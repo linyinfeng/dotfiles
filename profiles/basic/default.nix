@@ -11,4 +11,8 @@
     ../services/clean-gcroots
     ../services/gnupg
   ];
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
 }
