@@ -1,0 +1,22 @@
+{ config, pkgs, lib, ... }:
+
+{
+  programs.bash.enable = true;
+  programs.zsh = {
+    enable = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "history-substring-search"
+      ];
+    };
+    initExtra = ''
+      bindkey -M emacs '^P' history-substring-search-up
+      bindkey -M emacs '^N' history-substring-search-down
+    '';
+  };
+  programs.fish.enable = true;
+  programs.starship.enable = true;
+  programs.fzf.enable = true;
+  programs.zoxide.enable = true;
+}

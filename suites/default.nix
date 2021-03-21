@@ -15,7 +15,17 @@ let
 
 
   suites = with profiles; rec {
-    base = [ users.nixos users.root ];
+    base = [ basic users.root users.yinfeng ];
+
+    network = with networking; [ network-manager resolved ];
+    multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
+    development = with services; [ adb ];
+    virtualization = with profiles.virtualization; [ anbox docker libvirt wine ];
+    wireless = with services; [ bluetooth ];
+    gfw = with networking; [ gfwProxy ];
+
+    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ (with services; [ openssh printing ]);
+    mobileWorkstation = workstation ++ wireless ++ [ laptop ];
   };
 in
 lib.mapAttrs (_: v: dev.os.profileMap v) suites // {

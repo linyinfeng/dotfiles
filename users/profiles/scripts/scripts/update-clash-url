@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+url="$1"
+DIR="/var/lib/clash"
+
+su clash << ASCLASH
+
+set -e
+
+mkdir -p $DIR
+
+echo 'Backup old config.yaml'
+mv $DIR/config.yaml $DIR/config.yaml.old
+
+export HTTP_PROXY=
+export HTTPS_PROXY=
+export ALL_PROXY=
+export http_proxy=
+export https_proxy=
+export all_proxy=
+
+echo 'Downloading config.yaml...'
+tmpfile=$(mktemp /tmp/update-clash-config.XXXXXX)
+curl "$url" > "$tmpfile"
+
+yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$tmpfile" - <<EOF > $DIR/config.yaml
+port: 7890
+socks-port: 7891
+mixed-port: 8899
+external-controller: 127.0.0.1:7892
+EOF
+
+if [ $? -eq 0 ]; then
+    echo 'Restarting clash...'
+    sudo systemctl restart clash
+    sudo systemctl status clash
+else
+    echo 'Restore old config.yaml'
+    cp $DIR/config.yaml.old $DIR/config.yaml
+fi
+
+ASCLASH

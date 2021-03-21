@@ -6,16 +6,22 @@ in
   modules = [
     home.nixosModules.home-manager
     ci-agent.nixosModules.agent-profile
+
+    impermanence.nixosModules.impermanence
   ];
 
   overlays = [
-    nix.overlay
     nur.overlay
     devshell.overlay
     (final: prev: {
       deploy-rs = deploy.packages.${prev.system}.deploy-rs;
     })
     pkgs.overlay
+
+    emacs-overlay.overlay
+    (final: prev: {
+      nixops-flake = nixops.defaultPackage.${prev.system};
+    })
   ];
 
   # passed to all nixos modules

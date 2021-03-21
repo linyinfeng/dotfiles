@@ -1,0 +1,5 @@
+{ ... }:
+
+{
+  virtualisation.anbox.enable = true;
+}

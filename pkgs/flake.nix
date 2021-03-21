@@ -1,7 +1,9 @@
 {
   description = "Package Sources";
 
-  inputs = { };
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
 
   outputs = { self, nixpkgs, ... }: {
     overlay = final: prev: {
