@@ -19,7 +19,7 @@ let
 
     network = with networking; [ network-manager resolved ];
     multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
-    development = with services; [ adb ];
+    development = (with profiles.development; [ shells ]) ++ (with services; [ adb ]);
     virtualization = with profiles.virtualization; [ anbox docker libvirt wine ];
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
