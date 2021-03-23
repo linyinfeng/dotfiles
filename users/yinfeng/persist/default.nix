@@ -36,7 +36,6 @@ in
 
       ".config/nix"
       ".config/dconf"
-      ".config/clash"
       ".config/onedrive"
       ".config/chromium"
       ".config/transmission-daemon"
@@ -56,6 +55,7 @@ in
 
       ".cache/nix-index"
 
+      ".local/share/Trash"
       ".local/share/zoxide"
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"

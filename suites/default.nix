@@ -24,8 +24,8 @@ let
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
 
-    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ (with services; [ openssh printing ]);
-    mobileWorkstation = workstation ++ wireless ++ [ laptop ];
+    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
+    mobileWorkstation = workstation ++ [ laptop ];
   };
 in
 lib.mapAttrs (_: v: dev.os.profileMap v) suites // {
