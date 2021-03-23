@@ -63,9 +63,9 @@
   (package-install 'use-package))
 (require 'use-package)
 
-(use-package auctex
-  :ensure t
-  :defer t)
+;; (use-package auctex
+;;   :ensure t
+;;   :defer t)
 
 (use-package avy
   :ensure t
