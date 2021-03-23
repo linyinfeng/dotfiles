@@ -84,6 +84,7 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
+  boot.initrd.availableKernelModules = [ "nvme" ];
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";
