@@ -35,6 +35,7 @@ in
       profile.${defaultProfile} = {
         visibleName = "Main";
         default = true;
+        font = "DejaVu Sans Mono for Powerline 10";
       };
     };
 
