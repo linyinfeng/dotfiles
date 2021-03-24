@@ -22,7 +22,7 @@ in
 
 {
   home.packages = [
-    scripts
+    # scripts
     secretScripts
   ];
 }

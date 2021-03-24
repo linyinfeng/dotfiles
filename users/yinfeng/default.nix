@@ -25,27 +25,18 @@
     gid = 1000;
   };
 
-  home-manager.users.yinfeng = {
-    imports = [
-      (import ../profiles/passthrough config)
+  home-manager.users.yinfeng = { suites, ... }: {
+    imports = suites.full;
 
-      ../profiles/desktop-applications
-      ../profiles/digital-paper
-      ../profiles/direnv
-      ../profiles/emacs
-      ../profiles/git
-      ../profiles/gnome
-      ../profiles/ides
-      ../profiles/latex
-      ../profiles/onedrive
-      ../profiles/proxychains
-      ../profiles/rime
-      ../profiles/scripts
-      ../profiles/shells
-      ../profiles/tools
-      ../profiles/vscode
+    programs.git = {
+      userName = "Lin Yinfeng";
+      userEmail = "lin.yinfeng@outlook.com";
+      signing = {
+        key = "35977ED3D1FB6D74484647F65FE6190217C55B26";
+        signByDefault = true;
+      };
+    };
 
-      ./user-profiles/git
-    ];
+    passthrough.systemConfig = config;
   };
 }

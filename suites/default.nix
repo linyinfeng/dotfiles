@@ -31,7 +31,14 @@ let
 
   # available as 'suites' within the home-manager configuration
   userSuites = with userProfiles; rec {
-    base = [ direnv git ];
+    base = [ direnv git scripts shells ];
+    multimedia = [ gnome desktop-applications rime ];
+    development = [ emacs latex tools ];
+    multimediaDev = multimedia ++ development ++ [ ides vscode ];
+    synchronize = [ onedrive digital-paper ];
+    gfw = [ proxychains ];
+
+    full = base ++ multimediaDev ++ synchronize ++ gfw;
   };
 
 in

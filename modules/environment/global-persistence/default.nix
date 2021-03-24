@@ -52,6 +52,7 @@ with lib;
       directories = cfg.directories;
       files = cfg.etcFiles;
     };
+
     system.activationScripts.globalPersistenceLinkFiles =
       let
         link = file:
@@ -70,5 +71,29 @@ with lib;
           '';
       in
       "${script}";
+
+    environment.systemPackages = [
+      (pkgs.stdenvNoCC.mkDerivation {
+        name = "global-persistence-scripts";
+        buildCommand = ''
+          install -Dm755 $migrateToPersist $out/bin/persist-migrate
+          install -Dm755 $persistPermission $out/bin/persist-permission
+        '';
+        migrateToPersist = pkgs.substituteAll {
+          src = ./persist-migrate.sh;
+          isExecutable = true;
+          inherit (pkgs.stdenvNoCC) shell;
+          inherit (pkgs) coreutils gawk rsync;
+          persist = cfg.root;
+        };
+        persistPermission = pkgs.substituteAll {
+          src = ./persist-permission.sh;
+          isExecutable = true;
+          inherit (pkgs.stdenvNoCC) shell;
+          inherit (pkgs) fd;
+          persist = cfg.root;
+        };
+      })
+    ];
   };
 }

@@ -1,1 +1,3 @@
-[ ]
+[
+  ./passthrough.nix
+]

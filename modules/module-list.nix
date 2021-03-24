@@ -1,4 +1,4 @@
 [
-  ./environment/global-persistence.nix
+  ./environment/global-persistence/default.nix
   ./services/clean-gcroots.nix
 ]
