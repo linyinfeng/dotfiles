@@ -24,14 +24,16 @@ let
     virtualization = with profiles.virtualization; [ anbox docker libvirt wine ];
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
+    campus = with networking; [ campus-network ];
 
     workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
-    mobileWorkstation = workstation ++ [ laptop ];
+    campusWorkstation = workstation ++ campus;
+    mobileWorkstation = campusWorkstation ++ [ laptop ];
   };
 
   # available as 'suites' within the home-manager configuration
   userSuites = with userProfiles; rec {
-    base = [ direnv git scripts shells ];
+    base = [ direnv git shells ];
     multimedia = [ gnome desktop-applications rime ];
     development = [ emacs latex tools ];
     multimediaDev = multimedia ++ development ++ [ ides vscode ];

@@ -39,7 +39,7 @@ let
 in
 {
   imports =
-    suites.workstation ++
+    suites.campusWorkstation ++
     suites.gfw ++
     [
       hardware.common-pc
