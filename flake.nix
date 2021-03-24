@@ -56,8 +56,14 @@
             });
           });
 
+        homeConfigurations = os.mkHomeConfigurations;
+
         nixosModules =
           let moduleList = import ./modules/module-list.nix;
+          in lib.pathsToImportedAttrs moduleList;
+
+        homeModules =
+          let moduleList = import ./users/modules/module-list.nix;
           in lib.pathsToImportedAttrs moduleList;
 
         overlay = import ./pkgs;
@@ -92,9 +98,6 @@
           devShell = import ./shell {
             inherit self system;
           };
-
-          legacyPackages.hmActivationPackages =
-            os.mkHomeActivation;
         }
       );
     in

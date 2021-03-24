@@ -1,7 +1,4 @@
 { inputs }: with inputs;
-let
-  hmModules = { };
-in
 {
   modules = [
     home.nixosModules.home-manager
@@ -26,9 +23,14 @@ in
 
   # passed to all nixos modules
   specialArgs = {
-    inherit hmModules;
-
     overrideModulesPath = "${override}/nixos/modules";
     hardware = nixos-hardware.nixosModules;
   };
+
+  # added to home-manager
+  userModules = [
+  ];
+
+  # passed to all home-manager modules
+  userSpecialArgs = { };
 }
