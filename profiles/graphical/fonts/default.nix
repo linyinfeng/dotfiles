@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   fonts.fonts = with pkgs; [
@@ -34,7 +34,7 @@
   ];
 
   fonts.fontconfig.defaultFonts = {
-    sansSerif = [
+    sansSerif = lib.mkBefore [
       "Noto Sans"
       "Source Han Sans SC"
       "Source Han Sans TC"
@@ -42,7 +42,7 @@
       "Source Han Sans K"
       "DejaVu Sans"
     ];
-    serif = [
+    serif = lib.mkBefore [
       "Noto Serif"
       "Source Han Serif SC"
       "Source Han Serif TC"
@@ -50,11 +50,12 @@
       "Source Han Serif K"
       "DejaVu Serif"
     ];
-    monospace = [
+    # respect powerline font settings in core
+    monospace = lib.mkAfter [
       "Noto Sans Mono"
       "DejaVu Sans Mono"
     ];
-    emoji = [
+    emoji = lib.mkBefore [
       "Noto Color Emoji"
     ];
   };
