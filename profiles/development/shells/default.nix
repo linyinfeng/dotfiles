@@ -1,9 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment.shells = with pkgs; [
-    bashInteractive
-    zsh
-    fish
-  ];
+  programs.zsh.enable = true;
 }

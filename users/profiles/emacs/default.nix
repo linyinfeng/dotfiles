@@ -20,6 +20,11 @@ in
     client.enable = true;
   };
 
+  environment.shellAliases = {
+    emacs = "emacsclient --create-frame";
+    vim = "emacsclient --create-frame --tty";
+  };
+
   home.sessionVariables = {
     EDITOR = "emacsclient";
   };
