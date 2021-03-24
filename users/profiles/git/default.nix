@@ -10,4 +10,7 @@
       credential.helper = "libsecret";
     };
   };
+  home.packages = with pkgs; [
+    git-crypt
+  ];
 }
