@@ -3,7 +3,7 @@
 let
 
   btrfsSubvol = subvol: extraConfig: {
-    device = "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d";
+    device = "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
     fsType = "btrfs";
     options = [ "subvol=${subvol}" "compress=zstd" ];
   } // extraConfig;
@@ -15,11 +15,11 @@ let
       {
         domain_name = "li7g.com ";
         sub_domains = [
-          "laptop"
+          "work"
         ];
       }
     ];
-    ip_interface = "enp0s31f6";
+    ip_interface = "enp4s0";
     interval = 300;
   };
 
@@ -39,10 +39,11 @@ let
 in
 {
   imports =
-    suites.mobileWorkstation ++
+    suites.workstation ++
     suites.gfw ++
     [
-      hardware.lenovo-thinkpad-t460s
+      hardware.common-pc
+      hardware.common-cpu-intel
       hardware.common-pc-ssd
     ];
 
@@ -55,9 +56,6 @@ in
     efiSupport = true;
     device = "nodev";
     useOSProber = true;
-
-    font = "${pkgs.dejavu_fonts}/share/fonts/truetype/DejaVuSansMono.ttf";
-    fontSize = 22;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -66,7 +64,7 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
 
-  powerManagement.cpuFreqGovernor = "powersave";
+  powerManagement.cpuFreqGovernor = "performance";
 
   systemd.services.godns-ipv4 = godnsService {
     name = "godns-ipv4";
@@ -86,30 +84,30 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
-  fileSystems."/" =
-    {
-      device = "tmpfs";
-      fsType = "tmpfs";
-      options = [ "defaults" "size=8G" "mode=755" ];
-    };
-  boot.initrd.luks.devices."crypt-root".device =
-    "/dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd";
-  fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
+  boot.initrd.availableKernelModules = [ "nvme" ];
+  fileSystems."/" = {
+    device = "tmpfs";
+    fsType = "tmpfs";
+    options = [ "defaults" "size=16G" "mode=755" ];
+  };
+  boot.initrd.luks.devices."crypt-root" = {
+    device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
+    allowDiscards = true;
+  };
   fileSystems."/nix" = btrfsSubvol "@nix" { neededForBoot = true; };
+  fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
   fileSystems."/swap" = btrfsSubvol "@swap" { };
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/8F31-70B2";
+      device = "/dev/disk/by-uuid/74C9-BFBC";
       fsType = "vfat";
     };
-  fileSystems."/windows/c" =
+  fileSystems."/data" =
     {
-      device = "/dev/disk/by-uuid/ECB0C2DCB0C2AD00";
-      fsType = "ntfs";
-      options = [ "ro" "fmask=333" "dmask=222" ];
+      device = "/dev/disk/by-uuid/6c4a47ea-492e-4855-8157-180e74904b73";
+      fsType = "ext4";
     };
-  swapDevices =
-    [{
-      device = "/swap/swapfile";
-    }];
+  swapDevices = [{
+    device = "/swap/swapfile";
+  }];
 }

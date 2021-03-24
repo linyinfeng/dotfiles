@@ -25,8 +25,8 @@ let
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
 
-    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ (with services; [ openssh printing ]);
-    mobileWorkstation = workstation ++ wireless ++ [ laptop ];
+    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
+    mobileWorkstation = workstation ++ [ laptop ];
   };
 
   # available as 'suites' within the home-manager configuration
