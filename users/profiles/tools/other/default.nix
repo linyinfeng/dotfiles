@@ -59,4 +59,8 @@
     yq-go
     zola
   ];
+
+  home.global-persistence.directories = [
+    ".config/gh"
+  ];
 }

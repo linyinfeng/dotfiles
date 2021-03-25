@@ -21,4 +21,8 @@ in
     style:
       horizontal: true
   '';
+
+  home.global-persistence.directories = [
+    ".config/ibus/rime"
+  ];
 }

@@ -95,5 +95,8 @@ with lib;
         };
       })
     ];
+
+    # for user level persistence
+    programs.fuse.userAllowOther = true;
   };
 }

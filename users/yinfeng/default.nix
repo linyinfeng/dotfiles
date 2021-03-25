@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./persist
-  ];
-
   users.users.yinfeng = {
     uid = 1000;
     hashedPassword = import ../../secrets/users/yinfeng/hashedPassword.nix;

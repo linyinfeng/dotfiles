@@ -20,7 +20,7 @@ in
     client.enable = true;
   };
 
-  environment.shellAliases = {
+  home.shellAliases = {
     emacs = "emacsclient --create-frame";
     vim = "emacsclient --create-frame --tty";
   };
@@ -30,4 +30,13 @@ in
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
+
+  home.global-persistence = {
+    directories = [
+      ".emacs.d"
+    ];
+    files = [
+      ".ispell_english"
+    ];
+  };
 }

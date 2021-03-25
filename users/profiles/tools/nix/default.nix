@@ -14,4 +14,10 @@
     patchelf
     manix
   ];
+
+  home.global-persistence.directories = [
+    ".nixops"
+    ".config/cachix"
+    ".cache/nix-index"
+  ];
 }

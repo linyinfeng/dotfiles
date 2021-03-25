@@ -13,4 +13,8 @@
       '';
     })
   ];
+
+  home.global-persistence.directories = [
+    ".dpapp"
+  ];
 }

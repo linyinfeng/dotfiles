@@ -29,6 +29,7 @@
 
   # added to home-manager
   userModules = [
+    (builtins.toPath "${impermanence}/home-manager.nix")
   ];
 
   # passed to all home-manager modules

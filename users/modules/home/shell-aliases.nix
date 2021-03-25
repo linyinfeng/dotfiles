@@ -1,12 +1,12 @@
 { config, lib, ... }:
 
 let
-  cfg = config.environment.shellAliases;
+  cfg = config.home.shellAliases;
 in
 
 with lib;
 {
-  options.environment.shellAliases = lib.mkOption {
+  options.home.shellAliases = lib.mkOption {
     type = with types; attrsOf str;
     default = { };
     description = ''

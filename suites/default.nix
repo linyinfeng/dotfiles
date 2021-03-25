@@ -35,12 +35,13 @@ let
   userSuites = with userProfiles; rec {
     base = [ direnv git shells ];
     multimedia = [ gnome desktop-applications rime ];
-    development = [ emacs latex tools ];
+    development = [ userProfiles.development emacs latex tools gnupg ssh ];
+    virtualization = [ wine gnupg ];
     multimediaDev = multimedia ++ development ++ [ ides vscode ];
     synchronize = [ onedrive digital-paper ];
     gfw = [ proxychains ];
 
-    full = base ++ multimediaDev ++ synchronize ++ gfw;
+    full = base ++ multimediaDev ++ virtualization ++ synchronize ++ gfw;
   };
 
 in
