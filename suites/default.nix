@@ -25,6 +25,7 @@ let
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
     campus = with networking; [ campus-network ];
+    game = with graphical.game; [ steam ];
 
     workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
     campusWorkstation = workstation ++ campus;

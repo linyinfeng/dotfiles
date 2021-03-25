@@ -40,6 +40,7 @@ in
 {
   imports =
     suites.mobileWorkstation ++
+    suites.game ++
     suites.gfw ++
     [
       hardware.lenovo-thinkpad-t460s
