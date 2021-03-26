@@ -51,18 +51,13 @@ in
   console.keyMap = "us";
   time.timeZone = "Asia/Shanghai";
 
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    device = "nodev";
-    useOSProber = true;
-
-    font = "${pkgs.dejavu_fonts}/share/fonts/truetype/DejaVuSansMono.ttf";
-    fontSize = 22;
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      consoleMode = "auto";
+    };
   };
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.systemd-boot.consoleMode = "auto";
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;

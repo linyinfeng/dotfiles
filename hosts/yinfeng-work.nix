@@ -51,18 +51,15 @@ in
   console.keyMap = "us";
   time.timeZone = "Asia/Shanghai";
 
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    device = "nodev";
-    useOSProber = true;
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      consoleMode = "max";
+    };
   };
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.systemd-boot.consoleMode = "auto";
 
   hardware.enableRedistributableFirmware = true;
-  hardware.video.hidpi.enable = true;
 
   powerManagement.cpuFreqGovernor = "performance";
 
