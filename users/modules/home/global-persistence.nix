@@ -37,10 +37,12 @@ with lib;
   };
 
   config = {
-    home.persistence.${persistHome} = mkIf (cfg.enable) {
-      directories = cfg.directories;
-      files = cfg.files;
-      allowOther = true;
+    home.persistence = mkIf (cfg.enable) {
+      "${persistHome}" = {
+        directories = cfg.directories;
+        files = cfg.files;
+        allowOther = true;
+      };
     };
   };
 }
