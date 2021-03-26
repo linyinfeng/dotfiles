@@ -1,14 +1,14 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     android-studio
     jetbrains.idea-ultimate
     jetbrains.clion
     jetbrains.goland
   ];
 
-  home.global-persistence.directories = [
+  environment.global-persistence.user.directories = [
     ".config/Google"
     ".config/JetBrains"
 

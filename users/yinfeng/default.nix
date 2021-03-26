@@ -24,6 +24,8 @@
   home-manager.users.yinfeng = { suites, ... }: {
     imports = suites.full;
 
+    home.global-persistence.enable = true;
+
     programs.git = {
       userName = "Lin Yinfeng";
       userEmail = "lin.yinfeng@outlook.com";

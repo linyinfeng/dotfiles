@@ -8,7 +8,12 @@
     gnome3.gnome-boxes
   ];
 
-  environment.global-persistence.directories = [
-    "/var/lib/libvirt"
-  ];
+  environment.global-persistence = {
+    directories = [
+      "/var/lib/libvirt"
+    ];
+    user.directories = [
+      ".config/libvirt"
+    ];
+  };
 }

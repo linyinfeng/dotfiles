@@ -5,7 +5,7 @@ let
   home = "${config.home.homeDirectory}";
   persist = "${config.passthrough.systemConfig.environment.global-persistence.root}";
   persistHome = "${persist}${home}";
-  systemWiseEnabled = config.passthrough.systemConfig.environment.global-persistence.enable;
+  sysCfg = config.passthrough.systemConfig.environment.global-persistence;
 in
 
 with lib;
@@ -13,7 +13,7 @@ with lib;
   options.home.global-persistence = {
     enable = lib.mkOption {
       type = types.bool;
-      default = systemWiseEnabled;
+      default = false;
       description = ''
         Whether to enable global home persistence storage.
       '';
@@ -37,7 +37,12 @@ with lib;
   };
 
   config = {
-    home.persistence = mkIf (cfg.enable) {
+    home.global-persistence = {
+      directories = sysCfg.user.directories;
+      files = sysCfg.user.files;
+    };
+
+    home.persistence = mkIf (sysCfg.enable && cfg.enable) {
       "${persistHome}" = {
         directories = cfg.directories;
         files = cfg.files;

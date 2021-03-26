@@ -20,14 +20,15 @@ let
 
     network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
     multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
-    development = (with profiles.development; [ shells ]) ++ (with services; [ adb gnupg ]);
+    development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
+    multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
     virtualization = with profiles.virtualization; [ anbox docker libvirt wine ];
     wireless = with services; [ bluetooth ];
-    gfw = with networking; [ gfwProxy ];
+    gfw = with networking; [ gfw-proxy ];
     campus = with networking; [ campus-network ];
     game = with graphical.game; [ steam ];
 
-    workstation = base ++ multimedia ++ development ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
+    workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
     campusWorkstation = workstation ++ campus;
     mobileWorkstation = campusWorkstation ++ [ laptop ];
   };
@@ -36,13 +37,12 @@ let
   userSuites = with userProfiles; rec {
     base = [ direnv git shells ];
     multimedia = [ gnome desktop-applications rime ];
-    development = [ userProfiles.development emacs latex tools gnupg ssh ];
-    virtualization = [ wine gnupg ];
-    multimediaDev = multimedia ++ development ++ [ ides vscode ];
+    development = [ userProfiles.development emacs tools ssh ];
+    virtualization = [ wine ];
+    multimediaDev = multimedia ++ development ++ [ vscode ];
     synchronize = [ onedrive digital-paper ];
-    gfw = [ proxychains ];
 
-    full = base ++ multimediaDev ++ virtualization ++ synchronize ++ gfw;
+    full = base ++ multimediaDev ++ virtualization ++ synchronize;
   };
 
 in

@@ -45,6 +45,26 @@ with lib;
         Files should be stored in persistent storage. These files will be soft linked.
       '';
     };
+
+    user = {
+      directories = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        description = ''
+          Directories to bind mount to persistent storage for users.
+          Paths should be relative to home of user.
+        '';
+      };
+
+      files = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        description = ''
+          Files to link to persistent storage for users.
+          Paths should be relative to home of user.
+        '';
+      };
+    };
   };
 
   config = mkIf (cfg.enable && cfg.root != null) {
@@ -80,14 +100,14 @@ with lib;
           install -Dm755 $persistPermission $out/bin/persist-permission
         '';
         migrateToPersist = pkgs.substituteAll {
-          src = ./persist-migrate.sh;
+          src = ./global-persistence/persist-migrate.sh;
           isExecutable = true;
           inherit (pkgs.stdenvNoCC) shell;
           inherit (pkgs) coreutils gawk rsync;
           persist = cfg.root;
         };
         persistPermission = pkgs.substituteAll {
-          src = ./persist-permission.sh;
+          src = ./global-persistence/persist-permission.sh;
           isExecutable = true;
           inherit (pkgs.stdenvNoCC) shell;
           inherit (pkgs) fd;

@@ -1,5 +1,5 @@
 PROXY_HOST="localhost"
-PROXY_PORT="8899"
+PROXY_PORT="@mixedPort@"
 
 export HTTP_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
 export http_proxy="$HTTP_PROXY"
