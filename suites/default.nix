@@ -18,9 +18,9 @@ let
   suites = with profiles; rec {
     base = [ basic users.root users.yinfeng ];
 
-    network = with networking; [ network-manager resolved ];
+    network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
     multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
-    development = (with profiles.development; [ shells ]) ++ (with services; [ adb ]);
+    development = (with profiles.development; [ shells ]) ++ (with services; [ adb gnupg ]);
     virtualization = with profiles.virtualization; [ anbox docker libvirt wine ];
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfwProxy ];
