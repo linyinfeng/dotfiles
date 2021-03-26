@@ -37,8 +37,8 @@ let
   userSuites = with userProfiles; rec {
     base = [ direnv git shells ];
     multimedia = [ gnome desktop-applications rime ];
-    development = [ userProfiles.development emacs tools ssh ];
-    virtualization = [ wine ];
+    development = [ userProfiles.development emacs tools ];
+    virtualization = [ ];
     multimediaDev = multimedia ++ development ++ [ vscode ];
     synchronize = [ onedrive digital-paper ];
 

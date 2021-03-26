@@ -55,35 +55,21 @@
     directories = [
       ".ts3client"
       ".mozilla"
-      ".steam"
       ".zotero"
       ".goldendict"
 
       ".config/calibre"
       ".config/chromium"
-      ".config/gnome-boxes"
       ".config/obs-studio"
       ".config/Element"
       ".config/unity3d/Team Cherry" # hollow knight saves
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
-      ".local/share/gnome-boxes"
       ".local/share/geary"
       ".local/share/applications"
-      ".local/share/Steam"
 
-      "Desktop"
-      "Documents"
-      "Downloads"
-      "Music"
-      "Pictures"
-      "Public"
-      "Templates"
-      "Videos"
       "Zotero"
-    ];
-    files = [
     ];
   };
 }

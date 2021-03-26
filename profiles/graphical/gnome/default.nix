@@ -11,4 +11,15 @@
   networking.firewall.allowedTCPPorts = [
     5900 # VNC
   ];
+
+  environment.global-persistence.user.directories = [
+    "Desktop"
+    "Documents"
+    "Downloads"
+    "Music"
+    "Pictures"
+    "Public"
+    "Templates"
+    "Videos"
+  ];
 }

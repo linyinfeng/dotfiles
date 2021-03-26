@@ -14,6 +14,9 @@
     ];
     user.directories = [
       ".config/libvirt"
+
+      ".config/gnome-boxes"
+      ".local/share/gnome-boxes"
     ];
   };
 }
