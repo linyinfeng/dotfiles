@@ -26,9 +26,9 @@
       `((".*" ,auto-save-dir t)))
 (setq create-lockfiles nil)
 
-;; no menu bar and tool bar
-(menu-bar-mode -1)
-(tool-bar-mode -1)
+;; ;; no menu bar and tool bar
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
 
 (setq package-archives
       '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
