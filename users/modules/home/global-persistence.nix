@@ -19,6 +19,14 @@ with lib;
       '';
     };
 
+    root = lib.mkOption {
+      type = types.str;
+      default = false;
+      description = ''
+        Root of home global persistence.
+      '';
+    };
+
     directories = mkOption {
       type = with types; listOf str;
       default = [ ];
@@ -38,12 +46,13 @@ with lib;
 
   config = {
     home.global-persistence = {
+      root = persistHome;
       directories = sysCfg.user.directories;
       files = sysCfg.user.files;
     };
 
     home.persistence = mkIf (sysCfg.enable && cfg.enable) {
-      "${persistHome}" = {
+      "${cfg.root}" = {
         directories = cfg.directories;
         files = cfg.files;
         allowOther = true;

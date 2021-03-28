@@ -13,18 +13,16 @@
       bindkey -M emacs '^P' history-substring-search-up
       bindkey -M emacs '^N' history-substring-search-down
     '';
+    history = lib.mkIf (config.home.global-persistence.enable) {
+      path = "${config.home.global-persistence.root}/.zsh_history";
+    };
   };
   programs.starship.enable = true;
   programs.fzf.enable = true;
   programs.zoxide.enable = true;
 
-  home.global-persistence = {
-    directories = [
-      ".local/share/zoxide"
-      ".local/share/direnv"
-    ];
-    files = [
-      ".zsh_history"
-    ];
-  };
+  home.global-persistence.directories = [
+    ".local/share/zoxide"
+    ".local/share/direnv"
+  ];
 }
