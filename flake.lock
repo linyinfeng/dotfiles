@@ -133,11 +133,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1616318638,
-        "narHash": "sha256-E6ABXtzw6bHmrIirB1sJL6S2MEa3sfcvRLzRa92frCo=",
+        "lastModified": 1616724076,
+        "narHash": "sha256-SwbPXLjN2sLy4NL/GhodiJrdkIVZwGGTGiCN3JxH1cU=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ddcd476603dfd3388b1dc8234fa9d550156a51f5",
+        "rev": "fedfd430f96695997b3eaf8d7e82ca79406afa23",
         "type": "github"
       },
       "original": {
@@ -336,16 +336,15 @@
     },
     "utils": {
       "locked": {
-        "lastModified": 1608663846,
-        "narHash": "sha256-YOAXeoNLW0IubQ6AZLGuSj5kAD5n4DYXLYReLtyds1A=",
+        "lastModified": 1614513358,
+        "narHash": "sha256-LakhOx3S1dRjnh0b5Dg3mbZyH0ToC9I8Y2wKSkBaTzU=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "a68df93a37cd5137ac22ffeb2d8a03acf253cc24",
+        "rev": "5466c5bbece17adaab2d82fae80b46e807611bf3",
         "type": "github"
       },
       "original": {
         "owner": "numtide",
-        "ref": "flatten-tree-system",
         "repo": "flake-utils",
         "type": "github"
       }

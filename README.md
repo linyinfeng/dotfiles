@@ -1,6 +1,6 @@
 [![Bors enabled](https://bors.tech/images/badge_small.svg)](https://app.bors.tech/repositories/32678)
 [![MIT License](https://img.shields.io/github/license/divnix/devos)][mit]
-[![NixOS 20.09](https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
+[![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=flat&logo=NixOS&logoColor=white)](https://nixos.org)
 
 > #### ⚠ Advisory ⚠
 > DevOS requires the [flakes][flakes] feature available via an _experimental_
@@ -14,7 +14,7 @@ personal and productive use. A sane repository structure is provided,
 integrating several popular projects like [home-manager][home-manager],
 [devshell][devshell], and [more](./doc/integrations).
 
-Stiving for ___nix first™___ solutions with unobstrusive implementations,
+Striving for ___nix first™___ solutions with unobstrusive implementations,
 a [flake centric][flake-doc] approach is taken for useful conveniences such as
 [automatic source updates](./pkgs#automatic-source-updates).
 

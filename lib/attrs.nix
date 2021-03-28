@@ -21,9 +21,20 @@ rec {
       paths' = lib.filter (lib.hasSuffix ".nix") paths;
     in
     genAttrs' paths' (path: {
-      name = lib.removeSuffix ".nix" (baseNameOf path);
+      name = lib.removeSuffix ".nix"
+        # Safe as long this is just used as a name
+        (builtins.unsafeDiscardStringContext (baseNameOf path));
       value = import path;
     });
 
   concatAttrs = lib.fold (attr: sum: lib.recursiveUpdate sum attr) { };
+
+  # Filter out packages that support given system and follow flake check requirements
+  filterPackages = system: packages:
+    let
+      # Everything that nix flake check requires for the packages output
+      filter = (n: v: with v; let platforms = meta.hydraPlatforms or meta.platforms or [ ]; in
+      lib.isDerivation v && !meta.broken && builtins.elem system platforms);
+    in
+    lib.filterAttrs filter packages;
 }
