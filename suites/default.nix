@@ -1,21 +1,7 @@
-{ lib }:
-let
-  inherit (lib) dev;
+{ users, profiles, userProfiles, ... }:
 
-  profiles = dev.os.mkProfileAttrs (toString ../profiles);
-  userProfiles = dev.os.mkProfileAttrs (toString ../users/profiles);
-  users = dev.os.mkProfileAttrs (toString ../users);
-
-  allProfiles =
-    let defaults = lib.collect (x: x ? default) profiles;
-    in map (x: x.default) defaults;
-
-  allUsers =
-    let defaults = lib.collect (x: x ? default) users;
-    in map (x: x.default) defaults;
-
-
-  suites = with profiles; rec {
+{
+  system = with profiles; rec {
     base = [ basic users.root users.yinfeng ];
 
     network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
@@ -32,9 +18,7 @@ let
     campusWorkstation = workstation ++ campus;
     mobileWorkstation = campusWorkstation ++ [ laptop ];
   };
-
-  # available as 'suites' within the home-manager configuration
-  userSuites = with userProfiles; rec {
+  user = with userProfiles; rec {
     base = [ direnv git shells ];
     multimedia = [ gnome desktop-applications rime ];
     development = [ userProfiles.development emacs tools ];
@@ -43,14 +27,5 @@ let
     synchronize = [ onedrive digital-paper ];
 
     full = base ++ multimediaDev ++ virtualization ++ synchronize;
-  };
-
-in
-{
-  system = lib.mapAttrs (_: v: dev.os.profileMap v) suites // {
-    inherit allProfiles allUsers;
-  };
-  user = lib.mapAttrs (_: v: dev.os.profileMap v) userSuites // {
-    allProfiles = userProfiles;
   };
 }

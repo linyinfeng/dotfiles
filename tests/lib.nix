@@ -46,13 +46,15 @@ lib.runTests {
   testPathsToImportedAttrs = {
     expr =
       pathsToImportedAttrs [
-        ./testPathsToImportedAttrs/foo.nix
-        ./testPathsToImportedAttrs/bar.nix
-        ./testPathsToImportedAttrs/t.nix
-        ./testPathsToImportedAttrs/f.nix
+        "${self}/tests/testPathsToImportedAttrs/dir"
+        "${self}/tests/testPathsToImportedAttrs/foo.nix"
+        "${self}/tests/testPathsToImportedAttrs/bar.nix"
+        "${self}/tests/testPathsToImportedAttrs/t.nix"
+        "${self}/tests/testPathsToImportedAttrs/f.nix"
       ];
 
     expected = {
+      dir = { a = 5; };
       foo = { bar = 1; };
       bar = { foo = 2; };
       t = true;
@@ -66,4 +68,32 @@ lib.runTests {
     (rgxToString "a?" "a" == "a")
     (rgxToString "hat" "foohatbar" == "hat")
   ];
+
+  testSafeReadDir = {
+    expr = safeReadDir "${self}/tests/profiles" // safeReadDir "${self}/nonexistentdir";
+    expected = {
+      foo = "directory";
+      t = "directory";
+    };
+  };
+
+  testSuites =
+    let
+      profiles = os.mkProfileAttrs (toString ./profiles);
+      users = "";
+      userProfiles = "";
+      suites = { profiles, ... }: {
+        system.bar = [ profiles.foo ];
+      };
+    in
+    {
+      expr = os.mkSuites { inherit profiles users userProfiles suites; };
+      expected = {
+        system = {
+          bar = [ profiles.foo.default ];
+          allProfiles = [ profiles.foo.default profiles.t.default ];
+          allUsers = [ ];
+        };
+      };
+    };
 }

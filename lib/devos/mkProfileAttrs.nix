@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, dev, ... }:
 
 let mkProfileAttrs =
   /**
@@ -16,7 +16,7 @@ let mkProfileAttrs =
   let
     imports =
       let
-        files = builtins.readDir dir;
+        files = dev.safeReadDir dir;
 
         p = n: v:
           v == "directory"
@@ -27,7 +27,7 @@ let mkProfileAttrs =
     f = n: _:
       lib.optionalAttrs
         (lib.pathExists "${dir}/${n}/default.nix")
-        { default = /. + "${dir}/${n}"; }
+        { default = "${dir}/${n}"; }
       // mkProfileAttrs "${dir}/${n}";
   in
   lib.mapAttrs f imports;
