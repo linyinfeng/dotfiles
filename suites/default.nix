@@ -20,7 +20,7 @@
   };
   user = with userProfiles; rec {
     base = [ direnv git shells ];
-    multimedia = [ gnome desktop-applications rime ];
+    multimedia = [ gnome desktop-applications rime fonts ];
     development = [ userProfiles.development emacs tools ];
     virtualization = [ ];
     multimediaDev = multimedia ++ development ++ [ vscode ];
