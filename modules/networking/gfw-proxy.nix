@@ -28,6 +28,7 @@ let
       yqGo = pkgs.yq-go;
       httpPort = cfg.port.http;
       socksPort = cfg.port.socks5;
+      redirPort = cfg.port.redir;
       mixedPort = cfg.port.mixed;
       externalControllerPort = cfg.port.externalController;
       directory = clashDir;
@@ -56,17 +57,21 @@ with lib;
         type = with types; int;
         default = 7891;
       };
+      redir = mkOption {
+        type = with types; int;
+        default = 7893;
+      };
       mixed = mkOption {
         type = with types; int;
         default = 8899;
       };
       externalController = mkOption {
         type = with types; int;
-        default = 7892;
+        default = 7900;
       };
       webui = mkOption {
         type = with types; int;
-        default = 7893;
+        default = 7901;
       };
     };
     environment = mkOption {

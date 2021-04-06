@@ -10,6 +10,7 @@ systemctl="@systemd@/bin/systemctl"
 
 http_port="@httpPort@"
 socks_port="@socksPort@"
+redir_port="@redirPort@"
 mixed_port="@mixedPort@"
 external_controller_port="@externalControllerPort@"
 
@@ -39,6 +40,7 @@ $curl "$url" > "$tmpfile"
 $yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$tmpfile" - <<EOF > "$dir/config.yaml"
 port: $http_port
 socks-port: $socks_port
+redir-port: $redir_port
 mixed-port: $mixed_port
 external-controller: 127.0.0.1:$external_controller_port
 EOF
