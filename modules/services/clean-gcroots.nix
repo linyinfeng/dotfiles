@@ -19,7 +19,11 @@ with lib;
   config = mkIf (cfg.enable) {
     systemd.user.services.clean-gcroots = {
       description = "Clean user gcroots";
-      script = "${pkgs.findutils}/bin/find -L /nix/var/nix/gcroots/per-user/%u -maxdepth 1 -type l -delete -print";
+      script = ''
+        user="$1"
+        ${pkgs.findutils}/bin/find -L "/nix/var/nix/gcroots/per-user/$user" -maxdepth 1 -type l -delete -print
+      '';
+      scriptArgs = "%u";
       serviceConfig = {
         Type = "oneshot";
       };
