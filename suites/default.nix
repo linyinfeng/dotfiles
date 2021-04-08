@@ -2,7 +2,7 @@
 
 {
   system = with profiles; rec {
-    base = [ basic users.root users.yinfeng ];
+    base = [ core basic users.root users.yinfeng ];
 
     network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
     multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
