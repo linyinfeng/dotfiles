@@ -26,9 +26,10 @@
       `((".*" ,auto-save-dir t)))
 (setq create-lockfiles nil)
 
-;; ;; no menu bar and tool bar
-;; (menu-bar-mode -1)
-;; (tool-bar-mode -1)
+;; no menu bar
+(menu-bar-mode -1)
+;; no tool bar
+(tool-bar-mode -1)
 
 (setq package-archives
       '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
@@ -63,9 +64,9 @@
   (package-install 'use-package))
 (require 'use-package)
 
-;; (use-package auctex
-;;   :ensure t
-;;   :defer t)
+(use-package auctex
+  :ensure t
+  :defer t)
 
 (use-package avy
   :ensure t
@@ -149,6 +150,9 @@
   :ensure t)
 
 (use-package markdown-mode
+  :ensure t)
+
+(use-package neotree
   :ensure t)
 
 (use-package nix-mode
