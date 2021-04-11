@@ -111,7 +111,7 @@ let
               overlays = [ ];
               specialArgs = { };
               userModules = [ ];
-              userSpecialArgs = [ ];
+              userSpecialArgs = { };
             };
           in
           mkOption {
