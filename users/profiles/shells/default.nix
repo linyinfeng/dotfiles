@@ -14,7 +14,7 @@
       bindkey -M emacs '^N' history-substring-search-down
     '';
     history = lib.mkIf (config.home.global-persistence.enable) {
-      path = "${config.home.global-persistence.root}/.zsh_history";
+      path = "../../${config.home.global-persistence.root}/.zsh_history";
     };
   };
   programs.starship.enable = true;
