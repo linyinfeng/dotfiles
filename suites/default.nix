@@ -13,10 +13,11 @@
     gfw = with networking; [ gfw-proxy ];
     campus = with networking; [ campus-network ];
     game = with graphical.game; [ steam ];
+    ciAgent = with services; [ hercules-ci-agent ];
 
     workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
-    campusWorkstation = workstation ++ campus;
-    mobileWorkstation = campusWorkstation ++ [ laptop ];
+    mobileWorkstation = workstation ++ campus ++ [ laptop ];
+    desktopWorkstation = workstation ++ ciAgent;
   };
   user = with userProfiles; rec {
     base = [ direnv git shells ];

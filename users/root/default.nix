@@ -1,6 +1,6 @@
-{ ... }:
+{ lib, ... }:
 
 {
   users.users.root.hashedPassword =
-    import ../../secrets/users/root/hashedPassword.nix;
+    lib.removeSuffix "\n" (builtins.readFile ../../secrets/users/root/hashedPassword.txt);
 }

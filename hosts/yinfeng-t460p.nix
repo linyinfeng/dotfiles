@@ -10,7 +10,7 @@ let
 
   godnsBasicConfig = {
     provider = "Cloudflare";
-    login_token = import ../secrets/services/ddns/cloudflare-token.nix;
+    login_token = lib.removeSuffix "\n" (builtins.readFile ../secrets/services/ddns/cloudflare-token.txt);
     domains = [
       {
         domain_name = "li7g.com ";

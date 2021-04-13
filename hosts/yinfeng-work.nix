@@ -10,7 +10,7 @@ let
 
   godnsBasicConfig = {
     provider = "Cloudflare";
-    login_token = import ../secrets/services/ddns/cloudflare-token.nix;
+    login_token = lib.removeSuffix "\n" (builtins.readFile ../secrets/services/ddns/cloudflare-token.txt);
     domains = [
       {
         domain_name = "li7g.com ";
@@ -39,7 +39,8 @@ let
 in
 {
   imports =
-    suites.campusWorkstation ++
+    suites.desktopWorkstation ++
+    suites.campus ++
     suites.gfw ++
     [
       hardware.common-pc
@@ -63,6 +64,7 @@ in
 
   powerManagement.cpuFreqGovernor = "performance";
 
+  services.hercules-ci-agent.settings.concurrentTasks = 8;
   systemd.services.godns-ipv4 = godnsService {
     name = "godns-ipv4";
     config = godnsBasicConfig // {

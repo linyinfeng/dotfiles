@@ -1,9 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   users.users.yinfeng = {
     uid = 1000;
-    hashedPassword = import ../../secrets/users/yinfeng/hashedPassword.nix;
+    hashedPassword = lib.removeSuffix "\n" (builtins.readFile ../../secrets/users/yinfeng/hashedPassword.txt);
     isNormalUser = true;
     shell = pkgs.zsh;
     group = "yinfeng";
