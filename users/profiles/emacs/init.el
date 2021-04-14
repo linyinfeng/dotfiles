@@ -118,6 +118,9 @@
 (use-package flycheck
   :ensure t)
 
+(use-package flycheck-projectile
+  :ensure t)
+
 (use-package json-mode
   :ensure t)
 
