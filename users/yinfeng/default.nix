@@ -5,7 +5,7 @@
     uid = 1000;
     hashedPassword = lib.removeSuffix "\n" (builtins.readFile ../../secrets/users/yinfeng/hashedPassword.txt);
     isNormalUser = true;
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
     group = "yinfeng";
     extraGroups = [
       "users"

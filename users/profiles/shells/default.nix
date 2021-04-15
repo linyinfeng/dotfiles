@@ -17,7 +17,8 @@
       path = "../../${config.home.global-persistence.root}/.zsh_history";
     };
   };
-  programs.starship.enable = true;
+  programs.fish.enable = true;
+  # programs.starship.enable = true;
   programs.fzf.enable = true;
   programs.zoxide.enable = true;
 
