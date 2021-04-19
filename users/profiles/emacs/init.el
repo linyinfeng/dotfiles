@@ -77,7 +77,9 @@
   :ensure t)
 
 (use-package company
-  :ensure t)
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package counsel
   :ensure t
@@ -163,19 +165,26 @@
 
 (use-package org
   :ensure t
-  ;; :config
-  ;; (use-package org-bullets
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq org-bullets-bullet-list
-  ;;      '("●"
-  ;;        "○"
-  ;;        "✿"
-  ;;        "❀"
-  ;;        "◆"
-  ;;        "◇"))
-  ;;   :hook
-  ;;   (org-mode . (lambda () (org-bullets-mode 1))))
+  :config
+  (use-package org-roam
+    :ensure t
+    :config
+    (setq org-roam-directory "~/Source/org-roam")
+    :init
+    (add-hook 'after-init-hook 'org-roam-mode))
+  (use-package org-bullets
+    :ensure t
+    :config
+    (setq org-bullets-bullet-list
+          '("●"
+            "○"
+            "✿"
+            "❀"
+            "◆"
+            "◇"))
+    :hook
+    (org-mode . (lambda () (org-bullets-mode 1))))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
   :bind
   ("C-c l" . org-store-link)
   ("C-c a" . org-agenda)

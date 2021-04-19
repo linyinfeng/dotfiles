@@ -12,6 +12,8 @@ in
     (with pkgs; [
       ispell
       agda # agda mode
+      sqlite # org-roam
+      graphviz # org-roam
     ]);
 
   services.emacs = {
