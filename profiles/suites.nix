@@ -20,7 +20,7 @@
     desktopWorkstation = workstation ++ ciAgent;
   };
   user = with userProfiles; rec {
-    base = [ direnv git shells ];
+    base = [ direnv git git-extra shells ];
     multimedia = [ gnome desktop-applications rime fonts ];
     development = [ userProfiles.development emacs tools ];
     virtualization = [ ];
