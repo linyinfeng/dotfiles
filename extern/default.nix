@@ -28,6 +28,8 @@
 
   # added to home-manager
   userModules = [
+
+    # extra user modules
     (builtins.toPath "${impermanence}/home-manager.nix")
   ];
 
