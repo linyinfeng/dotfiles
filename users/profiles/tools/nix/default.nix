@@ -8,7 +8,7 @@
     nixpkgs-fmt
     nix-index
     nix-update
-    nixops-flake
+    nixopsUnstable
     cabal2nix
     carnix
     patchelf

@@ -181,29 +181,6 @@
         "type": "github"
       }
     },
-    "nixops": {
-      "inputs": {
-        "nixpkgs": [
-          "nixos"
-        ],
-        "utils": [
-          "utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1614711931,
-        "narHash": "sha256-In+aL5PrOWCjEMDBv+Yv93epJijt24NfGY6Vdy/aIVo=",
-        "owner": "nixos",
-        "repo": "nixops",
-        "rev": "45256745cef246dabe1ae8a7d109988f190cd7ef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixops",
-        "type": "github"
-      }
-    },
     "nixos": {
       "locked": {
         "lastModified": 1617082367,
@@ -324,7 +301,6 @@
         "home": "home",
         "impermanence": "impermanence",
         "naersk": "naersk",
-        "nixops": "nixops",
         "nixos": "nixos",
         "nixos-20_09": "nixos-20_09",
         "nixos-hardware": "nixos-hardware",

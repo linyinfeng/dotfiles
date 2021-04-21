@@ -31,10 +31,6 @@
 
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      nixops = {
-        url = "github:nixos/nixops";
-        inputs = { nixpkgs.follows = "nixos"; utils.follows = "utils"; };
-      };
     };
 
   outputs = inputs@{ deploy, nixos, nur, self, utils, ... }:

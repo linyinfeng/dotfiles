@@ -4,6 +4,7 @@
     home.nixosModules.home-manager
     ci-agent.nixosModules.agent-profile
 
+    # extra modules
     impermanence.nixosModules.impermanence
   ];
 
@@ -15,10 +16,8 @@
     })
     pkgs.overlay
 
+    # extra overlay
     emacs-overlay.overlay
-    (final: prev: {
-      nixops-flake = nixops.defaultPackage.${prev.system};
-    })
   ];
 
   # passed to all nixos modules
