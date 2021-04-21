@@ -14,8 +14,9 @@
     campus = with networking; [ campus-network ];
     game = with graphical.game; [ steam ];
     ciAgent = with services; [ hercules-ci-agent ];
+    phone = with services; [ kde-connect ];
 
-    workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ (with services; [ openssh printing ]);
+    workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ phone ++ (with services; [ openssh printing ]);
     mobileWorkstation = workstation ++ campus ++ [ laptop ];
     desktopWorkstation = workstation ++ ciAgent;
   };

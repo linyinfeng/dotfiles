@@ -2,7 +2,7 @@
 let
   extensionPkgs = with pkgs.gnomeExtensions; [
     # arc-menu
-    # gsconnect
+    gsconnect
     # dash-to-dock
     # dash-to-panel
     appindicator
@@ -14,7 +14,7 @@ in
 
   programs.chromium.extensions = [
     "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
-    # "jfnifeihccihocjbfcfhicmmgpjicaec" # GSConnect
+    "jfnifeihccihocjbfcfhicmmgpjicaec" # GSConnect
   ];
 
   # Remove initial setup dialog
