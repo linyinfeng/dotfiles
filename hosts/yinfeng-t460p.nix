@@ -42,6 +42,7 @@ in
     suites.mobileWorkstation ++
     suites.game ++
     suites.gfw ++
+    suites.chia ++
     [
       hardware.lenovo-thinkpad-t460s
       hardware.common-pc-ssd

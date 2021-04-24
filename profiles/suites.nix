@@ -15,6 +15,7 @@
     game = with graphical.game; [ steam ];
     ciAgent = with services; [ hercules-ci-agent ];
     phone = with services; [ kde-connect ];
+    chia = [ services.chia ];
 
     workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ phone ++ (with services; [ openssh printing ]);
     mobileWorkstation = workstation ++ campus ++ [ laptop ];
