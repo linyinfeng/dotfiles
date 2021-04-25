@@ -34,6 +34,7 @@
     imagemagick
     iozone
     kmon
+    lm_sensors
     loc
     ncdu
     neofetch
