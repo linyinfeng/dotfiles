@@ -37,7 +37,7 @@
     gnome3.gnome-sound-recorder
     gnome3.gnome-tweaks
     gnome3.polari
-    goldendict
+    # goldendict # TODO: broken
     gparted
     inkscape
     keepass

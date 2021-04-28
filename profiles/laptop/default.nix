@@ -1,5 +1,7 @@
-{ ... }:
+{ config, ... }:
 
 {
-  services.tlp.enable = true;
+  services.tlp = {
+    enable = !config.services.power-profiles-daemon.enable;
+  };
 }
