@@ -13,7 +13,7 @@ let
     login_token = lib.removeSuffix "\n" (builtins.readFile ../secrets/services/ddns/cloudflare-token.txt);
     domains = [
       {
-        domain_name = "li7g.com ";
+        domain_name = "li7g.com";
         sub_domains = [
           "work"
         ];
