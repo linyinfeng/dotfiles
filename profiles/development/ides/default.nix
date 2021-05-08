@@ -6,6 +6,7 @@
     jetbrains.idea-ultimate
     jetbrains.clion
     jetbrains.goland
+    jetbrains.pycharm-professional
   ];
 
   environment.global-persistence.user.directories = [
