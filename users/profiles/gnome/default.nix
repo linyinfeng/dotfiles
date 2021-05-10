@@ -4,7 +4,7 @@ let
     # arc-menu
     gsconnect
     # dash-to-dock
-    # dash-to-panel
+    dash-to-panel
     appindicator
     # caffeine
   ];
