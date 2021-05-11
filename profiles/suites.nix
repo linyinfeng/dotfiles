@@ -8,7 +8,7 @@
     multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
     development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
     multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-    virtualization = with profiles.virtualization; [ docker libvirt wine ];
+    virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
     wireless = with services; [ bluetooth ];
     gfw = with networking; [ gfw-proxy ];
     campus = with networking; [ campus-network ];

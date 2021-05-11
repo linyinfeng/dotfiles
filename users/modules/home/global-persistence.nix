@@ -3,9 +3,9 @@
 let
   cfg = config.home.global-persistence;
   home = "${config.home.homeDirectory}";
-  persist = "${config.passthrough.systemConfig.environment.global-persistence.root}";
-  persistHome = "${persist}${home}";
   sysCfg = config.passthrough.systemConfig.environment.global-persistence;
+  persist = "${sysCfg.root}";
+  persistHome = "${persist}${home}";
 in
 
 with lib;
@@ -20,8 +20,8 @@ with lib;
     };
 
     root = lib.mkOption {
-      type = types.str;
-      default = false;
+      type = with types; nullOr str;
+      default = null;
       description = ''
         Root of home global persistence.
       '';
@@ -42,16 +42,25 @@ with lib;
         A list of files in your home directory you want to link to persistent storage.
       '';
     };
+
+    enabled = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Is global home persistence storage enabled.
+      '';
+    };
   };
 
-  config = {
+  config = mkIf (config.passthrough.systemConfig != null && sysCfg.enable) {
     home.global-persistence = {
       root = persistHome;
       directories = sysCfg.user.directories;
       files = sysCfg.user.files;
+      enabled = cfg.enable;
     };
 
-    home.persistence = mkIf (sysCfg.enable && cfg.enable) {
+    home.persistence = mkIf (cfg.enabled) {
       "${cfg.root}" = {
         directories = cfg.directories;
         files = cfg.files;

@@ -13,7 +13,7 @@
       bindkey -M emacs '^P' history-substring-search-up
       bindkey -M emacs '^N' history-substring-search-down
     '';
-    history = lib.mkIf (config.home.global-persistence.enable) {
+    history = lib.mkIf (config.home.global-persistence.enabled) {
       path = "../../${config.home.global-persistence.root}/.zsh_history";
     };
   };
