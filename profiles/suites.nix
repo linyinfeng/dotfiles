@@ -24,7 +24,7 @@
   user = with userProfiles; rec {
     base = [ direnv git git-extra shells ];
     multimedia = [ gnome desktop-applications rime fonts ];
-    development = [ userProfiles.development emacs tools ];
+    development = [ userProfiles.development emacs tools asciinema ];
     virtualization = [ ];
     multimediaDev = multimedia ++ development ++ [ vscode ];
     synchronize = [ onedrive digital-paper ];
