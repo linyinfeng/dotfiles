@@ -41,12 +41,7 @@ in
   imports =
     suites.desktopWorkstation ++
     suites.campus ++
-    suites.gfw ++
-    [
-      hardware.common-pc
-      hardware.common-cpu-intel
-      hardware.common-pc-ssd
-    ];
+    suites.gfw;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

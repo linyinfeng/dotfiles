@@ -42,11 +42,7 @@ in
     suites.mobileWorkstation ++
     suites.game ++
     suites.gfw ++
-    suites.chia ++
-    [
-      hardware.lenovo-thinkpad-t460s
-      hardware.common-pc-ssd
-    ];
+    suites.chia;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

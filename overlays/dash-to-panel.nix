@@ -1,4 +1,7 @@
-final: prev: {
+channels: final: prev: {
+
+  __dontExport = true; # overrides clutter up actual creations
+
   gnomeExtensions = prev.gnomeExtensions // {
     dash-to-panel = prev.gnomeExtensions.dash-to-panel.overrideAttrs
       (old: rec {
