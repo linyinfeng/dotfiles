@@ -6,19 +6,26 @@
     hashedPassword = lib.removeSuffix "\n" (builtins.readFile ../../secrets/users/yinfeng/hashedPassword.txt);
     isNormalUser = true;
     shell = pkgs.fish;
-    group = "yinfeng";
-    extraGroups = [
-      "users"
-      "wheel"
-      "networkmanager"
-      "adbusers"
-      "docker"
-      "libvirtd"
+    group = config.users.groups.yinfeng.name;
+    extraGroups = with config.users.groups; [
+      users.name
+      wheel.name
+      networkmanager.name
+      adbusers.name
+      docker.name
+      libvirtd.name
+      keys.name
     ];
   };
 
   users.groups.yinfeng = {
     gid = 1000;
+  };
+
+  sops.secrets = {
+    yinfeng-asciinema-token = {
+      owner = "yinfeng";
+    };
   };
 
   home-manager.users.yinfeng = { suites, ... }: {

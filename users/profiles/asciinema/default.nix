@@ -1,9 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
     asciinema
   ];
 
-  xdg.configFile."asciinema/install-id".source = ../../../secrets/asciinema/recorder-token.txt;
+  home.activation.linkAsciinemaSecrets = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/asciinema"
+    ln -s "/run/secrets/yinfeng-asciinema-token" "$HOME/.config/asciinema/install-id"
+  '';
 }

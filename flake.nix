@@ -25,6 +25,8 @@
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
+      sops-nix.url = "github:Mic92/sops-nix";
+      sops-nix.inputs.nixpkgs.follows = "nixos";
     };
 
   outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
@@ -43,6 +45,7 @@
 
             # MAIN
             inputs.emacs-overlay.overlay
+            inputs.sops-nix.overlay
           ];
         };
         latest = { };
@@ -71,6 +74,7 @@
 
             # MAIN
             inputs.impermanence.nixosModules.impermanence
+            inputs.sops-nix.nixosModules.sops
           ];
         };
 
@@ -96,7 +100,8 @@
         };
         profiles = [ ./profiles ./users ];
         suites = { profiles, users, ... }: with profiles; rec {
-          base = [ core basic users.root users.yinfeng ];
+          foundation = [ global-persistence sops security.polkit services.clean-gcroots ];
+          base = [ core foundation users.root ];
 
           network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
           multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
@@ -114,6 +119,8 @@
           workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ phone ++ (with services; [ openssh printing ]);
           mobileWorkstation = workstation ++ campus ++ [ laptop ];
           desktopWorkstation = workstation ++ ciAgent;
+
+          user-yinfeng = [ users.yinfeng ];
         };
       };
 

@@ -393,7 +393,28 @@
         "nixos": "nixos",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
-        "pkgs": "pkgs"
+        "pkgs": "pkgs",
+        "sops-nix": "sops-nix"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1618840526,
+        "narHash": "sha256-3VAac44xE+kO8o7BQXLqHrAMUQT+XqIK8BcLkEEDwOA=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "4f384662a85804fa2bc1bc1f99e70bb468e76f88",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
       }
     },
     "utils": {

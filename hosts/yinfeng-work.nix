@@ -41,7 +41,8 @@ in
   imports =
     suites.desktopWorkstation ++
     suites.campus ++
-    suites.gfw;
+    suites.gfw ++
+    suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

@@ -42,7 +42,8 @@ in
     suites.mobileWorkstation ++
     suites.game ++
     suites.gfw ++
-    suites.chia;
+    suites.chia ++
+    suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
