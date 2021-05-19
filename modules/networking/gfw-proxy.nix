@@ -34,10 +34,12 @@ let
       directory = clashDir;
     };
     updateClash = pkgs.substituteAll {
-      src = ../../secrets/networking/gfw-proxy/update-clash.sh;
+      src = ./gfw-proxy/update-clash.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
+      dlerUrl = config.sops.secrets.clash-dler.path;
+      cnixUrl = config.sops.secrets.clash-cnix.path;
     };
   };
 in
@@ -135,6 +137,10 @@ with lib;
       ports = [
         "${toString cfg.port.webui}:80"
       ];
+    };
+    sops.secrets = {
+      clash-dler = { };
+      clash-cnix = { };
     };
 
     programs.proxychains = {
