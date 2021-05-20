@@ -25,8 +25,18 @@
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      sops-nix.url = "github:Mic92/sops-nix";
-      sops-nix.inputs.nixpkgs.follows = "nixos";
+      sops-nix = {
+        url = "github:Mic92/sops-nix";
+        inputs.nixpkgs.follows = "nixos";
+      };
+      flake-utils.url = "github:numtide/flake-utils";
+      yinfeng = {
+        url = "github:linyinfeng/nur-packages";
+        inputs = {
+          nixpkgs.follows = "nixos";
+          flake-utils.follows = "flake-utils";
+        };
+      };
     };
 
   outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
@@ -75,6 +85,7 @@
             # MAIN
             inputs.impermanence.nixosModules.impermanence
             inputs.sops-nix.nixosModules.sops
+            inputs.yinfeng.nixosModules.vlmcsd
           ];
         };
 
@@ -103,22 +114,26 @@
           foundation = [ global-persistence sops security.polkit services.clean-gcroots ];
           base = [ core foundation users.root ];
 
-          network = (with networking; [ network-manager resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
+          network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]) ++ (with services; [ openssh ]);
+          networkManager = (with networking; [ network-manager ]);
           multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
           development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
           multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
           virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
           wireless = with services; [ bluetooth ];
-          gfw = with networking; [ gfw-proxy ];
-          campus = with networking; [ campus-network ];
-          game = with graphical.game; [ steam ];
-          ciAgent = with services; [ hercules-ci-agent ];
           phone = with services; [ kde-connect ];
+          printing = [ services.printing ];
+          campus = with networking; [ campus-network ];
+          ciAgent = with services; [ hercules-ci-agent ];
+
+          gfw = with networking; [ gfw-proxy ];
+          game = with graphical.game; [ steam ];
           chia = [ services.chia ];
 
-          workstation = base ++ multimediaDev ++ virtualization ++ network ++ wireless ++ phone ++ (with services; [ openssh printing ]);
+          workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
           mobileWorkstation = workstation ++ campus ++ [ laptop ];
           desktopWorkstation = workstation ++ ciAgent;
+          homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
 
           user-yinfeng = [ users.yinfeng ];
         };

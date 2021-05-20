@@ -168,6 +168,21 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "locked": {
+        "lastModified": 1620759905,
+        "narHash": "sha256-WiyWawrgmyN0EdmiHyG2V+fqReiVi8bM9cRdMaKQOFg=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b543720b25df6ffdfcf9227afafc5b8c1fabfae8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home": {
       "inputs": {
         "nixpkgs": [
@@ -386,6 +401,7 @@
         "darwin": "darwin",
         "digga": "digga",
         "emacs-overlay": "emacs-overlay",
+        "flake-utils": "flake-utils_2",
         "home": "home",
         "impermanence": "impermanence",
         "latest": "latest",
@@ -394,7 +410,8 @@
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "pkgs": "pkgs",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "yinfeng": "yinfeng"
       }
     },
     "sops-nix": {
@@ -448,6 +465,29 @@
         "owner": "gytis-ivaskevicius",
         "ref": "staging",
         "repo": "flake-utils-plus",
+        "type": "github"
+      }
+    },
+    "yinfeng": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1620723324,
+        "narHash": "sha256-fiVhAucxJoj2Ro/7TPuxzxsPhlmSKtzhyPbFZiKuLQw=",
+        "owner": "linyinfeng",
+        "repo": "nur-packages",
+        "rev": "31d5c9117b4b57e054e223e6eafb03c0e45ee6e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "nur-packages",
         "type": "github"
       }
     }

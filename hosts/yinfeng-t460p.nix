@@ -1,4 +1,4 @@
-{ pkgs, lib, suites, hardware, ... }:
+{ pkgs, lib, suites, ... }:
 
 let
 
