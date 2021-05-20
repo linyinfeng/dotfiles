@@ -126,11 +126,13 @@
           gfw = with networking; [ gfw-proxy ];
           game = with graphical.game; [ steam ];
           chia = [ services.chia ];
+          jupyterhub = [ services.jupyterhub ];
 
           workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
           mobileWorkstation = workstation ++ campus ++ [ laptop ];
           desktopWorkstation = workstation ++ ciAgent;
           homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
+          overseaServer = base ++ network;
 
           user-yinfeng = [ users.yinfeng ];
         };
@@ -157,7 +159,12 @@
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
-      deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
+      deploy.nodes = digga.lib.mkDeployNodes
+        # MAIN
+        (removeAttrs self.nixosConfigurations [ "NixOS" ])
+        {
+          sshUser = "root";
+        };
 
       defaultTemplate = self.templates.flk;
       templates.flk.path = ./.;

@@ -1,6 +1,12 @@
 { lib, ... }:
 
 {
-  users.users.root.hashedPassword =
-    "$6$R0t4xwTHn$irNE.4dLiAEI/AH6sEDAneS4OZe20GUud8I9KYe2/g1cJdRyRHhPbLRtfM7XaHzF51Yj8py7Q1FJGs/OAKn750";
+  users.users.root = {
+    hashedPassword =
+      "$6$R0t4xwTHn$irNE.4dLiAEI/AH6sEDAneS4OZe20GUud8I9KYe2/g1cJdRyRHhPbLRtfM7XaHzF51Yj8py7Q1FJGs/OAKn750";
+    openssh.authorizedKeys.keyFiles = [
+      ../../sops/ssh/id_ed25519.pub
+      ../../sops/ssh/extra-authorized-keys
+    ];
+  };
 }

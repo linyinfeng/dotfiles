@@ -17,6 +17,9 @@
       libvirtd.name
       keys.name
     ];
+
+    openssh.authorizedKeys.keyFiles =
+      config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
 
   users.groups.yinfeng = {
@@ -27,12 +30,21 @@
     yinfeng-asciinema-token = {
       owner = "yinfeng";
     };
+    yinfeng-id-ed25519 = {
+      owner = "yinfeng";
+      format = "binary";
+      sopsFile = ../../sops/ssh/id_ed25519;
+    };
   };
 
   home-manager.users.yinfeng = { suites, ... }: {
     imports = suites.full;
 
     home.global-persistence.enable = true;
+
+    home.linkSecrets.".ssh/id_ed25519".secret = config.sops.secrets.yinfeng-id-ed25519.path;
+    home.file.".ssh/id_ed25519.pub".source = ../../sops/ssh/id_ed25519.pub;
+    home.file.".ssh/config".source = ../../sops/ssh/config;
 
     programs.git = {
       userName = "Lin Yinfeng";

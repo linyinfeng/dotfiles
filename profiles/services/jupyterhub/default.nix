@@ -1,0 +1,5 @@
+{ ... }:
+
+{
+  services.jupyterhub.enable = true;
+}

@@ -15,10 +15,6 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
     user.files = [
-      ".ssh/authorized_keys"
-      ".ssh/config"
-      ".ssh/id_rsa"
-      ".ssh/id_rsa.pub"
       ".ssh/known_hosts"
     ];
   };

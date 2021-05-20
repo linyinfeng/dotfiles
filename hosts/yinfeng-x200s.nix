@@ -1,4 +1,4 @@
-{ pkgs, lib, suites, ... }:
+{ suites, ... }:
 
 {
   imports =
@@ -14,6 +14,7 @@
     version = 2;
     device = "/dev/sda";
   };
+  boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
 
   hardware.enableRedistributableFirmware = true;
 
