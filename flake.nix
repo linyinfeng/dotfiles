@@ -32,10 +32,7 @@
       flake-utils.url = "github:numtide/flake-utils";
       yinfeng = {
         url = "github:linyinfeng/nur-packages";
-        inputs = {
-          nixpkgs.follows = "nixos";
-          flake-utils.follows = "flake-utils";
-        };
+        inputs.nixpkgs.follows = "nixos";
       };
     };
 
