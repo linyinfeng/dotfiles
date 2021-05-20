@@ -103,7 +103,7 @@
           foundation = [ global-persistence sops security.polkit services.clean-gcroots ];
           base = [ core foundation users.root ];
 
-          network = (with networking; [ network-manager resolved ]) ++ (with security; [ fail2ban firewall ]);
+          network = (with networking; [ network-manager resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
           multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
           development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
           multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
