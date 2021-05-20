@@ -3,7 +3,8 @@
 {
   users.users.yinfeng = {
     uid = 1000;
-    hashedPassword = lib.removeSuffix "\n" (builtins.readFile ../../secrets/users/yinfeng/hashedPassword.txt);
+    hashedPassword =
+      "$6$h301rApi$UNvaI1rdGSQPKG.pBOv0W941dKKDiUUexVVrLE7dO5oJEO5fp72.z7Eg/aZIsI0nzJJrQuEKw0IeaO0Zrcxmp/";
     isNormalUser = true;
     shell = pkgs.fish;
     group = config.users.groups.yinfeng.name;

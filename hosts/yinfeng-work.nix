@@ -8,34 +8,6 @@ let
     options = [ "subvol=${subvol}" "compress=zstd" ];
   } // extraConfig;
 
-  godnsBasicConfig = {
-    provider = "Cloudflare";
-    login_token = lib.removeSuffix "\n" (builtins.readFile ../secrets/services/ddns/cloudflare-token.txt);
-    domains = [
-      {
-        domain_name = "li7g.com";
-        sub_domains = [
-          "work"
-        ];
-      }
-    ];
-    ip_interface = "enp4s0";
-    interval = 300;
-  };
-
-  godnsService = { name, config }: {
-    after = [ "network.target" ];
-    serviceConfig = {
-      Restart = "on-abort";
-      ExecStart =
-        let
-          configFile = pkgs.writeText "${name}-config" (builtins.toJSON config);
-        in
-        "${pkgs.nur.repos.linyinfeng.godns}/bin/godns -c ${configFile}";
-    };
-    wantedBy = [ "multi-user.target" ];
-  };
-
 in
 {
   imports =
@@ -61,20 +33,6 @@ in
   powerManagement.cpuFreqGovernor = "performance";
 
   services.hercules-ci-agent.settings.concurrentTasks = 8;
-  systemd.services.godns-ipv4 = godnsService {
-    name = "godns-ipv4";
-    config = godnsBasicConfig // {
-      ip_url = "";
-      ip_type = "IPv4";
-    };
-  };
-  systemd.services.godns-ipv6 = godnsService {
-    name = "godns-ipv6";
-    config = godnsBasicConfig // {
-      ipv6_url = "";
-      ip_type = "IPv6";
-    };
-  };
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
