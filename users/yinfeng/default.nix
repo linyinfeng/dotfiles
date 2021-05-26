@@ -1,10 +1,13 @@
 { config, pkgs, lib, ... }:
 
 let
-  homeDirectory = "/home/yinfeng";
+  name = "yinfeng";
+  user = config.users.users.${name};
+  homeManager = config.home-manager.users.${name};
+  homeDirectory = "/home/${name}";
 in
 {
-  users.users.yinfeng = {
+  users.users.${name} = {
     uid = 1000;
     hashedPassword =
       "$6$h301rApi$UNvaI1rdGSQPKG.pBOv0W941dKKDiUUexVVrLE7dO5oJEO5fp72.z7Eg/aZIsI0nzJJrQuEKw0IeaO0Zrcxmp/";
@@ -26,22 +29,22 @@ in
   };
 
   sops.secrets = {
-    yinfeng-asciinema-token = {
-      owner = config.users.users.yinfeng.name;
+    "${name}-asciinema-token" = {
+      owner = user.name;
     };
-    yinfeng-id-ed25519 = {
-      owner = config.users.users.yinfeng.name;
+    "${name}-id-ed25519" = {
+      owner = user.name;
       format = "binary";
       sopsFile = ../../sops/ssh/id_ed25519;
     };
   };
 
-  home-manager.users.yinfeng = { suites, ... }: {
+  home-manager.users.${name} = { suites, ... }: {
     imports = suites.full;
 
     home.global-persistence.enable = true;
 
-    home.linkSecrets.".ssh/id_ed25519".secret = config.sops.secrets.yinfeng-id-ed25519.path;
+    home.linkSecrets.".ssh/id_ed25519".secret = config.sops.secrets."${name}-id-ed25519".path;
     home.file.".ssh/id_ed25519.pub".source = ../../sops/ssh/id_ed25519.pub;
     home.file.".ssh/config".source = ../../sops/ssh/config;
 
@@ -59,5 +62,5 @@ in
 
   environment.global-persistence.directories =
     map (dir: "${homeDirectory}/${dir}")
-      config.home-manager.users.yinfeng.home.global-persistence.directories;
+      homeManager.home.global-persistence.directories;
 }
