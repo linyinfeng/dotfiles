@@ -27,10 +27,10 @@ in
 
   sops.secrets = {
     yinfeng-asciinema-token = {
-      owner = "yinfeng";
+      owner = config.users.users.yinfeng.name;
     };
     yinfeng-id-ed25519 = {
-      owner = "yinfeng";
+      owner = config.users.users.yinfeng.name;
       format = "binary";
       sopsFile = ../../sops/ssh/id_ed25519;
     };
