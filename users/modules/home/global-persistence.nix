@@ -62,7 +62,7 @@ with lib;
 
     home.persistence = mkIf (cfg.enabled) {
       "${cfg.root}" = {
-        directories = cfg.directories;
+        # directories = cfg.directories; # use global-persistence configuration
         files = cfg.files;
         allowOther = true;
       };

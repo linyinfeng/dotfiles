@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+  homeDirectory = "/home/yinfeng";
+in
 {
   users.users.yinfeng = {
     uid = 1000;
@@ -7,7 +10,7 @@
       "$6$h301rApi$UNvaI1rdGSQPKG.pBOv0W941dKKDiUUexVVrLE7dO5oJEO5fp72.z7Eg/aZIsI0nzJJrQuEKw0IeaO0Zrcxmp/";
     isNormalUser = true;
     shell = pkgs.fish;
-    group = config.users.groups.yinfeng.name;
+    home = homeDirectory;
     extraGroups = with config.users.groups; [
       users.name
       wheel.name
@@ -20,10 +23,6 @@
 
     openssh.authorizedKeys.keyFiles =
       config.users.users.root.openssh.authorizedKeys.keyFiles;
-  };
-
-  users.groups.yinfeng = {
-    gid = 1000;
   };
 
   sops.secrets = {
@@ -57,4 +56,8 @@
 
     passthrough.systemConfig = config;
   };
+
+  environment.global-persistence.directories =
+    map (dir: "${homeDirectory}/${dir}")
+      config.home-manager.users.yinfeng.home.global-persistence.directories;
 }
