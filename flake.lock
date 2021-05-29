@@ -303,6 +303,29 @@
         "type": "indirect"
       }
     },
+    "nixos-cn": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1622254724,
+        "narHash": "sha256-CqOsdHmA/08/VbagPEoHKgY7h4ipRBZ74mpKQQK+aMc=",
+        "owner": "nixos-cn",
+        "repo": "flakes",
+        "rev": "9e5be8bddb375e16d532bd89087a2d385592470b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos-cn",
+        "repo": "flakes",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1622204124,
@@ -407,6 +430,7 @@
         "latest": "latest",
         "naersk": "naersk_2",
         "nixos": "nixos",
+        "nixos-cn": "nixos-cn",
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "pkgs": "pkgs",

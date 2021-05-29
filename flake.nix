@@ -35,6 +35,11 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.flake-utils.follows = "flake-utils";
       };
+      nixos-cn = {
+        url = "github:nixos-cn/flakes";
+        inputs.nixpkgs.follows = "nixos";
+        inputs.flake-utils.follows = "flake-utils";
+      };
     };
 
   outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
