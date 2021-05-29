@@ -33,6 +33,7 @@
       yinfeng = {
         url = "github:linyinfeng/nur-packages";
         inputs.nixpkgs.follows = "nixos";
+        inputs.flake-utils.follows = "flake-utils";
       };
     };
 
