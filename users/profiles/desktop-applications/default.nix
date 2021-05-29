@@ -2,7 +2,6 @@
 
 {
   programs = {
-    chromium.enable = true;
     firefox.enable = true;
 
     mpv.enable = true;
@@ -59,7 +58,6 @@
       ".goldendict"
 
       ".config/calibre"
-      ".config/chromium"
       ".config/obs-studio"
       ".config/Element"
       ".config/unity3d/Team Cherry" # hollow knight saves

@@ -148,7 +148,7 @@
         profiles = [ ./users/profiles ];
         suites = { profiles, ... }: with profiles; rec {
           base = [ direnv git git-extra shells ];
-          multimedia = [ gnome desktop-applications rime fonts ];
+          multimedia = [ gnome desktop-applications chromium rime fonts ];
           development = [ profiles.development emacs tools asciinema ];
           virtualization = [ ];
           multimediaDev = multimedia ++ development ++ [ vscode ];
