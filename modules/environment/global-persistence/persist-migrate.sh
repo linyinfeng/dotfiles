@@ -29,7 +29,7 @@ for file in $@
 do
     source=$("$realpath" "$file")
     if [ ! -e "$source" ]; then
-        failure "file is not a directory: '$source'"
+        failure "file does not exists: '$source'"
         exit 1
     fi
 

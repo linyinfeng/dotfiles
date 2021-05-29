@@ -60,12 +60,22 @@ with lib;
       enabled = cfg.enable;
     };
 
-    home.persistence = mkIf (cfg.enabled) {
-      "${cfg.root}" = {
-        # directories = cfg.directories; # use global-persistence configuration
-        files = cfg.files;
-        allowOther = true;
-      };
-    };
+    home.activation.linkPersistenceFiles = hm.dag.entryBefore [ "writeBoundary" ]
+      (
+        let
+          linkSingleFile = file:
+            let
+              source = "${persistHome}/${file}";
+              target = "${home}/${file}";
+            in
+            ''
+              if [ -e "${target}" -a ! -L "${target}" ]; then
+                "${sysCfg.persistMigrate}/bin/persist-migrate" "${target}"
+              fi
+              ln -sf "${source}" "${target}"
+            '';
+        in
+        lib.concatStrings (map linkSingleFile cfg.files)
+      );
   };
 }
