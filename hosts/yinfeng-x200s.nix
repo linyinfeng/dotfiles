@@ -16,6 +16,8 @@
   };
   boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
 
+  services.logind.lidSwitch = "ignore";
+
   hardware.enableRedistributableFirmware = true;
 
   networking = {
