@@ -2,6 +2,27 @@
 
 let
   cfg = config.environment.global-persistence;
+  persistMigrate = pkgs.stdenvNoCC.mkDerivation {
+    name = "global-persistence-scripts";
+    buildCommand = ''
+      install -Dm755 $migrateToPersist $out/bin/persist-migrate
+      install -Dm755 $persistPermission $out/bin/persist-permission
+    '';
+    migrateToPersist = pkgs.substituteAll {
+      src = ./global-persistence/persist-migrate.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) coreutils gawk rsync;
+      persist = cfg.root;
+    };
+    persistPermission = pkgs.substituteAll {
+      src = ./global-persistence/persist-permission.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) fd;
+      persist = cfg.root;
+    };
+  };
 in
 
 with lib;
@@ -43,6 +64,14 @@ with lib;
       default = [ ];
       description = ''
         Files should be stored in persistent storage. These files will be soft linked.
+      '';
+    };
+
+    persistMigrate = mkOption {
+      type = with types; package;
+      default = persistMigrate;
+      description = ''
+        persist-migrate script.
       '';
     };
 
@@ -93,27 +122,7 @@ with lib;
       "${script}";
 
     environment.systemPackages = [
-      (pkgs.stdenvNoCC.mkDerivation {
-        name = "global-persistence-scripts";
-        buildCommand = ''
-          install -Dm755 $migrateToPersist $out/bin/persist-migrate
-          install -Dm755 $persistPermission $out/bin/persist-permission
-        '';
-        migrateToPersist = pkgs.substituteAll {
-          src = ./global-persistence/persist-migrate.sh;
-          isExecutable = true;
-          inherit (pkgs.stdenvNoCC) shell;
-          inherit (pkgs) coreutils gawk rsync;
-          persist = cfg.root;
-        };
-        persistPermission = pkgs.substituteAll {
-          src = ./global-persistence/persist-permission.sh;
-          isExecutable = true;
-          inherit (pkgs.stdenvNoCC) shell;
-          inherit (pkgs) fd;
-          persist = cfg.root;
-        };
-      })
+      cfg.persistMigrate
     ];
 
     # for user level persistence
