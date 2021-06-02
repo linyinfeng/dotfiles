@@ -72,6 +72,7 @@ with lib;
               if [ -e "${target}" -a ! -L "${target}" ]; then
                 "${sysCfg.persistMigrate}/bin/persist-migrate" "${target}"
               fi
+              mkdir -p $(dirname "${target}")
               ln -sf "${source}" "${target}"
             '';
         in

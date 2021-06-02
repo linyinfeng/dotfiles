@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "anbox": {
+      "locked": {
+        "lastModified": 1622001195,
+        "narHash": "sha256-DiLLbW364Y0LZi4zVShjjZnHFRb1KrKCUuYFA4iGFzE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4b6029fb3d4428a54ffccd42cde04ca8af4e77ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/102341/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "ci-agent": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -420,6 +436,7 @@
     },
     "root": {
       "inputs": {
+        "anbox": "anbox",
         "ci-agent": "ci-agent",
         "darwin": "darwin",
         "digga": "digga",
