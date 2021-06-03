@@ -15,6 +15,7 @@ in
     suites.game ++
     suites.fw ++
     suites.chia ++
+    suites.portalClient ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";

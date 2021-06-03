@@ -35,7 +35,7 @@ in
     "${name}-id-ed25519" = {
       owner = user.name;
       format = "binary";
-      sopsFile = ../../sops/ssh/id_ed25519;
+      sopsFile = ../../sops/ssh/id_ed25519.json;
     };
   };
 

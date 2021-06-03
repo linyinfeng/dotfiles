@@ -90,6 +90,7 @@
             # MAIN
             inputs.impermanence.nixosModules.impermanence
             inputs.sops-nix.nixosModules.sops
+            inputs.nixos-cn.nixosModules.nixos-cn
             inputs.yinfeng.nixosModules.vlmcsd
           ];
         };
@@ -135,6 +136,8 @@
           game = with graphical.game; [ steam ];
           chia = [ services.chia ];
           jupyterhub = [ services.jupyterhub ];
+          portalServer = [ services.portal.server ];
+          portalClient = [ services.portal.client ];
 
           workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
           mobileWorkstation = workstation ++ campus ++ [ laptop ];
