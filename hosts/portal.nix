@@ -2,8 +2,7 @@
 
 {
   imports =
-    suites.overseaServer ++
-    suites.portalServer;
+    suites.overseaServer;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
@@ -17,6 +16,11 @@
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
 
   boot.tmpOnTmpfs = true;
+
+  services.portal = {
+    host = "portal.li7g.com";
+    server.enable = true;
+  };
 
   networking = {
     useDHCP = false;

@@ -18,7 +18,7 @@ in
     };
     path = lib.mkOption {
       type = with lib.types; str;
-      default = "/ray";
+      default = "/63b13cf9-fa55-45ef-9126-56fc769383dd";
     };
     client = {
       enable = lib.mkOption {
@@ -27,7 +27,7 @@ in
       };
       port = lib.mkOption {
         type = with lib.types; int;
-        default = 1080;
+        default = 8080;
       };
       extraV2rayConfig = lib.mkOption {
         type = with lib.types; attrs;

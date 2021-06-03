@@ -15,7 +15,6 @@ in
     suites.game ++
     suites.fw ++
     suites.chia ++
-    suites.portalClient ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -34,6 +33,11 @@ in
   hardware.video.hidpi.enable = true;
 
   powerManagement.cpuFreqGovernor = "powersave";
+
+  services.portal = {
+    host = "portal.li7g.com";
+    client.enable = true;
+  };
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
