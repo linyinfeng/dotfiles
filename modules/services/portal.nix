@@ -53,18 +53,14 @@ in
         enable = true;
         configFile = config.sops.templates.portal-v2ray.path;
       };
-      systemd.services.v2ray.requires = [ "v2ray-config.path" ];
-      systemd.paths.v2ray-config = {
-        pathConfig = {
-          PathChanged = config.sops.templates.portal-v2ray.path;
-          Unit = "restart-v2ray.service";
+      systemd.services.v2ray = {
+        environment = {
+          "v2ray.vmess.aead.forced" = "true";
         };
-      };
-      systemd.services.restart-v2ray = {
-        script = ''
-          "${config.systemd.package}/systemctl" restart "v2ray.service"
-        '';
-        serviceConfig.Type = "oneshot";
+        restartTriggers = [
+          config.sops.secrets.portal-client-id.sopsFile
+          config.sops.templates.portal-v2ray.file
+        ];
       };
     })
     (lib.mkIf cfg.server.enable {
@@ -161,6 +157,11 @@ in
                   wsSettings = {
                     path = cfg.path;
                   };
+                };
+                mux = {
+                  enabled = false;
+                  # mux as much as possible
+                  concurrency = 1024;
                 };
               }
             ];
