@@ -1,5 +1,5 @@
 [
   ./environment/global-persistence.nix
-  ./networking/gfw-proxy.nix
+  ./networking/fw-proxy.nix
   ./services/clean-gcroots.nix
 ]

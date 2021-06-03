@@ -13,7 +13,7 @@ in
   imports =
     suites.mobileWorkstation ++
     suites.game ++
-    suites.gfw ++
+    suites.fw ++
     suites.chia ++
     suites.user-yinfeng;
 

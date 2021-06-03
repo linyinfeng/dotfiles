@@ -131,7 +131,7 @@
           campus = with networking; [ campus-network ];
           ciAgent = with services; [ hercules-ci-agent ];
 
-          gfw = with networking; [ gfw-proxy ];
+          fw = with networking; [ fw-proxy ];
           game = with graphical.game; [ steam ];
           chia = [ services.chia ];
           jupyterhub = [ services.jupyterhub ];

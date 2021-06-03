@@ -1,12 +1,12 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.networking.gfw-proxy;
+  cfg = config.networking.fw-proxy;
 
   clashUser = "clash";
   clashDir = "/var/lib/clash";
 
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
-    name = "gfw-proxy-scripts";
+    name = "fw-proxy-scripts";
     buildCommand = ''
       install -Dm644 $enableProxy    $out/bin/enable-proxy
       install -Dm644 $disableProxy   $out/bin/disable-proxy
@@ -14,14 +14,14 @@ let
       install -Dm755 $updateClash    $out/bin/update-clash
     '';
     enableProxy = pkgs.substituteAll {
-      src = ./gfw-proxy/enable-proxy;
+      src = ./fw-proxy/enable-proxy;
       mixedPort = cfg.port.mixed;
     };
     disableProxy = pkgs.substituteAll {
-      src = ./gfw-proxy/disable-proxy;
+      src = ./fw-proxy/disable-proxy;
     };
     updateClashUrl = pkgs.substituteAll {
-      src = ./gfw-proxy/update-clash-url.sh;
+      src = ./fw-proxy/update-clash-url.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) coreutils curl systemd;
@@ -34,7 +34,7 @@ let
       directory = clashDir;
     };
     updateClash = pkgs.substituteAll {
-      src = ./gfw-proxy/update-clash.sh;
+      src = ./fw-proxy/update-clash.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
@@ -45,7 +45,7 @@ let
 in
 with lib;
 {
-  options.networking.gfw-proxy = {
+  options.networking.fw-proxy = {
     enable = mkOption {
       type = with types; bool;
       default = false;
@@ -91,7 +91,7 @@ with lib;
   };
 
   config = mkIf (cfg.enable) {
-    networking.gfw-proxy.environment =
+    networking.fw-proxy.environment =
       let
         proxyUrl = "http://localhost:${toString cfg.port.mixed}/";
       in
@@ -101,7 +101,7 @@ with lib;
         http_proxy = proxyUrl;
         https_proxy = proxyUrl;
       };
-    networking.gfw-proxy.stringEnvironment = map
+    networking.fw-proxy.stringEnvironment = map
       (key:
         let value = lib.getAttr key cfg.environment;
         in "${key}=${value}"
