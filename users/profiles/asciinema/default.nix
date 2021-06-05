@@ -10,5 +10,5 @@
   #   ln -sf "/run/secrets/yinfeng-asciinema-token" "$HOME/.config/asciinema/install-id"
   # '';
   home.linkSecrets.".config/asciinema/install-id".secret =
-    config.passthrough.systemConfig.sops.secrets.yinfeng-asciinema-token.path;
+    config.passthrough.systemConfig.age.secrets.yinfeng-asciinema-token.path;
 }

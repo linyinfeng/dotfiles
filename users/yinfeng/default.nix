@@ -9,8 +9,7 @@ in
 {
   users.users.${name} = {
     uid = 1000;
-    hashedPassword =
-      "$6$h301rApi$UNvaI1rdGSQPKG.pBOv0W941dKKDiUUexVVrLE7dO5oJEO5fp72.z7Eg/aZIsI0nzJJrQuEKw0IeaO0Zrcxmp/";
+    passwordFile = config.age.secrets."user-${name}-password".path;
     isNormalUser = true;
     shell = pkgs.fish;
     home = homeDirectory;
@@ -28,14 +27,15 @@ in
       config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
 
-  sops.secrets = {
+  age.secrets = {
+    "user-${name}-password".file = ../../secrets + "/user-${name}-password.age";
     "${name}-asciinema-token" = {
+      file = ../../secrets + "/${name}-asciinema-token.age";
       owner = user.name;
     };
     "${name}-id-ed25519" = {
+      file = ../../secrets + "/${name}-id-ed25519.age";
       owner = user.name;
-      format = "binary";
-      sopsFile = ../../sops/ssh/id_ed25519.json;
     };
   };
 
@@ -44,9 +44,9 @@ in
 
     home.global-persistence.enable = true;
 
-    home.linkSecrets.".ssh/id_ed25519".secret = config.sops.secrets."${name}-id-ed25519".path;
-    home.file.".ssh/id_ed25519.pub".source = ../../sops/ssh/id_ed25519.pub;
-    home.file.".ssh/config".source = ../../sops/ssh/config;
+    home.linkSecrets.".ssh/id_ed25519".secret = config.age.secrets."${name}-id-ed25519".path;
+    home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
+    home.file.".ssh/config".source = ./ssh/config;
 
     programs.git = {
       userName = "Lin Yinfeng";

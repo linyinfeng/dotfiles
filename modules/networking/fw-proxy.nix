@@ -38,8 +38,8 @@ let
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
-      dlerUrl = config.sops.secrets.clash-dler.path;
-      cnixUrl = config.sops.secrets.clash-cnix.path;
+      dlerUrl = config.age.secrets.clash-dler.path;
+      cnixUrl = config.age.secrets.clash-cnix.path;
     };
   };
 in
@@ -138,9 +138,9 @@ with lib;
         "${toString cfg.port.webui}:80"
       ];
     };
-    sops.secrets = {
-      clash-dler = { };
-      clash-cnix = { };
+    age.secrets = {
+      clash-dler.file = ../../secrets/clash-dler.age;
+      clash-cnix.file = ../../secrets/clash-cnix.age;
     };
 
     programs.proxychains = {

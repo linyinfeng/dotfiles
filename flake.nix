@@ -5,7 +5,7 @@
     {
       nixos.url = "nixpkgs/nixos-unstable";
       latest.url = "nixpkgs";
-      digga.url = "github:divnix/digga";
+      digga.url = "github:divnix/digga/develop";
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
@@ -17,6 +17,8 @@
       home.inputs.nixpkgs.follows = "nixos";
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "latest";
+      agenix.url = "github:ryantm/agenix";
+      agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
       pkgs.url = "path:./pkgs";
@@ -25,10 +27,6 @@
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      sops-nix = {
-        url = "github:Mic92/sops-nix";
-        inputs.nixpkgs.follows = "nixos";
-      };
       flake-utils.url = "github:numtide/flake-utils";
       yinfeng = {
         url = "github:linyinfeng/nur-packages";
@@ -36,14 +34,20 @@
         inputs.flake-utils.follows = "flake-utils";
       };
       anbox.url = "github:nixos/nixpkgs/pull/102341/head";
-      nixos-cn = {
-        url = "github:nixos-cn/flakes";
-        inputs.nixpkgs.follows = "nixos";
-        inputs.flake-utils.follows = "flake-utils";
-      };
     };
 
-  outputs = inputs@{ self, pkgs, digga, nixos, ci-agent, home, nixos-hardware, nur, ... }:
+  outputs =
+    { self
+    , pkgs
+    , digga
+    , nixos
+    , ci-agent
+    , home
+    , nixos-hardware
+    , nur
+    , agenix
+    , ...
+    } @ inputs:
     digga.lib.mkFlake {
       inherit self inputs;
 
@@ -59,7 +63,7 @@
 
             # MAIN
             inputs.emacs-overlay.overlay
-            inputs.sops-nix.overlay
+            agenix.overlay
           ];
         };
         latest = { };
@@ -85,12 +89,11 @@
             { _module.args.ourLib = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
+            agenix.nixosModules.age
             ./modules/customBuilds.nix
 
             # MAIN
             inputs.impermanence.nixosModules.impermanence
-            inputs.sops-nix.nixosModules.sops
-            inputs.nixos-cn.nixosModules.nixos-cn
             inputs.yinfeng.nixosModules.vlmcsd
           ];
         };
@@ -115,35 +118,39 @@
             ];
           };
         };
-        profiles = [ ./profiles ./users ];
-        suites = { profiles, users, ... }: with profiles; rec {
-          foundation = [ global-persistence sops security.polkit services.clean-gcroots ];
-          base = [ core foundation users.root ];
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./profiles // {
+            users = digga.lib.importers.rakeLeaves ./users;
+          };
+          suites = with profiles; rec {
+            foundation = [ global-persistence security.polkit services.clean-gcroots services.openssh ];
+            base = [ core foundation users.root ];
 
-          network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]) ++ (with services; [ openssh ]);
-          networkManager = (with networking; [ network-manager ]);
-          multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
-          development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
-          multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-          virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
-          wireless = with services; [ bluetooth ];
-          phone = with services; [ kde-connect ];
-          printing = [ services.printing ];
-          campus = with networking; [ campus-network ];
-          ciAgent = with services; [ hercules-ci-agent ];
+            network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
+            networkManager = (with networking; [ network-manager ]);
+            multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ sound ]);
+            development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
+            multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
+            virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
+            wireless = with services; [ bluetooth ];
+            phone = with services; [ kde-connect ];
+            printing = [ services.printing ];
+            campus = with networking; [ campus-network ];
+            ciAgent = with services; [ hercules-ci-agent ];
 
-          fw = with networking; [ fw-proxy ];
-          game = with graphical.game; [ steam ];
-          chia = [ services.chia ];
-          jupyterhub = [ services.jupyterhub ];
+            fw = with networking; [ fw-proxy ];
+            game = with graphical.game; [ steam ];
+            chia = [ services.chia ];
+            jupyterhub = [ services.jupyterhub ];
 
-          workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
-          mobileWorkstation = workstation ++ campus ++ [ laptop ];
-          desktopWorkstation = workstation ++ ciAgent;
-          homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
-          overseaServer = base ++ network;
+            workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
+            mobileWorkstation = workstation ++ campus ++ [ laptop ];
+            desktopWorkstation = workstation ++ ciAgent;
+            homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
+            overseaServer = base ++ network;
 
-          user-yinfeng = [ users.yinfeng ];
+            user-yinfeng = [ users.yinfeng ];
+          };
         };
       };
 
@@ -153,17 +160,23 @@
           # MAIN
           (builtins.toPath "${inputs.impermanence}/home-manager.nix")
         ];
-        profiles = [ ./users/profiles ];
-        suites = { profiles, ... }: with profiles; rec {
-          base = [ direnv git git-extra shells ];
-          multimedia = [ gnome desktop-applications chromium rime fonts ];
-          development = [ profiles.development emacs tools asciinema ];
-          virtualization = [ ];
-          multimediaDev = multimedia ++ development ++ [ vscode ];
-          synchronize = [ onedrive digital-paper ];
+        importables = rec {
+          profiles = digga.lib.importers.rakeLeaves ./users/profiles;
+          suites = with profiles; rec {
+            base = [ direnv git git-extra shells ];
+            multimedia = [ gnome desktop-applications chromium rime fonts ];
+            development = [ profiles.development emacs tools asciinema ];
+            virtualization = [ ];
+            multimediaDev = multimedia ++ development ++ [ vscode ];
+            synchronize = [ onedrive digital-paper ];
 
-          full = base ++ multimediaDev ++ virtualization ++ synchronize;
+            full = base ++ multimediaDev ++ virtualization ++ synchronize;
+          };
         };
+      };
+
+      devshell.externalModules = { pkgs, ... }: {
+        packages = [ pkgs.agenix ];
       };
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;

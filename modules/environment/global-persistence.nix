@@ -121,6 +121,10 @@ with lib;
       in
       "${script}";
 
+    age.sshKeyPaths = [
+      "${cfg.root}/etc/ssh/ssh_host_ed25519_key"
+    ];
+
     environment.systemPackages = [
       cfg.persistMigrate
     ];

@@ -48,18 +48,18 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      sops.secrets.portal-client-id = { };
+      age.secrets.portal-client-id.file = ../../secrets/portal-client-id.age;
       services.v2ray = {
         enable = true;
-        configFile = config.sops.templates.portal-v2ray.path;
+        configFile = config.age.templates.portal-v2ray.path;
       };
       systemd.services.v2ray = {
         environment = {
           "v2ray.vmess.aead.forced" = "true";
         };
         restartTriggers = [
-          config.sops.secrets.portal-client-id.sopsFile
-          config.sops.templates.portal-v2ray.file
+          config.age.secrets.portal-client-id.file
+          config.age.templates.portal-v2ray.file
         ];
       };
     })
@@ -89,7 +89,7 @@ in
         allowedTCPPorts = [ 80 443 ];
       };
 
-      sops.templates.portal-v2ray.content = builtins.toJSON {
+      age.templates.portal-v2ray.content = builtins.toJSON {
         log.loglevel = cfg.logLevel;
         inbounds = [
           {
@@ -98,7 +98,7 @@ in
             settings = {
               clients = [
                 {
-                  id = config.sops.placeholder.portal-client-id;
+                  id = config.age.placeholder.portal-client-id;
                   inherit (cfg) alterId;
                 }
               ];
@@ -120,7 +120,7 @@ in
       };
     })
     (lib.mkIf cfg.client.enable {
-      sops.templates.portal-v2ray.content =
+      age.templates.portal-v2ray.content =
         let
           basicConfig = {
             inbounds = [
@@ -144,7 +144,7 @@ in
                       port = 443;
                       users = [
                         {
-                          id = config.sops.placeholder.portal-client-id;
+                          id = config.age.placeholder.portal-client-id;
                           inherit (cfg) alterId;
                         }
                       ];

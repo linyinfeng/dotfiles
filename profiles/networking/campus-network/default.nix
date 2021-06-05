@@ -1,15 +1,16 @@
 { config, pkgs, ... }:
 
 let
-  secretConfig = {
+  secretConfig = file: {
+    inherit file;
     mode = "440";
-    group = config.users.groups.keys.name;
+    group = config.users.groups.wheel.name;
   };
 in
 {
-  sops.secrets = {
-    campus-net-username = secretConfig;
-    campus-net-password = secretConfig;
+  age.secrets = {
+    campus-net-username = secretConfig ../../../secrets/campus-net-username.age;
+    campus-net-password = secretConfig ../../../secrets/campus-net-password.age;
   };
   environment.systemPackages = [
     (pkgs.stdenvNoCC.mkDerivation {
@@ -23,8 +24,8 @@ in
         isExecutable = true;
         inherit (pkgs.stdenvNoCC) shell;
         inherit (pkgs) curl;
-        usernameFile = config.sops.secrets.campus-net-username.path;
-        passwordFile = config.sops.secrets.campus-net-password.path;
+        usernameFile = config.age.secrets.campus-net-username.path;
+        passwordFile = config.age.secrets.campus-net-password.path;
       };
       campusNetLogout = pkgs.substituteAll {
         src = ./scripts/logout.sh;
