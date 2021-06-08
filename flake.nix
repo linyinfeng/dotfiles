@@ -33,7 +33,6 @@
         inputs.nixpkgs.follows = "nixos";
         inputs.flake-utils.follows = "flake-utils";
       };
-      anbox.url = "github:nixos/nixpkgs/pull/102341/head";
     };
 
   outputs =
@@ -67,7 +66,6 @@
           ];
         };
         latest = { };
-        anbox = { };
       };
 
       lib = import ./lib { lib = digga.lib // nixos.lib; };

@@ -41,7 +41,7 @@
     inkscape
     keepass
     keepassxc
-    # libreoffice-fresh
+    libreoffice-fresh
     mplayer
     tdesktop
     teamspeak_client
