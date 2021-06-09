@@ -65,7 +65,6 @@
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
-      ".local/share/applications"
 
       "Zotero"
     ];
