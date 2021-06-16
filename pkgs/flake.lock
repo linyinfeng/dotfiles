@@ -1,21 +1,40 @@
 {
   "nodes": {
-    "nixpkgs": {
+    "dash-to-panel": {
+      "flake": false,
       "locked": {
-        "lastModified": 1615926763,
-        "narHash": "sha256-yeq8A3EPNuQVlsxlEQrIRsklfJwJK0Us6jtcG/u8wNs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b702a56d417647de4090ac56c0f18bdc7e646610",
+        "lastModified": 1623533909,
+        "narHash": "sha256-kWTQkKLydVtPVfDu+zB69wmPE/xYErx6r8SpZCJvghE=",
+        "owner": "home-sweet-gnome",
+        "repo": "dash-to-panel",
+        "rev": "258083f3e30ef6dfb23ad2b5580c05f0faba7e3f",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "home-sweet-gnome",
+        "repo": "dash-to-panel",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1623580589,
+        "narHash": "sha256-Ayp1cjXpwFCkAiWUE46rj9APTltsiEBdIs2+cj+U7+c=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "fa0326ce5233f7d592271df52c9d0812bec47b84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
+        "dash-to-panel": "dash-to-panel",
         "nixpkgs": "nixpkgs"
       }
     }

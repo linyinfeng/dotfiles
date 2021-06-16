@@ -3,6 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # MAIN
+    dash-to-panel = {
+      url = "github:home-sweet-gnome/dash-to-panel";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, ... }: {

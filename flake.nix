@@ -101,6 +101,7 @@
           /* set host specific properties here */
 
           NixOS = { };
+
           # MAIN
           yinfeng-t460p = {
             modules = with nixos-hardware.nixosModules; [
@@ -121,6 +122,7 @@
             users = digga.lib.importers.rakeLeaves ./users;
           };
           suites = with profiles; rec {
+            # MAIN
             foundation = [ global-persistence security.polkit services.clean-gcroots services.openssh ];
             base = [ core foundation users.root ];
 
@@ -161,6 +163,7 @@
         importables = rec {
           profiles = digga.lib.importers.rakeLeaves ./users/profiles;
           suites = with profiles; rec {
+            # MAIN
             base = [ direnv git git-extra shells ];
             multimedia = [ gnome desktop-applications chromium rime fonts ];
             development = [ profiles.development emacs tools asciinema ];
