@@ -2,8 +2,6 @@
 
 {
   programs = {
-    firefox.enable = true;
-
     mpv.enable = true;
 
     obs-studio = {
@@ -45,6 +43,7 @@
     mplayer
     tdesktop
     teamspeak_client
+    transmission-gtk
     virt-manager
     zoom-us
     zotero
@@ -53,7 +52,6 @@
   home.global-persistence = {
     directories = [
       ".ts3client"
-      ".mozilla"
       ".zotero"
       ".goldendict"
 

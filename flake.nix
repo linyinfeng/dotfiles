@@ -105,8 +105,10 @@
           # MAIN
           yinfeng-t460p = {
             modules = with nixos-hardware.nixosModules; [
-              lenovo-thinkpad-t460s
+              common-pc
+              common-cpu-intel
               common-pc-ssd
+              lenovo-thinkpad-t460s
             ];
           };
           yinfeng-work = {
@@ -128,7 +130,7 @@
 
             network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
             networkManager = (with networking; [ network-manager ]);
-            multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ pipewire pulseaudio ]);
+            multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ pipewire ]);
             development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
             multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
             virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
@@ -165,7 +167,7 @@
           suites = with profiles; rec {
             # MAIN
             base = [ direnv git git-extra shells ];
-            multimedia = [ gnome desktop-applications chromium rime fonts ];
+            multimedia = [ gnome desktop-applications chromium firefox rime fonts ];
             development = [ profiles.development emacs tools asciinema ];
             virtualization = [ ];
             multimediaDev = multimedia ++ development ++ [ vscode ];
