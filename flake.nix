@@ -123,7 +123,7 @@
           };
           suites = with profiles; rec {
             # MAIN
-            foundation = [ global-persistence security.polkit services.clean-gcroots services.openssh ];
+            foundation = [ global-persistence security.polkit services.gc services.openssh ];
             base = [ core foundation users.root ];
 
             network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
