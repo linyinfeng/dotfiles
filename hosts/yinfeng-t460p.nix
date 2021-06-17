@@ -1,4 +1,4 @@
-{ config, suites, ... }:
+{ config, suites, lib, ... }:
 
 let
 

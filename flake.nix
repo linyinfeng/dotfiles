@@ -145,6 +145,7 @@
             chia = [ services.chia ];
             jupyterhub = [ services.jupyterhub ];
             transmission = [ services.transmission ];
+            samba = [ services.samba ];
 
             workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
             mobileWorkstation = workstation ++ campus ++ [ laptop ];
