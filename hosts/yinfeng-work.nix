@@ -1,12 +1,18 @@
-{ suites, ... }:
+{ lib, suites, ... }:
 
 let
 
-  btrfsSubvol = subvol: extraConfig: {
-    device = "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
-    fsType = "btrfs";
-    options = [ "subvol=${subvol}" "compress=zstd" ];
-  } // extraConfig;
+  btrfsSubvol = device: subvol: extraConfig: lib.mkMerge [
+    {
+      inherit device;
+      fsType = "btrfs";
+      options = [ "subvol=${subvol}" "compress=zstd" ];
+    }
+    extraConfig
+  ];
+
+  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
+  btrfsSubvolMobile = btrfsSubvol "/dev/disk/by-uuid/7eb0cf99-d5ea-4bb0-97fa-bbea23308f71";
 
 in
 {
@@ -14,6 +20,7 @@ in
     suites.desktopWorkstation ++
     suites.campus ++
     suites.fw ++
+    suites.transmission ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -37,7 +44,7 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
-  boot.initrd.availableKernelModules = [ "nvme" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" "sr_mod" ];
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";
@@ -47,15 +54,19 @@ in
     device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
     allowDiscards = true;
   };
-  fileSystems."/nix" = btrfsSubvol "@nix" { neededForBoot = true; };
-  fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
-  fileSystems."/var/log" = btrfsSubvol "@var-log" { neededForBoot = true; };
-  fileSystems."/swap" = btrfsSubvol "@swap" { };
+  boot.initrd.luks.devices."crypt-mobile" = {
+    device = "/dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c";
+  };
+  fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+  fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+  fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+  fileSystems."/swap" = btrfsSubvolMain "@swap" { };
   fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/74C9-BFBC";
       fsType = "vfat";
     };
+  fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
   fileSystems."/data" =
     {
       device = "/dev/disk/by-uuid/6c4a47ea-492e-4855-8157-180e74904b73";

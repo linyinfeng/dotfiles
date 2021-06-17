@@ -43,7 +43,7 @@
     mplayer
     tdesktop
     teamspeak_client
-    transmission-gtk
+    transmission-remote-gtk
     virt-manager
     zoom-us
     zotero

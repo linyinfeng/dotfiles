@@ -2,11 +2,16 @@
 
 let
 
-  btrfsSubvol = subvol: extraConfig: {
-    device = "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d";
-    fsType = "btrfs";
-    options = [ "subvol=${subvol}" "compress=zstd" ];
-  } // extraConfig;
+  btrfsSubvol = device: subvol: extraConfig: lib.mkMerge [
+    {
+      inherit device;
+      fsType = "btrfs";
+      options = [ "subvol=${subvol}" "compress=zstd" ];
+    }
+    extraConfig
+  ];
+
+  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d";
 
 in
 {
@@ -73,11 +78,11 @@ in
     };
   boot.initrd.luks.devices."crypt-root".device =
     "/dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd";
-  fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
-  fileSystems."/var/log" = btrfsSubvol "@var-log" { neededForBoot = true; };
-  fileSystems."/persist/.snapshots" = btrfsSubvol "@snapshots" { };
-  fileSystems."/nix" = btrfsSubvol "@nix" { neededForBoot = true; };
-  fileSystems."/swap" = btrfsSubvol "@swap" { };
+  fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+  fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+  fileSystems."/persist/.snapshots" = btrfsSubvolMain "@snapshots" { };
+  fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+  fileSystems."/swap" = btrfsSubvolMain "@swap" { };
   fileSystems."/boot" =
     {
       device = "/dev/disk/by-uuid/8F31-70B2";

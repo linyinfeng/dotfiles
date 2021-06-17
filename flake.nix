@@ -144,6 +144,7 @@
             game = with graphical.game; [ steam ];
             chia = [ services.chia ];
             jupyterhub = [ services.jupyterhub ];
+            transmission = [ services.transmission ];
 
             workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
             mobileWorkstation = workstation ++ campus ++ [ laptop ];

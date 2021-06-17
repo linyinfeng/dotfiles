@@ -21,7 +21,8 @@ in
       docker.name
       libvirtd.name
       keys.name
-    ];
+    ] ++
+    lib.optional (config.users.groups ? transmission) config.users.groups.transmission.name;
 
     openssh.authorizedKeys.keyFiles =
       config.users.users.root.openssh.authorizedKeys.keyFiles;
