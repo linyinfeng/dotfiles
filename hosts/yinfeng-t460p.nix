@@ -1,4 +1,4 @@
-{ suites, ... }:
+{ config, suites, ... }:
 
 let
 
@@ -42,6 +42,29 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
+  services.snapper.configs = {
+    persist = {
+      subvolume = "/persist";
+      extraConfig = ''
+        ALLOW_GROUPS="${config.users.groups.wheel.name}"
+        TIMELINE_CREATE="yes"
+        TIMELINE_CLEANUP="yes"
+        TIMELINE_MIN_AGE="1800"
+        TIMELINE_LIMIT_HOURLY="10"
+        TIMELINE_LIMIT_DAILY="10"
+        TIMELINE_LIMIT_WEEKLY="0"
+        TIMELINE_LIMIT_MONTHLY="10"
+        TIMELINE_LIMIT_YEARLY="10"
+        NUMBER_CLEANUP="yes"
+        NUMBER_MIN_AGE="1800"
+        NUMBER_LIMIT="20"
+      '';
+    };
+  };
+  environment.shellAliases = {
+    snap = "snapper -c persist";
+  };
+
   fileSystems."/" =
     {
       device = "tmpfs";
@@ -51,6 +74,8 @@ in
   boot.initrd.luks.devices."crypt-root".device =
     "/dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd";
   fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
+  fileSystems."/var/log" = btrfsSubvol "@var-log" { neededForBoot = true; };
+  fileSystems."/persist/.snapshots" = btrfsSubvol "@snapshots" { };
   fileSystems."/nix" = btrfsSubvol "@nix" { neededForBoot = true; };
   fileSystems."/swap" = btrfsSubvol "@swap" { };
   fileSystems."/boot" =

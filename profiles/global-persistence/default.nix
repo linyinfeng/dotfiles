@@ -4,7 +4,6 @@
   environment.global-persistence = {
     directories = [
       "/etc/nixos"
-      "/var/log"
       "/var/lib/systemd/coredump"
       "/var/db/sudo/lectured"
     ];

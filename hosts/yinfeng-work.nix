@@ -49,6 +49,7 @@ in
   };
   fileSystems."/nix" = btrfsSubvol "@nix" { neededForBoot = true; };
   fileSystems."/persist" = btrfsSubvol "@persist" { neededForBoot = true; };
+  fileSystems."/var/log" = btrfsSubvol "@var-log" { neededForBoot = true; };
   fileSystems."/swap" = btrfsSubvol "@swap" { };
   fileSystems."/boot" =
     {
