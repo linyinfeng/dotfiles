@@ -59,6 +59,7 @@
       ".config/obs-studio"
       ".config/Element"
       ".config/unity3d/Team Cherry" # hollow knight saves
+      ".config/transmission-remote-gtk"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
