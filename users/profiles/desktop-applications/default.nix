@@ -45,6 +45,7 @@
     teamspeak_client
     transmission-remote-gtk
     virt-manager
+    vlc
     zoom-us
     zotero
   ];
