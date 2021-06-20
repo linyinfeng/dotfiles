@@ -27,11 +27,9 @@
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      flake-utils.url = "github:numtide/flake-utils";
       yinfeng = {
         url = "github:linyinfeng/nur-packages";
         inputs.nixpkgs.follows = "nixos";
-        inputs.flake-utils.follows = "flake-utils";
       };
     };
 
