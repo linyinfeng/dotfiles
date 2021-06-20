@@ -20,6 +20,7 @@ in
     suites.desktopWorkstation ++
     suites.campus ++
     suites.fw ++
+    suites.godns ++
     suites.transmission ++
     suites.samba ++
     suites.user-yinfeng;
@@ -41,6 +42,24 @@ in
   powerManagement.cpuFreqGovernor = "performance";
 
   services.hercules-ci-agent.settings.concurrentTasks = 8;
+  services.godns = {
+    ipv4.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "work" ];
+      }];
+      ip_type = "IPv4";
+      ip_interface = "enp4s0";
+    };
+    ipv6.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "work" ];
+      }];
+      ip_type = "IPv6";
+      ip_interface = "enp4s0";
+    };
+  };
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";

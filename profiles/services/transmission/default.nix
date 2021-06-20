@@ -12,6 +12,7 @@ in
     settings = {
       rpc-bind-address = "::";
       rpc-whitelist-enabled = false;
+      rpc-host-whitelist-enabled = false;
     };
   };
 

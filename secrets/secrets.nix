@@ -23,4 +23,5 @@ in
   "yinfeng-asciinema-token.age".publicKeys = allKeys;
   "yinfeng-id-ed25519.age".publicKeys = allKeys;
   "transmission-credentials.age".publicKeys = allKeys;
+  "cloudflare-token.age".publicKeys = allKeys;
 }

@@ -146,6 +146,7 @@
             jupyterhub = [ services.jupyterhub ];
             transmission = [ services.transmission ];
             samba = [ services.samba ];
+            godns = [ services.godns ];
 
             workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
             mobileWorkstation = workstation ++ campus ++ [ laptop ];

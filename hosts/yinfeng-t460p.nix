@@ -19,7 +19,7 @@ in
     suites.mobileWorkstation ++
     suites.game ++
     suites.fw ++
-    suites.chia ++
+    suites.godns ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -42,6 +42,24 @@ in
   services.portal = {
     host = "portal.li7g.com";
     client.enable = true;
+  };
+  services.godns = {
+    ipv4.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "t460p" ];
+      }];
+      ip_type = "IPv4";
+      ip_url = "https://myip.biturl.top";
+    };
+    ipv6.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "t460p" ];
+      }];
+      ip_type = "IPv6";
+      ip_interface = "enp0s31f6";
+    };
   };
 
   environment.global-persistence.enable = true;
