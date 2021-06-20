@@ -14,13 +14,5 @@
 
   environment.global-persistence.user.directories = [
     ".local/share/backgrounds"
-    "Desktop"
-    "Documents"
-    "Downloads"
-    "Music"
-    "Pictures"
-    "Public"
-    "Templates"
-    "Videos"
   ];
 }

@@ -171,7 +171,7 @@
             multimedia = [ gnome desktop-applications chromium firefox rime fonts ];
             development = [ profiles.development emacs tools asciinema ];
             virtualization = [ ];
-            multimediaDev = multimedia ++ development ++ [ vscode ];
+            multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
             synchronize = [ onedrive digital-paper ];
 
             full = base ++ multimediaDev ++ virtualization ++ synchronize;
