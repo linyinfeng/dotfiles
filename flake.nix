@@ -27,10 +27,7 @@
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      yinfeng = {
-        url = "github:linyinfeng/nur-packages";
-        inputs.nixpkgs.follows = "nixos";
-      };
+      yinfeng.url = "github:linyinfeng/nur-packages";
     };
 
   outputs =

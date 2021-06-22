@@ -80,7 +80,7 @@ in
   };
 
   config = mkIf (config.age.templates != { }) {
-    system.activationScripts.post-agenix = {
+    system.activationScripts.agenix-templates = {
       text = ''
         echo "Setting up age templates..."
         ${concatMapStringsSep "\n" (name:
