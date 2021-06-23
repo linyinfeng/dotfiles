@@ -11,6 +11,7 @@ in
     port = rpcPort;
     settings = {
       rpc-bind-address = "::";
+      rpc-authentication-required = true;
       rpc-whitelist-enabled = false;
       rpc-host-whitelist-enabled = false;
     };
