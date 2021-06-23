@@ -1,8 +1,8 @@
-unset HTTP_PROXY
-unset http_proxy
-unset HTTPS_PROXY
-unset https_proxy
-unset ALL_PROXY
-unset all_proxy
-unset NO_PROXY
-unset no_proxy
+export HTTP_PROXY=""
+export http_proxy=""
+export HTTPS_PROXY=""
+export https_proxy=""
+export ALL_PROXY=""
+export all_proxy=""
+export NO_PROXY=""
+export no_proxy=""
