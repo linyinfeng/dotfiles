@@ -4,7 +4,7 @@ with builtins;
 let
   users = config.users.users;
   substitute = pkgs.writers.writePython3 "substitute" { }
-    (replaceStrings [ "@subst@" ] [ "${subst-pairs}" ] (readFile ./templates/subs.py));
+    (replaceStrings [ "@subst@" ] [ "${subst-pairs}" ] (readFile ./subs.py));
   subst-pairs = pkgs.writeText "pairs" (concatMapStringsSep "\n"
     (name:
       "${config.age.placeholder.${name}} ${config.age.secrets.${name}.path}")

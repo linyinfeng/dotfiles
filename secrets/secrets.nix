@@ -1,16 +1,19 @@
 let
-  yinfeng-t460p = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILlzCwC0yEkICPP/S5eSr41Kenl35n0N2ne2O+ZQ+j6y";
-  yinfeng-work = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRWO0HmTkgNBLLyvK3DodO4va2H54gHeRjhj5wSuxBq";
-  yinfeng-x200s = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFb0b3IBA+0vYl32R4azIeofIDmff7jkBDk3Wg/7u293";
+  t460p = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILlzCwC0yEkICPP/S5eSr41Kenl35n0N2ne2O+ZQ+j6y";
+  xps8930 = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRWO0HmTkgNBLLyvK3DodO4va2H54gHeRjhj5wSuxBq";
+  x200s = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFb0b3IBA+0vYl32R4azIeofIDmff7jkBDk3Wg/7u293";
   portal = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIErlwC2p24gqh55P+nbtYXDB+Ya6airZOjQ0yLhlA1op";
   systems = [
-    yinfeng-t460p
-    yinfeng-work
-    yinfeng-x200s
+    t460p
+    xps8930
+    x200s
     portal
   ];
-  user = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9ZXqc9C4fS5gdUOaVdF4pVmStlCYFlHmOKUM/DKPxu";
-  allKeys = systems ++ [ user ];
+  yinfeng = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9ZXqc9C4fS5gdUOaVdF4pVmStlCYFlHmOKUM/DKPxu";
+  users = [
+    yinfeng
+  ];
+  allKeys = systems ++ users;
 in
 {
   "clash-dler.age".publicKeys = allKeys;

@@ -3,36 +3,44 @@
 
   inputs =
     {
-      nixos.url = "nixpkgs/nixos-unstable";
+      nixos.url = "nixpkgs/release-21.05";
       latest.url = "nixpkgs";
-      digga.url = "github:divnix/digga/master";
+      digga = {
+        url = "github:divnix/digga/develop";
+        inputs.nipxkgs.follows = "latest";
+      };
 
       ci-agent = {
         url = "github:hercules-ci/hercules-ci-agent";
-        inputs = { nix-darwin.follows = "darwin"; nixos-20_09.follows = "nixos"; nixos-unstable.follows = "latest"; };
+        # TODO: fix this
+        # inputs = { nix-darwin.follows = "darwin"; nixos-20_09.follows = "nixos"; nixos-unstable.follows = "latest"; };
+        inputs = { nix-darwin.follows = "darwin"; nixos-unstable.follows = "nixos"; };
       };
       darwin.url = "github:LnL7/nix-darwin";
       darwin.inputs.nixpkgs.follows = "latest";
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
-      naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "latest";
+      # naersk.url = "github:nmattia/naersk";
+      # naersk.inputs.nixpkgs.follows = "latest";
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "latest";
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      pkgs.url = "path:./pkgs";
-      pkgs.inputs.nixpkgs.follows = "nixos";
+      nvfetcher.url = "github:berberman/nvfetcher";
+      nvfetcher.inputs.nixpkgs.follows = "latest";
 
       # MAIN
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       yinfeng.url = "github:linyinfeng/nur-packages";
+
+      # Fix overrides
+      utils.url = "github:numtide/flake-utils";
+      nixpkgs.follows = "nixos";
     };
 
   outputs =
     { self
-    , pkgs
     , digga
     , nixos
     , ci-agent
@@ -40,6 +48,7 @@
     , nixos-hardware
     , nur
     , agenix
+    , nvfetcher
     , ...
     } @ inputs:
     digga.lib.mkFlake {
@@ -51,13 +60,13 @@
         nixos = {
           imports = [ (digga.lib.importers.overlays ./overlays) ];
           overlays = [
-            ./pkgs/default.nix
-            pkgs.overlay # for `srcs`
             nur.overlay
 
             # MAIN
             inputs.emacs-overlay.overlay
             agenix.overlay
+            nvfetcher.overlay
+            ./pkgs/default.nix
           ];
         };
         latest = { };
@@ -67,6 +76,7 @@
 
       sharedOverlays = [
         (final: prev: {
+          __dontExport = true;
           lib = prev.lib.extend (lfinal: lprev: {
             our = self.lib;
           });
@@ -77,13 +87,12 @@
         hostDefaults = {
           system = "x86_64-linux";
           channelName = "nixos";
-          modules = ./modules/module-list.nix;
+          imports = [ (digga.lib.importers.modules ./modules) ];
           externalModules = [
             { lib.our = self.lib; }
             ci-agent.nixosModules.agent-profile
             home.nixosModules.home-manager
             agenix.nixosModules.age
-            ./modules/customBuilds.nix
 
             # MAIN
             inputs.impermanence.nixosModules.impermanence
@@ -98,7 +107,7 @@
           NixOS = { };
 
           # MAIN
-          yinfeng-t460p = {
+          t460p = {
             modules = with nixos-hardware.nixosModules; [
               common-pc
               common-cpu-intel
@@ -106,7 +115,7 @@
               lenovo-thinkpad-t460s
             ];
           };
-          yinfeng-work = {
+          xps8930 = {
             modules = with nixos-hardware.nixosModules; [
               common-pc
               common-cpu-intel
@@ -155,7 +164,7 @@
       };
 
       home = {
-        modules = ./users/modules/module-list.nix;
+        imports = [ (digga.lib.importers.modules ./users/modules) ];
         externalModules = [
           # MAIN
           (builtins.toPath "${inputs.impermanence}/home-manager.nix")
@@ -177,7 +186,14 @@
       };
 
       devshell.externalModules = { pkgs, ... }: {
-        packages = [ pkgs.agenix ];
+        commands = [
+          { package = pkgs.agenix; category = "secrets"; }
+          {
+            name = pkgs.nvfetcher-bin.pname;
+            help = pkgs.nvfetcher-bin.meta.description;
+            command = "cd $DEVSHELL_ROOT/pkgs; ${pkgs.nvfetcher-bin}/bin/nvfetcher -c ./sources.toml --no-output $@; nixpkgs-fmt _sources/";
+          }
+        ];
       };
 
       homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;

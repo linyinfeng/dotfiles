@@ -9,14 +9,14 @@ let
       install -Dm755 $persistPermission $out/bin/persist-permission
     '';
     migrateToPersist = pkgs.substituteAll {
-      src = ./global-persistence/persist-migrate.sh;
+      src = ./persist-migrate.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) coreutils gawk rsync;
       persist = cfg.root;
     };
     persistPermission = pkgs.substituteAll {
-      src = ./global-persistence/persist-permission.sh;
+      src = ./persist-permission.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) fd;

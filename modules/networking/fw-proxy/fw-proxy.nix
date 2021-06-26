@@ -14,14 +14,14 @@ let
       install -Dm755 $updateClash    $out/bin/update-clash
     '';
     enableProxy = pkgs.substituteAll {
-      src = ./fw-proxy/enable-proxy;
+      src = ./enable-proxy;
       mixedPort = cfg.port.mixed;
     };
     disableProxy = pkgs.substituteAll {
-      src = ./fw-proxy/disable-proxy;
+      src = ./disable-proxy;
     };
     updateClashUrl = pkgs.substituteAll {
-      src = ./fw-proxy/update-clash-url.sh;
+      src = ./update-clash-url.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) coreutils curl systemd;
@@ -34,7 +34,7 @@ let
       directory = clashDir;
     };
     updateClash = pkgs.substituteAll {
-      src = ./fw-proxy/update-clash.sh;
+      src = ./update-clash.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
@@ -139,8 +139,8 @@ with lib;
       ];
     };
     age.secrets = {
-      clash-dler.file = ../../secrets/clash-dler.age;
-      clash-cnix.file = ../../secrets/clash-cnix.age;
+      clash-dler.file = ../../../secrets/clash-dler.age;
+      clash-cnix.file = ../../../secrets/clash-cnix.age;
     };
 
     programs.proxychains = {
