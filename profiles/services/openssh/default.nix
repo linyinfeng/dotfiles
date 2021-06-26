@@ -1,8 +1,27 @@
 { ... }:
 
+let
+  aliveInterval = "15";
+  aliveCountMax = "4";
+in
 {
-  services.openssh.enable = true;
-  services.openssh.forwardX11 = true;
+  services.openssh = {
+    enable = true;
+    forwardX11 = true;
+    openFirewall = true;
+    passwordAuthentication = false;
+    extraConfig = ''
+      ClientAliveInterval ${aliveInterval}
+      ClientAliveCountMax ${aliveCountMax}
+    '';
+  };
+
+  programs.ssh = {
+    extraConfig = ''
+      ServerAliveInterval ${aliveInterval}
+      ServerAliveCountMax ${aliveCountMax}
+    '';
+  };
 
   networking.firewall.allowedTCPPorts = [ 22 ];
 
