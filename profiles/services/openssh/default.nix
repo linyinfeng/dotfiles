@@ -9,7 +9,6 @@ in
     enable = true;
     forwardX11 = true;
     openFirewall = true;
-    passwordAuthentication = false;
     extraConfig = ''
       ClientAliveInterval ${aliveInterval}
       ClientAliveCountMax ${aliveCountMax}

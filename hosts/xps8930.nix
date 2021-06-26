@@ -46,7 +46,7 @@ in
     ipv4.settings = {
       domains = [{
         domain_name = "li7g.com";
-        sub_domains = [ "work" ];
+        sub_domains = [ "xps8930" ];
       }];
       ip_type = "IPv4";
       ip_interface = "enp4s0";
@@ -54,7 +54,7 @@ in
     ipv6.settings = {
       domains = [{
         domain_name = "li7g.com";
-        sub_domains = [ "work" ];
+        sub_domains = [ "xps8930" ];
       }];
       ip_type = "IPv6";
       ip_interface = "enp4s0";
