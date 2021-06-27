@@ -37,6 +37,16 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
 
+  # services.xserver.videoDrivers = [ "nvidia" ];
+  # hardware.nvidia = {
+  #   prime = {
+  #     offload.enable = true;
+  #     nvidiaBusId = "PCI:2:0:0";
+  #     intelBusId = "PCI:0:2:0";
+  #   };
+  #   modesetting.enable = true;
+  # };
+
   powerManagement.cpuFreqGovernor = "powersave";
 
   services.portal = {
