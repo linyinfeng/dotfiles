@@ -60,6 +60,9 @@ in
       ip_interface = "enp4s0";
     };
   };
+  nix.gc.options = lib.mkForce ''
+    --delete-older-than 14d
+  '';
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
