@@ -24,8 +24,10 @@ in
     ] ++
     lib.optional (config.users.groups ? transmission) config.users.groups.transmission.name;
 
-    openssh.authorizedKeys.keyFiles =
-      config.users.users.root.openssh.authorizedKeys.keyFiles;
+    openssh.authorizedKeys.keyFiles = [
+      ./ssh/id_ed25519.pub
+      ./ssh/authorized-keys/t460p-win.pub
+    ];
   };
 
   age.secrets = {
