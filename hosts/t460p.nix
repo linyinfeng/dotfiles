@@ -47,6 +47,18 @@ in
   #   modesetting.enable = true;
   # };
 
+  virtualisation.kvmgt = {
+    enable = true;
+    device = "0000:00:02.0";
+    vgpus = {
+      i915-GVTg_V5_4 = {
+        uuid = [
+          "fb70adc6-d612-4af4-bfcd-94939e5ca225"
+        ];
+      };
+    };
+  };
+
   powerManagement.cpuFreqGovernor = "powersave";
 
   services.portal = {
