@@ -142,8 +142,8 @@
             phone = with services; [ kde-connect ];
             printing = [ services.printing ];
             campus = with networking; [ campus-network ];
-            ciAgent = with services; [ hercules-ci-agent ];
 
+            ciAgent = with services; [ hercules-ci-agent ];
             fw = with networking; [ fw-proxy ];
             game = with graphical.game; [ steam ];
             chia = [ services.chia ];
@@ -154,7 +154,7 @@
 
             workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
             mobileWorkstation = workstation ++ campus ++ [ laptop ];
-            desktopWorkstation = workstation ++ ciAgent;
+            desktopWorkstation = workstation;
             homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
             overseaServer = base ++ network;
 

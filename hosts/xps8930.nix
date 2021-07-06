@@ -23,6 +23,7 @@ in
     suites.godns ++
     suites.transmission ++
     suites.samba ++
+    suites.ciAgent ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
