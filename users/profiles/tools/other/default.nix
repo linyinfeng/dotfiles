@@ -58,7 +58,6 @@
     wl-clipboard
     youtube-dl
     yq-go
-    zola
   ];
 
   home.global-persistence.directories = [

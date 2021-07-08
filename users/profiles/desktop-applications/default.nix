@@ -6,8 +6,8 @@
 
     obs-studio = {
       enable = true;
-      plugins = with pkgs; [
-        obs-wlrobs
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
       ];
     };
 
@@ -30,10 +30,10 @@
     calibre
     element-desktop
     gimp
-    gnome3.dconf-editor
-    gnome3.gnome-sound-recorder
-    gnome3.gnome-tweaks
-    gnome3.polari
+    gnome.dconf-editor
+    gnome.gnome-sound-recorder
+    gnome.gnome-tweaks
+    gnome.polari
     # goldendict # TODO: broken
     gparted
     inkscape

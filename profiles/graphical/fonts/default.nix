@@ -8,18 +8,10 @@
     noto-fonts-extra
 
     source-han-serif
-    source-han-serif-japanese
-    source-han-serif-korean
-    source-han-serif-simplified-chinese
-    source-han-serif-traditional-chinese
     source-han-sans
-    source-han-sans-japanese
-    source-han-sans-korean
-    source-han-sans-simplified-chinese
-    source-han-sans-traditional-chinese
     source-code-pro
 
-    opensans-ttf
+    open-sans
     liberation_ttf
     wqy_zenhei
     wqy_microhei

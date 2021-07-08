@@ -29,7 +29,7 @@ in
       skim
       tealdeer
       usbutils
-      utillinux
+      util-linux
       whois
     ];
 

@@ -5,7 +5,7 @@
   networking.firewall.checkReversePath = false;
 
   environment.systemPackages = with pkgs; [
-    gnome3.gnome-boxes
+    gnome.gnome-boxes
   ];
 
   environment.global-persistence = {
