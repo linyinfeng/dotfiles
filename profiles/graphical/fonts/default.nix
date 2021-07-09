@@ -27,19 +27,19 @@
 
   fonts.fontconfig.defaultFonts = {
     sansSerif = lib.mkBefore [
-      "Noto Sans"
       "Source Han Sans SC"
       "Source Han Sans TC"
       "Source Han Sans HW"
       "Source Han Sans K"
+      "Noto Sans"
       "DejaVu Sans"
     ];
     serif = lib.mkBefore [
-      "Noto Serif"
       "Source Han Serif SC"
       "Source Han Serif TC"
       "Source Han Serif HW"
       "Source Han Serif K"
+      "Noto Serif"
       "DejaVu Serif"
     ];
     # respect powerline font settings in core
