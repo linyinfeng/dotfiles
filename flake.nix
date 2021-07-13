@@ -145,7 +145,7 @@
               multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ pipewire ]);
               development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-              virtualization = with profiles.virtualization; [ docker libvirt wine anbox ];
+              virtualization = with profiles.virtualization; [ podman libvirt wine anbox ];
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];

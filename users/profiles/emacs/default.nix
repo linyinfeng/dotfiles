@@ -16,7 +16,7 @@ in
       graphviz # org-roam
       fira-code-symbols # fira-code-mode
     ]);
-  fonts.fontconfig.enable = true; # for fira-code-symbols
+  fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 
   services.emacs = {
     enable = true;

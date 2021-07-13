@@ -18,7 +18,6 @@ in
       wheel.name
       networkmanager.name
       adbusers.name
-      docker.name
       libvirtd.name
       keys.name
     ] ++
