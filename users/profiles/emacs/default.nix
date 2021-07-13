@@ -14,7 +14,9 @@ in
       agda # agda mode
       sqlite # org-roam
       graphviz # org-roam
+      fira-code-symbols # fira-code-mode
     ]);
+  fonts.fontconfig.enable = true; # for fira-code-symbols
 
   services.emacs = {
     enable = true;
