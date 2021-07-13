@@ -1,7 +1,9 @@
+{ lib, ... }:
+
+# TODO: currently broken
+lib.mkIf false
 {
-  # TODO: currently broken
-  # services.hercules-ci-agent.enable = true;
-  services.hercules-ci-agent.enable = false;
+  services.hercules-ci-agent.enable = true;
 
   environment.global-persistence.directories = [
     "/var/lib/hercules-ci-agent"
