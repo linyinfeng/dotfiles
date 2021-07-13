@@ -120,7 +120,7 @@
 (use-package fira-code-mode
   :ensure t
   :delight
-  :custom (fira-code-mode-disabled-ligatures '("x"))
+  :custom (fira-code-mode-disabled-ligatures '("[]" "x"))
   :hook ((prog-mode . fira-code-mode)))
 
 (use-package flycheck
