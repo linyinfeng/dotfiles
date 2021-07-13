@@ -43,6 +43,7 @@
     pciutils
     pkgdiff
     procs
+    rargs
     ripgrep
     rlwrap
     screenfetch
