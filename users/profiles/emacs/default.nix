@@ -5,6 +5,11 @@ let
     config = emacsConfig;
     package = pkgs.emacs;
     alwaysEnsure = true;
+    override = epkgs: epkgs // {
+      idris-mode = epkgs.melpaPackages.idris-mode.overrideAttrs (old: {
+        patches = [ ./patches/emacs-idris-mode.patch ];
+      });
+    };
   });
 in
 {
