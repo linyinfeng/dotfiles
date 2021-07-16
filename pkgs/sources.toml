@@ -2,3 +2,7 @@
 [manix]
 src.git = "https://github.com/mlvzk/manix"
 fetch.github = "mlvzk/manix"
+
+[idris2-mode]
+src.git = "https://github.com/redfish64/idris2-mode"
+fetch.github = "redfish64/idris2-mode"
