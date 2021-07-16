@@ -117,12 +117,6 @@
   :config
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-(use-package fira-code-mode
-  :ensure t
-  :delight
-  :custom (fira-code-mode-disabled-ligatures '("[]" "x"))
-  :hook ((prog-mode . fira-code-mode)))
-
 (use-package flycheck
   :ensure t)
 
