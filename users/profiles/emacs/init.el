@@ -145,7 +145,8 @@
   (setq lsp-rust-server 'rust-analyzer)
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
-(use-package idris2-mode)
+(use-package idris-mode
+  :ensure t)
 
 (use-package lsp-ui
   :ensure t)

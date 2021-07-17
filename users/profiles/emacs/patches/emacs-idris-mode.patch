@@ -1,0 +1,13 @@
+diff --git a/idris-warnings-tree.el b/idris-warnings-tree.el
+index 822f120..317a41a 100644
+--- a/idris-warnings-tree.el
++++ b/idris-warnings-tree.el
+@@ -54,7 +54,7 @@
+             (setq buffer-read-only t)
+             (goto-char (point-min))
+             notes
+-            (display-buffer (idris2-buffer-name :notes))
++            (display-buffer (idris-buffer-name :notes))
+           ))))))
+ 
+ (defvar idris-tree-printer 'idris-tree-default-printer)

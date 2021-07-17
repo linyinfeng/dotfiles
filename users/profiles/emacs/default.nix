@@ -6,12 +6,9 @@ let
     package = pkgs.emacs;
     alwaysEnsure = true;
     override = epkgs: epkgs // {
-      idris2-mode = epkgs.trivialBuild {
-        inherit (pkgs.sources.idris2-mode) pname version src;
-        packageRequires = [
-          epkgs.prop-menu
-        ];
-      };
+      idris-mode = epkgs.melpaPackages.idris-mode.overrideAttrs (old: {
+        patches = [ ./patches/emacs-idris-mode.patch ];
+      });
     };
   });
 in
