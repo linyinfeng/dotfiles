@@ -54,6 +54,8 @@ in
   home-manager.users.${name} = { suites, ... }: {
     imports = suites.full;
 
+    passthrough.systemConfig = config;
+
     home.global-persistence.enable = true;
 
     home.linkSecrets.".ssh/id_ed25519".secret = config.age.secrets."${name}-id-ed25519".path;
@@ -69,8 +71,6 @@ in
         signByDefault = true;
       };
     };
-
-    passthrough.systemConfig = config;
   };
 
   environment.global-persistence.directories =
