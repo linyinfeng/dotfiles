@@ -120,7 +120,7 @@
             imports = [ (digga.lib.importers.modules ./modules) ];
             externalModules = [
               { lib.our = self.lib; }
-              digga.nixosModules.nixConfig
+              # digga.nixosModules.nixConfig
               ci-agent.nixosModules.agent-profile
               home.nixosModules.home-manager
               agenix.nixosModules.age
