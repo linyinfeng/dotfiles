@@ -185,6 +185,35 @@
         "type": "github"
       }
     },
+    "dot-tar": {
+      "inputs": {
+        "naersk": [
+          "naersk"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ],
+        "rust-overlays": [
+          "rust-overlays"
+        ],
+        "utils": [
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1626962418,
+        "narHash": "sha256-zFOMCekvIjEZRUnfgJQoQjvkdh8xsKsFY1RKZhi7xgg=",
+        "owner": "linyinfeng",
+        "repo": "dot-tar",
+        "rev": "8d33a7d9c933b7bcdf07e97ed45661e621fd1f58",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "dot-tar",
+        "type": "github"
+      }
+    },
     "emacs-overlay": {
       "locked": {
         "lastModified": 1626918102,
@@ -509,6 +538,7 @@
           "deploy"
         ],
         "digga": "digga",
+        "dot-tar": "dot-tar",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": [
           "digga",
@@ -533,7 +563,31 @@
         ],
         "nur": "nur",
         "nvfetcher": "nvfetcher",
+        "rust-overlays": "rust-overlays",
         "yinfeng": "yinfeng"
+      }
+    },
+    "rust-overlays": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1626315278,
+        "narHash": "sha256-rrN/a7Hq4hp6YLWGKDddGwqaWNjEANpqJHgyANprCRE=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "41b11431e8dfa23263913bb96b5ef1913e01dfc1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "yinfeng": {

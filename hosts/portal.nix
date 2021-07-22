@@ -1,5 +1,9 @@
-{ suites, ... }:
+{ config, suites, lib, ... }:
 
+let
+  dot-tar-host = "tar.li7g.com";
+  dot-tar-port = 8001;
+in
 {
   imports =
     suites.overseaServer;
@@ -20,6 +24,29 @@
   services.portal = {
     host = "portal.li7g.com";
     server.enable = true;
+  };
+
+  services.dot-tar = {
+    enable = true;
+    config = {
+      release = {
+        port = dot-tar-port;
+        authority_allow_list = [
+          "github.com"
+        ];
+      };
+    };
+  };
+
+  services.caddy = {
+    config = ''
+      ${dot-tar-host} {
+        log {
+          output stdout
+        }
+        reverse_proxy localhost:${toString dot-tar-port}
+      }
+    '';
   };
 
   networking = {

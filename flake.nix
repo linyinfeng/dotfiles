@@ -59,6 +59,14 @@
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       yinfeng.url = "github:linyinfeng/nur-packages";
+      dot-tar.url = "github:linyinfeng/dot-tar";
+      dot-tar.inputs.utils.follows = "flake-utils";
+      dot-tar.inputs.nixpkgs.follows = "nixos";
+      dot-tar.inputs.naersk.follows = "naersk";
+      dot-tar.inputs.rust-overlays.follows = "rust-overlays";
+      rust-overlays.url = "github:oxalica/rust-overlay";
+      rust-overlays.inputs.flake-utils.follows = "flake-utils";
+      rust-overlays.inputs.nixpkgs.follows = "nixos";
     };
 
   outputs =
@@ -94,6 +102,7 @@
 
               # MAIN
               inputs.emacs-overlay.overlay
+              inputs.dot-tar.overlay
             ];
           };
           latest = { };
@@ -127,6 +136,7 @@
               # MAIN
               inputs.impermanence.nixosModules.impermanence
               inputs.yinfeng.nixosModules.vlmcsd
+              inputs.dot-tar.nixosModules.dot-tar
             ];
           };
 
