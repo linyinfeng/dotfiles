@@ -5,6 +5,7 @@
     package = pkgs.gitFull;
     lfs.enable = true;
     extraConfig = {
+      init.defaultBranch = "main";
       pull.ff = "only";
       credential.helper = "libsecret";
     };

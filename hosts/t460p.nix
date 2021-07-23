@@ -20,6 +20,7 @@ in
     suites.game ++
     suites.fw ++
     suites.godns ++
+    suites.anbox ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";

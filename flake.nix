@@ -67,6 +67,9 @@
       rust-overlays.url = "github:oxalica/rust-overlay";
       rust-overlays.inputs.flake-utils.follows = "flake-utils";
       rust-overlays.inputs.nixpkgs.follows = "nixos";
+
+      anbox-patch.url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar";
+      anbox-patch.flake = false;
     };
 
   outputs =
@@ -86,6 +89,25 @@
     digga.lib.mkFlake
       {
         inherit self inputs;
+
+        # MAIN: patch the channel nixos
+        # TODO: waiting for better patch supports
+        imports = [
+          {
+            # IFD workaround
+            supportedSystems = [ "x86_64-linux" ];
+            channels.nixos = {
+              options.patches = nixos.lib.mkOption {
+                type = with nixos.lib.types; listOf path;
+              };
+              config = {
+                patches = [
+                  inputs.anbox-patch
+                ];
+              };
+            };
+          }
+        ];
 
         channelsConfig = { allowUnfree = true; };
 
@@ -176,7 +198,7 @@
               multimedia = (with graphical; [ gnome fonts ibus-chinese ]) ++ (with services; [ pipewire ]);
               development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-              virtualization = with profiles.virtualization; [ podman libvirt wine anbox ];
+              virtualization = with profiles.virtualization; [ podman libvirt wine ];
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];
@@ -190,6 +212,7 @@
               transmission = [ services.transmission ];
               samba = [ services.samba ];
               godns = [ services.godns ];
+              anbox = [ profiles.virtualization.anbox ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];

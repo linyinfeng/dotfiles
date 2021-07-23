@@ -20,6 +20,18 @@
         "type": "github"
       }
     },
+    "anbox-patch": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-WbL+DwQykjd3gtrlu3rPjW0zSX3skvFi2Vj3CIMnEwQ=",
+        "type": "tarball",
+        "url": "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"
+      }
+    },
     "blank": {
       "locked": {
         "lastModified": 1625557891,
@@ -526,6 +538,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "anbox-patch": "anbox-patch",
         "blank": [
           "digga",
           "blank"
