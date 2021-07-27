@@ -35,12 +35,6 @@
       nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
       nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
-      ci-agent.url = "github:hercules-ci/hercules-ci-agent";
-      ci-agent.inputs.nix-darwin.follows = "darwin";
-      ci-agent.inputs.nixos-20_09.follows = "nixos";
-      ci-agent.inputs.nixos-unstable.follows = "latest";
-      ci-agent.inputs.flake-compat.follows = "digga/deploy/flake-compat";
-
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "latest";
 
@@ -63,13 +57,13 @@
       dot-tar.inputs.utils.follows = "flake-utils";
       dot-tar.inputs.nixpkgs.follows = "nixos";
       dot-tar.inputs.naersk.follows = "naersk";
-      dot-tar.inputs.rust-overlays.follows = "rust-overlays";
-      rust-overlays.url = "github:oxalica/rust-overlay";
-      rust-overlays.inputs.flake-utils.follows = "flake-utils";
-      rust-overlays.inputs.nixpkgs.follows = "nixos";
+      dot-tar.inputs.rust-overlay.follows = "rust-overlay";
+      rust-overlay.url = "github:oxalica/rust-overlay";
+      rust-overlay.inputs.flake-utils.follows = "flake-utils";
+      rust-overlay.inputs.nixpkgs.follows = "nixos";
 
-      anbox-patch.url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar";
-      anbox-patch.flake = false;
+      anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
+      calibre-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/131477.patch.tar"; flake = false; };
     };
 
   outputs =
@@ -77,7 +71,6 @@
     , digga
     , bud
     , nixos
-    , ci-agent
     , home
     , nixos-hardware
     , nur
@@ -103,6 +96,8 @@
               config = {
                 patches = [
                   inputs.anbox-patch
+                  inputs.calibre-patch
+
                 ];
               };
             };
@@ -150,7 +145,6 @@
               { lib.our = self.lib; }
               digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
-              ci-agent.nixosModules.agent-profile
               home.nixosModules.home-manager
               agenix.nixosModules.age
               bud.nixosModules.bud
@@ -204,7 +198,6 @@
               printing = [ services.printing ];
               campus = with networking; [ campus-network ];
 
-              ciAgent = with services; [ hercules-ci-agent ];
               fw = with networking; [ fw-proxy ];
               game = with graphical.game; [ steam ];
               chia = [ services.chia ];

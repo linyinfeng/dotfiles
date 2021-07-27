@@ -23,7 +23,6 @@ in
     suites.godns ++
     suites.transmission ++
     suites.samba ++
-    suites.ciAgent ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -42,7 +41,6 @@ in
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  services.hercules-ci-agent.settings.concurrentTasks = 8;
   services.godns = {
     ipv4.settings = {
       domains = [{
