@@ -199,7 +199,7 @@
               campus = with networking; [ campus-network ];
 
               fw = with networking; [ fw-proxy ];
-              game = with graphical.game; [ steam ];
+              game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];
               jupyterhub = [ services.jupyterhub ];
               transmission = [ services.transmission ];

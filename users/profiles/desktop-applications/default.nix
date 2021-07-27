@@ -59,7 +59,7 @@
       ".config/calibre"
       ".config/obs-studio"
       ".config/Element"
-      ".config/unity3d/Team Cherry" # hollow knight saves
+      ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
 
       ".local/share/Anki2"

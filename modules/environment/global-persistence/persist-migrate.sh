@@ -25,7 +25,7 @@ function failure {
     printf "$NC\n"
 }
 
-for file in $@
+for file in "$@"
 do
     source=$("$realpath" "$file")
     if [ ! -e "$source" ]; then
