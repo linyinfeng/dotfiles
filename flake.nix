@@ -63,7 +63,6 @@
       rust-overlay.inputs.nixpkgs.follows = "nixos";
 
       anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
-      calibre-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/131477.patch.tar"; flake = false; };
     };
 
   outputs =
@@ -96,8 +95,6 @@
               config = {
                 patches = [
                   inputs.anbox-patch
-                  inputs.calibre-patch
-
                 ];
               };
             };
@@ -201,7 +198,6 @@
               fw = with networking; [ fw-proxy ];
               game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];
-              jupyterhub = [ services.jupyterhub ];
               transmission = [ services.transmission ];
               samba = [ services.samba ];
               godns = [ services.godns ];
