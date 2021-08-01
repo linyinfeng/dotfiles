@@ -69,7 +69,7 @@ with lib;
       };
       externalController = mkOption {
         type = with types; int;
-        default = 7900;
+        default = 9090;
       };
       webui = mkOption {
         type = with types; int;

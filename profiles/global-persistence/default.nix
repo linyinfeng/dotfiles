@@ -11,5 +11,8 @@
       # systemd machine-id
       "/etc/machine-id"
     ];
+    user.directories = [
+      ".local/share/nix"
+    ];
   };
 }

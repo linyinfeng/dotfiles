@@ -41,6 +41,7 @@
     keepassxc
     libreoffice-fresh
     mplayer
+    linyinfeng.clash-for-windows
     tdesktop
     teamspeak_client
     transmission-remote-gtk

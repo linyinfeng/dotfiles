@@ -115,6 +115,7 @@
               ./pkgs/default.nix
 
               # MAIN
+              inputs.yinfeng.overlays.linyinfeng
               inputs.emacs-overlay.overlay
               inputs.dot-tar.overlay
             ];
