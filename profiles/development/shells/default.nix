@@ -7,9 +7,9 @@
     fishPlugins.foreign-env
   ];
 
+  programs.tprofile.enable = true;
+
   environment.global-persistence.user.directories = [
     ".local/share/fish"
   ];
-
-  programs.fish.loginShellInit = builtins.readFile ./tprofile.fish;
 }

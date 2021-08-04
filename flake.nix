@@ -150,6 +150,7 @@
               # MAIN
               inputs.impermanence.nixosModules.impermanence
               inputs.yinfeng.nixosModules.vlmcsd
+              inputs.yinfeng.nixosModules.tprofile
               inputs.dot-tar.nixosModules.dot-tar
             ];
           };
