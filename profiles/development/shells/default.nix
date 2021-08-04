@@ -10,4 +10,6 @@
   environment.global-persistence.user.directories = [
     ".local/share/fish"
   ];
+
+  programs.fish.loginShellInit = builtins.readFile ./tprofile.fish;
 }
