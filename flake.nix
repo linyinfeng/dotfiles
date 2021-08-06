@@ -248,7 +248,7 @@
 
         deploy.nodes = digga.lib.mkDeployNodes
           # MAIN
-          (removeAttrs self.nixosConfigurations [ "NixOS" ])
+          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
           {
             sshUser = "root";
           };
