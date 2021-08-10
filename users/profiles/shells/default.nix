@@ -18,8 +18,7 @@
     };
   };
   programs.fish.enable = true;
-  # programs.starship.enable = true;
-  programs.fzf.enable = true;
+  programs.skim.enable = true;
   programs.zoxide.enable = true;
 
   home.global-persistence.directories = [

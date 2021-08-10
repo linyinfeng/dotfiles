@@ -40,6 +40,7 @@
     keepass
     keepassxc
     libreoffice-fresh
+    meld
     mplayer
     linyinfeng.clash-for-windows
     tdesktop

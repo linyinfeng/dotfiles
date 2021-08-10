@@ -35,7 +35,7 @@ in
       profile.${defaultProfile} = {
         visibleName = "Main";
         default = true;
-        font = "DejaVu Sans Mono for Powerline 10";
+        font = "Sarasa Term Slab SC 11";
       };
     };
 
