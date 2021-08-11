@@ -246,7 +246,11 @@
 
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
-        deploy.nodes = digga.lib.mkDeployNodes self.nixosConfigurations { };
+        deploy.nodes = digga.lib.mkDeployNodes
+          # MAIN
+          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
+          { };
+        deploy.sshUser = "root";
 
         defaultTemplate = self.templates.bud;
         templates.bud.path = ./.;
