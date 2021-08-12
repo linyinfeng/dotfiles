@@ -6,5 +6,4 @@ in
 {
   networking.fw-proxy.enable = true;
   systemd.services.nix-daemon.environment = cfg.environment;
-  systemd.services.flatpak-system-helper.environment = cfg.environment;
 }

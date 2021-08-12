@@ -8,7 +8,7 @@
     ];
   };
 
-  age.secrets.user-root-password.file = ../../secrets/user-root-password.age;
+  age.secrets.user-root-password.file = config.age.secrets-directory + /user-root-password.age;
 
   home-manager.users.root = { suites, ... }: {
     imports = suites.base;

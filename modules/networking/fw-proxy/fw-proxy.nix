@@ -113,7 +113,6 @@ with lib;
     };
     systemd.services.clash-premium = {
       description = "A rule based proxy in GO";
-      after = [ "network-online.target" ];
       serviceConfig = {
         Type = "exec";
         User = "clash";
@@ -127,20 +126,23 @@ with lib;
     };
     environment.global-persistence.directories = [ clashDir ];
     system.activationScripts.fixClashDirectoryPremission = ''
+      mkdir -p "${clashDir}"
       chown "${clashUser}" "${clashDir}"
     '';
     environment.systemPackages = [
       scripts
     ];
-    virtualisation.oci-containers.containers.yacd = {
+
+    # network is not available in vm-test
+    virtualisation.oci-containers.containers.yacd = lib.mkIf (!config.system.is-vm-test) {
       image = "haishanh/yacd";
       ports = [
         "${toString cfg.port.webui}:80"
       ];
     };
     age.secrets = {
-      clash-dler.file = ../../../secrets/clash-dler.age;
-      clash-cnix.file = ../../../secrets/clash-cnix.age;
+      clash-dler.file = config.age.secrets-directory + /clash-dler.age;
+      clash-cnix.file = config.age.secrets-directory + /clash-cnix.age;
     };
 
     programs.proxychains = {

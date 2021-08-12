@@ -9,8 +9,8 @@ let
 in
 {
   age.secrets = {
-    campus-net-username = secretConfig ../../../secrets/campus-net-username.age;
-    campus-net-password = secretConfig ../../../secrets/campus-net-password.age;
+    campus-net-username = secretConfig (config.age.secrets-directory + /campus-net-username.age);
+    campus-net-password = secretConfig (config.age.secrets-directory + /campus-net-password.age);
   };
   environment.systemPackages = [
     (pkgs.stdenvNoCC.mkDerivation {
@@ -35,4 +35,5 @@ in
       };
     })
   ];
+  nix.binaryCaches = [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
 }

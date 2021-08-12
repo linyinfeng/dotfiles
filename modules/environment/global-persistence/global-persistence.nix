@@ -120,6 +120,16 @@ with lib;
           '';
       in
       "${script}";
+    system.activationScripts.ensurePersistenceRootExists = {
+      text = ''
+        if [ ! -d "${cfg.root}" ]; then
+          echo "Warning: global persistence storage '${cfg.root}' is not presented, create a fake one for test only."
+          mkdir -p "${cfg.root}"
+        fi
+      '';
+    };
+    system.activationScripts."createDirsIn-${replaceStrings [ "/" "." " " ] [ "-" "" "" ] cfg.root}".deps =
+      [ "ensurePersistenceRootExists" ];
 
     age.sshKeyPaths = [
       "${cfg.root}/etc/ssh/ssh_host_ed25519_key"

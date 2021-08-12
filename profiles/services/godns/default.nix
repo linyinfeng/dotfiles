@@ -31,7 +31,7 @@ in
     };
   };
   config = {
-    age.secrets.cloudflare-token.file = ../../../secrets/cloudflare-token.age;
+    age.secrets.cloudflare-token.file = config.age.secrets-directory + /cloudflare-token.age;
     age.templates = lib.mapAttrs'
       (_: godnsCfg:
         lib.nameValuePair godnsCfg.fullName

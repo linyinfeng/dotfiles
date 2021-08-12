@@ -26,5 +26,5 @@ in
     "comment" = "Dransmission downloads";
   };
 
-  age.secrets.transmission-credentials.file = ../../../secrets/transmission-credentials.age;
+  age.secrets.transmission-credentials.file = config.age.secrets-directory + /transmission-credentials.age;
 }

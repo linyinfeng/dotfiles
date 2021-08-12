@@ -1,4 +1,4 @@
-{ suites, ... }:
+{ config, suites, lib, ... }:
 
 {
   imports =
@@ -20,8 +20,8 @@
 
   hardware.enableRedistributableFirmware = true;
 
-  networking = {
-    useDHCP = false;
+  networking = lib.mkIf (!config.system.is-vm-test) {
+    useNetworkd = true;
     interfaces.enp0s25.useDHCP = true;
     # wireless.enable = true;
     # interfaces.wls1.useDHCP = true;

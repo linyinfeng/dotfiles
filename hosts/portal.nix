@@ -49,8 +49,8 @@ in
     '';
   };
 
-  networking = {
-    useDHCP = false;
+  networking = lib.mkIf (!config.system.is-vm-test) {
+    useNetworkd = true;
     interfaces.ens3.useDHCP = true;
   };
 

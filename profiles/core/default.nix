@@ -28,6 +28,8 @@ in
     ];
   };
 
+  networking.useDHCP = false;
+
   fonts = {
     fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
 

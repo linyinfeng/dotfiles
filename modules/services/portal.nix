@@ -48,7 +48,7 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      age.secrets.portal-client-id.file = ../../secrets/portal-client-id.age;
+      age.secrets.portal-client-id.file = config.age.secrets-directory + /portal-client-id.age;
       services.v2ray = {
         enable = true;
         configFile = config.age.templates.portal-v2ray.path;

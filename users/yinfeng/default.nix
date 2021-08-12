@@ -5,6 +5,10 @@ let
   user = config.users.users.${name};
   homeManager = config.home-manager.users.${name};
   homeDirectory = "/home/${name}";
+
+  groupNameIfPresent = name: lib.optional
+    (config.users.groups ? ${name})
+    config.users.groups.${name}.name;
 in
 {
   users.users.${name} = {
@@ -16,12 +20,12 @@ in
     extraGroups = with config.users.groups; [
       users.name
       wheel.name
-      networkmanager.name
-      adbusers.name
-      libvirtd.name
       keys.name
     ] ++
-    lib.optional (config.users.groups ? transmission) config.users.groups.transmission.name;
+    groupNameIfPresent "adbusers" ++
+    groupNameIfPresent "libvirtd" ++
+    groupNameIfPresent "transmission" ++
+    groupNameIfPresent "networkmanager";
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/id_ed25519.pub
@@ -30,17 +34,17 @@ in
   };
 
   age.secrets = {
-    "user-${name}-password".file = ../../secrets + "/user-${name}-password.age";
+    "user-${name}-password".file = config.age.secrets-directory + "/user-${name}-password.age";
     "${name}-asciinema-token" = {
-      file = ../../secrets + "/${name}-asciinema-token.age";
+      file = config.age.secrets-directory + "/${name}-asciinema-token.age";
       owner = user.name;
     };
     "${name}-id-ed25519" = {
-      file = ../../secrets + "/${name}-id-ed25519.age";
+      file = config.age.secrets-directory + "/${name}-id-ed25519.age";
       owner = user.name;
     };
     "${name}-nix-access-tokens" = {
-      file = ../../secrets + "/${name}-nix-access-tokens.age";
+      file = config.age.secrets-directory + "/${name}-nix-access-tokens.age";
     };
   };
 
