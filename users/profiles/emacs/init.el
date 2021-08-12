@@ -31,6 +31,12 @@
 ;; no tool bar
 (tool-bar-mode -1)
 
+(set-face-attribute 'default nil
+                    :family "Sarasa Term Slab SC"
+                    :height 110
+                    :weight 'normal
+                    :width 'normal)
+
 (setq package-archives
       '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))

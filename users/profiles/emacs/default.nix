@@ -14,7 +14,8 @@ in
       agda # agda mode
       sqlite # org-roam
       graphviz # org-roam
-      fira-code-symbols # fira-code-mode
+
+      sarasa-gothic
     ]);
   fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 
