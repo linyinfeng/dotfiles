@@ -20,21 +20,24 @@ partition to `/mnt/boot`:
 ```console
 $ mount /dev/disk/by-label/nixos /mnt
 $ mkdir -p /mnt/boot && mount /dev/disk/by-label/boot /mnt/boot # UEFI only
-$ swapon /dev/$your_swap_partition
+$ swapon /dev/disk/by-label/swap
+```
+
+Add some extra space to the store. In the iso, it's running on a tmpfs
+off your RAM:
+```console
+$ mkdir -p /mnt/tmpstore/{work,store}
+$ mount -t overlay overlay -olowerdir=/nix/store,upperdir=/mnt/tmpstore/store,workdir=/mnt/tmpstore/work /nix/store
 ```
 
 ## Install
 
-Install using the `flk` wrapper baked into the iso off of a copy of devos
-from the time the iso was built:
+Install off of a copy of devos from the time the iso was built:
 
 ```console
 $ cd /iso/devos
-$ nix develop
-$ flk install NixOS --impure # use same host as above
+$ nixos-install --flake .#NixOS
 ```
-
-<!-- TODO: find out why --impure is necesary / PRs welcome! -->
 
 ## Notes of interest
 
@@ -42,7 +45,7 @@ $ flk install NixOS --impure # use same host as above
 
 The iso live installer comes preconfigured with a network configuration
 which announces it's hostname via [MulticastDNS][mDNS] as `hostname.local`,
-that is `NixOS.local` in the [iso example](./iso).
+that is `bootstrap.local` in the [iso example](./iso).
 
 In the rare case that [MulticastDNS][mDNS] is not availabe or turned off
 in your network, there is a static link-local IPv6 address configured to
@@ -66,7 +69,7 @@ You can then ssh into the live installer through one of the
 following options:
 
 ```console
-ssh root@NixOS.local
+ssh root@bootstrap.local
 
 ssh root@fe80::47%eno1  # where eno1 is your network interface on which you are linked to the target
 ```
