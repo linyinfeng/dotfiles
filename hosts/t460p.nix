@@ -21,6 +21,7 @@ in
     suites.fw ++
     suites.godns ++
     suites.anbox ++
+    suites.gitweb ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -62,6 +63,8 @@ in
 
   powerManagement.cpuFreqGovernor = "powersave";
 
+  services.nginx.enable = true;
+  networking.firewall.allowedTCPPorts = [ 80 ];
   services.portal = {
     host = "portal.li7g.com";
     client.enable = true;

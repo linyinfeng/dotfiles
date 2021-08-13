@@ -23,6 +23,7 @@ in
     suites.godns ++
     suites.transmission ++
     suites.samba ++
+    suites.gitweb ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -41,6 +42,8 @@ in
 
   powerManagement.cpuFreqGovernor = "performance";
 
+  services.nginx.enable = true;
+  networking.firewall.allowedTCPPorts = [ 80 ];
   services.godns = {
     ipv4.settings = {
       domains = [{

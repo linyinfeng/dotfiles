@@ -205,6 +205,7 @@
               samba = [ services.samba ];
               godns = [ services.godns ];
               anbox = [ profiles.virtualization.anbox ];
+              gitweb = [ services.gitweb ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
