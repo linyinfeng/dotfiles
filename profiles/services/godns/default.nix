@@ -58,19 +58,3 @@ in
       cfg;
   };
 }
-
-
-# age.templates.${fullName}.content = builtins.toJSON (lib.mkMerge [
-#   {
-#     provider = "Cloudflare";
-#     login_token = config.age.templates.${fullName}.placeholder;
-#     resolver = "8.8.8.8";
-#   }
-#   godnsCfg.settings
-# ]);
-# systemd.services.${fullName} = {
-#   script = ''
-#     ${pkgs.godns} -c ${config.age.templates.${fullName}.path}
-#   '';
-#   wantedBy = [ "network.target" ];
-# };
