@@ -50,12 +50,14 @@
       # end ANTI CORRUPTION LAYER
 
       # MAIN
+      nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       yinfeng.url = "github:linyinfeng/nur-packages";
+      yinfeng.inputs.flake-utils.follows = "flake-utils";
       yinfeng.inputs.nixpkgs.follows = "nixos";
       dot-tar.url = "github:linyinfeng/dot-tar";
-      dot-tar.inputs.utils.follows = "flake-utils";
+      dot-tar.inputs.flake-utils.follows = "flake-utils";
       dot-tar.inputs.nixpkgs.follows = "nixos";
       dot-tar.inputs.naersk.follows = "naersk";
       dot-tar.inputs.rust-overlay.follows = "rust-overlay";
