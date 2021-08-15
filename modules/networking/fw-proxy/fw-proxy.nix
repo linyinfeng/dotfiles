@@ -111,7 +111,8 @@ with lib;
     users.users.${clashUser} = {
       isSystemUser = true;
     };
-    systemd.services.clash-premium = {
+    # TODO: network is not available in vm-test
+    systemd.services.clash-premium = lib.mkIf (!config.system.is-vm-test) {
       description = "A rule based proxy in GO";
       serviceConfig = {
         Type = "exec";
@@ -132,9 +133,7 @@ with lib;
     environment.systemPackages = [
       scripts
     ];
-
-    # network is not available in vm-test
-    virtualisation.oci-containers.containers.yacd = lib.mkIf (!config.system.is-vm-test) {
+    virtualisation.oci-containers.containers.yacd = {
       image = "haishanh/yacd";
       ports = [
         "${toString cfg.port.webui}:80"

@@ -23,6 +23,7 @@ let
       persist = cfg.root;
     };
   };
+  activationScriptName = "createDirsIn-${lib.replaceStrings [ "/" "." " " ] [ "-" "" "" ] cfg.root}";
 in
 
 with lib;
@@ -128,8 +129,23 @@ with lib;
         fi
       '';
     };
-    system.activationScripts."createDirsIn-${replaceStrings [ "/" "." " " ] [ "-" "" "" ] cfg.root}".deps =
+    system.activationScripts.${activationScriptName}.deps =
       [ "ensurePersistenceRootExists" ];
+    system.activationScripts.fixHomePermission = {
+      text =
+        let
+          enableFilter = user: _:
+            config.home-manager.users ? ${user} &&
+            config.home-manager.users.${user}.home.global-persistence.enable;
+          enabledUsers = lib.filterAttrs enableFilter config.users.users;
+          fixScript = user: userCfg: ''
+            echo "change permission of ${cfg.root}${userCfg.home} to ${userCfg.name}:${userCfg.group}..."
+            chown -R ${userCfg.name}:${userCfg.group} "${cfg.root}${userCfg.home}"
+          '';
+        in
+        lib.concatStrings (lib.mapAttrsToList fixScript enabledUsers);
+      deps = [ activationScriptName ];
+    };
 
     age.sshKeyPaths = [
       "${cfg.root}/etc/ssh/ssh_host_ed25519_key"

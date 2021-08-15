@@ -207,12 +207,11 @@
               samba = [ services.samba ];
               godns = [ services.godns ];
               anbox = [ profiles.virtualization.anbox ];
-              gitweb = [ services.gitweb ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
               desktopWorkstation = workstation;
-              homeServer = base ++ network ++ (with services; [ teamspeak vlmcsd ]);
+              homeServer = base ++ network ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
               overseaServer = base ++ network;
 
               user-yinfeng = [ users.yinfeng ];

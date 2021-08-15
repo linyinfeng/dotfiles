@@ -18,14 +18,26 @@
 
   services.logind.lidSwitch = "ignore";
 
-  hardware.enableRedistributableFirmware = true;
-
-  networking = lib.mkIf (!config.system.is-vm-test) {
-    useNetworkd = true;
-    interfaces.enp0s25.useDHCP = true;
-    # wireless.enable = true;
-    # interfaces.wls1.useDHCP = true;
+  services.godns = {
+    ipv4.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "x200s" ];
+      }];
+      ip_type = "IPv4";
+      ip_url = "https://myip.biturl.top";
+    };
+    ipv6.settings = {
+      domains = [{
+        domain_name = "li7g.com";
+        sub_domains = [ "x200s" ];
+      }];
+      ip_type = "IPv6";
+      ip_interface = "enp0s25";
+    };
   };
+
+  hardware.enableRedistributableFirmware = true;
 
   nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
 
