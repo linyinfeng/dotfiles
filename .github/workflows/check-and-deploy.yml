@@ -1,0 +1,43 @@
+name: "Check and Deploy"
+
+on:
+  push:
+
+jobs:
+  check-and-deploy:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Install Nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://github.com/numtide/nix-unstable-installer/releases/latest/download/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - name: Setup Cachix
+      uses: cachix/cachix-action@master
+      with:
+        skipPush: true
+        name: linyinfeng
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        extraPullNames: nix-community, nrdxp
+    - name: Format check
+      run: nix run nixpkgs#nixpkgs-fmt -- . --check
+    - name: Check
+      run: nix flake check --verbose --print-build-logs
+    - name: Install SSH Key
+      if: ${{ github.ref == 'refs/heads/main' }}
+      uses: shimataro/ssh-key-action@develop
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+    - name: Connect to tailscale
+      if: ${{ github.ref == 'refs/heads/main' }}
+      uses: tailscale/github-action@main
+      with:
+        authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+    - name: Deploy
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: nix develop --command deploy --skip-checks --targets ".#portal" ".#x200s"

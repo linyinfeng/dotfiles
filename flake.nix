@@ -258,7 +258,12 @@
         deploy.nodes = digga.lib.mkDeployNodes
           # MAIN
           (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
-          { };
+          {
+            portal.hostname = "portal.ts.li7g.com";
+            x200s.hostname = "x200s.ts.li7g.com";
+            t460p.hostname = "t460p.ts.li7g.com";
+            xps8930.hostname = "xps8930.ts.li7g.com";
+          };
         deploy.sshUser = "root";
 
         defaultTemplate = self.templates.bud;
