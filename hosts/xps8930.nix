@@ -21,6 +21,7 @@ in
     suites.campus ++
     suites.fw ++
     suites.godns ++
+    suites.ci-agent ++
     suites.transmission ++
     suites.samba ++
     suites.user-yinfeng;
@@ -59,6 +60,9 @@ in
       ip_type = "IPv6";
       ip_interface = "enp4s0";
     };
+  };
+  services.hercules-ci-agent.settings = {
+    concurrentTasks = 4;
   };
   nix.gc.options = lib.mkForce ''
     --delete-older-than 14d

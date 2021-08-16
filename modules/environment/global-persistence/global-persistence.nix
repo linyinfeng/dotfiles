@@ -139,8 +139,10 @@ with lib;
             config.home-manager.users.${user}.home.global-persistence.enable;
           enabledUsers = lib.filterAttrs enableFilter config.users.users;
           fixScript = user: userCfg: ''
-            echo "change permission of ${cfg.root}${userCfg.home} to ${userCfg.name}:${userCfg.group}..."
-            chown -R ${userCfg.name}:${userCfg.group} "${cfg.root}${userCfg.home}"
+            if [ $(stat --format='%U:%G' "${cfg.root}${userCfg.home}") != "${userCfg.name}:${userCfg.group}" ]; then
+              echo "change permission of ${cfg.root}${userCfg.home} to ${userCfg.name}:${userCfg.group}..."
+              chown -R ${userCfg.name}:${userCfg.group} "${cfg.root}${userCfg.home}"
+            fi
           '';
         in
         lib.concatStrings (lib.mapAttrsToList fixScript enabledUsers);
