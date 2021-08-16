@@ -62,7 +62,7 @@ in
     };
   };
   services.hercules-ci-agent.settings = {
-    concurrentTasks = 4;
+    concurrentTasks = 2;
   };
   nix.gc.options = lib.mkForce ''
     --delete-older-than 14d

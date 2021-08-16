@@ -21,7 +21,7 @@ let
   };
   rage = "${pkgs.rage}/bin/rage";
   buildSecret = name: content: ''
-    echo -n "${content}" | "${rage}" --encrypt --recipient "${publicKey}" --output "$out/${name}.age" \
+    "${rage}" --encrypt --recipient "${publicKey}" --output "$out/${name}.age" \
       "${pkgs.writeText "fake-secret-${name}-raw" content}"
   '';
   secretsDirForTest = pkgs.runCommandNoCC "secrets-for-test" { } ''
