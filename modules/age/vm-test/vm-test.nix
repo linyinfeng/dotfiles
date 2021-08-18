@@ -24,7 +24,7 @@ let
     "${rage}" --encrypt --recipient "${publicKey}" --output "$out/${name}.age" \
       "${pkgs.writeText "fake-secret-${name}-raw" content}"
   '';
-  secretsDirForTest = pkgs.runCommandNoCC "secrets-for-test" { } ''
+  secretsDirForTest = pkgs.runCommand "secrets-for-test" { } ''
     mkdir -p "$out"
     ${lib.concatStrings (lib.mapAttrsToList buildSecret secretsForTest)}
   '';
