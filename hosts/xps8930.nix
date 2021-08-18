@@ -69,6 +69,7 @@ in
     url = "https://github.com/linyinfeng/dotfiles";
     tokenFile = config.age.secrets.dotfiles-runner-token.path;
   };
+  systemd.services.github-runner.environment = config.networking.fw-proxy.environment;
   age.secrets.dotfiles-runner-token.file = config.age.secrets-directory + /dotfiles-runner-token.age;
   nix.gc.options = lib.mkForce ''
     --delete-older-than 14d

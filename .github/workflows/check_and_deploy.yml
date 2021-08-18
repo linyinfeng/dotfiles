@@ -1,7 +1,8 @@
-name: "Check and Deploy"
+name: "Check & Deploy"
 
 on:
   push:
+  pull_request:
 
 jobs:
   check-and-deploy:
