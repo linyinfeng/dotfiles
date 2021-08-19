@@ -28,5 +28,4 @@ in
   "transmission-credentials.age".publicKeys = allKeys;
   "cloudflare-token.age".publicKeys = allKeys;
   "yinfeng-nix-access-tokens.age".publicKeys = allKeys;
-  "dotfiles-runner-token.age".publicKeys = allKeys;
 }
