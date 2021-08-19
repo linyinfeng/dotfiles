@@ -62,7 +62,6 @@ in
 
   powerManagement.cpuFreqGovernor = "powersave";
 
-  networking.firewall.allowedTCPPorts = [ 80 ];
   services.portal = {
     host = "portal.li7g.com";
     client.enable = true;

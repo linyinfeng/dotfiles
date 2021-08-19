@@ -42,7 +42,18 @@ in
 
   powerManagement.cpuFreqGovernor = "performance";
 
-  networking.firewall.allowedTCPPorts = [ 80 ];
+  virtualisation.kvmgt = {
+    enable = true;
+    device = "0000:00:02.0";
+    vgpus = {
+      i915-GVTg_V5_4 = {
+        uuid = [
+          "15feffce-745b-4cb6-9f48-075af14cdb6f"
+        ];
+      };
+    };
+  };
+
   services.godns = {
     ipv4.settings = {
       domains = [{
