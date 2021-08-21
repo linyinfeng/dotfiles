@@ -64,11 +64,6 @@
       rust-overlay.url = "github:oxalica/rust-overlay";
       rust-overlay.inputs.flake-utils.follows = "flake-utils";
       rust-overlay.inputs.nixpkgs.follows = "nixos";
-      hercules-ci-agent.url = "github:hercules-ci/hercules-ci-agent";
-      # hercules-ci-agent.inputs.nixos-20_09.follows = "nixos";
-      # hercules-ci-agent.inputs.nixos-unstable.follows = "nixos";
-      hercules-ci-agent.inputs.nix-darwin.follows = "darwin";
-      hercules-ci-agent.inputs.flake-compat.follows = "digga/deploy/flake-compat";
 
       anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
     };
@@ -160,7 +155,6 @@
               inputs.yinfeng.nixosModules.vlmcsd
               inputs.yinfeng.nixosModules.tprofile
               inputs.dot-tar.nixosModules.dot-tar
-              inputs.hercules-ci-agent.nixosModules.agent-service
             ];
           };
 
