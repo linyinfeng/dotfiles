@@ -33,28 +33,14 @@ in
     {
       enable = true;
       profile.${defaultProfile} = {
-        visibleName = "Main";
         default = true;
+        visibleName = "Main";
         font = "Sarasa Term Slab SC 11";
+        scrollOnOutput = false;
       };
     };
 
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
   '';
-
-  home.global-persistence = {
-    directories = [
-      ".config/dconf"
-      ".config/goa-1.0" # gnome accounts
-      ".local/share/keyrings"
-      ".local/share/Trash"
-      ".local/share/webkitgtk" # gnome accounts
-    ];
-    files = [
-      ".face"
-
-      ".config/mimeapps.list"
-    ];
-  };
 }

@@ -23,7 +23,7 @@ in
     "path" = "/var/lib/transmission/Downloads";
     "read only" = true;
     "browseable" = true;
-    "comment" = "Dransmission downloads";
+    "comment" = "Transmission downloads";
   };
 
   age.secrets.transmission-credentials.file = config.age.secrets-directory + /transmission-credentials.age;

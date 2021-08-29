@@ -34,15 +34,16 @@
     gnome.gnome-sound-recorder
     gnome.gnome-tweaks
     gnome.polari
-    # goldendict # TODO: broken
+    goldendict # TODO: broken
     gparted
     inkscape
     keepass
     keepassxc
     libreoffice-fresh
+    linyinfeng.clash-for-windows
+    linyinfeng.icalingua
     meld
     mplayer
-    linyinfeng.clash-for-windows
     tdesktop
     teamspeak_client
     transmission-remote-gtk
@@ -63,6 +64,7 @@
       ".config/Element"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
+      ".config/icalingua"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"

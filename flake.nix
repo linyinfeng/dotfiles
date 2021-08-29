@@ -53,9 +53,9 @@
       nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
-      yinfeng.url = "github:linyinfeng/nur-packages";
-      yinfeng.inputs.flake-utils.follows = "flake-utils";
-      yinfeng.inputs.nixpkgs.follows = "nixos";
+      linyinfeng.url = "github:linyinfeng/nur-packages";
+      linyinfeng.inputs.flake-utils.follows = "flake-utils";
+      linyinfeng.inputs.nixpkgs.follows = "nixos";
       dot-tar.url = "github:linyinfeng/dot-tar";
       dot-tar.inputs.flake-utils.follows = "flake-utils";
       dot-tar.inputs.nixpkgs.follows = "nixos";
@@ -118,7 +118,7 @@
               ./pkgs/default.nix
 
               # MAIN
-              inputs.yinfeng.overlays.linyinfeng
+              inputs.linyinfeng.overlays.linyinfeng
               inputs.emacs-overlay.overlay
               inputs.dot-tar.overlay
             ];
@@ -152,8 +152,8 @@
 
               # MAIN
               inputs.impermanence.nixosModules.impermanence
-              inputs.yinfeng.nixosModules.vlmcsd
-              inputs.yinfeng.nixosModules.tprofile
+              inputs.linyinfeng.nixosModules.vlmcsd
+              inputs.linyinfeng.nixosModules.tprofile
               inputs.dot-tar.nixosModules.dot-tar
             ];
           };
@@ -263,6 +263,21 @@
         defaultTemplate = self.templates.bud;
         templates.bud.path = ./.;
         templates.bud.description = "bud template";
+
+        # MAIN
+        outputsBuilder = channels:
+          let
+            system = channels.nixos.system;
+            inherit (nixos) lib;
+          in
+          {
+            checks = lib.foldl lib.recursiveUpdate { }
+              (lib.mapAttrsToList
+                (host: cfg:
+                  lib.optionalAttrs (cfg.pkgs.system == system)
+                    { "toplevel-${host}" = cfg.config.system.build.toplevel; })
+                self.nixosConfigurations);
+          };
 
       }
     //

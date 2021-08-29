@@ -7,6 +7,12 @@
     desktopManager.gnome.enable = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    kooha
+    pulseaudio
+    gnome.devhelp
+  ];
+
   services.gnome.chrome-gnome-shell.enable = true;
 
   security.wrappers.spice-client-glib-usb-acl-helper.source =
@@ -16,7 +22,18 @@
     5900 # VNC
   ];
 
-  environment.global-persistence.user.directories = [
-    ".local/share/backgrounds"
-  ];
+  environment.global-persistence.user = {
+    directories = [
+      ".config/dconf"
+      ".config/goa-1.0" # gnome accounts
+      ".local/share/keyrings"
+      ".local/share/Trash"
+      ".local/share/webkitgtk" # gnome accounts
+      ".local/share/backgrounds"
+    ];
+    files = [
+      ".face"
+      ".config/mimeapps.list"
+    ];
+  };
 }
