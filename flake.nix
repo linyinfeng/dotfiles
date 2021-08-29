@@ -232,7 +232,7 @@
               # MAIN
               base = [ direnv git git-extra shells ];
               multimedia = [ gnome desktop-applications chromium firefox rime fonts ];
-              development = [ profiles.development emacs tools asciinema texworks ];
+              development = [ profiles.development emacs tools asciinema tex ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
               synchronize = [ onedrive digital-paper ];
