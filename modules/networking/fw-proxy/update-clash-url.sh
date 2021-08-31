@@ -2,17 +2,10 @@
 
 mkdir="@coreutils@/bin/mkdir"
 mv="@coreutils@/bin/mv"
-chown="@coreutils@/bin/chown"
 cp="@coreutils@/bin/cp"
 curl="@curl@/bin/curl"
 yq="@yqGo@/bin/yq"
 systemctl="@systemd@/bin/systemctl"
-
-http_port="@httpPort@"
-socks_port="@socksPort@"
-redir_port="@redirPort@"
-mixed_port="@mixedPort@"
-external_controller_port="@externalControllerPort@"
 
 dir="@directory@"
 url="$1"
@@ -26,26 +19,13 @@ if [ -f "$dir/config.yaml" ]; then
     $mv "$dir/config.yaml" "$dir/config.yaml.old"
 fi
 
-export HTTP_PROXY=
-export HTTPS_PROXY=
-export ALL_PROXY=
-export http_proxy=
-export https_proxy=
-export all_proxy=
-
 echo 'Downloading config.yaml...'
 tmpfile=$(mktemp /tmp/update-clash-config.XXXXXX)
 $curl "$url" > "$tmpfile"
 
 $yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$tmpfile" - <<EOF > "$dir/config.yaml"
-port: $http_port
-socks-port: $socks_port
-redir-port: $redir_port
-mixed-port: $mixed_port
-external-controller: 127.0.0.1:$external_controller_port
+@mixinConfig@
 EOF
-
-$chown clash "$dir/config.yaml"
 
 if [ $? -eq 0 ]; then
     echo 'Restarting clash...'

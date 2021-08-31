@@ -202,6 +202,7 @@
               ci-agent = with services; [ hercules-ci-agent ];
 
               fw = with networking; [ fw-proxy ];
+              fw-tun = with networking; [ fw-proxy-tun ];
               game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];
               transmission = [ services.transmission ];
