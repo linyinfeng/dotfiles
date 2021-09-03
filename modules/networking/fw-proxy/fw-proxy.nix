@@ -93,10 +93,6 @@ with lib;
         type = with types; bool;
         default = false;
       };
-      address = mkOption {
-        type = with types; str;
-        default = "10.255.0.1";
-      };
       routeTable = mkOption {
         type = with types; str;
         default = "0x356";
@@ -272,10 +268,11 @@ with lib;
           stack = "gvisor";
         };
       };
-      services.udev.extraRules = ''
-        SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="add",RUN+="${scripts}/bin/clash-tun-setup"
-        SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="remove",RUN+="${scripts}/bin/clash-tun-clean"
-      '';
+      # Manual enable and disable use clash-tun-setup/clean
+      # services.udev.extraRules = ''
+      #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="add",RUN+="${scripts}/bin/clash-tun-setup"
+      #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="remove",RUN+="${scripts}/bin/clash-tun-clean"
+      # '';
     })
   ]);
 }
