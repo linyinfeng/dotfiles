@@ -21,7 +21,7 @@ in
     suites.fw ++
     suites.fw-tun ++
     suites.godns ++
-    suites.anbox ++
+    # suites.anbox ++ # TODO: broken
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";

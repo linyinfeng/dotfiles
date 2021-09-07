@@ -65,7 +65,7 @@
       rust-overlay.inputs.flake-utils.follows = "flake-utils";
       rust-overlay.inputs.nixpkgs.follows = "nixos";
 
-      anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
+      # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
     };
 
   outputs =
@@ -87,22 +87,22 @@
 
         # MAIN: patch the channel nixos
         # TODO: waiting for better patch supports
-        imports = [
-          {
-            # IFD workaround
-            supportedSystems = [ "x86_64-linux" ];
-            channels.nixos = {
-              options.patches = nixos.lib.mkOption {
-                type = with nixos.lib.types; listOf path;
-              };
-              config = {
-                patches = [
-                  inputs.anbox-patch
-                ];
-              };
-            };
-          }
-        ];
+        # imports = [
+        #   {
+        #     # IFD workaround
+        #     supportedSystems = [ "x86_64-linux" ];
+        #     channels.nixos = {
+        #       options.patches = nixos.lib.mkOption {
+        #         type = with nixos.lib.types; listOf path;
+        #       };
+        #       config = {
+        #         patches = [
+        #           inputs.anbox-patch
+        #         ];
+        #       };
+        #     };
+        #   }
+        # ];
 
         channelsConfig = { allowUnfree = true; };
 
@@ -208,7 +208,7 @@
               transmission = [ services.transmission ];
               samba = [ services.samba ];
               godns = [ services.godns ];
-              anbox = [ profiles.virtualization.anbox ];
+              # anbox = [ profiles.virtualization.anbox ]; # TODO: broken
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];

@@ -2,7 +2,7 @@
 
 {
   virtualisation.anbox = {
-    enable = true;
+    # enable = true; # TODO: broken
     ipv4.dns = "8.8.8.8";
   };
   environment.global-persistence.directories = [
