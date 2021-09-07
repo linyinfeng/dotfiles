@@ -221,9 +221,13 @@ with lib;
 
     (mkIf (cfg.webui.enable) {
       virtualisation.oci-containers.containers.yacd = {
-        image = "haishanh/yacd";
+        image = "docker.io/haishanh/yacd:latest";
         ports = [
           "${toString cfg.webui.port}:80"
+        ];
+        extraOptions = [
+          "--label"
+          "io.containers.autoupdate=registry"
         ];
       };
     })
