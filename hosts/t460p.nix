@@ -130,12 +130,12 @@ in
       device = "/dev/disk/by-uuid/8F31-70B2";
       fsType = "vfat";
     };
-  # fileSystems."/windows/c" =
-  #   {
-  #     device = "/dev/disk/by-uuid/ECB0C2DCB0C2AD00";
-  #     fsType = "ntfs";
-  #     options = [ "ro" "fmask=333" "dmask=222" ];
-  #   };
+  fileSystems."/media/windows/c" =
+    {
+      device = "/dev/disk/by-uuid/ECB0C2DCB0C2AD00";
+      fsType = "ntfs";
+      options = [ "ro" "fmask=333" "dmask=222" ];
+    };
   swapDevices =
     [{
       device = "/swap/swapfile";
