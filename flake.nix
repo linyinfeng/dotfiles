@@ -54,15 +54,15 @@
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       linyinfeng.url = "github:linyinfeng/nur-packages";
-      linyinfeng.inputs.flake-utils.follows = "flake-utils";
+      linyinfeng.inputs.flake-utils.follows = "digga/flake-utils";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
       dot-tar.url = "github:linyinfeng/dot-tar";
-      dot-tar.inputs.flake-utils.follows = "flake-utils";
+      dot-tar.inputs.flake-utils.follows = "digga/flake-utils";
       dot-tar.inputs.nixpkgs.follows = "nixos";
       dot-tar.inputs.naersk.follows = "naersk";
       dot-tar.inputs.rust-overlay.follows = "rust-overlay";
       rust-overlay.url = "github:oxalica/rust-overlay";
-      rust-overlay.inputs.flake-utils.follows = "flake-utils";
+      rust-overlay.inputs.flake-utils.follows = "digga/flake-utils";
       rust-overlay.inputs.nixpkgs.follows = "nixos";
 
       # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
@@ -264,6 +264,8 @@
         defaultTemplate = self.templates.bud;
         templates.bud.path = ./.;
         templates.bud.description = "bud template";
+        # MAIN
+        templates.project.path = ./templates/project;
 
         # MAIN
         outputsBuilder = channels:
