@@ -30,6 +30,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           name: id_rsa
+          if_key_exists: replace
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}

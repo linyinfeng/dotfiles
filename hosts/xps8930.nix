@@ -82,6 +82,7 @@ in
     extraLabels = [ "nixos" ];
     tokenFile = config.age.secrets.github-runner-xps8930.path;
     url = "https://github.com/linyinfeng/dotfiles";
+    extraPackages = with pkgs; [ openssh ];
   };
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
