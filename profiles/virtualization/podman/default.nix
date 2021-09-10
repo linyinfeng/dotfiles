@@ -20,6 +20,8 @@ lib.mkMerge [
         ExecStartPost = "${podman} image prune -f";
       };
       wantedBy = [ "multi-user.target" "default.target" ];
+      environment = lib.mkIf (config.networking.fw-proxy.enable)
+        config.networking.fw-proxy.environment;
     };
     systemd.timers.podman-auto-update = {
       description = "Podman auto-update timer";
