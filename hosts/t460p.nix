@@ -13,6 +13,8 @@ let
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d";
 
+  windowsCMountPoint = "/media/windows/c";
+
 in
 {
   imports =
@@ -112,6 +114,14 @@ in
     snap = "snapper -c persist";
   };
 
+  fonts.fontconfig.localConf = ''
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+    <fontconfig>
+      <dir>${windowsCMountPoint}/Windows/Fonts</dir>
+    </fontconfig>
+  '';
+
   fileSystems."/" =
     {
       device = "tmpfs";
@@ -130,7 +140,7 @@ in
       device = "/dev/disk/by-uuid/8F31-70B2";
       fsType = "vfat";
     };
-  fileSystems."/media/windows/c" =
+  fileSystems.${windowsCMountPoint} =
     {
       device = "/dev/disk/by-uuid/ECB0C2DCB0C2AD00";
       fsType = "ntfs";
