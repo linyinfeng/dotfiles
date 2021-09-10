@@ -65,6 +65,9 @@
       rust-overlay.inputs.flake-utils.follows = "digga/flake-utils";
       rust-overlay.inputs.nixpkgs.follows = "nixos";
 
+      flake-compat.follows = "digga/deploy/flake-compat";
+      flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
+
       # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
     };
 
@@ -266,6 +269,7 @@
         templates.bud.description = "bud template";
         # MAIN
         templates.project.path = ./templates/project;
+        templates.project.description = "simple project template";
 
         # MAIN
         outputsBuilder = channels:
@@ -286,6 +290,11 @@
     //
     {
       budModules = { devos = import ./bud; };
+
+      # MAIN
+      ciNix = inputs.flake-compat-ci.lib.recurseIntoFlakeWith {
+        flake = self;
+      };
     }
   ;
 }

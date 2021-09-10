@@ -1,4 +1,4 @@
-{ config, lib, suites, ... }:
+{ config, pkgs, lib, suites, ... }:
 
 let
 
@@ -75,9 +75,24 @@ in
   services.hercules-ci-agent.settings = {
     concurrentTasks = 2;
   };
-  nix.gc.options = lib.mkForce ''
-    --delete-older-than 14d
-  '';
+  services.github-runner = {
+    enable = true;
+    name = "xps8930";
+    replace = true;
+    extraLabels = [ "nixos" ];
+    tokenFile = config.age.secrets.github-runner-xps8930.path;
+    url = "https://github.com/linyinfeng/dotfiles";
+  };
+  systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
+    config.networking.fw-proxy.environment;
+  nix.trustedUsers = [ "github-runner" ];
+  age.secrets.github-runner-xps8930.file = config.age.secrets-directory + /github-runner-xps8930.age;
+  nix.gc.options =
+    let
+      freeSpaceGB = 30;
+    in
+    # https://github.com/hercules-ci/hercules-ci-agent/blob/master/internal/nix/gc.nix
+    ''--max-freed "$((${toString freeSpaceGB} * 1024**3 - 1024 * $(df -P -k /nix/store | tail -n 1 | ${pkgs.gawk}/bin/awk '{ print $4 }')))"'';
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";

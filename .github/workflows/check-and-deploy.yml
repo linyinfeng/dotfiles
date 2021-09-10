@@ -1,0 +1,39 @@
+name: "Check and Deploy"
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check-and-deploy:
+    runs-on: [self-hosted, linux, X64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Format check
+        run: nix run nixpkgs#nixpkgs-fmt -- . --check
+      - name: Check
+        run: nix flake check --verbose --print-build-logs
+      - name: Push cache
+        run: |
+          for host in portal x200s; do
+            nix build ".#nixosConfigurations.portal.config.system.build.toplevel" --json | \
+              nix run nixpkgs#jq -- ".[].outputs.out" --raw-output | \
+              nix run nixpkgs#cachix -- push linyinfeng
+          done
+        env:
+          CACHIX_SIGNING_KEY: ${{ secrets.CACHIX_SIGNING_KEY }}
+      - name: Install SSH key
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: shimataro/ssh-key-action@develop
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Deploy
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          for host in portal x200s; do
+            nix develop --command deploy --skip-checks ".#$host"
+          done

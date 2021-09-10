@@ -132,7 +132,7 @@ with lib;
       '';
       default =
         let
-          proxyUrl = "http://localhost:${toString cfg.mixinConfig.mixed-port}/";
+          proxyUrl = "http://localhost:${toString cfg.mixinConfig.mixed-port}";
         in
         {
           HTTP_PROXY = proxyUrl;
