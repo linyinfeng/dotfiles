@@ -26,15 +26,20 @@ jobs:
           CACHIX_SIGNING_KEY: ${{ secrets.CACHIX_SIGNING_KEY }}
       - name: Install SSH key
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: shimataro/ssh-key-action@develop
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          name: id_rsa
-          if_key_exists: replace
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          echo "$SSH_KEY" > "$HOME/.ssh/id_rsa"
+          chmod 600 "$HOME/.ssh/id_rsa"
+          echo "$KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_rsa"
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           for host in portal x200s; do
-            nix develop --command deploy --skip-checks ".#$host"
+            nix develop --command deploy --skip-checks ".#$host" \
+              --ssh-opts="-o UserKnownHostsFile=$HOME/.ssh/known_hosts -i $HOME/.ssh/id_rsa"
           done
