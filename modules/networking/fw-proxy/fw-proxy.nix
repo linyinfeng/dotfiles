@@ -157,13 +157,6 @@ with lib;
 
   config = mkIf (cfg.enable) (mkMerge [
     {
-      networking.fw-proxy.mixinConfig = {
-        port = 7890;
-        socks-port = 7891;
-        mixed-port = 8899;
-        external-controller = "127.0.0.1:9090";
-      };
-
       users.users.${clashUser} = {
         isSystemUser = true;
         group = config.users.groups.nogroup.name;

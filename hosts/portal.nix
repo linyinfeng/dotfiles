@@ -6,7 +6,7 @@ let
 in
 {
   imports =
-    suites.overseaServer;
+    suites.server;
   config = lib.mkMerge [
     {
       i18n.defaultLocale = "en_US.UTF-8";

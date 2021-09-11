@@ -192,6 +192,7 @@
               foundation = [ global-persistence security.polkit services.gc services.openssh ];
               base = [ core foundation users.root ];
 
+              audit = [ security.audit ];
               network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
               networkManager = (with networking; [ network-manager ]);
               multimedia = (with graphical; [ gnome sway fonts ibus-chinese ]) ++ (with services; [ pipewire ]);
@@ -205,7 +206,6 @@
               ci-agent = with services; [ hercules-ci-agent ];
 
               fw = with networking; [ fw-proxy ];
-              fw-tun = with networking; [ fw-proxy-tun ];
               game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];
               transmission = [ services.transmission ];
@@ -216,8 +216,8 @@
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
               desktopWorkstation = workstation;
-              homeServer = base ++ network ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
-              overseaServer = base ++ network;
+              server = base ++ audit ++ network;
+              homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
 
               user-yinfeng = [ users.yinfeng ];
             };

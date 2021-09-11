@@ -21,7 +21,6 @@ in
     suites.mobileWorkstation ++
     suites.game ++
     suites.fw ++
-    suites.fw-tun ++
     suites.godns ++
     # suites.anbox ++ # TODO: broken
     suites.user-yinfeng;
