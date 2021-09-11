@@ -86,7 +86,7 @@ in
   };
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
-  nix.trustedUsers = [ "github-runner" ];
+  nix.allowedUsers = [ "github-runner" ];
   age.secrets.github-runner-xps8930.file = config.age.secrets-directory + /github-runner-xps8930.age;
   nix.gc.options =
     let

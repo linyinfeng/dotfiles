@@ -52,7 +52,7 @@ in
 
     useSandbox = true;
 
-    allowedUsers = [ "@wheel" ];
+    allowedUsers = [ "@users" ];
 
     trustedUsers = [ "root" "@wheel" ];
 
