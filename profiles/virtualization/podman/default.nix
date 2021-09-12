@@ -27,7 +27,6 @@ lib.mkMerge [
       description = "Podman auto-update timer";
       timerConfig = {
         OnCalendar = "daily";
-        RamdomizedDelaySec = 900;
         Persistent = true;
       };
       wantedBy = [ "timers.target" ];

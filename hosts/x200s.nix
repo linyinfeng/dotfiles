@@ -18,6 +18,8 @@
 
   services.logind.lidSwitch = "ignore";
 
+  services.scheduled-reboot.enable = true;
+
   services.godns = {
     ipv4.settings = {
       domains = [{

@@ -22,6 +22,8 @@ in
 
       boot.tmpOnTmpfs = true;
 
+      services.scheduled-reboot.enable = true;
+
       services.portal = {
         host = "portal.li7g.com";
         server.enable = true;
