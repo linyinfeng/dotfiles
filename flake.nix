@@ -168,6 +168,7 @@
 
             # MAIN
             t460p = {
+              system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
                 common-pc
                 common-cpu-intel
@@ -176,11 +177,18 @@
               ];
             };
             xps8930 = {
+              system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
                 common-pc
                 common-cpu-intel
                 common-pc-ssd
               ];
+            };
+            x200s = {
+              system = "x86_64-linux";
+            };
+            portal = {
+              system = "x86_64-linux";
             };
           };
           importables = rec {
