@@ -14,6 +14,7 @@ in
   };
 
   config = lib.mkIf config.system.is-vm-test {
+    # print more logs for debug
     systemd.services.debug-unfinished = {
       enable = true;
       script = ''

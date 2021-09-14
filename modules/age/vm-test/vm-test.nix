@@ -13,8 +13,9 @@ let
       rpc-username = "xxxxxx";
       rpc-password = "xxxxxx";
     };
-    user-root-password = "$6$bj3/URz325$NMUMZHcKQzC0ZzTTSOqqn68MI2TwlZCuaC64TNUUVTyiF8Z/zqpgjt5m3cBXrBz2XJ5hOd9ZMUq3/VW9qT6K7.";
-    user-yinfeng-password = "$6$B2VNSp7Q2hyKatgR$ozmqtZxDnKMJE8zdgIfwq8vYPkKuHmnWX7POvg.jKqPBtlzlbWpcY3lxxy7yTvjg9wG6C0MJUagnaPhDcdfZN.";
+    # Just 123456
+    user-root-password = "$6$4RnIhgDxen6$yKiSAezliYeZ4Cf9lXfPSnvMTlGbSGA1vgXNQszn12zUZ9EFwyjw3adgK.mSl2m11JcQJOqffzUVdTELDeyJj0";
+    user-yinfeng-password = "$6$4RnIhgDxen6$yKiSAezliYeZ4Cf9lXfPSnvMTlGbSGA1vgXNQszn12zUZ9EFwyjw3adgK.mSl2m11JcQJOqffzUVdTELDeyJj0";
     yinfeng-asciinema-token = "00000000-0000-0000-0000-000000000000";
     yinfeng-id-ed25519 = " ";
     yinfeng-nix-access-tokens = " ";
@@ -30,7 +31,7 @@ let
   '';
 in
 {
-  config = lib.mkIf (config.system.is-vm-test) {
+  config = lib.mkIf (config.system.is-vm) {
     age.secrets-directory = secretsDirForTest;
     age.sshKeyPaths = lib.mkForce [
       ./test-key.txt

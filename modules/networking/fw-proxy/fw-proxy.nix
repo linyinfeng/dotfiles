@@ -167,8 +167,7 @@ with lib;
         group = config.users.groups.nogroup.name;
         capabilities = "cap_net_bind_service,cap_net_admin=+ep";
       };
-      # network is not available in vm-test
-      systemd.services.clash-premium = lib.mkIf (!config.system.is-vm-test) {
+      systemd.services.clash-premium = {
         description = "A rule based proxy in GO";
         serviceConfig = {
           Type = "exec";

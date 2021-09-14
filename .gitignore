@@ -1,10 +1,6 @@
 result
 .direnv
-doc/index.html
 
-# Result of flk commands
-vm
-iso
-doi
+*.qcow2
 
 pkgs/_sources/.shake*

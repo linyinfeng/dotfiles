@@ -52,7 +52,7 @@ in
         '';
       };
 
-      networking = lib.mkIf (!config.system.is-vm-test) {
+      networking = lib.mkIf (!config.system.is-vm) {
         useNetworkd = true;
         interfaces.ens3.useDHCP = true;
       };
@@ -66,9 +66,5 @@ in
       swapDevices =
         [{ device = "/dev/disk/by-uuid/961406a7-4dac-4d45-80e9-ef9b0d4fab99"; }];
     }
-
-    (lib.mkIf config.system.is-vm-test {
-      services.nginx.enable = lib.mkForce false;
-    })
   ];
 }

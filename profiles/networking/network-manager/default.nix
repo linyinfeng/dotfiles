@@ -15,7 +15,7 @@ lib.mkMerge [
       "/etc/NetworkManager/system-connections"
     ];
   }
-  (lib.mkIf config.system.is-vm-test {
+  (lib.mkIf config.system.is-vm {
     networking.networkmanager.enable = lib.mkForce false;
   })
 ]
