@@ -64,29 +64,22 @@ in
       };
     })
     (lib.mkIf cfg.server.enable {
-      services.caddy = {
-        enable = true;
-        config = ''
-          ${cfg.host} {
-            log {
-              output stdout
-            }
-            @v2ray {
-              path ${cfg.path}
-              header Connection *Upgrade*
-              header Upgrade websocket
-            }
-            handle @v2ray {
-              reverse_proxy localhost:${toString cfg.server.internalPort}
-            }
-            handle {
-              respond "hello, world"
-            }
+      services.nginx.virtualHosts.${cfg.host} = {
+        addSSL = true;
+        locations.${cfg.path}.extraConfig = ''
+          if ($http_upgrade != "websocket") { # Return 404 error when WebSocket upgrading negotiate failed
+            return 404;
           }
+          proxy_redirect off;
+          proxy_pass http://localhost:${toString cfg.server.internalPort};
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header Host $host;
+          # Show real IP in v2ray access.log
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         '';
-      };
-      networking.firewall = {
-        allowedTCPPorts = [ 80 443 ];
       };
 
       age.templates.portal-v2ray.content = builtins.toJSON {

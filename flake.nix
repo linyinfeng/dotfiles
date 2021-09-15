@@ -217,6 +217,7 @@
               printing = [ services.printing ];
               campus = with networking; [ campus-network ];
               ci-agent = with services; [ hercules-ci-agent ];
+              acme = [ services.acme ];
 
               fw = with networking; [ fw-proxy ];
               game = with graphical.game; [ steam minecraft ];
