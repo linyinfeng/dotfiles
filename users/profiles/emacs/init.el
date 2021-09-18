@@ -236,10 +236,6 @@
                 '(pyim-probe-punctuation-line-beginning
                   pyim-probe-punctuation-after-punctuation))
   (pyim-isearch-mode 1)
-  (use-package posframe
-    :ensure t
-    :config
-    (setq pyim-page-tooltip 'posframe))
   (use-package pyim-basedict
     :ensure t
     :config
