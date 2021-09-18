@@ -72,7 +72,12 @@
 
 (use-package auctex
   :ensure t
-  :defer t)
+  :defer t
+  :config
+  (setq TeX-view-program-slection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t)
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer))
 
 (use-package avy
   :ensure t
