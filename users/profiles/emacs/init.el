@@ -33,7 +33,7 @@
 
 (set-face-attribute 'default nil
                     :family "Sarasa Term Slab SC"
-                    :height 110
+                    :height 100
                     :weight 'normal
                     :width 'normal)
 
@@ -70,11 +70,11 @@
   (package-install 'use-package))
 (require 'use-package)
 
-(use-package auctex
-  :ensure t
+(use-package tex
   :defer t
+  :ensure auctex
   :config
-  (setq TeX-view-program-slection '((output-pdf "PDF Tools"))
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-source-correlate-start-server t)
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer))

@@ -35,7 +35,7 @@ in
       profile.${defaultProfile} = {
         default = true;
         visibleName = "Main";
-        font = "Sarasa Term Slab SC 11";
+        font = "Sarasa Term Slab SC 10";
         scrollOnOutput = false;
       };
     };

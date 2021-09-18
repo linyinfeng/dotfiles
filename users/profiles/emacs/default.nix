@@ -14,6 +14,7 @@ in
       agda # agda mode
       sqlite # org-roam
       graphviz # org-roam
+      poppler_utils # pdf-tools
 
       sarasa-gothic
     ]);
