@@ -198,8 +198,9 @@
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-v2-ack t)
   (org-roam-directory (file-truename "~/Source/org-roam"))
+  :init
+  (setq org-roam-v2-ack t)
   :config
   (org-roam-db-autosync-mode)
   :bind (("C-c o r t" . org-roam-buffer-toggle)
