@@ -31,12 +31,6 @@
 ;; no tool bar
 (tool-bar-mode -1)
 
-(set-face-attribute 'default nil
-                    :family "Sarasa Term Slab SC"
-                    :height 100
-                    :weight 'normal
-                    :width 'normal)
-
 (setq package-archives
       '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
@@ -46,6 +40,10 @@
 
 ;; window move
 (windmove-default-keybindings)
+
+;; split thresholds
+(setq split-height-threshold 120
+      split-width-threshold 120)
 
 ;; quoted char radix
 (setq read-quoted-char-radix 16)
@@ -76,8 +74,7 @@
   :config
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-source-correlate-start-server t)
-  (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer))
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package avy
   :ensure t
@@ -89,8 +86,7 @@
 
 (use-package company
   :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  :hook ((after-init . global-company-mode)))
 
 (use-package counsel
   :ensure t
@@ -183,12 +179,6 @@
 (use-package org
   :ensure t
   :config
-  (use-package org-roam
-    :ensure t
-    :config
-    (setq org-roam-directory "~/Source/org-roam")
-    :init
-    (add-hook 'after-init-hook 'org-roam-mode))
   (use-package org-bullets
     :ensure t
     :config
@@ -199,13 +189,25 @@
             "❀"
             "◆"
             "◇"))
-    :hook
-    (org-mode . (lambda () (org-bullets-mode 1))))
+    :hook (org-mode . (lambda () (org-bullets-mode 1))))
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-  :bind
-  ("C-c l" . org-store-link)
-  ("C-c a" . org-agenda)
-  ("C-c c" . org-capture))
+  :bind (("C-c o l" . org-store-link)
+         ("C-c o a" . org-agenda)
+         ("C-c o c" . org-capture)))
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-v2-ack t)
+  (org-roam-directory (file-truename "~/Source/org-roam"))
+  :config
+  (org-roam-db-autosync-mode)
+  :bind (("C-c o r t" . org-roam-buffer-toggle)
+         ("C-c o r f" . org-roam-node-find)
+         ("C-c o r g" . org-roam-graph)
+         ("C-c o r i" . org-roam-node-insert)
+         ("C-c o r c" . org-roam-capture)
+         ("C-c o r j" . org-roam-dailies-capture-today)))
 
 (use-package paredit
   :ensure t)
@@ -217,7 +219,11 @@
   (setq proof-three-window-mode-policy 'hybrid))
 
 (use-package pdf-tools
-  :ensure t)
+  :ensure t
+  :config
+  (pdf-tools-install)
+  (setq doc-view-resolution 300
+        pdf-view-use-scaling t))
 
 (use-package projectile
   :ensure t

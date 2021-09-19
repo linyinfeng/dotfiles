@@ -3,7 +3,7 @@ let
   emacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = emacsConfig;
-    package = pkgs.emacsPgtk;
+    package = pkgs.emacsGcc;
     alwaysEnsure = true;
   });
 in
