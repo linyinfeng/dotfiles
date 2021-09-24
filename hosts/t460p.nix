@@ -113,6 +113,30 @@ in
     snap = "snapper -c persist";
   };
 
+  nix.distributedBuilds = true;
+  nix.buildMachines = [
+    {
+      hostName = "xps8930.ts.li7g.com";
+      sshUser = "yinfeng";
+      sshKey = config.age.secrets."yinfeng-id-ed25519".path;
+      systems = [ "x86_64-linux" "i686-linux" ];
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
+      speedFactor = 2;
+      maxJobs = 4;
+    }
+  ];
+  services.openssh.knownHosts = {
+    xps8930 = {
+      hostNames = [ "xps8930.ts.li7g.com" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRWO0HmTkgNBLLyvK3DodO4va2H54gHeRjhj5wSuxBq";
+    };
+  };
+
   fonts.fontconfig.localConf = ''
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">

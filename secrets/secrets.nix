@@ -29,4 +29,5 @@ in
   "cloudflare-token.age".publicKeys = allKeys;
   "yinfeng-nix-access-tokens.age".publicKeys = allKeys;
   "github-runner-xps8930.age".publicKeys = allKeys;
+  "commit-notifier-bot.age".publicKeys = allKeys;
 }

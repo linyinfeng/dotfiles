@@ -2,6 +2,7 @@
 
 {
   virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
   networking.firewall.checkReversePath = false;
 
   environment.systemPackages = with pkgs; [

@@ -15,9 +15,6 @@
 
   services.gnome.chrome-gnome-shell.enable = true;
 
-  security.wrappers.spice-client-glib-usb-acl-helper.source =
-    "${pkgs.spice-gtk}/bin/spice-client-glib-usb-acl-helper";
-
   networking.firewall.allowedTCPPorts = [
     5900 # VNC
   ];

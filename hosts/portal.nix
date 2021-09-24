@@ -1,11 +1,8 @@
-{ config, suites, lib, ... }:
+{ pkgs, config, suites, lib, ... }:
 
 let
   dotTarHost = "tar.li7g.com";
   dotTarPort = 8001;
-  grafanaPort = 8002;
-  prometheusPort = 8003;
-  prometheusNodeExporterPort = 8004;
 in
 {
   imports =
@@ -36,48 +33,10 @@ in
       services.nginx.virtualHosts.${config.services.portal.host} = {
         addSSL = true;
         enableACME = true;
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString grafanaPort}";
-          proxyWebsockets = true;
-        };
       };
       services.portal = {
         host = "portal.li7g.com";
         server.enable = true;
-      };
-      services.grafana = {
-        enable = true;
-        domain = dotTarHost;
-        port = grafanaPort;
-        addr = "127.0.0.1";
-      };
-      services.prometheus = {
-        enable = true;
-        port = prometheusPort;
-        extraFlags = [
-          "--web.enable-admin-api"
-        ];
-        exporters = {
-          node = {
-            enable = true;
-            enabledCollectors = [ "systemd" ];
-            port = prometheusNodeExporterPort;
-          };
-        };
-        scrapeConfigs = [
-          {
-            job_name = "prometheus";
-            static_configs = [{
-              targets = [ "127.0.0.1:${toString config.services.prometheus.port}" ];
-            }];
-          }
-          {
-            job_name = "node";
-            static_configs = [{
-              targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ];
-            }];
-          }
-        ];
       };
       services.nginx.virtualHosts.${dotTarHost} = {
         addSSL = true;
@@ -97,6 +56,20 @@ in
           };
         };
       };
+      systemd.services.commit-notifier = {
+        script = ''
+          export TELOXIDE_TOKEN=$(cat ${config.age.secrets.commit-notifier-bot.path})
+          ${pkgs.commit-notifier}/bin/commit-notifier \
+            --working-dir /var/lib/commit-notifier \
+            --cron "0 */5 * * * *"
+        '';
+        path = [
+          pkgs.git
+        ];
+        environment.RUST_LOG = "info";
+        wantedBy = [ "multi-user.target" ];
+      };
+      age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;
 
       fileSystems."/" =
         {
