@@ -84,6 +84,7 @@ in
     url = "https://github.com/linyinfeng/dotfiles";
     extraPackages = with pkgs; [ openssh ];
   };
+  environment.global-persistence.directories = [ "/var/lib/github-runner" ];
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
   nix.allowedUsers = [ "github-runner" ];
