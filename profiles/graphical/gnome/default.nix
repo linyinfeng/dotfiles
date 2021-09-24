@@ -27,6 +27,7 @@
       ".local/share/Trash"
       ".local/share/webkitgtk" # gnome accounts
       ".local/share/backgrounds"
+      ".cache/tracker3"
     ];
     files = [
       ".face"
