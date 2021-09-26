@@ -158,6 +158,7 @@
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send
               inputs.dot-tar.nixosModules.dot-tar
+              inputs.commit-notifier.nixosModules.commit-notifier
             ];
           };
 

@@ -56,21 +56,10 @@ in
           };
         };
       };
-      systemd.services.commit-notifier = {
-        script = ''
-          export TELOXIDE_TOKEN=$(cat ${config.age.secrets.commit-notifier-bot.path})
-          ${pkgs.commit-notifier}/bin/commit-notifier \
-            --working-dir /var/lib/commit-notifier \
-            --cron "0 */5 * * * *"
-        '';
-        path = [
-          pkgs.git
-        ];
-        environment.RUST_LOG = "info";
-        serviceConfig = {
-          Restart = "on-failure";
-        };
-        wantedBy = [ "multi-user.target" ];
+      services.commit-notifier = {
+        enable = true;
+        cron = "0 */5 * * * *";
+        tokenFile = config.age.secrets.commit-notifier-bot.path;
       };
       age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;
 
