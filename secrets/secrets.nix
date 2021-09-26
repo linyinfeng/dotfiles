@@ -30,4 +30,5 @@ in
   "yinfeng-nix-access-tokens.age".publicKeys = allKeys;
   "github-runner-xps8930.age".publicKeys = allKeys;
   "commit-notifier-bot.age".publicKeys = allKeys;
+  "push-bot.age".publicKeys = allKeys;
 }

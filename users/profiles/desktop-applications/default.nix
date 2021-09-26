@@ -40,10 +40,10 @@
     keepass
     keepassxc
     libreoffice-fresh
-    linyinfeng.clash-for-windows
-    linyinfeng.icalingua
     meld
     mplayer
+    nur.repos.linyinfeng.clash-for-windows
+    nur.repos.linyinfeng.icalingua
     tdesktop
     teamspeak_client
     transmission-remote-gtk

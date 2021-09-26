@@ -74,6 +74,11 @@ in
       };
       age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;
 
+      services.notify-failure.services = [
+        "dot-tar"
+        "commit-notifier"
+      ];
+
       fileSystems."/" =
         {
           device = "/dev/disk/by-uuid/c02e1983-731b-4aab-96dc-73e594901c80";

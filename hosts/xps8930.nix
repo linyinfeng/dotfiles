@@ -96,6 +96,10 @@ in
     # https://github.com/hercules-ci/hercules-ci-agent/blob/master/internal/nix/gc.nix
     ''--max-freed "$((${toString freeSpaceGB} * 1024**3 - 1024 * $(df -P -k /nix/store | tail -n 1 | ${pkgs.gawk}/bin/awk '{ print $4 }')))"'';
 
+  services.notify-failure.services = [
+    "github-runner"
+  ];
+
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 

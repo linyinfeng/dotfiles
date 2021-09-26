@@ -119,7 +119,7 @@
               ./pkgs/default.nix
 
               # MAIN
-              inputs.linyinfeng.overlays.linyinfeng
+              inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               inputs.dot-tar.overlay
               inputs.commit-notifier.overlay
@@ -156,6 +156,7 @@
               inputs.impermanence.nixosModules.impermanence
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
+              inputs.linyinfeng.nixosModules.telegram-send
               inputs.dot-tar.nixosModules.dot-tar
             ];
           };
@@ -217,6 +218,8 @@
               campus = with networking; [ campus-network ];
               ci-agent = with services; [ hercules-ci-agent ];
               acme = [ services.acme ];
+              telegram-send = [ programs.telegram-send ];
+              notify-failure = [ services.notify-failure ];
 
               fw = with networking; [ fw-proxy ];
               game = with graphical.game; [ steam minecraft ];
@@ -226,10 +229,10 @@
               godns = [ services.godns ];
               # anbox = [ profiles.virtualization.anbox ]; # TODO: broken
 
-              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ printing;
+              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
               desktopWorkstation = workstation;
-              server = base ++ audit ++ network;
+              server = base ++ audit ++ network ++ telegram-send ++ notify-failure;
               homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
 
               user-yinfeng = [ users.yinfeng ];
