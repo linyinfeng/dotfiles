@@ -67,6 +67,9 @@ in
           pkgs.git
         ];
         environment.RUST_LOG = "info";
+        serviceConfig = {
+          Restart = "on-failure";
+        };
         wantedBy = [ "multi-user.target" ];
       };
       age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;

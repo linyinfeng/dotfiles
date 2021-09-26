@@ -57,18 +57,11 @@
       linyinfeng.inputs.flake-utils.follows = "digga/flake-utils";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
       dot-tar.url = "github:linyinfeng/dot-tar";
-      dot-tar.inputs.flake-utils.follows = "digga/flake-utils";
+      dot-tar.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       dot-tar.inputs.nixpkgs.follows = "nixos";
-      dot-tar.inputs.naersk.follows = "naersk";
-      dot-tar.inputs.rust-overlay.follows = "rust-overlay";
       commit-notifier.url = "github:linyinfeng/commit-notifier";
       commit-notifier.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       commit-notifier.inputs.nixpkgs.follows = "nixos";
-      commit-notifier.inputs.naersk.follows = "naersk";
-      commit-notifier.inputs.rust-overlay.follows = "rust-overlay";
-      rust-overlay.url = "github:oxalica/rust-overlay";
-      rust-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      rust-overlay.inputs.nixpkgs.follows = "nixos";
 
       flake-compat.follows = "digga/deploy/flake-compat";
       flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
