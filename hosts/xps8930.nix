@@ -122,7 +122,7 @@ in
       fsType = "vfat";
     };
   fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
-  fileSystems."/data" =
+  fileSystems."/media/data" =
     {
       device = "/dev/disk/by-uuid/6c4a47ea-492e-4855-8157-180e74904b73";
       fsType = "ext4";
