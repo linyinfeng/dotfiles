@@ -39,7 +39,7 @@ jobs:
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          for host in portal x200s xps8930; do
+          for host in portal x200s; do
             nix develop --command deploy --skip-checks ".#$host" \
               --ssh-opts="-o UserKnownHostsFile=$HOME/.ssh/known_hosts -i $HOME/.ssh/id_rsa"
           done
