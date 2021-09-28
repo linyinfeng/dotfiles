@@ -64,7 +64,6 @@
       commit-notifier.inputs.nixpkgs.follows = "nixos";
 
       flake-compat.follows = "digga/deploy/flake-compat";
-      flake-compat-ci.url = "github:hercules-ci/flake-compat-ci";
 
       # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
     };
@@ -143,8 +142,8 @@
           hostDefaults = {
             system = "x86_64-linux";
             channelName = "nixos";
-            imports = [ (digga.lib.importModules ./modules) ];
-            externalModules = [
+            imports = [ (digga.lib.importExportableModules ./modules) ];
+            modules = [
               { lib.our = self.lib; }
               digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
@@ -242,8 +241,8 @@
         };
 
         home = {
-          imports = [ (digga.lib.importModules ./users/modules) ];
-          externalModules = [
+          imports = [ (digga.lib.importExportableModules ./users/modules) ];
+          modules = [
             # MAIN
             (builtins.toPath "${inputs.impermanence}/home-manager.nix")
           ];
@@ -307,11 +306,6 @@
     //
     {
       budModules = { devos = import ./bud; };
-
-      # MAIN
-      ciNix = inputs.flake-compat-ci.lib.recurseIntoFlakeWith {
-        flake = self;
-      };
     }
   ;
 }

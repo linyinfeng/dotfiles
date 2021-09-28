@@ -1,6 +1,11 @@
 result
 .direnv
 
-*.qcow2
+# Result of bud commands
+vm
+iso
+doi
 
 pkgs/_sources/.shake*
+
+*.qcow2

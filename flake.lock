@@ -189,11 +189,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1631974852,
-        "narHash": "sha256-f2K83yDufQWp22kjtOQXHfsXXyUbndCMxrhG57mI9DE=",
+        "lastModified": 1632784893,
+        "narHash": "sha256-SBmGCObLqF9CrWoF7hrBpiCMPTUFzHiBvAtCJXQrPg4=",
         "owner": "divnix",
         "repo": "digga",
-        "rev": "8e91e1814ef0ab294731ceb106ffdac009363702",
+        "rev": "6316878be3527ef2b27b8e92afb44ce1857830b3",
         "type": "github"
       },
       "original": {
@@ -228,11 +228,11 @@
     },
     "emacs-overlay": {
       "locked": {
-        "lastModified": 1632647195,
-        "narHash": "sha256-Fa1w/WA8iwC+pRU9MxeSN2R5pivz74kBstR/dO8tWiM=",
+        "lastModified": 1632793536,
+        "narHash": "sha256-xg85ltALPEPtZmehymAWoHY3r/b4Z4whro2GV7X0r1U=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "6b81c0312373b808637045aa16f87f866beccd40",
+        "rev": "ad94b67e6adc794df8c50ec1ac3a12e34d145a4d",
         "type": "github"
       },
       "original": {
@@ -254,21 +254,6 @@
       "original": {
         "owner": "edolstra",
         "repo": "flake-compat",
-        "type": "github"
-      }
-    },
-    "flake-compat-ci": {
-      "locked": {
-        "lastModified": 1629629549,
-        "narHash": "sha256-c6Hipyp52MZ2pTFXEIRdcLK2rtKt9jggCQ7ZOgBS44k=",
-        "owner": "hercules-ci",
-        "repo": "flake-compat-ci",
-        "rev": "ef10daf1cb1823086ed547d39806aaca4c53cc17",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-compat-ci",
         "type": "github"
       }
     },
@@ -330,11 +315,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1632431340,
-        "narHash": "sha256-9xUnx5aeDp8Irg2/rWBKn3AjiiQTtsjTX0UshzMXy94=",
+        "lastModified": 1632691598,
+        "narHash": "sha256-onyAFZYgBzXGGlV2opCUygFSGHE937PIUpKLHpUhals=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b0651cc2173427857b172604f85da6afe69e1d41",
+        "rev": "cb09a968e9b4ab12a8f203f454a1fba372a9fd71",
         "type": "github"
       },
       "original": {
@@ -360,11 +345,11 @@
     },
     "latest": {
       "locked": {
-        "lastModified": 1632656787,
-        "narHash": "sha256-+GgrrZq0qpSTFoNnIKUQ9xKkosiNrw9MUZsbL/JuADM=",
+        "lastModified": 1632792068,
+        "narHash": "sha256-MZgwTxtBpNKALoudCO4jZ/pIIMy5gH7tw1L2bawRvHA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "61da86928406435694525d7b9553f6ee2703fd77",
+        "rev": "35cad8da44b44a174798e19d03b81bd995ac5de0",
         "type": "github"
       },
       "original": {
@@ -482,11 +467,11 @@
     },
     "nixos": {
       "locked": {
-        "lastModified": 1632411313,
-        "narHash": "sha256-lekODc44lVo9/0EwGiX6LoEt2KhiPdcfNopealMJ7n4=",
+        "lastModified": 1632660378,
+        "narHash": "sha256-sjA8eQlnyDjDLyAyq3XlJmN0nqW0ftl/pb7VnMg86L0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "51bcdc4cdaac48535dabf0ad4642a66774c609ed",
+        "rev": "31ffc50c571e6683e9ecc9dbcbd4a8e9914b4497",
         "type": "github"
       },
       "original": {
@@ -538,11 +523,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1632648398,
-        "narHash": "sha256-59D4g8E/Wqph1vubh16UBaSqjQSSAbj2cqSxJA9quG8=",
+        "lastModified": 1632789925,
+        "narHash": "sha256-pWPGi4U4DUx/RRH9W3yxGWCliNM2Ow81rKpHxmRFbHA=",
         "owner": "nix-community",
         "repo": "nur",
-        "rev": "e04e3dca67f7fdc541d6f33349892ba53ff4d418",
+        "rev": "99f19d67c82c868bca64d730e79152fa42943735",
         "type": "github"
       },
       "original": {
@@ -568,11 +553,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1632625720,
-        "narHash": "sha256-nKjOSbeW1mf2PtiwBOpXRq/zDNlYLj8KpxwmaJrFENM=",
+        "lastModified": 1632700276,
+        "narHash": "sha256-XABvQUq2qv+YcQxW93DnU8mgtVsGJWyhcznny/Lbp0Q=",
         "owner": "berberman",
         "repo": "nvfetcher",
-        "rev": "732bc7407512be45ebe17e5d8ba99e129fb0ac1a",
+        "rev": "248fe98ed1bc352ce164d08a9e76fdc5f301ba2d",
         "type": "github"
       },
       "original": {
@@ -630,7 +615,6 @@
           "deploy",
           "flake-compat"
         ],
-        "flake-compat-ci": "flake-compat-ci",
         "flake-utils": [
           "digga",
           "flake-utils"
