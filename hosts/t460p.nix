@@ -36,6 +36,7 @@ in
       consoleMode = "auto";
     };
   };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
