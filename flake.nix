@@ -29,6 +29,8 @@
 
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "latest";
+      sops-nix.url = "github:Mic92/sops-nix";
+      sops-nix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "latest";
@@ -56,6 +58,9 @@
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils.follows = "digga/flake-utils";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
+      nixos-cn.url = "github:nixos-cn/flakes";
+      nixos-cn.inputs.nixpkgs.follows = "nixos";
+      nixos-cn.inputs.flake-utils.follows = "digga/flake-utils";
       dot-tar.url = "github:linyinfeng/dot-tar";
       dot-tar.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       dot-tar.inputs.nixpkgs.follows = "nixos";
@@ -118,6 +123,8 @@
               ./pkgs/default.nix
 
               # MAIN
+              inputs.sops-nix.overlay
+              inputs.nixos-cn.overlay
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               inputs.dot-tar.overlay
@@ -152,7 +159,10 @@
               bud.nixosModules.bud
 
               # MAIN
+              inputs.sops-nix.nixosModules.sops
               inputs.impermanence.nixosModules.impermanence
+              "${inputs.nixos-cn}/modules/sops/template"
+              "${inputs.nixos-cn}/modules/sops/extend-scripts.nix"
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send

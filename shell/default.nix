@@ -5,6 +5,6 @@
   ];
   exportedModules = [
     ./devos.nix
+    ./sops-nix.nix
   ];
 }
-
