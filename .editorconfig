@@ -33,3 +33,6 @@ trim_trailing_whitespace = false
 
 [*.el]
 indent_size = unset
+
+[*.org]
+indent_size = unset

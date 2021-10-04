@@ -31,14 +31,17 @@
 ;; no tool bar
 (tool-bar-mode -1)
 
-(setq package-archives
-      '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-        ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+;; default font
+(set-face-attribute 'default nil
+                    :family "Sarasa Mono Slab SC"
+                    :height 100
+                    :weight 'normal
+                    :width 'normal)
 
 ;; no tabs
 (setq-default indent-tabs-mode nil)
 
-;; window move
+;; windmove
 (windmove-default-keybindings)
 
 ;; split thresholds
@@ -48,16 +51,22 @@
 ;; quoted char radix
 (setq read-quoted-char-radix 16)
 
-;; recompile all command
-(defun recompile-all ()
-  "Recompile everything in package user directory"
-  (interactive)
-  (byte-recompile-directory package-user-dir nil 'force))
 ;; open init.el command
+(defun open-dotfiles ()
+  "Open dotfiles"
+  (find-file "~/Source/dotfiles"))
 (defun open-init-el ()
   "Open init.el file"
   (interactive)
-  (find-file "~/Source/nixos-configuration/configuration/users/yinfeng/home/dotfiles/emacs.d/init.el"))
+  (find-file "~/Source/dotfiles/users/profiles/emacs/init.el"))
+(defun nixos-rebuild-switch ()
+  "NixOS rebuild"
+  (interactive)
+  (async-shell-command "sudo nixos-rebuild --flake ~/Source/dotfiles switch"))
+(defun restart-emacs-daemon ()
+  "Restart emacs"
+  (interactive)
+  (async-shell-command "systemctl --user restart emacs"))
 
 ;; packages
 (require 'package)
@@ -68,13 +77,9 @@
   (package-install 'use-package))
 (require 'use-package)
 
-(use-package tex
-  :defer t
-  :ensure auctex
-  :config
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+(use-package ace-window
+  :ensure t
+  :bind (("M-o" . ace-window)))
 
 (use-package avy
   :ensure t
@@ -199,16 +204,28 @@
   :ensure t
   :custom
   (org-roam-directory (file-truename "~/Source/org-roam"))
+  (org-roam-complete-everywhere t)
+  (org-roam-capture-templates
+   (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
+     `(("d" "default" plain "%?"
+        :target (file+head ,file-format "#+title: ${title}")
+        :unnarrowed t)
+       ("p" "paper" plain (file "~/Source/org-roam/templates/paper.org")
+        :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
+        :unnarrowed t))))
   :init
   (setq org-roam-v2-ack t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today)
+         :map org-mode-map
+         ("C-M-i"   . completion-at-point))
   :config
-  (org-roam-db-autosync-mode)
-  :bind (("C-c o r t" . org-roam-buffer-toggle)
-         ("C-c o r f" . org-roam-node-find)
-         ("C-c o r g" . org-roam-graph)
-         ("C-c o r i" . org-roam-node-insert)
-         ("C-c o r c" . org-roam-capture)
-         ("C-c o r j" . org-roam-dailies-capture-today)))
+  (org-roam-db-autosync-mode))
 
 (use-package paredit
   :ensure t)
@@ -238,7 +255,9 @@
   :delight pyim-isearch-mode
   :config
   (setq default-input-method "pyim")
+  (setq pyim-page-tooltip 'popup)
   (setq pyim-default-scheme 'quanpin)
+  (setq pyim-page-length 5)
   (setq-default pyim-english-input-switch-functions
                 '(pyim-probe-dynamic-english
                   pyim-probe-isearch-mode
@@ -260,7 +279,7 @@
 (use-package racket-mode
   :ensure t)
 
-(use-package restart-emacs
+(use-package rainbow-delimiters
   :ensure t)
 
 (use-package rust-mode
@@ -274,6 +293,14 @@
 
 (use-package swift-mode
   :ensure t)
+
+(use-package tex
+  :defer t
+  :ensure auctex
+  :config
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t)
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package undo-tree
   :ensure t
