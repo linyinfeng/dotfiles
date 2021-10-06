@@ -22,6 +22,7 @@ in
     suites.game ++
     suites.fw ++
     suites.godns ++
+    suites.waydroid ++
     # suites.anbox ++ # TODO: broken
     suites.user-yinfeng;
 

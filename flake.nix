@@ -241,6 +241,7 @@
               samba = [ services.samba ];
               godns = [ services.godns ];
               # anbox = [ profiles.virtualization.anbox ]; # TODO: broken
+              waydroid = [ profiles.virtualization.waydroid ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
