@@ -1,4 +1,4 @@
-{ config, suites, lib, ... }:
+{ config, pkgs, suites, lib, ... }:
 
 let
 
@@ -41,6 +41,7 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
 
+  boot.blacklistedKernelModules = ["nouveau"];
   # services.xserver.videoDrivers = [ "nvidia" ];
   # hardware.nvidia = {
   #   prime = {

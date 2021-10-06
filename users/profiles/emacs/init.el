@@ -298,8 +298,9 @@
   :defer t
   :ensure auctex
   :config
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+  (setq TeX-source-correlate-start-server t)
+  (setq TeX-source-correlate-mode t)
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package undo-tree
