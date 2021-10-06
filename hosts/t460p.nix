@@ -42,7 +42,7 @@ in
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
 
-  boot.blacklistedKernelModules = ["nouveau"];
+  boot.blacklistedKernelModules = [ "nouveau" ];
   # services.xserver.videoDrivers = [ "nvidia" ];
   # hardware.nvidia = {
   #   prime = {
