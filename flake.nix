@@ -119,6 +119,7 @@
               nur.overlay
               agenix.overlay
               nvfetcher.overlay
+              deploy.overlay
               ./pkgs/default.nix
 
               # MAIN
@@ -130,11 +131,7 @@
               inputs.commit-notifier.overlay
             ];
           };
-          latest = {
-            overlays = [
-              deploy.overlay
-            ];
-          };
+          latest = { };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
