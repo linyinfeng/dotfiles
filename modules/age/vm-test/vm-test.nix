@@ -8,7 +8,9 @@ let
     clash-cnix = "xxxxxx";
     clash-dler = "xxxxxx";
     cloudflare-token = "xxxxxx";
+    commit-notifier-bot = "0000000000:00000000000000000000000000000000000";
     portal-client-id = "00000000-0000-0000-0000-000000000000";
+    push-bot = "0000000000:00000000000000000000000000000000000";
     transmission-credentials = builtins.toJSON {
       rpc-username = "xxxxxx";
       rpc-password = "xxxxxx";

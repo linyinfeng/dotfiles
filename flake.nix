@@ -61,12 +61,6 @@
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils";
-      dot-tar.url = "github:linyinfeng/dot-tar";
-      dot-tar.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      dot-tar.inputs.nixpkgs.follows = "nixos";
-      commit-notifier.url = "github:linyinfeng/commit-notifier";
-      commit-notifier.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      commit-notifier.inputs.nixpkgs.follows = "nixos";
 
       flake-compat.follows = "digga/deploy/flake-compat";
 
@@ -127,8 +121,6 @@
               inputs.nixos-cn.overlay
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
-              inputs.dot-tar.overlay
-              inputs.commit-notifier.overlay
             ];
           };
           latest = { };
@@ -166,8 +158,8 @@
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send
-              inputs.dot-tar.nixosModules.dot-tar
-              inputs.commit-notifier.nixosModules.commit-notifier
+              inputs.linyinfeng.nixosModules.commit-notifier
+              inputs.linyinfeng.nixosModules.dot-tar
             ];
           };
 
