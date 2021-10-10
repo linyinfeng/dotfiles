@@ -76,6 +76,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+(setq use-package-always-demand t)
 
 (use-package ace-window
   :ensure t
@@ -138,6 +139,10 @@
 (use-package flycheck-projectile
   :ensure t)
 
+(use-package flyspell
+  :ensure nil ; builtin
+  :hook ((org-mode . flyspell-mode)))
+
 (use-package json-mode
   :ensure t)
 
@@ -184,31 +189,40 @@
 (use-package org
   :ensure t
   :config
-  (use-package org-bullets
-    :ensure t
-    :config
-    (setq org-bullets-bullet-list
-          '("●"
-            "○"
-            "✿"
-            "❀"
-            "◆"
-            "◇"))
-    :hook (org-mode . (lambda () (org-bullets-mode 1))))
   (setq org-directory "~/Source/orgs")
+  ;; done with time information
+  (setq org-log-done 'time)
+  ;; better latex block size
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-  ;; agenda settings
-  (setq org-agenda-files '("~/Source/orgs/journal"))
-  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :bind (("C-c o l" . org-store-link)
          ("C-c o a" . org-agenda)
          ("C-c o c" . org-capture)))
+
+(use-package org-agenda
+  :ensure org
+  :config
+  (add-to-list 'org-agenda-files "~/Source/orgs/tasks")
+  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+"))
+
+(use-package org-bullets
+  :ensure t
+  :config
+  (setq org-bullets-bullet-list
+        '("●"
+          "○"
+          "✿"
+          "❀"
+          "◆"
+          "◇"))
+  :hook (org-mode . (lambda () (org-bullets-mode 1))))
 
 (use-package org-journal
   :ensure t
   :init
   (setq org-journal-prefix-key "C-c j ")
   :config
+  ;; include journal in agenda
+  (add-to-list 'org-agenda-files "~/Source/orgs/journal")
   (setq org-journal-dir "~/Source/orgs/journal"
         org-journal-file-format "%Y-%m-%d"))
 
@@ -232,11 +246,12 @@
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ;; Dailies: not using
+         ;; Dailies: use org-journal instead
          ;; ("C-c n j" . org-roam-dailies-capture-today)
          :map org-mode-map
          ("C-M-i"   . completion-at-point))
   :config
+  ;; db auto sync
   (org-roam-db-autosync-mode))
 
 (defun sync-orgs ()
@@ -313,7 +328,6 @@
   :ensure t)
 
 (use-package tex
-  :defer t
   :ensure auctex
   :config
   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
