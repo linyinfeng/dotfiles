@@ -258,7 +258,7 @@
   "Sync orgs notes"
   (interactive)
   (let ((default-directory org-directory))
-    (async-shell-command "nix-shell --command update")))
+    (async-shell-command "nix-shell --command update-all")))
 
 (use-package paredit
   :ensure t)
