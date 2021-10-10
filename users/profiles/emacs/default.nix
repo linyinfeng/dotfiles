@@ -20,7 +20,7 @@ in
       sarasa-gothic
     ]);
   home.file = {
-    "Source/org-roam/templates".source = ./org-roam/templates;
+    "Source/orgs/notes/templates".source = ./org-roam/templates;
   };
   fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 

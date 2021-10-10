@@ -195,22 +195,34 @@
             "◆"
             "◇"))
     :hook (org-mode . (lambda () (org-bullets-mode 1))))
+  (setq org-directory "~/Source/orgs")
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+  ;; agenda settings
+  (setq org-agenda-files '("~/Source/orgs/journal"))
+  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :bind (("C-c o l" . org-store-link)
          ("C-c o a" . org-agenda)
          ("C-c o c" . org-capture)))
 
+(use-package org-journal
+  :ensure t
+  :init
+  (setq org-journal-prefix-key "C-c j ")
+  :config
+  (setq org-journal-dir "~/Source/orgs/journal"
+        org-journal-file-format "%Y-%m-%d"))
+
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/Source/org-roam"))
+  (org-roam-directory (file-truename "~/Source/orgs/notes"))
   (org-roam-complete-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
      `(("d" "default" plain "%?"
         :target (file+head ,file-format "#+title: ${title}")
         :unnarrowed t)
-       ("p" "paper" plain (file "~/Source/org-roam/templates/paper.org")
+       ("p" "paper" plain (file "~/Source/orgs/notes/templates/paper.org")
         :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
         :unnarrowed t))))
   :init
@@ -220,12 +232,18 @@
          ("C-c n g" . org-roam-graph)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today)
+         ;; Dailies: not using
+         ;; ("C-c n j" . org-roam-dailies-capture-today)
          :map org-mode-map
          ("C-M-i"   . completion-at-point))
   :config
   (org-roam-db-autosync-mode))
+
+(defun sync-orgs ()
+  "Sync orgs notes"
+  (interactive)
+  (let ((default-directory org-directory))
+    (async-shell-command "nix-shell --command update")))
 
 (use-package paredit
   :ensure t)
