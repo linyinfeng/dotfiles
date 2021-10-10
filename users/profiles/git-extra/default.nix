@@ -8,6 +8,9 @@
       init.defaultBranch = "main";
       pull.ff = "only";
       credential.helper = "libsecret";
+
+      # fish git status
+      bash.showInformativeStatus = true;
     };
   };
   home.packages = with pkgs; [

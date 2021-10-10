@@ -56,7 +56,7 @@
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       linyinfeng.url = "github:linyinfeng/nur-packages";
-      linyinfeng.inputs.flake-utils.follows = "digga/flake-utils";
+      linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";

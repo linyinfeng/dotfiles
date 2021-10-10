@@ -329,20 +329,20 @@
     },
     "linyinfeng": {
       "inputs": {
-        "flake-utils": [
+        "flake-utils-plus": [
           "digga",
-          "flake-utils"
+          "flake-utils-plus"
         ],
         "nixpkgs": [
           "nixos"
         ]
       },
       "locked": {
-        "lastModified": 1633742603,
-        "narHash": "sha256-YtZX5Gr0cfBvyDNR6SkqpFsIIwobOR+BZtsku+nmLGQ=",
+        "lastModified": 1633766065,
+        "narHash": "sha256-3VxgH7O0dw0NRef9fVHLzBieEUePfRXLoU5ouB4XlIk=",
         "owner": "linyinfeng",
         "repo": "nur-packages",
-        "rev": "986daf0dc9294be187a496ba18cc3719b8a9130d",
+        "rev": "f3a11bb4d88035f991215f734b2f95fc578727a4",
         "type": "github"
       },
       "original": {
