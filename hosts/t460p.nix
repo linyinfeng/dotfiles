@@ -78,7 +78,7 @@ in
         sub_domains = [ "t460p" ];
       }];
       ip_type = "IPv4";
-      ip_url = "https://myip.biturl.top";
+      ip_interface = "enp0s31f6";
     };
     ipv6.settings = {
       domains = [{
