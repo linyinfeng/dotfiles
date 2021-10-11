@@ -43,15 +43,6 @@ in
   hardware.video.hidpi.enable = true;
 
   boot.blacklistedKernelModules = [ "nouveau" ];
-  # services.xserver.videoDrivers = [ "nvidia" ];
-  # hardware.nvidia = {
-  #   prime = {
-  #     offload.enable = true;
-  #     nvidiaBusId = "PCI:2:0:0";
-  #     intelBusId = "PCI:0:2:0";
-  #   };
-  #   modesetting.enable = true;
-  # };
 
   virtualisation.kvmgt = {
     enable = true;
@@ -137,6 +128,22 @@ in
     xps8930 = {
       hostNames = [ "xps8930.ts.li7g.com" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRWO0HmTkgNBLLyvK3DodO4va2H54gHeRjhj5wSuxBq";
+    };
+  };
+
+  specialisation = {
+    nvidia.configuration = {
+      system.nixos.tags = [ "nvidia" ];
+
+      services.xserver.videoDrivers = [ "nvidia" ];
+      hardware.nvidia = {
+        prime = {
+          offload.enable = true;
+          nvidiaBusId = "PCI:2:0:0";
+          intelBusId = "PCI:0:2:0";
+        };
+        modesetting.enable = true;
+      };
     };
   };
 
