@@ -39,7 +39,7 @@ in
   };
 
   home.sessionVariables = {
-    EDITOR = "emacsclient";
+    EDITOR = "emacsclient --create-frame --tty";
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
