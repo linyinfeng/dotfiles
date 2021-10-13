@@ -13,7 +13,7 @@
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
-      digga.inputs.home-manager.follows = "home";
+      digga.inputs.latest.follows = "latest";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
@@ -42,14 +42,12 @@
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      # start ANTI CORRUPTION LAYER
-      # remove after https://github.com/NixOS/nix/pull/4641
-      nixpkgs.follows = "nixos";
-      nixlib.follows = "digga/nixlib";
-      blank.follows = "digga/blank";
-      flake-utils-plus.follows = "digga/flake-utils-plus";
-      flake-utils.follows = "digga/flake-utils";
-      # end ANTI CORRUPTION LAYER
+      # MAIN: more inputs follows
+      digga.inputs.home-manager.follows = "home";
+      bud.inputs.beautysh.follows = "beautysh";
+      beautysh.url = "github:lovesegfault/beautysh";
+      beautysh.inputs.flake-utils.follows = "digga/flake-utils";
+      beautysh.inputs.nixpkgs.follows = "nixos";
 
       # MAIN
       nur.url = "github:nix-community/nur";
