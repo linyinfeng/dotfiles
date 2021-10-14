@@ -35,11 +35,11 @@ in
 
   home.shellAliases = {
     emacs = "emacsclient --create-frame";
-    vim = "emacsclient --create-frame --tty";
+    emacs-tty = "emacsclient --create-frame --tty";
   };
 
   home.sessionVariables = {
-    EDITOR = "emacsclient --create-frame --tty";
+    EDITOR = config.home.shellAliases.emacs-tty;
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
