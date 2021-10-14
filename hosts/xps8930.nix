@@ -54,6 +54,10 @@ in
     };
   };
 
+  services.portal = {
+    host = "portal.li7g.com";
+    client.enable = true;
+  };
   services.godns = {
     ipv4.settings = {
       domains = [{
