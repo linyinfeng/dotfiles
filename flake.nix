@@ -256,7 +256,7 @@
               development = [ profiles.development emacs tools asciinema tex ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
-              synchronize = [ onedrive digital-paper ];
+              synchronize = [ onedrive digital-paper roaming ];
 
               full = base ++ multimediaDev ++ virtualization ++ synchronize;
             };

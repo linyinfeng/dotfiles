@@ -62,8 +62,8 @@ in
 
     home.global-persistence.enable = true;
 
-    home.linkSecrets.".ssh/id_ed25519".secret = config.age.secrets."${name}-id-ed25519".path;
-    home.linkSecrets.".config/nix/nix.conf".secret = config.age.templates."${name}-nix-conf".path;
+    home.link.".ssh/id_ed25519".target = config.age.secrets."${name}-id-ed25519".path;
+    home.link.".config/nix/nix.conf".target = config.age.templates."${name}-nix-conf".path;
     home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
     home.file.".ssh/config".source = ./ssh/config;
 

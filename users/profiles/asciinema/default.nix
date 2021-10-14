@@ -9,6 +9,6 @@
   #   mkdir -p "$HOME/.config/asciinema"
   #   ln -sf "/run/secrets/yinfeng-asciinema-token" "$HOME/.config/asciinema/install-id"
   # '';
-  home.linkSecrets.".config/asciinema/install-id".secret =
+  home.link.".config/asciinema/install-id".target =
     config.passthrough.systemConfig.age.secrets.yinfeng-asciinema-token.path;
 }
