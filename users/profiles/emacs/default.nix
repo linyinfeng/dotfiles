@@ -48,9 +48,6 @@ in
     directories = [
       ".emacs.d"
     ];
-    files = [
-      ".ispell_english"
-    ];
   };
   home.link.".ispell_english".target = "${config.home.roaming.path}/dotfiles/ispell_english";
 }
