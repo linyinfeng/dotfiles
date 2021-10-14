@@ -189,7 +189,7 @@
 (use-package org
   :ensure t
   :config
-  (setq org-directory "~/Source/orgs")
+  (setq org-directory "~/Roaming/orgs")
   ;; done with time information
   (setq org-log-done 'time)
   ;; better latex block size
@@ -201,7 +201,7 @@
 (use-package org-agenda
   :ensure org
   :config
-  (add-to-list 'org-agenda-files "~/Source/orgs/tasks")
+  (add-to-list 'org-agenda-files "~/Roaming/orgs/tasks")
   (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+"))
 
 (use-package org-bullets
@@ -222,21 +222,21 @@
   (setq org-journal-prefix-key "C-c j ")
   :config
   ;; include journal in agenda
-  (add-to-list 'org-agenda-files "~/Source/orgs/journal")
-  (setq org-journal-dir "~/Source/orgs/journal"
+  (add-to-list 'org-agenda-files "~/Roaming/orgs/journal")
+  (setq org-journal-dir "~/Roaming/orgs/journal"
         org-journal-file-format "%Y-%m-%d"))
 
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/Source/orgs/notes"))
+  (org-roam-directory (file-truename "~/Roaming/orgs/notes"))
   (org-roam-complete-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
      `(("d" "default" plain "%?"
         :target (file+head ,file-format "#+title: ${title}")
         :unnarrowed t)
-       ("p" "paper" plain (file "~/Source/orgs/notes/templates/paper.org")
+       ("p" "paper" plain (file "~/Roaming/orgs/notes/templates/paper.org")
         :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
         :unnarrowed t))))
   :init
