@@ -63,6 +63,8 @@
       flake-compat.follows = "digga/deploy/flake-compat";
 
       # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
+      # TODO remove after issue <https://github.com/NixOS/nixpkgs/issues/141728> solved
+      tracker-fix.url = "github:nixos/nixpkgs/e4ef597edfd8a0ba5f12362932fc9b1dd01a0aef";
     };
 
   outputs =
@@ -122,6 +124,8 @@
             ];
           };
           latest = { };
+          # MAIN
+          tracker-fix = { };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
