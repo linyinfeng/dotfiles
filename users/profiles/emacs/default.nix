@@ -16,6 +16,7 @@ in
       sqlite # org-roam
       graphviz # org-roam
       poppler_utils # pdf-tools
+      ripgrep # rg
 
       sarasa-gothic
     ]);
@@ -34,12 +35,12 @@ in
   };
 
   home.shellAliases = {
-    emacs = "emacsclient --create-frame";
-    emacs-tty = "emacsclient --create-frame --tty";
+    ec = "emacsclient --create-frame";
+    ect = "emacsclient --create-frame --tty";
   };
 
   home.sessionVariables = {
-    EDITOR = config.home.shellAliases.emacs-tty;
+    EDITOR = config.home.shellAliases.ect;
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;

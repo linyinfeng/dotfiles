@@ -61,6 +61,7 @@ in
         cron = "0 */5 * * * *";
         tokenFile = config.age.secrets.commit-notifier-bot.path;
       };
+      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
       age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;
 
       services.notify-failure.services = [

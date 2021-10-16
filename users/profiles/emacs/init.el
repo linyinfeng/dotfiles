@@ -1,5 +1,6 @@
-(message "Start loading init.el")
+(setq lexical-binding t)
 
+(message "Start loading init.el")
 
 (defvar host-dir "~/.emacs.d/host/")
 (if (file-exists-p host-dir)
@@ -313,6 +314,9 @@
   :ensure t)
 
 (use-package rainbow-delimiters
+  :ensure t)
+
+(use-package rg
   :ensure t)
 
 (use-package rust-mode
