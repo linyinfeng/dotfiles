@@ -77,6 +77,8 @@ in
     };
   };
 
+  environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
+
   environment.global-persistence.directories =
     map (dir: "${homeDirectory}/${dir}")
       homeManager.home.global-persistence.directories;

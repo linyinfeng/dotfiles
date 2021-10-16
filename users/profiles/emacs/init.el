@@ -63,7 +63,7 @@
 (defun nixos-rebuild-switch ()
   "NixOS rebuild"
   (interactive)
-  (async-shell-command "sudo nixos-rebuild --flake ~/Source/dotfiles switch"))
+  (async-shell-command "sudo nixos-rebuild switch"))
 (defun restart-emacs-daemon ()
   "Restart emacs"
   (interactive)
@@ -87,6 +87,13 @@
   :ensure t
   :config
   (global-set-key (kbd "C-:") 'avy-goto-char-timer))
+
+(use-package cdlatex
+  :ensure t
+  :config
+  (use-package texmathp
+    :ensure auctex)
+  :hook ((org-mode . turn-on-org-cdlatex)))
 
 (use-package cmake-mode
   :ensure t)
@@ -193,8 +200,6 @@
   (setq org-directory "~/Roaming/orgs")
   ;; done with time information
   (setq org-log-done 'time)
-  ;; better latex block size
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
   :bind (("C-c o l" . org-store-link)
          ("C-c o a" . org-agenda)
          ("C-c o c" . org-capture)))
