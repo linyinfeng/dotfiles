@@ -212,7 +212,7 @@
               audit = [ security.audit ];
               network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
               networkManager = (with networking; [ network-manager ]);
-              multimedia = (with graphical; [ gnome sway fonts ibus-chinese ]) ++ (with services; [ pipewire ]);
+              multimedia = (with graphical; [ gnome kde sway fonts i18n ]) ++ (with services; [ pipewire ]);
               development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
               virtualization = with profiles.virtualization; [ podman libvirt wine ];

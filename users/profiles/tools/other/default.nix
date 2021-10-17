@@ -16,6 +16,7 @@
   home.packages = with pkgs; [
     bandwhich
     bc
+    btop
     cntr
     compsize
     cryptsetup
@@ -48,6 +49,7 @@
     rlwrap
     screenfetch
     sd
+    speedread
     srm
     tealdeer
     tokei

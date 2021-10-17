@@ -39,8 +39,9 @@ in
   };
 
   hardware.enableRedistributableFirmware = true;
-
   powerManagement.cpuFreqGovernor = "performance";
+
+  services.xserver.desktopManager.gnome.enable = true;
 
   virtualisation.kvmgt = {
     enable = true;

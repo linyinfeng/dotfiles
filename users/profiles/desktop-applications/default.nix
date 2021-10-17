@@ -30,10 +30,6 @@
     calibre
     element-desktop
     gimp
-    gnome.dconf-editor
-    gnome.gnome-sound-recorder
-    gnome.gnome-tweaks
-    gnome.polari
     goldendict
     gparted
     inkscape

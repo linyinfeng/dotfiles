@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   extensionPkgs = with pkgs.gnomeExtensions; [
     # arc-menu
@@ -9,6 +9,8 @@ let
     # caffeine
   ];
 in
+lib.mkIf
+  config.passthrough.systemConfig.services.xserver.desktopManager.gnome.enable
 {
   home.packages = extensionPkgs;
 

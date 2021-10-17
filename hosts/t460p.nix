@@ -31,10 +31,23 @@ in
   time.timeZone = "Asia/Shanghai";
 
   boot.loader = {
-    efi.canTouchEfiVariables = true;
-    systemd-boot = {
+    efi = {
+      canTouchEfiVariables = true;
+    };
+    grub = {
       enable = true;
-      consoleMode = "auto";
+      efiSupport = true;
+      mirroredBoots = [
+        {
+          efiBootloaderId = "GRUB";
+          path = "/boot";
+          devices = [ "nodev" ];
+          efiSysMountPoint = "/boot";
+        }
+      ];
+      font = "${pkgs.iosevka}/share/fonts/truetype/iosevka-regular.ttf";
+      fontSize = 32;
+      useOSProber = true;
     };
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -56,7 +69,31 @@ in
     };
   };
 
-  powerManagement.cpuFreqGovernor = "powersave";
+  services.xserver.desktopManager.gnome.enable = true;
+  specialisation = {
+    kde.configuration = {
+      boot.loader.grub.configurationName = "(specialisation - KDE)";
+
+      services.xserver.desktopManager = {
+        gnome.enable = lib.mkForce false;
+        plasma5.enable = true;
+      };
+    };
+
+    nvidia.configuration = {
+      boot.loader.grub.configurationName = "(specialisation - NVIDIA)";
+
+      services.xserver.videoDrivers = [ "nvidia" ];
+      hardware.nvidia = {
+        prime = {
+          offload.enable = true;
+          nvidiaBusId = "PCI:2:0:0";
+          intelBusId = "PCI:0:2:0";
+        };
+        modesetting.enable = true;
+      };
+    };
+  };
 
   services.portal = {
     host = "portal.li7g.com";
@@ -128,22 +165,6 @@ in
     xps8930 = {
       hostNames = [ "xps8930.ts.li7g.com" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRWO0HmTkgNBLLyvK3DodO4va2H54gHeRjhj5wSuxBq";
-    };
-  };
-
-  specialisation = {
-    nvidia.configuration = {
-      system.nixos.tags = [ "nvidia" ];
-
-      services.xserver.videoDrivers = [ "nvidia" ];
-      hardware.nvidia = {
-        prime = {
-          offload.enable = true;
-          nvidiaBusId = "PCI:2:0:0";
-          intelBusId = "PCI:0:2:0";
-        };
-        modesetting.enable = true;
-      };
     };
   };
 
