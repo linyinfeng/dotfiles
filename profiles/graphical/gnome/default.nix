@@ -39,7 +39,6 @@ lib.mkIf
     ];
     files = [
       ".face"
-      ".config/mimeapps.list"
     ];
   };
 }

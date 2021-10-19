@@ -256,7 +256,7 @@
             suites = with profiles; rec {
               # MAIN
               base = [ direnv git git-extra shells ];
-              multimedia = [ gnome sway desktop-applications chromium firefox rime fonts ];
+              multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime ];
               development = [ profiles.development emacs tools asciinema tex ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];

@@ -24,6 +24,7 @@ in
     suites.ci-agent ++
     suites.transmission ++
     suites.samba ++
+    suites.waydroid ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -37,7 +38,7 @@ in
       consoleMode = "max";
     };
   };
-
+  boot.kernelPackages = pkgs.linuxPackages_xanmod;
   hardware.enableRedistributableFirmware = true;
   powerManagement.cpuFreqGovernor = "performance";
 

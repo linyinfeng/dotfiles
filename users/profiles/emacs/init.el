@@ -232,6 +232,9 @@
   (setq org-journal-dir "~/Roaming/orgs/journal"
         org-journal-file-format "%Y-%m-%d"))
 
+(use-package org-preview-html
+  :ensure t)
+
 (use-package org-roam
   :ensure t
   :custom

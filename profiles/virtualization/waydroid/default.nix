@@ -1,11 +1,17 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   waydroid = "${pkgs.waydroid}/bin/waydroid";
 in
 {
-  boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  # TODO fix this
+  system.requiredKernelConfig = with config.lib.kernelConfig; [
+    (isEnabled "ANDROID_BINDER_IPC")
+    (isEnabled "ANDROID_BINDERFS")
+    (isEnabled "ASHMEM")
+  ];
   environment.systemPackages = [ pkgs.waydroid ];
+  virtualisation.lxc.enable = true;
   systemd.services.waydroid-container = {
     description = "Waydroid Container";
     serviceConfig = {

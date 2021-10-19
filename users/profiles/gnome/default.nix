@@ -7,6 +7,7 @@ let
     dash-to-panel
     appindicator
     # caffeine
+    gtile
   ];
 in
 lib.mkIf
