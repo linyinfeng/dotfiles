@@ -39,7 +39,8 @@ jobs:
       - name: Deploy
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          for host in portal x200s; do
-            nix develop --command deploy --skip-checks ".#$host" \
-              --ssh-opts="-o UserKnownHostsFile=$HOME/.ssh/known_hosts -i $HOME/.ssh/id_rsa"
-          done
+          deploy=(nix develop --command deploy)
+          deploy_args=(--skip-checks --ssh-opts="-o UserKnownHostsFile=$HOME/.ssh/known_hosts -i $HOME/.ssh/id_rsa")
+
+          "${deploy[@]}" ".#portal" "${deploy_args[@]}"
+          "${deploy[@]}" ".#x200s"  "${deploy_args[@]}" --fast-connection true
