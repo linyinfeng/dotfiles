@@ -40,7 +40,7 @@ in
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
   hardware.enableRedistributableFirmware = true;
-  powerManagement.cpuFreqGovernor = "performance";
+  services.thermald.enable = true;
 
   services.xserver.desktopManager.gnome.enable = true;
 

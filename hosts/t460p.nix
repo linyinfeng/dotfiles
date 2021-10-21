@@ -55,6 +55,7 @@ in
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
+  services.thermald.enable = true;
 
   boot.blacklistedKernelModules = [ "nouveau" ];
 

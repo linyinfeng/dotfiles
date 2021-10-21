@@ -32,6 +32,7 @@
     github-cli
     gptfdisk
     hyperfine
+    i7z
     imagemagick
     iozone
     kmon
