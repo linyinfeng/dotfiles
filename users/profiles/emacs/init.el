@@ -70,9 +70,11 @@
   (async-shell-command "systemctl --user restart emacs"))
 
 ;; packages
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                         ("melpa" . "https://melpa.org/packages/")))
 (require 'package)
 (package-initialize)
-
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -232,9 +234,6 @@
   (setq org-journal-dir "~/Roaming/orgs/journal"
         org-journal-file-format "%Y-%m-%d"))
 
-(use-package org-preview-html
-  :ensure t)
-
 (use-package org-roam
   :ensure t
   :custom
@@ -352,6 +351,10 @@
   :delight
   :config
   (global-undo-tree-mode))
+
+(use-package webkit
+  :config
+  (use-package webkit-ace))
 
 (use-package which-key
   :ensure t

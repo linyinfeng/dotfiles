@@ -53,6 +53,8 @@
       nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
+      emacs-webkit.url = "github:akirakyle/emacs-webkit";
+      emacs-webkit.flake = false;
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       linyinfeng.inputs.nixpkgs.follows = "nixos";

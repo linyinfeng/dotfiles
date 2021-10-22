@@ -1,10 +1,15 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   emacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = emacsConfig;
     package = pkgs.emacsPgtkGcc;
     alwaysEnsure = true;
+    override = epkgs: epkgs // {
+      webkit = pkgs.callPackage inputs.emacs-webkit {
+        inherit (epkgs) trivialBuild;
+      };
+    };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;
 in
