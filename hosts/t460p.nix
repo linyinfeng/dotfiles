@@ -23,6 +23,7 @@ in
     suites.fw ++
     suites.godns ++
     suites.waydroid ++
+    suites.nixbuild ++
     # suites.anbox ++ # TODO: broken
     suites.user-yinfeng;
 
@@ -151,7 +152,6 @@ in
     {
       hostName = "xps8930.ts.li7g.com";
       sshUser = "yinfeng";
-      sshKey = config.age.secrets."yinfeng-id-ed25519".path;
       systems = [ "x86_64-linux" "i686-linux" ];
       supportedFeatures = [
         "nixos-test"
@@ -159,10 +159,14 @@ in
         "big-parallel"
         "kvm"
       ];
-      speedFactor = 2;
       maxJobs = 4;
     }
   ];
+  programs.ssh.extraConfig = ''
+    Host xps8930.ts.li7g.com
+      IdentityFile ${config.age.secrets."xps8930-id-ed25519".path}
+  '';
+  age.secrets."xps8930-id-ed25519".file = ../secrets/yinfeng-id-ed25519.age;
   services.openssh.knownHosts = {
     xps8930 = {
       hostNames = [ "xps8930.ts.li7g.com" ];

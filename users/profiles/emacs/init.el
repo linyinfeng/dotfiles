@@ -354,7 +354,7 @@
 
 (use-package webkit
   :config
-  (use-package webkit-ace))
+  (require 'webkit-ace))
 
 (use-package which-key
   :ensure t
