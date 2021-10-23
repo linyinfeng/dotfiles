@@ -7,6 +7,8 @@ in
 {
   imports =
     suites.server ++
+    suites.telegram-send ++
+    suites.notify-failure ++
     suites.acme;
 
   config = lib.mkMerge [
