@@ -46,4 +46,10 @@ lib.mkIf
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
   '';
+
+  # gsconnect association
+  xdg.mimeApps.associations.added = {
+    "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+  };
 }

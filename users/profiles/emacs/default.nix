@@ -40,12 +40,12 @@ in
   };
 
   home.shellAliases = {
-    ec = "emacsclient --create-frame";
+    ec = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
 
   home.sessionVariables = {
-    EDITOR = config.home.shellAliases.ect;
+    EDITOR = "emacsclient --create-frame";
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
