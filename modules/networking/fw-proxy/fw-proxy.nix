@@ -185,14 +185,15 @@ with lib;
         mkdir -p "${clashDir}"
         chown "${clashUser}" "${clashDir}"
       '';
-      environment.systemPackages = [
-        scripts
-      ];
       age.secrets = {
         clash-dler.file = config.age.secrets-directory + /clash-dler.age;
         clash-cnix.file = config.age.secrets-directory + /clash-cnix.age;
       };
 
+      environment.systemPackages = [
+        scripts
+        pkgs.proxychains-ng # add proxychains-ng
+      ];
       programs.proxychains = {
         enable = true;
         chain.type = "strict";

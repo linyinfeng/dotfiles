@@ -40,7 +40,8 @@ in
   };
 
   home.shellAliases = {
-    ec = "emacsclient --create-frame --no-wait";
+    en = "emacsclient --no-wait";
+    ecn = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
 
