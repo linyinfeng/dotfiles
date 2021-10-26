@@ -157,9 +157,7 @@
   :ensure t)
 
 (use-package lsp-haskell
-  :ensure t
-  :config
-  (setq lsp-haskell-process-path-hie "haskell-language-server-wrapper"))
+  :ensure t)
 
 (use-package lsp-mode
   :ensure t
@@ -191,54 +189,63 @@
   :ensure t)
 
 (use-package neotree
-  :ensure t)
+  :ensure t
+  :custom
+  (neo-smart-open t)
+  :bind
+  (("C-c t s" . neotree-show)
+   ("C-c t t" . neotree-toggle)))
 
 (use-package nix-mode
   :ensure t)
 
 (use-package org
   :ensure t
-  :config
-  (setq org-directory "~/Roaming/orgs")
+  :custom
+  (org-directory "~/Roaming/orgs")
   ;; done with time information
-  (setq org-log-done 'time)
+  (org-log-done 'time)
   :bind (("C-c o l" . org-store-link)
          ("C-c o a" . org-agenda)
          ("C-c o c" . org-capture)))
 
 (use-package org-agenda
   :ensure org
+  :custom
+  (org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :config
-  (add-to-list 'org-agenda-files "~/Roaming/orgs/tasks")
-  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+"))
+  (add-to-list 'org-agenda-files "~/Roaming/orgs/tasks"))
 
 (use-package org-bullets
   :ensure t
-  :config
-  (setq org-bullets-bullet-list
-        '("●"
-          "○"
-          "✿"
-          "❀"
-          "◆"
-          "◇"))
+  :custom
+  (org-bullets-bullet-list
+   '("●"
+     "○"
+     "✿"
+     "❀"
+     "◆"
+     "◇"))
   :hook (org-mode . (lambda () (org-bullets-mode 1))))
 
 (use-package org-journal
   :ensure t
   :init
   (setq org-journal-prefix-key "C-c j ")
+  :custom
+  (org-journal-dir "~/Roaming/orgs/journal")
+  (org-journal-file-format "%Y-%m-%d")
   :config
   ;; include journal in agenda
-  (add-to-list 'org-agenda-files "~/Roaming/orgs/journal")
-  (setq org-journal-dir "~/Roaming/orgs/journal"
-        org-journal-file-format "%Y-%m-%d"))
+  (add-to-list 'org-agenda-files "~/Roaming/orgs/journal"))
 
 (use-package org-roam
   :ensure t
+  :init
+  (setq org-roam-v2-ack t)
   :custom
   (org-roam-directory (file-truename "~/Roaming/orgs/notes"))
-  (org-roam-complete-everywhere t)
+  (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
      `(("d" "default" plain "%?"
@@ -247,8 +254,6 @@
        ("p" "paper" plain (file "~/Roaming/orgs/notes/templates/paper.org")
         :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
         :unnarrowed t))))
-  :init
-  (setq org-roam-v2-ack t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -273,20 +278,23 @@
 
 (use-package proof-general
   :ensure t
-  :config
-  (setq proof-three-window-enable t)
-  (setq proof-three-window-mode-policy 'hybrid))
+  :custom
+  (proof-three-window-enable t)
+  (proof-three-window-mode-policy 'hybrid))
 
 (use-package pdf-tools
   :ensure t
+  :custom
+  (doc-view-resolution 300)
+  (pdf-view-use-scaling t)
   :config
-  (pdf-tools-install)
-  (setq doc-view-resolution 300
-        pdf-view-use-scaling t))
+  (pdf-tools-install))
 
 (use-package projectile
   :ensure t
   :delight
+  :custom
+  (projectile-switch-project-action 'neotree-projectile-action)
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
@@ -294,19 +302,20 @@
 (use-package pyim
   :ensure t
   :delight pyim-isearch-mode
+  :custom
+  (default-input-method "pyim")
+  (pyim-page-tooltip 'popup)
+  (pyim-default-scheme 'quanpin)
+  (pyim-page-length 5)
+  (pyim-english-input-switch-functions
+   '(pyim-probe-dynamic-english
+     pyim-probe-isearch-mode
+     pyim-probe-program-mode
+     pyim-probe-org-structure-template))
+  (pyim-punctuation-half-width-functions
+   '(pyim-probe-punctuation-line-beginning
+     pyim-probe-punctuation-after-punctuation))
   :config
-  (setq default-input-method "pyim")
-  (setq pyim-page-tooltip 'popup)
-  (setq pyim-default-scheme 'quanpin)
-  (setq pyim-page-length 5)
-  (setq-default pyim-english-input-switch-functions
-                '(pyim-probe-dynamic-english
-                  pyim-probe-isearch-mode
-                  pyim-probe-program-mode
-                  pyim-probe-org-structure-template))
-  (setq-default pyim-punctuation-half-width-functions
-                '(pyim-probe-punctuation-line-beginning
-                  pyim-probe-punctuation-after-punctuation))
   (pyim-isearch-mode 1)
   (use-package pyim-basedict
     :ensure t
@@ -340,10 +349,11 @@
 
 (use-package tex
   :ensure auctex
+  :custom
+  (TeX-view-program-selection '((output-pdf "PDF Tools")))
+  (TeX-source-correlate-start-server t)
+  (TeX-source-correlate-mode t)
   :config
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
-  (setq TeX-source-correlate-start-server t)
-  (setq TeX-source-correlate-mode t)
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package undo-tree
