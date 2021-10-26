@@ -44,9 +44,11 @@ in
     ecn = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
-
   home.sessionVariables = {
     EDITOR = "emacsclient --create-frame";
+  };
+  xdg.mimeApps.associations.added = {
+    "text/plain" = "emacsclient.desktop";
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
