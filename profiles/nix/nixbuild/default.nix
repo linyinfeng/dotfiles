@@ -16,14 +16,14 @@ in
     # buildMachines = [
     #   {
     #     hostName = "eu.nixbuild.net";
-    #     system = "x86_64-linux";
+    #     systems = [ "x86_64-linux", "aarch64-linux"];
     #     maxJobs = 100;
     #     supportedFeatures = [ "benchmark" "big-parallel" ];
     #   }
     # ];
   };
   environment.etc."nixbuild/machines".text = ''
-    eu.nixbuild.net x86_64-linux - 100 1 benchmark,big-parallel
+    eu.nixbuild.net x86_64-linux,aarch64-linux - 100 1 benchmark,big-parallel
   '';
   environment.shellAliases = {
     nixbuild = ''nix --builders @/etc/nixbuild/machines'';
