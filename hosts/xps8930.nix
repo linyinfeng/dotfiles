@@ -25,6 +25,7 @@ in
     suites.transmission ++
     suites.samba ++
     suites.waydroid ++
+    suites.nixbuild ++
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -39,6 +40,7 @@ in
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
   services.thermald.enable = true;
 

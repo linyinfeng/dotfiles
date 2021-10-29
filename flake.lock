@@ -359,6 +359,22 @@
         "type": "github"
       }
     },
+    "mobile-nixos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1635290178,
+        "narHash": "sha256-5K4j4BaTbunLAufdC6zdWuvPTKDtpYhBQUA2+WVX6Gk=",
+        "owner": "nixos",
+        "repo": "mobile-nixos",
+        "rev": "b34d0923aaaabe39240bdcdbfe05b08457211e5d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "mobile-nixos",
+        "type": "github"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -404,11 +420,9 @@
     "nixos": {
       "locked": {
         "lastModified": 1634782485,
-        "narHash": "sha256-psfh4OQSokGXG0lpq3zKFbhOo3QfoeudRcaUnwMRkQo=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "34ad3ffe08adfca17fcb4e4a47bb5f3b113687be",
-        "type": "github"
+        "narHash": "sha256-LfUakbMENzxMlrtQ6npDkejL3L4AlILAQUclHIJLiBw=",
+        "type": "git",
+        "url": "file:///home/yinfeng/Source/nixpkgs"
       },
       "original": {
         "owner": "nixos",
@@ -573,6 +587,7 @@
         "impermanence": "impermanence",
         "latest": "latest",
         "linyinfeng": "linyinfeng",
+        "mobile-nixos": "mobile-nixos",
         "naersk": "naersk",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",

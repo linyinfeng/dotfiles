@@ -62,6 +62,9 @@
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils";
 
+      mobile-nixos.url = "github:nixos/mobile-nixos";
+      mobile-nixos.flake = false;
+
       flake-compat.follows = "digga/deploy/flake-compat";
 
       # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
@@ -111,7 +114,8 @@
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
-              digga.overlays.patchedNix
+              # Do not pull in patchedNix from digga
+              # digga.overlays.patchedNix
               nur.overlay
               agenix.overlay
               nvfetcher.overlay
@@ -201,6 +205,12 @@
             portal = {
               system = "x86_64-linux";
             };
+            oneplus3t = {
+              system = "aarch64-linux";
+              modules = [
+                (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-oneplus3"; })
+              ];
+            };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
@@ -279,7 +289,7 @@
 
         deploy.nodes = digga.lib.mkDeployNodes
           # MAIN
-          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
+          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" "oneplus3t" ])
           {
             portal.hostname = "portal.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";
