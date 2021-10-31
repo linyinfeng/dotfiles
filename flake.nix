@@ -177,7 +177,8 @@
             NixOS = {
               # MAIN
               tests = [
-                digga.lib.allProfilesTest
+                # TODO currently disable
+                # digga.lib.allProfilesTest
               ];
             };
 

@@ -8,8 +8,8 @@ in
     enable = true;
     openFirewall = true;
     credentialsFile = config.age.secrets.transmission-credentials.path;
-    port = rpcPort;
     settings = {
+      rpc-port = rpcPort;
       rpc-bind-address = "::";
       rpc-authentication-required = true;
       rpc-whitelist-enabled = false;

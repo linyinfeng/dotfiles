@@ -40,7 +40,7 @@ in
     enable = true;
     user = "yinfeng";
   };
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.desktopManager.xfce.enable = true;
 
   powerManagement.enable = true;
   hardware.pulseaudio.enable = true;
