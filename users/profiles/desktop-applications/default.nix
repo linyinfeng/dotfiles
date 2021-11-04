@@ -45,6 +45,7 @@
     transmission-remote-gtk
     virt-manager
     vlc
+    xournalpp
     zoom-us
     zotero
   ];
