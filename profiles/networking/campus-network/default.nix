@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   secretConfig = file: {
@@ -35,5 +35,5 @@ in
       };
     })
   ];
-  nix.binaryCaches = [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
+  nix.binaryCaches = lib.mkOrder 500 [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
 }

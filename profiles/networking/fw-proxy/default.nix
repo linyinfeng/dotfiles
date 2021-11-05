@@ -15,5 +15,7 @@ in
   };
   systemd.services.nix-daemon.environment = cfg.environment;
 
-  nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+  nix.binaryCaches = [
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+  ];
 }
