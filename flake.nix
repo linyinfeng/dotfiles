@@ -313,12 +313,13 @@
             inherit (nixos) lib;
           in
           {
-            checks = lib.foldl lib.recursiveUpdate { }
-              (lib.mapAttrsToList
-                (host: cfg:
-                  lib.optionalAttrs (cfg.pkgs.system == system)
-                    { "toplevel-${host}" = cfg.config.system.build.toplevel; })
-                self.nixosConfigurations);
+            # TODO broken in nix flake show, due to home-manager man pages
+            # checks = lib.foldl lib.recursiveUpdate { }
+            #   (lib.mapAttrsToList
+            #     (host: cfg:
+            #       lib.optionalAttrs (cfg.pkgs.system == system)
+            #         { "toplevel-${host}" = cfg.config.system.build.toplevel; })
+            #     self.nixosConfigurations);
           };
 
       }
