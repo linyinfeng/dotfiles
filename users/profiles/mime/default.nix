@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 let
   webBrowser = "chromium-browser.desktop";
@@ -47,4 +47,12 @@ in
         "application/pdf" = "org.gnome.Evince.desktop";
       };
   };
+
+  home.activation.diffMimeAppsList = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+    echo "Differences of current mimeapps.list"
+    # show diff and ignore result
+    diff "${config.xdg.configHome}/mimeapps.list" "${config.xdg.configFile."mimeapps.list".source}" || true
+    echo "Delete current mimeapps.list"
+    rm "${config.xdg.configHome}/mimeapps.list"
+  '';
 }

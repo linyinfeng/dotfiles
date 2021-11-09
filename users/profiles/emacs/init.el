@@ -97,9 +97,6 @@
     :ensure auctex)
   :hook ((org-mode . turn-on-org-cdlatex)))
 
-(use-package cmake-mode
-  :ensure t)
-
 (use-package company
   :ensure t
   :hook ((after-init . global-company-mode)))
