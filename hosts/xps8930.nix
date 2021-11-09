@@ -12,6 +12,7 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
+  btrfsSubvolData = btrfsSubvol "/dev/disk/by-uuid/fc047db2-0ba9-445a-9b84-194af545fa23";
   btrfsSubvolMobile = btrfsSubvol "/dev/disk/by-uuid/7eb0cf99-d5ea-4bb0-97fa-bbea23308f71";
 
 in
@@ -124,6 +125,9 @@ in
   boot.initrd.luks.devices."crypt-mobile" = {
     device = "/dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c";
   };
+  boot.initrd.luks.devices."crypt-data" = {
+    device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea";
+  };
   fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
   fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
   fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
@@ -134,11 +138,7 @@ in
       fsType = "vfat";
     };
   fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
-  fileSystems."/media/data" =
-    {
-      device = "/dev/disk/by-uuid/6c4a47ea-492e-4855-8157-180e74904b73";
-      fsType = "ext4";
-    };
+  fileSystems."/media/data" = btrfsSubvolData "@data" { };
   swapDevices = [{
     device = "/swap/swapfile";
   }];
