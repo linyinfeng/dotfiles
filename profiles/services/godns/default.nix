@@ -3,7 +3,7 @@
 let
   cfg = config.services.godns;
 
-  godns = "${pkgs.nur.repos.linyinfeng.godns}/bin/godns";
+  godns = "${pkgs.godns}/bin/godns";
 
   godnsOpts = { name, config, ... }: {
     options = {
