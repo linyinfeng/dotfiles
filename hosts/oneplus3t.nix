@@ -66,5 +66,5 @@ in
   };
 
   # TODO kernel unsupported
-  nix.useSandbox = lib.mkOverride 150 false;
+  nix.useSandbox = lib.mkOverride 50 false;
 }

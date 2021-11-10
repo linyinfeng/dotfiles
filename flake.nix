@@ -116,7 +116,8 @@
             overlays = [
               # Do not pull in patchedNix from digga
               # digga.overlays.patchedNix
-              nur.overlay
+              # TODO nix flake show broken due to IFD
+              # nur.overlay
               agenix.overlay
               nvfetcher.overlay
               deploy.overlay
@@ -177,8 +178,7 @@
             NixOS = {
               # MAIN
               tests = [
-                # TODO currently disable
-                # digga.lib.allProfilesTest
+                digga.lib.allProfilesTest
               ];
             };
 
@@ -264,6 +264,9 @@
           modules = [
             # MAIN
             (builtins.toPath "${inputs.impermanence}/home-manager.nix")
+            # TODO nix flake show broken due to IFD
+            # see https://github.com/nix-community/home-manager/issues/1262
+            { manual.manpages.enable = false; }
           ];
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
@@ -313,15 +316,27 @@
             inherit (nixos) lib;
           in
           {
-            # TODO broken in nix flake show, due to home-manager man pages
-            # checks = lib.foldl lib.recursiveUpdate { }
-            #   (lib.mapAttrsToList
-            #     (host: cfg:
-            #       lib.optionalAttrs (cfg.pkgs.system == system)
-            #         { "toplevel-${host}" = cfg.config.system.build.toplevel; })
-            #     self.nixosConfigurations);
+            checks = (
+              # fix preferLocalBuild for deployChecks
+              let
+                deployChecks = deploy.lib.${system}.deployChecks self.deploy;
+                renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
+                localBuild = n: v: v.overrideAttrs (oldAttrs:
+                  assert ! (oldAttrs ? preferLocalBuild); {
+                    preferLocalBuild = true;
+                  });
+              in
+              lib.mapAttrs localBuild (lib.mapAttrs' renameOp deployChecks)
+            ) //
+            (
+              lib.foldl lib.recursiveUpdate { }
+                (lib.mapAttrsToList
+                  (host: cfg:
+                    lib.optionalAttrs (cfg.pkgs.system == system)
+                      { "toplevel-${host}" = cfg.config.system.build.toplevel; })
+                  self.nixosConfigurations)
+            );
           };
-
       }
     //
     {

@@ -4,7 +4,8 @@
   programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [
-      ms-vscode.cpptools
+      # TODO nix flake show broken due to IFD
+      # ms-vscode.cpptools
     ];
   };
 
