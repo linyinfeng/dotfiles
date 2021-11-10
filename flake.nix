@@ -223,7 +223,7 @@
               base = [ core foundation users.root ];
 
               audit = [ security.audit ];
-              network = (with networking; [ resolved tailscale ]) ++ (with security; [ fail2ban firewall ]);
+              network = (with networking; [ resolved tailscale tools ]) ++ (with security; [ fail2ban firewall ]);
               networkManager = (with networking; [ network-manager ]);
               multimedia = (with graphical; [ gnome kde sway fonts i18n ]) ++ (with services; [ pipewire ]);
               development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);

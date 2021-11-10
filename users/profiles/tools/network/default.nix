@@ -7,7 +7,6 @@
     rsync
     axel
     dnsutils
-    traceroute
     iperf
     nmap-graphical
   ];
