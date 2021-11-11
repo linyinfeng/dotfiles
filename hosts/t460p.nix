@@ -24,7 +24,6 @@ in
     suites.godns ++
     suites.waydroid ++
     suites.nixbuild ++
-    # suites.anbox ++ # TODO: broken
     suites.user-yinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";

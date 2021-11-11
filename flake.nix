@@ -67,10 +67,6 @@
       nixpkgs-mobile.url = "github:nixos/nixpkgs/b165ce0c4efbb74246714b5c66b6bcdce8cde175";
 
       flake-compat.follows = "digga/deploy/flake-compat";
-
-      # anbox-patch = { url = "https://tar.li7g.com/https/github.com/nixos/nixpkgs/pull/125600.patch.tar"; flake = false; };
-      # TODO remove after issue <https://github.com/NixOS/nixpkgs/issues/141728> solved
-      tracker-fix.url = "github:nixos/nixpkgs/e4ef597edfd8a0ba5f12362932fc9b1dd01a0aef";
     };
 
   outputs =
@@ -90,24 +86,11 @@
       {
         inherit self inputs;
 
-        # MAIN: patch the channel nixos
-        # TODO: waiting for better patch supports
-        # imports = [
-        #   {
-        #     # IFD workaround
-        #     supportedSystems = [ "x86_64-linux" ];
-        #     channels.nixos = {
-        #       options.patches = nixos.lib.mkOption {
-        #         type = with nixos.lib.types; listOf path;
-        #       };
-        #       config = {
-        #         patches = [
-        #           inputs.anbox-patch
-        #         ];
-        #       };
-        #     };
-        #   }
-        # ];
+        # TODO some packages broken in x86_64-darwin
+        supportedSystems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
 
         channelsConfig = { allowUnfree = true; };
 
@@ -133,7 +116,6 @@
           };
           latest = { };
           # MAIN
-          tracker-fix = { };
           nixpkgs-mobile = {
             # inherit (nixos) imports;
             # overlays = nixos.overlays ++
@@ -255,7 +237,6 @@
               transmission = [ services.transmission ];
               samba = [ services.samba ];
               godns = [ services.godns ];
-              # anbox = [ profiles.virtualization.anbox ]; # TODO: broken
               waydroid = [ profiles.virtualization.waydroid ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
