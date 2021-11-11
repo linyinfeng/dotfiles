@@ -64,6 +64,7 @@
 
       mobile-nixos.url = "github:nixos/mobile-nixos";
       mobile-nixos.flake = false;
+      nixpkgs-mobile.url = "github:nixos/nixpkgs/b165ce0c4efbb74246714b5c66b6bcdce8cde175";
 
       flake-compat.follows = "digga/deploy/flake-compat";
 
@@ -110,7 +111,7 @@
 
         channelsConfig = { allowUnfree = true; };
 
-        channels = {
+        channels = rec {
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
@@ -133,6 +134,14 @@
           latest = { };
           # MAIN
           tracker-fix = { };
+          nixpkgs-mobile = {
+            # inherit (nixos) imports;
+            # overlays = nixos.overlays ++
+            overlays =
+              [
+                (import "${inputs.mobile-nixos}/overlay/overlay.nix")
+              ];
+          };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
@@ -208,6 +217,7 @@
             };
             oneplus3t = {
               system = "aarch64-linux";
+              channelName = "nixpkgs-mobile";
               modules = [
                 (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-oneplus3"; })
               ];
@@ -274,7 +284,7 @@
               # MAIN
               base = [ direnv git git-extra shells ];
               multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime ];
-              development = [ profiles.development emacs tools asciinema tex ];
+              development = [ profiles.development emacs tools asciinema tex postmarketos ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
               synchronize = [ onedrive digital-paper roaming ];
