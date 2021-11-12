@@ -57,10 +57,7 @@ in
         environment = {
           "v2ray.vmess.aead.forced" = "true";
         };
-        restartTriggers = [
-          config.age.secrets.portal-client-id.file
-          config.age.templates.portal-v2ray.file
-        ];
+        # TODO add a restart trigger
       };
     })
     (lib.mkIf cfg.server.enable {
