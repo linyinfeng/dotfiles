@@ -160,9 +160,6 @@
               inputs.linyinfeng.nixosModules.telegram-send
               inputs.linyinfeng.nixosModules.commit-notifier
               inputs.linyinfeng.nixosModules.dot-tar
-
-              # constant configuration revision
-              ({ lib, ... }: { system.configurationRevision = lib.mkForce null; })
             ];
           };
 
