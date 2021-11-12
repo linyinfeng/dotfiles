@@ -13,8 +13,10 @@ jobs:
         uses: actions/checkout@master
       - name: Format check
         run: nix run nixpkgs#nixpkgs-fmt -- . --check
-      - name: Check
-        run: nix flake check --verbose --print-build-logs
+      - name: Flake show
+        run: nix flake show
+      - name: Flake check
+        run: nix flake check --verbose --print-build-logs --builders @/etc/nixbuild/machines
       - name: Push cache
         run: |
           for host in portal x200s; do
