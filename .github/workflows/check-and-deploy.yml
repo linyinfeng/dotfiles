@@ -16,7 +16,7 @@ jobs:
       - name: Flake show
         run: nix flake show
       - name: Flake check
-        run: nix flake check --verbose --print-build-logs --builders ${{ secrets.BUILDERS }}
+        run: nix flake check --verbose --print-build-logs --builders "${{ secrets.BUILDERS }}"
       - name: Push cache
         run: |
           for host in portal x200s; do
