@@ -5,6 +5,6 @@ in
 {
   commands = map (pkgWithCategory "sops") (with pkgs; [
     sops
-    # sops-ssh-to-age # broken
+    ssh-to-age
   ]);
 }

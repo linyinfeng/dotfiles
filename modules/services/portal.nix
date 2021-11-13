@@ -48,10 +48,10 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      age.secrets.portal-client-id.file = config.age.secrets-directory + /portal-client-id.age;
+      sops.secrets."portal/client-id" = { };
       services.v2ray = {
         enable = true;
-        configFile = config.age.templates.portal-v2ray.path;
+        configFile = config.sops.templates.portal-v2ray.path;
       };
       systemd.services.v2ray = {
         environment = {
@@ -79,7 +79,7 @@ in
         '';
       };
 
-      age.templates.portal-v2ray.content = builtins.toJSON {
+      sops.templates.portal-v2ray.content = builtins.toJSON {
         log.loglevel = cfg.logLevel;
         inbounds = [
           {
@@ -88,7 +88,7 @@ in
             settings = {
               clients = [
                 {
-                  id = config.age.placeholder.portal-client-id;
+                  id = config.sops.placeholder."portal/client-id";
                   inherit (cfg) alterId;
                 }
               ];
@@ -110,7 +110,7 @@ in
       };
     })
     (lib.mkIf cfg.client.enable {
-      age.templates.portal-v2ray.content =
+      sops.templates.portal-v2ray.content =
         let
           basicConfig = {
             inbounds = [
@@ -134,7 +134,7 @@ in
                       port = 443;
                       users = [
                         {
-                          id = config.age.placeholder.portal-client-id;
+                          id = config.sops.placeholder."portal/client-id";
                           inherit (cfg) alterId;
                         }
                       ];

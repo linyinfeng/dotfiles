@@ -3,11 +3,10 @@
 {
   programs.telegram-send = {
     enable = true;
-    configFile = config.age.secrets.push-bot.path;
+    configFile = config.sops.secrets."telegram-bot/push".path;
   };
 
-  age.secrets.push-bot = {
-    file = config.age.secrets-directory + /push-bot.age;
+  sops.secrets."telegram-bot/push" = {
     mode = "440";
     group = config.users.groups.wheel.name;
   };

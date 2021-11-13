@@ -29,13 +29,13 @@ in
     nixbuild = ''nix --builders @/etc/nixbuild/machines'';
   };
 
+  # TODO use other identity
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519
-      IdentityFile ${config.age.secrets."nixbuild-id-ed25519".path}
+      IdentityFile ${config.sops.secrets."yinfeng/id-ed25519".path}
       ${proxyCommand}
   '';
-  age.secrets."nixbuild-id-ed25519".file = ../../../secrets/yinfeng-id-ed25519.age;
   services.openssh.knownHosts = {
     nixbuild = {
       hostNames = [ "eu.nixbuild.net" ];

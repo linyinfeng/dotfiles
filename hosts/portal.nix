@@ -61,10 +61,10 @@ in
       services.commit-notifier = {
         enable = true;
         cron = "0 */5 * * * *";
-        tokenFile = config.age.secrets.commit-notifier-bot.path;
+        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
       };
       systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
-      age.secrets.commit-notifier-bot.file = config.age.secrets-directory + /commit-notifier-bot.age;
+      sops.secrets."telegram-bot/commit-notifier" = { };
 
       services.notify-failure.services = [
         "dot-tar"

@@ -39,8 +39,8 @@ let
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
-      dlerUrl = config.age.secrets.clash-dler.path;
-      cnixUrl = config.age.secrets.clash-cnix.path;
+      dlerUrl = config.sops.secrets."clash/dler".path;
+      cnixUrl = config.sops.secrets."clash/cnix".path;
     };
     tunSetup = pkgs.substituteAll {
       src = ./tun-setup.sh;
@@ -185,11 +185,11 @@ with lib;
         mkdir -p "${clashDir}"
         chown "${clashUser}" "${clashDir}"
       '';
-      age.secrets = {
-        clash-dler.file = config.age.secrets-directory + /clash-dler.age;
-        clash-cnix.file = config.age.secrets-directory + /clash-cnix.age;
-      };
 
+      sops.secrets = {
+        "clash/dler" = { };
+        "clash/cnix" = { };
+      };
       environment.systemPackages = [
         scripts
         pkgs.proxychains-ng # add proxychains-ng

@@ -27,6 +27,7 @@
 
       deploy.follows = "digga/deploy";
 
+      # TODO switch to sops-nix and remove agenix
       agenix.url = "github:ryantm/agenix";
       agenix.inputs.nixpkgs.follows = "latest";
       sops-nix.url = "github:Mic92/sops-nix";
@@ -153,8 +154,9 @@
               # MAIN
               inputs.sops-nix.nixosModules.sops
               inputs.impermanence.nixosModules.impermanence
-              "${inputs.nixos-cn}/modules/sops/template"
-              "${inputs.nixos-cn}/modules/sops/extend-scripts.nix"
+              inputs.nixos-cn.nixosModules.nixos-cn
+              # "${inputs.nixos-cn}/modules/sops/template"
+              # "${inputs.nixos-cn}/modules/sops/extend-scripts.nix"
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send

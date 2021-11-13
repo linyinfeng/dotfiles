@@ -7,7 +7,7 @@ in
   services.transmission = {
     enable = true;
     openFirewall = true;
-    credentialsFile = config.age.secrets.transmission-credentials.path;
+    credentialsFile = config.sops.secrets."transmission/credentials".path;
     settings = {
       rpc-port = rpcPort;
       rpc-bind-address = "::";
@@ -16,7 +16,7 @@ in
       rpc-host-whitelist-enabled = false;
     };
   };
-
+  sops.secrets."transmission/credentials" = { };
   networking.firewall.allowedTCPPorts = [ rpcPort ];
 
   services.samba.shares.transmission = {
@@ -25,6 +25,4 @@ in
     "browseable" = true;
     "comment" = "Transmission downloads";
   };
-
-  age.secrets.transmission-credentials.file = config.age.secrets-directory + /transmission-credentials.age;
 }

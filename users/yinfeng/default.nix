@@ -13,7 +13,7 @@ in
 {
   users.users.${name} = {
     uid = 1000;
-    passwordFile = config.age.secrets."user-${name}-password".path;
+    passwordFile = config.sops.secrets."user-password/${name}".path;
     isNormalUser = true;
     shell = pkgs.fish;
     home = homeDirectory;
@@ -33,24 +33,15 @@ in
     ];
   };
 
-  age.secrets = {
-    "user-${name}-password".file = config.age.secrets-directory + "/user-${name}-password.age";
-    "${name}-asciinema-token" = {
-      file = config.age.secrets-directory + "/${name}-asciinema-token.age";
-      owner = user.name;
-    };
-    "${name}-id-ed25519" = {
-      file = config.age.secrets-directory + "/${name}-id-ed25519.age";
-      owner = user.name;
-    };
-    "${name}-nix-access-tokens" = {
-      file = config.age.secrets-directory + "/${name}-nix-access-tokens.age";
-    };
+  sops.secrets = {
+    "user-password/${name}".neededForUsers = true;
+    "${name}/asciinema-token".owner = user.name;
+    "${name}/id-ed25519".owner = user.name;
+    "${name}/nix-access-tokens" = { };
   };
-
-  age.templates."${name}-nix-conf" = {
+  sops.templates."${name}/nix-conf" = {
     content = ''
-      access-tokens = ${config.age.placeholder."${name}-nix-access-tokens"}
+      access-tokens = ${config.sops.placeholder."${name}/nix-access-tokens"}
     '';
     owner = user.name;
   };
@@ -62,8 +53,8 @@ in
 
     home.global-persistence.enable = true;
 
-    home.link.".ssh/id_ed25519".target = config.age.secrets."${name}-id-ed25519".path;
-    home.link.".config/nix/nix.conf".target = config.age.templates."${name}-nix-conf".path;
+    home.link.".ssh/id_ed25519".target = config.sops.secrets."${name}/id-ed25519".path;
+    home.link.".config/nix/nix.conf".target = config.sops.templates."${name}/nix-conf".path;
     home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
     home.file.".ssh/config".source = ./ssh/config;
 

@@ -31,15 +31,15 @@ in
     };
   };
   config = {
-    age.secrets.cloudflare-token.file = config.age.secrets-directory + /cloudflare-token.age;
-    age.templates = lib.mapAttrs'
+    sops.secrets."cloudflare-token" = { };
+    sops.templates = lib.mapAttrs'
       (_: godnsCfg:
         lib.nameValuePair godnsCfg.fullName
           {
             content = builtins.toJSON (lib.recursiveUpdate
               {
                 provider = "Cloudflare";
-                login_token = config.age.placeholder.cloudflare-token;
+                login_token = config.sops.placeholder."cloudflare-token";
                 resolver = "8.8.8.8";
               }
               godnsCfg.settings);
@@ -50,7 +50,7 @@ in
         lib.nameValuePair godnsCfg.fullName
           {
             script = ''
-              ${godns} -c ${config.age.templates.${godnsCfg.fullName}.path}
+              ${godns} -c ${config.sops.templates.${godnsCfg.fullName}.path}
             '';
             after = [ "network-online.target" ];
             wantedBy = [ "multi-user.target" ];

@@ -8,10 +8,6 @@ let
   };
 in
 {
-  age.secrets = {
-    campus-net-username = secretConfig (config.age.secrets-directory + /campus-net-username.age);
-    campus-net-password = secretConfig (config.age.secrets-directory + /campus-net-password.age);
-  };
   environment.systemPackages = [
     (pkgs.stdenvNoCC.mkDerivation {
       name = "campus-network-scripts";
@@ -24,8 +20,8 @@ in
         isExecutable = true;
         inherit (pkgs.stdenvNoCC) shell;
         inherit (pkgs) curl;
-        usernameFile = config.age.secrets.campus-net-username.path;
-        passwordFile = config.age.secrets.campus-net-password.path;
+        usernameFile = config.sops.secrets."campus-net/username".path;
+        passwordFile = config.sops.secrets."campus-net/password".path;
       };
       campusNetLogout = pkgs.substituteAll {
         src = ./scripts/logout.sh;
@@ -35,5 +31,9 @@ in
       };
     })
   ];
+  sops.secrets = {
+    "campus-net/username" = { };
+    "campus-net/password" = { };
+  };
   nix.binaryCaches = lib.mkOrder 500 [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
 }

@@ -89,15 +89,15 @@ in
     name = "xps8930";
     replace = true;
     extraLabels = [ "nixos" ];
-    tokenFile = config.age.secrets.github-runner-xps8930.path;
+    tokenFile = config.sops.secrets."xps8930/github-runner".path;
     url = "https://github.com/linyinfeng/dotfiles";
     extraPackages = with pkgs; [ openssh ];
   };
+  sops.secrets."xps8930/github-runner" = { };
   environment.global-persistence.directories = [ "/var/lib/private/github-runner" ];
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
   nix.allowedUsers = [ "github-runner" ];
-  age.secrets.github-runner-xps8930.file = config.age.secrets-directory + /github-runner-xps8930.age;
   nix.gc.options =
     let
       freeSpaceGB = 30;

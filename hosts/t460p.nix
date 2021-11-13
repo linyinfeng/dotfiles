@@ -72,30 +72,30 @@ in
   };
 
   services.xserver.desktopManager.gnome.enable = true;
-  specialisation = {
-    kde.configuration = {
-      boot.loader.grub.configurationName = "(specialisation - KDE)";
+  # specialisation = {
+  #   kde.configuration = {
+  #     boot.loader.grub.configurationName = "(specialisation - KDE)";
 
-      services.xserver.desktopManager = {
-        gnome.enable = lib.mkForce false;
-        plasma5.enable = true;
-      };
-    };
+  #     services.xserver.desktopManager = {
+  #       gnome.enable = lib.mkForce false;
+  #       plasma5.enable = true;
+  #     };
+  #   };
 
-    nvidia.configuration = {
-      boot.loader.grub.configurationName = "(specialisation - NVIDIA)";
+  #   nvidia.configuration = {
+  #     boot.loader.grub.configurationName = "(specialisation - NVIDIA)";
 
-      services.xserver.videoDrivers = [ "nvidia" ];
-      hardware.nvidia = {
-        prime = {
-          offload.enable = true;
-          nvidiaBusId = "PCI:2:0:0";
-          intelBusId = "PCI:0:2:0";
-        };
-        modesetting.enable = true;
-      };
-    };
-  };
+  #     services.xserver.videoDrivers = [ "nvidia" ];
+  #     hardware.nvidia = {
+  #       prime = {
+  #         offload.enable = true;
+  #         nvidiaBusId = "PCI:2:0:0";
+  #         intelBusId = "PCI:0:2:0";
+  #       };
+  #       modesetting.enable = true;
+  #     };
+  #   };
+  # };
 
   services.portal = {
     host = "portal.li7g.com";
@@ -163,9 +163,8 @@ in
   ];
   programs.ssh.extraConfig = ''
     Host xps8930.ts.li7g.com
-      IdentityFile ${config.age.secrets."xps8930-id-ed25519".path}
+      IdentityFile ${config.sops.secrets."yinfeng/id-ed25519".path}
   '';
-  age.secrets."xps8930-id-ed25519".file = ../secrets/yinfeng-id-ed25519.age;
   services.openssh.knownHosts = {
     xps8930 = {
       hostNames = [ "xps8930.ts.li7g.com" ];
