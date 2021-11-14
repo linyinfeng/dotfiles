@@ -55,7 +55,16 @@ in
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
+  
   services.thermald.enable = true;
+  services.power-profiles-daemon.enable = false;
+  services.tlp = {
+    enable = true;
+    settings = {
+      START_CHARGE_THRESH_BAT0 = 75;
+      STOP_CHARGE_THRESH_BAT0 = 80;
+    };
+  };
 
   boot.blacklistedKernelModules = [ "nouveau" ];
 
