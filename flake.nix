@@ -234,7 +234,7 @@
 
               fw = with networking; [ fw-proxy ];
               nixbuild = [ nix.nixbuild ];
-              game = with graphical.game; [ steam minecraft lutris ];
+              game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];
               transmission = [ services.transmission ];
               samba = [ services.samba ];
