@@ -70,7 +70,7 @@ in
           step "add"; $git add --all --verbose
           step "commit"; $git commit --message "update at $date" --verbose
         fi
-        step "pull"; $git pull --ff-only --verbose
+        step "pull"; $git pull --verbose
         if [ "$skip" = "false" ]; then
           step "push"; $git push --verbose
         fi
