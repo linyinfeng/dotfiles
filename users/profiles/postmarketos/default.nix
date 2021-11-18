@@ -6,7 +6,7 @@
       ".config/pmbootstrap.cfg"
     ];
     directories = [
-      ".local/var/pmbootstrap"
+      ".local/var"
     ];
   };
 }
