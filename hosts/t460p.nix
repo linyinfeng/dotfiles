@@ -51,6 +51,20 @@ in
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPatches = [
+  #   {
+  #     name = "waydroid";
+  #     patch = null;
+  #     extraConfig = ''
+  #       ASHMEM y
+  #       ANDROID y
+  #       ANDROID_BINDER_IPC y
+  #       ANDROID_BINDERFS n
+  #       ANDROID_BINDER_DEVICES "binder,hwbinder,vndbinder"
+  #     '';
+  #   }
+  # ];
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.enableRedistributableFirmware = true;
