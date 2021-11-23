@@ -166,8 +166,11 @@
          (c-mode . lsp)
          (c++-mode . lsp)
          (rust-mode . lsp))
+  :custom
+  (lsp-rust-server 'rust-analyzer)
+  (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-experimental-proc-attr-macros t)
   :config
-  (setq lsp-rust-server 'rust-analyzer)
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
 (use-package idris-mode
