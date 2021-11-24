@@ -26,6 +26,10 @@ in
 
       boot.tmpOnTmpfs = true;
 
+      environment.systemPackages = with pkgs; [
+        tmux
+      ];
+
       services.scheduled-reboot.enable = true;
 
       services.nginx = {

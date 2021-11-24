@@ -244,7 +244,7 @@
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
               desktopWorkstation = workstation;
-              server = base ++ audit ++ network;
+              server = base ++ network;
               homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
 
               user-yinfeng = [ users.yinfeng ];
