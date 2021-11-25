@@ -40,7 +40,6 @@ in
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/nix/persist";
       environment.global-persistence.directories = [
-        "/var/log"
         "/var/lib/acme"
       ];
 
