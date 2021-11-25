@@ -196,7 +196,10 @@
             x200s = {
               system = "x86_64-linux";
             };
-            portal = {
+            vultr = {
+              system = "x86_64-linux";
+            };
+            nexusbytes = {
               system = "x86_64-linux";
             };
             oneplus3t = {
