@@ -1,6 +1,17 @@
 { pkgs, config, suites, lib, ... }:
 
 let
+
+  btrfsSubvol = device: subvol: extraConfig: lib.mkMerge [
+    {
+      inherit device;
+      fsType = "btrfs";
+      options = [ "subvol=${subvol}" "compress=zstd" ];
+    }
+    extraConfig
+  ];
+  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
+
   portalHost = "portal.li7g.com";
   dotTarHost = "tar.li7g.com";
   dotTarPort = 8001;
@@ -80,14 +91,19 @@ in
           fsType = "tmpfs";
           options = [ "defaults" "size=2G" "mode=755" ];
         };
-      fileSystems."/nix" =
+      fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+      fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+      fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+      fileSystems."/swap" = btrfsSubvolMain "@swap" { };
+      fileSystems."/boot" =
         {
-          device = "/dev/disk/by-uuid/c02e1983-731b-4aab-96dc-73e594901c80";
+          device = "/dev/disk/by-uuid/4a186796-5865-4b47-985c-9354adec09a4";
           fsType = "ext4";
         };
-
       swapDevices =
-        [{ device = "/dev/disk/by-uuid/961406a7-4dac-4d45-80e9-ef9b0d4fab99"; }];
+        [{
+          device = "/swap/swapfile";
+        }];
     }
 
     {
