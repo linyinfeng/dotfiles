@@ -44,5 +44,6 @@ jobs:
           deploy=(nix develop --command deploy)
           deploy_args=(--skip-checks --ssh-opts="-o UserKnownHostsFile=$HOME/.ssh/known_hosts -i $HOME/.ssh/id_rsa")
 
-          "${deploy[@]}" ".#portal" "${deploy_args[@]}"
+          "${deploy[@]}" ".#vultr" "${deploy_args[@]}"
+          "${deploy[@]}" ".#nexusbytes" "${deploy_args[@]}"
           "${deploy[@]}" ".#x200s"  "${deploy_args[@]}" --fast-connection true
