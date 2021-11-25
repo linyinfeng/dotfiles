@@ -101,7 +101,7 @@ in
       fileSystems."/swap" = btrfsSubvolMain "@swap" { };
       fileSystems."/boot" =
         {
-          device = "/dev/disk/by-uuid/f8d738d7-a2be-rr8f-a521-2b2a408d2572";
+          device = "/dev/disk/by-uuid/f8d738d7-a2be-448f-a521-2b2a408d2572";
           fsType = "ext4";
         };
       swapDevices =
