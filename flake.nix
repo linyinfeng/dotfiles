@@ -288,7 +288,8 @@
           # MAIN
           (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" "oneplus3t" ])
           {
-            portal.hostname = "portal.ts.li7g.com";
+            vultr.hostname = "vultr.ts.li7g.com";
+            nexusbytes.hostname = "nexusbytes.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";
             t460p.hostname = "t460p.ts.li7g.com";
             xps8930.hostname = "xps8930.ts.li7g.com";
