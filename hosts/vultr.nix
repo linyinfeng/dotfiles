@@ -1,6 +1,7 @@
 { pkgs, config, suites, lib, ... }:
 
 let
+  portalHost = "portal.li7g.com";
   dotTarHost = "tar.li7g.com";
   dotTarPort = 8001;
 in
@@ -25,6 +26,12 @@ in
       boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
 
       boot.tmpOnTmpfs = true;
+      environment.global-persistence.enable = true;
+      environment.global-persistence.root = "/nix/persist";
+      environment.global-persistence.directories = [
+        "/var/log"
+        "/var/lib/acme"
+      ];
 
       environment.systemPackages = with pkgs; [
         tmux
@@ -41,7 +48,7 @@ in
         enableACME = true;
       };
       services.portal = {
-        host = "portal.li7g.com";
+        host = portalHost;
         server.enable = true;
       };
       services.nginx.virtualHosts.${dotTarHost} = {
@@ -62,20 +69,18 @@ in
           };
         };
       };
-      services.commit-notifier = {
-        enable = true;
-        cron = "0 */5 * * * *";
-        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
-      };
-      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
-      sops.secrets."telegram-bot/commit-notifier" = { };
 
       services.notify-failure.services = [
         "dot-tar"
-        "commit-notifier"
       ];
 
       fileSystems."/" =
+        {
+          device = "tmpfs";
+          fsType = "tmpfs";
+          options = [ "defaults" "size=2G" "mode=755" ];
+        };
+      fileSystems."/nix" =
         {
           device = "/dev/disk/by-uuid/c02e1983-731b-4aab-96dc-73e594901c80";
           fsType = "ext4";

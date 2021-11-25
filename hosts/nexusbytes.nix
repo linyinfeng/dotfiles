@@ -11,17 +11,12 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/c0e72722-18c2-4250-9034-676287478998";
-
-  portalHost = "portal.li7g.com";
-  dotTarHost = "tar.li7g.com";
-  dotTarPort = 8001;
 in
 {
   imports =
     suites.server ++
     suites.telegram-send ++
-    suites.notify-failure ++
-    suites.acme ++ [
+    suites.notify-failure ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
@@ -40,42 +35,18 @@ in
       boot.kernelModules = [ "kvm-amd" ];
 
       boot.tmpOnTmpfs = true;
+      services.fstrim.enable = true;
+      environment.global-persistence.enable = true;
+      environment.global-persistence.root = "/persist";
+      environment.global-persistence.directories = [
+        "/var/lib/private"
+      ];
 
       environment.systemPackages = with pkgs; [
         tmux
       ];
 
       services.scheduled-reboot.enable = true;
-      services.nginx = {
-        enable = true;
-      };
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
-      services.nginx.virtualHosts.${config.services.portal.host} = {
-        addSSL = true;
-        enableACME = true;
-      };
-      services.portal = {
-        host = portalHost;
-        server.enable = true;
-      };
-      services.nginx.virtualHosts.${dotTarHost} = {
-        addSSL = true;
-        enableACME = true;
-        locations."/" = {
-          proxyPass = "http://localhost:${toString dotTarPort}";
-        };
-      };
-      services.dot-tar = {
-        enable = true;
-        config = {
-          release = {
-            port = dotTarPort;
-            authority_allow_list = [
-              "github.com"
-            ];
-          };
-        };
-      };
       services.commit-notifier = {
         enable = true;
         cron = "0 */5 * * * *";
@@ -85,7 +56,6 @@ in
       sops.secrets."telegram-bot/commit-notifier" = { };
 
       services.notify-failure.services = [
-        "dot-tar"
         "commit-notifier"
       ];
 
@@ -115,6 +85,16 @@ in
         useNetworkd = true;
         interfaces.ens3.useDHCP = true;
       };
+      # TODO not working
+      # environment.etc."systemd/network/50-ens3-ipv6.network".source = config.sops.templates."ens3-ipv6.network".path;
+      sops.secrets."portal/ipv6-address" = { };
+      sops.templates."ens3-ipv6.network".content = ''
+        [Match]
+        Name=ens3
+
+        [Network]
+        Address=${config.sops.placeholder."portal/ipv6-address"}
+      '';
     }
   ];
 }
