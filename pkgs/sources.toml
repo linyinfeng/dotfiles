@@ -1,1 +1,4 @@
 # nvfetcher.toml
+[ligature-el]
+src.git = "https://github.com/mickeynp/ligature.el"
+fetch.git = "https://github.com/mickeynp/ligature.el"

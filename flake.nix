@@ -44,7 +44,6 @@
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
       # MAIN: more inputs follows
-      digga.inputs.home-manager.follows = "home";
       bud.inputs.beautysh.follows = "beautysh";
       beautysh.url = "github:lovesegfault/beautysh";
       beautysh.inputs.flake-utils.follows = "digga/flake-utils";
@@ -53,15 +52,15 @@
       # MAIN
       nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
-      emacs-overlay.url = "github:nix-community/emacs-overlay";
-      emacs-webkit.url = "github:akirakyle/emacs-webkit";
-      emacs-webkit.flake = false;
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils";
+      emacs-overlay.url = "github:nix-community/emacs-overlay";
+      emacs-webkit.url = "github:akirakyle/emacs-webkit";
+      emacs-webkit.flake = false;
 
       mobile-nixos.url = "github:nixos/mobile-nixos";
       mobile-nixos.flake = false;

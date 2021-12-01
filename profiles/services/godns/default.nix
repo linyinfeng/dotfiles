@@ -34,7 +34,7 @@ in
     sops.secrets."cloudflare-token" = { };
     sops.templates = lib.mapAttrs'
       (_: godnsCfg:
-        lib.nameValuePair godnsCfg.fullName
+        lib.nameValuePair "${godnsCfg.fullName}.json"
           {
             content = builtins.toJSON (lib.recursiveUpdate
               {
@@ -50,7 +50,7 @@ in
         lib.nameValuePair godnsCfg.fullName
           {
             script = ''
-              ${godns} -c ${config.sops.templates.${godnsCfg.fullName}.path}
+              ${godns} -c ${config.sops.templates."${godnsCfg.fullName}.json".path}
             '';
             after = [ "network-online.target" ];
             wantedBy = [ "multi-user.target" ];

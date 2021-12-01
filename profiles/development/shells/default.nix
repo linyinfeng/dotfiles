@@ -8,10 +8,9 @@
     done
     pkgs.libnotify # for done notification
   ]) ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
-    plugin-git
-    plugin-bang-bang
-    pisces
-    replay-fish
+    git
+    bang-bang
+    replay
   ]);
 
   programs.tprofile.enable = true;

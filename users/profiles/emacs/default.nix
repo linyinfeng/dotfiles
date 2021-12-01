@@ -9,6 +9,9 @@ let
       webkit = pkgs.callPackage inputs.emacs-webkit {
         inherit (epkgs) trivialBuild;
       };
+      ligature = epkgs.trivialBuild {
+        inherit (pkgs.sources.ligature-el) pname version src;
+      };
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;

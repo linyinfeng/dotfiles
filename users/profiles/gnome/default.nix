@@ -3,8 +3,8 @@ let
   extensionPkgs = with pkgs.gnomeExtensions; [
     # arc-menu
     gsconnect
-    # dash-to-dock
-    dash-to-panel
+    dash-to-dock
+    # dash-to-panel
     appindicator
     # caffeine
     gtile

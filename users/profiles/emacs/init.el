@@ -153,6 +153,16 @@
 (use-package json-mode
   :ensure t)
 
+(use-package ligature
+  :config
+  (ligature-set-ligatures '(prog-mode)
+                          ; lists of default ligations of Iosevka
+                          '("<--" "<---" "<<-" "<-" "->" "->>" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
+                            "<==" "<===" "<<=" "<=" "=>" "=>>" "==>" ">=" ">>=" "<=>" "<==>" "<===>" "<====>" "<!---"
+                            "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!==" ":>"
+                            ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<***>" "++" "+++"))
+  (global-ligature-mode t))
+
 (use-package lsp-haskell
   :ensure t)
 
