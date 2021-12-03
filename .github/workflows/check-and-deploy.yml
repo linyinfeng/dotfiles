@@ -19,7 +19,7 @@ jobs:
         run: nix flake check --verbose --print-build-logs
       - name: Push cache
         run: |
-          for host in portal x200s; do
+          for host in vultr nexusbytes x200s; do
             nix build ".#nixosConfigurations.portal.config.system.build.toplevel" --json | \
               nix run nixpkgs#jq -- ".[].outputs.out" --raw-output | \
               nix run nixpkgs#cachix -- push linyinfeng
