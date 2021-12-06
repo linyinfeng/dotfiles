@@ -46,7 +46,7 @@
       # MAIN: more inputs follows
       bud.inputs.beautysh.follows = "beautysh";
       beautysh.url = "github:lovesegfault/beautysh";
-      beautysh.inputs.flake-utils.follows = "digga/flake-utils";
+      beautysh.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       beautysh.inputs.nixpkgs.follows = "nixos";
 
       # MAIN
@@ -57,7 +57,7 @@
       linyinfeng.inputs.nixpkgs.follows = "nixos";
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";
-      nixos-cn.inputs.flake-utils.follows = "digga/flake-utils";
+      nixos-cn.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       emacs-webkit.url = "github:akirakyle/emacs-webkit";
       emacs-webkit.flake = false;
