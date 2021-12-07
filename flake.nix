@@ -273,7 +273,7 @@
             suites = with profiles; rec {
               # MAIN
               base = [ direnv git git-extra shells ];
-              multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime ];
+              multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
               development = [ profiles.development emacs tools asciinema tex postmarketos ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];

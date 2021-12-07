@@ -4,13 +4,6 @@
   programs = {
     mpv.enable = true;
 
-    obs-studio = {
-      enable = true;
-      plugins = with pkgs.obs-studio-plugins; [
-        wlrobs
-      ];
-    };
-
     zathura = {
       enable = true;
       extraConfig = ''
@@ -57,7 +50,6 @@
       ".goldendict"
 
       ".config/calibre"
-      ".config/obs-studio"
       ".config/Element"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"

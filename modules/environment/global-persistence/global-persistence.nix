@@ -149,7 +149,7 @@ with lib;
       deps = [ activationScriptName ];
     };
 
-    age.sshKeyPaths = [
+    age.identityPaths = [
       "${cfg.root}/etc/ssh/ssh_host_ed25519_key"
     ];
 
