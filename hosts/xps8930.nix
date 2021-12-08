@@ -25,7 +25,6 @@ in
     suites.ci-agent ++
     suites.transmission ++
     suites.samba ++
-    suites.waydroid ++
     suites.nixbuild ++
     suites.user-yinfeng;
 
@@ -40,7 +39,6 @@ in
       consoleMode = "max";
     };
   };
-  boot.kernelPackages = pkgs.linuxPackages_xanmod;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
   services.thermald.enable = true;
