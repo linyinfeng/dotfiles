@@ -313,8 +313,8 @@
         # MAIN
         outputsBuilder = channels:
           let
-            system = channels.nixos.system;
-            inherit (nixos) lib;
+            pkgs = channels.nixos;
+            inherit (pkgs) system lib;
           in
           {
             checks = (
@@ -337,6 +337,11 @@
                       { "toplevel-${host}" = cfg.config.system.build.toplevel; })
                   self.nixosConfigurations)
             );
+
+
+            allChecks = pkgs.linkFarm "all-checks"
+              (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
+                self.checks.${system});
           };
       }
     //
