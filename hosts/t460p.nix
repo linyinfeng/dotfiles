@@ -69,6 +69,15 @@ in
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
+  environment.systemPackages = [
+    (pkgs.makeDesktopItem {
+      name = "stream-hidpi";
+      desktopName = "Steam (HiDPI)";
+      exec = "env GDK_SCALE=2 steam %U";
+      categories = "Network;FileTransfer;Game;";
+      icon = "steam";
+    })
+  ];
 
   services.thermald.enable = true;
   services.power-profiles-daemon.enable = false;
