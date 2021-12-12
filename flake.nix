@@ -200,6 +200,9 @@
             x200s = {
               system = "x86_64-linux";
             };
+            nuc = {
+              system = "x86_64-linux";
+            };
             vultr = {
               system = "x86_64-linux";
             };
