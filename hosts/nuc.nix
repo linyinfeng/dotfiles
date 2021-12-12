@@ -42,7 +42,7 @@ in
         sub_domains = [ "nuc" ];
       }];
       ip_type = "IPv4";
-      ip_interface = "enp4s0";
+      ip_interface = "enp88s0";
       # TODO if public ip working change to `ip_url`
       # ip_url = "https://myip.biturl.top";
     };
@@ -52,7 +52,7 @@ in
         sub_domains = [ "nuc" ];
       }];
       ip_type = "IPv6";
-      ip_interface = "enp0s25";
+      ip_interface = "enp88s0";
     };
   };
 
