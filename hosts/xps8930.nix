@@ -19,6 +19,7 @@ in
 {
   imports =
     suites.desktopWorkstation ++
+    suites.tpm ++
     suites.campus ++
     suites.fw ++
     suites.godns ++

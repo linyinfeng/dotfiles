@@ -243,6 +243,7 @@
               notify-failure = [ services.notify-failure ];
 
               fw = with networking; [ fw-proxy ];
+              tpm = [ security.tpm ];
               nixbuild = [ nix.nixbuild ];
               game = with graphical.game; [ steam minecraft ];
               chia = [ services.chia ];

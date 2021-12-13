@@ -19,6 +19,7 @@ in
 {
   imports =
     suites.mobileWorkstation ++
+    suites.tpm ++
     suites.game ++
     suites.fw ++
     suites.godns ++
