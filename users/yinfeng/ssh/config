@@ -12,6 +12,7 @@ Host x200s
 
 Host nuc
     HostName nuc.ts.li7g.com
+    User root
 
 Host t460p
     HostName t460p.ts.li7g.com

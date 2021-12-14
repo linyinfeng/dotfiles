@@ -16,11 +16,9 @@ let
 in
 {
   imports =
-    suites.workstation ++
-    suites.godns ++
+    suites.homeServer ++
     suites.fw ++
-    suites.campus ++ # TODO move to home
-    suites.user-yinfeng;
+    suites.campus;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
@@ -32,8 +30,6 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
-
-  services.xserver.desktopManager.gnome.enable = true;
 
   services.thermald.enable = true;
   services.scheduled-reboot.enable = true;
