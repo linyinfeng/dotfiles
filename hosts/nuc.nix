@@ -16,7 +16,8 @@ let
 in
 {
   imports =
-    suites.homeServer ++
+    suites.workstation ++
+    suites.godns ++
     suites.fw ++
     suites.campus ++ # TODO move to home
     suites.user-yinfeng;
@@ -31,6 +32,8 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
+
+  services.xserver.desktopManager.gnome.enable = true;
 
   services.thermald.enable = true;
   services.scheduled-reboot.enable = true;
