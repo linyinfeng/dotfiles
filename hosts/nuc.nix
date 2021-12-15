@@ -17,6 +17,7 @@ in
 {
   imports =
     suites.homeServer ++
+    suites.virtualization ++
     suites.fw ++
     suites.campus;
 

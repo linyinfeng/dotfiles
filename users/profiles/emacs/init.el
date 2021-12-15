@@ -198,6 +198,15 @@
 (use-package markdown-mode
   :ensure t)
 
+(use-package nyan-mode
+  :ensure t
+  :custom
+  (nyan-animate-nyancat t)
+  (nyan-bar-length 16)
+  (nyan-wavy-trail t)
+  :config
+  (nyan-mode))
+
 (use-package neotree
   :ensure t
   :custom
