@@ -13,17 +13,9 @@ in
     extraOptions = ''
       builders-use-substitutes = true
     '';
-    # buildMachines = [
-    #   {
-    #     hostName = "eu.nixbuild.net";
-    #     systems = [ "x86_64-linux", "aarch64-linux"];
-    #     maxJobs = 100;
-    #     supportedFeatures = [ "benchmark" "big-parallel" ];
-    #   }
-    # ];
   };
   environment.etc."nixbuild/machines".text = ''
-    eu.nixbuild.net x86_64-linux,aarch64-linux - 100 1 benchmark,big-parallel
+    eu.nixbuild.net x86_64-linux,i686-linux,aarch64-linux - 100 2 benchmark,big-parallel
   '';
   environment.shellAliases = {
     nixbuild = ''nix --builders @/etc/nixbuild/machines'';
@@ -33,9 +25,14 @@ in
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519
-      IdentityFile ${config.sops.secrets."yinfeng/id-ed25519".path}
+      IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
       ${proxyCommand}
   '';
+  users.groups.nixbuild = { };
+  sops.secrets."nixbuild/id-ed25519" = {
+    mode = "0440";
+    group = config.users.groups.nixbuild.name;
+  };
   services.openssh.knownHosts = {
     nixbuild = {
       hostNames = [ "eu.nixbuild.net" ];

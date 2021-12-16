@@ -64,10 +64,6 @@
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "latest";
 
-      mobile-nixos.url = "github:nixos/mobile-nixos";
-      mobile-nixos.flake = false;
-      nixpkgs-mobile.url = "github:nixos/nixpkgs/b165ce0c4efbb74246714b5c66b6bcdce8cde175";
-
       flake-compat.follows = "digga/deploy/flake-compat";
     };
 
@@ -120,15 +116,6 @@
             ];
           };
           latest = { };
-          # MAIN
-          nixpkgs-mobile = {
-            # inherit (nixos) imports;
-            # overlays = nixos.overlays ++
-            overlays =
-              [
-                (import "${inputs.mobile-nixos}/overlay/overlay.nix")
-              ];
-          };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
@@ -208,13 +195,6 @@
             };
             nexusbytes = {
               system = "x86_64-linux";
-            };
-            oneplus3t = {
-              system = "aarch64-linux";
-              channelName = "nixpkgs-mobile";
-              modules = [
-                (import "${inputs.mobile-nixos}/lib/configuration.nix" { device = "oneplus-oneplus3"; })
-              ];
             };
           };
           importables = rec {
@@ -297,11 +277,12 @@
 
         deploy.nodes = digga.lib.mkDeployNodes
           # MAIN
-          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" "oneplus3t" ])
+          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
           {
             vultr.hostname = "vultr.ts.li7g.com";
             nexusbytes.hostname = "nexusbytes.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";
+            nuc.hostname = "nuc.ts.li7g.com";
             t460p.hostname = "t460p.ts.li7g.com";
             xps8930.hostname = "xps8930.ts.li7g.com";
           };

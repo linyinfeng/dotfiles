@@ -26,7 +26,8 @@ in
     groupNameIfPresent "libvirtd" ++
     groupNameIfPresent "transmission" ++
     groupNameIfPresent "networkmanager" ++
-    groupNameIfPresent "tss";
+    groupNameIfPresent "tss" ++
+    groupNameIfPresent "nixbuild";
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/id_ed25519.pub
