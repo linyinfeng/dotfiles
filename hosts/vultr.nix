@@ -55,7 +55,7 @@ in
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
       services.nginx.virtualHosts.${config.services.portal.host} = {
-        onlySSL = true;
+        forceSSL = true;
         enableACME = true;
       };
       services.portal = {
@@ -63,7 +63,7 @@ in
         server.enable = true;
       };
       services.nginx.virtualHosts.${dotTarHost} = {
-        onlySSL = true;
+        forceSSL = true;
         enableACME = true;
         locations."/" = {
           proxyPass = "http://localhost:${toString dotTarPort}";
@@ -82,7 +82,7 @@ in
       };
 
       services.nginx.virtualHosts."nuc.li7g.com" = {
-        onlySSL = true;
+        forceSSL = true;
         enableACME = true;
         locations."/" = {
           proxyPass = "http://nuc.ts.li7g.com";
