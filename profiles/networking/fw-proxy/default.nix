@@ -17,7 +17,7 @@ in
 
   nix = {
     binaryCaches = [
-      "http://cache.li7g.com"
+      "http://nuc.ts.li7g.com/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
     ];
     binaryCachePublicKeys = [

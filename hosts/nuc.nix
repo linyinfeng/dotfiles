@@ -94,19 +94,23 @@ in
         recommendedProxySettings = true;
         virtualHosts = {
           "nuc.li7g.com" = {
-            default = true;
-            locations."/" = {
-              proxyPass = "http://localhost:${toString grafanaPort}";
+            serverAliases = [ "nuc.ts.li7g.com" ];
+            locations."/grafana/" = {
+              proxyPass = "http://127.0.0.1:${toString grafanaPort}/";
             };
-          };
-          "hydra.li7g.com" = {
-            locations."/" = {
-              proxyPass = "http://localhost:${toString hydraPort}";
+            locations."/hydra/" = {
+              proxyPass = "http://127.0.0.1:${toString hydraPort}/";
+              extraConfig = ''
+                proxy_set_header X-Request-Base /hydra;
+              '';
+            };
+            locations."/store/" = {
+              proxyPass = "http://127.0.0.1:${toString servePort}/";
             };
           };
           "cache.li7g.com" = {
             locations."/" = {
-              proxyPass = "http://localhost:${toString servePort}";
+              proxyPass = "http://127.0.0.1:${toString servePort}";
             };
           };
         };
@@ -120,8 +124,13 @@ in
     # monitoring
     {
       services.grafana = {
+        addr = "127.0.0.1";
         enable = true;
         port = grafanaPort;
+        rootUrl = "http://nuc.li7g.com/grafana";
+        extraOptions = {
+          "SERVER_SERVE_FROM_SUB_PATH" = "true";
+        };
       };
       environment.global-persistence.directories = [
         "/var/lib/grafana"
@@ -140,17 +149,16 @@ in
     {
       services.hydra = {
         enable = true;
-        listenHost = "localhost";
+        listenHost = "127.0.0.1";
         port = hydraPort;
-        hydraURL = "hydra.li7g.com";
+        hydraURL = "nuc.li7g.com";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
-        extraConfig = ''
-        '';
+        debugServer = true;
       };
       environment.global-persistence.directories = [
         "/var/lib/hydra"
@@ -178,7 +186,7 @@ in
     {
       services.nix-serve = {
         enable = true;
-        bindAddress = "localhost";
+        bindAddress = "127.0.0.1";
         port = servePort;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
