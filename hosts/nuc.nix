@@ -128,6 +128,7 @@ in
         enable = true;
         port = grafanaPort;
         rootUrl = "http://nuc.li7g.com/grafana";
+        auth.anonymous.enable = true;
         extraOptions = {
           "SERVER_SERVE_FROM_SUB_PATH" = "true";
         };
