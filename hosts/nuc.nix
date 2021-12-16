@@ -72,8 +72,8 @@ in
         enable = true;
         recommendedProxySettings = true;
         virtualHosts = {
-          "nuc.li7g.com" = {
-            serverAliases = [ "nuc.ts.li7g.com" ];
+          "nuc.ts.li7g.com" = {
+            default = true;
             locations."/grafana/" = {
               proxyPass = "http://127.0.0.1:${toString grafanaPort}/";
             };
@@ -106,7 +106,7 @@ in
         addr = "127.0.0.1";
         enable = true;
         port = grafanaPort;
-        rootUrl = "http://nuc.li7g.com/grafana";
+        rootUrl = "/grafana";
         auth.anonymous.enable = true;
         extraOptions = {
           "SERVER_SERVE_FROM_SUB_PATH" = "true";
@@ -131,7 +131,7 @@ in
         enable = true;
         listenHost = "127.0.0.1";
         port = hydraPort;
-        hydraURL = "nuc.li7g.com";
+        hydraURL = "/hydra";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
         buildMachinesFiles = [

@@ -51,6 +51,7 @@ in
 
       services.nginx = {
         enable = true;
+        recommendedProxySettings = true;
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
       services.nginx.virtualHosts.${config.services.portal.host} = {
