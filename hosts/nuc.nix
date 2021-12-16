@@ -142,15 +142,15 @@ in
         buildMachinesFiles = [
           "/etc/nix/machines"
         ];
-      };
-      systemd.services.hydra-evaluator = {
-        environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+        extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+        extraConfig = ''
+        '';
       };
       environment.global-persistence.directories = [
         "/var/lib/hydra"
         "/var/lib/postgresql"
       ];
-      nix.trustedUsers = [ "hydra" ];
+      nix.allowedUsers = [ "hydra-www" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [
         {

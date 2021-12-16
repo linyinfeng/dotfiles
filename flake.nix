@@ -61,8 +61,6 @@
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       emacs-webkit.url = "github:akirakyle/emacs-webkit";
       emacs-webkit.flake = false;
-      nix.url = "github:nixos/nix";
-      nix.inputs.nixpkgs.follows = "latest";
 
       flake-compat.follows = "digga/deploy/flake-compat";
     };
@@ -110,9 +108,6 @@
               inputs.nixos-cn.overlay
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
-              (final: prev: {
-                nixUnstable = inputs.nix.packages.${final.system}.nix;
-              })
             ];
           };
           latest = { };
