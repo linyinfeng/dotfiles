@@ -80,6 +80,14 @@ in
         };
       };
 
+      services.nginx.virtualHosts."nuc.li7g.com" = {
+        addSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://nuc.ts.li7g.com";
+        };
+      };
+
       services.notify-failure.services = [
         "dot-tar"
       ];

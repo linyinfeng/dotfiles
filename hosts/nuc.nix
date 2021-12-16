@@ -42,27 +42,6 @@ in
       services.thermald.enable = true;
       services.scheduled-reboot.enable = true;
 
-      services.godns = {
-        ipv4.settings = {
-          domains = [{
-            domain_name = "li7g.com";
-            sub_domains = [ "nuc" ];
-          }];
-          ip_type = "IPv4";
-          ip_interface = "enp88s0";
-          # TODO if public ip working change to `ip_url`
-          # ip_url = "https://myip.biturl.top";
-        };
-        ipv6.settings = {
-          domains = [{
-            domain_name = "li7g.com";
-            sub_domains = [ "nuc" ];
-          }];
-          ip_type = "IPv6";
-          ip_interface = "enp88s0";
-        };
-      };
-
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
