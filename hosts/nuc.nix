@@ -159,7 +159,7 @@ in
           config.users.groups.nixbuild.name
         ];
       };
-      sops.secrets."nixbuild/id-ed25519".owner = config.users.users.hydra.name;
+      sops.secrets."nixbuild/id-ed25519".owner = config.users.users.hydra-queue-runner.name;
       nix.buildMachines = [
         {
           hostName = "localhost";
