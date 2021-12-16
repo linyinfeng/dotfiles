@@ -158,14 +158,11 @@ in
         extraGroups = [
           config.users.groups.nixbuild.name
         ];
-        openssh.authorizedKeys.keyFiles = [
-          ../users/yinfeng/ssh/id_ed25519.pub
-        ];
       };
+      sops.secrets."nixbuild/id-ed25519".owner = config.users.users.hydra.name;
       nix.buildMachines = [
         {
           hostName = "localhost";
-          sshKey = config.sops.secrets."yinfeng/id-ed25519".path;
           systems = [
             "x86_64-linux"
             "i686-linux"

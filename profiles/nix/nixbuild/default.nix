@@ -29,10 +29,7 @@ in
       ${proxyCommand}
   '';
   users.groups.nixbuild = { };
-  sops.secrets."nixbuild/id-ed25519" = {
-    mode = "0440";
-    group = config.users.groups.nixbuild.name;
-  };
+  sops.secrets."nixbuild/id-ed25519" = { };
   services.openssh.knownHosts = {
     nixbuild = {
       hostNames = [ "eu.nixbuild.net" ];
