@@ -36,6 +36,54 @@ in
   services.thermald.enable = true;
   services.scheduled-reboot.enable = true;
 
+  networking.firewall.allowedTCPPorts = [
+    3000 # temporary
+  ];
+  services.hydra = {
+    enable = true;
+    hydraURL = "hydra.li7g.com";
+    notificationSender = "hydra@li7g.com";
+    useSubstitutes = true;
+    # use local db (default)
+  };
+  systemd.services.hydra-evaluator = {
+    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+  };
+  environment.global-persistence.directories = [
+    "/var/lib/hydra"
+    "/var/lib/postgresql"
+  ];
+  nix.trustedUsers = [ "hydra" ];
+  nix.distributedBuilds = true;
+  users.users.hydra.openssh.authorizedKeys.keyFiles = [
+    ../users/yinfeng/ssh/id_ed25519.pub
+  ];
+  nix.buildMachines = [
+    {
+      hostName = "localhost";
+      sshKey = config.sops.secrets."yinfeng/id-ed25519".path;
+      systems = [
+        "x86_64-linux"
+        "i686-linux"
+      ];
+      maxJobs = 4;
+      speedFactor = 1;
+    }
+    {
+      hostName = "eu.nixbuild.net";
+      sshKey = config.sops.secrets."yinfeng/id-ed25519".path;
+      systems = [
+        "x86_64-linux"
+        "i686-linux"
+        "aarch64-linux"
+      ];
+      supportedFeatures = [ "benchmark" "big-parallel" ];
+      maxJobs = 100;
+      speedFactor = 2;
+    }
+  ];
+  sops.secrets."yinfeng/id-ed25519" = { };
+
   services.godns = {
     ipv4.settings = {
       domains = [{
