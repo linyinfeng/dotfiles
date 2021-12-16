@@ -63,7 +63,7 @@
       emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "latest";
- 
+
       flake-compat.follows = "digga/deploy/flake-compat";
     };
 
@@ -231,6 +231,7 @@
               samba = [ services.samba ];
               godns = [ services.godns ];
               waydroid = [ profiles.virtualization.waydroid ];
+              telegraf-system = [ services.telegraf-system ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];

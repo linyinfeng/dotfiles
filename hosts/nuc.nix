@@ -16,6 +16,7 @@ let
   grafanaPort = 3001;
   hydraPort = 3002;
   servePort = 3003;
+  influxdbPort = 3004;
 
 in
 {
@@ -24,6 +25,7 @@ in
     suites.virtualization ++
     suites.tpm ++
     suites.fw ++
+    suites.telegraf-system ++
     suites.campus;
 
   config = lib.mkMerge [
@@ -94,13 +96,15 @@ in
           };
         };
       };
-      networking.firewall.allowedTCPPorts = [
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
         80
+      ];
+      networking.firewall.allowedTCPPorts = [
         443
       ];
     }
 
-    # monitoring
+    # grafana
     {
       services.grafana = {
         addr = "127.0.0.1";
@@ -123,6 +127,30 @@ in
           chown grafana "$dir"
         '';
       };
+    }
+
+    # telegraf
+    {
+      services.telegraf.extraConfig = { };
+    }
+
+    # influxdb
+    {
+      services.influxdb2 = {
+        enable = true;
+        settings = {
+          http-bind-address = ":${toString influxdbPort}";
+        };
+      };
+      environment.systemPackages = with pkgs; [
+        influxdb2
+      ];
+      environment.global-persistence.directories = [
+        "/var/lib/influxdb"
+      ];
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+        influxdbPort
+      ];
     }
 
     # hydra
