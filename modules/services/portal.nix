@@ -62,7 +62,6 @@ in
     })
     (lib.mkIf cfg.server.enable {
       services.nginx.virtualHosts.${cfg.host} = {
-        addSSL = true;
         locations.${cfg.path}.extraConfig = ''
           if ($http_upgrade != "websocket") { # Return 404 error when WebSocket upgrading negotiate failed
             return 404;
