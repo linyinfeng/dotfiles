@@ -396,22 +396,6 @@
         "type": "github"
       }
     },
-    "mobile-nixos": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1638569976,
-        "narHash": "sha256-XNn8d+sVMIz2y9oBcZ6H1LVUJ7Nz/1fr1ohtRwRrMSY=",
-        "owner": "nixos",
-        "repo": "mobile-nixos",
-        "rev": "c4678e4cc77825c4d0cf64d40fc97ed1c08c2df0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "mobile-nixos",
-        "type": "github"
-      }
-    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -558,22 +542,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-mobile": {
-      "locked": {
-        "lastModified": 1635792138,
-        "narHash": "sha256-D79GqaYrwgyM4wvOPbQeKveAHROnVh97F36iSGZO9uA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "b165ce0c4efbb74246714b5c66b6bcdce8cde175",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "b165ce0c4efbb74246714b5c66b6bcdce8cde175",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1639566195,
@@ -706,13 +674,11 @@
         "impermanence": "impermanence",
         "latest": "latest",
         "linyinfeng": "linyinfeng",
-        "mobile-nixos": "mobile-nixos",
         "naersk": "naersk",
         "nix": "nix",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs-mobile": "nixpkgs-mobile",
         "nur": "nur",
         "nvfetcher": "nvfetcher",
         "sops-nix": "sops-nix"
