@@ -15,6 +15,7 @@ let
 
   grafanaPort = 3001;
   hydraPort = 3002;
+  servePort = 3003;
 
 in
 {
@@ -103,6 +104,11 @@ in
               proxyPass = "http://localhost:${toString hydraPort}";
             };
           };
+          "cache.li7g.com" = {
+            locations."/" = {
+              proxyPass = "http://localhost:${toString servePort}";
+            };
+          };
         };
       };
       networking.firewall.allowedTCPPorts = [
@@ -166,6 +172,18 @@ in
         }
       ];
       sops.secrets."yinfeng/id-ed25519" = { };
+    }
+
+    # store serving
+    {
+      services.nix-serve = {
+        enable = true;
+        bindAddress = "localhost";
+        port = servePort;
+        secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
+      };
+      sops.secrets."cache-li7g-com/key" = { };
+      nix.allowedUsers = [ "nix-serve" ];
     }
   ];
 }

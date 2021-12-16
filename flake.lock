@@ -380,6 +380,22 @@
         "type": "github"
       }
     },
+    "lowdown-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1633514407,
+        "narHash": "sha256-Dw32tiMjdK9t3ETl5fzGrutQTzh2rufgZV4A/BbxuD4=",
+        "owner": "kristapsdz",
+        "repo": "lowdown",
+        "rev": "d2c2b44ff6c27b936ec27358a2653caaef8f73b8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kristapsdz",
+        "repo": "lowdown",
+        "type": "github"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -397,6 +413,27 @@
       "original": {
         "owner": "nmattia",
         "repo": "naersk",
+        "type": "github"
+      }
+    },
+    "nix": {
+      "inputs": {
+        "lowdown-src": "lowdown-src",
+        "nixpkgs": [
+          "latest"
+        ]
+      },
+      "locked": {
+        "lastModified": 1639591986,
+        "narHash": "sha256-7EhO2aLHd6eJKWpxUyDIWvubh4LvSIcOX5iF5/UnqpQ=",
+        "owner": "nixos",
+        "repo": "nix",
+        "rev": "f66923efdefa5160222b6d6ef0dd9fa822242116",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nix",
         "type": "github"
       }
     },
@@ -638,6 +675,7 @@
         "latest": "latest",
         "linyinfeng": "linyinfeng",
         "naersk": "naersk",
+        "nix": "nix",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",
         "nixos-hardware": "nixos-hardware",
