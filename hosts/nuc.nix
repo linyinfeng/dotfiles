@@ -158,7 +158,6 @@ in
           "/etc/nix/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
-        debugServer = true;
       };
       environment.global-persistence.directories = [
         "/var/lib/hydra"
