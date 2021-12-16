@@ -150,7 +150,7 @@ in
         "/var/lib/hydra"
         "/var/lib/postgresql"
       ];
-      nix.allowedUsers = [ "hydra-www" ];
+      nix.allowedUsers = [ "hydra" "hydra-www" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [
         {
