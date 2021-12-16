@@ -23,7 +23,6 @@ in
     suites.virtualization ++
     suites.tpm ++
     suites.fw ++
-    suites.nixbuild ++
     suites.campus;
 
   config = lib.mkMerge [
@@ -142,7 +141,6 @@ in
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
-          "/etc/nixbuild/machines"
         ];
       };
       systemd.services.hydra-evaluator = {
@@ -154,18 +152,13 @@ in
       ];
       nix.trustedUsers = [ "hydra" ];
       nix.distributedBuilds = true;
-      users.users.hydra = {
-        extraGroups = [
-          config.users.groups.nixbuild.name
-        ];
-      };
-      sops.secrets."nixbuild/id-ed25519".owner = config.users.users.hydra-queue-runner.name;
       nix.buildMachines = [
         {
           hostName = "localhost";
           systems = [
             "x86_64-linux"
             "i686-linux"
+            "aarch64-linux"
           ];
           supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
           maxJobs = 4;

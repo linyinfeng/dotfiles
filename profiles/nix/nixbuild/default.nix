@@ -28,7 +28,6 @@ in
       IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
       ${proxyCommand}
   '';
-  users.groups.nixbuild = { };
   sops.secrets."nixbuild/id-ed25519" = { };
   services.openssh.knownHosts = {
     nixbuild = {
