@@ -322,7 +322,9 @@
                     lib.optionalAttrs (cfg.pkgs.system == system)
                       { "toplevel-${host}" = cfg.config.system.build.toplevel; })
                   self.nixosConfigurations)
-            );
+            ) // {
+              devShell = self.devShell.${system};
+            };
 
 
             allChecks = pkgs.linkFarm "all-checks"
