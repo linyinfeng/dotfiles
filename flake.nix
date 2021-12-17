@@ -84,10 +84,10 @@
       {
         inherit self inputs;
 
-        # TODO some packages broken in x86_64-darwin
+        # TODO devShell borken on aarch64-linux
         supportedSystems = [
           "x86_64-linux"
-          "aarch64-linux"
+          # "aarch64-linux"
         ];
 
         channelsConfig = { allowUnfree = true; };
