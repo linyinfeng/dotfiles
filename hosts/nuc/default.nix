@@ -79,6 +79,9 @@ in
         virtualHosts = {
           "nuc.ts.li7g.com" = {
             default = true;
+            locations."/" = {
+              root = ./www;
+            };
             locations."/grafana/" = {
               proxyPass = "http://127.0.0.1:${toString grafanaPort}/";
             };
