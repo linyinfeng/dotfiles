@@ -3,6 +3,7 @@
 {
   imports =
     suites.homeServer ++
+    suites.telegraf-system ++
     suites.fw;
 
   i18n.defaultLocale = "en_US.UTF-8";

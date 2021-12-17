@@ -15,6 +15,7 @@ in
 {
   imports =
     suites.server ++
+    suites.telegraf-system ++
     suites.telegram-send ++
     suites.notify-failure ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
