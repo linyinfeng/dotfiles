@@ -15,13 +15,19 @@ in
   };
   systemd.services.nix-daemon.environment = cfg.environment;
 
-  nix = {
-    binaryCaches = [
-      "http://nuc.ts.li7g.com/store"
-      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-    ];
-    binaryCachePublicKeys = [
-      "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
-    ];
-  };
+  nix = lib.mkMerge [
+    {
+      binaryCaches = lib.mkOrder 900 [
+        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+      ];
+    }
+    {
+      binaryCaches = lib.mkOrder 1100 [
+        "http://nuc.ts.li7g.com/store"
+      ];
+      binaryCachePublicKeys = [
+        "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
+      ];
+    }
+  ];
 }

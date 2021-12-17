@@ -35,7 +35,7 @@ in
         ${cfg.package}/bin/telegraf --config "${cfg.configUrl}"
       '';
       serviceConfig = {
-        ExecReload="${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
 
         RuntimeDirectory = "telegraf";
         LoadCredential = [
@@ -60,6 +60,6 @@ in
       description = "telegraf daemon user";
     };
 
-    users.groups.telegraf = {};
+    users.groups.telegraf = { };
   };
 }
