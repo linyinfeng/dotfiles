@@ -19,7 +19,7 @@ in
 {
   imports =
     suites.server ++
-    suites.telegraf-system ++
+    suites.monitoring ++
     suites.telegram-send ++
     suites.notify-failure ++
     suites.acme;

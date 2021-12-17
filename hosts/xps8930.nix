@@ -19,7 +19,7 @@ in
 {
   imports =
     suites.desktopWorkstation ++
-    suites.telegraf-system ++
+    suites.monitoring ++
     suites.tpm ++
     suites.campus ++
     suites.fw ++

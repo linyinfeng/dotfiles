@@ -17,6 +17,7 @@ let
   hydraPort = 3002;
   servePort = 3003;
   influxdbPort = 3004;
+  lokiPort = 3005;
 
 in
 {
@@ -25,7 +26,7 @@ in
     suites.virtualization ++
     suites.tpm ++
     suites.fw ++
-    suites.telegraf-system ++
+    suites.monitoring ++
     suites.campus;
 
   config = lib.mkMerge [
@@ -129,9 +130,50 @@ in
       };
     }
 
-    # telegraf
+    # loki
     {
-      services.telegraf.extraConfig = { };
+      services.loki = {
+        enable = true;
+        configuration = {
+          auth_enabled = false;
+          server.http_listen_port = lokiPort;
+
+          common = {
+            path_prefix = config.services.loki.dataDir;
+            replication_factor = 1;
+            ring = {
+              instance_addr = "127.0.0.1";
+              kvstore.store = "inmemory";
+            };
+          };
+
+          compactor = {
+            retention_enabled = true;
+          };
+          limits_config = {
+            retention_period = "336h"; # 14 days
+          };
+
+          schema_config.configs = [
+            {
+              from = "2020-10-24";
+              store = "boltdb-shipper";
+              object_store = "filesystem";
+              schema = "v11";
+              index = {
+                prefix = "index_";
+                period = "24h";
+              };
+            }
+          ];
+        };
+      };
+      environment.global-persistence.directories = [
+        config.services.loki.dataDir
+      ];
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+        lokiPort
+      ];
     }
 
     # influxdb

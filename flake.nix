@@ -221,7 +221,6 @@
               acme = [ services.acme ];
               telegram-send = [ programs.telegram-send ];
               notify-failure = [ services.notify-failure ];
-
               fw = with networking; [ fw-proxy ];
               tpm = [ security.tpm ];
               nixbuild = [ nix.nixbuild ];
@@ -232,6 +231,8 @@
               godns = [ services.godns ];
               waydroid = [ profiles.virtualization.waydroid ];
               telegraf-system = [ services.telegraf-system ];
+              promtail = [ services.promtail ];
+              monitoring = [ telegraf-system promtail ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
               mobileWorkstation = workstation ++ campus ++ [ laptop ];
