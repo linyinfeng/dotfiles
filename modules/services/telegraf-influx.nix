@@ -49,6 +49,9 @@ in
         # for ping probes
         AmbientCapabilities = [ "CAP_NET_RAW" ];
       };
+      path = [
+        pkgs.lm_sensors
+      ];
     };
 
     users.users.telegraf = {
