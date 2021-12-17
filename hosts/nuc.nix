@@ -22,7 +22,9 @@ let
 in
 {
   imports =
-    suites.homeServer ++
+    suites.server ++
+    suites.networkManager ++
+    suites.godns ++
     suites.virtualization ++
     suites.tpm ++
     suites.fw ++
