@@ -24,7 +24,7 @@ in
       description = "Configuration URL";
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
     systemd.services.telegraf-influx = {
       description = "Telegraf Agent";
       wantedBy = [ "multi-user.target" ];
