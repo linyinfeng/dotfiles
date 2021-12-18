@@ -24,6 +24,7 @@ in
       auth.anonymous.enable = true;
       extraOptions = {
         "SERVER_SERVE_FROM_SUB_PATH" = "true";
+        "USERS_DEFAULT_THEME" = "light";
         "DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH" = "${./home.json}";
       };
       security = {
