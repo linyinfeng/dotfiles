@@ -13,12 +13,7 @@ let
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/8b982fe4-1521-4a4d-aafc-af22c3961093";
 
-  grafanaPort = 3001;
-  hydraPort = 3002;
-  servePort = 3003;
-  influxdbPort = 3004;
-  lokiPort = 3005;
-
+  cfg = config.hosts.nuc;
 in
 {
   imports =
@@ -29,7 +24,35 @@ in
     suites.tpm ++
     suites.fw ++
     suites.monitoring ++
-    suites.campus;
+    suites.campus ++ [
+      ./influxdb
+      ./grafana
+    ];
+
+  options.hosts.nuc = {
+    ports = {
+      grafana = lib.mkOption {
+        type = lib.types.port;
+        default = 3001;
+      };
+      hydra = lib.mkOption {
+        type = lib.types.port;
+        default = 3002;
+      };
+      nixServe = lib.mkOption {
+        type = lib.types.port;
+        default = 3003;
+      };
+      influxdb = lib.mkOption {
+        type = lib.types.port;
+        default = 3004;
+      };
+      loki = lib.mkOption {
+        type = lib.types.port;
+        default = 3005;
+      };
+    };
+  };
 
   config = lib.mkMerge [
     {
@@ -83,21 +106,21 @@ in
               root = ./www;
             };
             locations."/grafana/" = {
-              proxyPass = "http://127.0.0.1:${toString grafanaPort}/";
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
             };
             locations."/hydra/" = {
-              proxyPass = "http://127.0.0.1:${toString hydraPort}/";
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
               extraConfig = ''
                 proxy_set_header X-Request-Base /hydra;
               '';
             };
             locations."/store/" = {
-              proxyPass = "http://127.0.0.1:${toString servePort}/";
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
             };
           };
           "cache.li7g.com" = {
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString servePort}";
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}";
             };
           };
         };
@@ -110,38 +133,13 @@ in
       ];
     }
 
-    # grafana
-    {
-      services.grafana = {
-        addr = "127.0.0.1";
-        enable = true;
-        port = grafanaPort;
-        rootUrl = "/grafana";
-        auth.anonymous.enable = true;
-        extraOptions = {
-          "SERVER_SERVE_FROM_SUB_PATH" = "true";
-        };
-      };
-      environment.global-persistence.directories = [
-        "/var/lib/grafana"
-      ];
-      system.activationScripts.fixGrafanaPermission = {
-        deps = [ "users" ];
-        text = ''
-          dir="${config.environment.global-persistence.root}/var/lib/grafana"
-          mkdir -p "$dir"
-          chown grafana "$dir"
-        '';
-      };
-    }
-
     # loki
     {
       services.loki = {
         enable = true;
         configuration = {
           auth_enabled = false;
-          server.http_listen_port = lokiPort;
+          server.http_listen_port = cfg.ports.loki;
 
           common = {
             path_prefix = config.services.loki.dataDir;
@@ -177,26 +175,7 @@ in
         config.services.loki.dataDir
       ];
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-        lokiPort
-      ];
-    }
-
-    # influxdb
-    {
-      services.influxdb2 = {
-        enable = true;
-        settings = {
-          http-bind-address = ":${toString influxdbPort}";
-        };
-      };
-      environment.systemPackages = with pkgs; [
-        influxdb2
-      ];
-      environment.global-persistence.directories = [
-        "/var/lib/private/influxdb2"
-      ];
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-        influxdbPort
+        cfg.ports.loki
       ];
     }
 
@@ -205,7 +184,7 @@ in
       services.hydra = {
         enable = true;
         listenHost = "127.0.0.1";
-        port = hydraPort;
+        port = cfg.ports.hydra;
         hydraURL = "/hydra";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
@@ -241,7 +220,7 @@ in
       services.nix-serve = {
         enable = true;
         bindAddress = "127.0.0.1";
-        port = servePort;
+        port = cfg.ports.nixServe;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
       sops.secrets."cache-li7g-com/key" = { };

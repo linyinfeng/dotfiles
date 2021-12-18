@@ -1,0 +1,79 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "dashboard",
+          "uid": "-- Dashboard --"
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "maxItems": 10,
+          "query": "",
+          "showHeadings": false,
+          "showRecentlyViewed": false,
+          "showSearch": true,
+          "showStarred": false,
+          "tags": []
+        },
+        "pluginVersion": "8.3.2",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "refId": "A"
+          }
+        ],
+        "title": "Dashboards",
+        "type": "dashlist"
+      }
+    ],
+    "schemaVersion": 33,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Home",
+    "uid": "FRJ6Zvo7z",
+    "version": 2,
+    "weekStart": ""
+  }
