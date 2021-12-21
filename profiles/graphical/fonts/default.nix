@@ -29,14 +29,14 @@
 
   fonts.fontconfig.defaultFonts = {
     sansSerif = lib.mkBefore [
-      "Source Sans Pro"
+      "Source Sans 3"
       "Source Han Sans SC"
       "Source Han Sans TC"
       "Source Han Sans HW"
       "Source Han Sans K"
     ];
     serif = lib.mkBefore [
-      "Source Serif Pro"
+      "Source Serif 4"
       "Source Han Serif SC"
       "Source Han Serif TC"
       "Source Han Serif HW"
