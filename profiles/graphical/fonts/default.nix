@@ -7,7 +7,9 @@
     noto-fonts-emoji
     noto-fonts-extra
 
+    source-serif-pro
     source-han-serif
+    source-sans-pro
     source-han-sans
     source-code-pro
 
@@ -27,20 +29,18 @@
 
   fonts.fontconfig.defaultFonts = {
     sansSerif = lib.mkBefore [
+      "Source Sans Pro"
       "Source Han Sans SC"
       "Source Han Sans TC"
       "Source Han Sans HW"
       "Source Han Sans K"
-      "Noto Sans"
-      "DejaVu Sans"
     ];
     serif = lib.mkBefore [
+      "Source Serif Pro"
       "Source Han Serif SC"
       "Source Han Serif TC"
       "Source Han Serif HW"
       "Source Han Serif K"
-      "Noto Serif"
-      "DejaVu Serif"
     ];
     # respect powerline font settings in core
     monospace = lib.mkAfter [
