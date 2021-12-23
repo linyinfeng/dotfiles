@@ -214,7 +214,7 @@
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
               virtualization = with profiles.virtualization; [ podman libvirt wine ];
 
-              resolved = with networking; [ resolved ];
+              resolved = [ networking.resolved ];
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];
