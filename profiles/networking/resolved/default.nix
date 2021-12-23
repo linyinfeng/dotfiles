@@ -1,6 +1,11 @@
-{ ... }:
+{ config, ... }:
 
 {
+  assertions = [
+    { assertion = !config.services.avahi.enable;
+      message = "resolved conflicts with avahi";
+    }
+  ];
   services.resolved = {
     enable = true;
     dnssec = "allow-downgrade";
