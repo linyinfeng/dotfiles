@@ -111,7 +111,8 @@
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               (final: prev: {
-                nixUnstable = inputs.nix.packages.${final.system}.nix;
+                # TODO broken evaluation
+                # nixUnstable = inputs.nix.packages.${final.system}.nix;
               })
             ];
           };
