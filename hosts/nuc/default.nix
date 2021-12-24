@@ -24,6 +24,7 @@ in
     suites.tpm ++
     suites.fw ++
     suites.monitoring ++
+    suites.nixbuild ++
     suites.campus ++ [
       ./influxdb
       ./grafana
@@ -190,6 +191,7 @@ in
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
+          "/etc/nixbuild/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
       };
@@ -212,7 +214,7 @@ in
           speedFactor = 1;
         }
       ];
-      sops.secrets."yinfeng/id-ed25519" = { };
+      sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
     }
 
     # store serving

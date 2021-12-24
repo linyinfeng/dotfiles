@@ -20,8 +20,6 @@ in
   environment.shellAliases = {
     nixbuild = ''nix --builders @/etc/nixbuild/machines'';
   };
-
-  # TODO use other identity
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519
