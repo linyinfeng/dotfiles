@@ -366,6 +366,9 @@
 (use-package swift-mode
   :ensure t)
 
+(use-package telega
+  :ensure t)
+
 (use-package tex
   :ensure auctex
   :custom
