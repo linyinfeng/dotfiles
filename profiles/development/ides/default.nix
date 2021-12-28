@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    android-studio
+    # android-studio # no `preferLocalbuild`
     jetbrains.idea-ultimate
     jetbrains.clion
     jetbrains.goland
