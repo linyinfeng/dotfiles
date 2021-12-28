@@ -42,8 +42,6 @@
 
   hardware.enableRedistributableFirmware = true;
 
-  nix.binaryCaches = [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
-
   fileSystems."/" =
     {
       device = "/dev/disk/by-uuid/25f4278d-36a3-46db-90cf-6f9e3755e2ef";
