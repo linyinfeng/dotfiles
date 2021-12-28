@@ -191,9 +191,14 @@ in
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
-          "/etc/nixbuild/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+
+        package = pkgs.hydra-unstable.overrideAttrs (old: {
+          patches = (old.patches or []) ++ [
+            ./patches/hydra-non-local.patch
+          ];
+        });
       };
       environment.global-persistence.directories = [
         "/var/lib/hydra"
@@ -212,6 +217,18 @@ in
           supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
           maxJobs = 4;
           speedFactor = 1;
+        }
+        {
+          hostName = "eu.nixbuild.net";
+          systems = [
+            "x86_64-linux"
+            "i686-linux"
+            "aarch64-linux"
+          ];
+          supportedFeatures = [ "benchmark" "big-parallel" ];
+          mandatoryFeatures = [ "non-local" ];
+          maxJobs = 100;
+          speedFactor = 2;
         }
       ];
       sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
