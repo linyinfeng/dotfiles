@@ -17,6 +17,8 @@
   };
   boot.initrd.availableKernelModules = [ "uhci_hcd" "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
 
+  services.fwupd.enable = true;
+
   services.logind.lidSwitch = "ignore";
 
   services.scheduled-reboot.enable = true;

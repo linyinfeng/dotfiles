@@ -67,6 +67,7 @@ in
       };
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
       hardware.enableRedistributableFirmware = true;
+      services.fwupd.enable = true;
 
       services.thermald.enable = true;
       services.scheduled-reboot.enable = true;

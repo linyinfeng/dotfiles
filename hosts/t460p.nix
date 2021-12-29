@@ -90,6 +90,8 @@ in
     };
   };
 
+  services.fwupd.enable = true;
+
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   virtualisation.kvmgt = {

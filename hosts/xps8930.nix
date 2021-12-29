@@ -44,6 +44,7 @@ in
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
   services.thermald.enable = true;
+  services.fwupd.enable = true;
 
   services.xserver.desktopManager.gnome.enable = true;
 
