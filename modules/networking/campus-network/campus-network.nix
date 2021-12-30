@@ -65,8 +65,9 @@ in
 
     systemd.services."campus-net-auto-login" = {
       enable = cfg.auto-login.enable;
-      script = ''
-      '';
+      serviceConfig = {
+        ExecStart = "${scripts}/bin/campus-net-auto-login";
+      };
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
