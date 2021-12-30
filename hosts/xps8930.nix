@@ -21,7 +21,6 @@ in
     suites.desktopWorkstation ++
     suites.monitoring ++
     suites.tpm ++
-    suites.campus ++
     suites.fw ++
     suites.godns ++
     suites.ci-agent ++
@@ -59,7 +58,10 @@ in
       };
     };
   };
-
+  networking.campus-network = {
+    enable = true;
+    auto-login.enable = true;
+  };
   services.portal = {
     host = "portal.li7g.com";
     client.enable = true;

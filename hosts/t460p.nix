@@ -132,6 +132,10 @@ in
   #   };
   # };
 
+  networking.campus-network = {
+    enable = true;
+    auto-login.enable = true;
+  };
   services.portal = {
     host = "portal.li7g.com";
     client.enable = true;

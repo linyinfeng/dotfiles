@@ -219,7 +219,6 @@
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];
-              campus = with networking; [ campus-network ];
               ci-agent = with services; [ hercules-ci-agent ];
               acme = [ services.acme ];
               telegram-send = [ programs.telegram-send ];
@@ -238,7 +237,7 @@
               monitoring = [ telegraf-system promtail ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
-              mobileWorkstation = workstation ++ campus ++ [ laptop ];
+              mobileWorkstation = workstation ++ [ laptop ];
               desktopWorkstation = workstation;
               server = base ++ network;
               homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);

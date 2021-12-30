@@ -1,0 +1,23 @@
+#!@shell@
+
+set +e
+
+login="@campusNetLogin@"
+curl="@curl@/bin/curl"
+interval="@intervalSec@"
+
+function test_and_login {
+    echo -n "curl 'http://captive.apple.com': "
+    "$curl" http://captive.apple.com --silent --show-error | grep Success > /dev/null
+    if [ $? -eq 0 ]; then
+        # do nothing
+        echo "already logged in"
+    else
+        echo "no internet, try login"
+        "$login"
+    fi
+}
+while true; do
+    test_and_login
+    sleep "$interval"
+done

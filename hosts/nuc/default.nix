@@ -24,8 +24,7 @@ in
     suites.tpm ++
     suites.fw ++
     suites.monitoring ++
-    suites.nixbuild ++
-    suites.campus ++ [
+    suites.nixbuild ++ [
       ./influxdb
       ./grafana
     ];
@@ -71,6 +70,11 @@ in
 
       services.thermald.enable = true;
       services.scheduled-reboot.enable = true;
+      
+      networking.campus-network = {
+        enable = true;
+        auto-login.enable = true;
+      };
 
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
