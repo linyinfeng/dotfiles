@@ -10,10 +10,10 @@ let
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "campus-network-scripts";
     buildCommand = ''
-        install -Dm755 $campusNetLogin  $out/bin/campus-net-login
-        install -Dm755 $campusNetLogout $out/bin/campus-net-logout
-        install -Dm755 $autoLogin       $out/bin/campus-net-auto-login
-      '';
+      install -Dm755 $campusNetLogin  $out/bin/campus-net-login
+      install -Dm755 $campusNetLogout $out/bin/campus-net-logout
+      install -Dm755 $autoLogin       $out/bin/campus-net-auto-login
+    '';
     campusNetLogin = pkgs.substituteAll {
       src = ./scripts/login.sh;
       isExecutable = true;
@@ -36,7 +36,7 @@ let
       inherit campusNetLogin;
       intervalSec = cfg.auto-login.interval;
     };
-  };  
+  };
 in
 {
   options.networking.campus-network = {

@@ -70,7 +70,7 @@ in
 
       services.thermald.enable = true;
       services.scheduled-reboot.enable = true;
-      
+
       networking.campus-network = {
         enable = true;
         auto-login.enable = true;
@@ -200,7 +200,7 @@ in
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
 
         package = pkgs.hydra-unstable.overrideAttrs (old: {
-          patches = (old.patches or []) ++ [
+          patches = (old.patches or [ ]) ++ [
             ./patches/hydra-non-local.patch
           ];
         });

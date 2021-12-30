@@ -2,7 +2,8 @@
 
 {
   assertions = [
-    { assertion = !config.services.avahi.enable;
+    {
+      assertion = !config.services.avahi.enable;
       message = "resolved conflicts with avahi";
     }
   ];
