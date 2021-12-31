@@ -13,6 +13,12 @@ in
     log-level = "warning";
     external-controller = "127.0.0.1:9090";
   };
+
+  networking.fw-proxy.auto-update = {
+    enable = true;
+    service = "dler";
+  };
+
   systemd.services.nix-daemon.environment = cfg.environment;
 
   nix = lib.mkMerge [

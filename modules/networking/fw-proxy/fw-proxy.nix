@@ -153,6 +153,15 @@ with lib;
         )
         (lib.attrNames cfg.environment);
     };
+    auto-update = {
+      enable = mkEnableOption "clash auto-update";
+      service = mkOption {
+        type = with types; str;
+        description = ''
+          Service used in auto update.
+        '';
+      };
+    };
   };
 
   config = mkIf (cfg.enable) (mkMerge [
@@ -270,6 +279,21 @@ with lib;
       #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="add",RUN+="${scripts}/bin/clash-tun-setup"
       #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="remove",RUN+="${scripts}/bin/clash-tun-clean"
       # '';
+    })
+    (mkIf cfg.auto-update.enable {
+      systemd.services.clash-auto-update = {
+        script = ''
+          "${scripts}/bin/update-clash" "${cfg.auto-update.service}"
+        '';
+        serviceConfig.Type = "oneshot";
+        after = [ "network-online.target" "clash-premium.service" ];
+      };
+      systemd.timers.clash-auto-update = {
+        timerConfig = {
+          OnCalendar = "04:00";
+        };
+        wantedBy = [ "timers.target" ];
+      };
     })
   ]);
 }
