@@ -223,7 +223,8 @@ in
           maxJobs = 4;
           speedFactor = 1;
         }
-        {
+        # disabled
+        (lib.mkIf false {
           hostName = "eu.nixbuild.net";
           systems = [
             "x86_64-linux"
@@ -234,7 +235,7 @@ in
           mandatoryFeatures = [ "non-local" ];
           maxJobs = 100;
           speedFactor = 2;
-        }
+        })
       ];
       sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
     }
