@@ -17,4 +17,9 @@
   environment.systemPackages = with pkgs; [
     pcsctools
   ];
+
+  security.pam.u2f.enable = true;
+  environment.global-persistence.user.directories = [
+    ".config/Yubico"
+  ];
 }
