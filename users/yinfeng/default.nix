@@ -63,7 +63,7 @@ in
       userName = "Lin Yinfeng";
       userEmail = "lin.yinfeng@outlook.com";
       signing = {
-        key = "35977ED3D1FB6D74484647F65FE6190217C55B26";
+        key = "0x113723FBAAF6AAE5";
         signByDefault = true;
       };
     };

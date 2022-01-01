@@ -44,7 +44,7 @@ in
     influxdb2
   ];
   environment.global-persistence.directories = [
-    "/var/lib/private/influxdb2"
+    "/var/lib/influxdb2"
     "/var/lib/private/influxdb2-setup"
   ];
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [

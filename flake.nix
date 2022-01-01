@@ -235,8 +235,9 @@
               telegraf-system = [ services.telegraf-system ];
               promtail = [ services.promtail ];
               monitoring = [ telegraf-system promtail ];
+              canokey = [ security.canokey ];
 
-              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing;
+              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing ++ canokey;
               mobileWorkstation = workstation ++ [ laptop ];
               desktopWorkstation = workstation;
               server = base ++ network;
@@ -266,8 +267,9 @@
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
               synchronize = [ onedrive digital-paper roaming ];
+              security = [ gpg ];
 
-              full = base ++ multimediaDev ++ virtualization ++ synchronize;
+              full = base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
             };
           };
           users = {
