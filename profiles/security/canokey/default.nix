@@ -15,10 +15,14 @@
   hardware.gpgSmartcards.enable = true;
 
   environment.systemPackages = with pkgs; [
+    yubikey-manager
     pcsctools
   ];
 
-  security.pam.u2f.enable = true;
+  security.pam.u2f = {
+    enable = true;
+    cue = true;
+  };
   environment.global-persistence.user.directories = [
     ".config/Yubico"
   ];

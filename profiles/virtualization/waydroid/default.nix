@@ -16,16 +16,16 @@
     [General]
     ApiLevel = 30
   '';
-  system.activationScripts.setupBinderLinks = {
-    deps = [ "users" "groups" ];
-    text = ''
-      binders=(binder vndbinder hwbinder)
-      for b in "''${binders[@]}"; do
-        ln -sf /dev/anbox-$b /dev/$b
-        chmod 666 /dev/$b
-      done
-    '';
-  };
+  # system.activationScripts.setupBinderLinks = {
+  #   deps = [ "users" "groups" ];
+  #   text = ''
+  #     binders=(binder vndbinder hwbinder)
+  #     for b in "''${binders[@]}"; do
+  #       ln -sf /dev/anbox-$b /dev/$b
+  #       chmod 666 /dev/$b
+  #     done
+  #   '';
+  # };
   environment.global-persistence = {
     user.directories = [
       ".local/share/waydroid"
