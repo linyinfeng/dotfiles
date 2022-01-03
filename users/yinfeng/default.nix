@@ -66,6 +66,12 @@ in
         signByDefault = true;
       };
     };
+    programs.gpg.publicKeys = [
+      {
+        source = ./pgp/pub.asc;
+        trust = "ultimate";
+      }
+    ];
   };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
