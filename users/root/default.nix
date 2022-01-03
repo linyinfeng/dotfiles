@@ -4,8 +4,7 @@
   users.users.root = {
     passwordFile = config.sops.secrets."user-password/root".path;
     openssh.authorizedKeys.keyFiles = [
-      ../yinfeng/ssh/id_ed25519.pub
-      ./ssh/actions.pub
+      ../yinfeng/ssh/authorized-keys/pgp.pub
     ];
   };
 
