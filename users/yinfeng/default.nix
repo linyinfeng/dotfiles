@@ -61,10 +61,8 @@ in
     programs.git = {
       userName = "Lin Yinfeng";
       userEmail = "lin.yinfeng@outlook.com";
-      signing = {
-        key = "0x113723FBAAF6AAE5";
-        signByDefault = true;
-      };
+      # do not sign by default
+      # signing.signByDefault = true;
     };
     programs.gpg.publicKeys = [
       {
