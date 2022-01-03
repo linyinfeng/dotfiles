@@ -1,5 +1,5 @@
 keys:
-  - &main       age10smz367wn4dfdq8ufgku5d7q7de9qvdzdn6h2d8szmta9hws7v2sup9r6p
+  - &main       95EDCBDEF79666EA5242AA42585F0B3FF1F83C5D
   - &t460p      age1c8ex4vam0qx6kldl3w2tddhmejxkrlf90mmfe334myq2l9cnfq9sgehs5d
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
   - &x200s      age1naq9xtdmugcede56kpgfu8tu3gq20g6tgrt2x3vz08ge86rwvpqqfxaw2e
@@ -11,8 +11,9 @@ keys:
 creation_rules:
   - path_regex: secrets/[^/]+\.yaml$
     key_groups:
-    - age:
+    - pgp:
       - *main
+      age:
       - *t460p
       - *xps8930
       - *x200s
@@ -21,6 +22,7 @@ creation_rules:
       - *vultr
   - path_regex: modules/sops/vm-test/test-secrets\.yaml$
     key_groups:
-    - age:
+    - pgp:
       - *main
+      age:
       - *vm-test

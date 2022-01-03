@@ -30,6 +30,7 @@ in
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/id_ed25519.pub
+      ./ssh/authorized-keys/pgp.pub
       ./ssh/authorized-keys/t460p-win.pub
     ];
   };
@@ -37,7 +38,6 @@ in
   sops.secrets = {
     "user-password/${name}".neededForUsers = true;
     "${name}/asciinema-token".owner = user.name;
-    "${name}/id-ed25519".owner = user.name;
     "${name}/nix-access-tokens" = { };
   };
   sops.templates."${name}/nix-conf" = {
@@ -54,7 +54,6 @@ in
 
     home.global-persistence.enable = true;
 
-    home.link.".ssh/id_ed25519".target = config.sops.secrets."${name}/id-ed25519".path;
     home.link.".config/nix/nix.conf".target = config.sops.templates."${name}/nix-conf".path;
     home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
     home.file.".ssh/config".source = ./ssh/config;
