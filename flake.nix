@@ -14,6 +14,8 @@
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
       digga.inputs.latest.follows = "latest";
+      digga.inputs.home-manager.follows = "home";
+      digga.inputs.deploy.follows = "deploy";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
@@ -23,23 +25,22 @@
       home.inputs.nixpkgs.follows = "nixos";
 
       darwin.url = "github:LnL7/nix-darwin";
-      darwin.inputs.nixpkgs.follows = "latest";
+      darwin.inputs.nixpkgs.follows = "nixos";
 
-      deploy.follows = "digga/deploy";
+      deploy.url = "github:input-output-hk/deploy-rs";
+      deploy.inputs.nixpkgs.follows = "nixos";
 
-      # TODO switch to sops-nix and remove agenix
-      agenix.url = "github:ryantm/agenix";
-      agenix.inputs.nixpkgs.follows = "latest";
+      # MAIN switch to sops-nix and remove agenix
+      # agenix.url = "github:ryantm/agenix";
+      # agenix.inputs.nixpkgs.follows = "nixos";
       sops-nix.url = "github:Mic92/sops-nix";
       sops-nix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
-      nvfetcher.inputs.nixpkgs.follows = "latest";
-      nvfetcher.inputs.flake-compat.follows = "digga/deploy/flake-compat";
-      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      nvfetcher.inputs.nixpkgs.follows = "nixos";
 
       naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "latest";
+      naersk.inputs.nixpkgs.follows = "nixos";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
@@ -64,7 +65,10 @@
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "latest";
 
-      flake-compat.follows = "digga/deploy/flake-compat";
+      flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.flake = false;
+      deploy.inputs.flake-compat.follows = "flake-compat";
+      nvfetcher.inputs.flake-compat.follows = "flake-compat";
     };
 
   outputs =
@@ -96,8 +100,6 @@
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
-              # Do not pull in patchedNix from digga
-              # digga.overlays.patchedNix
               # TODO nix flake show broken due to IFD
               # nur.overlay
               agenix.overlay
@@ -111,8 +113,7 @@
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               (final: prev: {
-                # TODO broken evaluation
-                # nixUnstable = inputs.nix.packages.${final.system}.nix;
+                nixUnstable = inputs.nix.packages.${final.system}.nix;
               })
             ];
           };
@@ -339,7 +340,7 @@
       }
     //
     {
-      budModules = { devos = import ./bud; };
+      budModules = { devos = import ./shell/bud; };
     }
   ;
 }

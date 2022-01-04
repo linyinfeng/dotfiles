@@ -84,7 +84,11 @@ in
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";
-        options = [ "defaults" "size=8G" "mode=755" ];
+        options = [ "defaults" "size=2G" "mode=755" ];
+      };
+      boot = {
+        tmpOnTmpfs = true;
+        tmpOnTmpfsSize = "50%";
       };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
       fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
