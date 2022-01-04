@@ -28,7 +28,10 @@
     inkscape
     keepass
     keepassxc
-    libreoffice-fresh
+    # TODO libreoffice-fresh broken
+    # https://github.com/NixOS/nixpkgs/issues/153436
+    # libreoffice-fresh
+    libreoffice
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
