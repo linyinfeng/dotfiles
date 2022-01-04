@@ -66,6 +66,9 @@
       nix.inputs.nixpkgs.follows = "latest";
 
       flake-compat.url = "github:edolstra/flake-compat";
+      flake-compat.flake = false;
+      deploy.inputs.flake-compat.follows = "flake-compat";
+      nvfetcher.inputs.flake-compat.follows = "flake-compat";
     };
 
   outputs =
