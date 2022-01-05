@@ -274,5 +274,17 @@ in
       sops.secrets."cache-li7g-com/key" = { };
       nix.allowedUsers = [ "nix-serve" ];
     }
+
+    # geth
+    {
+      services.geth.light = {
+        enable = true;
+        syncmode = "light";
+        http.enable = true;
+      };
+      environment.global-persistence.directories = [
+        "/var/lib/private/goethereum"
+      ];
+    }
   ];
 }
