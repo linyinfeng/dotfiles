@@ -195,7 +195,7 @@ in
         enable = true;
         listenHost = "127.0.0.1";
         port = cfg.ports.hydra;
-        hydraURL = "/hydra";
+        hydraURL = "http://nuc.li7g.com/hydra";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
         buildMachinesFiles = [
@@ -221,6 +221,10 @@ in
           linyinfeng = Bearer ${config.sops.placeholder."hydra/github-token"}
           littlenano = Bearer ${config.sops.placeholder."hydra/github-token"}
           </github_authorization>
+          <githubstatus>
+            jobs = .*
+            excludeBuildFromContext = 1
+          </githubstatus>
         '';
       };
       sops.secrets."hydra/github-token" = { };
