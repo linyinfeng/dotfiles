@@ -213,17 +213,17 @@ in
           Include "${config.sops.templates."hydra-extra-config".path}"
         '';
       };
-      sops.templates."hydra-extra-config".content = ''
-        <github_authorization>
-        linyinfeng = Bearer ${config.sops.placeholder."hydra/github-token"}
-        littlenano = Bearer ${config.sops.placeholder."hydra/github-token"}
-        </github_authorization>
-        <githubstatus>
-          jobs = .*
-          excludeBuildFromContext = 1
-        </githubstatus>
-      '';
-      sops.secrets."hydra/github-token" = {};
+      sops.templates."hydra-extra-config" = {
+        group = "hydra";
+        mode = "440";
+        content = ''
+          <github_authorization>
+          linyinfeng = Bearer ${config.sops.placeholder."hydra/github-token"}
+          littlenano = Bearer ${config.sops.placeholder."hydra/github-token"}
+          </github_authorization>
+        '';
+      };
+      sops.secrets."hydra/github-token" = { };
       environment.global-persistence.directories = [
         "/var/lib/hydra"
         "/var/lib/postgresql"
