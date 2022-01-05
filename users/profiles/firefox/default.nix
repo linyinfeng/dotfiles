@@ -1,6 +1,6 @@
-{ ... }:
+{ config, lib, ... }:
 
-{
+lib.mkIf config.home.graphical {
   programs.firefox = {
     enable = true;
     profiles = {

@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
-{
+lib.mkIf config.home.graphical {
   programs = {
     mpv.enable = true;
 

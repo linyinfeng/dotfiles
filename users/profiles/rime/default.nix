@@ -8,7 +8,7 @@ let
     installation_id: "${config.passthrough.systemConfig.networking.hostName}"
   '';
 in
-{
+lib.mkIf config.home.graphical {
   home.activation.patchRimeInstallation = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     target="${home}/${rimeConfig}/installation.yaml"
     if [ -e "$target" ]; then

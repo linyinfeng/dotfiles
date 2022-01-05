@@ -38,7 +38,7 @@ let
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
 in
-{
+lib.mkIf config.home.graphical {
   xdg.mimeApps = {
     enable = true;
     defaultApplications =

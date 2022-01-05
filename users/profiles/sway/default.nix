@@ -1,6 +1,7 @@
-{ ... }:
+{ lib, ... }:
 
-{
+# TODO disabled
+lib.mkIf false {
   wayland.windowManager.sway = {
     enable = true;
     systemdIntegration = true;

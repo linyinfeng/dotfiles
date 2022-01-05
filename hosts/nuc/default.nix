@@ -24,7 +24,9 @@ in
     suites.tpm ++
     suites.fw ++
     suites.monitoring ++
-    suites.nixbuild ++ [
+    suites.nixbuild ++
+    suites.user-yinfeng ++
+    suites.user-nianyi ++ [
       ./influxdb
       ./grafana
     ];

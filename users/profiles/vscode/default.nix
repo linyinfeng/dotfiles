@@ -1,6 +1,6 @@
-{ pkgs, lib, ... }:
+{ config, lib, pkgs, ... }:
 
-{
+lib.mkIf config.home.graphical {
   programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [

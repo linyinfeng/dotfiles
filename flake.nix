@@ -245,6 +245,7 @@
               homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
 
               user-yinfeng = [ users.yinfeng ];
+              user-nianyi = [ users.nianyi ];
             };
           };
         };
