@@ -232,7 +232,7 @@ in
         "/var/lib/hydra"
         "/var/lib/postgresql"
       ];
-      nix.allowedUsers = [ "hydra" "hydra-www" ];
+      nix.allowedUsers = [ "@hydra" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [
         {
