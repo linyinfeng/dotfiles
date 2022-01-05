@@ -195,7 +195,7 @@ in
         enable = true;
         listenHost = "127.0.0.1";
         port = cfg.ports.hydra;
-        hydraURL = "http://nuc.li7g.com/hydra";
+        hydraURL = "https://nuc.li7g.com/hydra";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
         buildMachinesFiles = [
