@@ -21,11 +21,11 @@ if diff -u <(echo "$event") <(echo "$expected"); then
         SELECT flake FROM jobsetevals
         WHERE nrbuilds = nrsucceeded AND
             jobset_id = (SELECT id FROM jobsets
-                        WHERE project = 'dotfiles' AND
-                                name = 'main')
+                         WHERE project = 'dotfiles' AND
+                               name = 'main')
         ORDER BY id DESC
         LIMIT 1
-    ")"
+    ")
     commit=$(echo "$flake_url" | grep -E -o '\w{40}$')
     echo "channel update: $commit"
     systemctl start dotfiles-channel-update@"$commit"
