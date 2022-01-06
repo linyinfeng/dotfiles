@@ -2,5 +2,5 @@
 
 {
   security.acme.acceptTerms = true;
-  security.acme.email = "lin.yinfeng@outlook.com";
+  security.acme.defaults.email = "lin.yinfeng@outlook.com";
 }
