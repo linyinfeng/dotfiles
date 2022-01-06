@@ -1,6 +1,6 @@
 # dotfiles
 
-[![Check and Deploy](https://github.com/linyinfeng/dotfiles/actions/workflows/check-and-deploy.yml/badge.svg)](https://github.com/linyinfeng/dotfiles/actions/workflows/check-and-deploy.yml)
+[![Hydra Build](https://img.shields.io/endpoint?label=main%2Fall-checks.x86_64-linux&url=https%3A%2F%2Fnuc.li7g.com%2Fhydra%2Fjob%2Fdotfiles%2Fmain%2Fall-checks.x86_64-linux%2Fshield)](https://nuc.li7g.com/hydra/jobset/dotfiles/main)
 
 My personal NixOS configurations, based on [devos].
 
