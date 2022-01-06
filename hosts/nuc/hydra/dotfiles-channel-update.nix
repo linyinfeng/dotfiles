@@ -13,9 +13,10 @@
       fi
       cd dotfiles
       git fetch
-      git checkout main && git reset --hard %I
+      git checkout main && git reset --hard "$1"
       git push --force origin main:tested
     '';
+    scriptArgs = "%I";
     path = with pkgs; [
       git
     ];
@@ -30,6 +31,16 @@
       config.networking.fw-proxy.environment;
   };
   sops.secrets."hydra/github-token" = { };
+
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "org.freedesktop.systemd1.manage-units" &&
+        action.lookup("unit") == "dotfiles-channel-update@.service" &&
+        subject.group == "hydra") {
+        return polkit.Result.YES;
+      }
+    });
+  '';
 
   environment.global-persistence.directories = [
     "/var/lib/private/dotfiles-channel-update"
