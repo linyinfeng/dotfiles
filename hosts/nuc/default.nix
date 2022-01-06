@@ -29,6 +29,7 @@ in
     suites.user-nianyi ++ [
       ./influxdb
       ./grafana
+      ./hydra
     ];
 
   options.hosts.nuc = {
@@ -189,80 +190,6 @@ in
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
         cfg.ports.loki
       ];
-    }
-
-    # hydra
-    {
-      services.hydra = {
-        enable = true;
-        listenHost = "127.0.0.1";
-        port = cfg.ports.hydra;
-        hydraURL = "https://nuc.li7g.com/hydra";
-        notificationSender = "hydra@li7g.com";
-        useSubstitutes = true;
-        buildMachinesFiles = [
-          "/etc/nix/machines"
-        ];
-        extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
-
-        package = pkgs.hydra-unstable.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            ./patches/hydra-non-local.patch
-          ];
-        });
-
-        extraConfig = ''
-          Include "${config.sops.templates."hydra-extra-config".path}"
-        '';
-      };
-      sops.templates."hydra-extra-config" = {
-        group = "hydra";
-        mode = "440";
-        content = ''
-          <github_authorization>
-          linyinfeng = Bearer ${config.sops.placeholder."hydra/github-token"}
-          littlenano = Bearer ${config.sops.placeholder."hydra/github-token"}
-          </github_authorization>
-          <githubstatus>
-            jobs = .*
-            excludeBuildFromContext = 1
-          </githubstatus>
-        '';
-      };
-      sops.secrets."hydra/github-token" = { };
-      environment.global-persistence.directories = [
-        "/var/lib/hydra"
-        "/var/lib/postgresql"
-      ];
-      nix.allowedUsers = [ "@hydra" ];
-      nix.distributedBuilds = true;
-      nix.buildMachines = [
-        {
-          hostName = "localhost";
-          systems = [
-            "x86_64-linux"
-            "i686-linux"
-            "aarch64-linux"
-          ];
-          supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-          maxJobs = 4;
-          speedFactor = 1;
-        }
-        # disabled
-        (lib.mkIf false {
-          hostName = "eu.nixbuild.net";
-          systems = [
-            "x86_64-linux"
-            "i686-linux"
-            "aarch64-linux"
-          ];
-          supportedFeatures = [ "benchmark" "big-parallel" ];
-          mandatoryFeatures = [ "non-local" ];
-          maxJobs = 100;
-          speedFactor = 2;
-        })
-      ];
-      sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
     }
 
     # store serving
