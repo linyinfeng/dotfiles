@@ -6,6 +6,4 @@ jq="@jq@/bin/jq"
 mkdir -p /tmp/hydra-hook
 output=$(mktemp "/tmp/hydra-hook/$time-XXXXXX")
 
-cat > "$output" <<EOF
-$HYDRA_JSON
-EOF
+cp $HYDRA_JSON > "$output"

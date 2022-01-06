@@ -29,7 +29,6 @@ in
         excludeBuildFromContext = 1
       </githubstatus>
       <runcommand>
-        job = *:*:*
         command = "${hydra-hook}"
       </runcommand>
     '';
