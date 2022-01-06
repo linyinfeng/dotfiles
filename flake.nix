@@ -309,35 +309,37 @@
             pkgs = channels.nixos;
             inherit (pkgs) system lib;
           in
-          {
-            checks = (
-              # fix preferLocalBuild for deployChecks
-              let
-                deployChecks = deploy.lib.${system}.deployChecks self.deploy;
-                renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
-                localBuild = n: v: v.overrideAttrs (oldAttrs:
-                  assert ! (oldAttrs ? preferLocalBuild); {
-                    preferLocalBuild = true;
-                  });
-              in
-              lib.mapAttrs localBuild (lib.mapAttrs' renameOp deployChecks)
-            ) //
-            (
-              lib.foldl lib.recursiveUpdate { }
-                (lib.mapAttrsToList
-                  (host: cfg:
-                    lib.optionalAttrs (cfg.pkgs.system == system)
-                      { "toplevel-${host}" = cfg.config.system.build.toplevel; })
-                  self.nixosConfigurations)
-            ) // {
-              devShell = self.devShell.${system};
+            {
+              checks = (
+                # fix preferLocalBuild for deployChecks
+                let
+                  deployChecks = deploy.lib.${system}.deployChecks self.deploy;
+                  renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
+                  localBuild = n: v: v.overrideAttrs (oldAttrs:
+                    assert ! (oldAttrs ? preferLocalBuild); {
+                      preferLocalBuild = true;
+                    });
+                in
+                  lib.mapAttrs localBuild (lib.mapAttrs' renameOp deployChecks)
+              ) //
+              (
+                lib.foldl lib.recursiveUpdate { }
+                  (lib.mapAttrsToList
+                    (host: cfg:
+                      lib.optionalAttrs (cfg.pkgs.system == system)
+                        { "toplevel-${host}" = cfg.config.system.build.toplevel; })
+                    self.nixosConfigurations)
+              ) // {
+                devShell = self.devShell.${system};
+              };
+
+
+              hydraJobs = {
+                all-checks = pkgs.linkFarm "all-checks"
+                  (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
+                    self.checks.${system});
+              } // self.checks.${system};
             };
-
-
-            hydraJobs.all-checks = pkgs.linkFarm "all-checks"
-              (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
-                self.checks.${system});
-          };
       }
     //
     {
