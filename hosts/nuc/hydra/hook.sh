@@ -4,6 +4,10 @@ jq="@jq@/bin/jq"
 psql="@psql@/bin/psql"
 systemctl="@systemd@/bin/systemctl"
 
+time=$(date --iso-8601=seconds)
+dump_file=$(mktemp "/tmp/hydra-events/$time-XXXXXX.json")
+cp "$HYDRA_JSON" "$dump_file"
+
 event=$("$jq" --sort-keys "{project, jobset, nixName, buildStatus}" "$HYDRA_JSON")
 
 # channel update event
