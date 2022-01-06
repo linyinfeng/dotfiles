@@ -6,10 +6,14 @@ let
     src = ./hook.sh;
     isExecutable = true;
     inherit (pkgs.stdenvNoCC) shell;
-    inherit (pkgs) jq;
+    inherit (pkgs) jq systemd;
   };
 in
 {
+  imports = [
+    ./dotfiles-channel-update.nix
+  ];
+
   services.hydra = {
     enable = true;
     listenHost = "127.0.0.1";
