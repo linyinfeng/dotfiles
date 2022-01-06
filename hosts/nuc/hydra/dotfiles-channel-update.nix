@@ -13,7 +13,9 @@
       fi
       cd dotfiles
       git fetch
-      git push --force origin "$1":tested
+      git checkout tested || git checkout -b tested
+      git reset --hard origin/main
+      git push --force --set-upstream origin tested
     '';
     scriptArgs = "%I";
     path = with pkgs; [
@@ -34,7 +36,7 @@
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&
-          action.lookup("unit") == "dotfiles-channel-update@.service" &&
+          RegExp('dotfiles-channel-update@[A-Za-z0-9_-]+.service').test(action.lookup("unit")) === true &&
           subject.isInGroup("hydra")) {
         return polkit.Result.YES;
       }
