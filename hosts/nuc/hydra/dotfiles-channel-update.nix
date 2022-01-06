@@ -34,8 +34,8 @@
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&
-        action.lookup("unit") == "dotfiles-channel-update@.service" &&
-        subject.group == "hydra") {
+          action.lookup("unit") == "dotfiles-channel-update@.service" &&
+          subject.isInGroup("hydra")) {
         return polkit.Result.YES;
       }
     });
