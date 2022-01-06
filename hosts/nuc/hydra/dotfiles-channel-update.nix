@@ -13,8 +13,7 @@
       fi
       cd dotfiles
       git fetch
-      git checkout main && git reset --hard "$1"
-      git push --force origin main:tested
+      git push --force origin "$1":tested
     '';
     scriptArgs = "%I";
     path = with pkgs; [
