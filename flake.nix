@@ -334,7 +334,7 @@
             };
 
 
-            hydraJobs.allChecks = pkgs.linkFarm "all-checks"
+            hydraJobs.all-checks = pkgs.linkFarm "all-checks"
               (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
                 self.checks.${system});
           };
