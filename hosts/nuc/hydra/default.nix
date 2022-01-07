@@ -57,6 +57,8 @@ in
     cores = 4
     max-jobs = 1
   '';
+  # limit cpu quota of nix builds
+  systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
   sops.secrets."nano/github-token" = { };
   sops.secrets."cache-li7g-com/key" = { };
   environment.global-persistence.directories = [
@@ -79,5 +81,4 @@ in
     }
   ];
   sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
-  systemd.services.nix-daemon.serviceConfig.CPUQuota = "50%";
 }
