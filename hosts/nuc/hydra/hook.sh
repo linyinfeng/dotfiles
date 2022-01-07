@@ -24,12 +24,11 @@ EOF
 )
 echo "expected = $expected"
 if [ "$event" = "$expected" ]; then
+    build_id=$(jq '.build' "$HYDRA_JSON")
     flake_url=$("$psql" -t -U hydra -d hydra -c "
         SELECT flake FROM jobsetevals
-        WHERE nrbuilds = nrsucceeded AND
-              jobset_id = (SELECT id FROM jobsets
-                           WHERE project = 'dotfiles' AND
-                                 name = 'main')
+        WHERE id = (SELECT eval FROM jobsetevalmembers
+                    WHERE build = $build_id)
         ORDER BY id DESC
         LIMIT 1
     ")
