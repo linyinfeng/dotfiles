@@ -131,14 +131,15 @@ with lib;
     };
     system.activationScripts.${activationScriptName}.deps =
       [ "ensurePersistenceRootExists" ];
-    system.activationScripts.fixHomePermission = {
-      text =
+    systemd.services.fix-home-permission = {
+      script =
         let
           enableFilter = user: _:
             config.home-manager.users ? ${user} &&
             config.home-manager.users.${user}.home.global-persistence.enable;
           enabledUsers = lib.filterAttrs enableFilter config.users.users;
           fixScript = user: userCfg: ''
+            echo "try fix for ${user}"
             if [ $(stat --format='%U:%G' "${cfg.root}${userCfg.home}") != "${userCfg.name}:${userCfg.group}" ]; then
               echo "change permission of ${cfg.root}${userCfg.home} to ${userCfg.name}:${userCfg.group}..."
               chown -R ${userCfg.name}:${userCfg.group} "${cfg.root}${userCfg.home}"
@@ -146,7 +147,7 @@ with lib;
           '';
         in
         lib.concatStrings (lib.mapAttrsToList fixScript enabledUsers);
-      deps = [ activationScriptName ];
+      wantedBy = [ "multi-user.target" ];
     };
 
     age.identityPaths = [
