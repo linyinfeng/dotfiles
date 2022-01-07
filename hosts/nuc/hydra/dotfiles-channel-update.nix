@@ -27,6 +27,7 @@
       cd dotfiles
       git checkout tested || git checkout -b tested
       git pull origin tested
+      git fetch
       git merge --ff-only "$commit"
       git push --set-upstream origin tested
     '';
