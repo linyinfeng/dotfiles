@@ -242,6 +242,7 @@
               promtail = [ services.promtail ];
               monitoring = [ telegraf-system promtail ];
               canokey = [ security.canokey ];
+              auto-upgrade = [ services.auto-upgrade ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing ++ canokey;
               mobileWorkstation = workstation ++ [ laptop ];

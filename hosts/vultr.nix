@@ -22,6 +22,7 @@ in
     suites.monitoring ++
     suites.telegram-send ++
     suites.notify-failure ++
+    suites.auto-upgrade ++
     suites.acme;
 
   config = lib.mkMerge [
@@ -47,13 +48,6 @@ in
       environment.systemPackages = with pkgs; [
         tmux
       ];
-
-      system.autoUpgrade = {
-        enable = true;
-        flake = "github:linyinfeng/dotfiles/tested";
-        allowReboot = true;
-      };
-      # services.scheduled-reboot.enable = true;
 
       services.nginx = {
         enable = true;

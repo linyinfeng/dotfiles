@@ -4,6 +4,7 @@
   imports =
     suites.homeServer ++
     suites.monitoring ++
+    suites.auto-upgrade ++
     suites.fw;
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -20,13 +21,6 @@
   services.fwupd.enable = true;
 
   services.logind.lidSwitch = "ignore";
-
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:linyinfeng/dotfiles/tested";
-    allowReboot = true;
-  };
-  # services.scheduled-reboot.enable = true;
 
   services.godns = {
     ipv4.settings = {
