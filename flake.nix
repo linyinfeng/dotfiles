@@ -210,7 +210,7 @@
             };
             suites = with profiles; rec {
               # MAIN
-              foundation = [ global-persistence security.polkit services.gc services.openssh ];
+              foundation = [ global-persistence security.polkit services.gc services.openssh nix.access-tokens ];
               base = [ core foundation users.root ];
 
               audit = [ security.audit ];

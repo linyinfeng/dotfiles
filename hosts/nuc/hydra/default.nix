@@ -26,7 +26,8 @@ in
     ];
     extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
     extraConfig = ''
-      store-uri = file:///nix/store?secret-key=${config.sops.secrets."cache-li7g-com/key".path}
+      # use secret-key-files option in nix.conf instead
+      # store-uri = file:///nix/store?secret-key=${config.sops.secrets."cache-li7g-com/key".path}
 
       Include "${config.sops.templates."hydra-extra-config".path}"
 
@@ -44,12 +45,15 @@ in
     mode = "440";
     content = ''
       <github_authorization>
-        linyinfeng = Bearer ${config.sops.placeholder."hydra/github-token"}
-        littlenano = Bearer ${config.sops.placeholder."hydra/github-token"}
+        linyinfeng = Bearer ${config.sops.placeholder."nano/github-token"}
+        littlenano = Bearer ${config.sops.placeholder."nano/github-token"}
       </github_authorization>
     '';
   };
-  sops.secrets."hydra/github-token" = { };
+  nix.extraOptions = ''
+    secret-key-files = ${config.sops.secrets."cache-li7g-com/key".path}
+  '';
+  sops.secrets."nano/github-token" = { };
   sops.secrets."cache-li7g-com/key" = { };
   environment.global-persistence.directories = [
     "/var/lib/hydra"

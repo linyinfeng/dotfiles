@@ -39,13 +39,6 @@ in
   sops.secrets = {
     "user-password/${name}".neededForUsers = true;
     "${name}/asciinema-token".owner = user.name;
-    "${name}/nix-access-tokens" = { };
-  };
-  sops.templates."${name}/nix-conf" = {
-    content = ''
-      access-tokens = ${config.sops.placeholder."${name}/nix-access-tokens"}
-    '';
-    owner = user.name;
   };
 
   home-manager.users.${name} = { suites, ... }: {
@@ -55,7 +48,6 @@ in
 
     home.global-persistence.enable = true;
 
-    home.link.".config/nix/nix.conf".target = config.sops.templates."${name}/nix-conf".path;
     home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
     home.file.".ssh/config".source = ./ssh/config;
 

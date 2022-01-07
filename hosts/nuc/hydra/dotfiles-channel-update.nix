@@ -40,14 +40,14 @@
       Group = "hydra";
       StateDirectory = "dotfiles-channel-update";
       LoadCredential = [
-        "github-token:${config.sops.secrets."hydra/github-token".path}"
+        "github-token:${config.sops.secrets."nano/github-token".path}"
         "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
       ];
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment;
   };
-  sops.secrets."hydra/github-token" = { };
+  sops.secrets."nano/github-token" = { };
   sops.secrets."cachix/linyinfeng" = { };
 
   security.polkit.extraConfig = ''
