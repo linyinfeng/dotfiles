@@ -52,6 +52,10 @@ in
   };
   nix.extraOptions = ''
     secret-key-files = ${config.sops.secrets."cache-li7g-com/key".path}
+
+    # reduce system load
+    cores = 4
+    max-jobs = 1
   '';
   sops.secrets."nano/github-token" = { };
   sops.secrets."cache-li7g-com/key" = { };
@@ -70,7 +74,7 @@ in
         "aarch64-linux"
       ];
       supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-      maxJobs = 4;
+      maxJobs = 1;
       speedFactor = 1;
     }
   ];
