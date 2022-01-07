@@ -1,5 +1,7 @@
 #!@shell@
 
+set -e
+
 jq="@jq@/bin/jq"
 psql="@postgresql@/bin/psql"
 systemctl="@systemd@/bin/systemctl"
@@ -24,7 +26,7 @@ EOF
 )
 echo "expected = $expected"
 if [ "$event" = "$expected" ]; then
-    build_id=$(jq '.build' "$HYDRA_JSON")
+    build_id=$("$jq" '.build' "$HYDRA_JSON")
     flake_url=$("$psql" -t -U hydra -d hydra -c "
         SELECT flake FROM jobsetevals
         WHERE id = (SELECT eval FROM jobsetevalmembers
