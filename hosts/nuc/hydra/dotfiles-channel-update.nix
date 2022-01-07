@@ -4,6 +4,19 @@
   systemd.services."dotfiles-channel-update@" = {
     script = ''
       cd "$STATE_DIRECTORY"
+      commit="$1"
+
+      # push cache to cachix
+      export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
+      export HOME="$STATE_DIRECTORY"
+      for host in vultr nexusbytes x200s; do
+        echo "push cache for host: $host"
+        nix build "github:linyinfeng/dotfiles/$commit#nixosConfigurations.$host.config.system.build.toplevel" --json | \
+          jq ".[].outputs.out" --raw-output | \
+          cachix push linyinfeng
+      done
+
+      # update channel
       if [ ! -d dotfiles ]; then
         git clone https://github.com/linyinfeng/dotfiles.git
         pushd dotfiles
@@ -12,26 +25,29 @@
         popd
       fi
       cd dotfiles
-      git fetch
       git checkout tested || git checkout -b tested
-      git reset --hard origin/main
-      git push --force --set-upstream origin tested
+      git pull origin tested
+      git merge --ff-only "$commit"
+      git push --set-upstream origin tested
     '';
     scriptArgs = "%I";
     path = with pkgs; [
-      git
+      git nixUnstable cachix jq
     ];
     serviceConfig = {
       DynamicUser = true;
+      Group = "hydra";
       StateDirectory = "dotfiles-channel-update";
       LoadCredential = [
         "github-token:${config.sops.secrets."hydra/github-token".path}"
+        "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
       ];
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment;
   };
   sops.secrets."hydra/github-token" = { };
+  sops.secrets."cachix/linyinfeng" = { };
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
