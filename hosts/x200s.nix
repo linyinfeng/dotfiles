@@ -21,7 +21,12 @@
 
   services.logind.lidSwitch = "ignore";
 
-  services.scheduled-reboot.enable = true;
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:linyinfeng/dotfiles/tested";
+    allowReboot = true;
+  };
+  # services.scheduled-reboot.enable = true;
 
   services.godns = {
     ipv4.settings = {

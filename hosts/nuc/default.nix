@@ -72,7 +72,13 @@ in
       services.fwupd.enable = true;
 
       services.thermald.enable = true;
-      services.scheduled-reboot.enable = true;
+
+      system.autoUpgrade = {
+        enable = true;
+        flake = "github:linyinfeng/dotfiles/tested";
+        allowReboot = true;
+      };
+      # services.scheduled-reboot.enable = true;
 
       networking.campus-network = {
         enable = true;
