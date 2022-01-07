@@ -26,6 +26,8 @@ in
     ];
     extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
     extraConfig = ''
+      store-uri = file:///nix/store?secret-key=${config.sops.secrets."cache-li7g-com/key".path}
+
       Include "${config.sops.templates."hydra-extra-config".path}"
 
       <githubstatus>
@@ -48,6 +50,7 @@ in
     '';
   };
   sops.secrets."hydra/github-token" = { };
+  sops.secrets."cache-li7g-com/key" = { };
   environment.global-persistence.directories = [
     "/var/lib/hydra"
     "/var/lib/postgresql"
