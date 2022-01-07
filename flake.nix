@@ -68,7 +68,7 @@
       emacs-webkit.url = "github:akirakyle/emacs-webkit";
       emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
-      nix.inputs.nixpkgs.follows = "latest";
+      nix.inputs.nixpkgs.follows = "nixos";
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
