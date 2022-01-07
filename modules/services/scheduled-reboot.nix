@@ -17,7 +17,13 @@ in
         Wheather to enable scheduled-reboot service.
       '';
     };
-
+    calendar = lib.mkOption {
+      type = with lib.types; str;
+      default = "04:00";
+      description = ''
+        Time to auto reboot.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -43,9 +49,7 @@ in
       };
     };
     systemd.timers.scheduled-reboot = {
-      timerConfig = {
-        OnCalendar = "04:30";
-      };
+      timerConfig.OnCalendar = cfg.calendar;
       wantedBy = [ "timers.target" ];
 
     };
