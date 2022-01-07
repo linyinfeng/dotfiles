@@ -26,7 +26,6 @@ lib.mkIf config.home.graphical {
     goldendict
     gparted
     inkscape
-    keepass
     keepassxc
     # TODO libreoffice-fresh broken
     # https://github.com/NixOS/nixpkgs/issues/153436

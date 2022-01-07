@@ -13,7 +13,6 @@ let
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
   btrfsSubvolData = btrfsSubvol "/dev/disk/by-uuid/fc047db2-0ba9-445a-9b84-194af545fa23";
-  btrfsSubvolMobile = btrfsSubvol "/dev/disk/by-uuid/7eb0cf99-d5ea-4bb0-97fa-bbea23308f71";
 
 in
 {
@@ -24,7 +23,6 @@ in
     suites.fw ++
     suites.godns ++
     suites.ci-agent ++
-    suites.transmission ++
     suites.samba ++
     suites.nixbuild ++
     suites.user-yinfeng;
@@ -140,7 +138,6 @@ in
       device = "/dev/disk/by-uuid/74C9-BFBC";
       fsType = "vfat";
     };
-  fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
   fileSystems."/media/data" = btrfsSubvolData "@data" { };
   swapDevices = [{
     device = "/swap/swapfile";
