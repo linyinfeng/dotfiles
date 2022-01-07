@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1641267703211,
+  "iteration": 1641562591189,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -127,7 +127,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -334,7 +334,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -476,7 +476,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -564,7 +564,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -717,7 +717,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -800,7 +800,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": false,
+            "spanNulls": 20000,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -858,7 +858,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "5m",
   "schemaVersion": 34,
   "style": "dark",
   "tags": [],
