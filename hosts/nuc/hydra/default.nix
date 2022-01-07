@@ -79,4 +79,5 @@ in
     }
   ];
   sops.secrets."nixbuild/id-ed25519".owner = "hydra-queue-runner";
+  systemd.services.nix-daemon.serviceConfig.CPUQuota = "50%";
 }
