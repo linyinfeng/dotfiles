@@ -14,6 +14,9 @@ let
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2";
   btrfsSubvolData = btrfsSubvol "/dev/disk/by-uuid/fc047db2-0ba9-445a-9b84-194af545fa23";
 
+  usbKeyFile = "/dev/disk/by-path/pci-0000:00:14.0-usb-0:13:1.0-scsi-0:0:0:0";
+  usbKeyFileSize = 4096;
+
 in
 {
   imports =
@@ -122,9 +125,13 @@ in
   boot.initrd.luks.devices."crypt-root" = {
     device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
     allowDiscards = true;
+    keyFile = usbKeyFile;
+    keyFileSize = usbKeyFileSize;
   };
   boot.initrd.luks.devices."crypt-data" = {
     device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea";
+    keyFile = usbKeyFile;
+    keyFileSize = usbKeyFileSize;
   };
   fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
   fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
