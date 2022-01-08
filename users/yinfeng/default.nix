@@ -30,7 +30,6 @@ in
     groupNameIfPresent "tss";
 
     openssh.authorizedKeys.keyFiles = [
-      ./ssh/id_ed25519.pub
       ./ssh/authorized-keys/pgp.pub
       ./ssh/authorized-keys/t460p-win.pub
     ];
@@ -48,8 +47,10 @@ in
 
     home.global-persistence.enable = true;
 
-    home.file.".ssh/id_ed25519.pub".source = ./ssh/id_ed25519.pub;
-    home.file.".ssh/config".source = ./ssh/config;
+    home.file.".ssh/config".source = pkgs.substituteAll {
+      src = ./ssh/config;
+      inherit uid;
+    };
 
     programs.git = {
       userName = "Lin Yinfeng";
