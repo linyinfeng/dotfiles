@@ -123,9 +123,6 @@ in
     device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
     allowDiscards = true;
   };
-  boot.initrd.luks.devices."crypt-mobile" = {
-    device = "/dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c";
-  };
   boot.initrd.luks.devices."crypt-data" = {
     device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea";
   };
