@@ -27,10 +27,7 @@ lib.mkIf config.home.graphical {
     gparted
     inkscape
     keepassxc
-    # TODO libreoffice-fresh broken
-    # https://github.com/NixOS/nixpkgs/issues/153436
-    # libreoffice-fresh
-    libreoffice
+    libreoffice-fresh
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
