@@ -27,13 +27,13 @@ in
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
       ];
     }
-    {
+    (lib.mkIf (config.networking.hostName != "nuc") {
       binaryCaches = lib.mkOrder 1100 [
         "http://nuc.ts.li7g.com/store"
       ];
       binaryCachePublicKeys = [
         "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
       ];
-    }
+    })
   ];
 }

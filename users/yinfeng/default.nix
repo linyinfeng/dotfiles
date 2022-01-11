@@ -2,7 +2,7 @@
 
 let
   name = "yinfeng";
-  uid = (import ../uid.nix).${name};
+  uid = config.ids.uids.${name};
   user = config.users.users.${name};
   homeManager = config.home-manager.users.${name};
   homeDirectory = "/home/${name}";
@@ -13,7 +13,7 @@ let
 in
 {
   users.users.${name} = {
-    uid = 1000;
+    inherit uid;
     passwordFile = config.sops.secrets."user-password/${name}".path;
     isNormalUser = true;
     shell = pkgs.fish;

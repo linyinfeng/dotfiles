@@ -33,7 +33,10 @@
     '';
     scriptArgs = "%I";
     path = with pkgs; [
-      git nixUnstable cachix jq
+      git
+      nixUnstable
+      cachix
+      jq
     ];
     serviceConfig = {
       DynamicUser = true;

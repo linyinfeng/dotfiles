@@ -1,9 +1,9 @@
-{ hmUsers, ... }:
+{ config, hmUsers, ... }:
 {
   home-manager.users = { inherit (hmUsers) nixos; };
 
   users.users.nixos = {
-    uid = 2000;
+    uid = config.ids.uids.nixos;
     password = "nixos";
     description = "default";
     isNormalUser = true;

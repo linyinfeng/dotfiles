@@ -200,7 +200,15 @@ in
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
       sops.secrets."cache-li7g-com/key" = { };
-      nix.allowedUsers = [ "nix-serve" ];
+
+      # TODO broken: cannot determine user's home directory
+      systemd.services.nix-serve = {
+        serviceConfig = {
+          Group = lib.mkForce "hydra";
+          RuntimeDirectory = "nix-serve";
+        };
+        environment.HOME = "$RUNTIME_DIRECTORY";
+      };
     }
 
     # geth

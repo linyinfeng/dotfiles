@@ -2,8 +2,6 @@
 let
   cfg = config.networking.fw-proxy;
 
-  clashUser = "clash";
-  clashDir = "/var/lib/clash";
   tunDev = "utun"; # fixed
 
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
@@ -32,7 +30,7 @@ let
       inherit (pkgs) coreutils curl systemd;
       yqGo = pkgs.yq-go;
       mixinConfig = builtins.toJSON cfg.mixinConfig;
-      directory = clashDir;
+      directory = "/var/lib/clash-premium";
     };
     updateClash = pkgs.substituteAll {
       src = ./update-clash.sh;
@@ -166,34 +164,26 @@ with lib;
 
   config = mkIf (cfg.enable) (mkMerge [
     {
-      users.users.${clashUser} = {
-        isSystemUser = true;
-        group = config.users.groups.nogroup.name;
-      };
-      security.wrappers.clash-premium = {
-        source = "${pkgs.nur.repos.linyinfeng.clash-premium}/bin/clash-premium";
-        owner = clashUser;
-        group = config.users.groups.nogroup.name;
-        capabilities = "cap_net_bind_service,cap_net_admin=+ep";
-      };
       systemd.services.clash-premium = {
         description = "A rule based proxy in GO";
+        script = ''
+          "${pkgs.nur.repos.linyinfeng.clash-premium}/bin/clash-premium" -d "$STATE_DIRECTORY"
+        '';
         serviceConfig = {
           Type = "exec";
           Restart = "on-abort";
-          User = clashUser;
-          Group = config.users.groups.nogroup.name;
-          ExecStart = ''
-            "${config.security.wrapperDir}/clash-premium" -d "${clashDir}"
-          '';
+          DynamicUser = true;
+          StateDirectory = "clash-premium";
+          AmbientCapabilities = [
+            "CAP_NET_BIND_SERVICE"
+            "CAP_NET_ADMIN"
+          ];
         };
         wantedBy = [ "multi-user.target" ];
       };
-      environment.global-persistence.directories = [ clashDir ];
-      system.activationScripts.fixClashDirectoryPremission = ''
-        mkdir -p "${clashDir}"
-        chown "${clashUser}" "${clashDir}"
-      '';
+      environment.global-persistence.directories = [
+        "/var/lib/private/clash-premium"
+      ];
 
       sops.secrets = {
         "clash/dler" = { };
@@ -246,7 +236,6 @@ with lib;
             RemainAfterExit = true;
           };
           script =
-
             ''
               if [ -d "${path}" ];then
                   exit 0

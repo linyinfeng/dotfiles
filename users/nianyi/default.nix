@@ -2,7 +2,7 @@
 
 let
   name = "nianyi";
-  uid = (import ../uid.nix).${name};
+  uid = config.ids.uids.${name};
   user = config.users.users.${name};
   homeManager = config.home-manager.users.${name};
   homeDirectory = "/home/${name}";
