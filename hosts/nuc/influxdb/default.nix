@@ -47,7 +47,4 @@ in
     "/var/lib/influxdb2"
     "/var/lib/private/influxdb2-setup"
   ];
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-    cfg.ports.influxdb
-  ];
 }

@@ -135,17 +135,11 @@ in
           };
           "cache.li7g.com" = {
             locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}";
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
             };
           };
         };
       };
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-        80
-      ];
-      networking.firewall.allowedTCPPorts = [
-        443
-      ];
     }
 
     # loki
@@ -188,9 +182,6 @@ in
       };
       environment.global-persistence.directories = [
         config.services.loki.dataDir
-      ];
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-        cfg.ports.loki
       ];
     }
 
