@@ -20,6 +20,8 @@ in
     suites.server ++
     suites.networkManager ++
     suites.godns ++
+    suites.teamspeak ++
+    suites.vlmcsd ++
     suites.virtualization ++
     suites.tpm ++
     suites.fw ++

@@ -243,12 +243,14 @@
               monitoring = [ telegraf-system promtail ];
               canokey = [ security.canokey ];
               auto-upgrade = [ services.auto-upgrade ];
+              teamspeak = [ services.teamspeak ];
+              vlmcsd = [ services.vlmcsd ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing ++ canokey;
               mobileWorkstation = workstation ++ [ laptop ];
               desktopWorkstation = workstation;
               server = base ++ network;
-              homeServer = server ++ networkManager ++ godns ++ (with services; [ teamspeak vlmcsd ]);
+              homeServer = server ++ networkManager ++ godns ++ teamspeak ++ vlmcsd;
 
               user-yinfeng = [ users.yinfeng ];
               user-nianyi = [ users.nianyi ];
