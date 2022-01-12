@@ -8,6 +8,12 @@
 
     # other users
     nixos = 1099;
+
+    # service users
+    # nix-access-tokens = 400; # not using
   };
-  ids.gids = { };
+  ids.gids = {
+    # service groups
+    nix-access-tokens = 400;
+  };
 }

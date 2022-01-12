@@ -27,7 +27,8 @@ in
     groupNameIfPresent "libvirtd" ++
     groupNameIfPresent "transmission" ++
     groupNameIfPresent "networkmanager" ++
-    groupNameIfPresent "tss";
+    groupNameIfPresent "tss" ++
+    groupNameIfPresent "nix-access-tokens";
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/authorized-keys/pgp.pub
