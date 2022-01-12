@@ -5,12 +5,7 @@
   virtualisation.spiceUSBRedirection.enable = true;
   networking.firewall.checkReversePath = false;
 
-  environment.global-persistence = {
-    directories = [
-      "/var/lib/libvirt"
-    ];
-    user.directories = [
-      ".config/libvirt"
-    ];
-  };
+  environment.global-persistence.user.directories = [
+    ".config/libvirt"
+  ];
 }

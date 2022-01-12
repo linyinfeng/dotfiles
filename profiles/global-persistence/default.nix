@@ -3,9 +3,12 @@
 {
   environment.global-persistence = {
     directories = [
-      "/var/lib/systemd/coredump"
-      "/var/db/sudo/lectured"
-      "/root/.local/share/nix" # trusted-settings.json
+      # service state directory
+      "/var/lib"
+      "/var/db"
+
+      # trusted-settings.json
+      "/root/.local/share/nix"
     ];
     etcFiles = [
       # systemd machine-id

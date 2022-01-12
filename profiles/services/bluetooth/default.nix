@@ -1,7 +1,5 @@
 { ... }:
 
 {
-  environment.global-persistence.directories = [
-    "/var/lib/bluetooth"
-  ];
+  hardware.bluetooth.enable = true;
 }

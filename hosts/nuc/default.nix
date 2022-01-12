@@ -186,9 +186,6 @@ in
           ];
         };
       };
-      environment.global-persistence.directories = [
-        config.services.loki.dataDir
-      ];
     }
 
     # store serving
@@ -218,9 +215,6 @@ in
         syncmode = "light";
         http.enable = true;
       };
-      environment.global-persistence.directories = [
-        "/var/lib/private/goethereum"
-      ];
     }
   ];
 }

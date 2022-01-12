@@ -26,13 +26,7 @@
   #     done
   #   '';
   # };
-  environment.global-persistence = {
-    user.directories = [
-      ".local/share/waydroid"
-    ];
-    directories = [
-      "/var/lib/waydroid"
-      "/var/lib/lxc/rootfs"
-    ];
-  };
+  environment.global-persistence.user.directories = [
+    ".local/share/waydroid"
+  ];
 }

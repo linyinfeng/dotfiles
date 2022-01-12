@@ -181,9 +181,6 @@ with lib;
         };
         wantedBy = [ "multi-user.target" ];
       };
-      environment.global-persistence.directories = [
-        "/var/lib/private/clash-premium"
-      ];
 
       sops.secrets = {
         "clash/dler" = { };

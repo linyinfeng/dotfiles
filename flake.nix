@@ -225,7 +225,6 @@
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];
-              ci-agent = with services; [ hercules-ci-agent ];
               acme = [ services.acme ];
               telegram-send = [ programs.telegram-send ];
               notify-failure = [ services.notify-failure ];

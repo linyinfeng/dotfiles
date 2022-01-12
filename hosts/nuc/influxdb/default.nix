@@ -43,8 +43,4 @@ in
   environment.systemPackages = with pkgs; [
     influxdb2
   ];
-  environment.global-persistence.directories = [
-    "/var/lib/influxdb2"
-    "/var/lib/private/influxdb2-setup"
-  ];
 }

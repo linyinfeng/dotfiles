@@ -40,9 +40,6 @@ in
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
-      environment.global-persistence.directories = [
-        "/var/lib/private"
-      ];
 
       environment.systemPackages = with pkgs; [
         tmux

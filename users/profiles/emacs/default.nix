@@ -20,13 +20,10 @@ in
   home.packages = [ emacs ] ++
     (with pkgs; [
       ispell
-      agda # agda mode
       sqlite # org-roam
       graphviz # org-roam
       poppler_utils # pdf-tools
       ripgrep # rg
-
-      sarasa-gothic
     ]);
   home.file = {
     "Roaming/orgs/notes/templates".source = ./org-roam/templates;

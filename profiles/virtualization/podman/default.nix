@@ -31,10 +31,6 @@ lib.mkMerge [
       };
       wantedBy = [ "timers.target" ];
     };
-
-    environment.global-persistence.directories = [
-      "/var/lib/containers"
-    ];
   }
   {
     systemd.services = lib.mapAttrs'

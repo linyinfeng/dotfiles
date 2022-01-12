@@ -12,7 +12,7 @@ in
 
       NETWORK_ID=$(cat "${config.sops.secrets."zerotier/main".path}")
       touch "${stateDir}/networks.d/''${NETWORK_ID}.conf"
-      echo "''${NETWORK_ID}=${interfaceName}" > /var/lib/zerotier-one/devicemap
+      echo "''${NETWORK_ID}=${interfaceName}" > "${stateDir}/devicemap"
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -21,10 +21,6 @@ in
   };
   systemd.services.zerotierone.requires = [ "zerotierone-setup.service" ];
   sops.secrets."zerotier/main" = { };
-
-  environment.global-persistence.directories = [
-    stateDir
-  ];
 
   networking.firewall.trustedInterfaces = [
     interfaceName

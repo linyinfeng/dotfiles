@@ -41,9 +41,6 @@ in
       boot.tmpOnTmpfs = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/nix/persist";
-      environment.global-persistence.directories = [
-        "/var/lib/acme"
-      ];
 
       environment.systemPackages = with pkgs; [
         tmux

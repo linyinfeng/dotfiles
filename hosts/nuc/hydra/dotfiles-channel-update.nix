@@ -62,8 +62,4 @@
       }
     });
   '';
-
-  environment.global-persistence.directories = [
-    "/var/lib/private/dotfiles-channel-update"
-  ];
 }

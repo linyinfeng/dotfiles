@@ -25,7 +25,6 @@ in
     suites.tpm ++
     suites.fw ++
     suites.godns ++
-    suites.ci-agent ++
     suites.samba ++
     suites.nixbuild ++
     suites.user-yinfeng;
@@ -98,7 +97,6 @@ in
     extraPackages = with pkgs; [ openssh ];
   };
   sops.secrets."xps8930/github-runner" = { };
-  environment.global-persistence.directories = [ "/var/lib/private/github-runner" ];
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
   nix.allowedUsers = [ "github-runner" ];

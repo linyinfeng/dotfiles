@@ -64,10 +64,6 @@ in
   systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
   sops.secrets."nano/github-token" = { };
   sops.secrets."cache-li7g-com/key" = { };
-  environment.global-persistence.directories = [
-    "/var/lib/hydra"
-    "/var/lib/postgresql"
-  ];
   nix.allowedUsers = [ "@hydra" ];
   nix.distributedBuilds = true;
   nix.buildMachines = [

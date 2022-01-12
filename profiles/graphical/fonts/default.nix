@@ -2,10 +2,7 @@
 
 {
   fonts.fonts = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk
     noto-fonts-emoji
-    noto-fonts-extra
 
     source-serif-pro
     source-han-serif
@@ -20,11 +17,8 @@
 
     jetbrains-mono
     iosevka
-    sarasa-gothic
     font-awesome
     powerline-fonts
-
-    symbola
   ];
 
   fonts.fontconfig.defaultFonts = {
@@ -44,8 +38,7 @@
     ];
     # respect powerline font settings in core
     monospace = lib.mkAfter [
-      "Noto Sans Mono"
-      "DejaVu Sans Mono"
+      "Iosevka"
     ];
     emoji = lib.mkBefore [
       "Noto Color Emoji"
