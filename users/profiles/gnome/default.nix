@@ -38,7 +38,7 @@ lib.mkIf
       profile.${defaultProfile} = {
         default = true;
         visibleName = "Main";
-        font = "Sarasa Term Slab SC 10";
+        font = "Iosevka Yinfeng";
         scrollOnOutput = false;
       };
     };

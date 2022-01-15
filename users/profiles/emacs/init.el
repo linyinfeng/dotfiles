@@ -33,11 +33,11 @@
 (tool-bar-mode -1)
 
 ;; default font
-;; (set-face-attribute 'default nil
-;;                     :family "Sarasa Mono Slab SC"
-;;                     :height 100
-;;                     :weight 'normal
-;;                     :width 'normal)
+(set-face-attribute 'default nil
+                    :family "Iosevka Yinfeng"
+                    :height 100
+                    :weight 'normal
+                    :width 'normal)
 
 ;; no tabs
 (setq-default indent-tabs-mode nil)

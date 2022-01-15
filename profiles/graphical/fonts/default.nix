@@ -1,5 +1,19 @@
 { pkgs, lib, ... }:
 
+let
+  iosevka-yinfeng = pkgs.iosevka.override {
+    privateBuildPlan = {
+        family = "Iosevka Yinfeng";
+        spacing = "fontconfig-mono";
+        serifs = "slab";
+        no-cv-ss = "false";
+        ligations = {
+          inherits = "haskell";
+        };
+    };
+    set = "yinfeng";
+  };
+in
 {
   fonts.fonts = with pkgs; [
     noto-fonts-emoji
@@ -44,4 +58,6 @@
       "Noto Color Emoji"
     ];
   };
+
+  passthru = { inherit iosevka-yinfeng; };
 }

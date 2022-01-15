@@ -54,7 +54,7 @@ lib.mkIf false {
     enable = true;
     settings = {
       font = {
-        normal.family = "Sarasa Mono Slab SC";
+        normal.family = "Iosevka Yinfeng";
         size = 11.0;
       };
       colors = {
