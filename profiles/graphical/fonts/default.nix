@@ -31,7 +31,7 @@ in
     wqy_microhei
 
     jetbrains-mono
-    iosevka
+    iosevka-yinfeng
     font-awesome
     powerline-fonts
   ];
@@ -53,7 +53,7 @@ in
     ];
     # respect powerline font settings in core
     monospace = lib.mkAfter [
-      "Iosevka"
+      "Iosevka Yinfeng"
     ];
     emoji = lib.mkBefore [
       "Noto Color Emoji"
