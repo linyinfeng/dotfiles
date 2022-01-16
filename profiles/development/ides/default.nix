@@ -1,14 +1,7 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    # android-studio # no `preferLocalbuild`
-    jetbrains.idea-ultimate
-    jetbrains.clion
-    jetbrains.goland
-    jetbrains.pycharm-professional
-  ];
-
+  # persistence directories for jetbrains ides
   environment.global-persistence.user.directories = [
     ".config/Google"
     ".config/JetBrains"
