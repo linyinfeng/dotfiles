@@ -3,13 +3,13 @@
 {
   environment.systemPackages = with pkgs; [
     lunar-client
-    multimc
+    polymc
     minecraft
   ];
 
   environment.global-persistence.user.directories = [
     ".minecraft"
-    ".local/share/multimc"
+    ".local/share/polymc"
     ".lunarclient"
     ".config/lunarclient"
   ];
