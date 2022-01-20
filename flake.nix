@@ -167,9 +167,9 @@
           hosts = {
             /* set host specific properties here */
             NixOS = {
-              # MAIN
-              tests = [
-                digga.lib.allProfilesTest
+              tests = import ./lib/tests ++ [
+                # TODO: vm-test broken
+                # digga.lib.allProfilesTest
               ];
             };
 
@@ -182,6 +182,8 @@
                 common-pc-ssd
                 lenovo-thinkpad-t460s
               ];
+              tests = import ./lib/tests;
+
             };
             xps8930 = {
               system = "x86_64-linux";
@@ -190,18 +192,38 @@
                 common-cpu-intel
                 common-pc-ssd
               ];
+              tests = import ./lib/tests;
+
             };
             x200s = {
               system = "x86_64-linux";
+              modules = with nixos-hardware.nixosModules; [
+                common-pc
+                common-cpu-intel
+                common-pc-ssd
+              ];
+              tests = import ./lib/tests;
+
             };
             nuc = {
               system = "x86_64-linux";
+              modules = with nixos-hardware.nixosModules; [
+                common-pc
+                common-cpu-intel
+                common-pc-ssd
+              ];
+              tests = import ./lib/tests;
+
             };
             vultr = {
               system = "x86_64-linux";
+              tests = import ./lib/tests;
+
             };
             nexusbytes = {
               system = "x86_64-linux";
+              tests = import ./lib/tests;
+
             };
           };
           importables = rec {
