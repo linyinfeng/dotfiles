@@ -1,4 +1,3 @@
 [
-  # TODO: vm-test borken
-  # ./boot.nix
+  ./boot.nix
 ]

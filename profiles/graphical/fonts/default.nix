@@ -19,9 +19,9 @@ in
   fonts.fonts = with pkgs; [
     noto-fonts-emoji
 
-    source-serif-pro
+    source-serif
     source-han-serif
-    source-sans-pro
+    source-sans
     source-han-sans
     source-code-pro
 

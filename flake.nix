@@ -118,7 +118,7 @@
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               (final: prev: {
-                nixUnstable = inputs.nix.packages.${final.system}.nix;
+                nixUnstable = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
               })
             ];
           };
@@ -167,10 +167,7 @@
           hosts = {
             /* set host specific properties here */
             NixOS = {
-              tests = import ./lib/tests ++ [
-                # TODO: vm-test broken
-                # digga.lib.allProfilesTest
-              ];
+              tests = import ./lib/tests;
             };
 
             # MAIN
