@@ -20,9 +20,9 @@ in
   imports =
     suites.server ++
     suites.monitoring ++
-    suites.telegram-send ++
-    suites.notify-failure ++
-    suites.auto-upgrade ++
+    suites.telegramSend ++
+    suites.notifyFailure ++
+    suites.autoUpgrade ++
     suites.acme;
 
   config = lib.mkMerge [

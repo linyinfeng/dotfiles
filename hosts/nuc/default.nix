@@ -27,9 +27,9 @@ in
     suites.fw ++
     suites.monitoring ++
     suites.nixbuild ++
-    suites.auto-upgrade ++
-    suites.user-yinfeng ++
-    suites.user-nianyi ++ [
+    suites.autoUpgrade ++
+    suites.userYinfeng ++
+    suites.userNianyi ++ [
       ./influxdb
       ./grafana
       ./hydra

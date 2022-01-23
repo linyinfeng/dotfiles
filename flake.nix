@@ -245,8 +245,8 @@
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];
               acme = [ services.acme ];
-              telegram-send = [ programs.telegram-send ];
-              notify-failure = [ services.notify-failure ];
+              telegramSend = [ programs.telegram-send ];
+              notifyFailure = [ services.notify-failure ];
               fw = with networking; [ fw-proxy ];
               tpm = [ security.tpm ];
               nixbuild = [ nix.nixbuild ];
@@ -256,22 +256,22 @@
               samba = [ services.samba ];
               godns = [ services.godns ];
               waydroid = [ profiles.virtualization.waydroid ];
-              telegraf-system = [ services.telegraf-system ];
+              telegrafSystem = [ services.telegraf-system ];
               promtail = [ services.promtail ];
-              monitoring = [ telegraf-system promtail ];
+              monitoring = [ telegrafSystem promtail ];
               canokey = [ security.canokey ];
-              auto-upgrade = [ services.auto-upgrade ];
+              autoUpgrade = [ services.auto-upgrade ];
               teamspeak = [ services.teamspeak ];
               vlmcsd = [ services.vlmcsd ];
 
-              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegram-send ++ notify-failure ++ printing ++ canokey;
+              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegramSend ++ notifyFailure ++ printing ++ canokey;
               mobileWorkstation = workstation ++ [ laptop ];
               desktopWorkstation = workstation;
               server = base ++ network;
               homeServer = server ++ networkManager ++ godns ++ teamspeak ++ vlmcsd;
 
-              user-yinfeng = [ users.yinfeng ];
-              user-nianyi = [ users.nianyi ];
+              userYinfeng = [ users.yinfeng ];
+              userNianyi = [ users.nianyi ];
             };
           };
         };

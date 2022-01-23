@@ -27,7 +27,7 @@ in
     suites.godns ++
     suites.samba ++
     suites.nixbuild ++
-    suites.user-yinfeng;
+    suites.userYinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

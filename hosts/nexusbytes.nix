@@ -16,9 +16,9 @@ in
   imports =
     suites.server ++
     suites.monitoring ++
-    suites.telegram-send ++
-    suites.auto-upgrade ++
-    suites.notify-failure ++ [
+    suites.telegramSend ++
+    suites.autoUpgrade ++
+    suites.notifyFailure ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
 

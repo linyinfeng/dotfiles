@@ -4,7 +4,7 @@
   imports =
     suites.homeServer ++
     suites.monitoring ++
-    suites.auto-upgrade ++
+    suites.autoUpgrade ++
     suites.fw;
 
   i18n.defaultLocale = "en_US.UTF-8";
