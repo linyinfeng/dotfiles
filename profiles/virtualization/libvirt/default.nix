@@ -2,8 +2,8 @@
 
 let
   winVirtioIso = pkgs.runCommand "win-virtio-iso" {} ''
-    mkdir -p "$out/var/lib/libvirt/images"
-    ln -s ${pkgs.win-virtio.src} "$out/var/lib/libvirt/images/win-virtio.iso"
+    mkdir -p "$out/share/win-virtio"
+    ln -s ${pkgs.win-virtio.src} "$out/share/win-virtio/win-virtio.iso"
   '';
 in
 {
