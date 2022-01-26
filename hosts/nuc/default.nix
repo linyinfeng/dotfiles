@@ -12,6 +12,7 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/8b982fe4-1521-4a4d-aafc-af22c3961093";
+  btrfsSubvolMobile = btrfsSubvol "/dev/mapper/crypt-mobile";
 
   cfg = config.hosts.nuc;
 in
@@ -29,6 +30,7 @@ in
     suites.monitoring ++
     suites.nixbuild ++
     suites.autoUpgrade ++
+    suites.transmission ++
     suites.userYinfeng ++
     suites.userNianyi ++ [
       ./influxdb
@@ -109,6 +111,12 @@ in
       swapDevices = [{
         device = "/swap/swapfile";
       }];
+
+      environment.etc."crypttab".text = ''
+        crypt-mobile /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c - tpm2-device=auto
+      '';
+      fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
+      fileSystems."/media/data" = btrfsSubvolMobile "@data" { };
     }
 
     # nginx
