@@ -34,6 +34,7 @@ lib.mkIf config.home.graphical {
     nur.repos.linyinfeng.icalingua
     tdesktop
     teamspeak_client
+    tigervnc
     transmission-remote-gtk
     virt-manager
     vlc

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  winVirtioIso = pkgs.runCommand "win-virtio-iso" {} ''
+  winVirtioIso = pkgs.runCommand "win-virtio-iso" { } ''
     mkdir -p "$out/share/win-virtio"
     ln -s ${pkgs.win-virtio.src} "$out/share/win-virtio/win-virtio.iso"
   '';

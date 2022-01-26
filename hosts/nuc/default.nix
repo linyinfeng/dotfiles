@@ -19,6 +19,7 @@ in
   imports =
     suites.server ++
     suites.networkManager ++
+    suites.development ++
     suites.godns ++
     suites.teamspeak ++
     suites.vlmcsd ++
@@ -33,6 +34,7 @@ in
       ./influxdb
       ./grafana
       ./hydra
+      ./desktop
     ];
 
   options.hosts.nuc = {
