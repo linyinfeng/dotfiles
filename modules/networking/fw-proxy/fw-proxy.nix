@@ -209,15 +209,17 @@ with lib;
     }
 
     (mkIf (cfg.webui.enable) {
-      virtualisation.oci-containers.containers.yacd = {
-        image = "docker.io/haishanh/yacd:latest";
-        ports = [
-          "${toString cfg.webui.port}:80"
-        ];
-        extraOptions = [
-          "--label"
-          "io.containers.autoupdate=registry"
-        ];
+      services.nginx.enable = true;
+      services.nginx.virtualHosts.localhost = {
+        locations = {
+          "/yacd/" = {
+            alias = "${pkgs.nur.repos.linyinfeng.yacd}/";
+            index = "index.html";
+          };
+          "/yacd" = {
+            alias = "$url"
+          };
+        };
       };
     })
 

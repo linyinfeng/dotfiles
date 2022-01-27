@@ -238,7 +238,8 @@
               multimedia = (with graphical; [ gnome kde sway fonts i18n v4l2 ]) ++ (with services; [ pipewire ]);
               development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-              virtualization = with profiles.virtualization; [ podman libvirt wine ];
+              # podman disabled
+              virtualization = with profiles.virtualization; [ libvirt wine ];
 
               resolved = [ networking.resolved ];
               wireless = with services; [ bluetooth ];
