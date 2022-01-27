@@ -39,6 +39,7 @@ lib.mkIf
     ];
     files = [
       ".face"
+      ".config/monitors.xml"
     ];
   };
 }
