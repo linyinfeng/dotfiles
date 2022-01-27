@@ -216,9 +216,6 @@ with lib;
             alias = "${pkgs.nur.repos.linyinfeng.yacd}/";
             index = "index.html";
           };
-          "/yacd" = {
-            alias = "$url"
-          };
         };
       };
     })
