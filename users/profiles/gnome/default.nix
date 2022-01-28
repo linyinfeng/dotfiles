@@ -53,4 +53,8 @@ lib.mkIf
     "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
     "application/zip" = "org.gnome.FileRoller.desktop";
   };
+
+  home.global-persistence.directories = [
+    ".config/gsconnect"
+  ];
 }
