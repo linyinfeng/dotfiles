@@ -36,7 +36,7 @@ in
       ./influxdb
       ./grafana
       ./hydra
-      ./desktop
+      # ./desktop
     ];
 
   options.hosts.nuc = {
