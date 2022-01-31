@@ -29,7 +29,7 @@
 
       deploy.url = "github:input-output-hk/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
-      deploy.inputs.utils.follows = "digga/flake-utils";
+      deploy.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       fenix.url = "github:nix-community/fenix";
       fenix.inputs.nixpkgs.follows = "nixos";
       deploy.inputs.fenix.follows = "fenix";
@@ -42,7 +42,7 @@
 
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "nixos";
-      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils";
+      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
       naersk.url = "github:nmattia/naersk";
       naersk.inputs.nixpkgs.follows = "nixos";
