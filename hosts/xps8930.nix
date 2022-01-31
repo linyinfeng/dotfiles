@@ -25,7 +25,6 @@ in
     suites.tpm ++
     suites.fw ++
     suites.godns ++
-    suites.samba ++
     suites.nixbuild ++
     suites.userYinfeng;
 

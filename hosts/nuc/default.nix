@@ -30,6 +30,7 @@ in
     suites.monitoring ++
     suites.nixbuild ++
     suites.autoUpgrade ++
+    suites.samba ++
     suites.transmission ++
     suites.userYinfeng ++
     suites.userNianyi ++ [
