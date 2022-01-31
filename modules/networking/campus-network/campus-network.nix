@@ -61,7 +61,7 @@ in
       "campus-net/username" = { };
       "campus-net/password" = { };
     };
-    nix.binaryCaches = lib.mkOrder 500 [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
+    nix.settings.substituters = lib.mkOrder 500 [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
 
     systemd.services."campus-net-auto-login" = {
       enable = cfg.auto-login.enable;

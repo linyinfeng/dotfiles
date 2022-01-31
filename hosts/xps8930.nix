@@ -99,7 +99,7 @@ in
   sops.secrets."xps8930/github-runner" = { };
   systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
     config.networking.fw-proxy.environment;
-  nix.allowedUsers = [ "github-runner" ];
+  nix.settings.allowed-users = [ "github-runner" ];
   nix.gc.options =
     let
       freeSpaceGB = 30;

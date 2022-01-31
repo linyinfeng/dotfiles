@@ -64,7 +64,7 @@ in
   systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
   sops.secrets."nano/github-token" = { };
   sops.secrets."cache-li7g-com/key" = { };
-  nix.allowedUsers = [ "@hydra" ];
+  nix.settings.allowed-users = [ "@hydra" ];
   nix.distributedBuilds = true;
   nix.buildMachines = [
     {

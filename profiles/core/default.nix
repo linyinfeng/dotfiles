@@ -11,9 +11,6 @@ in
     openFirewall = lib.mkDefault false;
   };
 
-  # This is just a representation of the nix default
-  nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-
   environment = {
 
     # Selection of sysadmin tools that can come in handy
@@ -54,18 +51,21 @@ in
 
   nix = {
 
+    # This is just a representation of the nix default
+    settings.system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+
     # Improve nix store disk usage
-    autoOptimiseStore = true;
+    settings.auto-optimise-store = true;
     gc.automatic = true;
     optimise.automatic = true;
 
     # Prevents impurities in builds
-    useSandbox = true;
+    settings.sandbox = true;
 
-    allowedUsers = [ "@users" ];
+    settings.allowed-users = [ "@users" ];
 
     # give root and @wheel special privileges with nix
-    trustedUsers = [ "root" "@wheel" ];
+    settings.trusted-users = [ "root" "@wheel" ];
 
     # Generally useful nix option defaults
     extraOptions = ''
