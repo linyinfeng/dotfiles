@@ -23,7 +23,7 @@ let
       persist = cfg.root;
     };
   };
-  activationScriptName = "createDirsIn-${lib.replaceStrings [ "/" "." " " ] [ "-" "" "" ] cfg.root}";
+  activationScriptName = "createPersistentStorageDirs";
 in
 
 with lib;

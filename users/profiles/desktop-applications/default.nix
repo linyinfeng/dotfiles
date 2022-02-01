@@ -31,7 +31,6 @@ lib.mkIf config.home.graphical {
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
-    nur.repos.linyinfeng.icalingua
     tdesktop
     teamspeak_client
     tigervnc
@@ -53,7 +52,6 @@ lib.mkIf config.home.graphical {
       ".config/Element"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
-      ".config/icalingua"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
