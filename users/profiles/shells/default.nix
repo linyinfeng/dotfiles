@@ -1,5 +1,9 @@
 { config, pkgs, lib, ... }:
 
+let
+  cfg = config.home.global-persistence;
+  sysCfg = config.passthrough.systemConfig.environment.global-persistence;
+in
 {
   programs.zsh = {
     enable = true;
@@ -14,7 +18,7 @@
       bindkey -M emacs '^N' history-substring-search-down
     '';
     history = lib.mkIf (config.home.global-persistence.enabled) {
-      path = "../../${config.home.global-persistence.root}/.zsh_history";
+      path = "../../${sysCfg.root}${cfg.home}/.zsh_history";
     };
   };
   programs.fish.enable = true;

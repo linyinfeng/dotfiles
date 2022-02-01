@@ -6,11 +6,8 @@
       # service state directory
       "/var/lib"
       "/var/db"
-
-      # trusted-settings.json
-      "/root/.local/share/nix"
     ];
-    etcFiles = [
+    files = [
       # systemd machine-id
       "/etc/machine-id"
     ];

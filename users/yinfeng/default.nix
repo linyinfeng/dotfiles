@@ -41,12 +41,14 @@ in
     "${name}/asciinema-token".owner = user.name;
   };
 
+  environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} = { suites, ... }: {
     imports = suites.full;
-
     passthrough.systemConfig = config;
-
-    home.global-persistence.enable = true;
+    home.global-persistence = {
+      enable = true;
+      home = homeDirectory;
+    };
 
     home.file.".ssh/config".source = pkgs.substituteAll {
       src = ./ssh/config;
@@ -68,8 +70,4 @@ in
   };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
-
-  environment.global-persistence.directories =
-    map (dir: "${homeDirectory}/${dir}")
-      homeManager.home.global-persistence.directories;
 }

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, options, lib, pkgs, ... }:
 
 let
   cfg = config.environment.global-persistence;
@@ -24,6 +24,17 @@ let
     };
   };
   activationScriptName = "createPersistentStorageDirs";
+
+  userCfg = name:
+    assert config.home-manager.users.${name}.home.global-persistence.enabled;
+    {
+      inherit name;
+      value = {
+        inherit (config.home-manager.users.${name}.home.global-persistence)
+          home directories files;
+      };
+    };
+  usersCfg = lib.listToAttrs (map userCfg cfg.user.users);
 in
 
 with lib;
@@ -44,14 +55,6 @@ with lib;
       '';
     };
 
-    etcFiles = mkOption {
-      type = with types; listOf str;
-      default = [ ];
-      description = ''
-        Files in /etc that should be stored in persistent storage.
-      '';
-    };
-
     directories = mkOption {
       type = with types; listOf str;
       default = [ ];
@@ -60,11 +63,11 @@ with lib;
       '';
     };
 
-    softLinkFiles = mkOption {
+    files = mkOption {
       type = with types; listOf str;
       default = [ ];
       description = ''
-        Files should be stored in persistent storage. These files will be soft linked.
+        Files should be stored in persistent storage.
       '';
     };
 
@@ -77,6 +80,14 @@ with lib;
     };
 
     user = {
+      users = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        description = ''
+          Persistence for users.
+        '';
+      };
+
       directories = mkOption {
         type = with types; listOf str;
         default = [ ];
@@ -99,28 +110,10 @@ with lib;
 
   config = mkIf (cfg.enable && cfg.root != null) {
     environment.persistence.${cfg.root} = {
-      directories = cfg.directories;
-      files = cfg.etcFiles;
+      inherit (cfg) directories files;
+      users = usersCfg;
     };
 
-    system.activationScripts.globalPersistenceLinkFiles =
-      let
-        link = file:
-          ''
-            link "${file}"
-          '';
-        links = concatMapStrings link cfg.softLinkFiles;
-        script = pkgs.writeShellScript "global-persistence-link-files"
-          ''
-            function link() {
-              mkdir -p $(dirname "/$1")
-              mkdir -p $(dirname "${cfg.root}/$1")
-              ln -sf "${cfg.root}/$1" "/$1"
-            }
-            ${links}
-          '';
-      in
-      "${script}";
     system.activationScripts.ensurePersistenceRootExists = {
       text = ''
         if [ ! -d "${cfg.root}" ]; then
@@ -131,24 +124,6 @@ with lib;
     };
     system.activationScripts.${activationScriptName}.deps =
       [ "ensurePersistenceRootExists" ];
-    systemd.services.fix-home-permission = {
-      script =
-        let
-          enableFilter = user: _:
-            config.home-manager.users ? ${user} &&
-            config.home-manager.users.${user}.home.global-persistence.enable;
-          enabledUsers = lib.filterAttrs enableFilter config.users.users;
-          fixScript = user: userCfg: ''
-            echo "try fix for ${user}"
-            if [ $(stat --format='%U:%G' "${cfg.root}${userCfg.home}") != "${userCfg.name}:${userCfg.group}" ]; then
-              echo "change permission of ${cfg.root}${userCfg.home} to ${userCfg.name}:${userCfg.group}..."
-              chown -R ${userCfg.name}:${userCfg.group} "${cfg.root}${userCfg.home}"
-            fi
-          '';
-        in
-        lib.concatStrings (lib.mapAttrsToList fixScript enabledUsers);
-      wantedBy = [ "multi-user.target" ];
-    };
 
     age.identityPaths = [
       "${cfg.root}/etc/ssh/ssh_host_ed25519_key"

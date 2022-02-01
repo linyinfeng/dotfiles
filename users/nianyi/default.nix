@@ -26,9 +26,13 @@ in
     ];
   };
 
+  environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} = { pkgs, suites, ... }: {
     passthrough.systemConfig = config;
-    home.global-persistence.enable = true;
+    home.global-persistence = {
+      enable = true;
+      home = homeDirectory;
+    };
 
     home.packages = with pkgs; [
       tmux
@@ -39,8 +43,4 @@ in
       "data"
     ];
   };
-
-  environment.global-persistence.directories =
-    map (dir: "${homeDirectory}/${dir}")
-      homeManager.home.global-persistence.directories;
 }

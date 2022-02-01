@@ -2,10 +2,7 @@
 
 let
   cfg = config.home.global-persistence;
-  home = "${config.home.homeDirectory}";
   sysCfg = config.passthrough.systemConfig.environment.global-persistence;
-  persist = "${sysCfg.root}";
-  persistHome = "${persist}${home}";
 in
 
 with lib;
@@ -19,16 +16,15 @@ with lib;
       '';
     };
 
-    root = lib.mkOption {
-      type = with types; nullOr str;
-      default = null;
+    home = mkOption {
+      type = types.str;
       description = ''
-        Root of home global persistence.
+        Home directory.
       '';
     };
 
     directories = mkOption {
-      type = with types; listOf str;
+      type = with types; listOf anything;
       default = [ ];
       description = ''
         A list of directories in your home directory that you want to link to persistent storage.
@@ -36,7 +32,7 @@ with lib;
     };
 
     files = mkOption {
-      type = with types; listOf str;
+      type = with types; listOf anything;
       default = [ ];
       description = ''
         A list of files in your home directory you want to link to persistent storage.
@@ -54,29 +50,9 @@ with lib;
 
   config = mkIf (config.passthrough.systemConfig != null && sysCfg.enable) {
     home.global-persistence = {
-      root = persistHome;
       directories = sysCfg.user.directories;
       files = sysCfg.user.files;
       enabled = cfg.enable;
     };
-
-    home.activation.linkPersistenceFiles = hm.dag.entryBefore [ "writeBoundary" ]
-      (
-        let
-          linkSingleFile = file:
-            let
-              source = "${persistHome}/${file}";
-              target = "${home}/${file}";
-            in
-            ''
-              if [ -e "${target}" -a ! -L "${target}" ]; then
-                "${sysCfg.persistMigrate}/bin/persist-migrate" "${target}"
-              fi
-              mkdir -p $(dirname "${target}")
-              ln -sf "${source}" "${target}"
-            '';
-        in
-        lib.concatStrings (map linkSingleFile cfg.files)
-      );
   };
 }
