@@ -86,29 +86,6 @@ in
   services.hercules-ci-agent.settings = {
     concurrentTasks = 2;
   };
-  services.github-runner = {
-    enable = true;
-    name = "xps8930";
-    replace = true;
-    extraLabels = [ "nixos" ];
-    tokenFile = config.sops.secrets."xps8930/github-runner".path;
-    url = "https://github.com/linyinfeng/dotfiles";
-    extraPackages = with pkgs; [ openssh ];
-  };
-  sops.secrets."xps8930/github-runner" = { };
-  systemd.services.github-runner.environment = lib.mkIf (config.networking.fw-proxy.enable)
-    config.networking.fw-proxy.environment;
-  nix.settings.allowed-users = [ "github-runner" ];
-  nix.gc.options =
-    let
-      freeSpaceGB = 30;
-    in
-    # https://github.com/hercules-ci/hercules-ci-agent/blob/master/internal/nix/gc.nix
-    ''--max-freed "$((${toString freeSpaceGB} * 1024**3 - 1024 * $(df -P -k /nix/store | tail -n 1 | ${pkgs.gawk}/bin/awk '{ print $4 }')))" --delete-older-than 14d'';
-
-  services.notify-failure.services = [
-    "github-runner"
-  ];
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
