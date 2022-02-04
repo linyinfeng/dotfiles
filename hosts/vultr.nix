@@ -82,7 +82,14 @@ in
         forceSSL = true;
         enableACME = true;
         locations."/" = {
-          proxyPass = "http://nuc.ts.li7g.com";
+          proxyPass = "http://nuc.ts.li7g.com/";
+        };
+      };
+      services.nginx.virtualHosts."vault.li7g.com" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://vault.ts.li7g.com/";
         };
       };
 

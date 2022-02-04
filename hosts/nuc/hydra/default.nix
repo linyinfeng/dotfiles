@@ -14,6 +14,19 @@ in
     ./dotfiles-channel-update.nix
   ];
 
+  services.nginx = {
+    virtualHosts = {
+      "nuc.ts.li7g.com" = {
+        locations."/hydra/" = {
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
+          extraConfig = ''
+            proxy_set_header X-Request-Base /hydra;
+          '';
+        };
+      };
+    };
+  };
+
   services.hydra = {
     enable = true;
     listenHost = "127.0.0.1";

@@ -37,7 +37,7 @@ in
       ./influxdb
       ./grafana
       ./hydra
-      # ./desktop
+      ./vaultwarden
     ];
 
   options.hosts.nuc = {
@@ -61,6 +61,16 @@ in
       loki = lib.mkOption {
         type = lib.types.port;
         default = 3005;
+      };
+      vaultwarden = {
+        http = lib.mkOption {
+          type = lib.types.port;
+          default = 3006;
+        };
+        websocket = lib.mkOption {
+          type = lib.types.port;
+          default = 3007;
+        };
       };
     };
   };
@@ -128,31 +138,9 @@ in
         virtualHosts = {
           "nuc.ts.li7g.com" = {
             default = true;
+            serverName = "nuc.li7g.com nuc.ts.li7g.com";
             locations."/" = {
               root = ./www;
-            };
-            locations."/grafana/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
-            };
-            locations."/hydra/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
-              extraConfig = ''
-                proxy_set_header X-Request-Base /hydra;
-              '';
-            };
-            locations."/store/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
-              extraConfig = ''
-                proxy_max_temp_file_size 0;
-              '';
-            };
-          };
-          "cache.li7g.com" = {
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
-              extraConfig = ''
-                proxy_max_temp_file_size 0;
-              '';
             };
           };
         };
@@ -201,6 +189,26 @@ in
 
     # store serving
     {
+      services.nginx = {
+        virtualHosts = {
+          "nuc.ts.li7g.com" = {
+            locations."/store/" = {
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
+              extraConfig = ''
+                proxy_max_temp_file_size 0;
+              '';
+            };
+          };
+          "cache.li7g.com" = {
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
+              extraConfig = ''
+                proxy_max_temp_file_size 0;
+              '';
+            };
+          };
+        };
+      };
       services.nix-serve = {
         enable = true;
         bindAddress = "0.0.0.0";
