@@ -112,6 +112,7 @@ with lib;
     environment.persistence.${cfg.root} = {
       inherit (cfg) directories files;
       users = usersCfg;
+      hideMounts = true;
     };
 
     system.activationScripts.ensurePersistenceRootExists = {
