@@ -49,6 +49,7 @@ lib.mkIf config.home.graphical {
       ".zotero"
       ".goldendict"
 
+      ".config/Bitwarden"
       ".config/calibre"
       ".config/Element"
       ".config/unity3d" # unity3d game saves
