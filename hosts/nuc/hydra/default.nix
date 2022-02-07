@@ -16,7 +16,7 @@ in
 
   services.nginx = {
     virtualHosts = {
-      "nuc.ts.li7g.com" = {
+      "nuc.li7g.com" = {
         locations."/hydra/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
           extraConfig = ''

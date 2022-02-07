@@ -22,6 +22,7 @@ in
     suites.networkManager ++
     suites.development ++
     suites.godns ++
+    suites.acme ++
     suites.teamspeak ++
     suites.vlmcsd ++
     suites.virtualization ++
@@ -130,21 +131,74 @@ in
       fileSystems."/media/data" = btrfsSubvolMobile "@data" { };
     }
 
+    # godns
+    {
+      services.godns = {
+        ipv4.settings = {
+          domains = [{
+            domain_name = "li7g.com";
+            sub_domains = [ "nuc" ];
+          }];
+          ip_type = "IPv4";
+          ip_url = "https://myip.biturl.top";
+        };
+        ipv6.settings = {
+          domains = [{
+            domain_name = "li7g.com";
+            sub_domains = [ "nuc" ];
+          }];
+          ip_type = "IPv6";
+          ip_interface = "enp88s0";
+        };
+      };
+    }
+
+    # acme
+    {
+      security.acme.certs = {
+        "nuc.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "home.li7g.com"
+            "nuc.ts.li7g.com"
+            "vault.li7g.com"
+          ];
+          group = "nginx";
+        };
+      };
+      sops.secrets.cloudflare-token = {};
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+    }
+
     # nginx
     {
       services.nginx = {
         enable = true;
         recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
         virtualHosts = {
-          "nuc.ts.li7g.com" = {
+          "nuc.li7g.com" = {
             default = true;
-            serverName = "nuc.li7g.com nuc.ts.li7g.com";
+            forceSSL = true;
+            useACMEHost = "nuc.li7g.com";
+            serverAliases = [
+              "home.li7g.com"
+              "nuc.ts.li7g.com"
+            ];
             locations."/" = {
               root = ./www;
             };
           };
         };
       };
+      networking.firewall.allowedTCPPorts = [
+        80 443
+      ];
     }
 
     # loki
@@ -191,7 +245,7 @@ in
     {
       services.nginx = {
         virtualHosts = {
-          "nuc.ts.li7g.com" = {
+          "nuc.li7g.com" = {
             locations."/store/" = {
               proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
               extraConfig = ''

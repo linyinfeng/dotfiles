@@ -7,15 +7,16 @@ in
   services.nginx = {
     virtualHosts = {
       "vault.li7g.com" = {
-        serverName = "vault.li7g.com vault.ts.li7g.com";
+        forceSSL = true;
+        useACMEHost = "nuc.li7g.com";
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}/";
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
         };
         locations."/notifications/hub/negotiate" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}/";
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
         };
         locations."/notifications/hub" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.websocket}/";
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.websocket}";
           proxyWebsockets = true;
         };
       };

@@ -18,7 +18,7 @@ in
   config = {
     services.nginx = {
       virtualHosts = {
-        "nuc.ts.li7g.com" = {
+        "nuc.li7g.com" = {
           locations."/grafana/" = {
             proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
           };

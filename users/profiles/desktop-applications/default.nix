@@ -20,6 +20,7 @@ lib.mkIf config.home.graphical {
 
   home.packages = with pkgs; [
     anki
+    bitwarden
     calibre
     element-desktop
     gimp
