@@ -49,6 +49,9 @@ in
       services.nginx = {
         enable = true;
         recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
       services.nginx.virtualHosts.${config.services.portal.host} = {
@@ -75,6 +78,13 @@ in
               "github.com"
             ];
           };
+        };
+      };
+      services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "https://nuc.ts.li7g.com";
         };
       };
 
