@@ -29,7 +29,7 @@ in
     }
     (lib.mkIf (config.networking.hostName != "nuc") {
       settings.substituters = lib.mkOrder 1100 [
-        "http://nuc.ts.li7g.com/store"
+        "https://nuc.li7g.com/store"
       ];
       settings.trusted-public-keys = [
         "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
