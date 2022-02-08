@@ -242,6 +242,7 @@
               virtualization = with profiles.virtualization; [ libvirt wine ];
 
               resolved = [ networking.resolved ];
+              wireguardHome = [ networking.wireguard-home ];
               wireless = with services; [ bluetooth ];
               phone = with services; [ kde-connect ];
               printing = [ services.printing ];

@@ -167,7 +167,7 @@ in
           group = "nginx";
         };
       };
-      sops.secrets.cloudflare-token = {};
+      sops.secrets.cloudflare-token = { };
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
@@ -197,7 +197,8 @@ in
         };
       };
       networking.firewall.allowedTCPPorts = [
-        80 443
+        80
+        443
       ];
     }
 

@@ -23,6 +23,7 @@ in
     suites.game ++
     suites.fw ++
     suites.godns ++
+    suites.wireguardHome ++
     suites.waydroid ++
     suites.nixbuild ++
     suites.userYinfeng;
