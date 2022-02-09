@@ -42,6 +42,17 @@ in
     ];
 
   options.hosts.nuc = {
+    listens = lib.mkOption {
+      type = with lib.types; listOf anything;
+      default = [
+        { addr = "[::]"; port = 80; }
+        { addr = "[::]"; port = 443; ssl = true; }
+        { addr = "[::]"; port = 8443; ssl = true; }
+        { addr = "0.0.0.0"; port = 80; }
+        { addr = "0.0.0.0"; port = 443; ssl = true; }
+        { addr = "0.0.0.0"; port = 8443; ssl = true; }
+      ];
+    };
     ports = {
       grafana = lib.mkOption {
         type = lib.types.port;
@@ -186,6 +197,7 @@ in
             default = true;
             forceSSL = true;
             useACMEHost = "nuc.li7g.com";
+            listen = config.hosts.nuc.listens;
             serverAliases = [
               "home.li7g.com"
               "nuc.ts.li7g.com"
@@ -199,6 +211,7 @@ in
       networking.firewall.allowedTCPPorts = [
         80
         443
+        8443
       ];
     }
 

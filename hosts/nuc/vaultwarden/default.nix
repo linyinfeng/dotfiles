@@ -9,6 +9,7 @@ in
       "vault.li7g.com" = {
         forceSSL = true;
         useACMEHost = "nuc.li7g.com";
+        listen = config.hosts.nuc.listens;
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
         };
