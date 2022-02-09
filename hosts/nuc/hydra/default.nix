@@ -66,13 +66,9 @@ in
       </github_authorization>
     '';
   };
-  nix.extraOptions = ''
-    secret-key-files = ${config.sops.secrets."cache-li7g-com/key".path}
-
-    # reduce system load
-    cores = 4
-    max-jobs = 1
-  '';
+  nix.settings.secret-key-files = [
+    "${config.sops.secrets."cache-li7g-com/key".path}"
+  ];
   # limit cpu quota of nix builds
   systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
   sops.secrets."nano/github-token" = { };
@@ -88,7 +84,7 @@ in
         "aarch64-linux"
       ];
       supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-      maxJobs = 1;
+      maxJobs = 4;
       speedFactor = 1;
     }
   ];
