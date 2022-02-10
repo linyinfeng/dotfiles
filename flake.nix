@@ -35,8 +35,8 @@
       deploy.inputs.fenix.follows = "fenix";
 
       # MAIN switch to sops-nix and remove agenix
-      # agenix.url = "github:ryantm/agenix";
-      # agenix.inputs.nixpkgs.follows = "nixos";
+      agenix.url = "github:ryantm/agenix";
+      agenix.inputs.nixpkgs.follows = "nixos";
       sops-nix.url = "github:Mic92/sops-nix";
       sops-nix.inputs.nixpkgs.follows = "nixos";
 
