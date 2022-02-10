@@ -1,0 +1,38 @@
+name: "Auto update"
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        ref: main
+        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://github.com/numtide/nix-unstable-installer/releases/latest/download/install
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - name: Setup cachix
+      uses: cachix/cachix-action@master
+      with:
+        name: linyinfeng
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - name: Nix flake update
+      run: |
+        nix flake update
+    - name: Commit and push
+      run: |
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "repository is clean, skip commit and push"
+        else
+          git commit --message "Automatic nix flake update" \
+                     --author "Nano <nano@linyinfeng.com>"
+          git push
+        fi
