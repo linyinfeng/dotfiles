@@ -27,6 +27,9 @@ jobs:
     - name: Nix flake update
       run: |
         nix flake update
+    - name: Test evaluation
+      run: |
+        nix flake check --no-build --verbose
     - name: Commit and push
       run: |
         if [ -z "$(git status --porcelain)" ]; then
