@@ -5,7 +5,7 @@ let
   hosts = {
     t460p = {
       ip = "192.168.3.2/24";
-      pubKey = "1Z1Z+wNd21Uhd1O9ujCdJVqcv40MTkBCpmSfwFoLrkY=";
+      publicKey = "1Z1Z+wNd21Uhd1O9ujCdJVqcv40MTkBCpmSfwFoLrkY=";
     };
   };
   ip = hosts.${hostName}.ip;
