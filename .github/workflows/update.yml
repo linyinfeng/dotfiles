@@ -32,7 +32,8 @@ jobs:
         if [ -z "$(git status --porcelain)" ]; then
           echo "repository is clean, skip commit and push"
         else
-          git commit --message "Automatic nix flake update" \
-                     --author "Nano <nano@linyinfeng.com>"
+          git config --global user.email "nano@linyinfeng.com"
+          git config --global user.name "Nano"
+          git commit --message "Nix flake update"
           git push
         fi
