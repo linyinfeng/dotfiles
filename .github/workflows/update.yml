@@ -30,6 +30,8 @@ jobs:
     - name: Test evaluation
       run: |
         nix flake check --no-build --verbose
+      env:
+        GC_INITIAL_HEAP_SIZE: 1M
     - name: Commit and push
       run: |
         if [ -z "$(git status --porcelain)" ]; then
