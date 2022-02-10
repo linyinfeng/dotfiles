@@ -34,6 +34,7 @@ jobs:
         else
           git config --global user.email "nano@linyinfeng.com"
           git config --global user.name "Nano"
+          git add --all
           git commit --message "Nix flake update"
           git push
         fi
