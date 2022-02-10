@@ -1,4 +1,4 @@
-name: "Auto update"
+name: "Automatic update"
 on:
   schedule:
     - cron: '0 0 * * *'
