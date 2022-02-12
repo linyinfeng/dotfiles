@@ -20,6 +20,7 @@ in
         locations."/hydra/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
           extraConfig = ''
+            proxy_set_header X-Forwarded-Port 8443;
             proxy_set_header X-Request-Base /hydra;
           '';
         };
@@ -31,7 +32,7 @@ in
     enable = true;
     listenHost = "127.0.0.1";
     port = cfg.ports.hydra;
-    hydraURL = "https://nuc.li7g.com/hydra";
+    hydraURL = "https://nuc.li7g.com:8443/hydra";
     notificationSender = "hydra@li7g.com";
     useSubstitutes = true;
     buildMachinesFiles = [
