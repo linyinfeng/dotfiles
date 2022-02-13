@@ -8,6 +8,9 @@ lib.mkIf
     displayManager.gdm.enable = true;
   };
 
+  # prevent gdm auto suspend before login
+  services.xserver.displayManager.gdm.autoSuspend = false;
+
   environment.systemPackages = with pkgs; [
     kooha
     pulseaudio
