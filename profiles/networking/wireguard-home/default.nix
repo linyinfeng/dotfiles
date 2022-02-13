@@ -4,12 +4,16 @@ let
   hostName = config.networking.hostName;
   hosts = {
     t460p = {
-      ip = "192.168.3.2/24";
+      ip = "192.168.2.2/32";
       publicKey = "1Z1Z+wNd21Uhd1O9ujCdJVqcv40MTkBCpmSfwFoLrkY=";
+    };
+    xps8930 = {
+      ip = "192.168.2.3/32";
+      publicKey = "ucLym/N2nVNc2uxEFCTY+KTJhYZ1KSCw35W0C5JGeyE=";
     };
   };
   ip = hosts.${hostName}.ip;
-  homeIp = "192.168.3.1/32";
+  homeIp = "192.168.2.1/32";
   home = {
     allowedIPs = [ homeIp ];
     endpoint = "home.li7g.com:13231";

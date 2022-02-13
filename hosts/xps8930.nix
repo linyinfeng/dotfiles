@@ -22,6 +22,7 @@ in
     suites.tpm ++
     suites.fw ++
     suites.godns ++
+    suites.wireguardHome ++
     suites.nixbuild ++
     suites.userYinfeng;
 
