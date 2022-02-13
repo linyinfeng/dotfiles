@@ -34,6 +34,7 @@ lib.mkIf
       ".config/goa-1.0" # gnome accounts
       ".config/gnome-boxes"
       ".local/share/keyrings"
+      ".local/share/applications"
       ".local/share/Trash"
       ".local/share/webkitgtk" # gnome accounts
       ".local/share/backgrounds"

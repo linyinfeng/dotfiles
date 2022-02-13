@@ -10,6 +10,7 @@ lib.mkIf
 
   environment.global-persistence.user = {
     directories = [
+      ".local/share/applications"
       ".local/share/Trash"
     ];
     files = [
