@@ -22,7 +22,6 @@ lib.mkIf config.home.graphical {
     anki
     bitwarden
     calibre
-    easytag
     element-desktop
     gimp
     goldendict
@@ -33,6 +32,7 @@ lib.mkIf config.home.graphical {
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
+    picard
     tdesktop
     teamspeak_client
     tigervnc
