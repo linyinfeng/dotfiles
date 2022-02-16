@@ -3,6 +3,7 @@
 let
   webBrowser = "firefox.desktop";
   imageViewer = "org.gnome.eog.desktop";
+  archiveViewer = "org.gnome.FileRoller.desktop";
 
   webFormats = [
     "x-scheme-handler/http"
@@ -35,6 +36,13 @@ let
     "vnd.wap.wbmp"
     "x-icns"
   ];
+  archiveFormats = map (f: "application/${f}") [
+    "x-tar"
+    "x-7z-compressed"
+    "x-rar-compressed"
+    "x-gtar"
+    "zip"
+  ];
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
 in
@@ -43,7 +51,8 @@ lib.mkIf config.home.graphical {
     enable = true;
     defaultApplications =
       buildMap [ webBrowser ] webFormats //
-      buildMap [ imageViewer ] imageFormats // {
+      buildMap [ imageViewer ] imageFormats //
+      buildMap [ archiveViewer ] archiveFormats // {
         "application/pdf" = "org.gnome.Evince.desktop";
       };
   };

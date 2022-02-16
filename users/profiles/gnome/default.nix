@@ -51,7 +51,6 @@ lib.mkIf
   xdg.mimeApps.associations.added = {
     "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
     "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-    "application/zip" = "org.gnome.FileRoller.desktop";
   };
 
   home.global-persistence.directories = [
