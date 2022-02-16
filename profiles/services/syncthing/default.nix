@@ -36,7 +36,7 @@ in
         ignorePerms = false;
       };
       "/var/lib/syncthing/Music" = {
-        id = "main";
+        id = "music";
         devices = otherNames;
         ignoreDelete = false;
         ignorePerms = false;
