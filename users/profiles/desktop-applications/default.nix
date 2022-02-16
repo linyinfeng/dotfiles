@@ -55,6 +55,7 @@ lib.mkIf config.home.graphical {
       ".config/Element"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
+      ".config/MusicBrainz" # picard configs
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
