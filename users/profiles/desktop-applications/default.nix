@@ -22,6 +22,7 @@ lib.mkIf config.home.graphical {
     anki
     bitwarden
     calibre
+    easytag
     element-desktop
     gimp
     goldendict
