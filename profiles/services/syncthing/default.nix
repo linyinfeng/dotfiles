@@ -3,7 +3,7 @@
 let
   devices = {
     "t460p" = {
-      id = "";
+      id = "ESRNKCW-WFHWAZZ-H7YXVCM-YM43VOE-VIREZYF-EY7DKPO-UUZLHIH-RSHQBQR";
       # addresses = [
       #   "t460p.ts.li7g.com"
       # ];
