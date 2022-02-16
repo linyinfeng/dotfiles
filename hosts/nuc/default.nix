@@ -33,6 +33,7 @@ in
     suites.autoUpgrade ++
     suites.samba ++
     suites.transmission ++
+    suites.syncthing ++
     suites.userYinfeng ++
     suites.userNianyi ++ [
       ./influxdb

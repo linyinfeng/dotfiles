@@ -8,6 +8,9 @@ let
     };
     "xps8930" = {
       id = "6TJQETQ-R4ST2CI-3O3K3K7-GSA3XLZ-B7WB7QU-H4UCP2H-ZOMV6KN-G7EF5QS";
+      addresses = [
+        "tcp://nuc.li7g.com:22000"
+      ];
     };
     "nuc" = {
       id = "FN5AKLS-VLUOTUK-RTKQWQ2-M3DOLFK-OMB7VJD-KA627GA-M2TY435-QFFLOQE";
@@ -25,17 +28,20 @@ in
 {
   services.syncthing = {
     enable = true;
+    openDefaultPorts = true;
+    user = "yinfeng";
+    group = "users";
     cert = "${./certs/${hostName}.pem}";
     key = config.sops.secrets."syncthing/${hostName}".path;
     devices = others;
     folders = {
-      "/var/lib/syncthing/Main" = {
+      "/var/lib/syncthing/Sync" = {
         id = "main";
         devices = otherNames;
         ignoreDelete = false;
         ignorePerms = false;
       };
-      "/var/lib/syncthing/Music" = {
+      "/home/yinfeng/Data/Music" = {
         id = "music";
         devices = otherNames;
         ignoreDelete = false;
@@ -44,10 +50,6 @@ in
     };
   };
   sops.secrets."syncthing/${hostName}" = { };
-
-  systemd.tmpfiles.rules = [
-    "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group}"
-  ];
 
   environment.systemPackages = with pkgs; [
     syncthing
