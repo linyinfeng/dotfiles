@@ -28,7 +28,8 @@ in
     groupNameIfPresent "transmission" ++
     groupNameIfPresent "networkmanager" ++
     groupNameIfPresent "tss" ++
-    groupNameIfPresent "nix-access-tokens";
+    groupNameIfPresent "nix-access-tokens" ++
+    groupNameIfPresent "syncthing";
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/authorized-keys/pgp.pub

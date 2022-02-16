@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
+  cfg = config.services.syncthing;
   devices = {
     "t460p" = {
       id = "ESRNKCW-WFHWAZZ-H7YXVCM-YM43VOE-VIREZYF-EY7DKPO-UUZLHIH-RSHQBQR";
@@ -43,6 +44,10 @@ in
     };
   };
   sops.secrets."syncthing/${hostName}" = { };
+
+  systemd.tmpfiles.rules = [
+    "d ${cfg.dataDir} 0750 ${cfg.user} ${cfg.group}"
+  ];
 
   environment.systemPackages = with pkgs; [
     syncthing
