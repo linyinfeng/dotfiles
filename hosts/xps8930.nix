@@ -23,6 +23,7 @@ in
     suites.fw ++
     suites.godns ++
     suites.wireguardHome ++
+    suites.syncthing ++
     suites.nixbuild ++
     suites.userYinfeng;
 

@@ -265,6 +265,7 @@
               autoUpgrade = [ services.auto-upgrade ];
               teamspeak = [ services.teamspeak ];
               vlmcsd = [ services.vlmcsd ];
+              syncthing = [ services.syncthing ];
 
               workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegramSend ++ notifyFailure ++ printing ++ canokey;
               mobileWorkstation = workstation ++ [ laptop ];

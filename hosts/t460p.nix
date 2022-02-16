@@ -24,6 +24,7 @@ in
     suites.fw ++
     suites.godns ++
     suites.wireguardHome ++
+    suites.syncthing ++
     suites.waydroid ++
     suites.nixbuild ++
     suites.userYinfeng;
