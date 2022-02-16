@@ -5,21 +5,15 @@ let
   devices = {
     "t460p" = {
       id = "ESRNKCW-WFHWAZZ-H7YXVCM-YM43VOE-VIREZYF-EY7DKPO-UUZLHIH-RSHQBQR";
-      # addresses = [
-      #   "t460p.ts.li7g.com"
-      # ];
     };
     "xps8930" = {
       id = "6TJQETQ-R4ST2CI-3O3K3K7-GSA3XLZ-B7WB7QU-H4UCP2H-ZOMV6KN-G7EF5QS";
-      # addresses = [
-      #   "xps8930.ts.li7g.com"
-      # ];
     };
     "nuc" = {
       id = "FN5AKLS-VLUOTUK-RTKQWQ2-M3DOLFK-OMB7VJD-KA627GA-M2TY435-QFFLOQE";
-      # addresses = [
-      #   "nuc.ts.li7g.com"
-      # ];
+    };
+    "k40" = {
+      id = "BSTUP5D-LGMGCRC-MKM2OZO-SB5RYDK-5N73YYS-YTWEFPK-WWWD3IK-YFUU2QU";
     };
   };
   hostName = config.networking.hostName;
@@ -35,7 +29,13 @@ in
     key = config.sops.secrets."syncthing/${hostName}".path;
     devices = others;
     folders = {
-      "/var/lib/syncthing/main" = {
+      "/var/lib/syncthing/Main" = {
+        id = "main";
+        devices = otherNames;
+        ignoreDelete = false;
+        ignorePerms = false;
+      };
+      "/var/lib/syncthing/Music" = {
         id = "main";
         devices = otherNames;
         ignoreDelete = false;
