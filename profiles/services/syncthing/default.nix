@@ -8,12 +8,12 @@ let
     };
     "xps8930" = {
       id = "6TJQETQ-R4ST2CI-3O3K3K7-GSA3XLZ-B7WB7QU-H4UCP2H-ZOMV6KN-G7EF5QS";
-      addresses = [
-        "tcp://nuc.li7g.com:22000"
-      ];
     };
     "nuc" = {
       id = "FN5AKLS-VLUOTUK-RTKQWQ2-M3DOLFK-OMB7VJD-KA627GA-M2TY435-QFFLOQE";
+      addresses = [
+        "tcp://nuc.li7g.com:22000"
+      ];
     };
     "k40" = {
       id = "BSTUP5D-LGMGCRC-MKM2OZO-SB5RYDK-5N73YYS-YTWEFPK-WWWD3IK-YFUU2QU";
