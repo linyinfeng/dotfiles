@@ -17,9 +17,7 @@ Host nuc
 Host t460p
     HostName t460p.ts.li7g.com
     User yinfeng
-    RemoteForward /run/user/@uid@/gnupg/S.gpg-agent /run/user/@uid@/gnupg/S.gpg-agent.extra
 
 Host xps8930
     HostName xps8930.ts.li7g.com
     User yinfeng
-    RemoteForward /run/user/@uid@/gnupg/S.gpg-agent /run/user/@uid@/gnupg/S.gpg-agent.extra
