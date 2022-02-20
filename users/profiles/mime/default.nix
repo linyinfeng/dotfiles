@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  webBrowser = "firefox.desktop";
+  webBrowser = "chromium-browser.desktop";
   imageViewer = "org.gnome.eog.desktop";
   archiveViewer = "org.gnome.FileRoller.desktop";
 
