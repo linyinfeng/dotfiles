@@ -8,6 +8,7 @@
       init.defaultBranch = "main";
       pull.ff = "only";
       credential.helper = "libsecret";
+      commit.gpgSign = true;
 
       # fish git status
       bash.showInformativeStatus = true;
