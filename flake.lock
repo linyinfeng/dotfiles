@@ -26,7 +26,11 @@
           "nixos"
         ],
         "poetry2nix": "poetry2nix",
-        "utils": "utils"
+        "utils": [
+          "digga",
+          "flake-utils-plus",
+          "flake-utils"
+        ]
       },
       "locked": {
         "lastModified": 1644351083,
@@ -106,9 +110,6 @@
     },
     "deploy": {
       "inputs": {
-        "fenix": [
-          "fenix"
-        ],
         "flake-compat": [
           "flake-compat"
         ],
@@ -122,15 +123,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1639771334,
-        "narHash": "sha256-4hgZmsCPaL5QlcEijHmzaYYrEwHtUFqraCUrCqLGJOo=",
-        "owner": "input-output-hk",
+        "lastModified": 1643787431,
+        "narHash": "sha256-8IwuVgXulRE3ZWq6z8mytarawC32pKPKR20EyDtSH+w=",
+        "owner": "serokell",
         "repo": "deploy-rs",
-        "rev": "7267eab9139ca4476fd8ed49e2e8652bba4c037f",
+        "rev": "4154ba1aaaf7333a916384c348d867d03b6f1409",
         "type": "github"
       },
       "original": {
-        "owner": "input-output-hk",
+        "owner": "serokell",
         "repo": "deploy-rs",
         "type": "github"
       }
@@ -656,21 +657,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "utils": {
-      "locked": {
-        "lastModified": 1644229661,
-        "narHash": "sha256-1YdnJAsNy69bpcjuoKdOYQX0YxZBiCYZo4Twxerqv7k=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "3cecb5b042f7f209c56ffd8371b2711a290ec797",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
         "type": "github"
       }
     }

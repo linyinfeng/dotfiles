@@ -27,7 +27,7 @@
       darwin.url = "github:LnL7/nix-darwin";
       darwin.inputs.nixpkgs.follows = "nixos";
 
-      deploy.url = "github:input-output-hk/deploy-rs";
+      deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
       deploy.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       fenix.url = "github:nix-community/fenix";
@@ -52,7 +52,7 @@
       # MAIN: more inputs follows
       bud.inputs.beautysh.follows = "beautysh";
       beautysh.url = "github:lovesegfault/beautysh";
-      beautysh.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       beautysh.inputs.nixpkgs.follows = "nixos";
 
       # MAIN
