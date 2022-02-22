@@ -29,7 +29,9 @@ in
     }
     (lib.mkIf (config.networking.hostName != "nuc") {
       settings.substituters = lib.mkOrder 1100 [
-        "https://nuc.li7g.com:8443/store"
+        # priority of cache.nixos.org and its mirror: 40
+        # priority of cachix: 41
+        "https://nuc.li7g.com:8443/store?priority=50"
       ];
       settings.trusted-public-keys = [
         "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
