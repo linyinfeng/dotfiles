@@ -5,7 +5,8 @@
     enable = true;
     flake = "github:linyinfeng/dotfiles/tested";
     allowReboot = true;
-    dates = "04:30";
+    dates = "04:00";
+    randomizedDelaySec = "30min";
     flags = [ "--refresh" "--verbose" ];
   };
   systemd.services.nixos-upgrade.environment =

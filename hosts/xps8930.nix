@@ -25,6 +25,7 @@ in
     suites.wireguardHome ++
     suites.syncthing ++
     suites.nixbuild ++
+    suites.autoUpgrade ++
     suites.userYinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";

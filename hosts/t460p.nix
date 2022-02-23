@@ -27,6 +27,7 @@ in
     suites.syncthing ++
     suites.waydroid ++
     suites.nixbuild ++
+    suites.autoUpgrade ++
     suites.userYinfeng;
 
   i18n.defaultLocale = "en_US.UTF-8";
