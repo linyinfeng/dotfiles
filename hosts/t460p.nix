@@ -190,14 +190,17 @@ in
     </fontconfig>
   '';
 
+  boot.initrd.luks.forceLuksSupportInInitrd = true;
+  boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
+  boot.initrd.preLVMCommands = ''
+    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd -n crypt-root
+  '';
   fileSystems."/" =
     {
       device = "tmpfs";
       fsType = "tmpfs";
       options = [ "defaults" "size=8G" "mode=755" ];
     };
-  boot.initrd.luks.devices."crypt-root".device =
-    "/dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd";
   fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
   fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
   fileSystems."/persist/.snapshots" = btrfsSubvolMain "@snapshots" { };
