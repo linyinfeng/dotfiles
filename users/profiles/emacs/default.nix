@@ -15,6 +15,7 @@ let
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;
+  syncPath = "/var/lib/syncthing/Main";
 in
 {
   home.packages = [ emacs ] ++
@@ -26,7 +27,7 @@ in
       ripgrep # rg
     ]);
   home.file = {
-    "Roaming/orgs/notes/templates".source = ./org-roam/templates;
+    ".emacs.d/var/orgs/templates".source = ./org-roam/templates;
   };
   fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 
@@ -58,5 +59,5 @@ in
       ".emacs.d"
     ];
   };
-  home.link.".ispell_english".target = "${config.home.roaming.path}/dotfiles/ispell_english";
+  home.link.".ispell_english".target = "${syncPath}/dotfiles/ispell_english";
 }

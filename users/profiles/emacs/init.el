@@ -221,7 +221,7 @@
 (use-package org
   :ensure t
   :custom
-  (org-directory "~/Roaming/orgs")
+  (org-directory "/var/lib/syncthing/Main/orgs")
   ;; done with time information
   (org-log-done 'time)
   :bind (("C-c o l" . org-store-link)
@@ -233,7 +233,7 @@
   :custom
   (org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :config
-  (add-to-list 'org-agenda-files "~/Roaming/orgs/tasks"))
+  (add-to-list 'org-agenda-files "/var/lib/syncthing/Main/orgs/tasks"))
 
 (use-package org-bullets
   :ensure t
@@ -252,25 +252,25 @@
   :init
   (setq org-journal-prefix-key "C-c j ")
   :custom
-  (org-journal-dir "~/Roaming/orgs/journal")
+  (org-journal-dir "/var/lib/syncthing/Main/orgs/journal")
   (org-journal-file-format "%Y-%m-%d")
   :config
   ;; include journal in agenda
-  (add-to-list 'org-agenda-files "~/Roaming/orgs/journal"))
+  (add-to-list 'org-agenda-files "/var/lib/syncthing/Main/orgs/journal"))
 
 (use-package org-roam
   :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory (file-truename "~/Roaming/orgs/notes"))
+  (org-roam-directory (file-truename "/var/lib/syncthing/Main/orgs/notes"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
      `(("d" "default" plain "%?"
         :target (file+head ,file-format "#+title: ${title}")
         :unnarrowed t)
-       ("p" "paper" plain (file "~/Roaming/orgs/notes/templates/paper.org")
+       ("p" "paper" plain (file "~/.emacs.d/var/orgs/templates/paper.org")
         :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
         :unnarrowed t))))
   :bind (("C-c n l" . org-roam-buffer-toggle)

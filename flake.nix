@@ -295,7 +295,7 @@
               development = [ profiles.development emacs tools asciinema tex postmarketos ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
-              synchronize = [ onedrive digital-paper roaming ];
+              synchronize = [ onedrive digital-paper ];
               security = [ gpg ];
 
               full = base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
