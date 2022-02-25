@@ -7,7 +7,6 @@
     ".cabal"
 
     "Source"
-    "Roaming"
     "Local"
   ];
 }
