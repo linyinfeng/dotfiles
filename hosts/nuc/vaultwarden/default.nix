@@ -10,6 +10,9 @@ in
         forceSSL = true;
         useACMEHost = "nuc.li7g.com";
         listen = config.hosts.nuc.listens;
+        serverAliases = [
+          "vault.ts.li7g.com"
+        ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
         };
@@ -27,7 +30,7 @@ in
     enable = true;
     backupDir = "/media/data/vaultwarden-backup";
     config = {
-      domain = "https://vault.li7g.com";
+      domain = "https://vault.ts.li7g.com";
       signupsAllowed = false;
       sendsAllowed = false;
       emergencyAccessAllowed = false;

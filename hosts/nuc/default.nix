@@ -175,6 +175,7 @@ in
             "home.li7g.com"
             "nuc.ts.li7g.com"
             "vault.li7g.com"
+            "vault.ts.li7g.com"
           ];
           group = "nginx";
         };
