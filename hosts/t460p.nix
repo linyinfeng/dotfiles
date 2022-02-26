@@ -35,40 +35,13 @@ in
   time.timeZone = "Asia/Shanghai";
 
   boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-    };
-    grub = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
       enable = true;
-      efiSupport = true;
-      mirroredBoots = [
-        {
-          efiBootloaderId = "GRUB";
-          path = "/boot";
-          devices = [ "nodev" ];
-          efiSysMountPoint = "/boot";
-        }
-      ];
-      font = "${pkgs.iosevka}/share/fonts/truetype/iosevka-regular.ttf";
-      fontSize = 32;
-      useOSProber = true;
+      consoleMode = "auto";
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  # boot.kernelPatches = [
-  #   {
-  #     name = "waydroid";
-  #     patch = null;
-  #     extraConfig = ''
-  #       ASHMEM y
-  #       ANDROID y
-  #       ANDROID_BINDER_IPC y
-  #       ANDROID_BINDERFS n
-  #       ANDROID_BINDER_DEVICES "binder,hwbinder,vndbinder"
-  #     '';
-  #   }
-  # ];
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.enableRedistributableFirmware = true;
@@ -105,30 +78,6 @@ in
   };
 
   services.xserver.desktopManager.gnome.enable = true;
-  # specialisation = {
-  #   kde.configuration = {
-  #     boot.loader.grub.configurationName = "(specialisation - KDE)";
-
-  #     services.xserver.desktopManager = {
-  #       gnome.enable = lib.mkForce false;
-  #       plasma5.enable = true;
-  #     };
-  #   };
-
-  #   nvidia.configuration = {
-  #     boot.loader.grub.configurationName = "(specialisation - NVIDIA)";
-
-  #     services.xserver.videoDrivers = [ "nvidia" ];
-  #     hardware.nvidia = {
-  #       prime = {
-  #         offload.enable = true;
-  #         nvidiaBusId = "PCI:2:0:0";
-  #         intelBusId = "PCI:0:2:0";
-  #       };
-  #       modesetting.enable = true;
-  #     };
-  #   };
-  # };
 
   networking.campus-network = {
     enable = true;

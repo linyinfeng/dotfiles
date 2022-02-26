@@ -118,7 +118,8 @@
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               (final: prev: {
-                nixUnstable = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
+                # TODO nix master broken
+                # nixUnstable = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
               })
             ];
           };
