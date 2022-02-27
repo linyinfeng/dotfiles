@@ -118,8 +118,10 @@
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
               (final: prev: {
-                # TODO nix master broken
-                # nixUnstable = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
+                nixVersions = prev.nixVersions.extend
+                  (final': prev': {
+                    master = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
+                  });
               })
             ];
           };
@@ -229,7 +231,7 @@
             };
             suites = with profiles; rec {
               # MAIN
-              foundation = [ global-persistence security.polkit services.gc services.openssh nix.access-tokens ];
+              foundation = [ global-persistence security.polkit services.gc services.openssh nix.access-tokens nix.version ];
               base = [ core foundation users.root ];
 
               audit = [ security.audit ];
