@@ -218,10 +218,14 @@
 (use-package nix-mode
   :ensure t)
 
+(use-package ob-rust
+  :ensure t)
+
 (use-package org
   :ensure t
   :custom
   (org-directory "/var/lib/syncthing/Main/orgs")
+  (org-startup-indented t)
   ;; done with time information
   (org-log-done 'time)
   :bind (("C-c o l" . org-store-link)
