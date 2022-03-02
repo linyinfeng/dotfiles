@@ -29,7 +29,11 @@ in
           name = "stream-hidpi";
           desktopName = "Steam (HiDPI)";
           exec = "env GDK_SCALE=\"${cfg.hidpi.scale}\" steam %U";
-          categories = "Network;FileTransfer;Game;";
+          categories = [
+            "Network"
+            "FileTransfer"
+            "Game"
+          ];
           icon = "steam";
         })
       ];
