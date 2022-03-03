@@ -275,7 +275,7 @@ with lib;
       };
       systemd.timers.clash-auto-update = {
         timerConfig = {
-          OnCalendar = "04:00";
+          OnCalendar = "03:30";
         };
         wantedBy = [ "timers.target" ];
       };
