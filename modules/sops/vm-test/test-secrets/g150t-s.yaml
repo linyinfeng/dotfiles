@@ -1,14 +1,14 @@
 net-login:
-    data: null
-    url: null
+    data: ""
+    url: ""
 ss:
-    password: null
-transmission: null
+    password: ""
+transmission: ""
 user-passwords:
-    matrixlt: null
-    root: null
+    matrixlt: ""
+    root: ""
 wireguard:
-    wg0-private-key: null
+    wg0-private-key: ""
 sops:
     kms: []
     gcp_kms: []
@@ -24,8 +24,8 @@ sops:
             Z3pZV1ZtQkcyVDNwUkIyRWJwRkNxLzgK04IBcqemxLIKG7UlLhNMEzstcI1g74ip
             gxV3eFr9U/tf+fv7N0IgJQiiboXQQJqfbuMLjoAV3ncEoKy1KJAhcw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T07:52:36Z"
-    mac: ENC[AES256_GCM,data:rmMgbUtOfQknFvYvpodETbiOXbKX0B0om1EHa8zFkMtQa6Cg0+qhZqNiW3LzCcQpzEEShJhZF6pDZ93/ZftdjrXVjIkqlE5R+P/qVGPV4hV0bXnCprZGSgR50wSExCfuoNL5Um9lKERtRAYC/yuN/Pe0lvZBZON9ZaxzTZeTAAM=,iv:seCq/l++V/mp0MkN/I2v4HdLhqwclxPdMoPxk7fFpTM=,tag:epvkKMQxasS+YkgRQoLiNg==,type:str]
+    lastmodified: "2022-03-04T09:03:55Z"
+    mac: ENC[AES256_GCM,data:MaayMZDZ+DzzPy0sQcuj5E0jl56Evo1CtpeL1jLntRa10jPEF3dq/1fEghz+WBn8S2M8F9JBVht8VRltiRacsZEFmD5dUydlK0VuKIKSk8t4PM73pU3vgrk1skn95g5BEw8prxvW2q/EntB/7+qGEW4FHIQHyD2iNXJA6N0B22Y=,iv:DmZQVAk7DAvL7OV/4jHSaAx7RJt5TjgxFIdLf4oxEbU=,tag:44HgrPmXWuQ0tuH6Ny59gA==,type:str]
     pgp:
         - created_at: "2022-03-04T07:05:58Z"
           enc: |-

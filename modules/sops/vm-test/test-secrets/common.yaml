@@ -1,25 +1,25 @@
 campus-net:
-    username: null
-    password: null
+    username: ""
+    password: ""
 clash:
-    dler: null
-    cnix: null
-cloudflare-token: null
+    dler: ""
+    cnix: ""
+cloudflare-token: ""
 telegram-bot:
-    push: null
+    push: ""
 portal:
-    client-id: null
+    client-id: ""
 user-password:
-    root: null
-    yinfeng: null
+    root: ""
+    yinfeng: ""
 nixbuild:
-    id-ed25519: null
+    id-ed25519: ""
 influxdb:
-    token: null
+    token: ""
 zerotier:
-    main: null
+    main: ""
 nano:
-    github-token: null
+    github-token: ""
 sops:
     kms: []
     gcp_kms: []
@@ -80,8 +80,8 @@ sops:
             clRhemJQbGlYbUNVUXIxNHlBVmJ5cjgK/foHoJO2L1ZZzo5qXGgw0wbe9YtmBV0o
             dAGmUAJnTzklp13JunGytqtVkwVn6IcSYLHkww1vxzDlQs8iZnO2BA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T07:51:59Z"
-    mac: ENC[AES256_GCM,data:BbneNLVzFa2WT/46J7uJwgqqvpQpYlNyRgTHdxXVFI1Cj8JNtv03Iy2+X8Hs9NdNLKqepkN85ZtD1n6hUPhFqmxuhjQ5C/bBB1OfgDXfEtwyb11zUC0+C7WZDYlM1DdusPijeaNpBUt1Ty4fo3Prz2rUvLintjilhG2Pplc7ah4=,iv:qOph1SF0o+AVWO/oqQirKUsLPbt9u1YZiRLgYn7LsMs=,tag:qYBOUZPX7UqJwFUZVC76jA==,type:str]
+    lastmodified: "2022-03-04T09:03:40Z"
+    mac: ENC[AES256_GCM,data:q74KkFC3jGGYf45tRCE5v+hji+hzTlxZd4LQtP5oR2MU82ydpLM7qqEtju1PTN/hrNqxe8w7HRfzCdzqkMvpPFhzrIYV1wKJUhelxBvH83+SNnCmLbdoyTuS2ZM08us20Or1gm0pBnoH3lQyEeqzo9eJC/8dSlPlJ4Vl9d+q9PI=,iv:LCden5OY/prX/OIAC9tkUiRU2cKRjW1pXtYMWzJkTGw=,tag:TUya8uhNxU+k12ctV/Clog==,type:str]
     pgp:
         - created_at: "2022-03-04T07:47:04Z"
           enc: |-

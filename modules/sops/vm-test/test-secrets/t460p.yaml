@@ -1,5 +1,5 @@
-syncthing: null
-wireguard: null
+syncthing: ""
+wireguard: ""
 sops:
     kms: []
     gcp_kms: []
@@ -15,8 +15,8 @@ sops:
             VWN5YnZzbE45b1hnclg0dGNZbUltb1EKiQrxiVJtd4d14a8Xm+nl5nlNYY4esEyQ
             bE9efHSLU8x1ihcG7YiqQwvPjNAVg68c27qHZRPK49QHM76Be0VIhQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T07:54:35Z"
-    mac: ENC[AES256_GCM,data:RtBwpvPjDPTTbfWiwzpfbmTW9adOufqmgevYJYiWCUla5aSqM3oliF1tu1I0n97e5u55WEvs6016qBlKMbk6QC/9Vfql9P4DziWl8kDikwughwEDksbwrq5jVhdITKpf8bXDizqYywcI7NjFbs5VN+x6r8qpuscRRHUD9FlSJGE=,iv:6Y/6Yxv+tTi8SxSzBvBPJD6W2Qm6t0jfF22v5a7jNFc=,tag:OxW9ohWKWrNRnJ0CDYpk3g==,type:str]
+    lastmodified: "2022-03-04T09:04:16Z"
+    mac: ENC[AES256_GCM,data:9U9dtA8nC6KMqh801yyiTwirZXrNBKHOmsYlOm/2Vlq4CGQ5y/c0/3kRYB8pprcV3VVuN0LXELQp4XR0w9gaamMwVc0utE/ATF2xI5RFQn6MMKdWnHBzrMXONIJYcxaNb2+xWpcAqCHSv6WCA/eha0FFCLgFMNV20o3kSITF6Sk=,iv:zjMzKRJtGCJdDwxsUu++csph7Q2xMjLWbeocnxPPAFc=,tag:9tLeBPApHoXdKdPwNvBFaw==,type:str]
     pgp:
         - created_at: "2022-03-04T07:54:23Z"
           enc: |-
