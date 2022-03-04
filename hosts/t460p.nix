@@ -20,8 +20,10 @@ in
   imports =
     suites.mobileWorkstation ++
     suites.tpm ++
+    suites.nixAccessTokens ++
     suites.game ++
-    suites.fw ++
+    suites.behindFw ++
+    suites.fwProxy ++
     suites.godns ++
     suites.wireguardHome ++
     suites.syncthing ++

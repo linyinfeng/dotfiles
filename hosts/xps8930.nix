@@ -20,7 +20,9 @@ in
     suites.desktopWorkstation ++
     suites.monitoring ++
     suites.tpm ++
-    suites.fw ++
+    suites.nixAccessTokens ++
+    suites.behindFw ++
+    suites.fwProxy ++
     suites.godns ++
     suites.wireguardHome ++
     suites.syncthing ++

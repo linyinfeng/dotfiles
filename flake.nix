@@ -224,6 +224,10 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
+            g150ts = {
+              system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
@@ -231,8 +235,8 @@
             };
             suites = with profiles; rec {
               # MAIN
-              foundation = [ global-persistence security.polkit services.gc services.openssh nix.access-tokens nix.version ];
-              base = [ core foundation users.root ];
+              foundation = [ global-persistence security.polkit services.gc services.openssh nix.version ];
+              base = [ profiles.core foundation users.root ];
 
               audit = [ security.audit ];
               network = (with networking; [ tailscale zerotier tools ]) ++ (with security; [ fail2ban firewall ]);
@@ -243,6 +247,7 @@
               # podman disabled
               virtualization = with profiles.virtualization; [ libvirt wine ];
 
+              nixAccessTokens = [ nix.access-tokens ];
               resolved = [ networking.resolved ];
               wireguardHome = [ networking.wireguard-home ];
               wireless = with services; [ bluetooth ];
@@ -251,7 +256,8 @@
               acme = [ services.acme ];
               telegramSend = [ programs.telegram-send ];
               notifyFailure = [ services.notify-failure ];
-              fw = with networking; [ fw-proxy ];
+              behindFw = with networking; [ behind-fw ];
+              fwProxy = with networking; [ fw-proxy ];
               tpm = [ security.tpm ];
               nixbuild = [ nix.nixbuild ];
               game = with graphical.game; [ steam minecraft ];

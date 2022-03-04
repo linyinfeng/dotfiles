@@ -20,6 +20,7 @@ in
   imports =
     suites.server ++
     suites.networkManager ++
+    suites.nixAccessTokens ++
     suites.development ++
     suites.godns ++
     suites.acme ++
@@ -27,7 +28,8 @@ in
     suites.vlmcsd ++
     suites.virtualization ++
     suites.tpm ++
-    suites.fw ++
+    suites.behindFw ++
+    suites.fwProxy ++
     suites.monitoring ++
     suites.nixbuild ++
     suites.autoUpgrade ++
@@ -304,6 +306,12 @@ in
         syncmode = "light";
         http.enable = true;
       };
+    }
+
+    # transmission
+    # extra settings for suites.transmission
+    {
+      sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /nuc.yaml;
     }
   ];
 }
