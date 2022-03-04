@@ -1,4 +1,4 @@
 channels: final: prev:
 {
-  godns = channels.latest.godns;
+  inherit (channels.latest) godns;
 }
