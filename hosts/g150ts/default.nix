@@ -3,6 +3,7 @@
 {
   imports =
     suites.server ++
+    suites.monitoring ++
     suites.networkManager ++
     suites.samba ++
     suites.transmission ++

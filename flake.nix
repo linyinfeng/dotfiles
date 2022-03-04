@@ -236,7 +236,7 @@
             suites = with profiles; rec {
               # MAIN
               foundation = [ global-persistence security.polkit services.gc services.openssh nix.version ];
-              base = [ profiles.core foundation users.root ];
+              base = [ core foundation users.root ];
 
               audit = [ security.audit ];
               network = (with networking; [ tailscale zerotier tools ]) ++ (with security; [ fail2ban firewall ]);
