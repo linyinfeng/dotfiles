@@ -35,6 +35,7 @@ let
       inherit (pkgs) curl;
       inherit campusNetLogin;
       intervalSec = cfg.auto-login.interval;
+      maxTimeSec = cfg.auto-login.testMaxTime;
     };
   };
 in
@@ -48,6 +49,13 @@ in
         default = 30;
         description = ''
           Auto login interval in seconds
+        '';
+      };
+      testMaxTime = lib.mkOption {
+        type = lib.types.int;
+        default = 10;
+        description = ''
+          Max time to test connection
         '';
       };
     };
