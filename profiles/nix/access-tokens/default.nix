@@ -13,5 +13,5 @@
     mode = "0440";
   };
   users.groups.nix-access-tokens.gid = config.ids.gids.nix-access-tokens;
-  sops.secrets."nano/github-token" = { };
+  sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
 }

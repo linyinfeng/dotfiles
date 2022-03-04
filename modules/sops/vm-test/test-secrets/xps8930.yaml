@@ -1,0 +1,42 @@
+syncthing: null
+wireguard: null
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBkRHhEdldXdjU1N3JENjR6
+            QTkvWUk5UFBjWEVOejBLS2pnK00yOHBTU25FClZuSmZ2em1qNml1bEJPRldkeFhn
+            SkVodE9kYWRFMzNQYjhYQ0ovb1U4R2cKLS0tIFZleU5wV3JZMEs4ZXJ4dWF6UUhh
+            em53cG9ZNnF3RHg4NFRNNlJzUkpsdFUK7/Tl0OgY2bI++kZSG4JLWfMce4voYzMD
+            3A3r10VN1fFgNVWHif96lwbsLAW84kw1GW2QP5/m3oLyZs6ql6sKtQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-03-04T07:54:58Z"
+    mac: ENC[AES256_GCM,data:FjZwHTC8wePZ8w55svJAOG2Jt8Aoc96K7GGDZKgTnyTPwqCMGiHZCA9ZfSj/4eS+zV6nizhxcI4VOdWfxvnqfNvgzwXkExDo7An08RAnJB1mAyUn2434QYcvNR0zFMZ6gRJ8EalY35tsThtTaM4NicobR7xQlZybrwUif4dRia0=,iv:nizNT+KU+maeHq8cZfcMnC8LAk4btPabYng9LzOS5jE=,tag:6FBdqCuGDD9lPadq0Id9eg==,type:str]
+    pgp:
+        - created_at: "2022-03-04T07:54:41Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            wcFMA9Ld8m0GpeODARAArIUJ94CAtj+untBoTchR4YprJVIcPF28s17fEbiP5tKc
+            LDOrmY9huaRYIOt4zI8KO+NG9ERfLGBeVUA3rg0bCCKjGe1FSsNrCNLzarpRcNem
+            +sMhSBAHASazFgQd7jiwM0P5UrAh/pSoGCbKUdSW2gsjUEhls6wDCf5z+KLjRPWo
+            +0GZX2OiQkxtw6n9luB9sCSQ1iDIOsg8jnTjvqSQ4jQTkPd0CPBNrLPhI7klQU3P
+            0owzNp82ehAjeBM/D1g0d8tyYLpAOA4HrM2JcLZoX3KAIUn5HzdPfDni/ytv7xCw
+            OY5fe9VDTZoxWs6aJ28bORti+zl+GAl9tp/oa5OfP6XBsdzk4B9SRLxnlef7WPG8
+            ecgQPS21HAsev1FSJ0WYAYln/DdwrW6HowPEiAKYfjGRZiLEJRN3IQ/rZgYGQX6s
+            DHSwVve9hdb5R7FsCPZ4gR/MtKTzOFdYG50HDOJTHkX4tMiPDcAr0ZD1qez2iVZA
+            h6mlWPGrR4kjlojFwb4VvBZwJ/TavjvqKAt9s6R6xTl1XE6Uad5JxVg01Ku5rzzd
+            qPzSzaJ1CoBUCRNhdkTmUBJVUDuvGaj6/bUwZs3lL8rks11L2o54dZv8cy4OFxvV
+            MWDjiSM8HD2izsGzWh1EjWrHrToGluu29VCTxyXzTKwDNdatvNvPF5mgrT3vuoDS
+            5gFAvcRKUxcy6HnaCA+GszC3LmPiaV8h6o8biBd+8z+ARKm7YHH5K4IClP1rqP0s
+            BBwJWmB1nU0+W8NGYtO/WJ3kFQZk/js2RRocRRH/gmpFk+IVyq2pAA==
+            =VE+W
+            -----END PGP MESSAGE-----
+          fp: 95EDCBDEF79666EA5242AA42585F0B3FF1F83C5D
+    unencrypted_suffix: _unencrypted
+    version: 3.7.1

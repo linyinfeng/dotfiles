@@ -65,10 +65,8 @@ in
     environment.systemPackages = [
       scripts
     ];
-    sops.secrets = {
-      "campus-net/username" = { };
-      "campus-net/password" = { };
-    };
+    sops.secrets."campus-net/username".sopsFile = config.sops.secretsDir + /common.yaml;
+    sops.secrets."campus-net/password".sopsFile = config.sops.secretsDir + /common.yaml;
     nix.settings.substituters = lib.mkOrder 500 [ "https://mirrors.nju.edu.cn/nix-channels/store" ];
 
     systemd.services."campus-net-auto-login" = {

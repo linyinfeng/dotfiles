@@ -6,10 +6,11 @@ keys:
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
   - &nexusbytes age1xya6kmcpxw6n6xdp8pnl5kzhpu39vpfqn73cg9su8rvw63r89y8qc3xmy9
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
+  - &g150t-s    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
 creation_rules:
-  - path_regex: secrets/[^/]+\.yaml$
+  - path_regex: secrets/common\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -20,7 +21,44 @@ creation_rules:
       - *nuc
       - *nexusbytes
       - *vultr
-  - path_regex: modules/sops/vm-test/test-secrets\.yaml$
+      # no age key for g150t-s
+  - path_regex: secrets/t460p\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *t460p
+  - path_regex: secrets/nuc\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *nuc
+  - path_regex: secrets/xps8930\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *xps8930
+  - path_regex: secrets/vultr\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *vultr
+  - path_regex: secrets/nexusbytes\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *nexusbytes
+  - path_regex: secrets/g150t-s\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *g150t-s
+  - path_regex: modules/sops/vm-test/test-secrets/.*\.yaml$
     key_groups:
     - pgp:
       - *main

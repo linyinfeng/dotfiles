@@ -26,7 +26,7 @@ in
       IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
       ${proxyCommand}
   '';
-  sops.secrets."nixbuild/id-ed25519" = { };
+  sops.secrets."nixbuild/id-ed25519".sopsFile = config.sops.secretsDir + /common.yaml;
   services.openssh.knownHosts = {
     nixbuild = {
       extraHostNames = [ "eu.nixbuild.net" ];

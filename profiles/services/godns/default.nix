@@ -31,7 +31,7 @@ in
     };
   };
   config = {
-    sops.secrets."cloudflare-token" = { };
+    sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
     sops.templates = lib.mapAttrs'
       (_: godnsCfg:
         lib.nameValuePair "${godnsCfg.fullName}.json"

@@ -32,7 +32,7 @@ in
     user = "yinfeng";
     group = "users";
     cert = "${./certs/${hostName}.pem}";
-    key = config.sops.secrets."syncthing/${hostName}".path;
+    key = config.sops.secrets."syncthing".path;
     devices = others;
     folders = {
       "main" = {
@@ -49,7 +49,7 @@ in
       };
     };
   };
-  sops.secrets."syncthing/${hostName}" = { };
+  sops.secrets."syncthing".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
 
   environment.systemPackages = with pkgs; [
     syncthing

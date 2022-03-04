@@ -294,7 +294,7 @@
               # MAIN
               base = [ direnv git git-extra shells ];
               multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
-              development = [ profiles.development emacs tools asciinema tex postmarketos ];
+              development = [ profiles.development emacs tools tex postmarketos ];
               virtualization = [ ];
               multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
               synchronize = [ onedrive digital-paper ];

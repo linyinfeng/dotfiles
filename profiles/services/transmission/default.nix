@@ -16,7 +16,7 @@ in
       rpc-host-whitelist-enabled = false;
     };
   };
-  sops.secrets."transmission/credentials" = { };
+  sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /nuc.yaml;
   networking.firewall.allowedTCPPorts = [ rpcPort ];
 
   services.samba.shares.transmission = {

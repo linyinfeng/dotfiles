@@ -20,7 +20,7 @@ in
     before = [ "zerotierone.service" ];
   };
   systemd.services.zerotierone.requires = [ "zerotierone-setup.service" ];
-  sops.secrets."zerotier/main" = { };
+  sops.secrets."zerotier/main".sopsFile = config.sops.secretsDir + /common.yaml;
 
   networking.firewall.trustedInterfaces = [
     interfaceName

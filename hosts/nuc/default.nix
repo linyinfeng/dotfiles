@@ -180,7 +180,7 @@ in
           group = "nginx";
         };
       };
-      sops.secrets.cloudflare-token = { };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
@@ -285,7 +285,7 @@ in
         port = cfg.ports.nixServe;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
-      sops.secrets."cache-li7g-com/key" = { };
+      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
       # TODO broken: cannot determine user's home directory
       systemd.services.nix-serve = {

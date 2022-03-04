@@ -9,5 +9,6 @@
   sops.secrets."telegram-bot/push" = {
     mode = "440";
     group = config.users.groups.wheel.name;
+    sopsFile = config.sops.secretsDir + /common.yaml;
   };
 }

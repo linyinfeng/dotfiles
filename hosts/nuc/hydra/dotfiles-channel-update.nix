@@ -50,8 +50,8 @@
     environment = lib.mkIf (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment;
   };
-  sops.secrets."nano/github-token" = { };
-  sops.secrets."cachix/linyinfeng" = { };
+  sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {

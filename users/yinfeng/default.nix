@@ -36,9 +36,9 @@ in
     ];
   };
 
-  sops.secrets = {
-    "user-password/${name}".neededForUsers = true;
-    "${name}/asciinema-token".owner = user.name;
+  sops.secrets."user-password/${name}" = {
+    neededForUsers = true;
+    sopsFile = config.sops.secretsDir + /common.yaml;
   };
 
   environment.global-persistence.user.users = [ name ];

@@ -21,5 +21,8 @@ in
     };
   };
 
-  sops.secrets."user-password/root".neededForUsers = true;
+  sops.secrets."user-password/root" = {
+    neededForUsers = true;
+    sopsFile = config.sops.secretsDir + /common.yaml;
+  };
 }

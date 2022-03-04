@@ -25,10 +25,10 @@ in
     wg0 = {
       ips = [ ip ];
       peers = [ home ];
-      privateKeyFile = config.sops.secrets."wireguard/${hostName}".path;
+      privateKeyFile = config.sops.secrets."wireguard".path;
     };
   };
-  sops.secrets."wireguard/${hostName}" = { };
+  sops.secrets."wireguard".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];

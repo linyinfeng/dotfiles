@@ -48,7 +48,7 @@ in
 
   config = lib.mkMerge [
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      sops.secrets."portal/client-id" = { };
+      sops.secrets."portal/client-id".sopsFile = config.sops.secretsDir + /common.yaml;
       services.v2ray = {
         enable = true;
         configFile = config.sops.templates.portal-v2ray.path;

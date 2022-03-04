@@ -40,9 +40,9 @@ in
       rocketAddress = "127.0.0.1";
       rocketPort = cfg.ports.vaultwarden.http;
     };
-    environmentFile = config.sops.secrets.vaultwarden.path;
+    environmentFile = config.sops.secrets."vaultwarden".path;
   };
-  sops.secrets.vaultwarden = { };
+  sops.secrets."vaultwarden".sopsFile = config.sops.secretsDir + /nuc.yaml;
   systemd.services.backup-vaultwarden.aliases = lib.mkForce [ ];
   systemd.timers.backup-vaultwarden.aliases = lib.mkForce [ ];
 }

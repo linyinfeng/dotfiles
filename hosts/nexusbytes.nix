@@ -51,7 +51,7 @@ in
         tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
       };
       systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
-      sops.secrets."telegram-bot/commit-notifier" = { };
+      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
 
       services.notify-failure.services = [
         "commit-notifier"
@@ -83,15 +83,15 @@ in
         useNetworkd = true;
         interfaces.ens3.useDHCP = true;
       };
-      # TODO not working
+      # TODO ipv6 not working
       # environment.etc."systemd/network/50-ens3-ipv6.network".source = config.sops.templates."ens3-ipv6.network".path;
-      sops.secrets."portal/ipv6-address" = { };
+      sops.secrets."ipv6-address".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
       sops.templates."ens3-ipv6.network".content = ''
         [Match]
         Name=ens3
 
         [Network]
-        Address=${config.sops.placeholder."portal/ipv6-address"}
+        Address=${config.sops.placeholder."ipv6-address"}
       '';
     }
   ];

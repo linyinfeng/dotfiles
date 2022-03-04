@@ -182,10 +182,8 @@ with lib;
         wantedBy = [ "multi-user.target" ];
       };
 
-      sops.secrets = {
-        "clash/dler" = { };
-        "clash/cnix" = { };
-      };
+      sops.secrets."clash/dler".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."clash/cnix".sopsFile = config.sops.secretsDir + /common.yaml;
       environment.systemPackages = [
         scripts
         pkgs.proxychains-ng # add proxychains-ng

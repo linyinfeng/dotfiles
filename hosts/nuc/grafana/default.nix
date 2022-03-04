@@ -42,7 +42,10 @@ in
           config.sops.secrets."grafana/password".path;
       };
     };
-    sops.secrets."grafana/password".owner = config.users.users.grafana.name;
+    sops.secrets."grafana/password" = {
+      owner = config.users.users.grafana.name;
+      sopsFile = config.sops.secretsDir + /nuc.yaml;
+    };
     system.activationScripts.fixGrafanaPermission = {
       deps = [ "users" ];
       text = ''
