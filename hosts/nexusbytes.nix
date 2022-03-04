@@ -85,14 +85,14 @@ in
       };
       # TODO ipv6 not working
       # environment.etc."systemd/network/50-ens3-ipv6.network".source = config.sops.templates."ens3-ipv6.network".path;
-      sops.secrets."ipv6-address".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
-      sops.templates."ens3-ipv6.network".content = ''
-        [Match]
-        Name=ens3
+      # sops.secrets."ipv6-address".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
+      # sops.templates."ens3-ipv6.network".content = ''
+      #   [Match]
+      #   Name=ens3
 
-        [Network]
-        Address=${config.sops.placeholder."ipv6-address"}
-      '';
+      #   [Network]
+      #   Address=${config.sops.placeholder."ipv6-address"}
+      # '';
     }
   ];
 }

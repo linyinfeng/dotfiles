@@ -1,5 +1,5 @@
 syncthing: null
-cache-li7g.com:
+cache-li7g-com:
     key: null
 influxdb:
     password: null
@@ -25,8 +25,8 @@ sops:
             UjNPZldLZTE0dWZ1ZFUrd1JJQUozbDgKIfEztFiOeKJrL+8wR0+M1SfILpwcMkzM
             U3QQ+oIrLsRkNh6q8yETbDXRyg/Vm7et4H8nKBqXAyDuZvqrEnvMdQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T07:53:49Z"
-    mac: ENC[AES256_GCM,data:XmeQmsFAOwPUwSDfzaYyF5sMHUUZt/LrcQng8cJQ2kddw3hJP6vq984MRsEHbcj0I93Qqy7jLVM8DhIj6GSruOivCIew2GCPsQig/oY/pyFUMKIbBiJ88YQJYqUhpkBnQXYA2tg64nAa5CwnemtTu+qWBiL+GXkM7o2/9YdejG0=,iv:kMVrBMmRM4hdzV2w6OkJyWacA29gQTft0dj0sYnZfM8=,tag:mtGvSsXjWxrsfoYv0bl18g==,type:str]
+    lastmodified: "2022-03-04T08:59:54Z"
+    mac: ENC[AES256_GCM,data:6MXGBSZWkvy3N4oLBQqkNiYX2yjUv2kFBGbygztcJUQG5UnMuU5o29ULkTbF3/htdUNGWIL16cGSQmROx4o71TXwBs/y8lJXsw4+nQdEBmliiBDurxUoncl/3hatcXtGwIqsmcElea2lt0VmbPcEpN/xrIh4O2gXQdplSM4+iVo=,iv:OJhPLIaOO54FzRI2Zf1ixnLYb6RPJ1oWeGQqScgnazk=,tag:Mui3xQy86PqAY5eF+LPyZQ==,type:str]
     pgp:
         - created_at: "2022-03-04T07:53:24Z"
           enc: |-
