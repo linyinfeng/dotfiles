@@ -13,9 +13,12 @@ let
     };
   };
   ip = hosts.${hostName}.ip;
-  homeIp = "192.168.2.1/32";
   home = {
-    allowedIPs = [ homeIp ];
+    allowedIPs = [
+      "192.168.0.0/24"
+      "192.168.1.0/24"
+      "192.168.2.0/24"
+    ];
     endpoint = "home.li7g.com:13231";
     publicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
   };
