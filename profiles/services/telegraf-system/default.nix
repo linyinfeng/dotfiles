@@ -54,7 +54,7 @@ in
   systemd.services.telegraf.path = with pkgs; [
     lm_sensors
   ];
-  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   sops.templates."telegraf-environment".content = ''
     INFLUX_TOKEN=${config.sops.placeholder."influxdb/token"}
   '';

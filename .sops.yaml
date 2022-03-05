@@ -22,6 +22,18 @@ creation_rules:
       - *nexusbytes
       - *vultr
       # no age key for g150t-s
+  - path_regex: secrets/infrastructure\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *t460p
+      - *xps8930
+      - *x200s
+      - *nuc
+      - *nexusbytes
+      - *vultr
+      - *g150t-s
   - path_regex: secrets/t460p\.yaml$
     key_groups:
     - pgp:

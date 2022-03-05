@@ -39,7 +39,7 @@ in
     wantedBy = [ "multi-user.target" ];
   };
   sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   environment.systemPackages = with pkgs; [
     influxdb2
   ];
