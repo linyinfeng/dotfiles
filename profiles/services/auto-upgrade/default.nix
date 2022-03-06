@@ -7,7 +7,7 @@
     allowReboot = true;
     dates = "04:00";
     randomizedDelaySec = "30min";
-    flags = [ "--refresh" "--verbose" ];
+    flags = [ "--refresh" ];
   };
   systemd.services.nixos-upgrade.environment =
     lib.mkIf (config.networking.fw-proxy.enable)
