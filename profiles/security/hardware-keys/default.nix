@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  # canokey
   services.udev.packages = [
     pkgs.nur.repos.linyinfeng.canokey-udev-rules
   ];
@@ -15,8 +16,8 @@
   hardware.gpgSmartcards.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # TODO broken
-    # yubikey-manager
+    yubikey-manager-qt
+    yubikey-manager
     pcsctools
   ];
 

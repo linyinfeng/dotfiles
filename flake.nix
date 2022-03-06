@@ -269,13 +269,13 @@
               telegrafSystem = [ services.telegraf-system ];
               promtail = [ services.promtail ];
               monitoring = [ telegrafSystem promtail ];
-              canokey = [ security.canokey ];
+              hardwareKeys = [ security.hardware-keys ];
               autoUpgrade = [ services.auto-upgrade ];
               teamspeak = [ services.teamspeak ];
               vlmcsd = [ services.vlmcsd ];
               syncthing = [ services.syncthing ];
 
-              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegramSend ++ notifyFailure ++ printing ++ canokey;
+              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegramSend ++ notifyFailure ++ printing ++ hardwareKeys;
               mobileWorkstation = workstation ++ [ laptop ];
               desktopWorkstation = workstation;
               server = base ++ network;
