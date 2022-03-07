@@ -5,11 +5,13 @@
   environment.systemPackages = (with pkgs.fishPlugins; [
     foreign-env
     done
-    pkgs.libnotify # for done notification
   ]) ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
     git
     bang-bang
     replay
+  ]) ++ (with pkgs; [
+    libnotify # for done notification
+    comma
   ]);
 
   programs.tprofile.enable = true;
