@@ -1,4 +1,4 @@
-# TODO wait for pull request 162568
+# TODO https://nixpk.gs/pr-tracker.html?pr=162568
 channels: final: prev:
 {
   inherit (channels.latest) thermald;

@@ -242,10 +242,9 @@
               network = (with networking; [ tailscale zerotier tools ]) ++ (with security; [ fail2ban firewall ]);
               networkManager = (with networking; [ network-manager ]);
               multimedia = (with graphical; [ gnome kde sway fonts i18n v4l2 ]) ++ (with services; [ pipewire ]);
-              development = (with profiles.development; [ shells latex ]) ++ (with services; [ adb gnupg ]);
+              development = (with profiles.development; [ shells ]) ++ (with services; [ adb gnupg ]);
               multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-              # podman disabled
-              virtualization = with profiles.virtualization; [ libvirt wine ];
+              virtualization = with profiles.virtualization; [ libvirt wine podman ];
 
               nixAccessTokens = [ nix.access-tokens ];
               resolved = [ networking.resolved ];

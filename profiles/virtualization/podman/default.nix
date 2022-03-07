@@ -11,25 +11,19 @@ lib.mkMerge [
     };
     virtualisation.oci-containers.backend = "podman";
     systemd.services.podman-auto-update = {
-      description = "Podman auto-update service";
-      wants = [ "network-online.target" ];
-      after = [ "network-online.target" ];
       serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${podman} auto-update";
-        ExecStartPost = "${podman} image prune -f";
+        ExecStart = [
+          "" # override original
+          "${podman} auto-update"
+        ];
+        ExecStartPost = [
+          "" # override original
+          "${podman} image prune -f"
+        ];
       };
-      wantedBy = [ "multi-user.target" "default.target" ];
-      environment = lib.mkIf (config.networking.fw-proxy.enable)
-        config.networking.fw-proxy.environment;
-    };
-    systemd.timers.podman-auto-update = {
-      description = "Podman auto-update timer";
-      timerConfig = {
-        OnCalendar = "daily";
-        Persistent = true;
-      };
-      wantedBy = [ "timers.target" ];
+      environment =
+        lib.mkIf (config.networking.fw-proxy.enable)
+          config.networking.fw-proxy.environment;
     };
   }
   {
@@ -40,5 +34,10 @@ lib.mkMerge [
         };
       })
       config.virtualisation.oci-containers.containers;
+  }
+  {
+    environment.systemPackages = with pkgs; [
+      distrobox
+    ];
   }
 ]
