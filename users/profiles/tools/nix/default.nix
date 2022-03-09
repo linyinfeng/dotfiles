@@ -10,7 +10,7 @@
     nixpkgs-review
     nix-index
     nix-update
-    nixopsUnstable
+    nixops_unstable
     cabal2nix
     carnix
     patchelf
