@@ -179,6 +179,7 @@
   :custom
   (lsp-rust-server 'rust-analyzer)
   (lsp-rust-analyzer-proc-macro-enable t)
+  (lsp-rust-analyzer-rustc-source "discover")
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
