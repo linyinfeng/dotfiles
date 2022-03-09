@@ -16,7 +16,7 @@ in
 
   networking.fw-proxy.auto-update = {
     enable = true;
-    service = "dler";
+    service = "main";
   };
 
   systemd.services.nix-daemon.environment = cfg.environment;

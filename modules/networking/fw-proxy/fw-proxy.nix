@@ -37,8 +37,8 @@ let
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit updateClashUrl;
-      dlerUrl = config.sops.secrets."clash/dler".path;
-      cnixUrl = config.sops.secrets."clash/cnix".path;
+      mainUrl = config.sops.secrets."clash/main".path;
+      alternativeUrl = config.sops.secrets."clash/alternative".path;
     };
     tunSetup = pkgs.substituteAll {
       src = ./tun-setup.sh;
@@ -182,8 +182,8 @@ with lib;
         wantedBy = [ "multi-user.target" ];
       };
 
-      sops.secrets."clash/dler".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.secrets."clash/cnix".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."clash/main".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."clash/alternative".sopsFile = config.sops.secretsDir + /common.yaml;
       environment.systemPackages = [
         scripts
         pkgs.proxychains-ng # add proxychains-ng

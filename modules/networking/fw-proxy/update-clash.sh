@@ -4,12 +4,12 @@ update="@updateClashUrl@"
 
 case "$1" in
 
-    "dler")
-        $update $(cat "@dlerUrl@")
+    "main")
+        $update $(cat "@mainUrl@")
         ;;
 
-    "cnix")
-        $update $(cat "@cnixUrl@")
+    "alternative")
+        $update $(cat "@alternativeUrl@")
         ;;
 
     "https://*" | "http://*")

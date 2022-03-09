@@ -2,8 +2,8 @@ campus-net:
     username: ""
     password: ""
 clash:
-    dler: ""
-    cnix: ""
+    main: ""
+    alternative: ""
 cloudflare-token: ""
 telegram-bot:
     push: ""
@@ -80,8 +80,8 @@ sops:
             clRhemJQbGlYbUNVUXIxNHlBVmJ5cjgK/foHoJO2L1ZZzo5qXGgw0wbe9YtmBV0o
             dAGmUAJnTzklp13JunGytqtVkwVn6IcSYLHkww1vxzDlQs8iZnO2BA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T09:03:40Z"
-    mac: ENC[AES256_GCM,data:q74KkFC3jGGYf45tRCE5v+hji+hzTlxZd4LQtP5oR2MU82ydpLM7qqEtju1PTN/hrNqxe8w7HRfzCdzqkMvpPFhzrIYV1wKJUhelxBvH83+SNnCmLbdoyTuS2ZM08us20Or1gm0pBnoH3lQyEeqzo9eJC/8dSlPlJ4Vl9d+q9PI=,iv:LCden5OY/prX/OIAC9tkUiRU2cKRjW1pXtYMWzJkTGw=,tag:TUya8uhNxU+k12ctV/Clog==,type:str]
+    lastmodified: "2022-03-09T06:01:49Z"
+    mac: ENC[AES256_GCM,data:wpohzGzWNpp9JEWZC0Rm+JkXXFP3B+zU9iZz+M8/2l7YKG4G/U+/q6CBqMQ2psZvuwi5n/DbtJz3iAEJAYtJreup6chojlrTV/ZbG2px8jBI1vlgpm4vqljcSmHYcTk1qHwzF8SWZTo5493tKhkY3nU8FgXyckHC2oQV78QntJk=,iv:2OVwI8PIowbfLu7+XtA0tiKiQr3uC2XRsK/uteAYHaw=,tag:2gRlBDGvMd4Vh+911806tw==,type:str]
     pgp:
         - created_at: "2022-03-04T07:47:04Z"
           enc: |-
