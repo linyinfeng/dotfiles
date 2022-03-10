@@ -54,9 +54,6 @@ in
         configFile = config.sops.templates.portal-v2ray.path;
       };
       systemd.services.v2ray = {
-        environment = {
-          "v2ray.vmess.aead.forced" = "true";
-        };
         # TODO add a restart trigger
       };
     })

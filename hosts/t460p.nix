@@ -19,6 +19,7 @@ in
 {
   imports =
     suites.mobileWorkstation ++
+    suites.monitoring ++
     suites.tpm ++
     suites.nixAccessTokens ++
     suites.game ++
