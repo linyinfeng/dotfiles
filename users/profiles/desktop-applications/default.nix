@@ -24,6 +24,7 @@ lib.mkIf config.home.graphical {
     calibre
     element-desktop
     gimp
+    gnuradio
     goldendict
     gparted
     inkscape
