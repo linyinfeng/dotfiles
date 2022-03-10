@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1641562591189,
+  "iteration": 1646896731427,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -84,7 +84,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -170,7 +170,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -232,7 +233,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -291,7 +292,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -370,7 +371,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -432,7 +434,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -517,7 +519,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -605,7 +608,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -671,7 +675,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.4.3",
       "targets": [
         {
           "datasource": {
@@ -754,7 +758,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -840,7 +845,8 @@
           "placement": "right"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.3.2",
@@ -856,10 +862,46 @@
       ],
       "title": "Sensors",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 14
+      },
+      "id": 27,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "expr": "{host=\"${host}\", job=\"systemd-journal\", unit=\"nixos-upgrade.service\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Auto Upgrade Log",
+      "type": "logs"
     }
   ],
   "refresh": "5m",
-  "schemaVersion": 34,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -894,7 +936,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
