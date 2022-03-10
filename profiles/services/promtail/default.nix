@@ -50,10 +50,6 @@
               source_labels = [ "__journal__comm" ];
               target_label = "command";
             }
-            {
-              source_labels = [ "__journal__cmdline" ];
-              target_label = "command_line";
-            }
           ];
         }
       ];
