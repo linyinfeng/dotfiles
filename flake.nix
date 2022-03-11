@@ -16,46 +16,38 @@
       digga.inputs.latest.follows = "latest";
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
+      digga.inputs.flake-compat.follows = "flake-compat";
+
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
       bud.inputs.devshell.follows = "digga/devshell";
+      bud.inputs.beautysh.follows = "beautysh";
+      beautysh.url = "github:lovesegfault/beautysh";
+      beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
+      beautysh.inputs.nixpkgs.follows = "nixos";
 
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
 
-      darwin.url = "github:LnL7/nix-darwin";
-      darwin.inputs.nixpkgs.follows = "nixos";
-
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
       deploy.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
+      deploy.inputs.flake-compat.follows = "flake-compat";
+      deploy.inputs.fenix.follows = "fenix";
       fenix.url = "github:nix-community/fenix";
       fenix.inputs.nixpkgs.follows = "nixos";
-      deploy.inputs.fenix.follows = "fenix";
 
-      # MAIN switch to sops-nix and remove agenix
-      agenix.url = "github:ryantm/agenix";
-      agenix.inputs.nixpkgs.follows = "nixos";
       sops-nix.url = "github:Mic92/sops-nix";
       sops-nix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
       nvfetcher.inputs.nixpkgs.follows = "nixos";
       nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-
-      naersk.url = "github:nmattia/naersk";
-      naersk.inputs.nixpkgs.follows = "nixos";
+      nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      # MAIN: more inputs follows
-      bud.inputs.beautysh.follows = "beautysh";
-      beautysh.url = "github:lovesegfault/beautysh";
-      beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
-      beautysh.inputs.nixpkgs.follows = "nixos";
-
-      # MAIN
       nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
       linyinfeng.url = "github:linyinfeng/nur-packages";
@@ -72,8 +64,6 @@
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
-      deploy.inputs.flake-compat.follows = "flake-compat";
-      nvfetcher.inputs.flake-compat.follows = "flake-compat";
     };
 
   outputs =
@@ -84,7 +74,6 @@
     , home
     , nixos-hardware
     , nur
-    , agenix
     , nvfetcher
     , deploy
     , ...
@@ -107,7 +96,6 @@
             overlays = [
               # TODO nix flake show broken due to IFD
               # nur.overlay
-              agenix.overlay
               nvfetcher.overlay
               deploy.overlay
               ./pkgs/default.nix
@@ -149,15 +137,11 @@
               digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
               home.nixosModules.home-manager
-              agenix.nixosModules.age
               bud.nixosModules.bud
 
-              # MAIN
               inputs.sops-nix.nixosModules.sops
               inputs.impermanence.nixosModules.impermanence
               inputs.nixos-cn.nixosModules.nixos-cn
-              # "${inputs.nixos-cn}/modules/sops/template"
-              # "${inputs.nixos-cn}/modules/sops/extend-scripts.nix"
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send
@@ -234,7 +218,6 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = with profiles; rec {
-              # MAIN
               foundation = [ global-persistence security.polkit services.gc services.openssh nix.version ];
               base = [ core foundation users.root ];
 
@@ -296,7 +279,6 @@
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = with profiles; rec {
-              # MAIN
               base = [ direnv git git-extra shells ];
               multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
               development = [ profiles.development emacs tools tex postmarketos ];
@@ -314,11 +296,11 @@
         };
 
         devshell = ./shell;
+        budModules = { devos = import ./shell/bud; };
 
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
         deploy.nodes = digga.lib.mkDeployNodes
-          # MAIN
           (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
           {
             vultr.hostname = "vultr.ts.li7g.com";
@@ -327,35 +309,21 @@
             nuc.hostname = "nuc.ts.li7g.com";
             t460p.hostname = "t460p.ts.li7g.com";
             xps8930.hostname = "xps8930.ts.li7g.com";
+            g150ts.hostname = "g150ts.ts.li7g.com";
           };
         deploy.sshUser = "root";
 
-        defaultTemplate = self.templates.bud;
-        templates.bud.path = ./.;
-        templates.bud.description = "bud template";
-        # MAIN
+        defaultTemplate = self.templates.project;
         templates.project.path = ./templates/project;
         templates.project.description = "simple project template";
 
-        # MAIN
         outputsBuilder = channels:
           let
             pkgs = channels.nixos;
             inherit (pkgs) system lib;
           in
           {
-            checks = (
-              # fix preferLocalBuild for deployChecks
-              let
-                deployChecks = deploy.lib.${system}.deployChecks self.deploy;
-                renameOp = n: v: { name = "deploy-" + n; value = deployChecks.${n}; };
-                localBuild = n: v: v.overrideAttrs (oldAttrs:
-                  assert ! (oldAttrs ? preferLocalBuild); {
-                    preferLocalBuild = true;
-                  });
-              in
-              lib.mapAttrs localBuild (lib.mapAttrs' renameOp deployChecks)
-            ) //
+            checks = deploy.lib.${system}.deployChecks self.deploy //
             (
               lib.foldl lib.recursiveUpdate { }
                 (lib.mapAttrsToList
@@ -374,10 +342,5 @@
                   self.checks.${system});
             } // self.checks.${system};
           };
-      }
-    //
-    {
-      budModules = { devos = import ./shell/bud; };
-    }
-  ;
+      };
 }
