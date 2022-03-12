@@ -10,15 +10,12 @@
     nixpkgs-review
     nix-index
     nix-update
-    nixops_unstable
     cabal2nix
-    carnix
     patchelf
     manix
   ];
 
   home.global-persistence.directories = [
-    ".nixops"
     ".config/cachix"
     ".cache/nix-index"
   ];
