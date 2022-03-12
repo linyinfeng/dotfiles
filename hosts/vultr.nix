@@ -1,4 +1,4 @@
-{ pkgs, config, suites, lib, ... }:
+{ pkgs, config, suites, profiles, lib, ... }:
 
 let
 
@@ -19,11 +19,11 @@ in
 {
   imports =
     suites.server ++
-    suites.monitoring ++
-    suites.telegramSend ++
-    suites.notifyFailure ++
-    suites.autoUpgrade ++
-    suites.acme;
+    (with profiles; [
+      programs.telegram-send
+      services.acme
+      services.notify-failure
+    ]);
 
   config = lib.mkMerge [
     {

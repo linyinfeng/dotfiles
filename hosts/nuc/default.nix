@@ -1,4 +1,4 @@
-{ config, pkgs, lib, suites, ... }:
+{ config, pkgs, lib, suites, profiles, ... }:
 
 let
 
@@ -19,25 +19,27 @@ in
 {
   imports =
     suites.server ++
-    suites.networkManager ++
-    suites.nixAccessTokens ++
     suites.development ++
-    suites.godns ++
-    suites.acme ++
-    suites.teamspeak ++
-    suites.vlmcsd ++
     suites.virtualization ++
-    suites.tpm ++
-    suites.behindFw ++
-    suites.fwProxy ++
-    suites.monitoring ++
-    suites.nixbuild ++
-    suites.autoUpgrade ++
-    suites.samba ++
-    suites.transmission ++
-    suites.syncthing ++
-    suites.userYinfeng ++
-    suites.userNianyi ++ [
+    (with profiles; [
+      nix.access-tokens
+      nix.nixbuild
+      security.tpm
+      networking.network-manager
+      networking.behind-fw
+      networking.fw-proxy
+      services.syncthing
+      services.transmission
+      services.samba
+      services.vlmcsd
+      services.teamspeak
+      services.godns
+      services.acme
+    ]) ++
+    (with profiles.users; [
+      yinfeng
+      nianyi
+    ]) ++ [
       ./influxdb
       ./grafana
       ./hydra

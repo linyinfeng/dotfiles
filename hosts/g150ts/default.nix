@@ -1,14 +1,14 @@
-{ config, pkgs, suites, ... }:
+{ config, pkgs, suites, profiles, ... }:
 
 {
   imports =
     suites.server ++
-    suites.monitoring ++
-    suites.networkManager ++
-    suites.samba ++
-    suites.transmission ++
-    suites.autoUpgrade ++
-    suites.behindFw ++
+    (with profiles; [
+      networking.network-manager
+      networking.behind-fw
+      services.transmission
+      services.samba
+    ]) ++
     [
       ./networking/wireguard
       ./networking/auto-login

@@ -1,0 +1,19 @@
+{ ... }:
+
+{
+  nix = {
+    settings.system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+
+    settings.auto-optimise-store = true;
+    optimise.automatic = true;
+
+    settings.sandbox = true;
+
+    settings.allowed-users = [ "@users" ];
+    settings.trusted-users = [ "root" "@wheel" ];
+
+    settings.keep-outputs = true;
+    settings.keep-derivations = true;
+    settings.fallback = true;
+  };
+}

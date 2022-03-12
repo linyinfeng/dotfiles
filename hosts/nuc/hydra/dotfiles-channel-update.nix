@@ -34,7 +34,7 @@
     scriptArgs = "%I";
     path = with pkgs; [
       git
-      nixUnstable
+      nixVersions.unstable
       cachix
       jq
     ];

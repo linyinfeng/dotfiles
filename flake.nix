@@ -217,55 +217,83 @@
             profiles = digga.lib.rakeLeaves ./profiles // {
               users = digga.lib.rakeLeaves ./users;
             };
-            suites = with profiles; rec {
-              foundation = [ global-persistence security.polkit services.gc services.openssh nix.version ];
-              base = [ core foundation users.root ];
+            suites = nixos.lib.fix (suites: {
+              core = suites.nixSettings ++ (with profiles; [ programs.tools services.openssh ]);
+              nixSettings = with profiles.nix; [ gc settings version cachix ];
+              base = suites.core ++
+                (with profiles; [
+                  security.polkit
+                  services.oom-killer
+                  global-persistence
+                  users.root
+                ]);
 
-              audit = [ security.audit ];
-              network = (with networking; [ tailscale zerotier tools ]) ++ (with security; [ fail2ban firewall ]);
-              networkManager = (with networking; [ network-manager ]);
-              multimedia = (with graphical; [ gnome kde sway fonts i18n v4l2 ]) ++ (with services; [ pipewire ]);
-              development = (with profiles.development; [ shells ]) ++ (with services; [ adb gnupg ]);
-              multimediaDev = multimedia ++ development ++ (with profiles.development; [ ides ]);
-              virtualization = with profiles.virtualization; [ libvirt wine podman ];
+              network = with profiles; [
+                networking.tailscale
+                networking.zerotier
+                networking.tools
+                security.fail2ban
+                security.firewall
+              ];
+              multimedia = with profiles; [
+                graphical.gnome
+                graphical.kde
+                graphical.sway
+                graphical.fonts
+                graphical.i18n
+                graphical.v4l2
+                services.pipewire
+              ];
+              development = with profiles; [
+                development.shells
+                services.adb
+                services.gnupg
+              ];
+              multimediaDev = suites.multimedia ++ suites.development ++
+                (with profiles; [ development.ides ]);
+              virtualization = with profiles; [
+                virtualization.libvirt
+                virtualization.wine
+                virtualization.podman
+              ];
+              games = with profiles.graphical.game; [ steam minecraft ];
+              monitoring = with profiles; [
+                services.telegraf-system
+                services.promtail
+              ];
 
-              nixAccessTokens = [ nix.access-tokens ];
-              resolved = [ networking.resolved ];
-              wireguardHome = [ networking.wireguard-home ];
-              wireless = with services; [ bluetooth ];
-              phone = with services; [ kde-connect ];
-              printing = [ services.printing ];
-              acme = [ services.acme ];
-              telegramSend = [ programs.telegram-send ];
-              notifyFailure = [ services.notify-failure ];
-              behindFw = with networking; [ behind-fw ];
-              fwProxy = with networking; [ fw-proxy ];
-              tpm = [ security.tpm ];
-              nixbuild = [ nix.nixbuild ];
-              game = with graphical.game; [ steam minecraft ];
-              chia = [ services.chia ];
-              transmission = [ services.transmission ];
-              samba = [ services.samba ];
-              godns = [ services.godns ];
-              waydroid = [ profiles.virtualization.waydroid ];
-              telegrafSystem = [ services.telegraf-system ];
-              promtail = [ services.promtail ];
-              monitoring = [ telegrafSystem promtail ];
-              hardwareKeys = [ security.hardware-keys ];
-              autoUpgrade = [ services.auto-upgrade ];
-              teamspeak = [ services.teamspeak ];
-              vlmcsd = [ services.vlmcsd ];
-              syncthing = [ services.syncthing ];
+              workstation = (with suites; [
+                base
+                multimediaDev
+                virtualization
+                network
+                monitoring
+              ]) ++ (with profiles; [
+                networking.network-manager
+                services.bluetooth
+                services.auto-upgrade
+                services.kde-connect
+                services.printing
+                security.hardware-keys
+              ]);
+              mobileWorkstation = suites.workstation ++
+                (with profiles; [
+                  services.tlp
+                ]);
 
-              workstation = base ++ multimediaDev ++ virtualization ++ network ++ networkManager ++ wireless ++ phone ++ telegramSend ++ notifyFailure ++ printing ++ hardwareKeys;
-              mobileWorkstation = workstation ++ [ laptop ];
-              desktopWorkstation = workstation;
-              server = base ++ network;
-              homeServer = server ++ networkManager ++ godns ++ teamspeak ++ vlmcsd;
-
-              userYinfeng = [ users.yinfeng ];
-              userNianyi = [ users.nianyi ];
-            };
+              server = (with suites; [
+                base
+                network
+                monitoring
+              ]) ++
+              (with profiles; [
+                services.auto-upgrade
+              ]);
+              homeServer = suites.server ++
+                (with profiles; [
+                  networking.network-manager
+                ]);
+            });
           };
         };
 
@@ -278,17 +306,18 @@
           ];
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
-            suites = with profiles; rec {
-              base = [ direnv git git-extra shells ];
-              multimedia = [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
-              development = [ profiles.development emacs tools tex postmarketos ];
+            suites = nixos.lib.fix (suites: {
+              base = with profiles; [ direnv git shells ];
+              multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
+              development = with profiles; [ development emacs tools tex postmarketos ];
               virtualization = [ ];
-              multimediaDev = multimedia ++ [ xdg-dirs ] ++ development ++ [ vscode ];
-              synchronize = [ onedrive digital-paper ];
-              security = [ gpg ];
+              multimediaDev = suites.multimedia ++ suites.development ++
+                (with profiles; [ xdg-dirs vscode ]);
+              synchronize = with profiles; [ onedrive digital-paper ];
+              security = with profiles; [ gpg ];
 
-              full = base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
-            };
+              full = with suites; base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
+            });
           };
           users = {
             nixos = { suites, ... }: { imports = suites.base; };
@@ -324,14 +353,14 @@
           in
           {
             checks = deploy.lib.${system}.deployChecks self.deploy //
-            (
-              lib.foldl lib.recursiveUpdate { }
-                (lib.mapAttrsToList
-                  (host: cfg:
-                    lib.optionalAttrs (cfg.pkgs.system == system)
-                      { "toplevel-${host}" = cfg.config.system.build.toplevel; })
-                  self.nixosConfigurations)
-            ) // {
+              (
+                lib.foldl lib.recursiveUpdate { }
+                  (lib.mapAttrsToList
+                    (host: cfg:
+                      lib.optionalAttrs (cfg.pkgs.system == system)
+                        { "toplevel-${host}" = cfg.config.system.build.toplevel; })
+                    self.nixosConfigurations)
+              ) // {
               devShell = self.devShell.${system};
             };
 

@@ -1,9 +1,20 @@
+{ pkgs, ... }:
+
 {
   programs.git = {
     enable = true;
+    package = pkgs.gitFull;
+    lfs.enable = true;
 
     extraConfig = {
+      init.defaultBranch = "main";
       pull.rebase = false;
+      pull.ff = "only";
+      credential.helper = "libsecret";
+      commit.gpgSign = true;
+
+      # fish git status
+      bash.showInformativeStatus = true;
     };
 
     aliases = {

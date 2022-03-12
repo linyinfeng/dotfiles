@@ -51,7 +51,6 @@ in
       "Source Han Serif HW"
       "Source Han Serif K"
     ];
-    # respect powerline font settings in core
     monospace = lib.mkAfter [
       "Iosevka Yinfeng"
     ];

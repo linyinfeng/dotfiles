@@ -1,12 +1,13 @@
-{ suites, ... }:
+{ suites, profiles, ... }:
 {
-  ### root password is empty by default ###
-  imports = suites.base;
+  imports =
+    suites.base ++
+    (with profiles; [
+      networking.network-manager
+    ]);
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.networkmanager.enable = true;
 
   fileSystems."/" = { device = "/dev/disk/by-label/nixos"; };
 }

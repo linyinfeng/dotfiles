@@ -1,4 +1,4 @@
-{ pkgs, config, suites, lib, modulesPath, ... }:
+{ pkgs, config, suites, profiles, lib, modulesPath, ... }:
 let
 
   btrfsSubvol = device: subvol: extraConfig: lib.mkMerge [
@@ -15,10 +15,10 @@ in
 {
   imports =
     suites.server ++
-    suites.monitoring ++
-    suites.telegramSend ++
-    suites.autoUpgrade ++
-    suites.notifyFailure ++ [
+    (with profiles; [
+      programs.telegram-send
+      services.notify-failure
+    ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
 

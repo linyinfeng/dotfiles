@@ -1,12 +1,13 @@
-{ config, suites, lib, ... }:
+{ config, suites, profiles, lib, ... }:
 
 {
   imports =
     suites.homeServer ++
-    suites.monitoring ++
-    suites.autoUpgrade ++
-    suites.behindFw ++
-    suites.fwProxy;
+    (with profiles; [
+      networking.behind-fw
+      networking.fw-proxy
+      services.godns
+    ]);
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

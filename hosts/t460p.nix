@@ -1,4 +1,4 @@
-{ config, pkgs, suites, lib, ... }:
+{ config, pkgs, suites, profiles, lib, ... }:
 
 let
 
@@ -19,19 +19,21 @@ in
 {
   imports =
     suites.mobileWorkstation ++
-    suites.monitoring ++
-    suites.tpm ++
-    suites.nixAccessTokens ++
-    suites.game ++
-    suites.behindFw ++
-    suites.fwProxy ++
-    suites.godns ++
-    suites.wireguardHome ++
-    suites.syncthing ++
-    suites.waydroid ++
-    suites.nixbuild ++
-    suites.autoUpgrade ++
-    suites.userYinfeng;
+    suites.games ++
+    (with profiles; [
+      nix.access-tokens
+      nix.nixbuild
+      security.tpm
+      networking.wireguard-home
+      networking.behind-fw
+      networking.fw-proxy
+      services.syncthing
+      services.godns
+      virtualization.waydroid
+    ]) ++
+    (with profiles.users; [
+      yinfeng
+    ]);
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

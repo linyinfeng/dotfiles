@@ -8,4 +8,5 @@
       --delete-older-than 14d
     '';
   };
+  nix.settings.min-free = 1024 * 1024 * 1024; # bytes
 }
