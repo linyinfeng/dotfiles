@@ -14,21 +14,11 @@
   };
 
   home.packages = with pkgs; [
-    bandwhich
-    bc
-    btop
     cntr
-    compsize
-    cryptsetup
     djvu2pdf
     dos2unix
-    dstat
-    efibootmgr
-    exa
     f2fs-tools
-    fd
     ffmpeg
-    file
     github-cli
     gptfdisk
     hyperfine
@@ -36,18 +26,13 @@
     imagemagick
     iozone
     kmon
-    lm_sensors
     loc
-    ncdu
     neofetch
     p7zip
     parted
     pciutils
     pkgdiff
-    procs
     rargs
-    ripgrep
-    rlwrap
     screenfetch
     sd
     speedread
@@ -58,7 +43,6 @@
     unar
     unrar
     unzip
-    usbutils
     wl-clipboard
     youtube-dl
     yq-go
