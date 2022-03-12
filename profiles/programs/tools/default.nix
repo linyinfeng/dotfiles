@@ -18,18 +18,22 @@
     file
     git
     gptfdisk
+    gptfdisk
     iputils
     jq
     lm_sensors
     manix
     moreutils
     ncdu
+    neofetch
     nix-index
+    pciutils
     procs
     ripgrep
     rlwrap
     usbutils
     util-linux
     whois
+    yq-go
   ];
 }

@@ -100,7 +100,6 @@
               deploy.overlay
               ./pkgs/default.nix
 
-              # MAIN
               inputs.sops-nix.overlay
               inputs.nixos-cn.overlay
               inputs.linyinfeng.overlays.singleRepoNur
@@ -158,7 +157,6 @@
                 import ./lib/tests;
             };
 
-            # MAIN
             t460p = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [

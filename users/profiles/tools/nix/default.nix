@@ -10,9 +10,9 @@
     nixpkgs-review
     nix-index
     nix-update
+    nixfmt
     cabal2nix
     patchelf
-    manix
   ];
 
   home.global-persistence.directories = [
