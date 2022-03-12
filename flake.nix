@@ -319,9 +319,7 @@
               full = with suites; base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
             });
           };
-          users = {
-            nixos = { suites, ... }: { imports = suites.base; };
-          }; # digga.lib.importers.rakeLeaves ./users/hm;
+          users = digga.lib.importers.rakeLeaves ./users/hm;
         };
 
         devshell = ./shell;

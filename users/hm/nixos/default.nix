@@ -1,0 +1,5 @@
+{ suites, ... }:
+
+{
+  imports = suites.base;
+}
