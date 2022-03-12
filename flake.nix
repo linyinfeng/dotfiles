@@ -154,7 +154,8 @@
           hosts = {
             /* set host specific properties here */
             NixOS = {
-              tests = import ./lib/tests;
+              tests = [ digga.lib.allProfilesTest ] ++
+                import ./lib/tests;
             };
 
             # MAIN
@@ -197,7 +198,6 @@
                 common-pc-ssd
               ];
               tests = import ./lib/tests;
-
             };
             vultr = {
               system = "x86_64-linux";
@@ -319,7 +319,7 @@
               full = with suites; base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
             });
           };
-          users = digga.lib.importers.rakeLeaves ./users/hm;
+          users = digga.lib.rakeLeaves ./users/hm;
         };
 
         devshell = ./shell;
@@ -361,7 +361,6 @@
               ) // {
               devShell = self.devShell.${system};
             };
-
 
             hydraJobs = {
               all-checks = pkgs.linkFarm "all-checks"
