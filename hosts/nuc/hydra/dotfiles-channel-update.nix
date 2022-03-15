@@ -34,9 +34,9 @@
     scriptArgs = "%I";
     path = with pkgs; [
       git
-      nixVersions.unstable
       cachix
       jq
+      config.nix.package
     ];
     serviceConfig = {
       DynamicUser = true;

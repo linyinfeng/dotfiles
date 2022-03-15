@@ -17,7 +17,7 @@ in
   git = { inherit hooks; };
 
   commands = with pkgs; [
-    (devos nixVersions.unstable)
+    (devos nixVersions.selected)
     (devos cachix)
     {
       category = "devos";

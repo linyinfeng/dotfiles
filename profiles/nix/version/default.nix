@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  nix.package = pkgs.nixVersions.unstable;
+  nix.package = pkgs.nixVersions.selected;
 }

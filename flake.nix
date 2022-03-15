@@ -108,6 +108,7 @@
                 nixVersions = prev.nixVersions.extend
                   (final': prev': {
                     master = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
+                    selected = final'.unstable;
                   });
               })
             ];
