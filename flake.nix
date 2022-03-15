@@ -273,6 +273,7 @@
                 services.kde-connect
                 services.printing
                 security.hardware-keys
+                hardware.rtl-sdr
               ]);
               mobileWorkstation = suites.workstation ++
                 (with profiles; [

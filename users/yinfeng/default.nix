@@ -22,6 +22,7 @@ in
       users.name
       wheel.name
       keys.name
+      plugdev.name
     ] ++
     groupNameIfPresent "adbusers" ++
     groupNameIfPresent "libvirtd" ++
