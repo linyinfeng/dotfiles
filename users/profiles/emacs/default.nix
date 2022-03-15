@@ -28,6 +28,7 @@ in
     ]);
   home.file = {
     ".emacs.d/var/orgs/templates".source = ./org-roam/templates;
+    ".emacs.d/var/pyim/greatdict.pyim.gz".source = "${pkgs.sources.pyim-greatdict.src}/pyim-greatdict.pyim.gz";
   };
   fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 

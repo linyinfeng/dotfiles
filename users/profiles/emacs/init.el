@@ -156,7 +156,7 @@
 (use-package ligature
   :config
   (ligature-set-ligatures '(prog-mode)
-                          ; lists of default ligations of Iosevka
+                          ;; lists of default ligations of Iosevka
                           '("<--" "<---" "<<-" "<-" "->" "->>" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
                             "<==" "<===" "<<=" "<=" "=>" "=>>" "==>" ">=" ">>=" "<=>" "<==>" "<===>" "<====>" "<!---"
                             "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!==" ":>"
@@ -328,7 +328,7 @@
   :delight pyim-isearch-mode
   :custom
   (default-input-method "pyim")
-  (pyim-page-tooltip 'popup)
+  (pyim-page-tooltip '(popup minibuffer))
   (pyim-default-scheme 'quanpin)
   (pyim-page-length 5)
   (pyim-english-input-switch-functions
@@ -339,12 +339,10 @@
   (pyim-punctuation-half-width-functions
    '(pyim-probe-punctuation-line-beginning
      pyim-probe-punctuation-after-punctuation))
+  (pyim-dicts
+   `((:name "Greatdict" :file ,(concat var-dir "pyim/greatdict.pyim.gz"))))
   :config
   (pyim-isearch-mode 1)
-  (use-package pyim-basedict
-    :ensure t
-    :config
-    (pyim-basedict-enable))
   (define-key pyim-mode-map "." 'pyim-page-next-page)
   (define-key pyim-mode-map "," 'pyim-page-previous-page)
   :bind
@@ -377,7 +375,7 @@
 (use-package tex
   :ensure auctex
   :custom
-  ; use default value
+  ;; use default value
   ;; (TeX-view-program-selection '((output-pdf "PDF Tools")))
   (TeX-source-correlate-start-server t)
   (TeX-source-correlate-mode t)
@@ -407,6 +405,6 @@
   "Open init.el file"
   (interactive)
   (load-file (let ((coding-system-for-read 'utf-8))
-             (shell-command-to-string "agda-mode locate"))))
+               (shell-command-to-string "agda-mode locate"))))
 
 (message "Finish loading init.el")

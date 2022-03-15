@@ -3,14 +3,26 @@
 {
   ligature-el = {
     pname = "ligature-el";
-    version = "c0e696a88824be6afa1f33fad548d36f96801d8e";
+    version = "9357156a917a021a87b33ee391567a5d8e44794a";
     src = fetchgit {
       url = "https://github.com/mickeynp/ligature.el";
-      rev = "c0e696a88824be6afa1f33fad548d36f96801d8e";
+      rev = "9357156a917a021a87b33ee391567a5d8e44794a";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
-      sha256 = "sha256-6D6zrrE2uRk02t9vbTmpMnDFeMAsEqKonEyCDyRvZ4I=";
+      sha256 = "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=";
+    };
+  };
+  pyim-greatdict = {
+    pname = "pyim-greatdict";
+    version = "87594b2a4d6391cf69475257b286d3b844791571";
+    src = fetchgit {
+      url = "https://github.com/tumashu/pyim-greatdict.git";
+      rev = "87594b2a4d6391cf69475257b286d3b844791571";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sha256 = "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=";
     };
   };
 }

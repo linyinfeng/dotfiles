@@ -2,3 +2,7 @@
 [ligature-el]
 src.git = "https://github.com/mickeynp/ligature.el"
 fetch.git = "https://github.com/mickeynp/ligature.el"
+
+[pyim-greatdict]
+src.git = "https://github.com/tumashu/pyim-greatdict.git"
+fetch.git = "https://github.com/tumashu/pyim-greatdict.git"
