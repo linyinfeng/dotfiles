@@ -22,14 +22,14 @@ in
       users.name
       wheel.name
       keys.name
-      plugdev.name
     ] ++
     groupNameIfPresent "adbusers" ++
     groupNameIfPresent "libvirtd" ++
     groupNameIfPresent "transmission" ++
     groupNameIfPresent "networkmanager" ++
     groupNameIfPresent "tss" ++
-    groupNameIfPresent "nix-access-tokens";
+    groupNameIfPresent "nix-access-tokens" ++
+    groupNameIfPresent "plugdev";
 
     openssh.authorizedKeys.keyFiles = [
       ./ssh/authorized-keys/pgp.pub
