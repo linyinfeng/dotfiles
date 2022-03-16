@@ -148,7 +148,8 @@
 
 (use-package flyspell
   :ensure nil ; builtin
-  :hook ((org-mode . flyspell-mode)))
+  :hook ((org-mode . flyspell-mode)
+         (TeX-mode . flyspell-mode)))
 
 (use-package json-mode
   :ensure t)
