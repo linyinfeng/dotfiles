@@ -18,7 +18,6 @@
       digga.inputs.deploy.follows = "deploy";
       digga.inputs.flake-compat.follows = "flake-compat";
 
-
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
       bud.inputs.devshell.follows = "digga/devshell";
@@ -62,6 +61,8 @@
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixos";
 
+      nickpkgs.url = "github:nickcao/nixpkgs/nixos-unstable-small";
+
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
     };
@@ -104,16 +105,22 @@
               inputs.nixos-cn.overlay
               inputs.linyinfeng.overlays.singleRepoNur
               inputs.emacs-overlay.overlay
-              (final: prev: {
-                nixVersions = prev.nixVersions.extend
-                  (final': prev': {
-                    master = inputs.nix.packages.${final.stdenv.hostPlatform.system}.nix;
-                    selected = final'.unstable;
-                  });
-              })
+              (final: prev:
+                let
+                  system = final.stdenv.hostPlatform.system;
+                in
+                {
+                  nixVersions = prev.nixVersions.extend
+                    (final': prev': {
+                      master = inputs.nix.packages.${system}.nix;
+                      selected = final'.stable;
+                    });
+                  nix = final.nixVersions.selected;
+                })
             ];
           };
           latest = { };
+          nickpkgs = { };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };
