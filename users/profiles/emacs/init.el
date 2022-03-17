@@ -386,6 +386,8 @@
 (use-package undo-tree
   :ensure t
   :delight
+  :custom
+  (undo-tree-history-directory-alist `(("." . ,(concat var-dir "undo-tree"))))
   :config
   (global-undo-tree-mode))
 
