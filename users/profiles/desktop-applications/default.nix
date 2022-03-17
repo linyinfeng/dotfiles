@@ -34,6 +34,7 @@ lib.mkIf config.home.graphical {
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
+    nur.repos.linyinfeng.icalingua-plus-plus
     picard
     tdesktop
     teamspeak_client
@@ -55,6 +56,7 @@ lib.mkIf config.home.graphical {
       ".config/Bitwarden"
       ".config/calibre"
       ".config/Element"
+      ".config/icalingua"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
       ".config/MusicBrainz" # picard configs
