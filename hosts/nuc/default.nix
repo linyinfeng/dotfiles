@@ -44,6 +44,7 @@ in
       ./grafana
       ./hydra
       ./vaultwarden
+      ./backup
     ];
 
   options.hosts.nuc = {
