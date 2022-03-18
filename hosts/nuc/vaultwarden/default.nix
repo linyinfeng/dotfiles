@@ -28,9 +28,10 @@ in
   };
   services.vaultwarden = {
     enable = true;
-    backupDir = "/media/data/vaultwarden-backup";
+    dbBackend = "postgresql";
     config = {
       domain = "https://vault.ts.li7g.com";
+      databaseUrl = "postgresql:///vaultwarden";
       signupsAllowed = false;
       sendsAllowed = false;
       emergencyAccessAllowed = false;
@@ -43,6 +44,31 @@ in
     environmentFile = config.sops.secrets."vaultwarden".path;
   };
   sops.secrets."vaultwarden".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  systemd.services.backup-vaultwarden.aliases = lib.mkForce [ ];
-  systemd.timers.backup-vaultwarden.aliases = lib.mkForce [ ];
+
+  systemd.services.vaultwarden = {
+    after = [ "vaultwarden-init.service" ];
+    requires = [ "vaultwarden-init.service" ];
+  };
+  systemd.services.vaultwarden-init = {
+    after = [ "postgresql.service" ];
+    requires = [ "postgresql.service" ];
+    serviceConfig = {
+      User = config.users.users.postgres.name;
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    path = [ config.services.postgresql.package ];
+    environment = {
+      "ROLE_NAME" = "vaultwarden";
+      "DB_NAME" = "vaultwarden";
+    };
+    script = ''
+      if [[ -n $(psql --quiet --tuples-only --no-align -c "\du $ROLE_NAME" | cut -d "|" -f 1) ]]; then
+        echo "already initialized: role vaultwarden already exists"
+      else
+        createuser vaultwarden
+        createdb vaultwarden --owner vaultwarden
+      fi
+    '';
+  };
 }
