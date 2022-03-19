@@ -45,6 +45,7 @@ in
       ./hydra
       ./vaultwarden
       ./backup
+      ./maddy
     ];
 
   options.hosts.nuc = {
@@ -181,6 +182,7 @@ in
             "nuc.ts.li7g.com"
             "vault.li7g.com"
             "vault.ts.li7g.com"
+            "smtp.li7g.com"
           ];
           group = "nginx";
         };
