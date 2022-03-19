@@ -100,7 +100,7 @@ in
     {
       # email notifications
       services.hydra.extraConfig = ''
-        email_notification = 1;
+        email_notification = 1
       '';
       services.maddy-init.accounts = [ "hydra@li7g.com" ];
       systemd.services.hydra-notify.serviceConfig.EnvironmentFile = config.sops.templates."hydra-email".path;
