@@ -45,30 +45,13 @@ in
   };
   sops.secrets."vaultwarden".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
-  systemd.services.vaultwarden = {
-    after = [ "vaultwarden-init.service" ];
-    requires = [ "vaultwarden-init.service" ];
-  };
-  systemd.services.vaultwarden-init = {
-    after = [ "postgresql.service" ];
-    requires = [ "postgresql.service" ];
-    serviceConfig = {
-      User = config.users.users.postgres.name;
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    path = [ config.services.postgresql.package ];
-    environment = {
-      "ROLE_NAME" = "vaultwarden";
-      "DB_NAME" = "vaultwarden";
-    };
-    script = ''
-      if [[ -n $(psql --quiet --tuples-only --no-align -c "\du $ROLE_NAME" | cut -d "|" -f 1) ]]; then
-        echo "already initialized: role vaultwarden already exists"
-      else
-        createuser vaultwarden
-        createdb vaultwarden --owner vaultwarden
-      fi
-    '';
-  };
+  services.postgresql.ensureDatabases = [ "vaultwarden" ];
+  services.postgresql.ensureUsers = [
+    {
+      name = "vaultwarden";
+      ensurePermissions = {
+        "DATABASE vaultwarden" = "ALL PRIVILEGES";
+      };
+    }
+  ];
 }
