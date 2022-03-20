@@ -343,7 +343,7 @@
           };
         deploy.sshUser = "root";
 
-        defaultTemplate = self.templates.project;
+        templates.default = self.templates.project;
         templates.project.path = ./templates/project;
         templates.project.description = "simple project template";
 
