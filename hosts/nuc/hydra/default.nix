@@ -102,15 +102,16 @@ in
       services.hydra.extraConfig = ''
         email_notification = 1
       '';
-      services.maddy-init.accounts = [ "hydra@li7g.com" ];
       systemd.services.hydra-notify.serviceConfig.EnvironmentFile = config.sops.templates."hydra-email".path;
       sops.templates."hydra-email".content = ''
+        EMAIL_SENDER_TRANSPORT=SMTP
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
         EMAIL_SENDER_TRANSPORT_sasl_password=${config.sops.placeholder."mail/password"}
-        EMAIL_SENDER_TRANSPORT_host=smtp.li7g.com
-        EMAIL_SENDER_TRANSPORT_port=587
-        EMAIL_SENDER_TRANSPORT_ssl=starttls
+        EMAIL_SENDER_TRANSPORT_host=smtp.ts.li7g.com
+        EMAIL_SENDER_TRANSPORT_port=465
+        EMAIL_SENDER_TRANSPORT_ssl=1
       '';
+      sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     }
   ];
 }

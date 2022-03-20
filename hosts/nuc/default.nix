@@ -45,7 +45,6 @@ in
       ./hydra
       ./vaultwarden
       ./backup
-      ./maddy
     ];
 
   options.hosts.nuc = {
@@ -184,13 +183,13 @@ in
             "vault.ts.li7g.com"
             "smtp.li7g.com"
           ];
-          group = "nginx";
         };
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
     }
 
     # nginx

@@ -10,8 +10,6 @@ cachix:
 vaultwarden: ""
 transmission:
     credentials: ""
-mail:
-    password: ""
 sops:
     kms: []
     gcp_kms: []
@@ -27,8 +25,8 @@ sops:
             L3Ntc3RTT3hDL3l6ZE4ycDErZFhJaEEK5IHBhVhHPeiDC2Jl+cxtgduz37VsM0Kv
             rurGhZ45rwwmJuo0Vs7hCZAnZ7q0nX+d2jUyBIbI8zg39nIYq1gAKA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-19T08:34:21Z"
-    mac: ENC[AES256_GCM,data:x8+8uvQkrR+bwphSeClOgJB5KQbyI4125zDYqiEOYl7fm6++ZEongReaOoJ6+kBnwnlLjSsTiROeaLIymFqns4TkzI+gHY8F9kcs+n8JfE0NiDYm3RyA2DBoZMfezF/47mzeT+onLtkR2fPwmazq0JmCDELiwn5xWOJlMqtlWkg=,iv:B47staf3Lj2GEOaDIGA979zVkfuvUAPIJlhtZkCGadw=,tag:yAylRtk4f6ms78tEIeAySQ==,type:str]
+    lastmodified: "2022-03-20T10:17:50Z"
+    mac: ENC[AES256_GCM,data:Zbd/YegTF7HvPC86UgJPDSbbeEQWg87q2LiMTua3jJ4cNsnvBvUtueW7IXChwwYBhY82/7g7ud/IFaYGYpuTNPcXVxIb4jE82BCwKkoAd3o1sjQOeoR8T20euU7GzWvoraeczsZT0oilaEI4F0Q0xffZXI7eiEWHw07hRYyQ2V8=,iv:WLCqSU5x+SR+hT4eFn3KiBNb2tWyUhivmATgEYv/HJw=,tag:6xcWlJXl7w34lbgOpBoADQ==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:49Z"
           enc: |

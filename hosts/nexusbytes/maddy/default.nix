@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  certDir = config.security.acme.certs."nuc.li7g.com".directory;
+  certDir = config.security.acme.certs."nexusbytes.li7g.com".directory;
 in
 {
   options = {
@@ -16,6 +16,7 @@ in
       hostname = "smtp.li7g.com";
       primaryDomain = "li7g.com";
       localDomains = [ "$(primary_domain)" ];
+      openFirewall = false; # only allow accesses from trusted network
       config = ''
         # Local storage & authentication
 
@@ -109,10 +110,8 @@ in
         };
       }
     ];
-    systemd.tmpfiles.rules = [
-      "a+ ${certDir}               - - - - user:maddy:r-x"
-      "A+ ${certDir}/fullchain.pem - - - - user:maddy:r--"
-      "A+ ${certDir}/key.pem       - - - - user:maddy:r--"
+    users.users.maddy.extraGroups = [
+      config.users.groups.acme.name
     ];
     # allow su to maddy to use maddyctl
     users.users.maddy.shell = pkgs.bash;
@@ -122,7 +121,9 @@ in
     };
 
     # accounts
-    sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /nuc.yaml;
+    services.maddy-init.accounts = [ "hydra@li7g.com" ];
+
+    sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     systemd.services.maddy-init = {
       after = [ "maddy.service" ];
       serviceConfig = {

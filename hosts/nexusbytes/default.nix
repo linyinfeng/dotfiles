@@ -17,9 +17,11 @@ in
     suites.server ++
     (with profiles; [
       programs.telegram-send
+      services.acme
       services.notify-failure
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
+      ./maddy
     ];
 
   config = lib.mkMerge [
@@ -45,18 +47,6 @@ in
         tmux
       ];
 
-      services.commit-notifier = {
-        enable = true;
-        cron = "0 */5 * * * *";
-        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
-      };
-      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
-      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
-
-      services.notify-failure.services = [
-        "commit-notifier"
-      ];
-
       fileSystems."/" =
         {
           device = "tmpfs";
@@ -76,6 +66,55 @@ in
         [{
           device = "/swap/swapfile";
         }];
+    }
+
+    # nginx
+    {
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+      };
+    }
+
+    # acme
+    {
+      security.acme.certs = {
+        "nexusbytes.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "smtp.li7g.com"
+            "smtp.ts.li7g.com"
+          ];
+        };
+      };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+    }
+
+    # commit-notifier
+    {
+      services.commit-notifier = {
+        enable = true;
+        cron = "0 */5 * * * *";
+        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
+      };
+      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
+      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
+
+      services.notify-failure.services = [
+        "commit-notifier"
+      ];
+    }
+
+    # postgresql
+    {
+      services.postgresql.enable = true;
     }
 
     {
