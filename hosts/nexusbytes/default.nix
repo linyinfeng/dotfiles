@@ -76,7 +76,20 @@ in
         recommendedTlsSettings = true;
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
+
+        virtualHosts = {
+          "nexusbytes.li7g.com" = {
+            default = true;
+            forceSSL = true;
+            useACMEHost = "nexusbytes.li7g.com";
+            serverAliases = [
+              "nexusbytes.ts.li7g.com"
+            ];
+          };
+        };
       };
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+      networking.firewall.allowedTCPPorts = [ 80 443 ];
     }
 
     # acme
@@ -86,6 +99,7 @@ in
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
           extraDomainNames = [
+            "nexusbytes.ts.li7g.com"
             "smtp.li7g.com"
             "smtp.ts.li7g.com"
           ];
