@@ -59,7 +59,11 @@ in
 
             default_destination {
               modify {
-                dkim $(primary_domain) $(local_domains) default
+                modify.dkim {
+                  domains $(primary_domain) $(local_domains)
+                  selector default
+                  key_path {env:CREDENTIALS_DIRECTORY}/dkim.key
+                }
               }
               deliver_to &remote_queue
             }
@@ -101,6 +105,10 @@ in
         }
       '';
     };
+    sops.secrets."dkim".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
+    systemd.services.maddy.serviceConfig.LoadCredential = [
+      "dkim.key:${config.sops.secrets."dkim".path}"
+    ];
     services.postgresql.ensureDatabases = [ "maddy" ];
     services.postgresql.ensureUsers = [
       {
