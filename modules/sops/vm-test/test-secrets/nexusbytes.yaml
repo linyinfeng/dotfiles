@@ -1,5 +1,6 @@
 telegram-bot:
     commit-notifier: ""
+dkim: ""
 sops:
     kms: []
     gcp_kms: []
@@ -15,8 +16,8 @@ sops:
             Rk8rcFZyQm9ra2ZNUGtZc2NiRHlSc1kKbEPTvp3eTZwIlkJPLegAJE9oQclVWIrL
             0GZF0V65MmVp5kAPGYwYoOnN+iKliCO93AwrQfZhZtL+LjpfxACKKg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-04T09:04:02Z"
-    mac: ENC[AES256_GCM,data:E2CWel9c5j3oFRKnKaX639dCJK2BMjXqZLelpNQaPy63/GWiscKvvoKYaB0i4nLFGu6evpb4Qe8cLCVmxCIFmLV6PHKOSV4Z6yzfxcP9JT5CB2vbDtoNM1KipndOmhrd7fEoYB73nEERsG5Os1yitraEAMD/QNJFzZWTqv7Hw/4=,iv:Dajnz+8h08VUqhw4XUmRKzc7WNwqozERNOVYPoajCuU=,tag:CNRUD6HW1UdvvdwJWpT63Q==,type:str]
+    lastmodified: "2022-03-21T07:46:40Z"
+    mac: ENC[AES256_GCM,data:CXb5jXpfWJO7VZkVb2XBjf+RQMKRuAOZwgG/IaaPuZyq8FTJ/bzwcfAF69BSWBncoHdNwCxf0kOSAmgpxImW3BTZoPyQLmF87shG51l+8lpoYU3J3BlgUGOjQ9gOIOYXvDtAhojr6uRiBZoa+viDerCoUD8YqFY/ek7yO4k77u4=,iv:DvZ4fwNiwFcCUHYivq9jXgDdBrv3TbOH22XqTALhjXQ=,tag:jZJ75RbKIramxm4TptOl/Q==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:47Z"
           enc: |
@@ -30,4 +31,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
     unencrypted_suffix: _unencrypted
-    version: 3.7.1
+    version: 3.7.2
