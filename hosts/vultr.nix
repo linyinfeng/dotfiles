@@ -78,9 +78,14 @@ in
         locations."/.well-known/matrix/server".return = ''
           200 '{ "m.server": "matrix.li7g.com:8443" }'
         '';
-        locations."/.well-known/matrix/client".return = ''
-          200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
-        '';
+        locations."/.well-known/matrix/client" = {
+          return = ''
+            200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
+          '';
+          extraConfig = ''
+            add_header Access-Control-Allow-Origin '*';
+          '';
+        };
       };
       services.nginx.virtualHosts.${config.services.portal.host} = {
         forceSSL = true;
