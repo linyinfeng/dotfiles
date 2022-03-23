@@ -161,7 +161,7 @@ in
         ipv4.settings = {
           domains = [{
             domain_name = "li7g.com";
-            sub_domains = [ "nuc" "matrix" ];
+            sub_domains = [ "nuc" ];
           }];
           ip_type = "IPv4";
           ip_url = "https://myip.biturl.top";
@@ -169,7 +169,7 @@ in
         ipv6.settings = {
           domains = [{
             domain_name = "li7g.com";
-            sub_domains = [ "nuc" "matrix" ];
+            sub_domains = [ "nuc" ];
           }];
           ip_type = "IPv6";
           ip_interface = "enp88s0";
@@ -184,7 +184,6 @@ in
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
           extraDomainNames = [
-            "li7g.com" # required by matrix
             "home.li7g.com"
             "nuc.ts.li7g.com"
             "vault.li7g.com"

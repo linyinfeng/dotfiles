@@ -105,17 +105,12 @@ in
   services.nginx.virtualHosts."matrix.li7g.com" = {
     forceSSL = true;
     useACMEHost = "nuc.li7g.com";
-    listen = [
-      { addr = "0.0.0.0"; port = 8448; ssl = true; }
-      { addr = "[::]"; port = 8448; ssl = true; }
-    ];
+    listen = config.hosts.nuc.listens;
     serverAliases = [
       "matrix.ts.li7g.com"
-      "matrix-proxy.li7g.com"
     ];
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}/";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 8448 ];
 }

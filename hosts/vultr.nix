@@ -52,18 +52,17 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
       };
-      networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
+      networking.firewall.allowedTCPPorts = [ 80 443 ];
 
       security.acme.certs = {
         "vultr.li7g.com" = {
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
           extraDomainNames = [
-            "li7g.com" # required by matrix
+            "li7g.com"
             "portal.li7g.com"
             "tar.li7g.com"
             "nuc-proxy.li7g.com"
-            "matrix-proxy.li7g.com"
           ];
         };
       };
@@ -73,6 +72,16 @@ in
       '';
       users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
 
+      services.nginx.virtualHosts."li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        locations."/.well-known/matrix/server".return = ''
+          200 '{ "m.server": "matrix.li7g.com:8443" }'
+        '';
+        locations."/.well-known/matrix/client".return = ''
+          200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
+        '';
+      };
       services.nginx.virtualHosts.${config.services.portal.host} = {
         forceSSL = true;
         useACMEHost = "vultr.li7g.com";
@@ -104,17 +113,6 @@ in
         useACMEHost = "vultr.li7g.com";
         locations."/" = {
           proxyPass = "https://nuc.ts.li7g.com";
-        };
-      };
-      services.nginx.virtualHosts."matrix-proxy.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
-        listen = [
-          { addr = "0.0.0.0"; port = 8448; ssl = true; }
-          { addr = "[::]"; port = 8448; ssl = true; }
-        ];
-        locations."/" = {
-          proxyPass = "https://matrix.ts.li7g.com:8448";
         };
       };
 
