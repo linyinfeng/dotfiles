@@ -45,6 +45,7 @@ in
       ./hydra
       ./vaultwarden
       ./backup
+      ./matrix
     ];
 
   options.hosts.nuc = {
@@ -88,6 +89,12 @@ in
         websocket = lib.mkOption {
           type = lib.types.port;
           default = 3007;
+        };
+      };
+      matrix = {
+        http = lib.mkOption {
+          type = lib.types.port;
+          default = 3008;
         };
       };
     };
@@ -154,7 +161,7 @@ in
         ipv4.settings = {
           domains = [{
             domain_name = "li7g.com";
-            sub_domains = [ "nuc" ];
+            sub_domains = [ "nuc" "matrix" ];
           }];
           ip_type = "IPv4";
           ip_url = "https://myip.biturl.top";
@@ -162,7 +169,7 @@ in
         ipv6.settings = {
           domains = [{
             domain_name = "li7g.com";
-            sub_domains = [ "nuc" ];
+            sub_domains = [ "nuc" "matrix" ];
           }];
           ip_type = "IPv6";
           ip_interface = "enp88s0";
@@ -177,11 +184,13 @@ in
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
           extraDomainNames = [
+            "li7g.com" # required by matrix
             "home.li7g.com"
             "nuc.ts.li7g.com"
             "vault.li7g.com"
             "vault.ts.li7g.com"
-            "smtp.li7g.com"
+            "matrix.li7g.com"
+            "matrix.ts.li7g.com"
           ];
         };
       };
@@ -202,13 +211,13 @@ in
         recommendedGzipSettings = true;
         virtualHosts = {
           "nuc.li7g.com" = {
-            default = true;
             forceSSL = true;
             useACMEHost = "nuc.li7g.com";
             listen = config.hosts.nuc.listens;
             serverAliases = [
               "home.li7g.com"
               "nuc.ts.li7g.com"
+              "nuc-proxy.li7g.com"
             ];
             locations."/" = {
               root = ./www;

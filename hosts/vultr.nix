@@ -13,7 +13,6 @@ let
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 
   portalHost = "portal.li7g.com";
-  dotTarHost = "tar.li7g.com";
   dotTarPort = 8001;
 in
 {
@@ -53,18 +52,38 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
       };
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
+      networking.firewall.allowedTCPPorts = [ 80 443 8448 ];
+
+      security.acme.certs = {
+        "vultr.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "li7g.com" # required by matrix
+            "portal.li7g.com"
+            "tar.li7g.com"
+            "nuc-proxy.li7g.com"
+            "matrix-proxy.li7g.com"
+          ];
+        };
+      };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+
       services.nginx.virtualHosts.${config.services.portal.host} = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "vultr.li7g.com";
       };
       services.portal = {
         host = portalHost;
         server.enable = true;
       };
-      services.nginx.virtualHosts.${dotTarHost} = {
+      services.nginx.virtualHosts."tar.li7g.com" = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "vultr.li7g.com";
         locations."/" = {
           proxyPass = "http://localhost:${toString dotTarPort}";
         };
@@ -82,9 +101,20 @@ in
       };
       services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
         forceSSL = true;
-        enableACME = true;
+        useACMEHost = "vultr.li7g.com";
         locations."/" = {
           proxyPass = "https://nuc.ts.li7g.com";
+        };
+      };
+      services.nginx.virtualHosts."matrix-proxy.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        listen = [
+          { addr = "0.0.0.0"; port = 8448; ssl = true; }
+          { addr = "[::]"; port = 8448; ssl = true; }
+        ];
+        locations."/" = {
+          proxyPass = "https://matrix.ts.li7g.com:8448";
         };
       };
 
