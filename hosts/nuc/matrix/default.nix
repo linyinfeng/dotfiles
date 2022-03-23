@@ -23,6 +23,10 @@ in
         # `private_key` has the type `path`
         # prefix a `/` to make `path` happy
         private_key = "/$CREDENTIALS_DIRECTORY/matrix";
+        trusted_third_party_id_servers = [
+          "matrix.org"
+          "vector.im"
+        ];
       };
       logging = [{
         type = "std";
@@ -60,19 +64,22 @@ in
       };
       federation_api = {
         inherit database;
-        key_perspectives = [{
-          server_name = "matrix.org";
-          keys = [
-            {
-              key_id = "ed25519:auto";
-              public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
-            }
-            {
-              key_id = "ed25519:a_RXGa";
-              public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ";
-            }
-          ];
-        }];
+        key_perspectives = [
+          {
+            server_name = "matrix.org";
+            keys = [
+              {
+                key_id = "ed25519:auto";
+                public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
+              }
+              {
+                key_id = "ed25519:a_RXGa";
+                public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ";
+              }
+            ];
+          }
+        ];
+        prefer_direct_fetch = false;
       };
       user_api = {
         account_database = database;
@@ -109,8 +116,18 @@ in
     serverAliases = [
       "matrix.ts.li7g.com"
     ];
+    locations."/_matrix" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}";
+    };
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}/";
+      root = pkgs.runCommandNoCC "element-web-with-config" {} ''
+        cp -r ${pkgs.element-web} $out
+        chmod u+w $out
+        rm $out/config.json
+        cat ${pkgs.element-web}/config.json |\
+          ${pkgs.jq}/bin/jq '."default_server_config"."m.homeserver" = { "base_url": "https://matrix.li7g.com:8443", "server_name": "li7g.org" }' \
+          > $out/config.json
+      '';
     };
   };
 }
