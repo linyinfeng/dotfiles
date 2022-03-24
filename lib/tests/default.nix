@@ -1,3 +1,5 @@
 [
-  ./boot.nix
+  # TODO disabled
+  # not stable
+  # ./boot.nix
 ]

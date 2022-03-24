@@ -157,8 +157,7 @@
           hosts = {
             /* set host specific properties here */
             NixOS = {
-              tests = [ digga.lib.allProfilesTest ] ++
-                import ./lib/tests;
+              tests = import ./lib/tests;
             };
 
             t460p = {

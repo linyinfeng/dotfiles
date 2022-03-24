@@ -53,7 +53,7 @@ in
       };
       mscs = {
         inherit database;
-        mscs = [ ];
+        mscs = [ "msc2836" "msc2946" ];
       };
       sync_api = {
         inherit database;
