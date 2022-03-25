@@ -17,6 +17,7 @@
 
   home.global-persistence.directories = [
     ".config/cachix"
+    ".cache/nix"
     ".cache/nix-index"
   ];
 }
