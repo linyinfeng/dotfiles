@@ -4,8 +4,10 @@ lib.mkIf config.home.graphical {
   programs.chromium = {
     enable = true;
     commandLineArgs = [
-      "--ozone-platform-hint=auto"
-      "--gtk-version=4"
+      # TODO disabled
+      # ibus not working
+      # "--ozone-platform-hint=auto"
+      # "--gtk-version=4"
     ];
   };
 

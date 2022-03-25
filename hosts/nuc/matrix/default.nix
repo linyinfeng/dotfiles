@@ -120,7 +120,7 @@ in
       proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}";
     };
     locations."/" = {
-      root = pkgs.runCommandNoCC "element-web-with-config" {} ''
+      root = pkgs.runCommandNoCC "element-web-with-config" { } ''
         cp -r ${pkgs.element-web} $out
         chmod u+w $out
         rm $out/config.json

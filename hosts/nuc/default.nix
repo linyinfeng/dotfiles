@@ -28,7 +28,6 @@ in
       networking.network-manager
       networking.behind-fw
       networking.fw-proxy
-      services.syncthing
       services.transmission
       services.samba
       services.vlmcsd

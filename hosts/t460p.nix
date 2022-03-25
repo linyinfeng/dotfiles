@@ -27,7 +27,6 @@ in
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
-      services.syncthing
       services.godns
       virtualization.waydroid
     ]) ++
