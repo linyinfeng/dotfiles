@@ -22,6 +22,9 @@ in
   systemd.services.zerotierone.requires = [ "zerotierone-setup.service" ];
   sops.secrets."zerotier/main".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
 
+  networking.firewall.allowedTCPPorts = [
+    config.services.zerotierone.port
+  ];
   networking.firewall.trustedInterfaces = [
     interfaceName
   ];

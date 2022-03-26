@@ -338,6 +338,7 @@
           {
             vultr.hostname = "vultr.ts.li7g.com";
             nexusbytes.hostname = "nexusbytes.ts.li7g.com";
+            tencent.hostname = "tencent.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";
             nuc.hostname = "nuc.ts.li7g.com";
             t460p.hostname = "t460p.ts.li7g.com";
