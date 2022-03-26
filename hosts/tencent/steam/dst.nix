@@ -6,7 +6,6 @@ let
   dstAppDir = "${dstRoot}/app";
   dstApp = "343050";
   dstStorageDir = "${dstRoot}/storage";
-  dstPort = 10999;
 in
 {
   home-manager.users.steam = {
@@ -35,7 +34,7 @@ in
     };
     wantedBy = [ "multi-user.target" ];
   };
-  networking.firewall.allowedUDPPorts = [
-    dstPort
-  ];
+  # networking.firewall.allowedUDPPorts = [
+  #   11000 11001
+  # ];
 }
