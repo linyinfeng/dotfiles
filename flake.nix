@@ -209,6 +209,10 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
+            tencent = {
+              system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
             g150ts = {
               system = "x86_64-linux";
               tests = import ./lib/tests;

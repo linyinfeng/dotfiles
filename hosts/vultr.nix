@@ -1,4 +1,4 @@
-{ pkgs, config, suites, profiles, lib, ... }:
+{ pkgs, config, suites, profiles, lib, modulesPath, ... }:
 
 let
 
@@ -22,7 +22,9 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-    ]);
+    ]) ++ [
+      (modulesPath + "/profiles/qemu-guest.nix")
+    ];
 
   config = lib.mkMerge [
     {
