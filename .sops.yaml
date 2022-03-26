@@ -35,6 +35,7 @@ creation_rules:
       - *nuc
       - *nexusbytes
       - *vultr
+      - *tencent
       - *g150t-s
   - path_regex: ^secrets/t460p\.yaml$
     key_groups:
