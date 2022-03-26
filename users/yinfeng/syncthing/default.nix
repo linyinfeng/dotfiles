@@ -46,36 +46,36 @@ lib.mkIf (devices ? ${hostName}) {
       };
     };
     config = {
-        users.users.${user} = {
-          inherit uid group;
-          isNormalUser = true;
-        };
-        users.groups.${group} = {
-          inherit gid;
-        };
-        services.syncthing = {
-          enable = true;
-          openDefaultPorts = true;
-          inherit user group;
-          cert = "${./certs/${hostName}.pem}";
-          key = "/run/secrets/syncthing";
-          devices = others;
-          folders = {
-            "main" = {
-              path = "/var/lib/syncthing/Main";
-              devices = otherNames;
-              ignoreDelete = false;
-              ignorePerms = false;
-            };
-            "music" = {
-              path = "/var/lib/syncthing/Music";
-              devices = otherNames;
-              ignoreDelete = false;
-              ignorePerms = false;
-            };
+      users.users.${user} = {
+        inherit uid group;
+        isNormalUser = true;
+      };
+      users.groups.${group} = {
+        inherit gid;
+      };
+      services.syncthing = {
+        enable = true;
+        openDefaultPorts = true;
+        inherit user group;
+        cert = "${./certs/${hostName}.pem}";
+        key = "/run/secrets/syncthing";
+        devices = others;
+        folders = {
+          "main" = {
+            path = "/var/lib/syncthing/Main";
+            devices = otherNames;
+            ignoreDelete = false;
+            ignorePerms = false;
+          };
+          "music" = {
+            path = "/var/lib/syncthing/Music";
+            devices = otherNames;
+            ignoreDelete = false;
+            ignorePerms = false;
           };
         };
       };
+    };
   };
   sops.secrets."syncthing".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
   home-manager.users.yinfeng.home.global-persistence.directories = [

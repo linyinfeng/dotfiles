@@ -3,10 +3,14 @@
 let
   stateDir = "/var/lib/zerotier-one";
   interfaceName = "zt0";
+  port = 9993;
 in
 {
-  services.zerotierone.enable = true;
-  systemd.services.zerotierone-setup = {
+  services.zerotierone = {
+    enable = true;
+    inherit port;
+  };
+  systemd.services.zerotierone-presetup = {
     script = ''
       mkdir -p "${stateDir}/networks.d"
 
@@ -16,11 +20,33 @@ in
     '';
     serviceConfig = {
       Type = "oneshot";
+      RemainAfterExit = true;
     };
     before = [ "zerotierone.service" ];
+    wantedBy = [ "multi-user.target" ];
   };
-  systemd.services.zerotierone.requires = [ "zerotierone-setup.service" ];
+  systemd.services.zerotierone-postsetup = {
+    script = ''
+      moon_id=$(cat ${config.sops.secrets."zerotier/moon".path})
+      echo "moon: $moon_id"
+      zerotier-cli orbit $moon_id $moon_id
+    '';
+    path = [
+      config.services.zerotierone.package
+    ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    after = [ "zerotierone.service" ];
+    wantedBy = [ "multi-user.target" ];
+  };
+  systemd.services.zerotierone.requires = [
+    "zerotierone-presetup.service"
+    "zerotierone-postsetup.service"
+  ];
   sops.secrets."zerotier/main".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."zerotier/moon".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
 
   networking.firewall.allowedTCPPorts = [
     config.services.zerotierone.port

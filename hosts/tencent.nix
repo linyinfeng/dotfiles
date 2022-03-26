@@ -17,8 +17,7 @@ in
     suites.server ++
     (with profiles; [
       networking.behind-fw
-      services.acme
-      services.notify-failure
+      networking.wireguard-home
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
     ];
@@ -59,6 +58,23 @@ in
         [{
           device = "/swap/swapfile";
         }];
+    }
+
+    # zerotier moon
+    {
+      # add new script
+      systemd.services.zerotierone-presetup = {
+        script = lib.mkAfter ''
+          cd /var/lib/zerotier-one
+          mkdir moons.d
+          cd moons.d
+          zerotier-idtool genmoon "${config.sops.secrets."zerotier/moon.json".path}"
+        '';
+        path = [
+          config.services.zerotierone.package
+        ];
+      };
+      sops.secrets."zerotier/moon.json".sopsFile = config.sops.secretsDir + /tencent.yaml;
     }
 
     {
