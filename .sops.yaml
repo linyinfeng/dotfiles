@@ -6,6 +6,7 @@ keys:
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
   - &nexusbytes age1xya6kmcpxw6n6xdp8pnl5kzhpu39vpfqn73cg9su8rvw63r89y8qc3xmy9
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
+  - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
   - &g150t-s    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
@@ -21,6 +22,7 @@ creation_rules:
       - *nuc
       - *nexusbytes
       - *vultr
+      - *tencent
       # no age key for g150t-s
   - path_regex: ^secrets/infrastructure\.yaml$
     key_groups:
@@ -58,6 +60,12 @@ creation_rules:
       - *main
       age:
       - *vultr
+  - path_regex: ^secrets/tencent\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *tencent
   - path_regex: ^secrets/nexusbytes\.yaml$
     key_groups:
     - pgp:

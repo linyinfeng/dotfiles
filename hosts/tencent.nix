@@ -38,7 +38,7 @@ in
 
       boot.tmpOnTmpfs = true;
       environment.global-persistence.enable = true;
-      environment.global-persistence.root = "/nix/persist";
+      environment.global-persistence.root = "/persist";
 
       fileSystems."/" =
         {
