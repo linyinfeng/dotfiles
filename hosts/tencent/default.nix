@@ -20,6 +20,7 @@ in
       networking.wireguard-home
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
+      ./steam
     ];
 
   config = lib.mkMerge [
@@ -66,7 +67,7 @@ in
       systemd.services.zerotierone-presetup = {
         script = lib.mkAfter ''
           cd /var/lib/zerotier-one
-          mkdir moons.d
+          mkdir -p moons.d
           cd moons.d
           zerotier-idtool genmoon "${config.sops.secrets."zerotier/moon.json".path}"
         '';
