@@ -38,7 +38,7 @@ in
     };
     wantedBy = [ "multi-user.target" ];
   };
-  # networking.firewall.allowedUDPPorts = [
-  #   11000 11001
-  # ];
+  networking.firewall.allowedUDPPorts = [
+    10999
+  ];
 }
