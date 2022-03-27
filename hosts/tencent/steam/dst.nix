@@ -22,6 +22,10 @@ in
         +app_update "${dstApp}" validate \
         +quit
 
+      # install modes
+      echo "ServerModCollectionSetup(\"2785301768\")" \
+        >> "${gameHome}/${dstAppDir}/mods/dedicated_server_mods_setup.lua"
+
       # start server
       cd "${gameHome}/${dstAppDir}/bin"
       steam-run ./dontstarve_dedicated_server_nullrenderer \
