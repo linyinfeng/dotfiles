@@ -34,6 +34,7 @@ in
     iosevka-yinfeng
     font-awesome
     powerline-fonts
+    sarasa-gothic
   ];
 
   fonts.fontconfig.defaultFonts = {

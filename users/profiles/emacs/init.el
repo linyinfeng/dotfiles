@@ -34,7 +34,7 @@
 
 ;; default font
 (set-face-attribute 'default nil
-                    :family "Iosevka Yinfeng"
+                    :family "Sarasa Mono Slab SC"
                     :height 100
                     :weight 'normal
                     :width 'normal)
@@ -329,7 +329,9 @@
   :delight pyim-isearch-mode
   :custom
   (default-input-method "pyim")
-  (pyim-page-tooltip '(popup minibuffer))
+  ;; TODO very slow under pgtk emacs
+  ;; (pyim-page-tooltip '(popup minibuffer))
+  (pyim-page-tooltip '(minibuffer posframe popup))
   (pyim-default-scheme 'quanpin)
   (pyim-page-length 5)
   (pyim-english-input-switch-functions
