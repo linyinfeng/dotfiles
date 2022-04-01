@@ -1,4 +1,4 @@
-{ pkgs, config, suites, profiles, lib, modulesPath, ... }:
+{ config, pkgs, suites, profiles, lib, modulesPath, ... }:
 
 let
 
@@ -18,6 +18,7 @@ in
     (with profiles; [
       networking.behind-fw
       networking.wireguard-home
+      services.acme
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
@@ -61,6 +62,49 @@ in
         }];
     }
 
+    # acme
+    {
+      security.acme.certs = {
+        "tencent.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "tencent.ts.li7g.com"
+            "shanghai.derp.li7g.com"
+          ];
+        };
+      };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+    }
+
+    # nginx
+    {
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+
+        virtualHosts = {
+          "tencent.li7g.com" = {
+            default = true;
+            onlySSL = true;
+            useACMEHost = "tencent.li7g.com";
+            serverAliases = [
+              "tencent.ts.li7g.com"
+            ];
+          };
+        };
+      };
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+      # only port 443
+      networking.firewall.allowedTCPPorts = [ 443 ];
+    }
+
     # zerotier moon
     {
       # add new script
@@ -77,6 +121,40 @@ in
       };
       sops.secrets."zerotier/moon.json".sopsFile = config.sops.secretsDir + /tencent.yaml;
     }
+
+    # tailscale derp server
+    (
+      let
+        derperPort = 8443;
+      in
+      {
+        systemd.services.derper = {
+          script = ''
+            ${pkgs.tailscale-derp}/bin/derper \
+              -a ":${toString derperPort}" \
+              -http-port "-1" \
+              --hostname="shanghai.derp.li7g.com" \
+              -certdir "$CREDENTIALS_DIRECTORY" \
+              -certmode manual \
+              -verify-clients
+          '';
+          serviceConfig = {
+            LoadCredential = [
+              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."tencent.li7g.com".directory}/fullchain.pem"
+              "shanghai.derp.li7g.com.key:${config.security.acme.certs."tencent.li7g.com".directory}/key.pem"
+            ];
+          };
+          after = [ "network-online.target" ];
+          wantedBy = [ "multi-user.service" ];
+        };
+        networking.firewall.allowedTCPPorts = [
+          derperPort
+        ];
+        networking.firewall.allowedUDPPorts = [
+          3478 # STUN port
+        ];
+      }
+    )
 
     {
       networking = lib.mkIf (!config.system.is-vm) {
