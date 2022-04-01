@@ -47,86 +47,6 @@ in
         tmux
       ];
 
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
-      };
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
-
-      security.acme.certs = {
-        "vultr.li7g.com" = {
-          dnsProvider = "cloudflare";
-          credentialsFile = config.sops.templates.acme-credentials.path;
-          extraDomainNames = [
-            "li7g.com"
-            "portal.li7g.com"
-            "tar.li7g.com"
-            "nuc-proxy.li7g.com"
-          ];
-        };
-      };
-      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.templates.acme-credentials.content = ''
-        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
-      '';
-      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
-
-      services.nginx.virtualHosts."li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
-        locations."/.well-known/matrix/server".return = ''
-          200 '{ "m.server": "matrix.li7g.com:8443" }'
-        '';
-        locations."/.well-known/matrix/client" = {
-          return = ''
-            200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
-          '';
-          extraConfig = ''
-            add_header Access-Control-Allow-Origin '*';
-          '';
-        };
-      };
-      services.nginx.virtualHosts.${config.services.portal.host} = {
-        forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
-      };
-      services.portal = {
-        host = portalHost;
-        server.enable = true;
-      };
-      services.nginx.virtualHosts."tar.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString dotTarPort}";
-        };
-      };
-      services.dot-tar = {
-        enable = true;
-        config = {
-          release = {
-            port = dotTarPort;
-            authority_allow_list = [
-              "github.com"
-            ];
-          };
-        };
-      };
-      services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
-        locations."/" = {
-          proxyPass = "https://nuc.ts.li7g.com";
-        };
-      };
-
-      services.notify-failure.services = [
-        "dot-tar"
-      ];
-
       fileSystems."/" =
         {
           device = "tmpfs";
@@ -146,6 +66,110 @@ in
         [{
           device = "/swap/swapfile";
         }];
+    }
+
+    # acme
+    {
+      security.acme.certs = {
+        "vultr.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "li7g.com"
+            "portal.li7g.com"
+            "tar.li7g.com"
+            "nuc-proxy.li7g.com"
+          ];
+        };
+      };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+    }
+
+    # nginx
+    {
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+      };
+      networking.firewall.allowedTCPPorts = [ 80 443 ];
+    }
+
+    # matrix well-known
+    {
+      services.nginx.virtualHosts."li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        locations."/.well-known/matrix/server".return = ''
+          200 '{ "m.server": "matrix.li7g.com:8443" }'
+        '';
+        locations."/.well-known/matrix/client" = {
+          return = ''
+            200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
+          '';
+          extraConfig = ''
+            add_header Access-Control-Allow-Origin '*';
+          '';
+        };
+      };
+    }
+
+    # portal
+    {
+      services.nginx.virtualHosts.${config.services.portal.host} = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        locations."/" = {
+          root = pkgs.element-web-li7g-com;
+        };
+      };
+      services.portal = {
+        host = portalHost;
+        server.enable = true;
+      };
+    }
+
+    # dot-tar
+    {
+      services.nginx.virtualHosts."tar.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        locations."/" = {
+          proxyPass = "http://localhost:${toString dotTarPort}";
+        };
+      };
+      services.dot-tar = {
+        enable = true;
+        config = {
+          release = {
+            port = dotTarPort;
+            authority_allow_list = [
+              "github.com"
+            ];
+          };
+        };
+      };
+
+      services.notify-failure.services = [
+        "dot-tar"
+      ];
+    }
+
+    # nuc-proxy
+    {
+      services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "vultr.li7g.com";
+        locations."/" = {
+          proxyPass = "https://nuc.ts.li7g.com";
+        };
+      };
     }
 
     {

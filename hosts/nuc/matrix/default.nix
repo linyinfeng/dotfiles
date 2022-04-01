@@ -120,14 +120,7 @@ in
       proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}";
     };
     locations."/" = {
-      root = pkgs.runCommandNoCC "element-web-with-config" { } ''
-        cp -r ${pkgs.element-web} $out
-        chmod u+w $out
-        rm $out/config.json
-        cat ${pkgs.element-web}/config.json |\
-          ${pkgs.jq}/bin/jq '."default_server_config"."m.homeserver" = { "base_url": "https://matrix.li7g.com:8443", "server_name": "li7g.org" }' \
-          > $out/config.json
-      '';
+      root = pkgs.element-web-li7g-com;
     };
   };
 }

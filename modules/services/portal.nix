@@ -14,11 +14,11 @@ in
     };
     logLevel = lib.mkOption {
       type = with lib.types; str;
-      default = "info";
+      default = "debug";
     };
-    path = lib.mkOption {
+    grpcServiceName = lib.mkOption {
       type = with lib.types; str;
-      default = "/63b13cf9-fa55-45ef-9126-56fc769383dd";
+      default = "63b13cf9fa5545ef912656fc769383dd";
     };
     client = {
       enable = lib.mkOption {
@@ -47,6 +47,7 @@ in
   };
 
   config = lib.mkMerge [
+
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal/client-id".sopsFile = config.sops.secretsDir + /common.yaml;
       services.v2ray = {
@@ -57,21 +58,25 @@ in
         # TODO add a restart trigger
       };
     })
+
     (lib.mkIf cfg.server.enable {
       services.nginx.virtualHosts.${cfg.host} = {
-        locations.${cfg.path}.extraConfig = ''
-          if ($http_upgrade != "websocket") { # Return 404 error when WebSocket upgrading negotiate failed
+        locations."/${cfg.grpcServiceName}/Tun".extraConfig = ''
+          # if the request method is not POST for this location, return 404
+          if ($request_method != "POST") {
             return 404;
           }
-          proxy_redirect off;
-          proxy_pass http://localhost:${toString cfg.server.internalPort};
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection "upgrade";
-          proxy_set_header Host $host;
-          # Show real IP in v2ray access.log
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+          grpc_socket_keepalive on;
+          grpc_intercept_errors on;
+          grpc_pass grpc://127.0.0.1:${toString cfg.server.internalPort};
+          grpc_set_header Upgrade $http_upgrade;
+          grpc_set_header Connection "upgrade";
+          grpc_set_header Host $host;
+
+          # show real IP in v2ray access.log
+          grpc_set_header X-Real-IP $remote_addr;
+          grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         '';
       };
 
@@ -91,9 +96,9 @@ in
               disableInsecureEncryption = true;
             };
             streamSettings = {
-              network = "ws";
-              wsSettings = {
-                inherit (cfg) path;
+              network = "grpc";
+              grpcSettings = {
+                serviceName = cfg.grpcServiceName;
               };
             };
           }
@@ -105,10 +110,12 @@ in
         ];
       };
     })
+
     (lib.mkIf cfg.client.enable {
       sops.templates.portal-v2ray.content =
         let
           basicConfig = {
+            log.loglevel = cfg.logLevel;
             inbounds = [
               {
                 port = cfg.client.port;
@@ -138,10 +145,10 @@ in
                   ];
                 };
                 streamSettings = {
-                  network = "ws";
+                  network = "grpc";
                   security = "tls";
-                  wsSettings = {
-                    path = cfg.path;
+                  grpcSettings = {
+                    serviceName = cfg.grpcServiceName;
                   };
                 };
                 mux = {
