@@ -14,7 +14,7 @@ in
     };
     logLevel = lib.mkOption {
       type = with lib.types; str;
-      default = "debug";
+      default = "info";
     };
     grpcServiceName = lib.mkOption {
       type = with lib.types; str;
@@ -152,7 +152,7 @@ in
                   };
                 };
                 mux = {
-                  enabled = false;
+                  enabled = true;
                   # mux as much as possible
                   concurrency = 1024;
                 };
