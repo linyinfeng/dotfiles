@@ -79,10 +79,9 @@
       {
         inherit self inputs;
 
-        # TODO devShell borken on aarch64-linux
         supportedSystems = [
           "x86_64-linux"
-          # "aarch64-linux"
+          "aarch64-linux"
         ];
 
         channelsConfig = { allowUnfree = true; };
@@ -357,7 +356,8 @@
             inherit (pkgs) system lib;
           in
           {
-            checks = deploy.lib.${system}.deployChecks self.deploy //
+            checks =
+              deploy.lib.${system}.deployChecks self.deploy //
               (
                 lib.foldl lib.recursiveUpdate { }
                   (lib.mapAttrsToList
@@ -365,15 +365,19 @@
                       lib.optionalAttrs (cfg.pkgs.system == system)
                         { "toplevel-${host}" = cfg.config.system.build.toplevel; })
                     self.nixosConfigurations)
+              ) // (
+                lib.mapAttrs'
+                  (name: drv: lib.nameValuePair "package-${name}" drv)
+                  self.packages.${system}
               ) // {
-              devShell = self.devShell.${system};
-            };
+                devShell = self.devShell.${system};
+              };
 
-            hydraJobs = {
+            hydraJobs = self.checks.${system} // {
               all-checks = pkgs.linkFarm "all-checks"
                 (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
                   self.checks.${system});
-            } // self.checks.${system};
+            };
           };
       };
 }
