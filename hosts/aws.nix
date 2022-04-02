@@ -20,7 +20,7 @@
       };
 
       fileSystems."/" = lib.mkForce {
-        device = "/dev/disk/by-label/\\x2f"; # label = "/"
+        device = "/dev/nvme0n1p1";
         fsType = "xfs";
       };
     }
