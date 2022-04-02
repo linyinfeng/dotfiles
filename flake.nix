@@ -13,6 +13,7 @@
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
       digga.inputs.flake-compat.follows = "flake-compat";
+      digga.inputs.nixos-generators.follows = "nixos-generators";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
@@ -42,6 +43,10 @@
       nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
       nixos-hardware.url = "github:nixos/nixos-hardware";
+
+      nixos-generators.url = "github:nix-community/nixos-generators";
+      nixos-generators.inputs.nixlib.follows = "nixos";
+      nixos-generators.inputs.nixpkgs.follows = "nixos";
 
       nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
@@ -158,7 +163,6 @@
             NixOS = {
               tests = import ./lib/tests;
             };
-
             t460p = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
@@ -168,7 +172,6 @@
                 lenovo-thinkpad-t460s
               ];
               tests = import ./lib/tests;
-
             };
             xps8930 = {
               system = "x86_64-linux";
@@ -178,7 +181,6 @@
                 common-pc-ssd
               ];
               tests = import ./lib/tests;
-
             };
             x200s = {
               system = "x86_64-linux";
@@ -188,7 +190,6 @@
                 common-pc-ssd
               ];
               tests = import ./lib/tests;
-
             };
             nuc = {
               system = "x86_64-linux";
@@ -202,7 +203,6 @@
             vultr = {
               system = "x86_64-linux";
               tests = import ./lib/tests;
-
             };
             nexusbytes = {
               system = "x86_64-linux";
