@@ -33,6 +33,7 @@ in
     groupNameIfPresent "networkmanager" ++
     groupNameIfPresent "tss" ++
     groupNameIfPresent "nix-access-tokens" ++
+    groupNameIfPresent "nixbuild" ++
     groupNameIfPresent "plugdev";
 
     openssh.authorizedKeys.keyFiles = [

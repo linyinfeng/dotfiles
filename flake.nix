@@ -86,7 +86,7 @@
 
         supportedSystems = [
           "x86_64-linux"
-          "aarch64-linux"
+          # "aarch64-linux"
         ];
 
         channelsConfig = { allowUnfree = true; };
@@ -216,6 +216,10 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
+            aws = {
+              system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {
@@ -280,6 +284,7 @@
                 services.printing
                 security.hardware-keys
                 hardware.rtl-sdr
+                nix.nix-ld
               ]);
               mobileWorkstation = suites.workstation ++
                 (with profiles; [
@@ -314,7 +319,7 @@
             suites = nixos.lib.fix (suites: {
               base = with profiles; [ direnv git shells ];
               multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
-              development = with profiles; [ development emacs tools tex postmarketos ];
+              development = with profiles; [ development emacs tools tex postmarketos awscli ];
               virtualization = [ ];
               multimediaDev = suites.multimedia ++ suites.development ++
                 (with profiles; [ xdg-dirs vscode ]);

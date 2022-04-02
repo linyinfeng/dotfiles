@@ -58,7 +58,10 @@ in
       };
       # allow evaluator and queue-runner to access nix-access-tokens
       systemd.services.hydra-evaluator.serviceConfig.SupplementaryGroups = [ config.users.groups.nix-access-tokens.name ];
-      systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [ config.users.groups.nix-access-tokens.name ];
+      systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [
+        config.users.groups.nix-access-tokens.name
+        config.users.groups.nixbuild.name
+      ];
       sops.templates."hydra-extra-config" = {
         group = "hydra";
         mode = "440";
@@ -91,10 +94,6 @@ in
           speedFactor = 1;
         }
       ];
-      sops.secrets."nixbuild/id-ed25519" = {
-        owner = "hydra-queue-runner";
-        sopsFile = config.sops.secretsDir + /common.yaml;
-      };
     }
 
     {

@@ -26,11 +26,18 @@ in
       IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
       ${proxyCommand}
   '';
-  sops.secrets."nixbuild/id-ed25519".sopsFile = config.sops.secretsDir + /common.yaml;
   services.openssh.knownHosts = {
     nixbuild = {
       extraHostNames = [ "eu.nixbuild.net" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
     };
+  };
+  users.groups.nixbuild = {
+    gid = config.ids.gids.nixbuild;
+  };
+  sops.secrets."nixbuild/id-ed25519" = {
+    sopsFile = config.sops.secretsDir + /common.yaml;
+    group = "nixbuild";
+    mode = "440";
   };
 }
