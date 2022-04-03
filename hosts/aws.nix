@@ -4,6 +4,7 @@
   imports =
     suites.server ++
     (with profiles; [
+      services.acme
     ]) ++ [
       (modulesPath + "/virtualisation/amazon-image.nix")
     ];
@@ -22,6 +23,51 @@
       fileSystems."/" = lib.mkForce {
         device = "/dev/nvme0n1p1";
         fsType = "xfs";
+      };
+    }
+
+    # nginx
+    {
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedTlsSettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+      };
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+      ];
+    }
+
+    # acme
+    {
+      security.acme.certs = {
+        "aws.li7g.com" = {
+          dnsProvider = "cloudflare";
+          credentialsFile = config.sops.templates.acme-credentials.path;
+          extraDomainNames = [
+            "aws.ts.li7g.com"
+            "matrix-proxy.li7g.com"
+          ];
+        };
+      };
+      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.templates.acme-credentials.content = ''
+        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
+      '';
+      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+    }
+
+    # matrix-proxy
+    {
+      services.nginx.virtualHosts."matrix-proxy.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "aws.li7g.com";
+        locations."/" = {
+          proxyPass = "https://nuc.ts.li7g.com";
+        };
       };
     }
 

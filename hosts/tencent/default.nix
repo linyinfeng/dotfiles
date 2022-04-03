@@ -140,7 +140,7 @@ in
           '';
           serviceConfig = {
             LoadCredential = [
-              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."tencent.li7g.com".directory}/fullchain.pem"
+              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."tencent.li7g.com".directory}/full.pem"
               "shanghai.derp.li7g.com.key:${config.security.acme.certs."tencent.li7g.com".directory}/key.pem"
             ];
           };

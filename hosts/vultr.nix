@@ -107,7 +107,7 @@ in
         forceSSL = true;
         useACMEHost = "vultr.li7g.com";
         locations."/.well-known/matrix/server".return = ''
-          200 '{ "m.server": "matrix.li7g.com:8443" }'
+          200 '{ "m.server": "matrix-proxy.li7g.com:443" }'
         '';
         locations."/.well-known/matrix/client" = {
           return = ''
