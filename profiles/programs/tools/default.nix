@@ -8,8 +8,6 @@
     compsize
     coreutils
     cryptsetup
-    curl
-    dnsutils
     dosfstools
     dstat
     efibootmgr
@@ -19,7 +17,6 @@
     git
     gptfdisk
     gptfdisk
-    iputils
     jq
     lm_sensors
     manix
@@ -31,9 +28,9 @@
     procs
     ripgrep
     rlwrap
+    tmux
     usbutils
     util-linux
-    whois
     yq-go
   ];
 }

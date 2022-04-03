@@ -319,7 +319,7 @@
             suites = nixos.lib.fix (suites: {
               base = with profiles; [ direnv git shells ];
               multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
-              development = with profiles; [ development emacs tools tex postmarketos awscli ];
+              development = with profiles; [ development emacs tools tex postmarketos awscli terraform ];
               virtualization = [ ];
               multimediaDev = suites.multimedia ++ suites.development ++
                 (with profiles; [ xdg-dirs vscode ]);

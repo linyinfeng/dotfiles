@@ -21,8 +21,9 @@
     pcsctools
   ];
 
+  # disabled
   security.pam.u2f = {
-    enable = true;
+    enable = false;
     cue = true;
   };
   environment.global-persistence.user.directories = [

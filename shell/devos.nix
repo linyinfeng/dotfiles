@@ -13,7 +13,10 @@ in
 {
   _file = toString ./.;
 
-  imports = [ "${extraModulesPath}/git/hooks.nix" ];
+  imports = [
+    ./terraform
+    "${extraModulesPath}/git/hooks.nix"
+  ];
   git = { inherit hooks; };
 
   commands = with pkgs; [
