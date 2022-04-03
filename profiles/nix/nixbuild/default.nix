@@ -38,6 +38,7 @@ in
   sops.secrets."nixbuild/id-ed25519" = {
     sopsFile = config.sops.secretsDir + /common.yaml;
     group = "nixbuild";
-    mode = "440";
+    # TODO openssh only accept mod 400
+    # mode = "440";
   };
 }
