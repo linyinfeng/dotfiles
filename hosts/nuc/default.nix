@@ -188,7 +188,6 @@ in
             "vault.li7g.com"
             "vault.ts.li7g.com"
             "matrix.li7g.com"
-            "matrix-proxy.li7g.com"
             "matrix.ts.li7g.com"
           ];
         };

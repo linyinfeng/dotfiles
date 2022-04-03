@@ -114,7 +114,6 @@ in
     useACMEHost = "nuc.li7g.com";
     listen = config.hosts.nuc.listens;
     serverAliases = [
-      "matrix-proxy.li7g.com"
       "matrix.ts.li7g.com"
     ];
     locations."/_matrix" = {

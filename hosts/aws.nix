@@ -19,11 +19,6 @@
         efi = false;
         hvm = true;
       };
-
-      fileSystems."/" = lib.mkForce {
-        device = "/dev/nvme0n1p1";
-        fsType = "xfs";
-      };
     }
 
     # nginx
@@ -49,7 +44,6 @@
           credentialsFile = config.sops.templates.acme-credentials.path;
           extraDomainNames = [
             "aws.ts.li7g.com"
-            "matrix-proxy.li7g.com"
           ];
         };
       };
@@ -58,17 +52,6 @@
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
       users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
-    }
-
-    # matrix-proxy
-    {
-      services.nginx.virtualHosts."matrix-proxy.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "aws.li7g.com";
-        locations."/" = {
-          proxyPass = "https://nuc.ts.li7g.com";
-        };
-      };
     }
 
     {
