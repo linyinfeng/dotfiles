@@ -2,6 +2,13 @@
 
 set -e
 
+if [ -a /etc/INITIALIZED ]; then
+  echo "already initialized"
+  exit 0
+fi
+
+echo "start initialization"
+
 CONFIG_NAME="${config_name}"
 
 echo "install host private key"
@@ -39,4 +46,7 @@ nix build --profile /nix/var/nix/profiles/system \
 
 echo "switch to new configuration"
 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
+
+touch /etc/INITIALIZED
+
 reboot
