@@ -19,6 +19,8 @@
         efi = false;
         hvm = true;
       };
+
+      swapDevices = [{ device = "/swapfile"; }];
     }
 
     # nginx

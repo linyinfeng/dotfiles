@@ -1,6 +1,11 @@
+provider "aws" {
+  # asia pacific (hong kong)
+  region = "ap-east-1"
+}
+
 resource "aws_instance" "main" {
   instance_type = "t3.micro"
-  ami           = module.nixos_image.ami
+  ami           = data.aws_ami.nixos.id
 
   subnet_id              = aws_subnet.main_1.id
   vpc_security_group_ids = [aws_security_group.main.id]
@@ -12,18 +17,36 @@ resource "aws_instance" "main" {
     volume_type           = "gp2"
     volume_size           = 20 # GiB
   }
+
+  user_data_replace_on_change = true
+  user_data = templatefile("${path.module}/aws/initialize.sh",
+    {
+      config_name          = "aws",
+      host_ed25519_key     = var.aws_ssh_host_ed25519_key,
+      host_ed25519_key_pub = var.aws_ssh_host_ed25519_key_pub,
+  })
 }
 
-module "deploy_nixos" {
-  source = "github.com/tweag/terraform-nixos//deploy_nixos"
+variable "aws_ssh_host_ed25519_key_pub" {
+  type      = string
+  sensitive = true
+}
 
-  flake         = true
-  config_pwd    = "${path.module}/.."
-  nixos_config  = "aws" # flake
-  target_system = "x86_64-linux"
+variable "aws_ssh_host_ed25519_key" {
+  type      = string
+  sensitive = true
+}
 
-  target_host = aws_instance.main.public_ip
-  ssh_agent   = true
+data "aws_ami" "nixos" {
+  most_recent = true
+  name_regex  = "^NixOS-.*"
+  # official account of nixos
+  owners = ["080433136561"]
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
 }
 
 resource "aws_eip" "main" {
@@ -51,8 +74,8 @@ resource "aws_default_route_table" "main" {
   default_route_table_id = aws_vpc.main.default_route_table_id
 
   route {
-    cidr_block      = "0.0.0.0/0"
-    gateway_id      = aws_internet_gateway.main.id
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
   }
 
   route {

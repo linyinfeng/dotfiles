@@ -1,8 +1,8 @@
 terraform {
-    backend "remote" {
-        organization = "li7g-com"
-        workspaces {
-            name = "dotfiles"
-        }
+  backend "remote" {
+    organization = "li7g-com"
+    workspaces {
+      name = "dotfiles"
     }
+  }
 }

@@ -1,19 +1,16 @@
 { pkgs, ... }:
 
 let
+  command = package: { category = "infrustructure"; inherit package; };
   terraform = pkgs.terraform;
-  wrapped = pkgs.writeShellScriptBin "terraform" ''
-    ${pkgs.sops}/bin/sops exec-env ${../../secrets/terraform.yaml} "${terraform}/bin/terraform \"$@\""
+  terraform-env = pkgs.writeShellScriptBin "terraform-env" ''
+    ${pkgs.sops}/bin/sops exec-env ../secrets/terraform.yaml ${pkgs.fish}/bin/fish
   '';
-  metaOverrided = wrapped.overrideAttrs (old: {
-    inherit (terraform) meta;
-  });
 in
 {
   commands = [
-    {
-      package = metaOverrided;
-      category = "infrustructure";
-    }
+    (command terraform)
+    (command terraform-env)
+    (command pkgs.nur.repos.linyinfeng.cf-terraforming)
   ];
 }
