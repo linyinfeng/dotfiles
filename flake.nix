@@ -38,7 +38,8 @@
       sops-nix.inputs.nixpkgs.follows = "nixos";
 
       nvfetcher.url = "github:berberman/nvfetcher";
-      nvfetcher.inputs.nixpkgs.follows = "nixos";
+      # TODO nvfetcher broken on nixos-unstable
+      # nvfetcher.inputs.nixpkgs.follows = "nixos";
       nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
@@ -97,7 +98,11 @@
             overlays = [
               # TODO nix flake show broken due to IFD
               # nur.overlay
-              nvfetcher.overlay
+              # TODO nvfetcher broken on nixos-unstable
+              # nvfetcher.overlay
+              (final: prev: {
+                nvfetcher-bin = nvfetcher.defaultPackage.${final.stdenv.hostPlatform.system};
+              })
               deploy.overlay
               ./pkgs/default.nix
 
