@@ -20,9 +20,6 @@ in
       disable-ccid = true;
     };
   };
-  home.packages = with pkgs; [
-    haskellPackages.hopenpgp-tools
-  ];
 
   # disable GNOME Keyring SSH agent
   xdg.configFile."autostart/gnome-keyring-ssh.desktop".source = disabledGnomeKeyringSsh;
