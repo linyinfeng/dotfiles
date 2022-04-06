@@ -147,6 +147,22 @@ in
           after = [ "network-online.target" ];
           wantedBy = [ "multi-user.service" ];
         };
+        systemd.services.derper-watchdog = {
+          script = ''
+            while true; do
+              if ! curl --silent --show-error --output /dev/null \
+                https://shanghai.derp.li7g.com:${toString derperPort}
+              then
+                echo "restart derper server"
+                systemctl restart derper
+              fi
+              sleep 10
+            done
+          '';
+          path = with pkgs; [ curl ];
+          after = [ "derper.service" ];
+          requiredBy = [ "derper.service" ];
+        };
         networking.firewall.allowedTCPPorts = [
           derperPort
         ];
