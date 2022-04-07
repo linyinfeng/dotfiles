@@ -14,7 +14,6 @@ in
   _file = toString ./.;
 
   imports = [
-    ./terraform
     "${extraModulesPath}/git/hooks.nix"
   ];
   git = { inherit hooks; };
