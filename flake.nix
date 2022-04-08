@@ -63,6 +63,11 @@
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixos";
 
+      hydra.url = "github:nixos/hydra";
+      hydra.inputs.nix.follows = "nix";
+      hydra.inputs.nixpkgs.follows = "nixos";
+      hydra.inputs.newNixpkgs.follows = "nixos";
+
       nickpkgs.url = "github:nickcao/nixpkgs/nixos-unstable-small";
 
       flake-compat.url = "github:edolstra/flake-compat";
@@ -118,9 +123,9 @@
                   nixVersions = prev.nixVersions.extend
                     (final': prev': {
                       master = inputs.nix.packages.${system}.nix;
-                      selected = final'.stable;
+                      selected = final'.master;
                     });
-                  nix = final.nixVersions.selected;
+                  hydra-master = inputs.hydra.defaultPackage.${system};
                 })
             ];
           };

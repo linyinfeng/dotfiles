@@ -32,6 +32,7 @@ in
 
       services.hydra = {
         enable = true;
+        package = pkgs.hydra-master;
         listenHost = "127.0.0.1";
         port = cfg.ports.hydra;
         hydraURL = "https://nuc.li7g.com:8443/hydra";
