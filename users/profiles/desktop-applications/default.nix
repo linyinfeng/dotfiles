@@ -3,19 +3,6 @@
 lib.mkIf config.home.graphical {
   programs = {
     mpv.enable = true;
-
-    zathura = {
-      enable = true;
-      extraConfig = ''
-        map <C-n> scroll down
-        map <C-p> scroll up
-        map <C-v> scroll full-down
-        map <A-v> scroll full-up
-      '';
-      options = {
-        adjust-open = "width";
-      };
-    };
   };
 
   home.packages = with pkgs; [
