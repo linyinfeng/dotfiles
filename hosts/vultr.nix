@@ -70,17 +70,16 @@ in
 
     # acme
     {
-      security.acme.certs = {
-        "vultr.li7g.com" = {
+      security.acme.certs."main" = {
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
+          domain = "vultr.li7g.com";
           extraDomainNames = [
             "li7g.com"
             "portal.li7g.com"
             "tar.li7g.com"
             "nuc-proxy.li7g.com"
           ];
-        };
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
@@ -105,7 +104,7 @@ in
     {
       services.nginx.virtualHosts."li7g.com" = {
         forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
+        useACMEHost = "main";
         locations."/.well-known/matrix/server".return = ''
           200 '{ "m.server": "matrix.li7g.com:8443" }'
         '';
@@ -124,7 +123,7 @@ in
     {
       services.nginx.virtualHosts.${config.services.portal.host} = {
         forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
+        useACMEHost = "main";
         locations."/" = {
           root = pkgs.element-web-li7g-com;
         };
@@ -139,7 +138,7 @@ in
     {
       services.nginx.virtualHosts."tar.li7g.com" = {
         forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
+        useACMEHost = "main";
         locations."/" = {
           proxyPass = "http://localhost:${toString dotTarPort}";
         };
@@ -165,7 +164,7 @@ in
     {
       services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
         forceSSL = true;
-        useACMEHost = "vultr.li7g.com";
+        useACMEHost = "main";
         locations."/" = {
           proxyPass = "https://nuc.ts.li7g.com";
         };

@@ -7,6 +7,10 @@
       services.acme
     ]) ++ [
       (modulesPath + "/virtualisation/amazon-image.nix")
+      # TODO nuc down
+      ./backup
+      ../nuc/options.nix
+      ../nuc/vaultwarden
     ];
 
   config = lib.mkMerge [
@@ -40,20 +44,24 @@
 
     # acme
     {
-      security.acme.certs = {
-        "aws.li7g.com" = {
-          dnsProvider = "cloudflare";
-          credentialsFile = config.sops.templates.acme-credentials.path;
-          extraDomainNames = [
-            "aws.ts.li7g.com"
-          ];
-        };
+      security.acme.certs."main" = {
+        dnsProvider = "cloudflare";
+        credentialsFile = config.sops.templates.acme-credentials.path;
+        domain = "aws.li7g.com";
+        extraDomainNames = [
+          "aws.ts.li7g.com"
+        ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
       users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+    }
+
+    # postgresql
+    {
+      services.postgresql.enable = true;
     }
 
     {

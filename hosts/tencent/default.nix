@@ -64,16 +64,15 @@ in
 
     # acme
     {
-      security.acme.certs = {
-        "tencent.li7g.com" = {
+      security.acme.certs."main" = {
           dnsProvider = "cloudflare";
           credentialsFile = config.sops.templates.acme-credentials.path;
+          domain = "tencent.li7g.com";
           extraDomainNames = [
             "tencent.ts.li7g.com"
             "shanghai.derp.li7g.com"
           ];
         };
-      };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
@@ -93,7 +92,7 @@ in
           "tencent.li7g.com" = {
             default = true;
             onlySSL = true;
-            useACMEHost = "tencent.li7g.com";
+            useACMEHost = "main";
             serverAliases = [
               "tencent.ts.li7g.com"
             ];
@@ -140,8 +139,8 @@ in
           '';
           serviceConfig = {
             LoadCredential = [
-              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."tencent.li7g.com".directory}/full.pem"
-              "shanghai.derp.li7g.com.key:${config.security.acme.certs."tencent.li7g.com".directory}/key.pem"
+              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."main".directory}/full.pem"
+              "shanghai.derp.li7g.com.key:${config.security.acme.certs."main".directory}/key.pem"
             ];
           };
           after = [ "network-online.target" ];

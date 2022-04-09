@@ -1,8 +1,9 @@
 { config, lib, ... }:
 
 {
+  # TODO nuc down
   system.autoUpgrade = {
-    enable = true;
+    enable = false;
     flake = "github:linyinfeng/dotfiles/tested";
     allowReboot = true;
     dates = "04:00";

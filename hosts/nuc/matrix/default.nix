@@ -111,7 +111,7 @@ in
 
   services.nginx.virtualHosts."matrix.li7g.com" = {
     forceSSL = true;
-    useACMEHost = "nuc.li7g.com";
+    useACMEHost = "main";
     listen = config.hosts.nuc.listens;
     serverAliases = [
       "matrix.ts.li7g.com"

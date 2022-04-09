@@ -4,11 +4,15 @@ let
   cfg = config.hosts.nuc;
 in
 {
+  security.acme.certs."main".extraDomainNames = [
+    "vault.li7g.com"
+    "vault.ts.li7g.com"
+  ];
   services.nginx = {
     virtualHosts = {
       "vault.li7g.com" = {
         forceSSL = true;
-        useACMEHost = "nuc.li7g.com";
+        useACMEHost = "main";
         listen = config.hosts.nuc.listens;
         serverAliases = [
           "vault.ts.li7g.com"

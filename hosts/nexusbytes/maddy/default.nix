@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  certDir = config.security.acme.certs."nexusbytes.li7g.com".directory;
+  certDir = config.security.acme.certs."main".directory;
 in
 {
   options = {

@@ -56,6 +56,8 @@ creation_rules:
       - *main
       age:
       - *nuc
+      # TODO nuc down
+      - *aws
   - path_regex: ^secrets/xps8930\.yaml$
     key_groups:
     - pgp:
