@@ -8,10 +8,6 @@ in
     host = lib.mkOption {
       type = with lib.types; str;
     };
-    alterId = lib.mkOption {
-      type = with lib.types; int;
-      default = 0;
-    };
     logLevel = lib.mkOption {
       type = with lib.types; str;
       default = "info";
@@ -85,15 +81,15 @@ in
         inbounds = [
           {
             port = cfg.server.internalPort;
-            protocol = "vmess";
+            protocol = "vless";
             settings = {
               clients = [
                 {
                   id = config.sops.placeholder."portal/client-id";
-                  inherit (cfg) alterId;
+                  level = 0;
                 }
               ];
-              disableInsecureEncryption = true;
+              decryption = "none";
             };
             streamSettings = {
               network = "grpc";
@@ -129,7 +125,7 @@ in
             ];
             outbounds = [
               {
-                protocol = "vmess";
+                protocol = "vless";
                 settings = {
                   vnext = [
                     {
@@ -138,7 +134,8 @@ in
                       users = [
                         {
                           id = config.sops.placeholder."portal/client-id";
-                          inherit (cfg) alterId;
+                          encryption = "none";
+                          level = 0;
                         }
                       ];
                     }
