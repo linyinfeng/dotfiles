@@ -1,39 +1,39 @@
 {
-    "ligature-el": {
-        "pinned": false,
-        "cargoLock": null,
-        "name": "ligature-el",
-        "src": {
-            "deepClone": false,
-            "url": "https://github.com/mickeynp/ligature.el",
-            "name": null,
-            "type": "git",
-            "sha256": "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=",
-            "rev": "9357156a917a021a87b33ee391567a5d8e44794a",
-            "leaveDotGit": false,
-            "fetchSubmodules": false
-        },
-        "version": "9357156a917a021a87b33ee391567a5d8e44794a",
-        "passthru": null,
-        "extract": null,
-        "rustGitDeps": null
-    },
     "pyim-greatdict": {
         "pinned": false,
         "cargoLock": null,
         "name": "pyim-greatdict",
+        "version": "87594b2a4d6391cf69475257b286d3b844791571",
+        "passthru": null,
         "src": {
             "deepClone": false,
             "url": "https://github.com/tumashu/pyim-greatdict.git",
+            "leaveDotGit": false,
+            "fetchSubmodules": false,
             "name": null,
             "type": "git",
             "sha256": "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=",
-            "rev": "87594b2a4d6391cf69475257b286d3b844791571",
-            "leaveDotGit": false,
-            "fetchSubmodules": false
+            "rev": "87594b2a4d6391cf69475257b286d3b844791571"
         },
-        "version": "87594b2a4d6391cf69475257b286d3b844791571",
+        "extract": null,
+        "rustGitDeps": null
+    },
+    "ligature-el": {
+        "pinned": false,
+        "cargoLock": null,
+        "name": "ligature-el",
+        "version": "9357156a917a021a87b33ee391567a5d8e44794a",
         "passthru": null,
+        "src": {
+            "deepClone": false,
+            "url": "https://github.com/mickeynp/ligature.el",
+            "leaveDotGit": false,
+            "fetchSubmodules": false,
+            "name": null,
+            "type": "git",
+            "sha256": "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=",
+            "rev": "9357156a917a021a87b33ee391567a5d8e44794a"
+        },
         "extract": null,
         "rustGitDeps": null
     }

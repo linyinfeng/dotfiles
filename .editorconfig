@@ -36,3 +36,6 @@ indent_size = unset
 
 [*.org]
 indent_size = unset
+
+[pkgs/_sources/generated.json]
+insert_final_newline = unset
