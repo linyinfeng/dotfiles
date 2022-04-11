@@ -95,15 +95,15 @@ in
     # acme
     {
       security.acme.certs."main" = {
-          dnsProvider = "cloudflare";
-          credentialsFile = config.sops.templates.acme-credentials.path;
-          domain = "nexusbytes.li7g.com";
-          extraDomainNames = [
-            "nexusbytes.ts.li7g.com"
-            "smtp.li7g.com"
-            "smtp.ts.li7g.com"
-          ];
-        };
+        dnsProvider = "cloudflare";
+        credentialsFile = config.sops.templates.acme-credentials.path;
+        domain = "nexusbytes.li7g.com";
+        extraDomainNames = [
+          "nexusbytes.ts.li7g.com"
+          "smtp.li7g.com"
+          "smtp.ts.li7g.com"
+        ];
+      };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}

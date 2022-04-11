@@ -2,7 +2,7 @@
 let
   overrider = final': prev': {
     pycurl = prev'.pycurl.overrideAttrs (old: {
-      disabledTests = (old.disabledTests or []) ++ [
+      disabledTests = (old.disabledTests or [ ]) ++ [
         "test_getinfo_raw_certinfo"
         "test_request_with_certinfo"
         "test_request_with_verifypeer"

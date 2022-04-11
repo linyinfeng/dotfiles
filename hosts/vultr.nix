@@ -71,15 +71,15 @@ in
     # acme
     {
       security.acme.certs."main" = {
-          dnsProvider = "cloudflare";
-          credentialsFile = config.sops.templates.acme-credentials.path;
-          domain = "vultr.li7g.com";
-          extraDomainNames = [
-            "li7g.com"
-            "portal.li7g.com"
-            "tar.li7g.com"
-            "nuc-proxy.li7g.com"
-          ];
+        dnsProvider = "cloudflare";
+        credentialsFile = config.sops.templates.acme-credentials.path;
+        domain = "vultr.li7g.com";
+        extraDomainNames = [
+          "li7g.com"
+          "portal.li7g.com"
+          "tar.li7g.com"
+          "nuc-proxy.li7g.com"
+        ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
