@@ -72,8 +72,14 @@ in
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
-      boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+      boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
       boot.kernelModules = [ "kvm-intel" ];
+      boot.initrd.luks.forceLuksSupportInInitrd = true;
+      boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
+      boot.initrd.preLVMCommands = ''
+        waitDevice /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c
+        ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c -n crypt-mobile
+      '';
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";
@@ -95,10 +101,6 @@ in
       swapDevices = [{
         device = "/swap/swapfile";
       }];
-
-      environment.etc."crypttab".text = ''
-        crypt-mobile /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c - tpm2-device=auto
-      '';
       fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
       fileSystems."/media/data" = btrfsSubvolMobile "@data" { };
     }

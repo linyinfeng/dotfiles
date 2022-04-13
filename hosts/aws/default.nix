@@ -7,10 +7,6 @@
       services.acme
     ]) ++ [
       (modulesPath + "/virtualisation/amazon-image.nix")
-      # TODO nuc down
-      ./backup
-      ../nuc/options.nix
-      ../nuc/vaultwarden
     ];
 
   config = lib.mkMerge [

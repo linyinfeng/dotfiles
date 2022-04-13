@@ -91,7 +91,6 @@ in
             "aarch64-linux"
           ];
           supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
-          maxJobs = 4;
           speedFactor = 1;
         }
       ];
