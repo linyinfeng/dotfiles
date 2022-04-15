@@ -5,6 +5,7 @@ lib.mkMerge [
     networking.networkmanager = {
       enable = true;
       enableStrongSwan = true;
+      logLevel = "INFO";
     };
 
     environment.etc."ipsec.secrets".text = ''
