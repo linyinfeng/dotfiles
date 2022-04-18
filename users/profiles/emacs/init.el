@@ -226,7 +226,7 @@
 (use-package org
   :ensure t
   :custom
-  (org-directory "/var/lib/syncthing/Main/orgs")
+  (org-directory "~/Syncthing/Main/orgs")
   (org-startup-indented t)
   ;; done with time information
   (org-log-done 'time)
@@ -239,7 +239,7 @@
   :custom
   (org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :config
-  (add-to-list 'org-agenda-files "/var/lib/syncthing/Main/orgs/tasks"))
+  (add-to-list 'org-agenda-files "~/Syncthing/Main/orgs/tasks"))
 
 (use-package org-bullets
   :ensure t
@@ -258,18 +258,18 @@
   :init
   (setq org-journal-prefix-key "C-c j ")
   :custom
-  (org-journal-dir "/var/lib/syncthing/Main/orgs/journal")
+  (org-journal-dir "~/Syncthing/Main/orgs/journal")
   (org-journal-file-format "%Y-%m-%d")
   :config
   ;; include journal in agenda
-  (add-to-list 'org-agenda-files "/var/lib/syncthing/Main/orgs/journal"))
+  (add-to-list 'org-agenda-files "~/Syncthing/Main/orgs/journal"))
 
 (use-package org-roam
   :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory (file-truename "/var/lib/syncthing/Main/orgs/notes"))
+  (org-roam-directory (file-truename "~/Syncthing/Main/orgs/notes"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
