@@ -13,10 +13,6 @@ in
   services.dendrite = {
     enable = true;
     httpPort = cfg.ports.matrix.http;
-    # TODO remove after pr#164096
-    # the module only substitue environment variables when `environmentFile != null`
-    # provide an empty environment file to make the module happy
-    environmentFile = builtins.toFile "empty" "";
     settings = {
       global = {
         server_name = "li7g.com";

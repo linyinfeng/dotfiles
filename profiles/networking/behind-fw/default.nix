@@ -9,7 +9,6 @@
     }
     (lib.mkIf (config.networking.hostName != "nuc") {
       settings.substituters = lib.mkOrder 1100 [
-        # TODO nuc down
         # priority of cache.nixos.org and its mirror: 40
         # priority of cachix: 41
         "https://nuc.li7g.com:8443/store?priority=50"
