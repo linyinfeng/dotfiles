@@ -6,6 +6,16 @@ let
   dstAppDir = "${dstRoot}/app";
   dstApp = "343050";
   dstStorageDir = "${dstRoot}/storage";
+  dstTTYCaves = "${dstRoot}/tty-caves";
+  dstTTYMaster = "${dstRoot}/tty-master";
+  dstRunnigIndicator = "${dstRoot}/running";
+  stopScript = pkgs.writeShellScript "dst-stop" ''
+    echo "write c_shutdown(true)"
+    echo "c_shutdown(true)" > "${gameHome}/${dstTTYCaves}"
+    echo "c_shutdown(true)" > "${gameHome}/${dstTTYMaster}"
+    while [ -f "${gameHome}/${dstRunnigIndicator}" ]; do sleep 1; done
+    echo "shutdown done"
+  '';
 in
 {
   home-manager.users.steam = {
@@ -26,6 +36,9 @@ in
       echo "ServerModCollectionSetup(\"2785301768\")" \
         >> "${gameHome}/${dstAppDir}/mods/dedicated_server_mods_setup.lua"
 
+      # create running indicator
+      touch "${gameHome}/${dstRunnigIndicator}"
+
       # start server
       cd "${gameHome}/${dstAppDir}/bin64"
       run_shared=(steam-run)
@@ -34,13 +47,21 @@ in
       run_shared+=(-conf_dir config)
       run_shared+=(-cluster "Main")
       run_shared+=(-monitor_parent_process $$)
-      "''${run_shared[@]}" -shard Caves  | sed 's/^/Caves:  /' &
-      "''${run_shared[@]}" -shard Master | sed 's/^/Master: /'
+      socat pty,link="${gameHome}/${dstTTYCaves}",raw STDOUT | \
+      "''${run_shared[@]}" -shard Caves  -console | sed --unbuffered 's/^/Caves:  /' &
+      socat pty,link="${gameHome}/${dstTTYMaster}",raw STDOUT | \
+      "''${run_shared[@]}" -shard Master -console | sed --unbuffered 's/^/Master: /' &
+
+      wait
+
+      # delete running indicator
+      rm "${gameHome}/${dstRunnigIndicator}"
     '';
-    path = with pkgs; [ steamcmd steam-run ];
+    path = with pkgs; [ steamcmd steam-run socat ];
     serviceConfig = {
       User = "steam";
       Group = "steam";
+      ExecStop = stopScript;
     };
     wantedBy = [ "multi-user.target" ];
   };
