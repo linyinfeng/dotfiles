@@ -63,7 +63,8 @@
       nix.inputs.nixpkgs.follows = "nixos";
 
       hydra.url = "github:nixos/hydra";
-      hydra.inputs.nix.follows = "nix";
+      # use hydra's bundled nix
+      # hydra.inputs.nix.follows = "nix";
       hydra.inputs.nixpkgs.follows = "nixos";
       hydra.inputs.newNixpkgs.follows = "nixos";
 
