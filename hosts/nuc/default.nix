@@ -237,14 +237,6 @@ in
               '';
             };
           };
-          "cache.li7g.com" = {
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
-              extraConfig = ''
-                proxy_max_temp_file_size 0;
-              '';
-            };
-          };
         };
       };
       services.nix-serve = {
