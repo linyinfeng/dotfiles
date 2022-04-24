@@ -27,7 +27,6 @@ lib.mkIf config.home.graphical {
     picard
     tdesktop
     teamspeak_client
-    tigervnc
     transmission-remote-gtk
     virt-manager
     vlc
