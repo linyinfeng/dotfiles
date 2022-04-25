@@ -3,7 +3,7 @@ let
   emacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = emacsConfig;
-    package = pkgs.emacsPgtkGcc;
+    package = pkgs.emacsPgtkNativeComp;
     alwaysEnsure = true;
     override = epkgs: epkgs // {
       webkit = pkgs.callPackage inputs.emacs-webkit {
