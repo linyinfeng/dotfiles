@@ -1,11 +1,14 @@
 { config, lib, ... }:
 
+let
+  cacheMachine = "nuc";
+in
 {
   system.autoUpgrade = {
     enable = true;
     flake = "github:linyinfeng/dotfiles/tested";
     allowReboot = true;
-    dates = "04:00";
+    dates = if config.networking.hostName == cacheMachine then "05:00" else "04:00";
     randomizedDelaySec = "30min";
     flags = [ "--refresh" ];
   };
