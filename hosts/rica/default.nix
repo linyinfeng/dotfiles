@@ -11,6 +11,9 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
+
+  minioPort = 9000;
+  minioConsolePort = 9001;
 in
 {
   imports =
@@ -96,6 +99,9 @@ in
         domain = "rica.li7g.com";
         extraDomainNames = [
           "rica.ts.li7g.com"
+          "minio.li7g.com"
+          "minio-console.li7g.com"
+          "cache.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
@@ -107,6 +113,37 @@ in
     # postgresql
     {
       services.postgresql.enable = true;
+    }
+
+    # minio
+    {
+      services.minio = {
+        enable = true;
+        listenAddress = "127.0.0.1:${toString minioPort}";
+        consoleAddress = "127.0.0.1:${toString minioConsolePort}";
+        rootCredentialsFile = config.sops.secrets."minio/root".path;
+      };
+      sops.secrets."minio/root".sopsFile = config.sops.secretsDir + /rica.yaml;
+      services.nginx.virtualHosts."minio.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        serverAliases = [
+          "cache.li7g.com"
+        ];
+        locations."/" = {
+          proxyPass = "http://localhost:${toString minioPort}";
+        };
+        extraConfig = ''
+          client_max_body_size 4G;
+        '';
+      };
+      services.nginx.virtualHosts."minio-console.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
+          proxyPass = "http://localhost:${toString minioConsolePort}";
+        };
+      };
     }
 
     (lib.mkIf (!config.system.is-vm) {

@@ -34,6 +34,7 @@ in
       services.teamspeak
       services.godns
       services.acme
+      programs.telegram-send
     ]) ++
     (with profiles.users; [
       yinfeng

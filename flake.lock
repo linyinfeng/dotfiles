@@ -462,6 +462,30 @@
         "type": "indirect"
       }
     },
+    "nix-gc-s3": {
+      "inputs": {
+        "flake-utils-plus": [
+          "digga",
+          "flake-utils-plus"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1650462466,
+        "narHash": "sha256-VQvS8Aph3+g1yX66t7DI8Z5qi1/MtzyoaH9wBWIT8kE=",
+        "owner": "linyinfeng",
+        "repo": "nix-gc-s3",
+        "rev": "043d3081ed0397eeb0324158ab73af0f69b93f60",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "nix-gc-s3",
+        "type": "github"
+      }
+    },
     "nix_2": {
       "inputs": {
         "lowdown-src": "lowdown-src_2",
@@ -725,6 +749,7 @@
         "linyinfeng": "linyinfeng",
         "nickpkgs": "nickpkgs",
         "nix": "nix_2",
+        "nix-gc-s3": "nix-gc-s3",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",

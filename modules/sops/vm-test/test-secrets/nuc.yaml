@@ -16,6 +16,9 @@ aws:
     accessKey: ""
 restic:
     password: ""
+cache:
+    keyId: ""
+    accessKey: ""
 sops:
     kms: []
     gcp_kms: []
@@ -31,8 +34,8 @@ sops:
             L3Ntc3RTT3hDL3l6ZE4ycDErZFhJaEEK5IHBhVhHPeiDC2Jl+cxtgduz37VsM0Kv
             rurGhZ45rwwmJuo0Vs7hCZAnZ7q0nX+d2jUyBIbI8zg39nIYq1gAKA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-24T08:03:09Z"
-    mac: ENC[AES256_GCM,data:bFcTi6AW5xxC05ucbWDHsFXNC4vekH09EHl419osKN4dCmXmsMImOIbgNFc/lFInrWBgwjtpDDjLDwP2hkQTEnsxygI+XDttiqg5aeTHrPOOvChbuyIeiubT3ZoI928HGyjlWr1kQypXiVAafYpmlGLNVXnFJi8JAmj6Ifr6rF8=,iv:QlhYJNLNOeD8vdQlJ4CgIVpwzhCAkes9qJcCMHWV99k=,tag:6oBGk9GAzpkdusVr0u+02A==,type:str]
+    lastmodified: "2022-04-28T10:54:16Z"
+    mac: ENC[AES256_GCM,data:+9Tl/H3HNqJLY9l6cPfH4qxBVKEbZyYSWHSWAX9x5iywnFL7AabWvph5dIjazrRSLJlq2c3bPmddETQ84vIh6orPeoptQqdViBOKM4n2kW+hd13mlPbRcjJmKLF5stBzfqUCxKIS7H0pKwc1Nzx2RZzZ4dXZ9AkEo6GvU/zMcwE=,iv:qalNYuyYYinvZ4FZDJt1IT820//0gtuUHLis/VEI3oo=,tag:GJHoYbwat3AXf9ViTubCNA==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:49Z"
           enc: |

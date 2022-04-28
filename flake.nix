@@ -53,6 +53,9 @@
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
+      nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
+      nix-gc-s3.inputs.nixpkgs.follows = "nixos";
+      nix-gc-s3.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
@@ -122,6 +125,7 @@
                       selected = final'.master;
                     });
                   hydra-master = inputs.hydra.defaultPackage.${system};
+                  nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                 })
             ];
           };

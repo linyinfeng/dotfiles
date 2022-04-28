@@ -17,6 +17,7 @@
     ffmpeg
     github-cli
     imagemagick
+    minio-client
     p7zip
     speedread
     trash-cli
@@ -27,6 +28,7 @@
   ];
 
   home.global-persistence.directories = [
-    ".config/gh"
+    ".config/gh" # github-cli
+    ".mc" # minio-client
   ];
 }

@@ -6,6 +6,17 @@
       cd "$STATE_DIRECTORY"
       commit="$1"
 
+      # push cache to cache.li7g.com
+      export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
+      export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      hydra_gcroot="/nix/var/nix/gcroots/hydra"
+      for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
+        echo "push cache for hydra gcroot: $hydra_gcroot"
+        proxychains4 nix copy --to "s3://cache?endpoint=minio.li7g.com" "/nix/store/$item" --verbose
+      done
+      echo "gc with hydra gcroots"
+      nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "$hydra_gcroot"
+
       # push cache to cachix
       export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
       export HOME="$STATE_DIRECTORY"
@@ -30,6 +41,10 @@
       git fetch
       git merge --ff-only "$commit"
       git push --set-upstream origin tested
+
+      ${config.programs.telegram-send.withConfig} --stdin <<EOF
+        dotfiles/tested -> $(git rev-parse HEAD)
+      EOF
     '';
     scriptArgs = "%I";
     path = with pkgs; [
@@ -37,21 +52,33 @@
       cachix
       jq
       config.nix.package
+      nix-gc-s3
+      proxychains
     ];
     serviceConfig = {
       DynamicUser = true;
       Group = "hydra";
       StateDirectory = "dotfiles-channel-update";
+      Restart = "on-failure";
       LoadCredential = [
         "github-token:${config.sops.secrets."nano/github-token".path}"
         "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
+        "cache-key-id:${config.sops.secrets."cache/keyId".path}"
+        "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
       ];
     };
-    environment = lib.mkIf (config.networking.fw-proxy.enable)
-      config.networking.fw-proxy.environment;
+    environment = lib.mkMerge [
+      {
+        HOME = "/var/lib/dotfiles-channel-update";
+      }
+      (lib.mkIf (config.networking.fw-proxy.enable)
+        config.networking.fw-proxy.environment)
+    ];
   };
   sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
