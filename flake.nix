@@ -214,6 +214,10 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
+            rica = {
+              system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
             tencent = {
               system = "x86_64-linux";
               tests = import ./lib/tests;
@@ -348,6 +352,7 @@
           {
             vultr.hostname = "vultr.ts.li7g.com";
             nexusbytes.hostname = "nexusbytes.ts.li7g.com";
+            rica.hostname = "rica.ts.li7g.com";
             tencent.hostname = "tencent.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";
             nuc.hostname = "nuc.ts.li7g.com";
