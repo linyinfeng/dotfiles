@@ -11,7 +11,7 @@
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
       hydra_gcroot="/nix/var/nix/gcroots/hydra"
       for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
-        echo "push cache for hydra gcroot: $hydra_gcroot"
+        echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
         proxychains4 nix copy --to "s3://cache?endpoint=minio.li7g.com" "/nix/store/$item" --verbose
       done
       echo "gc with hydra gcroots"
@@ -21,7 +21,7 @@
       export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
       export HOME="$STATE_DIRECTORY"
       for host in vultr nexusbytes aws; do
-        echo "push cache for host: $host"
+        echo "push cache to cachix for host: $host"
         nix build "github:linyinfeng/dotfiles/$commit#nixosConfigurations.$host.config.system.build.toplevel" --json | \
           jq ".[].outputs.out" --raw-output | \
           cachix push linyinfeng
@@ -42,8 +42,8 @@
       git merge --ff-only "$commit"
       git push --set-upstream origin tested
 
-      ${config.programs.telegram-send.withConfig} --stdin <<EOF
-        dotfiles/tested -> $(git rev-parse HEAD)
+      ${config.programs.telegram-send.withConfig} --format markdown --stdin <<EOF
+      *dotfiles/tested* → \`$(git rev-parse HEAD)\`
       EOF
     '';
     scriptArgs = "%I";
@@ -58,6 +58,9 @@
     serviceConfig = {
       DynamicUser = true;
       Group = "hydra";
+      SupplementaryGroups = [
+        config.users.groups.telegram-send.name
+      ];
       StateDirectory = "dotfiles-channel-update";
       Restart = "on-failure";
       LoadCredential = [
@@ -79,6 +82,8 @@
   sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
+
+  services.notify-failure.services = [ "dotfiles-channel-update@" ];
 
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
