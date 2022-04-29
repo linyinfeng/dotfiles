@@ -22,7 +22,9 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-    ]);
+    ]) ++ [
+      ./maddy
+    ];
 
   config = lib.mkMerge [
     {
@@ -102,12 +104,29 @@ in
           "minio.li7g.com"
           "minio-console.li7g.com"
           "cache.li7g.com"
+          "smtp.li7g.com"
+          "smtp.ts.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''
         CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
       '';
+    }
+
+    # commit-notifier
+    {
+      services.commit-notifier = {
+        enable = true;
+        cron = "0 */5 * * * *";
+        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
+      };
+      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
+      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /rica.yaml;
+
+      services.notify-failure.services = [
+        "commit-notifier"
+      ];
     }
 
     # postgresql

@@ -110,21 +110,6 @@ in
       '';
     }
 
-    # commit-notifier
-    {
-      services.commit-notifier = {
-        enable = true;
-        cron = "0 */5 * * * *";
-        tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
-      };
-      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
-      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /nexusbytes.yaml;
-
-      services.notify-failure.services = [
-        "commit-notifier"
-      ];
-    }
-
     # postgresql
     {
       services.postgresql.enable = true;
