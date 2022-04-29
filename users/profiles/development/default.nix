@@ -5,6 +5,7 @@
     ".rustup"
     ".cargo"
     ".cabal"
+    ".wrangler"
 
     "Source"
     "Local"
