@@ -21,7 +21,6 @@ in
       services.notify-failure
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
-      ./maddy
     ];
 
   config = lib.mkMerge [
