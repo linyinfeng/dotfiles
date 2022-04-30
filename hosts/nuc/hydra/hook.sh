@@ -36,5 +36,6 @@ if [ "$event" = "$expected" ]; then
     ")
     commit=$(echo "$flake_url" | grep -E -o '\w{40}$')
     echo "channel update: $commit"
-    "$systemctl" start dotfiles-channel-update@"$commit"
+    "$systemctl" stop  "dotfiles-channel-update@*"
+    "$systemctl" start "dotfiles-channel-update@$commit"
 fi
