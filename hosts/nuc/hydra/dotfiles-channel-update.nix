@@ -12,7 +12,7 @@
       hydra_gcroot="/nix/var/nix/gcroots/hydra"
       for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
         echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
-        proxychains4 nix copy --to "s3://cache?endpoint=minio.li7g.com" "/nix/store/$item" --verbose
+        proxychains4 nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "/nix/store/$item" --verbose
       done
       echo "gc with hydra gcroots"
       nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "$hydra_gcroot"
