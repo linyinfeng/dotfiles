@@ -14,8 +14,6 @@
         echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
         proxychains4 nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "/nix/store/$item" --verbose
       done
-      echo "gc with hydra gcroots"
-      nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "$hydra_gcroot"
 
       # push cache to cachix
       export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
@@ -52,7 +50,6 @@
       cachix
       jq
       config.nix.package
-      nix-gc-s3
       proxychains
     ];
     serviceConfig = {

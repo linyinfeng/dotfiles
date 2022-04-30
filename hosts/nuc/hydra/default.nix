@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./dotfiles-channel-update.nix
+    ./gc.nix
   ];
 
   config = lib.mkMerge [
