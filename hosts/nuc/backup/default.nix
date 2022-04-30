@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   preBackupCalendar = "01:00:00";
@@ -14,9 +14,9 @@ in
     startAt = preBackupCalendar;
   };
 
-  services.restic.backups.s3 = {
+  services.restic.backups.b2 = {
     initialize = true;
-    repository = "s3:https://s3.amazonaws.com/yinfeng-backup-nuc";
+    repository = "b2:yinfeng-backup";
     paths = [
       localBackupRoot
       # vaultwarden
@@ -26,10 +26,7 @@ in
       # dendrite
       "/var/lib/private/dendrite/media_store"
     ];
-    extraOptions = [
-      "s3.storage-class=STANDARD_IA"
-    ];
-    environmentFile = config.sops.templates."restic-s3-env".path;
+    environmentFile = config.sops.templates."restic-b2-env".path;
     passwordFile = config.sops.secrets."restic/password".path;
     pruneOpts = [
       "--keep-daily 7"
@@ -37,11 +34,14 @@ in
     ];
     timerConfig = { OnCalendar = backupOnCalendar; };
   };
-  sops.templates."restic-s3-env".content = ''
-    AWS_ACCESS_KEY_ID="${config.sops.placeholder."aws/keyId"}"
-    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."aws/accessKey"}"
+  systemd.services."restic-backups-b2".environment =
+    lib.mkIf (config.networking.fw-proxy.enable)
+      config.networking.fw-proxy.environment;
+  sops.templates."restic-b2-env".content = ''
+    B2_ACCOUNT_ID="${config.sops.placeholder."backup/keyId"}"
+    B2_ACCOUNT_KEY="${config.sops.placeholder."backup/accessKey"}"
   '';
   sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."aws/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."aws/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."backup/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."backup/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
 }
