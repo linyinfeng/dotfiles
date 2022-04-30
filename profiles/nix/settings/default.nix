@@ -15,5 +15,12 @@
     settings.keep-outputs = true;
     settings.keep-derivations = true;
     settings.fallback = true;
+
+    settings.substituters = [
+      "https://cache.li7g.com"
+    ];
+    settings.trusted-public-keys = [
+      "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
+    ];
   };
 }

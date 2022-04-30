@@ -11,10 +11,8 @@
       settings.substituters = lib.mkOrder 1100 [
         # priority of cache.nixos.org and its mirror: 40
         # priority of cachix: 41
-        "https://nuc.li7g.com:8443/store?priority=50"
-      ];
-      settings.trusted-public-keys = [
-        "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
+        # priority of cache.li7g.com: 50
+        "https://nuc.li7g.com:8443/store?priority=49"
       ];
     })
   ];
