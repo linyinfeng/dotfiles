@@ -10,6 +10,7 @@
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
       hydra_gcroot="/nix/var/nix/gcroots/hydra"
+      rm -rf "$HOME/.cache"
       for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
         echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
         proxychains4 nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "/nix/store/$item" --verbose
