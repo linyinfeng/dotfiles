@@ -52,8 +52,9 @@
       util-linux
     ];
     serviceConfig = {
-      DynamicUser = true;
+      User = "hydra";
       Group = "hydra";
+      Type = "oneshot";
       SupplementaryGroups = [
         config.users.groups.telegram-send.name
       ];
