@@ -1,19 +1,26 @@
 { config, pkgs, lib, ... }:
 
+let
+  hydraRootsDir = config.services.hydra.gcRootsDir;
+in
 {
   systemd.services."copy-cache-li7g-com" = {
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
-      hydra_gcroot="/nix/var/nix/gcroots/hydra"
-      for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
-        echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
+
+      roots=($(fd "^.*-all-checks$" "${hydraRootsDir}" --exec echo "/nix/store/{/}"))
+
+      nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
+      for root in "''${roots[@]}"; do
+        echo "push cache to cahche.li7g.com for hydra gcroot: $root"
         proxychains4 -q \
-          nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "/nix/store/$item" --verbose
+          nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
       done
     '';
     path = with pkgs; [
       config.nix.package
+      fd
       proxychains
     ];
     serviceConfig = {
@@ -25,6 +32,7 @@
       LoadCredential = [
         "cache-key-id:${config.sops.secrets."cache/keyId".path}"
         "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
+        "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
     };
     environment = lib.mkMerge [
@@ -40,8 +48,7 @@
       rm -rf /var/lib/copy-cache-li7g-com/.cache
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
-      hydra_gcroot="/nix/var/nix/gcroots/hydra"
-      nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "$hydra_gcroot"
+      nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "${hydraRootsDir}"
     '';
     path = with pkgs; [
       nix-gc-s3
@@ -65,4 +72,5 @@
 
   sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
 }
