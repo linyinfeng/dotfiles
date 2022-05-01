@@ -81,7 +81,7 @@ in
       systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
       sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
-      nix.settings.allowed-users = [ "@hydra" ];
+      nix.settings.trusted-users = [ "@hydra" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [
         {
