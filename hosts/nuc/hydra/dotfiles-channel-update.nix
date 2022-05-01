@@ -6,17 +6,6 @@
       cd "$STATE_DIRECTORY"
       commit="$1"
 
-      # push cache to cache.li7g.com
-      export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
-      export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
-      hydra_gcroot="/nix/var/nix/gcroots/hydra"
-      rm -rf "$HOME/.cache"
-      for item in $(ls "$hydra_gcroot" | grep "all-checks\$"); do
-        echo "push cache to cahche.li7g.com for hydra gcroot: $hydra_gcroot/$item"
-        proxychains4 -q \
-          nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "/nix/store/$item" --verbose
-      done
-
       # push cache to cachix
       export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
       export HOME="$STATE_DIRECTORY"
@@ -52,7 +41,6 @@
       cachix
       jq
       config.nix.package
-      proxychains
     ];
     serviceConfig = {
       DynamicUser = true;
@@ -65,22 +53,15 @@
       LoadCredential = [
         "github-token:${config.sops.secrets."nano/github-token".path}"
         "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
-        "cache-key-id:${config.sops.secrets."cache/keyId".path}"
-        "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
       ];
     };
-    environment = lib.mkMerge [
-      {
-        HOME = "/var/lib/dotfiles-channel-update";
-      }
-      (lib.mkIf (config.networking.fw-proxy.enable)
-        config.networking.fw-proxy.environment)
-    ];
+    environment = (lib.mkIf (config.networking.fw-proxy.enable)
+        config.networking.fw-proxy.environment);
+    requires = [ "copy-cache-li7g-com.service" ];
+    after = [ "copy-cache-li7g-com.service" ];
   };
   sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   services.notify-failure.services = [ "dotfiles-channel-update@" ];
 

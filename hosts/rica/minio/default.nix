@@ -44,19 +44,27 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/".extraConfig = ''
-      if ($request_method !~ ^GET|HEAD$) {
-        set $pass_with_host $host;
-        set $pass_with_auth $http_authorization;
-
-        proxy_pass ${minioAddress};
-      }
+      set $to_cache_nixos_org 0;
       if ($request_method ~ ^GET|HEAD$) {
+        set $to_cache_nixos_org 1;
+      }
+      if ($uri ~ ^.*\.narinfo$) {
+        set $to_cache_nixos_org 1$to_cache_nixos_org;
+      }
+
+      if ($to_cache_nixos_org = 11) {
         set $pass_with_host cache.nixos.org;
         set $pass_with_auth "";
 
         rewrite /cache/(.*) /$1 break;
         error_page 404 = @minioFallback;
         proxy_pass  https://cache.nixos.org;
+      }
+      if ($to_cache_nixos_org != 11) {
+        set $pass_with_host $host;
+        set $pass_with_auth $http_authorization;
+
+        proxy_pass ${minioAddress};
       }
 
       proxy_intercept_errors on;
