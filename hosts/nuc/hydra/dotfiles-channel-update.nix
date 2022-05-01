@@ -37,8 +37,8 @@
         git push --set-upstream origin tested
 
         ${config.programs.telegram-send.withConfig} --format markdown --stdin <<EOF
-        *dotfiles/tested* → \`$(git rev-parse HEAD)\`
-        EOF
+      *dotfiles/tested* → \`$(git rev-parse HEAD)\`
+      EOF
       ) 200>/var/lib/dotfiles-channel-update/lock
     '';
     scriptArgs = "%I";
