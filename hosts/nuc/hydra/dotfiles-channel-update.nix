@@ -11,6 +11,8 @@
         flock 200
         echo "enter critical section"
 
+        systemctl start copy-cache-li7g-com.service
+
         # push cache to cachix
         export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
         export HOME="$STATE_DIRECTORY"
@@ -64,8 +66,6 @@
     };
     environment = (lib.mkIf (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment);
-    requires = [ "copy-cache-li7g-com.service" ];
-    after = [ "copy-cache-li7g-com.service" ];
   };
   sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
@@ -75,7 +75,7 @@
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&
-          RegExp('dotfiles-channel-update@[A-Za-z0-9_-]+.service').test(action.lookup("unit")) === true &&
+          RegExp('dotfiles-channel-update@[A-Za-z0-9_-]+\.service|copy-cache-li7g-com\.service').test(action.lookup("unit")) === true &&
           subject.isInGroup("hydra")) {
         return polkit.Result.YES;
       }
