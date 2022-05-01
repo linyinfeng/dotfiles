@@ -14,7 +14,7 @@ in
         flock 200
         echo "enter critical section"
 
-        roots=($(fd "^.*-all-checks$" "${hydraRootsDir}" --exec echo "/nix/store/{/}"))
+        roots=($(fd "^.*-all-checks(.drv)?$" "${hydraRootsDir}" --exec echo "/nix/store/{/}"))
         nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
