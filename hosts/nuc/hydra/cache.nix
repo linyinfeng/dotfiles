@@ -15,11 +15,12 @@ in
         echo "enter critical section"
 
         roots=($(fd "^.*-all-checks$" "${hydraRootsDir}" --exec echo "/nix/store/{/}"))
-        nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
+        nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key" --verbose
+        nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key" --verbose --derivation
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
-          proxychains4 -q \
-            nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
+          proxychains4 -q nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
+          proxychains4 -q nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose --derivation
         done
       ) 200>/var/lib/cache-li7g-com/lock
     '';
