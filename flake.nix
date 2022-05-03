@@ -122,7 +122,7 @@
                   nixVersions = prev.nixVersions.extend
                     (final': prev': {
                       master = inputs.nix.packages.${system}.nix;
-                      selected = final'.master;
+                      selected = final'.unstable;
                     });
                   hydra-master = inputs.hydra.defaultPackage.${system};
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
