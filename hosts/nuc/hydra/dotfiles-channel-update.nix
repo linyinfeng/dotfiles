@@ -38,8 +38,10 @@
         git merge --ff-only "$commit"
         git push --set-upstream origin tested
 
-        ${config.programs.telegram-send.withConfig} --format markdown --stdin <<EOF
-      *dotfiles/tested* → \`$(git rev-parse HEAD)\`
+        ${config.programs.telegram-send.withConfig} --stdin <<EOF
+      dotfiles/tested
+
+      $(git show HEAD --no-patch)
       EOF
       ) 200>/var/lib/dotfiles-channel-update/lock
     '';
