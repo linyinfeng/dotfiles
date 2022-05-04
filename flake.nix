@@ -251,6 +251,7 @@
                 ]);
 
               network = with profiles; [
+                networking.resolved
                 networking.tailscale
                 networking.zerotier
                 networking.tools

@@ -1,12 +1,7 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
-  assertions = [
-    {
-      assertion = !config.services.avahi.enable;
-      message = "resolved conflicts with avahi";
-    }
-  ];
+  services.avahi.enable = lib.mkForce false;
   services.resolved = {
     enable = true;
     dnssec = "allow-downgrade";
@@ -23,4 +18,7 @@
       "2606:4700:4700::1001"
     ];
   };
+  networking.firewall.allowedUDPPorts = [
+    5353
+  ];
 }

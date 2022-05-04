@@ -6,6 +6,9 @@ lib.mkMerge [
       enable = true;
       enableStrongSwan = true;
       logLevel = "INFO";
+      connectionConfig = {
+        "connection.mdns" = 2;
+      };
     };
 
     environment.etc."ipsec.secrets".text = ''
