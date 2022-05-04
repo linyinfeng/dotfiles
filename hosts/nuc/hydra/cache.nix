@@ -60,7 +60,7 @@ in
         echo "enter critical section"
 
         rm -rf /var/lib/cache-li7g-com/.cache
-        nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "${hydraRootsDir}"
+        nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "${hydraRootsDir}" --jobs 10
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     path = with pkgs; [
