@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   stateDir = "/var/lib/zerotier-one";
@@ -35,6 +35,8 @@ in
       config.services.zerotierone.package
     ];
     serviceConfig = {
+      # delay before start
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
       Type = "oneshot";
       RemainAfterExit = true;
     };

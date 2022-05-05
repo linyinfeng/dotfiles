@@ -135,22 +135,22 @@ in
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;
-      environment.etc."systemd/network/50-enX0.network" = {
-        source = config.sops.templates."enX0".path;
-        user = "systemd-network";
-        mode = "400";
-      };
+      environment.etc."systemd/network/50-enX0.network".source =
+        config.sops.templates."enX0".path;
       sops.secrets."network/address".sopsFile = config.sops.secretsDir + /rica.yaml;
       sops.secrets."network/gateway".sopsFile = config.sops.secretsDir + /rica.yaml;
-      sops.templates."enX0".content = ''
-        [Match]
-        Name=enX0
+      sops.templates."enX0" = {
+        content = ''
+          [Match]
+          Name=enX0
 
-        [Network]
-        Address=${config.sops.placeholder."network/address"}
-        Gateway=${config.sops.placeholder."network/gateway"}
-        DNS=8.8.8.8 8.8.4.4
-      '';
+          [Network]
+          Address=${config.sops.placeholder."network/address"}
+          Gateway=${config.sops.placeholder."network/gateway"}
+          DNS=8.8.8.8 8.8.4.4
+        '';
+        owner = "systemd-network";
+      };
     })
   ];
 }
