@@ -29,6 +29,7 @@ let
     endpoint = "home.li7g.com:13231";
     publicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
     persistentKeepalive = 30;
+    dynamicEndpointRefreshSeconds = 60;
   };
 in
 {

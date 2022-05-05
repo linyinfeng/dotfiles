@@ -151,6 +151,12 @@
   :hook ((org-mode . flyspell-mode)
          (TeX-mode . flyspell-mode)))
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package idris-mode
+  :ensure t)
+
 (use-package json-mode
   :ensure t)
 
@@ -184,9 +190,6 @@
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
-
-(use-package idris-mode
-  :ensure t)
 
 (use-package lsp-ui
   :ensure t)
