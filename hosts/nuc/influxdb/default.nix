@@ -43,4 +43,7 @@ in
   environment.systemPackages = with pkgs; [
     influxdb2
   ];
+  networking.firewall.allowedTCPPorts = [
+    cfg.ports.influxdb
+  ];
 }

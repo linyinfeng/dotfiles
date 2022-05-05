@@ -16,7 +16,7 @@ in
       hostname = "smtp.li7g.com";
       primaryDomain = "li7g.com";
       localDomains = [ "$(primary_domain)" ];
-      openFirewall = false; # only allow accesses from trusted network
+      openFirewall = false;
       config = ''
         # Local storage & authentication
 
@@ -130,7 +130,6 @@ in
 
     # accounts
     services.maddy-init.accounts = [ "hydra@li7g.com" ];
-
     sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     systemd.services.maddy-init = {
       after = [ "maddy.service" ];
@@ -163,5 +162,9 @@ in
         }
       '';
     };
+
+    networking.firewall.allowedTCPPorts = [
+      465
+    ];
   };
 }

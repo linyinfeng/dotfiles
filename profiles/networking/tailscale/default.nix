@@ -31,7 +31,4 @@ in
   networking.firewall.allowedUDPPorts = [
     config.services.tailscale.port
   ];
-  networking.firewall.trustedInterfaces = [
-    interfaceName
-  ];
 }

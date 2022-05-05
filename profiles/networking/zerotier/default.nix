@@ -53,7 +53,4 @@ in
   networking.firewall.allowedTCPPorts = [
     config.services.zerotierone.port
   ];
-  networking.firewall.trustedInterfaces = [
-    interfaceName
-  ];
 }
