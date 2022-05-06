@@ -8,6 +8,6 @@
     axel
     dnsutils
     iperf
-    nmap-graphical
+    nmap
   ];
 }
