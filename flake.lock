@@ -707,6 +707,30 @@
         "type": "github"
       }
     },
+    "pastebin": {
+      "inputs": {
+        "flake-utils-plus": [
+          "digga",
+          "flake-utils-plus"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1652016089,
+        "narHash": "sha256-yAJNzMuwQ0QVhaSkHMkP5mx6TNEHELTqItte32cEiis=",
+        "owner": "linyinfeng",
+        "repo": "pastebin",
+        "rev": "4b95c6ee35f3ad0169fb455d461f4a132ffcff47",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "pastebin",
+        "type": "github"
+      }
+    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": [
@@ -756,6 +780,7 @@
         "nixos-hardware": "nixos-hardware",
         "nur": "nur",
         "nvfetcher": "nvfetcher",
+        "pastebin": "pastebin",
         "sops-nix": "sops-nix"
       }
     },

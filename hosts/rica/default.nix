@@ -105,6 +105,7 @@ in
           "cache.li7g.com"
           "smtp.li7g.com"
           "smtp.ts.li7g.com"
+          "pb.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
@@ -132,6 +133,40 @@ in
     {
       services.postgresql.enable = true;
     }
+
+    # pastebin
+    (let
+      pastebinPort = 3000;
+    in {
+      services.nginx.virtualHosts."pg.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/".proxyPass = "http://localhost:${toString pastebinPort}";
+      };
+      systemd.services.pastebin = {
+        script = ''
+          export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
+          export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
+          ${pkgs.pastebin}/bin/pastebin \
+            --endpoint minio.li7g.com \
+            --bucket pastebin \
+            --port "${toString pastebinPort}"
+        '';
+        serviceConfig = {
+          DynamicUser = true;
+          LoadCredential = [
+            "key-id:${config.sops.secrets."pastebin/keyId".path}"
+            "access-key:${config.sops.secrets."pastebin/accessKey".path}"
+          ];
+        };
+      };
+      sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
+
+      services.notify-failure.services = [
+        "pastebin"
+      ];
+    })
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;

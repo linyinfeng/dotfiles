@@ -56,6 +56,9 @@
       nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
       nix-gc-s3.inputs.nixpkgs.follows = "nixos";
       nix-gc-s3.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
+      pastebin.url = "github:linyinfeng/pastebin";
+      pastebin.inputs.nixpkgs.follows = "nixos";
+      pastebin.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       nixos-cn.url = "github:nixos-cn/flakes";
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
@@ -126,6 +129,7 @@
                     });
                   hydra-master = inputs.hydra.defaultPackage.${system};
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
+                  pastebin = inputs.pastebin.packages.${system}.default;
                 })
             ];
           };
