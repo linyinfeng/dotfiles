@@ -11,8 +11,8 @@ in
     script = ''
       set +e
       function test_and_login {
-        echo -n "curl 'http://captive.apple.com': "
-        "${curl}" http://captive.apple.com --silent --show-error | grep Success > /dev/null
+        echo -n "curl --ipv4 'http://captive.apple.com': "
+        "${curl}" --ipv4 http://captive.apple.com --silent --show-error | grep Success > /dev/null
         if [ $? -eq 0 ]; then
           # do nothing
           echo "already logged in"
