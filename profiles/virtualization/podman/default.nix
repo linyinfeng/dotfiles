@@ -8,6 +8,7 @@ lib.mkMerge [
     virtualisation.podman = {
       enable = true;
       dockerCompat = true;
+      defaultNetwork.dnsname.enable = true;
     };
     virtualisation.oci-containers.backend = "podman";
     systemd.services.podman-auto-update = {
