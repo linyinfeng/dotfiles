@@ -65,6 +65,12 @@ in
         }];
     }
 
+    # disable auto reboot
+    {
+      system.autoUpgrade.enable = lib.mkForce false;
+      services.scheduled-reboot.enable = lib.mkForce false;
+    }
+
     # acme
     {
       security.acme.certs."main" = {
