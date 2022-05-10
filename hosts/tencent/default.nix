@@ -19,6 +19,9 @@ in
       networking.behind-fw
       networking.wireguard-home
       services.acme
+    ]) ++
+    (with profiles.users; [
+      nianyi
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
