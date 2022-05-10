@@ -65,10 +65,13 @@ in
         }];
     }
 
-    # disable auto reboot
+    # environment for nianyi
     {
       system.autoUpgrade.enable = lib.mkForce false;
       services.scheduled-reboot.enable = lib.mkForce false;
+      virtualisation.podman.enable = true;
+      users.users.nianyi.extraGroups = [ "wheel" ];
+      security.sudo.wheelNeedsPassword = false;
     }
 
     # acme

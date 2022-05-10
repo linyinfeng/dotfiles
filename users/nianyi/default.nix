@@ -36,6 +36,8 @@ in
 
     home.packages = with pkgs; [
       tmux
+      vim
+      emacs
       go-shadowsocks2
     ];
 
