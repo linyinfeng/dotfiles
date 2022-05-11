@@ -8,6 +8,7 @@
 
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
+      digga.inputs.nixpkgs-unstable.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
       digga.inputs.latest.follows = "latest";
       digga.inputs.home-manager.follows = "home";
@@ -63,6 +64,8 @@
       nixos-cn.inputs.nixpkgs.follows = "nixos";
       nixos-cn.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       emacs-overlay.url = "github:nix-community/emacs-overlay";
+      emacs-overlay.inputs.nixpkgs.follows = "nixos";
+      emacs-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       emacs-webkit.url = "github:akirakyle/emacs-webkit";
       emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
@@ -91,7 +94,14 @@
     , nvfetcher
     , deploy
     , ...
-    } @ inputs:
+    } @ inputs':
+    let
+      inputs = inputs' // {
+        emacs-overlay = inputs'.emacs-overlay // {
+          overlay = self.lib.overlayNullProtector inputs'.emacs-overlay.overlay;
+        };
+      };
+    in
     digga.lib.mkFlake
       {
         inherit self inputs;

@@ -1,2 +1,4 @@
 { lib }:
-lib.makeExtensible (self: { })
+lib.makeExtensible (self: {
+  overlayNullProtector = import ./overlay-null-protector.nix;
+})

@@ -31,4 +31,5 @@ in
   networking.firewall.allowedUDPPorts = [
     config.services.tailscale.port
   ];
+  networking.firewall.checkReversePath = lib.mkForce "loose";
 }

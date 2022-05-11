@@ -46,6 +46,7 @@ lib.mkIf (devices ? ${hostName}) {
       };
     };
     config = {
+      system.stateVersion = config.system.stateVersion;
       users.users.${user} = {
         inherit uid group;
         isNormalUser = true;
