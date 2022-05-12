@@ -12,6 +12,13 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
+      # TODO workaround for https://github.com/nix-community/emacs-overlay/issues/225
+      pdf-tools = epkgs.pdf-tools.overrideAttrs
+        (old:
+          assert old ? CXXFLAGS == false;
+          {
+            CXXFLAGS = "--std=c++17";
+          });
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;

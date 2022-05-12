@@ -135,39 +135,42 @@ in
     }
 
     # pastebin
-    (let
-      pastebinPort = 3000;
-    in {
-      services.nginx.virtualHosts."pb.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/".proxyPass = "http://127.0.0.1:${toString pastebinPort}";
-      };
-      systemd.services.pastebin = {
-        script = ''
-          export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
-          export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
-          ${pkgs.pastebin}/bin/pastebin \
-            --endpoint-host minio.li7g.com \
-            --bucket pastebin \
-            --port "${toString pastebinPort}"
-        '';
-        serviceConfig = {
-          DynamicUser = true;
-          LoadCredential = [
-            "key-id:${config.sops.secrets."pastebin/keyId".path}"
-            "access-key:${config.sops.secrets."pastebin/accessKey".path}"
-          ];
+    (
+      let
+        pastebinPort = 3000;
+      in
+      {
+        services.nginx.virtualHosts."pb.li7g.com" = {
+          forceSSL = true;
+          useACMEHost = "main";
+          locations."/".proxyPass = "http://127.0.0.1:${toString pastebinPort}";
         };
-        wantedBy = [ "multi-user.target" ];
-      };
-      sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
-      sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
+        systemd.services.pastebin = {
+          script = ''
+            export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
+            export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
+            ${pkgs.pastebin}/bin/pastebin \
+              --endpoint-host minio.li7g.com \
+              --bucket pastebin \
+              --port "${toString pastebinPort}"
+          '';
+          serviceConfig = {
+            DynamicUser = true;
+            LoadCredential = [
+              "key-id:${config.sops.secrets."pastebin/keyId".path}"
+              "access-key:${config.sops.secrets."pastebin/accessKey".path}"
+            ];
+          };
+          wantedBy = [ "multi-user.target" ];
+        };
+        sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
+        sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
 
-      services.notify-failure.services = [
-        "pastebin"
-      ];
-    })
+        services.notify-failure.services = [
+          "pastebin"
+        ];
+      }
+    )
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;
