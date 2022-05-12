@@ -144,6 +144,9 @@ in
           forceSSL = true;
           useACMEHost = "main";
           locations."/".proxyPass = "http://127.0.0.1:${toString pastebinPort}";
+          extraConfig = ''
+            client_max_body_size 10M;
+          '';
         };
         systemd.services.pastebin = {
           script = ''
