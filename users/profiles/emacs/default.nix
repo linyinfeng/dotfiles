@@ -12,7 +12,7 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
-      # TODO workaround for https://github.com/nix-community/emacs-overlay/issues/225
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=172590
       pdf-tools = epkgs.pdf-tools.overrideAttrs
         (old:
           assert old ? CXXFLAGS == false;
