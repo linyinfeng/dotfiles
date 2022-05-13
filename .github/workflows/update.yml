@@ -1,8 +1,8 @@
 name: "Automatic update"
 on:
   schedule:
-    # every day 02:00 +08:00
-    - cron: '0 18 * * *'
+    # every day 00:00 +08:00
+    - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
