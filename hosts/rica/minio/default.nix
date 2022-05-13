@@ -92,4 +92,18 @@ in
     useACMEHost = "main";
     locations."/".proxyPass = "http://localhost:${toString minioConsolePort}";
   };
+
+  # metrics
+  services.telegraf.extraConfig = {
+    inputs.prometheus = [
+      {
+        urls = [ "http://127.0.0.1:${toString minioPort}/minio/v2/metrics/cluster" ];
+        bearer_token = "\${CREDENTIALS_DIRECTORY}/minio_bearer_token";
+      }
+    ];
+  };
+  systemd.services.telegraf.serviceConfig.LoadCredential = [
+    "minio_bearer_token:${config.sops.secrets."minio/metrics-bearer".path}"
+  ];
+  sops.secrets."minio/metrics-bearer".sopsFile = config.sops.secretsDir + /rica.yaml;
 }

@@ -63,7 +63,7 @@
 (defun nixos-rebuild-switch ()
   "NixOS rebuild"
   (interactive)
-  (async-shell-command "sudo nixos-rebuild switch"))
+  (async-shell-command "nixos-rebuild switch --use-remote-sudo"))
 (defun restart-emacs-daemon ()
   "Restart emacs"
   (interactive)
@@ -376,6 +376,9 @@
   :ensure t)
 
 (use-package telega
+  :ensure t)
+
+(use-package terraform-mode
   :ensure t)
 
 (use-package tex
