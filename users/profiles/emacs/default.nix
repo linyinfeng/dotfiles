@@ -12,13 +12,6 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=172590
-      pdf-tools = epkgs.pdf-tools.overrideAttrs
-        (old:
-          assert old ? CXXFLAGS == false;
-          {
-            CXXFLAGS = "--std=c++17";
-          });
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;
