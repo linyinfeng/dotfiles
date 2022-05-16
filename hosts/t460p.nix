@@ -92,14 +92,14 @@ in
     client.enable = true;
   };
   services.godns = {
-    ipv4.settings = {
-      domains = [{
-        domain_name = "li7g.com";
-        sub_domains = [ "t460p" ];
-      }];
-      ip_type = "IPv4";
-      ip_interface = "enp0s31f6";
-    };
+    # ipv4.settings = {
+    #   domains = [{
+    #     domain_name = "li7g.com";
+    #     sub_domains = [ "t460p" ];
+    #   }];
+    #   ip_type = "IPv4";
+    #   ip_interface = "enp0s31f6";
+    # };
     ipv6.settings = {
       domains = [{
         domain_name = "li7g.com";
