@@ -45,9 +45,6 @@ in
       ./influxdb
       ./grafana
       ./hydra
-      ./vaultwarden
-      ./backup
-      ./matrix
     ];
 
   config = lib.mkMerge [
@@ -140,8 +137,6 @@ in
           "nuc.ts.li7g.com"
           "vault.li7g.com"
           "vault.ts.li7g.com"
-          "matrix.li7g.com"
-          "matrix.ts.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;

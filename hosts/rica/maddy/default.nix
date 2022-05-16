@@ -129,7 +129,10 @@ in
     };
 
     # accounts
-    services.maddy-init.accounts = [ "hydra@li7g.com" ];
+    services.maddy-init.accounts = [
+      "hydra@li7g.com"
+      "vault@li7g.com"
+    ];
     sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     systemd.services.maddy-init = {
       after = [ "maddy.service" ];
@@ -165,6 +168,11 @@ in
 
     networking.firewall.allowedTCPPorts = [
       465
+    ];
+
+    security.acme.certs."main".extraDomainNames = [
+      "smtp.li7g.com"
+      "smtp.ts.li7g.com"
     ];
   };
 }

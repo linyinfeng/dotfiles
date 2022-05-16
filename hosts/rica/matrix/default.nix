@@ -1,14 +1,14 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.hosts.nuc;
+  cfg = config.hosts.rica;
   database = {
     connection_string = "postgres:///dendrite?host=/run/postgresql";
     max_open_conns = 20;
   };
 in
 {
-  sops.secrets.matrix.sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."matrix".sopsFile = config.sops.secretsDir + /rica.yaml;
 
   services.dendrite = {
     enable = true;
@@ -88,7 +88,7 @@ in
     config.networking.fw-proxy.environment;
 
   systemd.services.dendrite.serviceConfig.LoadCredential = [
-    "matrix:${config.sops.secrets.matrix.path}"
+    "matrix:${config.sops.secrets."matrix".path}"
     "mail-password:${config.sops.secrets."mail/password".path}"
   ];
 
@@ -105,10 +105,13 @@ in
     ];
   };
 
+  security.acme.certs."main".extraDomainNames = [
+    "matrix.li7g.com"
+    "matrix.ts.li7g.com"
+  ];
   services.nginx.virtualHosts."matrix.li7g.com" = {
     forceSSL = true;
     useACMEHost = "main";
-    listen = config.hosts.nuc.listens;
     serverAliases = [
       "matrix.ts.li7g.com"
     ];

@@ -41,7 +41,7 @@ in
     B2_ACCOUNT_ID="${config.sops.placeholder."backup/keyId"}"
     B2_ACCOUNT_KEY="${config.sops.placeholder."backup/accessKey"}"
   '';
-  sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."backup/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."backup/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."backup/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."backup/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
 }

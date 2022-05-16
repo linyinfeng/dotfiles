@@ -11,6 +11,8 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
+
+  cfg = config.hosts.rica;
 in
 {
   imports =
@@ -20,8 +22,13 @@ in
       services.acme
       services.notify-failure
     ]) ++ [
+      ./options.nix
       ./minio
       ./maddy
+      ./vaultwarden
+      # TODO temporarily disabled
+      # https://github.com/matrix-org/dendrite/issues/2464
+      # ./matrix
     ];
 
   config = lib.mkMerge [
@@ -99,13 +106,6 @@ in
         domain = "rica.li7g.com";
         extraDomainNames = [
           "rica.ts.li7g.com"
-          "minio.li7g.com"
-          "minio-overlay.li7g.com"
-          "minio-console.li7g.com"
-          "cache.li7g.com"
-          "smtp.li7g.com"
-          "smtp.ts.li7g.com"
-          "pb.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
@@ -135,45 +135,43 @@ in
     }
 
     # pastebin
-    (
-      let
-        pastebinPort = 3000;
-      in
-      {
-        services.nginx.virtualHosts."pb.li7g.com" = {
-          forceSSL = true;
-          useACMEHost = "main";
-          locations."/".proxyPass = "http://127.0.0.1:${toString pastebinPort}";
-          extraConfig = ''
-            client_max_body_size 25M;
-          '';
+    {
+      security.acme.certs."main".extraDomainNames = [
+        "pb.li7g.com"
+      ];
+      services.nginx.virtualHosts."pb.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/".proxyPass = "http://127.0.0.1:${toString cfg.ports.pastebin}";
+        extraConfig = ''
+          client_max_body_size 25M;
+        '';
+      };
+      systemd.services.pastebin = {
+        script = ''
+          export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
+          export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
+          ${pkgs.pastebin}/bin/pastebin \
+            --endpoint-host minio.li7g.com \
+            --bucket pastebin \
+            --port "${toString cfg.ports.pastebin}"
+        '';
+        serviceConfig = {
+          DynamicUser = true;
+          LoadCredential = [
+            "key-id:${config.sops.secrets."pastebin/keyId".path}"
+            "access-key:${config.sops.secrets."pastebin/accessKey".path}"
+          ];
         };
-        systemd.services.pastebin = {
-          script = ''
-            export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
-            export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
-            ${pkgs.pastebin}/bin/pastebin \
-              --endpoint-host minio.li7g.com \
-              --bucket pastebin \
-              --port "${toString pastebinPort}"
-          '';
-          serviceConfig = {
-            DynamicUser = true;
-            LoadCredential = [
-              "key-id:${config.sops.secrets."pastebin/keyId".path}"
-              "access-key:${config.sops.secrets."pastebin/accessKey".path}"
-            ];
-          };
-          wantedBy = [ "multi-user.target" ];
-        };
-        sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
-        sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
+        wantedBy = [ "multi-user.target" ];
+      };
+      sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
 
-        services.notify-failure.services = [
-          "pastebin"
-        ];
-      }
-    )
+      services.notify-failure.services = [
+        "pastebin"
+      ];
+    }
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;

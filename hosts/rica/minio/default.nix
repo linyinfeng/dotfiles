@@ -24,6 +24,12 @@ in
     rootCredentialsFile = config.sops.secrets."minio/root".path;
   };
   sops.secrets."minio/root".sopsFile = config.sops.secretsDir + /rica.yaml;
+  security.acme.certs."main".extraDomainNames = [
+    "minio.li7g.com"
+    "minio-overlay.li7g.com"
+    "minio-console.li7g.com"
+    "cache.li7g.com"
+  ];
   services.nginx.virtualHosts."minio.li7g.com" = {
     forceSSL = true;
     useACMEHost = "main";

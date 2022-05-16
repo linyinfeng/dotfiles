@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.hosts.nuc;
+  cfg = config.hosts.rica;
 in
 {
   security.acme.certs."main".extraDomainNames = [
@@ -13,7 +13,6 @@ in
       "vault.li7g.com" = {
         forceSSL = true;
         useACMEHost = "main";
-        listen = config.hosts.nuc.listens;
         serverAliases = [
           "vault.ts.li7g.com"
         ];
@@ -34,20 +33,29 @@ in
     enable = true;
     dbBackend = "postgresql";
     config = {
-      domain = "https://vault.ts.li7g.com";
+      domain = "https://vault.li7g.com";
       databaseUrl = "postgresql:///vaultwarden";
       signupsAllowed = false;
-      sendsAllowed = false;
       emergencyAccessAllowed = false;
       websocketEnabled = true;
       websocketAddress = "127.0.0.1";
       websocketPort = cfg.ports.vaultwarden.websocket;
       rocketAddress = "127.0.0.1";
       rocketPort = cfg.ports.vaultwarden.http;
+      smtpHost = "smtp.ts.li7g.com";
+      smtpFrom = "vault@li7g.com";
+      smtpPort = 465;
+      smtpSecurity = "force_tls";
+      smtpExplicitTls = true; # workaround for v1.24.0 and before
+      smtpUsername = "vault@li7g.com";
     };
-    environmentFile = config.sops.secrets."vaultwarden".path;
+    environmentFile = config.sops.templates."vaultwarden-env".path;
   };
-  sops.secrets."vaultwarden".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.templates."vaultwarden-env".content = ''
+    ADMIN_TOKEN=${config.sops.placeholder."vaultwarden/adminToken"}
+    SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
+  '';
+  sops.secrets."vaultwarden/adminToken".sopsFile = config.sops.secretsDir + /rica.yaml;
 
   services.postgresql.ensureDatabases = [ "vaultwarden" ];
   services.postgresql.ensureUsers = [

@@ -34,22 +34,6 @@
         type = lib.types.port;
         default = 3005;
       };
-      vaultwarden = {
-        http = lib.mkOption {
-          type = lib.types.port;
-          default = 3006;
-        };
-        websocket = lib.mkOption {
-          type = lib.types.port;
-          default = 3007;
-        };
-      };
-      matrix = {
-        http = lib.mkOption {
-          type = lib.types.port;
-          default = 3008;
-        };
-      };
     };
   };
 }
