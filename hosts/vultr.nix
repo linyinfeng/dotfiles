@@ -105,17 +105,15 @@ in
       services.nginx.virtualHosts."li7g.com" = {
         forceSSL = true;
         useACMEHost = "main";
-        locations."/.well-known/matrix/server".return = ''
-          200 '{ "m.server": "matrix.li7g.com:8443" }'
+        locations."/.well-known/matrix/server".extraConfig = ''
+          default_type application/json;
+          return 200 '{ "m.server": "matrix.li7g.com:443" }';
         '';
-        locations."/.well-known/matrix/client" = {
-          return = ''
-            200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com:8443" } }'
-          '';
-          extraConfig = ''
-            add_header Access-Control-Allow-Origin '*';
-          '';
-        };
+        locations."/.well-known/matrix/client".extraConfig = ''
+          add_header Access-Control-Allow-Origin '*';
+          default_type application/json;
+          return 200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com" } }';
+        '';
       };
     }
 

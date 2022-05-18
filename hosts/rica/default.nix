@@ -26,9 +26,7 @@ in
       ./minio
       ./maddy
       ./vaultwarden
-      # TODO temporarily disabled
-      # https://github.com/matrix-org/dendrite/issues/2464
-      # ./matrix
+      ./matrix
     ];
 
   config = lib.mkMerge [
