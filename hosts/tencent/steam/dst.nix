@@ -62,6 +62,7 @@ in
       User = "steam";
       Group = "steam";
       ExecStop = stopScript;
+      CPUQuota = "100%"; # at most 1 core (2 cores in total)
     };
     wantedBy = [ "multi-user.target" ];
   };

@@ -1,6 +1,8 @@
 wireguard: ""
 zerotier:
     moon.json: ""
+minecraft:
+    rcon: ""
 sops:
     kms: []
     gcp_kms: []
@@ -16,8 +18,8 @@ sops:
             Y1pFSHpZS0JVeGsrNG85eVVoR2hldzAKniLpKNEXZ/FS8tmOoHiWUSCvy458+PZo
             N0ziJXL2eZhditsX6bCxRei8G2Q6UvwOjR5w3K7ZmySb9SK/s+mHWQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-26T15:24:17Z"
-    mac: ENC[AES256_GCM,data:PW4SFZzI83TaVJDuTArC2e/ICyqAksfucLzqmlmfR+zi9h1ytV13xThkdeI8Tc5JCUKbgL+Nq2Wzp/aRJ4R8+q26JJdqeSbjEehPqOVRQvN2erfAEbwq0zv8gDDgNIPv5F4/nKFPCWa3QygNjzIl7DKvCFbD1oyWUppExSYH7y0=,iv:yvxqQdusEGuyNHPMYpMyU2wTUUQyHMaWAhcAgGcO3Lg=,tag:uo48ma3HdROrlR0jnEt/HQ==,type:str]
+    lastmodified: "2022-05-18T12:12:05Z"
+    mac: ENC[AES256_GCM,data:X+FA1pT+Fi593I5vl1lshaa1IydjsG1dTyucLs4uVAZvgSHE80YGLZxYcVhmMMCAynF7cI+eeAK7497Q9esuXc3joOQqJ4LlNKl/SVrC/oY4kbmF07CSlp2Pum8L4ltHOGokWcpSEbLuQAm1831v4Kh3wsJ+RCIBX5xseoq+s2Y=,iv:poUXmqANbNYCyMD5EUPRgeL5EQDHQs1uSanm+cr2hyA=,tag:I4DXqdexdMWpxo2yYqcP1w==,type:str]
     pgp:
         - created_at: "2022-03-26T08:08:05Z"
           enc: |

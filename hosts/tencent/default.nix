@@ -17,6 +17,7 @@ in
     suites.server ++
     (with profiles; [
       networking.behind-fw
+      networking.fw-proxy
       networking.wireguard-home
       services.acme
     ]) ++
@@ -25,6 +26,7 @@ in
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
+      ./minecraft
     ];
 
   config = lib.mkMerge [
