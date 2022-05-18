@@ -121,7 +121,6 @@ in
         cron = "0 */5 * * * *";
         tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
       };
-      systemd.services.commit-notifier.serviceConfig.Restart = "on-failure";
       sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /rica.yaml;
 
       services.notify-failure.services = [

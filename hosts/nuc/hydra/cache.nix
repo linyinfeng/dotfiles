@@ -34,7 +34,6 @@ in
       Group = "hydra";
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
-      Restart = "on-failure";
       LoadCredential = [
         "cache-key-id:${config.sops.secrets."cache/keyId".path}"
         "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
@@ -73,7 +72,6 @@ in
       Group = "hydra";
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
-      Restart = "on-failure";
       LoadCredential = [
         "cache-key-id:${config.sops.secrets."cache/keyId".path}"
         "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
@@ -88,4 +86,9 @@ in
   sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
+
+  services.notify-failure.services = [
+    "copy-cache-li7g-com"
+    "gc-cache-li7g-com"
+  ];
 }

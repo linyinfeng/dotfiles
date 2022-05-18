@@ -28,7 +28,7 @@
           git clone https://github.com/linyinfeng/dotfiles.git
           pushd dotfiles
           token=$(cat "$CREDENTIALS_DIRECTORY/github-token")
-          git remote set-url origin "http://littlenano:$token@github.com/linyinfeng/dotfiles.git"
+          git remote set-url origin "https://littlenano:$token@github.com/linyinfeng/dotfiles.git"
           popd
         fi
         cd dotfiles
@@ -61,7 +61,6 @@
         config.users.groups.telegram-send.name
       ];
       StateDirectory = "dotfiles-channel-update";
-      Restart = "on-failure";
       LoadCredential = [
         "github-token:${config.sops.secrets."nano/github-token".path}"
         "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
