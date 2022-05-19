@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  home = "/home/minecraft";
   port = 25565;
   rconPort = 25575;
   proxyCommandLine =
