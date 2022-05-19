@@ -5,16 +5,14 @@ let
   port = 25565;
   rconPort = 25575;
   proxyCommandLine =
-    " -Dhttp.proxyHost=localhost  -Dhttp.proxyPort=${toString config.networking.fw-proxy.mixinConfig.port}" +
+    "-Dhttp.proxyHost=localhost  -Dhttp.proxyPort=${toString config.networking.fw-proxy.mixinConfig.port}" +
     " -Dhttps.proxyHost=localhost -Dhttps.proxyPort=${toString config.networking.fw-proxy.mixinConfig.port}";
-  serverProgram = "${pkgs.papermc}/bin/minecraft-server -Xms256m -Xmx2048m ${proxyCommandLine}";
+  serverProgram = "java -jar server.jar";
 in
 {
   systemd.services.minecraft = {
     script = ''
       rcon_password=$(cat $CREDENTIALS_DIRECTORY/rcon-password)
-
-      echo "eula=true" > eula.txt
 
       yq e '.general.server.start-command = "${serverProgram}"' -i autoplug/general.yml
 
@@ -30,9 +28,9 @@ in
       fi
 
       # start the server
-      java ${proxyCommandLine} -jar AutoPlug-Client.jar
+      java -Xms256m -Xmx2048m ${proxyCommandLine} -jar AutoPlug-Client.jar
     '';
-    path = with pkgs; [ papermc jre yq-go ];
+    path = with pkgs; [ jre yq-go ];
     serviceConfig = {
       DynamicUser = true;
       StateDirectory = "minecraft";
