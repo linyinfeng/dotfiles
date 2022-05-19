@@ -20,10 +20,13 @@ in
 
       # server.properties edit
       if [ -f server.properties ]; then
-        sed "/^server-port=/ s/=.*/=${toString port}/" server.properties
-        sed "/^enable-rcon=/ s/=.*/=true/" server.properties
-        sed "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
-        sed "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
+        echo "setup server.properties"
+        sed -i "/^server-port=/ s/=.*/=${toString port}/" server.properties
+        sed -i "/^enable-rcon=/ s/=.*/=true/" server.properties
+        sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
+        sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
+        # disable verification
+        sed -i "/^online-mode=/ s/=.*/=false/" server.properties
       fi
 
       # start the server
@@ -37,12 +40,12 @@ in
       LoadCredential = [
         "rcon-password:${config.sops.secrets."minecraft/rcon".path}"
       ];
-      CPUQuota = "100%"; # at most 1 core (2 cores in total)
+      CPUQuota = "150%"; # at most 1.5 core (2 cores in total)
     };
     wantedBy = [ "multi-user.target" ];
   };
-  networking.firewall.allowedTCPPorts = [ port ];
-  networking.firewall.allowedUDPPorts = [ port ];
+  networking.firewall.allowedTCPPorts = [ port rconPort ];
+  networking.firewall.allowedUDPPorts = [ port rconPort ];
 
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /tencent.yaml;
 }
