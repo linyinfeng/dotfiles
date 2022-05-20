@@ -3,6 +3,7 @@
 let
   port = 25565;
   rconPort = 25575;
+  dynmapPort = 8123;
   proxyCommandLine =
     "-Dhttp.proxyHost=localhost  -Dhttp.proxyPort=${toString config.networking.fw-proxy.mixinConfig.port}" +
     " -Dhttps.proxyHost=localhost -Dhttps.proxyPort=${toString config.networking.fw-proxy.mixinConfig.port}";
@@ -13,7 +14,12 @@ in
     script = ''
       rcon_password=$(cat $CREDENTIALS_DIRECTORY/rcon-password)
 
-      yq e '.general.server.start-command = "${serverProgram}"' -i autoplug/general.yml
+      if [ -d autoplug ]; then
+        yq e '.general.server.start-command = "${serverProgram}"' -i autoplug/general.yml
+        yq e '.updater.global-cool-down = 0' -i autoplug/updater.yml
+        yq e '.updater.java-updater.enable = false' -i autoplug/updater.yml
+        yq e '.updater.plugins-update.async = false' -i autoplug/updater.yml
+      fi
 
       # server.properties edit
       if [ -f server.properties ]; then
@@ -45,4 +51,13 @@ in
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /tencent.yaml;
+
+  security.acme.certs."main".extraDomainNames = [
+    "mc.li7g.com"
+  ];
+  services.nginx.virtualHosts."mc.li7g.com" = {
+    onlySSL = true;
+    useACMEHost = "main";
+    locations."/".proxyPass = "http://127.0.0.1:${toString dynmapPort}";
+  };
 }
