@@ -29,6 +29,18 @@ in
       ./minecraft
     ];
 
+  options.hosts.tencent = {
+    listens = lib.mkOption {
+      type = with lib.types; listOf anything;
+      default = [
+        { addr = "[::]"; port = 443; ssl = true; }
+        { addr = "[::]"; port = 8443; ssl = true; }
+        { addr = "0.0.0.0"; port = 443; ssl = true; }
+        { addr = "0.0.0.0"; port = 8443; ssl = true; }
+      ];
+    };
+  };
+
   config = lib.mkMerge [
     {
       i18n.defaultLocale = "en_US.UTF-8";
@@ -104,8 +116,8 @@ in
 
         virtualHosts = {
           "tencent.li7g.com" = {
-            default = true;
             onlySSL = true;
+            listen = config.hosts.tencent.listens;
             useACMEHost = "main";
             serverAliases = [
               "tencent.ts.li7g.com"

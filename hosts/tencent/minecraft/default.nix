@@ -57,6 +57,7 @@ in
   ];
   services.nginx.virtualHosts."mc.li7g.com" = {
     onlySSL = true;
+    listen = config.hosts.tencent.listens;
     useACMEHost = "main";
     locations."/".proxyPass = "http://127.0.0.1:${toString dynmapPort}";
   };
