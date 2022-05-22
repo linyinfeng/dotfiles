@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
+  serverDomain = "mc.li7g.com";
   port = 25565; # also port for voice (udp)
   rconPort = 25575;
   mapPort = 8100;
@@ -21,6 +22,7 @@ in
         sed -i "/^enable-rcon=/ s/=.*/=true/" server.properties
         sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
         sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
+        sed -i "/^motd=/ s/=.*/=${serverDomain}/" server.properties
         # disable online-mode
         sed -i "/^online-mode=/ s/=.*/=false/" server.properties
       fi
@@ -28,6 +30,12 @@ in
       if [ -f config/bluemap/core.conf ]; then
         yq -i '.accept-download = true' config/bluemap/core.conf
         yq -i '.renderThreadCount = 2' config/bluemap/core.conf
+      fi
+
+      if [ -f config/PlasmoVoice/server.yml ]; then
+        yq -i '.udp.port = ${toString port}' config/PlasmoVoice/server.yml
+        yq -i '.udp.proxy_ip = "${serverDomain}"' config/PlasmoVoice/server.yml
+        yq -i '.udp.proxy_port = ${toString port}' config/PlasmoVoice/server.yml
       fi
 
       # start the server
@@ -51,9 +59,9 @@ in
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   security.acme.certs."main".extraDomainNames = [
-    "mc.li7g.com"
+    serverDomain
   ];
-  services.nginx.virtualHosts."mc.li7g.com" = {
+  services.nginx.virtualHosts.${serverDomain} = {
     onlySSL = true;
     listen = config.hosts.nuc.listens;
     useACMEHost = "main";
