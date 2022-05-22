@@ -13,15 +13,17 @@
 
         systemctl start copy-cache-li7g-com.service
 
+        # disable cachix push, prefer cache.li7g.com
+
         # push cache to cachix
-        export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
-        export HOME="$STATE_DIRECTORY"
-        for host in vultr nexusbytes aws; do
-          echo "push cache to cachix for host: $host"
-          nix build "github:linyinfeng/dotfiles/$commit#nixosConfigurations.$host.config.system.build.toplevel" --json | \
-            jq ".[].outputs.out" --raw-output | \
-            cachix push linyinfeng
-        done
+        # export CACHIX_SIGNING_KEY=$(cat "$CREDENTIALS_DIRECTORY/cachix-signing-key")
+        # export HOME="$STATE_DIRECTORY"
+        # for host in vultr nexusbytes aws; do
+        #   echo "push cache to cachix for host: $host"
+        #   nix build "github:linyinfeng/dotfiles/$commit#nixosConfigurations.$host.config.system.build.toplevel" --json | \
+        #     jq ".[].outputs.out" --raw-output | \
+        #     cachix push linyinfeng
+        # done
 
         # update channel
         if [ ! -d dotfiles ]; then
