@@ -18,8 +18,7 @@ in
         nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
-          proxychains4 -q \
-            nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
+          nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
         done
       ) 200>/var/lib/cache-li7g-com/lock
     '';
