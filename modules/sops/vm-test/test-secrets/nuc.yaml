@@ -19,6 +19,8 @@ restic:
 cache:
     keyId: ""
     accessKey: ""
+minecraft:
+    rcon: ""
 sops:
     kms: []
     gcp_kms: []
@@ -34,8 +36,8 @@ sops:
             L3Ntc3RTT3hDL3l6ZE4ycDErZFhJaEEK5IHBhVhHPeiDC2Jl+cxtgduz37VsM0Kv
             rurGhZ45rwwmJuo0Vs7hCZAnZ7q0nX+d2jUyBIbI8zg39nIYq1gAKA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-04-30T06:50:01Z"
-    mac: ENC[AES256_GCM,data:S3fOnYxBodl2isMRqAEKMqEhCtclVXHFlKd0lbacxzmv2iVPx9jL9f8polfxYh2pKgkAHc16cyc2X1vkPNUeDrAiueEyMgXEI9E8+QRwBpGzQF3pLZTo4SB2XykqG+M2MwBMk6EVLwemTftdMxevHuDoFKFneQfFXq3UP/v4yao=,iv:rcj2tWisHP9NAF+VYqwTc/w8GMrNAx3D1VnWivu/xOA=,tag:3Np2SrBlub1OqKdCD1RrCw==,type:str]
+    lastmodified: "2022-05-22T09:53:01Z"
+    mac: ENC[AES256_GCM,data:rRNfgtkTO8Kz4GgSUDBl+7ri+InIHiTWy14HWCJSAXVthabyPXcSEp4Q0sggMVm3OZK9+VwLrrOPhNer7z2qdaerJgMp75+x2m6+xq3+xrS454MQpXuqkeD3+GQ+KFI4MuUFGtlaONOi2P2FjshP7EK/wegFZelbudicQf6KLnc=,iv:FMsJNf2Dd0K891VtClup8I2bgRBh6udsXH3O6B0NZFo=,tag:atHxFd6LOVvH4+rNS87cxg==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:49Z"
           enc: |
@@ -49,4 +51,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
     unencrypted_suffix: _unencrypted
-    version: 3.7.2
+    version: 3.7.3

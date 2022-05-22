@@ -439,6 +439,58 @@
         "type": "github"
       }
     },
+    "mc-config": {
+      "inputs": {
+        "flake-utils-plus": [
+          "digga",
+          "flake-utils-plus"
+        ],
+        "minecraft-nix": [
+          "minecraft-nix"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1653217969,
+        "narHash": "sha256-aNlEoXoZ9O6Bf7xX59dCPlkmTUqpnFyY667Yp7PBzIA=",
+        "owner": "linyinfeng",
+        "repo": "mc-config",
+        "rev": "ed0ecd29cde047d329317e726fb99adcdf892e15",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "mc-config",
+        "type": "github"
+      }
+    },
+    "minecraft-nix": {
+      "inputs": {
+        "flake-utils": [
+          "digga",
+          "flake-utils-plus",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1653205671,
+        "narHash": "sha256-1z8Ho7TJiFn0xpgG80elOwXr7ALqulr+gpvQocJcop0=",
+        "owner": "ninlives",
+        "repo": "minecraft.nix",
+        "rev": "7f118971b7387b0224c12cbf0de1520d34ca182e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ninlives",
+        "repo": "minecraft.nix",
+        "type": "github"
+      }
+    },
     "nickpkgs": {
       "locked": {
         "lastModified": 1653101956,
@@ -783,6 +835,8 @@
         "impermanence": "impermanence",
         "latest": "latest",
         "linyinfeng": "linyinfeng",
+        "mc-config": "mc-config",
+        "minecraft-nix": "minecraft-nix",
         "nickpkgs": "nickpkgs",
         "nix": "nix_2",
         "nix-gc-s3": "nix-gc-s3",

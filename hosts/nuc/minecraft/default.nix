@@ -1,0 +1,62 @@
+{ config, lib, pkgs, ... }:
+
+let
+  port = 25565; # also port for voice (udp)
+  rconPort = 25575;
+  mapPort = 8100;
+  server = "${pkgs.mc-config.server-launcher}/bin/server --nogui";
+in
+{
+  systemd.services.minecraft = {
+    script = ''
+      rcon_password=$(cat $CREDENTIALS_DIRECTORY/rcon-password)
+
+      if [ -f eula.txt ]; then
+        echo "eula=true" > eula.txt
+      fi
+
+      if [ -f server.properties ]; then
+        echo "setting up server.properties..."
+        sed -i "/^server-port=/ s/=.*/=${toString port}/" server.properties
+        sed -i "/^enable-rcon=/ s/=.*/=true/" server.properties
+        sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
+        sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
+        # disable online-mode
+        sed -i "/^online-mode=/ s/=.*/=false/" server.properties
+      fi
+
+      if [ -f config/bluemap/core.conf ]; then
+        yq -i '.accept-download = true' config/bluemap/core.conf
+        yq -i '.renderThreadCount = 2' config/bluemap/core.conf
+      fi
+
+      # start the server
+      ${server}
+    '';
+    path = with pkgs; [ jre yq-go ];
+    serviceConfig = {
+      DynamicUser = true;
+      StateDirectory = "minecraft";
+      WorkingDirectory = "/var/lib/minecraft";
+      LoadCredential = [
+        "rcon-password:${config.sops.secrets."minecraft/rcon".path}"
+      ];
+      CPUQuota = "250%"; # at most 2 cores (4/8 cores in total)
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+  networking.firewall.allowedTCPPorts = [ port rconPort ];
+  networking.firewall.allowedUDPPorts = [ port rconPort ];
+
+  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /nuc.yaml;
+
+  security.acme.certs."main".extraDomainNames = [
+    "mc.li7g.com"
+  ];
+  services.nginx.virtualHosts."mc.li7g.com" = {
+    onlySSL = true;
+    listen = config.hosts.nuc.listens;
+    useACMEHost = "main";
+    locations."/".proxyPass = "http://127.0.0.1:${toString mapPort}";
+  };
+}

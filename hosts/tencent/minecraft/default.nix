@@ -53,9 +53,9 @@ in
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /tencent.yaml;
 
   security.acme.certs."main".extraDomainNames = [
-    "mc.li7g.com"
+    "byrmc-retro.li7g.com"
   ];
-  services.nginx.virtualHosts."mc.li7g.com" = {
+  services.nginx.virtualHosts."byrmc-retro.li7g.com" = {
     onlySSL = true;
     listen = config.hosts.tencent.listens;
     useACMEHost = "main";

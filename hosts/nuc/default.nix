@@ -45,6 +45,7 @@ in
       ./influxdb
       ./grafana
       ./hydra
+      ./minecraft
     ];
 
   config = lib.mkMerge [
