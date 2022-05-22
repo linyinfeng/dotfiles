@@ -52,6 +52,7 @@ lib.mkIf config.home.graphical {
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
+      ".local/share/minecraft.nix"
 
       "Zotero"
     ];
