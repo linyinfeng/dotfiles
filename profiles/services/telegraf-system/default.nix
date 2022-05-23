@@ -2,6 +2,13 @@
 
 let
   influxdbPort = 3004;
+  nucInfluxdb = bucket: {
+    urls = [ "http://nuc.ts.li7g.com:${toString influxdbPort}" ];
+    token = "$INFLUX_TOKEN";
+    organization = "main-org";
+    bucket = bucket;
+    tagpass.output_bucket = [bucket];
+  };
 in
 {
   services.telegraf = {
@@ -20,12 +27,10 @@ in
         flush_jitter = "5s";
       };
       outputs.influxdb_v2 = [
-        {
-          urls = [ "http://nuc.ts.li7g.com:${toString influxdbPort}" ];
-          token = "$INFLUX_TOKEN";
-          organization = "main-org";
-          bucket = "main";
-        }
+        (nucInfluxdb "main")
+        (nucInfluxdb "system")
+        (nucInfluxdb "minio")
+        (nucInfluxdb "minecraft")
       ];
       inputs = {
         cpu = [
@@ -34,20 +39,36 @@ in
             totalcpu = true;
             collect_cpu_time = false;
             report_active = false;
+            tags.output_bucket = "system";
           }
         ];
         disk = [
           {
             ignore_fs = [ "tmpfs" "devtmpfs" "devfs" "overlay" "aufs" "squashfs" ];
+            tags.output_bucket = "system";
           }
         ];
-        diskio = [{ }];
-        mem = [{ }];
-        net = [{ }];
-        processes = [{ }];
-        swap = [{ }];
-        system = [{ }];
-        sensors = [{ }];
+        diskio = [{
+          tags.output_bucket = "system";
+        }];
+        mem = [{
+          tags.output_bucket = "system";
+        }];
+        net = [{
+          tags.output_bucket = "system";
+        }];
+        processes = [{
+          tags.output_bucket = "system";
+        }];
+        swap = [{
+          tags.output_bucket = "system";
+        }];
+        system = [{
+          tags.output_bucket = "system";
+        }];
+        sensors = [{
+          tags.output_bucket = "system";
+        }];
       };
     };
   };

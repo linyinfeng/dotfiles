@@ -105,6 +105,7 @@ in
       {
         urls = [ "http://127.0.0.1:${toString minioPort}/minio/v2/metrics/cluster" ];
         bearer_token = "\${CREDENTIALS_DIRECTORY}/minio_bearer_token";
+        tags.output_bucket = "minio";
       }
     ];
   };

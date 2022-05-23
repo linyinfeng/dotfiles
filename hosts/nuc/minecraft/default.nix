@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
+  cfg = config.hosts.nuc;
   serverDomain = "mc.li7g.com";
   port = 25565; # also port for voice (udp)
   rconPort = 25575;
@@ -34,8 +35,13 @@ in
 
       if [ -f config/PlasmoVoice/server.yml ]; then
         yq -i '.udp.port = ${toString port}' config/PlasmoVoice/server.yml
-        yq -i '.udp.proxy_ip = "${serverDomain}"' config/PlasmoVoice/server.yml
-        yq -i '.udp.proxy_port = ${toString port}' config/PlasmoVoice/server.yml
+      fi
+
+      if [ -f config/unifiedmetrics/config.yml ]; then
+        mkdir -p config/unifiedmetrics/driver
+        cp $CREDENTIALS_DIRECTORY/driver-influxdb config/unifiedmetrics/driver/influx.yml
+        chmod 644 config/unifiedmetrics/driver/influx.yml
+        yq -i '.metrics.driver = "influx"' config/unifiedmetrics/config.yml
       fi
 
       # start the server
@@ -48,6 +54,7 @@ in
       WorkingDirectory = "/var/lib/minecraft";
       LoadCredential = [
         "rcon-password:${config.sops.secrets."minecraft/rcon".path}"
+        "driver-influxdb:${config.sops.templates."driver-influxdb".path}"
       ];
       CPUQuota = "250%"; # at most 2 cores (4/8 cores in total)
     };
@@ -57,6 +64,19 @@ in
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.templates."driver-influxdb".content = builtins.toJSON {
+    output = {
+      url = "http://localhost:${toString cfg.ports.influxdb}";
+      organization = "main-org";
+      bucket = "minecraft";
+      interval = 10;
+    };
+    authentication = {
+      scheme = "TOKEN";
+      token = config.sops.placeholder."influxdb/token";
+    };
+  };
 
   security.acme.certs."main".extraDomainNames = [
     serverDomain
