@@ -22,6 +22,14 @@ nano:
     github-token: ""
 mail:
     password: ""
+restic:
+    password: ""
+backup-b2:
+    keyId: ""
+    accessKey: ""
+backup-minio:
+    keyId: ""
+    accessKey: ""
 sops:
     kms: []
     gcp_kms: []
@@ -37,8 +45,8 @@ sops:
             OWREMHkrMGxFR2pDSjcvSDBuWkVBT0kKUX2yLvUSEFd3X3S3vPEESwrgZ7KuYnP9
             fUmcXH3sdxKnU3Seic6xX9LDXj9kHv+/C1iRYV7Byg3cNwb4Awt2iQ==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-20T10:17:40Z"
-    mac: ENC[AES256_GCM,data:ZCzQTgLO0J3Hb0jjmUITEUnCNr5HxmXPXZWZFMHpjwr8yFabAGwMhALNj7cpO5sCWaxVYvP2A0mNako1Zf8qo0Lw5Jls+pTCzdk5ELIQb4CcEU/YW50nZkK3jimTcbQ4xNunPWdcbpLHUyTdmESEIg14vfJmHANAAqdugUBHy0A=,iv:Q1sBTWTT0IFj/xCKFA0oiMNwYwtogZGZ4JXnIuyRgYw=,tag:JQLTtSZKNgw6+kgyTs67tQ==,type:str]
+    lastmodified: "2022-05-26T07:11:39Z"
+    mac: ENC[AES256_GCM,data:7T0xnwCt7zpy2zIklVTmml9382JNfolO2bhwrjTBoRxISW6nEIcISLx6RzrBY6jDxc93Pxud2G3Moq6QHi1iI8Z+0LCYOHYo4wZ1IzG1f1ZhDnqz4Vc4PtiMSo2zthEMcz/LUVnbiiylVMpN7hG0VBqElDZWRQcL0wVu+3nKUTc=,iv:ojtZ2iIwuaS/oscXBtz8TT35MMFmQt44vKdR8evTBT4=,tag:QMypb7DuVgLVZd0zW2cxVA==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:42Z"
           enc: |
@@ -52,4 +60,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
     unencrypted_suffix: _unencrypted
-    version: 3.7.2
+    version: 3.7.3

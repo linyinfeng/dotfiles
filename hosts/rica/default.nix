@@ -21,12 +21,14 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
+      services.restic
     ]) ++ [
       ./options.nix
       ./minio
       ./maddy
       ./vaultwarden
       ./matrix
+      ./backup
     ];
 
   config = lib.mkMerge [

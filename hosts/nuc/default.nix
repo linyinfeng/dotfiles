@@ -35,6 +35,7 @@ in
       services.godns
       services.acme
       services.notify-failure
+      services.restic
       programs.telegram-send
     ]) ++
     (with profiles.users; [
@@ -46,6 +47,7 @@ in
       ./grafana
       ./hydra
       ./minecraft
+      ./backup
     ];
 
   config = lib.mkMerge [

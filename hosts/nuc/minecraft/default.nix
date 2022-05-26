@@ -9,6 +9,10 @@ let
   server = "${pkgs.mc-config.server-launcher}/bin/server --nogui";
 in
 {
+  imports = [
+    ./backup.nix
+  ];
+
   systemd.services.minecraft = {
     script = ''
       rcon_password=$(cat $CREDENTIALS_DIRECTORY/rcon-password)
