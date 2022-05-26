@@ -5,7 +5,7 @@ let
   serverDomain = "mc.li7g.com";
   port = 25565; # also port for voice (udp)
   rconPort = 25575;
-  mapPort = 8100;
+  mapPort = 8123;
   server = "${pkgs.mc-config.server-launcher}/bin/server --nogui";
 in
 {
