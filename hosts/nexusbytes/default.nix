@@ -109,11 +109,6 @@ in
       '';
     }
 
-    # postgresql
-    {
-      services.postgresql.enable = true;
-    }
-
     {
       networking = lib.mkIf (!config.system.is-vm) {
         useNetworkd = true;
