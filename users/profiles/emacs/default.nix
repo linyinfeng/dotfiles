@@ -15,7 +15,7 @@ let
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;
-  syncPath = "/var/lib/syncthing/Main";
+  syncPath = "${config.home.homeDirectory}/Syncthing/Main";
 in
 {
   home.packages = [ emacs ] ++
