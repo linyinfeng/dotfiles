@@ -88,6 +88,10 @@
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
+
+      # TODO https://nixpk.gs/pr-tracker.html?pr=174178
+      fix-emacs.url = "https://tar.li7g.com/https/github.com/NixOS/nixpkgs/pull/174178.patch.tar";
+      fix-emacs.flake = false;
     };
 
   outputs =
@@ -124,6 +128,9 @@
         channels = rec {
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
+            patches = [
+              inputs.fix-emacs
+            ];
             overlays = [
               # TODO nix flake show broken due to IFD
               # nur.overlay
