@@ -243,18 +243,6 @@
         "type": "github"
       }
     },
-    "fix-emacs": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-yXZJn660ORnkZnuHn5BQc4Peyyk0m7qV6+z4oEiG2V4=",
-        "type": "tarball",
-        "url": "https://tar.li7g.com/https/github.com/NixOS/nixpkgs/pull/174178.patch.tar"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://tar.li7g.com/https/github.com/NixOS/nixpkgs/pull/174178.patch.tar"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -857,7 +845,6 @@
         "emacs-overlay": "emacs-overlay",
         "emacs-webkit": "emacs-webkit",
         "fenix": "fenix",
-        "fix-emacs": "fix-emacs",
         "flake-compat": "flake-compat",
         "home": "home",
         "hydra": "hydra",
