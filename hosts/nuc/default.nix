@@ -223,6 +223,9 @@ in
           ];
         };
       };
+      networking.firewall.allowedTCPPorts = [
+        cfg.ports.loki
+      ];
     }
 
     # store serving
