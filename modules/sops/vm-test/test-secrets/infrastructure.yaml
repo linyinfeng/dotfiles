@@ -1,5 +1,7 @@
 influxdb:
     token: ""
+loki:
+    password: ""
 zerotier:
     main: ""
     moon: ""
@@ -18,8 +20,8 @@ sops:
             RW9IcDRROVRINTI2cTE5RDJYL0F4MEkKm+xmFqxGMlhkSUF5YIKKhk70Y74X2N9O
             dXXDz+SyhQBJDMSpOc5wlJtkivX398rQewmyZoT/lLCiDUmgbQVK4w==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-26T09:15:17Z"
-    mac: ENC[AES256_GCM,data:KI+pvj4g1jmIbQBLKy4wlfW3rqKcbqaJouLCCd4yZ5jQMXxD9JzlWrWv3U3cVuxmiK0l2DR4xFn75Az6GRCQMAQscGuWJq6l60Mu4F+0yh1ejAGLkhy3qeJWH0JM7nZYkKeSb6x04jY1RvRBov8UFZKlyQyEE4Qaw501ZFt4sQo=,iv:HJHYzYiFRvDrOtuJ7y7OrLy6XJBtRjLDoYJpjyHE7yA=,tag:DjA9/DJEeVXr8FNCYCzLJg==,type:str]
+    lastmodified: "2022-05-27T07:06:23Z"
+    mac: ENC[AES256_GCM,data:PUEndpqTnl6f4opLQSHZG2N4eartLgeI3bNQnPLEmj4h8mTyr8Fr38j2gqPHytOSvEc4RF+L1mGsX8iZ+fnl8GBPSeqs9TqYWT7dpmN8KuWzEx9tNEFyKwzCvjZMw5OvGT3EBpMOeUhIiVK6Vjl3dwHInnuygDiQv/u6JCKZ5A8=,iv:hOJDMP8FsO27ilV3Xd4EPbQyoARsw7ADwk1j1ThxO2w=,tag:+znQGoxNxY6+abaJskF4KQ==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:46Z"
           enc: |
@@ -33,4 +35,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
     unencrypted_suffix: _unencrypted
-    version: 3.7.2
+    version: 3.7.3

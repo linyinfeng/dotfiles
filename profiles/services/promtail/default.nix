@@ -3,16 +3,18 @@
 {
   services.promtail = {
     enable = true;
+    extraFlags = [
+      "-config.expand-env=true"
+    ];
     configuration = {
       server = {
         http_listen_port = 0;
         grpc_listen_port = 0;
-
       };
       positions.filename = "/tmp/positions.yaml";
       clients = [
         {
-          url = "http://nuc.ts.li7g.com:3005/loki/api/v1/push";
+          url = "https://loki:\${LOKI_PASSWORD}@rica.ts.li7g.com/loki/api/v1/push";
         }
       ];
       scrape_configs = [
@@ -55,4 +57,11 @@
       ];
     };
   };
+  systemd.services.promtail.serviceConfig.EnvironmentFile = [
+    config.sops.templates."promtail-env".path
+  ];
+  sops.templates."promtail-env".content = ''
+    LOKI_PASSWORD=${config.sops.placeholder."loki/password"}
+  '';
+  sops.secrets."loki/password".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
 }

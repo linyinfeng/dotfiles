@@ -237,10 +237,6 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
-            nexusbytes = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
             rica = {
               system = "x86_64-linux";
               tests = import ./lib/tests;
@@ -379,7 +375,6 @@
           (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
           {
             vultr.hostname = "vultr.ts.li7g.com";
-            nexusbytes.hostname = "nexusbytes.ts.li7g.com";
             rica.hostname = "rica.ts.li7g.com";
             tencent.hostname = "tencent.ts.li7g.com";
             x200s.hostname = "x200s.ts.li7g.com";

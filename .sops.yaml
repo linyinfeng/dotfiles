@@ -79,12 +79,6 @@ creation_rules:
       - *main
       age:
       - *tencent
-  - path_regex: ^secrets/nexusbytes\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *nexusbytes
   - path_regex: ^secrets/rica\.yaml$
     key_groups:
     - pgp:

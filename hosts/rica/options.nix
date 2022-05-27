@@ -23,6 +23,18 @@
           default = 3003;
         };
       };
+      influxdb = lib.mkOption {
+        type = lib.types.port;
+        default = 3004;
+      };
+      loki = lib.mkOption {
+        type = lib.types.port;
+        default = 3005;
+      };
+      grafana = lib.mkOption {
+        type = lib.types.port;
+        default = 3006;
+      };
     };
   };
 }

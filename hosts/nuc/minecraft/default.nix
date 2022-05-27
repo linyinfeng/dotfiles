@@ -71,7 +71,7 @@ in
   sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {
-      url = "http://localhost:${toString cfg.ports.influxdb}";
+      url = "https://influxdb.ts.li7g.com";
       organization = "main-org";
       bucket = "minecraft";
       interval = 10;

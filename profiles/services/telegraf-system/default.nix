@@ -1,9 +1,8 @@
 { config, pkgs, ... }:
 
 let
-  influxdbPort = 3004;
   nucInfluxdb = bucket: {
-    urls = [ "http://nuc.ts.li7g.com:${toString influxdbPort}" ];
+    urls = [ "https://influxdb.ts.li7g.com" ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
     bucket = bucket;

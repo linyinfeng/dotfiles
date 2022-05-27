@@ -1,7 +1,10 @@
 { config, lib, ... }:
 
 let
-  defaultTimerConfig = { OnCalendar = "03:00:00"; };
+  defaultTimerConfig = {
+    OnCalendar = "03:00:00";
+    RandomizedDelaySec = "30min";
+  };
 in
 {
   services.restic.backups.b2 = {

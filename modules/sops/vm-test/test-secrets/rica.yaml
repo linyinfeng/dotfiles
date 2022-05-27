@@ -13,6 +13,12 @@ pastebin:
 vaultwarden:
     adminToken: ""
 matrix: ""
+influxdb:
+    password: ""
+grafana:
+    password: ""
+loki:
+    hashedPassword: ""
 sops:
     kms: []
     gcp_kms: []
@@ -28,8 +34,8 @@ sops:
             dHZGS1dIWXI5TXBjKzhFSEI2Zk00TEkKp3XPdfeXR/J1pFeJs1fZOyrh5uomhsIW
             7sC8zb0Rd/lKKpvnve4DeRvpu8rgLbB4jakFO+was6+K321QN0lgPw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-05-26T06:15:59Z"
-    mac: ENC[AES256_GCM,data:Pwc1C8WIZ8P9VKsWuXZ9Z/WRszIJJ02XB1I38txGVEB5aMT4vtmKT4PmHQuBiIo4dNMzheDUlgbgoiYh809lfqL9viIF77iVCV6ilUKR4coZxWhnMkTsaQIFabN8xQy7iepj5sih61x1kujiP7Jutpj1aUok2B9mwPCLECcsvPI=,iv:KJo+eOGADvllC1tSWKr8l6uEWalSB/Zg1h2ADuN2czU=,tag:SaS42PqLs3pYmT2G0IqB0Q==,type:str]
+    lastmodified: "2022-05-27T07:41:08Z"
+    mac: ENC[AES256_GCM,data:zaSKoekGlY8dky31kELrs7ZTV755jWaJaqfyRj0W+PVHWbC8NO1pfp3KFyIFqLDizNzSi48bF0kCopk+N+OyTYFRQ/OLvo28qNoyV0tvkc5RirR2StXQV1Uru8/kV1qjWsl989pJQgSa5tEOfP9VoG1GDYr3WMPkwuUnkjuBa7w=,iv:k7cO08FuwKjFDxh4zm0HHAR24aWWea09kgnVXDfVoZg=,tag:hDp+L5a9xcPV7uE7y+dqfw==,type:str]
     pgp:
         - created_at: "2022-04-28T06:34:31Z"
           enc: |

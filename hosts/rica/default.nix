@@ -29,6 +29,9 @@ in
       ./vaultwarden
       ./matrix
       ./backup
+      ./influxdb
+      ./grafana
+      ./loki
     ];
 
   config = lib.mkMerge [

@@ -1,10 +1,6 @@
 syncthing: ""
 cache-li7g-com:
     key: ""
-influxdb:
-    password: ""
-grafana:
-    password: ""
 cachix:
     linyinfeng: ""
 vaultwarden: ""
@@ -36,8 +32,8 @@ sops:
             L3Ntc3RTT3hDL3l6ZE4ycDErZFhJaEEK5IHBhVhHPeiDC2Jl+cxtgduz37VsM0Kv
             rurGhZ45rwwmJuo0Vs7hCZAnZ7q0nX+d2jUyBIbI8zg39nIYq1gAKA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-05-22T09:53:01Z"
-    mac: ENC[AES256_GCM,data:rRNfgtkTO8Kz4GgSUDBl+7ri+InIHiTWy14HWCJSAXVthabyPXcSEp4Q0sggMVm3OZK9+VwLrrOPhNer7z2qdaerJgMp75+x2m6+xq3+xrS454MQpXuqkeD3+GQ+KFI4MuUFGtlaONOi2P2FjshP7EK/wegFZelbudicQf6KLnc=,iv:FMsJNf2Dd0K891VtClup8I2bgRBh6udsXH3O6B0NZFo=,tag:atHxFd6LOVvH4+rNS87cxg==,type:str]
+    lastmodified: "2022-05-27T07:22:25Z"
+    mac: ENC[AES256_GCM,data:6bI8blw468KUZA6hY4yu7g6bcA4OoaEPDWXePrd8z0kMPrQlzMEmqVMhf4goidSkXBfTUB1dLhygazy0cf8oT7rV12CT+9dhJapg7W4liLGxROKf4dW0ZC+Mej2PnPpG0oT9hwvDUjh3VqP67vbpJ2Z4lsHlGCfzoCfDoJyVf4k=,iv:Ry5ONCVqm4gzgr185cTq8iNPM5UN6wTCZsW/06bVwHY=,tag:rJdGWpBxCa5lQLXuBen+zQ==,type:str]
     pgp:
         - created_at: "2022-03-19T08:32:49Z"
           enc: |

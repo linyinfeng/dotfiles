@@ -12,7 +12,7 @@
         # priority of cache.nixos.org and its mirror: 40
         # priority of cachix: 41
         # priority of cache.li7g.com: 50
-        "https://nuc.li7g.com:8443/store?priority=49"
+        # "https://nuc.li7g.com:8443/store?priority=49"
       ];
     })
   ];

@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  cfg = config.hosts.nuc;
+  cfg = config.hosts.rica;
   setup = pkgs.substituteAll {
     src = ./setup.sh;
     isExecutable = true;
@@ -38,12 +38,25 @@ in
     after = [ "influxdb2.service" ];
     wantedBy = [ "multi-user.target" ];
   };
-  sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /rica.yaml;
   sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   environment.systemPackages = with pkgs; [
     influxdb2
   ];
-  networking.firewall.allowedTCPPorts = [
-    cfg.ports.influxdb
+  security.acme.certs."main".extraDomainNames = [
+    "influxdb.li7g.com"
+    "influxdb.ts.li7g.com"
   ];
+  services.nginx = {
+    virtualHosts."influxdb.li7g.com" = {
+      forceSSL = true;
+      useACMEHost = "main";
+      serverAliases = [
+        "influxdb.ts.li7g.com"
+      ];
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString cfg.ports.influxdb}/";
+      };
+    };
+  };
 }

@@ -14,25 +14,13 @@
       ];
     };
     ports = {
-      grafana = lib.mkOption {
+      hydra = lib.mkOption {
         type = lib.types.port;
         default = 3001;
       };
-      hydra = lib.mkOption {
-        type = lib.types.port;
-        default = 3002;
-      };
       nixServe = lib.mkOption {
         type = lib.types.port;
-        default = 3003;
-      };
-      influxdb = lib.mkOption {
-        type = lib.types.port;
-        default = 3004;
-      };
-      loki = lib.mkOption {
-        type = lib.types.port;
-        default = 3005;
+        default = 3002;
       };
     };
   };

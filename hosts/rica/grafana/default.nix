@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  cfg = config.hosts.nuc;
+  cfg = config.hosts.rica;
 in
 {
   options = {
@@ -17,11 +17,9 @@ in
   };
   config = {
     services.nginx = {
-      virtualHosts = {
-        "nuc.li7g.com" = {
-          locations."/grafana/" = {
-            proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
-          };
+      virtualHosts."rica.li7g.com" = {
+        locations."/grafana/" = {
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
         };
       };
     };
@@ -44,7 +42,7 @@ in
     };
     sops.secrets."grafana/password" = {
       owner = config.users.users.grafana.name;
-      sopsFile = config.sops.secretsDir + /nuc.yaml;
+      sopsFile = config.sops.secretsDir + /rica.yaml;
     };
     system.activationScripts.fixGrafanaPermission = {
       deps = [ "users" ];
@@ -73,7 +71,7 @@ in
         {
           name = "InflexDB";
           type = "influxdb";
-          url = "http://localhost:${toString cfg.ports.influxdb}";
+          url = "https://influxdb.ts.li7g.com";
           uid = "GQCF0Gonz";
           jsonData = {
             version = "Flux";

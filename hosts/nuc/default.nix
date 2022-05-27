@@ -43,8 +43,6 @@ in
       nianyi
     ]) ++ [
       ./options.nix
-      ./influxdb
-      ./grafana
       ./hydra
       ./minecraft
       ./backup
@@ -73,6 +71,8 @@ in
 
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
+
+      systemd.watchdog.runtimeTime = "60s";
 
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
       boot.kernelModules = [ "kvm-intel" ];
@@ -183,49 +183,6 @@ in
     # postgresql
     {
       services.postgresql.enable = true;
-    }
-
-    # loki
-    {
-      services.loki = {
-        enable = true;
-        configuration = {
-          auth_enabled = false;
-          server.http_listen_port = cfg.ports.loki;
-
-          common = {
-            path_prefix = config.services.loki.dataDir;
-            replication_factor = 1;
-            ring = {
-              instance_addr = "127.0.0.1";
-              kvstore.store = "inmemory";
-            };
-          };
-
-          compactor = {
-            retention_enabled = true;
-          };
-          limits_config = {
-            retention_period = "336h"; # 14 days
-          };
-
-          schema_config.configs = [
-            {
-              from = "2020-10-24";
-              store = "boltdb-shipper";
-              object_store = "filesystem";
-              schema = "v11";
-              index = {
-                prefix = "index_";
-                period = "24h";
-              };
-            }
-          ];
-        };
-      };
-      networking.firewall.allowedTCPPorts = [
-        cfg.ports.loki
-      ];
     }
 
     # store serving
