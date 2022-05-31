@@ -376,7 +376,10 @@
   :ensure t)
 
 (use-package telega
-  :ensure t)
+  :ensure t
+  :custom
+  (telega-proxies '((:server "localhost" :port 8899 :enable t
+                             :type (:@type "proxyTypeSocks5")))))
 
 (use-package terraform-mode
   :ensure t)

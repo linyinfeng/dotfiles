@@ -16,9 +16,14 @@ in
     };
   };
   config = {
+    security.acme.certs."main".extraDomainNames = [
+      "grafana.li7g.com"
+    ];
     services.nginx = {
-      virtualHosts."rica.li7g.com" = {
-        locations."/grafana/" = {
+      virtualHosts."grafana.li7g.com" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
         };
       };

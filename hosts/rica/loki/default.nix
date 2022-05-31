@@ -40,9 +40,18 @@ in
       ];
     };
   };
+  security.acme.certs."main".extraDomainNames = [
+    "loki.li7g.com"
+    "loki.ts.li7g.com"
+  ];
   services.nginx = {
-    virtualHosts."rica.li7g.com" = {
-      locations."/loki/api/v1"= {
+    virtualHosts."loki.li7g.com" = {
+      forceSSL = true;
+      useACMEHost = "main";
+      serverAliases = [
+        "loki.ts.li7g.com"
+      ];
+      locations."/"= {
         proxyPass = "http://localhost:${toString cfg.ports.loki}";
         extraConfig = ''
           auth_basic "loki";
