@@ -1,36 +1,45 @@
-{ config, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   defaultTimerConfig = {
     OnCalendar = "03:00:00";
     RandomizedDelaySec = "30min";
   };
-in
-{
-  services.restic.backups.b2 = {
-    initialize = true;
+  cfgB2 = {
     repository = "b2:yinfeng-backup";
     environmentFile = config.sops.templates."restic-b2-env".path;
     passwordFile = config.sops.secrets."restic/password".path;
-    timerConfig = lib.mkDefault defaultTimerConfig;
   };
-  services.restic.backups.minio = {
-    initialize = true;
+  cfgMinio = {
     repository = "s3:https://minio.li7g.com/backup";
     environmentFile = config.sops.templates."restic-minio-env".path;
     passwordFile = config.sops.secrets."restic/password".path;
+  };
+
+  mkScript = cfg: pkgs.substituteAll ({
+    src = ./wrapper.sh;
+    isExecutable = true;
+    inherit (pkgs) restic;
+  } // cfg);
+  mkServiceCfg = cfg: {
+    initialize = true;
     timerConfig = lib.mkDefault defaultTimerConfig;
+  } // cfg;
+
+  scripts = pkgs.stdenvNoCC.mkDerivation {
+    name = "restic-scripts";
+    buildCommand = ''
+      install -Dm755 $resticB2    $out/bin/restic-b2
+      install -Dm755 $resticMinio $out/bin/restic-minio
+    '';
+    resticB2 = mkScript cfgB2;
+    resticMinio = mkScript cfgMinio;
   };
-  systemd.services."restic-backups-b2" = {
-    environment =
-      lib.mkIf (config.networking.fw-proxy.enable)
-        config.networking.fw-proxy.environment;
-  };
-  systemd.services."restic-backups-minio" = {
-    # environment =
-    #   lib.mkIf (config.networking.fw-proxy.enable)
-    #     config.networking.fw-proxy.environment;
-  };
+in
+{
+  services.restic.backups.b2 = mkServiceCfg cfgB2;
+  services.restic.backups.minio =  mkServiceCfg cfgMinio;
+
   sops.templates."restic-b2-env".content = ''
     B2_ACCOUNT_ID="${config.sops.placeholder."backup-b2/keyId"}"
     B2_ACCOUNT_KEY="${config.sops.placeholder."backup-b2/accessKey"}"
@@ -44,4 +53,8 @@ in
   sops.secrets."backup-b2/keyId".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."backup-minio/accessKey".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."backup-minio/keyId".sopsFile = config.sops.secretsDir + /common.yaml;
+
+  environment.systemPackages = [
+    scripts
+  ];
 }
