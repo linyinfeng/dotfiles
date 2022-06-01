@@ -25,16 +25,4 @@
       sha256 = "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=";
     };
   };
-  telega-el = {
-    pname = "telega-el";
-    version = "311d24e86fa353fc8ba2af1c9c9f3e228767fedd";
-    src = fetchgit {
-      url = "https://github.com/zevlg/telega.el.git";
-      rev = "311d24e86fa353fc8ba2af1c9c9f3e228767fedd";
-      fetchSubmodules = false;
-      deepClone = false;
-      leaveDotGit = false;
-      sha256 = "sha256-qpspzWtFd1g3Xa/w9lZKVFXcAhirp8gyYhU3LDP8+Wg=";
-    };
-  };
 }

@@ -34,23 +34,5 @@
             "url": "https://github.com/tumashu/pyim-greatdict.git"
         },
         "version": "87594b2a4d6391cf69475257b286d3b844791571"
-    },
-    "telega-el": {
-        "cargoLocks": null,
-        "extract": null,
-        "name": "telega-el",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "rev": "311d24e86fa353fc8ba2af1c9c9f3e228767fedd",
-            "sha256": "sha256-qpspzWtFd1g3Xa/w9lZKVFXcAhirp8gyYhU3LDP8+Wg=",
-            "type": "git",
-            "url": "https://github.com/zevlg/telega.el.git"
-        },
-        "version": "311d24e86fa353fc8ba2af1c9c9f3e228767fedd"
     }
 }
