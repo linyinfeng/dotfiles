@@ -12,6 +12,9 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
+      telega = epkgs.telega.override {
+        inherit (pkgs.sources.telega-el) src;
+      };
     };
   });
   fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;

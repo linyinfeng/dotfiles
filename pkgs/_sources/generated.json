@@ -1,40 +1,56 @@
 {
-    "pyim-greatdict": {
-        "pinned": false,
-        "cargoLock": null,
-        "name": "pyim-greatdict",
-        "version": "87594b2a4d6391cf69475257b286d3b844791571",
-        "passthru": null,
-        "src": {
-            "deepClone": false,
-            "url": "https://github.com/tumashu/pyim-greatdict.git",
-            "leaveDotGit": false,
-            "fetchSubmodules": false,
-            "name": null,
-            "type": "git",
-            "sha256": "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=",
-            "rev": "87594b2a4d6391cf69475257b286d3b844791571"
-        },
-        "extract": null,
-        "rustGitDeps": null
-    },
     "ligature-el": {
-        "pinned": false,
-        "cargoLock": null,
+        "cargoLocks": null,
+        "extract": null,
         "name": "ligature-el",
-        "version": "9357156a917a021a87b33ee391567a5d8e44794a",
         "passthru": null,
+        "pinned": false,
         "src": {
             "deepClone": false,
-            "url": "https://github.com/mickeynp/ligature.el",
-            "leaveDotGit": false,
             "fetchSubmodules": false,
+            "leaveDotGit": false,
             "name": null,
-            "type": "git",
+            "rev": "9357156a917a021a87b33ee391567a5d8e44794a",
             "sha256": "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=",
-            "rev": "9357156a917a021a87b33ee391567a5d8e44794a"
+            "type": "git",
+            "url": "https://github.com/mickeynp/ligature.el.git"
         },
+        "version": "9357156a917a021a87b33ee391567a5d8e44794a"
+    },
+    "pyim-greatdict": {
+        "cargoLocks": null,
         "extract": null,
-        "rustGitDeps": null
+        "name": "pyim-greatdict",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "87594b2a4d6391cf69475257b286d3b844791571",
+            "sha256": "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=",
+            "type": "git",
+            "url": "https://github.com/tumashu/pyim-greatdict.git"
+        },
+        "version": "87594b2a4d6391cf69475257b286d3b844791571"
+    },
+    "telega-el": {
+        "cargoLocks": null,
+        "extract": null,
+        "name": "telega-el",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "311d24e86fa353fc8ba2af1c9c9f3e228767fedd",
+            "sha256": "sha256-qpspzWtFd1g3Xa/w9lZKVFXcAhirp8gyYhU3LDP8+Wg=",
+            "type": "git",
+            "url": "https://github.com/zevlg/telega.el.git"
+        },
+        "version": "311d24e86fa353fc8ba2af1c9c9f3e228767fedd"
     }
 }

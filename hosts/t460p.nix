@@ -113,29 +113,6 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
-  services.snapper.configs = {
-    persist = {
-      subvolume = "/persist";
-      extraConfig = ''
-        ALLOW_GROUPS="${config.users.groups.wheel.name}"
-        TIMELINE_CREATE="yes"
-        TIMELINE_CLEANUP="yes"
-        TIMELINE_MIN_AGE="1800"
-        TIMELINE_LIMIT_HOURLY="10"
-        TIMELINE_LIMIT_DAILY="10"
-        TIMELINE_LIMIT_WEEKLY="4"
-        TIMELINE_LIMIT_MONTHLY="0"
-        TIMELINE_LIMIT_YEARLY="0"
-        NUMBER_CLEANUP="yes"
-        NUMBER_MIN_AGE="1800"
-        NUMBER_LIMIT="20"
-      '';
-    };
-  };
-  environment.shellAliases = {
-    snap = "snapper -c persist";
-  };
-
   fonts.fontconfig.localConf = ''
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">

@@ -32,6 +32,9 @@ jobs:
     - name: Nix flake update
       run: |
         nix flake update
+    - name: Update pkgs
+      run: |
+        nix develop --command nvfetcher
     - name: Test evaluation
       run: |
         set -e
