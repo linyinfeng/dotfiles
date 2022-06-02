@@ -6,7 +6,7 @@ let
     token = "$INFLUX_TOKEN";
     organization = "main-org";
     bucket = bucket;
-    tagpass.output_bucket = [bucket];
+    tagpass.output_bucket = [ bucket ];
   };
 in
 {

@@ -38,7 +38,7 @@ let
 in
 {
   services.restic.backups.b2 = mkServiceCfg cfgB2;
-  services.restic.backups.minio =  mkServiceCfg cfgMinio;
+  services.restic.backups.minio = mkServiceCfg cfgMinio;
 
   sops.templates."restic-b2-env".content = ''
     B2_ACCOUNT_ID="${config.sops.placeholder."backup-b2/keyId"}"

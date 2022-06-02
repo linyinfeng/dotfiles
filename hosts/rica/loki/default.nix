@@ -51,7 +51,7 @@ in
       serverAliases = [
         "loki.ts.li7g.com"
       ];
-      locations."/"= {
+      locations."/" = {
         proxyPass = "http://localhost:${toString cfg.ports.loki}";
         extraConfig = ''
           auth_basic "loki";

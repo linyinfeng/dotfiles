@@ -110,6 +110,23 @@ in
     };
   };
 
+  # mc-client
+  home-manager.users.yinfeng = { config, ... }:
+    let
+      gameDir = ".local/share/mc-li7g-com";
+    in
+    {
+      home.packages = [
+        (pkgs.writeShellScriptBin "mc-li7g-com" ''
+          "${pkgs.mc-config.client-launcher}/bin/minecraft" \
+            --gameDir "${config.home.homeDirectory}/${gameDir}"
+        '')
+      ];
+      home.global-persistence.directories = [
+        gameDir
+      ];
+    };
+
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
