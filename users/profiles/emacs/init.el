@@ -377,6 +377,7 @@
 
 (use-package telega
   :ensure t
+  :defer t
   :custom
   (telega-proxies '((:server "localhost" :port 8899 :enable t
                              :type (:@type "proxyTypeSocks5")))))
