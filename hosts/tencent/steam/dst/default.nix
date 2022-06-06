@@ -6,6 +6,9 @@ let
   dstAppDir = "${dstRoot}/app";
   dstApp = "343050";
   dstStorageDir = "${dstRoot}/storage";
+  dstConfigDirName = "config";
+  dstClusterName = "Main";
+  dstClusterDir = "${dstStorageDir}/${dstConfigDirName}/${dstClusterName}";
   dstTTYCaves = "${dstRoot}/tty-caves";
   dstTTYMaster = "${dstRoot}/tty-master";
   dstRunnigIndicator = "${dstRoot}/running";
@@ -35,6 +38,11 @@ in
       # install modes
       echo "ServerModCollectionSetup(\"2785301768\")" \
         >> "${gameHome}/${dstAppDir}/mods/dedicated_server_mods_setup.lua"
+      # modify settings
+      cp ${./modoverrides.lua} "${gameHome}/${dstClusterDir}/Master/modoverrides.lua"
+      cp ${./modoverrides.lua} "${gameHome}/${dstClusterDir}/Caves/modoverrides.lua"
+      cp ${./Master/worldgenoverride.lua} "${gameHome}/${dstClusterDir}/Master/worldgenoverride.lua"
+      cp ${./Caves/worldgenoverride.lua} "${gameHome}/${dstClusterDir}/Caves/worldgenoverride.lua"
 
       # create running indicator
       touch "${gameHome}/${dstRunnigIndicator}"
@@ -44,8 +52,8 @@ in
       run_shared=(steam-run)
       run_shared+=(./dontstarve_dedicated_server_nullrenderer_x64)
       run_shared+=(-persistent_storage_root "${gameHome}/${dstStorageDir}")
-      run_shared+=(-conf_dir config)
-      run_shared+=(-cluster "Main")
+      run_shared+=(-conf_dir "${dstConfigDirName}")
+      run_shared+=(-cluster "${dstClusterName}")
       run_shared+=(-monitor_parent_process $$)
       socat pty,link="${gameHome}/${dstTTYCaves}",raw STDOUT | \
       "''${run_shared[@]}" -shard Caves  -console | sed --unbuffered 's/^/Caves:  /' &

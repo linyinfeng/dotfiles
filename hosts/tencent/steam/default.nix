@@ -5,7 +5,7 @@ let
 in
 {
   imports = [
-    ./dst.nix
+    ./dst
   ];
 
   programs.steam.enable = true;
