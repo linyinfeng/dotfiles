@@ -31,7 +31,8 @@ in
     wqy_microhei
 
     jetbrains-mono
-    iosevka-yinfeng
+    # TODO broken
+    # iosevka-yinfeng
     font-awesome
     powerline-fonts
     sarasa-gothic
@@ -53,7 +54,8 @@ in
       "Source Han Serif K"
     ];
     monospace = lib.mkAfter [
-      "Iosevka Yinfeng"
+      # "Iosevka Yinfeng"
+      "Sarasa Mono Slab SC"
     ];
     emoji = lib.mkBefore [
       "Noto Color Emoji"
