@@ -34,8 +34,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."cache/keyId".path}"
-        "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
+        "cache-key-id:${config.sops.secrets."cache/key-id".path}"
+        "cache-access-key:${config.sops.secrets."cache/access-key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
     };
@@ -72,8 +72,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."cache/keyId".path}"
-        "cache-access-key:${config.sops.secrets."cache/accessKey".path}"
+        "cache-key-id:${config.sops.secrets."cache/key-id".path}"
+        "cache-access-key:${config.sops.secrets."cache/access-key".path}"
       ];
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable)
@@ -82,8 +82,8 @@ in
     after = [ "hydra-update-gc-roots.service" ];
   };
 
-  sops.secrets."cache/keyId".sopsFile = config.sops.secretsDir + /nuc.yaml;
-  sops.secrets."cache/accessKey".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cache/key-id".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cache/access-key".sopsFile = config.sops.secretsDir + /nuc.yaml;
   sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   services.notify-failure.services = [

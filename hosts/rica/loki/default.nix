@@ -62,9 +62,9 @@ in
   };
   sops.templates."loki-auth-file" = {
     content = ''
-      loki:${config.sops.placeholder."loki/hashedPassword"}
+      loki:${config.sops.placeholder."loki/hashed-password"}
     '';
     owner = "nginx";
   };
-  sops.secrets."loki/hashedPassword".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."loki/hashed-password".sopsFile = config.sops.secretsDir + /rica.yaml;
 }

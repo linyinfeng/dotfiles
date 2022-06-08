@@ -52,10 +52,10 @@ in
     environmentFile = config.sops.templates."vaultwarden-env".path;
   };
   sops.templates."vaultwarden-env".content = ''
-    ADMIN_TOKEN=${config.sops.placeholder."vaultwarden/adminToken"}
+    ADMIN_TOKEN=${config.sops.placeholder."vaultwarden/admin-token"}
     SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
   '';
-  sops.secrets."vaultwarden/adminToken".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."vaultwarden/admin-token".sopsFile = config.sops.secretsDir + /rica.yaml;
 
   services.postgresql.ensureDatabases = [ "vaultwarden" ];
   services.postgresql.ensureUsers = [

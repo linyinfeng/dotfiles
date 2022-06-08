@@ -1,6 +1,9 @@
 result*
 .direnv
 .vscode
+.data
+terraform/terraform.tfstate
+.terraform
 
 # Result of bud commands
 vm

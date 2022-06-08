@@ -41,18 +41,18 @@ in
   services.restic.backups.minio = mkServiceCfg cfgMinio;
 
   sops.templates."restic-b2-env".content = ''
-    B2_ACCOUNT_ID="${config.sops.placeholder."backup-b2/keyId"}"
-    B2_ACCOUNT_KEY="${config.sops.placeholder."backup-b2/accessKey"}"
+    B2_ACCOUNT_ID="${config.sops.placeholder."backup-b2/key-id"}"
+    B2_ACCOUNT_KEY="${config.sops.placeholder."backup-b2/access-key"}"
   '';
   sops.templates."restic-minio-env".content = ''
-    AWS_ACCESS_KEY_ID="${config.sops.placeholder."backup-minio/keyId"}"
-    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."backup-minio/accessKey"}"
+    AWS_ACCESS_KEY_ID="${config.sops.placeholder."backup-minio/key-id"}"
+    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."backup-minio/access-key"}"
   '';
   sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-b2/accessKey".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-b2/keyId".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-minio/accessKey".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-minio/keyId".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."backup-b2/access-key".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."backup-b2/key-id".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."backup-minio/access-key".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."backup-minio/key-id".sopsFile = config.sops.secretsDir + /common.yaml;
 
   environment.systemPackages = [
     scripts

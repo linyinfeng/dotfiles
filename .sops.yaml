@@ -17,6 +17,10 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
+  - path_regex: terraform.tfstate$
+    key_groups:
+    - pgp:
+      - *main
   - path_regex: ^secrets/common\.yaml$
     key_groups:
     - pgp:

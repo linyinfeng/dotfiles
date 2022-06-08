@@ -161,14 +161,14 @@ in
         serviceConfig = {
           DynamicUser = true;
           LoadCredential = [
-            "key-id:${config.sops.secrets."pastebin/keyId".path}"
-            "access-key:${config.sops.secrets."pastebin/accessKey".path}"
+            "key-id:${config.sops.secrets."pastebin/key-id".path}"
+            "access-key:${config.sops.secrets."pastebin/access-key".path}"
           ];
         };
         wantedBy = [ "multi-user.target" ];
       };
-      sops.secrets."pastebin/keyId".sopsFile = config.sops.secretsDir + /rica.yaml;
-      sops.secrets."pastebin/accessKey".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."pastebin/key-id".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."pastebin/access-key".sopsFile = config.sops.secretsDir + /rica.yaml;
 
       services.notify-failure.services = [
         "pastebin"

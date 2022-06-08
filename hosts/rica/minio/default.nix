@@ -21,9 +21,14 @@ in
     enable = true;
     listenAddress = "127.0.0.1:${toString minioPort}";
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
-    rootCredentialsFile = config.sops.secrets."minio/root".path;
+    rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
   };
-  sops.secrets."minio/root".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."minio/root/user".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."minio/root/password".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.templates."minio-root-credentials".content = ''
+    MINIO_ROOT_USER=${config.sops.placeholder."minio/root/user"}
+    MINIO_ROOT_PASSWORD=${config.sops.placeholder."minio/root/password"}
+  '';
   security.acme.certs."main".extraDomainNames = [
     "minio.li7g.com"
     "minio-overlay.li7g.com"
