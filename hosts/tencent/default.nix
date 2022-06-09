@@ -20,9 +20,6 @@ in
       networking.fw-proxy
       networking.wireguard-home
       services.acme
-    ]) ++
-    (with profiles.users; [
-      nianyi
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
@@ -77,15 +74,6 @@ in
         [{
           device = "/swap/swapfile";
         }];
-    }
-
-    # environment for nianyi
-    {
-      system.autoUpgrade.enable = lib.mkForce false;
-      services.scheduled-reboot.enable = lib.mkForce false;
-      virtualisation.podman.enable = true;
-      users.users.nianyi.extraGroups = [ "wheel" ];
-      security.sudo.wheelNeedsPassword = false;
     }
 
     # acme
