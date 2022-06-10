@@ -19,7 +19,6 @@ lib.mkIf config.home.graphical {
     inkscape
     keepassxc
     libreoffice-fresh
-    lollypop
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
