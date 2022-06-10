@@ -44,6 +44,7 @@
   };
 
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = true;
 
   fileSystems."/" =
     {

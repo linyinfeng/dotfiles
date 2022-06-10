@@ -42,6 +42,7 @@ in
   };
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = true;
   services.thermald.enable = true;
   services.fwupd.enable = true;
 

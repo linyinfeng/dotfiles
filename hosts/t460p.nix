@@ -49,6 +49,7 @@ in
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = true;
   hardware.video.hidpi.enable = true;
   programs.steam.hidpi = {
     enable = true;
