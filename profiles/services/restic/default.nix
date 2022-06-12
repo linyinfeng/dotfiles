@@ -41,18 +41,18 @@ in
   services.restic.backups.minio = mkServiceCfg cfgMinio;
 
   sops.templates."restic-b2-env".content = ''
-    B2_ACCOUNT_ID="${config.sops.placeholder."backup-b2/key-id"}"
-    B2_ACCOUNT_KEY="${config.sops.placeholder."backup-b2/access-key"}"
+    B2_ACCOUNT_ID="${config.sops.placeholder."b2_backup_key_id/value"}"
+    B2_ACCOUNT_KEY="${config.sops.placeholder."b2_backup_access_key/value"}"
   '';
   sops.templates."restic-minio-env".content = ''
-    AWS_ACCESS_KEY_ID="${config.sops.placeholder."backup-minio/key-id"}"
-    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."backup-minio/access-key"}"
+    AWS_ACCESS_KEY_ID="${config.sops.placeholder."minio_backup_key_id/value"}"
+    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key/value"}"
   '';
   sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-b2/access-key".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-b2/key-id".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-minio/access-key".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."backup-minio/key-id".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."b2_backup_key_id/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."b2_backup_access_key/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."minio_backup_key_id/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."minio_backup_access_key/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
 
   environment.systemPackages = [
     scripts

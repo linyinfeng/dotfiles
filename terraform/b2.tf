@@ -31,3 +31,12 @@ resource "b2_application_key" "backup" {
     "writeFiles"
   ]
 }
+
+output "b2_backup_key_id" {
+  value = b2_application_key.backup.application_key_id
+  sensitive = false
+}
+output "b2_backup_access_key" {
+  value = b2_application_key.backup.application_key
+  sensitive = true
+}

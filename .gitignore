@@ -2,7 +2,9 @@ result*
 .direnv
 .vscode
 .data
+secrets/terraform-outputs.plain.yaml
 terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
 .terraform
 
 # Result of bud commands

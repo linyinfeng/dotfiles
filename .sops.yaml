@@ -4,7 +4,6 @@ keys:
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
   - &x200s      age1naq9xtdmugcede56kpgfu8tu3gq20g6tgrt2x3vz08ge86rwvpqqfxaw2e
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
-  - &nexusbytes age1xya6kmcpxw6n6xdp8pnl5kzhpu39vpfqn73cg9su8rvw63r89y8qc3xmy9
   - &rica       age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
@@ -13,10 +12,23 @@ keys:
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
 creation_rules:
-  - path_regex: ^secrets/terraform\.yaml$
+  - path_regex: ^secrets/terraform-inputs\.yaml$
     key_groups:
     - pgp:
       - *main
+  - path_regex: ^secrets/terraform-outputs(\.plain)?\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *t460p
+      - *xps8930
+      - *x200s
+      - *nuc
+      - *rica
+      - *vultr
+      - *tencent
+      - *aws
   - path_regex: terraform.tfstate$
     key_groups:
     - pgp:
@@ -30,7 +42,6 @@ creation_rules:
       - *xps8930
       - *x200s
       - *nuc
-      - *nexusbytes
       - *rica
       - *vultr
       - *tencent
@@ -45,7 +56,6 @@ creation_rules:
       - *xps8930
       - *x200s
       - *nuc
-      - *nexusbytes
       - *rica
       - *vultr
       - *tencent

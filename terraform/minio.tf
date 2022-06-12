@@ -50,6 +50,15 @@ resource "minio_iam_user" "cache" {
   name = "cache"
 }
 
+output "minio_cache_key_id" {
+  value = minio_iam_user.cache.id
+  sensitive = false
+}
+output "minio_cache_access_key" {
+  value = minio_iam_user.cache.secret
+  sensitive = true
+}
+
 data "minio_iam_policy_document" "cache" {
   statement {
     actions = [
@@ -80,6 +89,15 @@ resource "minio_s3_bucket" "backup" {
 
 resource "minio_iam_user" "backup" {
   name = "backup"
+}
+
+output "minio_backup_key_id" {
+  value = minio_iam_user.backup.id
+  sensitive = false
+}
+output "minio_backup_access_key" {
+  value = minio_iam_user.backup.secret
+  sensitive = true
 }
 
 data "minio_iam_policy_document" "backup" {
@@ -113,6 +131,15 @@ resource "minio_s3_bucket" "pastebin" {
 
 resource "minio_iam_user" "pastebin" {
   name = "pastebin"
+}
+
+output "minio_pastebin_key_id" {
+  value = minio_iam_user.pastebin.id
+  sensitive = false
+}
+output "minio_pastebin_access_key" {
+  value = minio_iam_user.pastebin.secret
+  sensitive = true
 }
 
 data "minio_iam_policy_document" "pastebin" {
@@ -149,6 +176,15 @@ resource "minio_ilm_policy" "pastebin_expire_1d" {
 
 resource "minio_iam_user" "metrics" {
   name = "metrics"
+}
+
+output "minio_metrics_key_id" {
+  value = minio_iam_user.metrics.id
+  sensitive = false
+}
+output "minio_metrics_access_key" {
+  value = minio_iam_user.metrics.secret
+  sensitive = true
 }
 
 data "minio_iam_policy_document" "metrics" {
