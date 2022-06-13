@@ -352,7 +352,11 @@
 
         home = {
           imports = [ (digga.lib.importExportableModules ./users/modules) ];
-          modules = [ ];
+          modules = [
+            # TODO nix flake show broken due to IFD
+            # see https://github.com/nix-community/home-manager/issues/1262
+            { manual.manpages.enable = false; }
+          ];
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = nixos.lib.fix (suites: {
