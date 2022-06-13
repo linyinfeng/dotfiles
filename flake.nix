@@ -15,23 +15,32 @@
       digga.inputs.deploy.follows = "deploy";
       digga.inputs.flake-compat.follows = "flake-compat";
       digga.inputs.nixos-generators.follows = "nixos-generators";
+      digga.inputs.devshell.follows = "devshell";
+
+      devshell.url = "github:numtide/devshell";
+      devshell.inputs.nixpkgs.follows = "nixos";
+      devshell.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
       bud.url = "github:divnix/bud";
       bud.inputs.nixpkgs.follows = "nixos";
-      bud.inputs.devshell.follows = "digga/devshell";
+      bud.inputs.devshell.follows = "devshell";
       bud.inputs.beautysh.follows = "beautysh";
+
       beautysh.url = "github:lovesegfault/beautysh";
       beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       beautysh.inputs.nixpkgs.follows = "nixos";
 
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
+      home.inputs.flake-compat.follows = "flake-compat";
+      home.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
 
       deploy.url = "github:serokell/deploy-rs";
       deploy.inputs.nixpkgs.follows = "nixos";
       deploy.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       deploy.inputs.flake-compat.follows = "flake-compat";
       deploy.inputs.fenix.follows = "fenix";
+
       fenix.url = "github:nix-community/fenix";
       fenix.inputs.nixpkgs.follows = "nixos";
 

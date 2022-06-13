@@ -180,6 +180,7 @@ in
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."network/subnet".sopsFile = config.sops.secretsDir + /rica.yaml;
       sops.secrets."network/gateway".sopsFile = config.sops.secretsDir + /rica.yaml;
       sops.templates."enX0" = {
         content = ''
@@ -187,7 +188,7 @@ in
           Name=enX0
 
           [Network]
-          Address=${config.sops.placeholder."network/address"}
+          Address=${config.sops.placeholder."network/address"}/${config.sops.placeholder."network/subnet"}
           Gateway=${config.sops.placeholder."network/gateway"}
           DNS=8.8.8.8 8.8.4.4
         '';
