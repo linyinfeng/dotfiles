@@ -1,5 +1,6 @@
 keys:
   - &main       7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
+  - &github     age1r3rnncwc240u9ewe7rss99r6tuwfannj4k4cwxzyu7wpl6twydnsnmg88w
   - &t460p      age1c8ex4vam0qx6kldl3w2tddhmejxkrlf90mmfe334myq2l9cnfq9sgehs5d
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
   - &x200s      age1naq9xtdmugcede56kpgfu8tu3gq20g6tgrt2x3vz08ge86rwvpqqfxaw2e
@@ -16,6 +17,8 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
+      age:
+      - *github
   - path_regex: ^secrets/terraform-outputs(\.plain)?\.yaml$
     key_groups:
     - pgp:
@@ -33,6 +36,12 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
+      age:
+      - *github
+  - path_regex: terraform.plan$
+    key_groups:
+    - age:
+      - *github
   - path_regex: ^secrets/common\.yaml$
     key_groups:
     - pgp:
@@ -99,6 +108,13 @@ creation_rules:
       - *main
       age:
       - *rica
+  - path_regex: ^secrets/rica-terraform\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *rica
+      - *github
   - path_regex: ^secrets/aws\.yaml$
     key_groups:
     - pgp:

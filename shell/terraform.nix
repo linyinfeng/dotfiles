@@ -16,9 +16,11 @@
 
         function cleanup {
           cd $PRJ_ROOT
-          echo "encrypt terraform state to '$encrypted_state_file'..." >&2
-          sops --encrypt "$unencrypted_state_file" > "$encrypted_state_file"
-          rm "$unencrypted_state_file"
+          if [ -n "$(cat "$unencrypted_state_file")" ]; then
+            echo "encrypt terraform state to '$encrypted_state_file'..." >&2
+            sops --encrypt "$unencrypted_state_file" > "$encrypted_state_file"
+            rm "$unencrypted_state_file"
+          fi
         }
         trap cleanup EXIT
 
@@ -44,13 +46,13 @@
 
     {
       category = "infrastructure";
-      name = "terraform-upgrade";
+      name = "terraform-init";
       help = "upgrade terraform providers";
       command = ''
         set -e
 
         cd $PRJ_ROOT/terraform
-        ${pkgs.terraform}/bin/terraform init -upgrade
+        ${pkgs.terraform}/bin/terraform init "$@"
       '';
     }
   ];

@@ -179,7 +179,7 @@ in
       networking.useNetworkd = true;
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
-      sops.secrets."network/address".sopsFile = config.sops.secretsDir + /rica.yaml;
+      sops.secrets."network/address".sopsFile = config.sops.secretsDir + /rica-terraform.yaml;
       sops.secrets."network/subnet".sopsFile = config.sops.secretsDir + /rica.yaml;
       sops.secrets."network/gateway".sopsFile = config.sops.secretsDir + /rica.yaml;
       sops.templates."enX0" = {

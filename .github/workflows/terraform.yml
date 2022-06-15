@@ -1,0 +1,101 @@
+name: "Terraform"
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      diff: ${{ steps.plan.outputs.diff }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://github.com/numtide/nix-unstable-installer/releases/latest/download/install
+        nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - name: Setup cachix
+      uses: cachix/cachix-action@master
+      with:
+        name: linyinfeng
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - name: Cache terraform
+      uses: actions/cache@main
+      with:
+        path: terraform/.terraform/providers
+        key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
+    - name: Terraform init
+      run: |
+        nix develop --command terraform-init
+    - name: Terraform plan
+      id: plan
+      run: |
+        set +e
+        nix develop --command terraform-wrapper plan -out="$PWD/terraform/terraform.plan" -detailed-exitcode
+        exit_code=$?
+        set -e
+        if [ "$exit_code" -eq 0 ]; then
+          # success, empty diff
+          echo '::set-output name=diff::false'
+        elif [ "$exit_code" -eq 2 ]; then
+          # success, non-empty diff
+          echo '::set-output name=diff::true'
+        else
+          exit "$exit_code"
+        fi
+    - name: Encrypt plan
+      if: steps.plan.outputs.diff == 'true'
+      run: |
+        nix develop --command sops --encrypt terraform/terraform.plan > secrets/terraform.plan
+    - name: Upload plan
+      if: steps.plan.outputs.diff == 'true'
+      uses: actions/upload-artifact@main
+      with:
+        name: plan
+        path: secrets/terraform.plan
+
+  apply:
+    runs-on: ubuntu-latest
+    environment: infrastructure
+    needs: [ plan ]
+    if: |
+      needs.plan.outputs.diff == 'true' &&
+      github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://github.com/numtide/nix-unstable-installer/releases/latest/download/install
+        nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - name: Setup cachix
+      uses: cachix/cachix-action@master
+      with:
+        name: linyinfeng
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - name: Cache terraform
+      uses: actions/cache@main
+      with:
+        path: terraform/.terraform/providers
+        key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
+    - name: Terraform init
+      run: |
+        nix develop --command terraform-init
+    - name: Download plan
+      uses: actions/download-artifact@main
+      with:
+        name: plan
+    - name: Decrypt plan
+      run: |
+        nix develop --command sops --decrypt secrets/terraform.plan > terraform/terraform.plan
+    - name: Terraform apply
+      run: |
+        nix develop --command terraform-wrapper apply "$PWD/terraform/terraform.plan"
