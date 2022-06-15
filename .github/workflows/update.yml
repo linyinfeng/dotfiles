@@ -32,7 +32,7 @@ jobs:
         swap-size-gb: 10
     - name: Terraform update
       run: |
-        nix develop --command terraform-wrapper init -upgrade
+        nix develop --command terraform-upgrade
     - name: Nix flake update
       run: |
         nix flake update

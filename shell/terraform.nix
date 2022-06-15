@@ -30,7 +30,7 @@
     {
       category = "infrastructure";
       name = "terraform-update-outputs";
-      help = pkgs.terraform.meta.description;
+      help = "update terraform outputs";
       command = ''
         set -e
 
@@ -39,6 +39,18 @@
         terraform-wrapper output --json > "$unencrypted_output_file"
         sops --encrypt "$unencrypted_output_file" > "$encrypted_output_file"
         rm "$unencrypted_output_file"
+      '';
+    }
+
+    {
+      category = "infrastructure";
+      name = "terraform-upgrade";
+      help = "upgrade terraform providers";
+      command = ''
+        set -e
+
+        cd $PRJ_ROOT/terraform
+        ${pkgs.terraform}/bin/terraform init -upgrade
       '';
     }
   ];
