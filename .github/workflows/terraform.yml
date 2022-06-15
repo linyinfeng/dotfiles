@@ -4,6 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -99,3 +102,14 @@ jobs:
     - name: Terraform apply
       run: |
         nix develop --command terraform-wrapper apply "$PWD/terraform/terraform.plan"
+    - name: Commit and push
+      run: |
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "repository is clean, skip commit and push"
+        else
+          git config --global user.email "nano@linyinfeng.com"
+          git config --global user.name "Nano"
+          git add --all
+          git commit --message "Terraform apply"
+          git push
+        fi
