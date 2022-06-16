@@ -267,6 +267,15 @@ resource "cloudflare_record" "li7g_minio_console" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+resource "cloudflare_record" "li7g_git" {
+  name    = "git"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = "rica.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # --------------------------
 # smtp records for receiving
 

@@ -7,13 +7,11 @@ in
   security.acme.certs."main".extraDomainNames = [
     "grafana.li7g.com"
   ];
-  services.nginx = {
-    virtualHosts."grafana.li7g.com" = {
-      forceSSL = true;
-      useACMEHost = "main";
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
-      };
+  services.nginx.virtualHosts."grafana.li7g.com" = {
+    forceSSL = true;
+    useACMEHost = "main";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
     };
   };
   services.grafana = {

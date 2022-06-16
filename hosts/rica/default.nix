@@ -32,6 +32,7 @@ in
       ./influxdb
       ./grafana
       ./loki
+      ./cgit
     ];
 
   config = lib.mkMerge [
