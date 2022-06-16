@@ -41,4 +41,8 @@ in
       fastcgi_pass        ${fcgiwrapSocket};
     '';
   };
+
+  environment.global-persistence.directories = [
+    gitRoot
+  ];
 }
