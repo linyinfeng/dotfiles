@@ -96,7 +96,7 @@ jobs:
       uses: actions/download-artifact@main
       with:
         name: plan
-        path: secrets/terraform.plan
+        path: secrets # secrets/terraform.plan
     - name: Decrypt plan
       run: |
         nix develop --command sops --decrypt secrets/terraform.plan > terraform/terraform.plan
