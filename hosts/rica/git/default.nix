@@ -12,8 +12,8 @@ in
     projectroot = gitRoot;
     gitwebTheme = true;
     extraConfig = ''
+      $site_name = "git.li7g.com";
       $feature{'highlight'}{'default'} = [1];
-      $feature{'ctags'}{'default'} = [1];
       $feature{'avatar'}{'default'} = ['gravatar'];
     '';
   };
