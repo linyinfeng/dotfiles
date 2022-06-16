@@ -22,7 +22,10 @@ in
       services.acme
       services.notify-failure
       services.restic
-    ]) ++ [
+    ]) ++ (with profiles.users; [
+      yinfeng
+    ])
+    ++ [
       ./options.nix
       ./minio
       ./maddy
@@ -32,7 +35,7 @@ in
       ./influxdb
       ./grafana
       ./loki
-      ./cgit
+      ./git
     ];
 
   config = lib.mkMerge [
