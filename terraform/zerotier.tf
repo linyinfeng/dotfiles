@@ -3,13 +3,16 @@ provider "zerotier" {
 }
 
 locals {
-  zerotier_main_subnet = "172.29.0.0/16"
+  zerotier_main_subnet                 = "172.29.0.0"
+  zerotier_main_subnet_cidr            = "${local.zerotier_main_subnet}/${local.zerotier_main_subnet_bits}"
+  zerotier_main_subnet_bits            = 16
+  zerotier_main_subnet_min_host_number = 1
+  zerotier_main_subnet_max_host_number = pow(2, local.zerotier_main_subnet_bits) - 2
 }
 
 resource "zerotier_network" "main" {
   name = "main"
 
-  # no auto ip address assignment
   assign_ipv4 {
     zerotier = false
   }
@@ -18,9 +21,8 @@ resource "zerotier_network" "main" {
     sixplane = false
     rfc4193  = false
   }
-
   route {
-    target = local.zerotier_main_subnet
+    target = local.zerotier_main_subnet_cidr
   }
 
   enable_broadcast = true

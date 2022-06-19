@@ -55,5 +55,17 @@
         ${pkgs.terraform}/bin/terraform init "$@"
       '';
     }
+
+    {
+      category = "infrastructure";
+      name = "terraform-fmt";
+      help = "format terraform files";
+      command = ''
+        set -e
+
+        cd $PRJ_ROOT/terraform
+        ${pkgs.terraform}/bin/terraform fmt --recursive "$@"
+      '';
+    }
   ];
 }
