@@ -10,71 +10,6 @@ resource "cloudflare_zone" "com_li7g" {
 
 # ttl = 1 for automatic
 
-# main records
-
-resource "cloudflare_record" "li7g_aws_a" {
-  name    = "aws"
-  proxied = true
-  ttl     = 1
-  type    = "A"
-  value   = aws_eip.main.public_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_aws_aaaa" {
-  name    = "aws"
-  proxied = true
-  ttl     = 1
-  type    = "AAAA"
-  value   = aws_instance.main.ipv6_addresses[0]
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_vultr_a" {
-  name    = "vultr"
-  proxied = true
-  ttl     = 1
-  type    = "A"
-  value   = vultr_instance.main.main_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_vultr_aaaa" {
-  name    = "vultr"
-  proxied = true
-  ttl     = 1
-  type    = "AAAA"
-  value   = vultr_instance.main.v6_main_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_tencent_a" {
-  name    = "tencent"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = local.tencent_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_nexusbytes_a" {
-  name    = "nexusbytes"
-  proxied = true
-  ttl     = 1
-  type    = "A"
-  value   = local.nexusbytes_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_rica_a" {
-  name    = "rica"
-  proxied = true
-  ttl     = 1
-  type    = "A"
-  value   = local.rica_ip
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 # -------------
 # CNAME records
 
@@ -396,15 +331,6 @@ resource "cloudflare_record" "li7g_ts_mix2s" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_ts_nexusbytes" {
-  name    = "nexusbytes.ts"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = "100.81.121.63"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 resource "cloudflare_record" "li7g_ts_rica" {
   name    = "rica.ts"
   proxied = false
@@ -484,70 +410,6 @@ resource "cloudflare_record" "li7g_ts_xps8930" {
   type    = "A"
   value   = "100.67.95.76"
   zone_id = cloudflare_zone.com_li7g.id
-}
-
-# ------------
-# DDNS records
-
-resource "cloudflare_record" "li7g_nuc_a" {
-  name    = "nuc"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = "127.0.0.1" # create for ddns
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
-}
-
-resource "cloudflare_record" "li7g_nuc_aaaa" {
-  name    = "nuc"
-  proxied = false
-  ttl     = 1
-  type    = "AAAA"
-  value   = "::1" # create for ddns
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
-}
-
-# disabled
-# resource "cloudflare_record" "li7g_t460p_a" {
-#   name    = "t460p"
-#   proxied = false
-#   ttl     = 1
-#   type    = "A"
-#   value   = "127.0.0.1" # create for ddns
-#   zone_id = cloudflare_zone.com_li7g.id
-#   lifecycle { ignore_changes = [value] }
-# }
-
-resource "cloudflare_record" "li7g_t460p_aaaa" {
-  name    = "t460p"
-  proxied = false
-  ttl     = 1
-  type    = "AAAA"
-  value   = "::1" # create for ddns
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
-}
-
-resource "cloudflare_record" "li7g_xps8930_a" {
-  name    = "xps8930"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = "127.0.0.1" # create for ddns
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
-}
-
-resource "cloudflare_record" "li7g_xps8930_aaaa" {
-  name    = "xps8930"
-  proxied = false
-  ttl     = 1
-  type    = "AAAA"
-  value   = "::1" # create for ddns
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
 }
 
 # github pages dns challange

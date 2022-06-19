@@ -381,8 +381,9 @@
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
         deploy.nodes = digga.lib.mkDeployNodes
-          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" ])
+          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" "x200s" "g150ts" ])
           {
+            aws.hostname = "aws.ts.li7g.com";
             vultr.hostname = "vultr.ts.li7g.com";
             rica.hostname = "rica.ts.li7g.com";
             tencent.hostname = "tencent.ts.li7g.com";
