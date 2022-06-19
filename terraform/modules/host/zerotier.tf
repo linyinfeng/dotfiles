@@ -6,7 +6,7 @@ resource "zerotier_identity" "host" { }
 
 resource "zerotier_member" "host" {
   name                    = var.name
-  member_id               = zerotier_identity.identity.id
+  member_id               = zerotier_identity.host.id
   network_id              = var.zerotier_network_id
   hidden                  = false
   allow_ethernet_bridging = true

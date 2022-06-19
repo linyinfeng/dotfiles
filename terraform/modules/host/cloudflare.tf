@@ -3,7 +3,7 @@ variable "cloudflare_zone_id" {
 }
 
 variable "records" {
-    type = list(object({
+    type = map(object({
         proxied = bool
         type    = string
         value   = string
@@ -11,16 +11,16 @@ variable "records" {
 }
 
 variable "ddns_records" {
-    type = list(object({
+    type = map(object({
         proxied = bool
         type    = string
         value   = string
     }))
 }
 
-resource "cloudflare_record" "record" {
+resource "cloudflare_record" "records" {
   name    = var.name
-  for_each = { for index, r in var.records: index => r }
+  for_each = var.records
   ttl     = 1 # default ttl
   proxied = each.value.proxied
   type = each.value.type
@@ -28,9 +28,9 @@ resource "cloudflare_record" "record" {
   zone_id = var.cloudflare_zone_id
 }
 
-resource "cloudflare_record" "ddns_record" {
+resource "cloudflare_record" "ddns_records" {
   name    = var.name
-  for_each = { for index, r in var.ddns_records: index => r }
+  for_each = var.ddns_records
   ttl     = 1 # default ttl
   proxied = each.value.proxied
   type = each.value.type

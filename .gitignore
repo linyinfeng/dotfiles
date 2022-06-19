@@ -6,6 +6,7 @@ secrets/terraform-outputs.plain.yaml
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform.plan
+.terraform.tfstate.lock.info
 .terraform
 
 # Result of bud commands
