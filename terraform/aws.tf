@@ -1,6 +1,6 @@
 provider "aws" {
   # asia pacific (hong kong)
-  region = "ap-east-1"
+  region     = "ap-east-1"
   access_key = data.sops_file.terraform.data["aws.access-key"]
   secret_key = data.sops_file.terraform.data["aws.secret-key"]
 }

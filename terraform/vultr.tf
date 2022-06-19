@@ -1,5 +1,5 @@
 provider "vultr" {
-  api_key = data.sops_file.terraform.data["vultr.api-key"]
+  api_key     = data.sops_file.terraform.data["vultr.api-key"]
   rate_limit  = 700
   retry_limit = 2
 }

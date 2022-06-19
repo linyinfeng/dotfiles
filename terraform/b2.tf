@@ -1,6 +1,6 @@
 provider "b2" {
   application_key_id = data.sops_file.terraform.data["b2.application-key-id"]
-  application_key = data.sops_file.terraform.data["b2.application-key"]
+  application_key    = data.sops_file.terraform.data["b2.application-key"]
 }
 
 resource "b2_bucket" "backup" {
@@ -33,10 +33,10 @@ resource "b2_application_key" "backup" {
 }
 
 output "b2_backup_key_id" {
-  value = b2_application_key.backup.application_key_id
+  value     = b2_application_key.backup.application_key_id
   sensitive = false
 }
 output "b2_backup_access_key" {
-  value = b2_application_key.backup.application_key
+  value     = b2_application_key.backup.application_key
   sensitive = true
 }

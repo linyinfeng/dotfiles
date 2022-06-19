@@ -2,17 +2,25 @@ provider "zerotier" {
   zerotier_central_token = data.sops_file.terraform.data["zerotier.central-token"]
 }
 
+locals {
+  zerotier_main_subnet = "172.29.0.0/16"
+}
+
 resource "zerotier_network" "main" {
   name = "main"
 
+  # no auto ip address assignment
   assign_ipv4 {
-    zerotier = true
+    zerotier = false
   }
-
   assign_ipv6 {
     zerotier = false
     sixplane = false
     rfc4193  = false
+  }
+
+  route {
+    target = local.zerotier_main_subnet
   }
 
   enable_broadcast = true
@@ -30,6 +38,6 @@ EOF
 }
 
 output "zerotier_network_id" {
-  value = zerotier_network.main.id
+  value     = zerotier_network.main.id
   sensitive = true
 }

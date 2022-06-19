@@ -1,8 +1,8 @@
 provider "minio" {
-  minio_server = "minio.li7g.com"
+  minio_server     = "minio.li7g.com"
   minio_access_key = data.sops_file.rica.data["minio.root.user"]
   minio_secret_key = data.sops_file.rica.data["minio.root.password"]
-  minio_ssl = true
+  minio_ssl        = true
 }
 
 # Storage for cache.li7g.com
@@ -51,11 +51,11 @@ resource "minio_iam_user" "cache" {
 }
 
 output "minio_cache_key_id" {
-  value = minio_iam_user.cache.id
+  value     = minio_iam_user.cache.id
   sensitive = false
 }
 output "minio_cache_access_key" {
-  value = minio_iam_user.cache.secret
+  value     = minio_iam_user.cache.secret
   sensitive = true
 }
 
@@ -92,11 +92,11 @@ resource "minio_iam_user" "backup" {
 }
 
 output "minio_backup_key_id" {
-  value = minio_iam_user.backup.id
+  value     = minio_iam_user.backup.id
   sensitive = false
 }
 output "minio_backup_access_key" {
-  value = minio_iam_user.backup.secret
+  value     = minio_iam_user.backup.secret
   sensitive = true
 }
 
@@ -134,11 +134,11 @@ resource "minio_iam_user" "pastebin" {
 }
 
 output "minio_pastebin_key_id" {
-  value = minio_iam_user.pastebin.id
+  value     = minio_iam_user.pastebin.id
   sensitive = false
 }
 output "minio_pastebin_access_key" {
-  value = minio_iam_user.pastebin.secret
+  value     = minio_iam_user.pastebin.secret
   sensitive = true
 }
 
@@ -179,11 +179,11 @@ resource "minio_iam_user" "metrics" {
 }
 
 output "minio_metrics_key_id" {
-  value = minio_iam_user.metrics.id
+  value     = minio_iam_user.metrics.id
   sensitive = false
 }
 output "minio_metrics_access_key" {
-  value = minio_iam_user.metrics.secret
+  value     = minio_iam_user.metrics.secret
   sensitive = true
 }
 
