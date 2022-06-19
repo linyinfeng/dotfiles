@@ -147,9 +147,7 @@ module "hosts" {
   records             = each.value.records
   ddns_records        = each.value.ddns_records
   zerotier_network_id = zerotier_network.main.id
-  zerotier_ip_assignments = [
-    cidrhost(local.zerotier_main_subnet_cidr, random_integer.host_number[each.key].result)
-  ]
+  zerotier_ip         = cidrhost(local.zerotier_main_subnet_cidr, random_integer.host_number[each.key].result)
 }
 
 output "hosts" {

@@ -38,3 +38,12 @@ resource "cloudflare_record" "ddns_records" {
   zone_id  = var.cloudflare_zone_id
   lifecycle { ignore_changes = [value] }
 }
+
+resource "cloudflare_record" "zerotier_record" {
+  name    = "${var.name}.zt"
+  ttl     = 1 # default ttl
+  proxied = false
+  type    = "A"
+  value   = var.zerotier_ip
+  zone_id = var.cloudflare_zone_id
+}
