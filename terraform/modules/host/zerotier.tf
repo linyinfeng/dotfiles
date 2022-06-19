@@ -12,3 +12,11 @@ resource "zerotier_member" "host" {
   allow_ethernet_bridging = true
   no_auto_assign_ips      = false
 }
+
+output "zerotier_public_key" {
+    value = zerotier_identity.host.public_key
+}
+output "zerotier_private_key" {
+    value = zerotier_identity.host.private_key
+    sensitive = true
+}

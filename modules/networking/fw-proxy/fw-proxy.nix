@@ -171,7 +171,6 @@ with lib;
         '';
         serviceConfig = {
           Type = "exec";
-          Restart = "on-abort";
           DynamicUser = true;
           StateDirectory = "clash-premium";
           AmbientCapabilities = [

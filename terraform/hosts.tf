@@ -119,4 +119,5 @@ module "hosts" {
 
 output "hosts" {
   value = module.hosts
+  sensitive = true
 }
