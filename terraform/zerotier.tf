@@ -28,3 +28,8 @@ drop
 accept;
 EOF
 }
+
+output "zerotier_network_id" {
+  value = zerotier_network.main.id
+  sensitive = true
+}

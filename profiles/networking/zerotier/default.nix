@@ -23,7 +23,7 @@ in
       cp "${config.sops.secrets."hosts/value/${hostName}/zerotier_private_key".path}" "${stateDir}/identity.secret"
 
       mkdir -p "${stateDir}/networks.d"
-      NETWORK_ID=$(cat "${config.sops.secrets."zerotier/main".path}")
+      NETWORK_ID=$(cat "${config.sops.secrets."zerotier_network_id/value".path}")
       touch "${stateDir}/networks.d/$NETWORK_ID.conf"
       echo "$NETWORK_ID=${interfaceName}" > "${stateDir}/devicemap"
     '';
@@ -57,8 +57,8 @@ in
     "zerotierone-presetup.service"
     "zerotierone-postsetup.service"
   ];
-  sops.secrets."zerotier/main" = {
-    sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."zerotier_network_id/value" = {
+    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
     restartUnits = units;
   };
   sops.secrets."zerotier/moon" = {
