@@ -380,17 +380,19 @@
 
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 
-        deploy.nodes = digga.lib.mkDeployNodes
-          (removeAttrs self.nixosConfigurations [ "NixOS" "bootstrap" "x200s" "g150ts" ])
-          {
-            aws.hostname = "aws.ts.li7g.com";
-            vultr.hostname = "vultr.ts.li7g.com";
-            rica.hostname = "rica.ts.li7g.com";
-            tencent.hostname = "tencent.ts.li7g.com";
-            nuc.hostname = "nuc.ts.li7g.com";
-            t460p.hostname = "t460p.ts.li7g.com";
-            xps8930.hostname = "xps8930.ts.li7g.com";
-          };
+        deploy.nodes =
+          let
+            inherit (nixos) lib;
+            disabledHosts = [ "NixOS" "bootstrap" "x200s" "g150ts" ];
+            configs = lib.filterAttrs (name: cfg: !(lib.elem name disabledHosts)) self.nixosConfigurations;
+          in
+          digga.lib.mkDeployNodes
+            configs
+            (lib.mapAttrs
+              (name: cfg: {
+                hostname = "${cfg.config.networking.hostName}.zt.li7g.com";
+              })
+              configs);
         deploy.sshUser = "root";
 
         templates.default = self.templates.project;

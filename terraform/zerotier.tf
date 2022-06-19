@@ -28,12 +28,12 @@ resource "zerotier_network" "main" {
   enable_broadcast = true
   private          = true
   flow_rules       = <<EOF
-# allow only IPv4, IPv4 ARP, and IPv6 Ethernet frames.
-drop
-  not ethertype ipv4
-  and not ethertype arp
-  and not ethertype ipv6
-;
+# # allow only IPv4, IPv4 ARP, and IPv6 Ethernet frames.
+# drop
+#   not ethertype ipv4
+#   and not ethertype arp
+#   and not ethertype ipv6
+# ;
 # accept anything else
 accept;
 EOF
