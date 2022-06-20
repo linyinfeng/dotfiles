@@ -60,8 +60,7 @@ locals {
   ]
 }
 
-# TODO secret key is not sensitive
-resource "shell_script" "init_moon" {
+resource "shell_sensitive_script" "init_moon" {
   lifecycle_commands {
     create = <<EOT
       set -e
@@ -83,7 +82,7 @@ resource "shell_script" "init_moon" {
   }
 }
 locals {
-  zerotier_moon_json_original = shell_script.init_moon.output
+  zerotier_moon_json_original = shell_sensitive_script.init_moon.output
   zerotier_moon_json = merge(local.zerotier_moon_json_original, {
     roots = [
       for host in local.zerotier_moon_hosts :
@@ -103,7 +102,7 @@ output "zerotier_moon_json" {
   value     = local.zerotier_moon_json_string
   sensitive = true
 }
-resource "shell_script" "generate_moon" {
+resource "shell_sensitive_script" "generate_moon" {
   lifecycle_commands {
     create = <<EOT
       set -e
@@ -136,6 +135,6 @@ resource "shell_script" "generate_moon" {
   }
 }
 output "zerotier_moon" {
-  value     = shell_script.generate_moon.output
+  value     = shell_sensitive_script.generate_moon.output
   sensitive = true
 }
