@@ -76,6 +76,14 @@ in
 
       systemd.watchdog.runtimeTime = "60s";
 
+      services.btrfs.autoScrub = {
+        enable = true;
+        fileSystems = [
+          "/dev/disk/by-uuid/8b982fe4-1521-4a4d-aafc-af22c3961093"
+          "/dev/mapper/crypt-mobile"
+        ];
+      };
+
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "ahci" "nvme" "usbhid" "uas" "sd_mod" ];
       boot.kernelModules = [ "kvm-intel" ];
       boot.initrd.luks.forceLuksSupportInInitrd = true;

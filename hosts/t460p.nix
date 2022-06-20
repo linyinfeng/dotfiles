@@ -141,6 +141,13 @@ in
     </fontconfig>
   '';
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d"
+    ];
+  };
+
   boot.initrd.luks.forceLuksSupportInInitrd = true;
   boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
   boot.initrd.preLVMCommands = ''
@@ -155,7 +162,6 @@ in
     };
   fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
   fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
-  fileSystems."/persist/.snapshots" = btrfsSubvolMain "@snapshots" { };
   fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
   fileSystems."/swap" = btrfsSubvolMain "@swap" { };
   fileSystems."/boot" =

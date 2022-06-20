@@ -45,6 +45,13 @@
 
   hardware.enableRedistributableFirmware = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/dev/disk/by-uuid/25f4278d-36a3-46db-90cf-6f9e3755e2ef"
+    ];
+  };
+
   fileSystems."/" =
     {
       device = "/dev/disk/by-uuid/25f4278d-36a3-46db-90cf-6f9e3755e2ef";

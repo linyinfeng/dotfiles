@@ -94,6 +94,14 @@ in
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [
+      "/dev/disk/by-uuid/3d22521e-0f64-4a64-ad29-40dcabda13a2"
+      "/dev/disk/by-uuid/fc047db2-0ba9-445a-9b84-194af545fa23"
+    ];
+  };
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" "sr_mod" ];
   boot.initrd.luks.forceLuksSupportInInitrd = true;
   boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
