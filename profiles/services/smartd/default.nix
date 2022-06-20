@@ -27,7 +27,6 @@ in
   services.smartd = {
     enable = true;
     autodetect = true;
-    notifications.test = true;
     # -a: monitor all attributes
     # -n standby,10: skip at most 10 checks if the device is sleep or standby
     # -s (S/../.././01|L/../../6/02):
