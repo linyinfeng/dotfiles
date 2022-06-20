@@ -26,5 +26,8 @@ terraform {
     minio = {
       source = "aminueza/minio"
     }
+    shell = {
+      source = "scottwinkler/shell"
+    }
   }
 }

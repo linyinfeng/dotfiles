@@ -9,6 +9,8 @@
       command = ''
         set -e
 
+        export PATH=${pkgs.zerotierone}/bin:$PATH
+
         encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
         unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
         echo "decrypt terraform state to '$unencrypted_state_file'..." >&2

@@ -118,23 +118,6 @@ in
       networking.firewall.allowedTCPPorts = [ 443 ];
     }
 
-    # zerotier moon
-    {
-      # add new script
-      systemd.services.zerotierone-presetup = {
-        script = lib.mkAfter ''
-          cd /var/lib/zerotier-one
-          mkdir -p moons.d
-          cd moons.d
-          zerotier-idtool genmoon "${config.sops.secrets."zerotier/moon.json".path}"
-        '';
-        path = [
-          config.services.zerotierone.package
-        ];
-      };
-      sops.secrets."zerotier/moon.json".sopsFile = config.sops.secretsDir + /tencent.yaml;
-    }
-
     # tailscale derp server
     (
       let

@@ -4,8 +4,10 @@ result*
 .data
 secrets/terraform-outputs.plain.yaml
 terraform/terraform.tfstate
+terraform.tfstate.*.backup
 terraform.tfstate.backup
 terraform.plan
+terraform/moon
 .terraform.tfstate.lock.info
 .terraform
 

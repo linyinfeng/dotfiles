@@ -43,3 +43,98 @@ output "zerotier_network_id" {
   value     = zerotier_network.main.id
   sensitive = true
 }
+
+variable "zerotier_moon_main_host" {
+  type    = string
+  default = "tencent"
+}
+variable "zerotier_port" {
+  type    = number
+  default = 9993
+}
+locals {
+  zerotier_moon_id = "000000${module.hosts[var.zerotier_moon_main_host].zerotier_id}"
+  zerotier_moon_hosts = [
+    for host in keys(local.hosts) : host
+    if length(local.hosts[host].records) > 0
+  ]
+}
+
+resource "shell_script" "init_moon" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+
+      PUBLIC_KEY_FILE=$(mktemp /tmp/zerotier-init-moon-public-key.XXXXXXXX)
+      echo "$ZEROTIER_MAIN_HOST_PUBLIC_KEY" > "$PUBLIC_KEY_FILE"
+      function cleanup {
+        rm "$PUBLIC_KEY_FILE"
+      }
+      trap cleanup EXIT
+      zerotier-idtool initmoon "$PUBLIC_KEY_FILE"
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+  environment = {
+    ZEROTIER_MAIN_HOST_PUBLIC_KEY = module.hosts[var.zerotier_moon_main_host].zerotier_public_key
+  }
+}
+locals {
+  zerotier_moon_json_original = shell_script.init_moon.output
+  zerotier_moon_json = merge(local.zerotier_moon_json_original, {
+    roots = [
+      for host in local.zerotier_moon_hosts :
+      {
+        identity = module.hosts[host].zerotier_public_key
+        stableEndpoints = [
+          for k, v in local.hosts[host].records :
+          "${v.value}/${var.zerotier_port}"
+          if v.type == "A" || v.type == "AAAA"
+        ]
+      }
+    ]
+  })
+  zerotier_moon_json_string = jsonencode(local.zerotier_moon_json)
+}
+output "zerotier_moon_json" {
+  value     = local.zerotier_moon_json_string
+  sensitive = true
+}
+resource "shell_script" "generate_moon" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+
+      TMP_DIR=$(mktemp --directory /tmp/zerotier-generate-moon.XXXXXXXX)
+      function cleanup {
+        rm -r "$TMP_DIR"
+      }
+      # trap cleanup EXIT
+
+      pushd "$TMP_DIR" > /dev/null
+      echo "$ZEROTIER_MOON_JSON" > moon.json
+      zerotier-idtool genmoon moon.json
+      MOON_FILENAME=$(ls *.moon)
+
+      jq --null-input \
+        --arg filename "$MOON_FILENAME" \
+        --arg content_base64 "$(cat "$MOON_FILENAME" | base64 --wrap=0)" \
+        '{"filename": $filename, "content_base64": $content_base64}' \
+        > output
+      cat output
+      popd > /dev/null
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+  environment = {
+    ZEROTIER_MOON_JSON = local.zerotier_moon_json_string
+  }
+}
+output "zerotier_moon" {
+  value     = shell_script.generate_moon.output
+  sensitive = true
+}

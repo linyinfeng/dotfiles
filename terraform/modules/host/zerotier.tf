@@ -18,6 +18,9 @@ resource "zerotier_member" "host" {
   ip_assignments          = [var.zerotier_ip]
 }
 
+output "zerotier_id" {
+  value = zerotier_identity.host.id
+}
 output "zerotier_public_key" {
   value = zerotier_identity.host.public_key
 }

@@ -8,7 +8,6 @@ let
   units = [
     "zerotierone-presetup.service"
     "zerotierone.service"
-    "zerotierone-postsetup.service"
   ];
 in
 {
@@ -18,14 +17,25 @@ in
   };
   systemd.services.zerotierone-presetup = {
     script = ''
-
+      echo "setting up identity files..."
       cp "${config.sops.secrets."hosts/value/${hostName}/zerotier_public_key".path}" "${stateDir}/identity.public"
       cp "${config.sops.secrets."hosts/value/${hostName}/zerotier_private_key".path}" "${stateDir}/identity.secret"
 
+      echo "setting up network interface..."
       mkdir -p "${stateDir}/networks.d"
       NETWORK_ID=$(cat "${config.sops.secrets."zerotier_network_id/value".path}")
       touch "${stateDir}/networks.d/$NETWORK_ID.conf"
       echo "$NETWORK_ID=${interfaceName}" > "${stateDir}/devicemap"
+
+      echo "cleaning up moon..."
+      rm -rf "${stateDir}/moons.d"
+
+      echo "setting up moon..."
+      mkdir -p "${stateDir}/moons.d"
+      FILENAME=$(cat ${config.sops.secrets."zerotier_moon/value/filename".path})
+      cat ${config.sops.secrets."zerotier_moon/value/content_base64".path} |\
+        base64 --decode \
+        > "${stateDir}/moons.d/$FILENAME"
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -34,35 +44,19 @@ in
     before = [ "zerotierone.service" ];
     wantedBy = [ "multi-user.target" ];
   };
-  systemd.services.zerotierone-postsetup = {
-    script = ''
-      moon_id=$(cat ${config.sops.secrets."zerotier/moon".path})
-      echo "moon: $moon_id"
-      zerotier-cli orbit $moon_id $moon_id
-    '';
-    path = [
-      config.services.zerotierone.package
-    ];
-    serviceConfig = {
-      # delay before start
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 30";
-      Type = "oneshot";
-      RemainAfterExit = true;
-      Restart = "on-failure";
-    };
-    after = [ "zerotierone.service" ];
-    wantedBy = [ "multi-user.target" ];
-  };
   systemd.services.zerotierone.requires = [
     "zerotierone-presetup.service"
-    "zerotierone-postsetup.service"
   ];
   sops.secrets."zerotier_network_id/value" = {
     sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
     restartUnits = units;
   };
-  sops.secrets."zerotier/moon" = {
-    sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."zerotier_moon/value/filename" = {
+    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+    restartUnits = units;
+  };
+  sops.secrets."zerotier_moon/value/content_base64" = {
+    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
     restartUnits = units;
   };
   sops.secrets."hosts/value/${hostName}/zerotier_public_key" = {
