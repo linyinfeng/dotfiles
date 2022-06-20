@@ -60,6 +60,7 @@ locals {
   ]
 }
 
+# TODO secret key is not sensitive
 resource "shell_script" "init_moon" {
   lifecycle_commands {
     create = <<EOT
@@ -130,7 +131,7 @@ resource "shell_script" "generate_moon" {
       # do nothing
     EOT
   }
-  environment = {
+  sensitive_environment = {
     ZEROTIER_MOON_JSON = local.zerotier_moon_json_string
   }
 }
