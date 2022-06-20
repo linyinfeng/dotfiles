@@ -68,6 +68,9 @@ in
     restartUnits = units;
   };
 
+  networking.firewall.allowedUDPPorts = [
+    config.services.zerotierone.port
+  ];
   networking.firewall.allowedTCPPorts = [
     config.services.zerotierone.port
   ];
