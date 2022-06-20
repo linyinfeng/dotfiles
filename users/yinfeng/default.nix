@@ -35,6 +35,7 @@ in
     groupNameIfPresent "nix-access-tokens" ++
     groupNameIfPresent "nixbuild" ++
     groupNameIfPresent "telegram-send" ++
+    groupNameIfPresent "service-mail" ++
     groupNameIfPresent "plugdev";
 
     openssh.authorizedKeys.keyFiles = [

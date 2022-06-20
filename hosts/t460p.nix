@@ -27,8 +27,11 @@ in
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
-      services.godns
       virtualization.waydroid
+      services.godns
+      services.smartd
+      programs.service-mail
+      programs.telegram-send
     ]) ++
     (with profiles.users; [
       yinfeng

@@ -132,6 +132,7 @@ in
     services.maddy-init.accounts = [
       "hydra@li7g.com"
       "vault@li7g.com"
+      "smartd@li7g.com"
     ];
     sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     systemd.services.maddy-init = {

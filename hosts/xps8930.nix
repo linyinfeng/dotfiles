@@ -26,6 +26,9 @@ in
       networking.behind-fw
       networking.fw-proxy
       services.godns
+      services.smartd
+      programs.service-mail
+      programs.telegram-send
     ]) ++
     (with profiles.users; [ yinfeng ]);
 

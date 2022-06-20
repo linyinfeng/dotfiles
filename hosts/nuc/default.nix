@@ -36,6 +36,8 @@ in
       services.acme
       services.notify-failure
       services.restic
+      services.smartd
+      programs.service-mail
       programs.telegram-send
     ]) ++
     (with profiles.users; [
