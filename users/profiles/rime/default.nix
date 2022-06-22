@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixosConfig, ... }:
 let
   yq = "${pkgs.yq-go}/bin/yq";
   home = "${config.home.homeDirectory}";
   rimeConfig = ".config/ibus/rime";
   installationCustom = ''
     sync_dir: "${home}/OneDrive/Documents/RIME"
-    installation_id: "${config.passthrough.systemConfig.networking.hostName}"
+    installation_id: "${nixosConfig.networking.hostName}"
   '';
 in
 lib.mkIf config.home.graphical {

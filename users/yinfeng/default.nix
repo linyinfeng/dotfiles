@@ -52,7 +52,6 @@ in
   environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} = { suites, ... }: {
     imports = suites.full;
-    passthrough.systemConfig = config;
     home.global-persistence = {
       enable = true;
       home = homeDirectory;

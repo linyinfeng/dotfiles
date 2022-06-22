@@ -14,7 +14,6 @@ in
   environment.global-persistence.user.users = [ "root" ];
   home-manager.users.root = { suites, ... }: {
     imports = suites.base;
-    passthrough.systemConfig = config;
     home.global-persistence = {
       enable = true;
       home = homeDirectory;

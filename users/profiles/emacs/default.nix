@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, nixosConfig, ... }:
 let
   emacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
@@ -15,7 +15,7 @@ let
       };
     };
   });
-  fw-proxy = config.passthrough.systemConfig.networking.fw-proxy;
+  fw-proxy = nixosConfig.networking.fw-proxy;
   syncPath = "${config.home.homeDirectory}/Syncthing/Main";
 in
 {

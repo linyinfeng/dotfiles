@@ -1,10 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, nixosConfig, ... }:
 
 let
   cfg = config.home.graphical;
-  sysCfg = config.passthrough.systemConfig;
-
-  sysGraphical = sysCfg.services.xserver.enable;
+  sysGraphical = nixosConfig.services.xserver.enable;
 in
 
 with lib;
@@ -16,7 +14,7 @@ with lib;
     '';
   };
 
-  config = mkIf (sysCfg != null) {
+  config = {
     home.graphical = lib.mkDefault sysGraphical;
   };
 }

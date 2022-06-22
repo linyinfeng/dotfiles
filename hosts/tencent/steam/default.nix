@@ -22,7 +22,6 @@ in
   users.groups.steam = { };
   environment.global-persistence.user.users = [ "steam" ];
   home-manager.users.steam = {
-    passthrough.systemConfig = config;
     home.global-persistence = {
       enable = true;
       home = gameHome;

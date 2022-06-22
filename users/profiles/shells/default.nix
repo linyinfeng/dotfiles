@@ -1,9 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixosConfig, ... }:
 
-let
-  cfg = config.home.global-persistence;
-  sysCfg = config.passthrough.systemConfig.environment.global-persistence;
-in
 {
   programs.fish.enable = true;
   programs.skim.enable = true;

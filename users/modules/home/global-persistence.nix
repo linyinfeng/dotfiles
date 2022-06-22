@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, nixosConfig, ... }:
 
 let
   cfg = config.home.global-persistence;
-  sysCfg = config.passthrough.systemConfig.environment.global-persistence;
+  sysCfg = nixosConfig.environment.global-persistence;
 in
 
 with lib;
@@ -48,7 +48,7 @@ with lib;
     };
   };
 
-  config = mkIf (config.passthrough.systemConfig != null && sysCfg.enable) {
+  config = mkIf sysCfg.enable {
     home.global-persistence = {
       directories = sysCfg.user.directories;
       files = sysCfg.user.files;
