@@ -14,7 +14,7 @@
       positions.filename = "/tmp/positions.yaml";
       clients = [
         {
-          url = "https://loki:\${LOKI_PASSWORD}@loki.ts.li7g.com/loki/api/v1/push";
+          url = "https://loki:\${LOKI_PASSWORD}@loki.zt.li7g.com/loki/api/v1/push";
         }
       ];
       scrape_configs = [

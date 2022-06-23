@@ -62,7 +62,7 @@ in
       {
         name = "InflexDB";
         type = "influxdb";
-        url = "https://influxdb.ts.li7g.com";
+        url = "https://influxdb.zt.li7g.com";
         uid = "GQCF0Gonz";
         jsonData = {
           version = "Flux";

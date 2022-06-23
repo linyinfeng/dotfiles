@@ -147,9 +147,8 @@ in
         domain = "nuc.li7g.com";
         extraDomainNames = [
           "home.li7g.com"
-          "nuc.ts.li7g.com"
+          "nuc.zt.li7g.com" # for nuc-proxy
           "vault.li7g.com"
-          "vault.ts.li7g.com"
         ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
@@ -174,7 +173,7 @@ in
             listen = config.hosts.nuc.listens;
             serverAliases = [
               "home.li7g.com"
-              "nuc.ts.li7g.com"
+              "nuc.zt.li7g.com"
               "nuc-proxy.li7g.com"
             ];
             locations."/" = {

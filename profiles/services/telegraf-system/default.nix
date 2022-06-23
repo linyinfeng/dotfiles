@@ -2,7 +2,7 @@
 
 let
   nucInfluxdb = bucket: {
-    urls = [ "https://influxdb.ts.li7g.com" ];
+    urls = [ "https://influxdb.zt.li7g.com" ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
     bucket = bucket;

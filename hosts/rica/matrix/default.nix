@@ -107,14 +107,10 @@ in
 
   security.acme.certs."main".extraDomainNames = [
     "matrix.li7g.com"
-    "matrix.ts.li7g.com"
   ];
   services.nginx.virtualHosts."matrix.li7g.com" = {
     forceSSL = true;
     useACMEHost = "main";
-    serverAliases = [
-      "matrix.ts.li7g.com"
-    ];
     locations."/_matrix" = {
       proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}";
     };

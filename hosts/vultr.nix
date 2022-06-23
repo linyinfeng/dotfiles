@@ -171,7 +171,7 @@ in
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
-          proxyPass = "https://nuc.ts.li7g.com";
+          proxyPass = "https://nuc.zt.li7g.com";
         };
       };
     }

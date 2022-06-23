@@ -102,9 +102,6 @@ in
             default = true;
             forceSSL = true;
             useACMEHost = "main";
-            serverAliases = [
-              "rica.ts.li7g.com"
-            ];
           };
         };
       };
@@ -118,9 +115,6 @@ in
         dnsProvider = "cloudflare";
         credentialsFile = config.sops.templates.acme-credentials.path;
         domain = "rica.li7g.com";
-        extraDomainNames = [
-          "rica.ts.li7g.com"
-        ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''

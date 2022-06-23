@@ -42,14 +42,14 @@ in
   };
   security.acme.certs."main".extraDomainNames = [
     "loki.li7g.com"
-    "loki.ts.li7g.com"
+    "loki.zt.li7g.com"
   ];
   services.nginx = {
     virtualHosts."loki.li7g.com" = {
       forceSSL = true;
       useACMEHost = "main";
       serverAliases = [
-        "loki.ts.li7g.com"
+        "loki.zt.li7g.com" # for internal connection
       ];
       locations."/" = {
         proxyPass = "http://localhost:${toString cfg.ports.loki}";

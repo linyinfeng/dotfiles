@@ -44,9 +44,6 @@
         dnsProvider = "cloudflare";
         credentialsFile = config.sops.templates.acme-credentials.path;
         domain = "aws.li7g.com";
-        extraDomainNames = [
-          "aws.ts.li7g.com"
-        ];
       };
       sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
       sops.templates.acme-credentials.content = ''

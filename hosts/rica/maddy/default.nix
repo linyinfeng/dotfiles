@@ -173,7 +173,7 @@ in
 
     security.acme.certs."main".extraDomainNames = [
       "smtp.li7g.com"
-      "smtp.ts.li7g.com"
+      "smtp.zt.li7g.com" # for internal connection
     ];
   };
 }

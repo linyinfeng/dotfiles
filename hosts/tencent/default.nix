@@ -90,7 +90,6 @@ in
         credentialsFile = config.sops.templates.acme-credentials.path;
         domain = "tencent.li7g.com";
         extraDomainNames = [
-          "tencent.ts.li7g.com"
           "shanghai.derp.li7g.com"
         ];
       };
@@ -114,9 +113,6 @@ in
             onlySSL = true;
             listen = config.hosts.tencent.listens;
             useACMEHost = "main";
-            serverAliases = [
-              "tencent.ts.li7g.com"
-            ];
           };
         };
       };

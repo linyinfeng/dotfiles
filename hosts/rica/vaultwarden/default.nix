@@ -6,16 +6,12 @@ in
 {
   security.acme.certs."main".extraDomainNames = [
     "vault.li7g.com"
-    "vault.ts.li7g.com"
   ];
   services.nginx = {
     virtualHosts = {
       "vault.li7g.com" = {
         forceSSL = true;
         useACMEHost = "main";
-        serverAliases = [
-          "vault.ts.li7g.com"
-        ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
         };
@@ -42,7 +38,7 @@ in
       websocketPort = cfg.ports.vaultwarden.websocket;
       rocketAddress = "127.0.0.1";
       rocketPort = cfg.ports.vaultwarden.http;
-      smtpHost = "smtp.ts.li7g.com";
+      smtpHost = "smtp.zt.li7g.com";
       smtpFrom = "vault@li7g.com";
       smtpPort = 465;
       smtpSecurity = "force_tls";

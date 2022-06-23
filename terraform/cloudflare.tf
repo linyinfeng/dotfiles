@@ -121,12 +121,12 @@ resource "cloudflare_record" "li7g_influxdb" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_influxdb_ts" {
-  name    = "influxdb.ts"
+resource "cloudflare_record" "li7g_influxdb_zt" {
+  name    = "influxdb.zt"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "rica.ts.li7g.com"
+  value   = "rica.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -139,12 +139,12 @@ resource "cloudflare_record" "li7g_loki" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_loki_ts" {
-  name    = "loki.ts"
+resource "cloudflare_record" "li7g_loki_zt" {
+  name    = "loki.zt"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "rica.ts.li7g.com"
+  value   = "rica.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -256,12 +256,12 @@ resource "cloudflare_record" "li7g_smtp" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_ts_smtp" {
-  name    = "smtp.ts"
+resource "cloudflare_record" "li7g_smtp_zt" {
+  name    = "smtp.zt"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "rica.ts.li7g.com"
+  value   = "rica.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -337,24 +337,6 @@ resource "cloudflare_record" "li7g_ts_rica" {
   ttl     = 1
   type    = "A"
   value   = "100.75.88.79"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_ts_vault" {
-  name    = "vault.ts"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.ts.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_ts_matrix" {
-  name    = "matrix.ts"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.ts.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 

@@ -1,27 +1,23 @@
 Host rica
-    HostName rica.ts.li7g.com
+    HostName rica.zt.li7g.com
     User root
 
 Host vultr
-    HostName vultr.ts.li7g.com
-    User root
-
-Host x200s
-    HostName x200s.ts.li7g.com
+    HostName vultr.zt.li7g.com
     User root
 
 Host nuc
-    HostName nuc.ts.li7g.com
-    User root
+    HostName nuc.zt.li7g.com
+    User yinfeng
 
 Host tencent
-    HostName tencent.ts.li7g.com
+    HostName tencent.zt.li7g.com
     User root
 
 Host t460p
-    HostName t460p.ts.li7g.com
+    HostName t460p.zt.li7g.com
     User yinfeng
 
 Host xps8930
-    HostName xps8930.ts.li7g.com
+    HostName xps8930.zt.li7g.com
     User yinfeng

@@ -45,14 +45,14 @@ in
   ];
   security.acme.certs."main".extraDomainNames = [
     "influxdb.li7g.com"
-    "influxdb.ts.li7g.com"
+    "influxdb.zt.li7g.com"
   ];
   services.nginx = {
     virtualHosts."influxdb.li7g.com" = {
       forceSSL = true;
       useACMEHost = "main";
       serverAliases = [
-        "influxdb.ts.li7g.com"
+        "influxdb.zt.li7g.com" # for internal connection
       ];
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString cfg.ports.influxdb}/";
