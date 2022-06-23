@@ -24,7 +24,7 @@ in
     };
     path = [ config.services.tailscale.package ];
     after = [ "tailscaled.service" ];
-    wantedBy = [ "multi-user.service" ];
+    requiredBy = [ "tailscaled.service" ];
   };
   sops.secrets."tailscale".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   # no need to open ports
