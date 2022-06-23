@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   hostName = config.networking.hostName;
@@ -41,6 +41,8 @@ in
       privateKeyFile = config.sops.secrets."wireguard".path;
     };
   };
+  # do not auto start
+  systemd.services."wireguard-wg0".wantedBy = lib.mkForce [ ];
   sops.secrets."wireguard".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
   environment.systemPackages = with pkgs; [
     wireguard-tools
