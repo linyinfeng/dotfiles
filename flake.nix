@@ -279,6 +279,7 @@
                 ]);
 
               network = with profiles; [
+                networking.avahi
                 networking.resolved
                 networking.tailscale
                 networking.zerotier
