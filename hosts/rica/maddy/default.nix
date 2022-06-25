@@ -133,6 +133,7 @@ in
       "hydra@li7g.com"
       "vault@li7g.com"
       "smartd@li7g.com"
+      "grafana@li7g.com"
     ];
     sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
     systemd.services.maddy-init = {
@@ -169,6 +170,7 @@ in
 
     networking.firewall.allowedTCPPorts = [
       465
+      587
     ];
 
     security.acme.certs."main".extraDomainNames = [
