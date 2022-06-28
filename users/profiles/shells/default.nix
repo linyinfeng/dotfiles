@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixosConfig, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   programs.fish.enable = true;

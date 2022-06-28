@@ -1,5 +1,5 @@
-{ ... }:
+{ self, lib, ... }:
 
 {
-  system.stateVersion = "22.05";
+  system.stateVersion = lib.mkDefault self.lib.flakeStateVersion;
 }

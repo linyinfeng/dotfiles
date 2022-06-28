@@ -1,4 +1,4 @@
-{ config, pkgs, lib, nixosConfig, ... }:
+{ config, pkgs, lib, osConfig, ... }:
 let
   extensionPkgs = with pkgs.gnomeExtensions; [
     # arc-menu
@@ -10,7 +10,7 @@ let
     gtile
   ];
 in
-lib.mkIf nixosConfig.services.xserver.desktopManager.gnome.enable
+lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
 {
   home.packages = extensionPkgs;
 

@@ -1,8 +1,8 @@
-{ config, lib, nixosConfig, ... }:
+{ config, lib, osConfig, ... }:
 
 let
   cfg = config.home.global-persistence;
-  sysCfg = nixosConfig.environment.global-persistence;
+  sysCfg = osConfig.environment.global-persistence;
 in
 
 with lib;

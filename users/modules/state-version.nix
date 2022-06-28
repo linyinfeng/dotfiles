@@ -1,5 +1,5 @@
-{ lib, nixosConfig, ... }:
+{ self, lib, ... }:
 
 {
-  home.stateVersion = lib.mkDefault nixosConfig.system.stateVersion;
+  home.stateVersion = lib.mkDefault self.lib.flakeStateVersion;
 }

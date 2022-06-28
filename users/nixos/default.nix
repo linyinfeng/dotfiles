@@ -1,6 +1,8 @@
 { config, hmUsers, ... }:
 {
-  home-manager.users = { inherit (hmUsers) nixos; };
+  home-manager.users.nixos = { suites, ... }: {
+    imports = suites.base;
+  };
 
   users.users.nixos = {
     uid = config.ids.uids.nixos;

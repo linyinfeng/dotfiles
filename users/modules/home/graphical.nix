@@ -1,8 +1,8 @@
-{ config, lib, nixosConfig, ... }:
+{ config, lib, osConfig, ... }:
 
 let
   cfg = config.home.graphical;
-  sysGraphical = nixosConfig.services.xserver.enable;
+  sysGraphical = osConfig.services.xserver.enable;
 in
 
 with lib;
