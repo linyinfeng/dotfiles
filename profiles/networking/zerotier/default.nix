@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   stateDir = "/var/lib/zerotier-one";
@@ -74,4 +74,6 @@ in
   networking.firewall.allowedTCPPorts = [
     config.services.zerotierone.port
   ];
+
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

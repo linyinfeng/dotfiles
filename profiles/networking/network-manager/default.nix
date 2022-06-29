@@ -6,6 +6,7 @@ lib.mkMerge [
       enable = true;
       enableStrongSwan = true;
       logLevel = "INFO";
+      firewallBackend = "nftables";
       connectionConfig = {
         "connection.mdns" = 2;
       };

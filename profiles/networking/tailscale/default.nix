@@ -32,4 +32,5 @@ in
     config.services.tailscale.port
   ];
   networking.firewall.checkReversePath = lib.mkForce "loose";
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

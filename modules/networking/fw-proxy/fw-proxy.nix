@@ -261,6 +261,8 @@ with lib;
       #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="add",RUN+="${scripts}/bin/clash-tun-setup"
       #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="remove",RUN+="${scripts}/bin/clash-tun-clean"
       # '';
+
+      networking.networkmanager.unmanaged = [ tunDev ];
     })
     (mkIf cfg.auto-update.enable {
       systemd.services.clash-auto-update = {
