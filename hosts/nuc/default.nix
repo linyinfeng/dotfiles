@@ -60,7 +60,6 @@ in
         efi.canTouchEfiVariables = true;
         systemd-boot.enable = true;
       };
-      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
       hardware.enableRedistributableFirmware = true;
       services.fwupd.enable = true;
 

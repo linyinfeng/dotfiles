@@ -25,6 +25,7 @@ in
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
+      virtualization.binfmt
       services.godns
       services.smartd
       programs.service-mail
@@ -43,7 +44,6 @@ in
       consoleMode = "max";
     };
   };
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   hardware.enableRedistributableFirmware = true;
   services.thermald.enable = true;
   services.fwupd.enable = true;

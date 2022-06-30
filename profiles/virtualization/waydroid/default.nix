@@ -14,7 +14,7 @@
     /dev/anbox-hwbinder = hidl
 
     [General]
-    ApiLevel = 30
+    ApiLevel = 29
   '';
   environment.global-persistence.user.directories = [
     ".local/share/waydroid"

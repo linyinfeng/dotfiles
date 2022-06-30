@@ -28,6 +28,7 @@ in
       networking.behind-fw
       networking.fw-proxy
       virtualization.waydroid
+      virtualization.binfmt
       services.godns
       services.smartd
       programs.service-mail
@@ -49,7 +50,6 @@ in
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
