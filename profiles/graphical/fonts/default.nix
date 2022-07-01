@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   iosevka-yinfeng = pkgs.iosevka.override {
@@ -31,33 +31,32 @@ in
     wqy_microhei
 
     jetbrains-mono
-    # TODO broken
-    # iosevka-yinfeng
+    iosevka-yinfeng
     font-awesome
     powerline-fonts
     sarasa-gothic
   ];
 
   fonts.fontconfig.defaultFonts = {
-    sansSerif = lib.mkBefore [
+    sansSerif = [
       "Source Sans 3"
       "Source Han Sans SC"
       "Source Han Sans TC"
       "Source Han Sans HW"
       "Source Han Sans K"
     ];
-    serif = lib.mkBefore [
+    serif = [
       "Source Serif 4"
       "Source Han Serif SC"
       "Source Han Serif TC"
       "Source Han Serif HW"
       "Source Han Serif K"
     ];
-    monospace = lib.mkAfter [
+    monospace = [
       # "Iosevka Yinfeng"
       "Sarasa Mono Slab SC"
     ];
-    emoji = lib.mkBefore [
+    emoji = [
       "Noto Color Emoji"
     ];
   };

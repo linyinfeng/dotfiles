@@ -29,19 +29,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
     };
   };
 
-  programs.gnome-terminal =
-    let defaultProfile = "b1dcc9dd-5262-4d8d-a863-c897e6d979b9";
-    in
-    {
-      enable = true;
-      profile.${defaultProfile} = {
-        default = true;
-        visibleName = "Main";
-        font = "Iosevka Yinfeng 10";
-        scrollOnOutput = false;
-      };
-    };
-
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
   '';
