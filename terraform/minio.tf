@@ -207,3 +207,28 @@ resource "minio_iam_user_policy_attachment" "metrics" {
   policy_name = minio_iam_policy.metrics.name
   user_name   = minio_iam_user.metrics.name
 }
+
+resource "shell_sensitive_script" "minio_metrics_generate_prometheus_config" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+
+      mc alias set minio-metrics https://minio.li7g.com "$KEY_ID" "$ACCESS_KEY" >&2
+      mc admin prometheus generate minio-metrics --json
+      mc alias remove minio-metrics >&2
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+  environment = {
+    KEY_ID = minio_iam_user.metrics.id
+  }
+  sensitive_environment = {
+    ACCESS_KEY = minio_iam_user.metrics.secret
+  }
+}
+output "minio_metrics_bearer_token" {
+  value     = shell_sensitive_script.minio_metrics_generate_prometheus_config.output.bearerToken
+  sensitive = true
+}
