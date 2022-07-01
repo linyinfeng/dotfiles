@@ -103,6 +103,9 @@ jobs:
     - name: Terraform apply
       run: |
         nix develop --command terraform-wrapper apply "$PWD/terraform/terraform.plan"
+    - name: Terraform update outputs
+      run: |
+        nix develop --command terraform-update-outputs
     - name: Commit and push
       run: |
         if [ -z "$(git status --porcelain)" ]; then
