@@ -9,7 +9,7 @@
       command = ''
         set -e
 
-        export PATH=${pkgs.zerotierone}/bin:$PATH
+        export PATH=${pkgs.zerotierone}/bin:${pkgs.minio-client}/bin:$PATH
 
         encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
         unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
