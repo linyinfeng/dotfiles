@@ -50,7 +50,7 @@ creation_rules:
     key_groups:
     - age:
       - *github
-  - path_regex: ^secrets/(terraform/)?common\.yaml$
+  - path_regex: ^secrets/(terraform/)?common(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -64,7 +64,7 @@ creation_rules:
       - *tencent
       - *aws
       # no age key for g150ts
-  - path_regex: ^secrets/(terraform/)?infrastructure\.yaml$
+  - path_regex: ^secrets/(terraform/)?infrastructure(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -78,55 +78,55 @@ creation_rules:
       - *tencent
       - *aws
       - *g150ts
-  - path_regex: ^secrets/(terraform/)?t460p\.yaml$
+  - path_regex: ^secrets/(terraform/)?t460p(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *t460p
-  - path_regex: ^secrets/(terraform/)?nuc\.yaml$
+  - path_regex: ^secrets/(terraform/)?nuc(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *nuc
-  - path_regex: ^secrets/(terraform/)?xps8930\.yaml$
+  - path_regex: ^secrets/(terraform/)?xps8930(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *xps8930
-  - path_regex: ^secrets/(terraform/)?x200s\.yaml$
+  - path_regex: ^secrets/(terraform/)?x200s(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *x200s
-  - path_regex: ^secrets/(terraform/)?vultr\.yaml$
+  - path_regex: ^secrets/(terraform/)?vultr(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *vultr
-  - path_regex: ^secrets/(terraform/)?tencent\.yaml$
+  - path_regex: ^secrets/(terraform/)?tencent(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *tencent
-  - path_regex: ^secrets/(terraform/)?rica\.yaml$
+  - path_regex: ^secrets/(terraform/)?rica(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *rica
-  - path_regex: ^secrets/(terraform/)?aws\.yaml$
+  - path_regex: ^secrets/(terraform/)?aws(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *aws
-  - path_regex: ^secrets/(terraform/)?g150ts\.yaml$
+  - path_regex: ^secrets/(terraform/)?g150ts(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main

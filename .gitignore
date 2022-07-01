@@ -3,6 +3,7 @@ result*
 .vscode
 .data
 secrets/terraform-outputs.plain.yaml
+secrets/terraform/*.plain.yaml
 terraform/terraform.tfstate
 terraform.tfstate.*.backup
 terraform.tfstate.backup

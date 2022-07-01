@@ -12,13 +12,16 @@ writeShellScriptBin "terraform-output-extractor" ''
   for name in "''${template_names[@]}"; do
     template_file="templates/$name.yq"
     target="terraform/$name.yaml"
-    echo "creating '$target'..."
+    target_plain="terraform/$name.plain.yaml"
+    echo "creating '$target_plain'..."
     if [ "$name" != "common" -a "$name" != "infrastructure" ]; then
       export hostname="$name"
     fi
-    ${sops}/bin/sops exec-file terraform-outputs.yaml "${yq-go}/bin/yq eval --from-file \"$template_file\" {}" > "$target"
-    echo "encrypting '$target'..."
-    ${sops}/bin/sops --encrypt --in-place "$target"
+    ${sops}/bin/sops exec-file terraform-outputs.yaml "${yq-go}/bin/yq eval --from-file \"$template_file\" {}" > "$target_plain"
+    echo "encrypting '$target_plain' to '$target'..."
+    ${sops}/bin/sops --encrypt "$target_plain" > "$target"
+    echo "deleting '$target_plain'..."
+    rm "$target_plain"
   done
 
   popd
