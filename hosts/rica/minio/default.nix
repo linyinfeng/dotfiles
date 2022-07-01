@@ -108,14 +108,14 @@ in
   services.telegraf.extraConfig = {
     inputs.prometheus = [
       {
-        urls = [ "http://127.0.0.1:${toString minioPort}/minio/v2/metrics/cluster" ];
-        bearer_token = "\${CREDENTIALS_DIRECTORY}/minio_bearer_token";
+        urls = [ "https://minio.li7g.com/minio/v2/metrics/cluster" ];
+        bearer_token = "$CREDENTIALS_DIRECTORY/minio_bearer_token";
         tags.output_bucket = "minio";
       }
     ];
   };
   systemd.services.telegraf.serviceConfig.LoadCredential = [
-    "minio_bearer_token:${config.sops.secrets."minio/metrics-bearer".path}"
+    "minio_bearer_token:${config.sops.secrets."minio_metrics_bearer_token".path}"
   ];
-  sops.secrets."minio/metrics-bearer".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."minio_metrics_bearer_token".sopsFile = config.sops.secretsDir + /terraform/rica.yaml;
 }

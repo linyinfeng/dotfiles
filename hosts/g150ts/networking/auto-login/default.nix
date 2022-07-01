@@ -33,6 +33,6 @@ in
     '';
   };
   systemd.services.NetworkManager.requires = [ "${service}.service" ];
-  sops.secrets."net-login/url".sopsFile = config.sops.secretsDir + /g150t-s.yaml;
-  sops.secrets."net-login/data".sopsFile = config.sops.secretsDir + /g150t-s.yaml;
+  sops.secrets."net-login/url".sopsFile = config.sops.secretsDir + /g150ts.yaml;
+  sops.secrets."net-login/data".sopsFile = config.sops.secretsDir + /g150ts.yaml;
 }

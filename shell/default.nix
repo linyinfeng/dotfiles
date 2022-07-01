@@ -4,7 +4,7 @@
     bud.devshellModules.bud
   ];
   exportedModules = [
-    ./terraform.nix
+    ./terraform
     ./devos.nix
   ];
 }

@@ -34,8 +34,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."minio_cache_key_id/value".path}"
-        "cache-access-key:${config.sops.secrets."minio_cache_access_key/value".path}"
+        "cache-key-id:${config.sops.secrets."minio_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."minio_cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
     };
@@ -72,8 +72,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."minio_cache_key_id/value".path}"
-        "cache-access-key:${config.sops.secrets."minio_cache_access_key/value".path}"
+        "cache-key-id:${config.sops.secrets."minio_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."minio_cache_access_key".path}"
       ];
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable)
@@ -82,8 +82,8 @@ in
     after = [ "hydra-update-gc-roots.service" ];
   };
 
-  sops.secrets."minio_cache_key_id/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
-  sops.secrets."minio_cache_access_key/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."minio_cache_key_id".sopsFile = config.sops.secretsDir + /terraform/nuc.yaml;
+  sops.secrets."minio_cache_access_key".sopsFile = config.sops.secretsDir + /terraform/nuc.yaml;
   sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
 
   services.notify-failure.services = [

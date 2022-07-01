@@ -166,14 +166,14 @@ in
         serviceConfig = {
           DynamicUser = true;
           LoadCredential = [
-            "key-id:${config.sops.secrets."minio_pastebin_key_id/value".path}"
-            "access-key:${config.sops.secrets."minio_pastebin_access_key/value".path}"
+            "key-id:${config.sops.secrets."minio_pastebin_key_id".path}"
+            "access-key:${config.sops.secrets."minio_pastebin_access_key".path}"
           ];
         };
         wantedBy = [ "multi-user.target" ];
       };
-      sops.secrets."minio_pastebin_key_id/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
-      sops.secrets."minio_pastebin_access_key/value".sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+      sops.secrets."minio_pastebin_key_id".sopsFile = config.sops.secretsDir + /terraform/rica.yaml;
+      sops.secrets."minio_pastebin_access_key".sopsFile = config.sops.secretsDir + /terraform/rica.yaml;
 
       services.notify-failure.services = [
         "pastebin"

@@ -8,7 +8,7 @@ keys:
   - &rica       age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
-  - &g150t-s    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
+  - &g150ts    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
   - &aws        age1m6tfhx22rdfd27v2666lqskpuag6fqz9rfdquqv4cktg88mv64yqusulpa
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
@@ -18,6 +18,14 @@ creation_rules:
     - pgp:
       - *main
       age:
+      - *github
+  # terraform inputs shared with rica
+  - path_regex: ^secrets/rica-terraform\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *rica
       - *github
   - path_regex: ^secrets/terraform-outputs(\.plain)?\.yaml$
     key_groups:
@@ -42,7 +50,7 @@ creation_rules:
     key_groups:
     - age:
       - *github
-  - path_regex: ^secrets/common\.yaml$
+  - path_regex: ^secrets/(terraform/)?common\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -55,8 +63,8 @@ creation_rules:
       - *vultr
       - *tencent
       - *aws
-      # no age key for g150t-s
-  - path_regex: ^secrets/infrastructure\.yaml$
+      # no age key for g150ts
+  - path_regex: ^secrets/(terraform/)?infrastructure\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -69,64 +77,61 @@ creation_rules:
       - *vultr
       - *tencent
       - *aws
-      - *g150t-s
-  - path_regex: ^secrets/t460p\.yaml$
+      - *g150ts
+  - path_regex: ^secrets/(terraform/)?t460p\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *t460p
-  - path_regex: ^secrets/nuc\.yaml$
+  - path_regex: ^secrets/(terraform/)?nuc\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *nuc
-      # TODO nuc down
-      - *aws
-  - path_regex: ^secrets/xps8930\.yaml$
+  - path_regex: ^secrets/(terraform/)?xps8930\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *xps8930
-  - path_regex: ^secrets/vultr\.yaml$
+  - path_regex: ^secrets/(terraform/)?x200s\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *x200s
+  - path_regex: ^secrets/(terraform/)?vultr\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *vultr
-  - path_regex: ^secrets/tencent\.yaml$
+  - path_regex: ^secrets/(terraform/)?tencent\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *tencent
-  - path_regex: ^secrets/rica\.yaml$
+  - path_regex: ^secrets/(terraform/)?rica\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *rica
-  - path_regex: ^secrets/rica-terraform\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *rica
-      - *github
-  - path_regex: ^secrets/aws\.yaml$
+  - path_regex: ^secrets/(terraform/)?aws\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *aws
-  - path_regex: ^secrets/g150t-s\.yaml$
+  - path_regex: ^secrets/(terraform/)?g150ts\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
-      - *g150t-s
+      - *g150ts
   - path_regex: ^modules/sops/vm-test/test-secrets/.*\.yaml$
     key_groups:
     - pgp:

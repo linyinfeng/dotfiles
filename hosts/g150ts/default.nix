@@ -25,7 +25,7 @@
 
   services.logind.lidSwitch = "ignore";
   security.sudo.wheelNeedsPassword = false;
-  sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /g150t-s.yaml;
+  sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /g150ts.yaml;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";

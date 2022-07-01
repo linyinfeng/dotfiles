@@ -18,12 +18,12 @@ in
   systemd.services.zerotierone-presetup = {
     script = ''
       echo "setting up identity files..."
-      cp "${config.sops.secrets."hosts/value/${hostName}/zerotier_public_key".path}" "${stateDir}/identity.public"
-      cp "${config.sops.secrets."hosts/value/${hostName}/zerotier_private_key".path}" "${stateDir}/identity.secret"
+      cp "${config.sops.secrets."zerotier_public_key".path}" "${stateDir}/identity.public"
+      cp "${config.sops.secrets."zerotier_private_key".path}" "${stateDir}/identity.secret"
 
       echo "setting up network interface..."
       mkdir -p "${stateDir}/networks.d"
-      NETWORK_ID=$(cat "${config.sops.secrets."zerotier_network_id/value".path}")
+      NETWORK_ID=$(cat "${config.sops.secrets."zerotier_network_id".path}")
       touch "${stateDir}/networks.d/$NETWORK_ID.conf"
       echo "$NETWORK_ID=${interfaceName}" > "${stateDir}/devicemap"
 
@@ -32,8 +32,8 @@ in
 
       echo "setting up moon..."
       mkdir -p "${stateDir}/moons.d"
-      FILENAME=$(cat ${config.sops.secrets."zerotier_moon/value/filename".path})
-      cat ${config.sops.secrets."zerotier_moon/value/content_base64".path} |\
+      FILENAME=$(cat ${config.sops.secrets."zerotier_moon/filename".path})
+      cat ${config.sops.secrets."zerotier_moon/content_base64".path} |\
         base64 --decode \
         > "${stateDir}/moons.d/$FILENAME"
     '';
@@ -47,24 +47,24 @@ in
   systemd.services.zerotierone.requires = [
     "zerotierone-presetup.service"
   ];
-  sops.secrets."zerotier_network_id/value" = {
-    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."zerotier_network_id" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
     restartUnits = units;
   };
-  sops.secrets."zerotier_moon/value/filename" = {
-    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."zerotier_moon/filename" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
     restartUnits = units;
   };
-  sops.secrets."zerotier_moon/value/content_base64" = {
-    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."zerotier_moon/content_base64" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
     restartUnits = units;
   };
-  sops.secrets."hosts/value/${hostName}/zerotier_public_key" = {
-    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."zerotier_public_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/${hostName}.yaml;
     restartUnits = units;
   };
-  sops.secrets."hosts/value/${hostName}/zerotier_private_key" = {
-    sopsFile = config.sops.secretsDir + /terraform-outputs.yaml;
+  sops.secrets."zerotier_private_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/${hostName}.yaml;
     restartUnits = units;
   };
 

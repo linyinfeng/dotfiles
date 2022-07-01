@@ -1,5 +1,8 @@
 { pkgs, ... }:
 
+let
+  extractor = pkgs.callPackage ./extractor { };
+in
 {
   commands = [
     {
@@ -43,6 +46,8 @@
         terraform-wrapper output --json > "$unencrypted_output_file"
         sops --encrypt "$unencrypted_output_file" > "$encrypted_output_file"
         rm "$unencrypted_output_file"
+
+        ${extractor}/bin/terraform-output-extractor
       '';
     }
 

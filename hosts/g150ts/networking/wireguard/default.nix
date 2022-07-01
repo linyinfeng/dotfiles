@@ -46,7 +46,7 @@ in
     };
   };
 
-  sops.secrets."wireguard/wg0-private-key".sopsFile = config.sops.secretsDir + /g150t-s.yaml;
+  sops.secrets."wireguard/wg0-private-key".sopsFile = config.sops.secretsDir + /g150ts.yaml;
 
   networking.firewall.allowedTCPPorts = [ port ];
   networking.firewall.allowedUDPPorts = [ port ];

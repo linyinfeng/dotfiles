@@ -20,5 +20,5 @@ in
       config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
 
-  sops.secrets."user-password/matrixlt".sopsFile = config.sops.secretsDir + /g150t-s.yaml;
+  sops.secrets."user-password/matrixlt".sopsFile = config.sops.secretsDir + /g150ts.yaml;
 }
