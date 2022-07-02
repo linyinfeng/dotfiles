@@ -1,7 +1,8 @@
 { pkgs, ... }:
 
 let
-  extractor = pkgs.callPackage ./extractor { };
+  secretExtractor = pkgs.callPackage ./extractor/secrets.nix { };
+  dataExtractor = pkgs.callPackage ./extractor/data.nix { };
 in
 {
   commands = [
@@ -12,7 +13,11 @@ in
       command = ''
         set -e
 
-        export PATH=${pkgs.zerotierone}/bin:${pkgs.minio-client}/bin:$PATH
+        export PATH=${pkgs.zerotierone}/bin:$PATH
+        export PATH=${pkgs.minio-client}/bin:$PATH
+        export PATH=${pkgs.syncthing}/bin:$PATH
+        export PATH=${pkgs.jq}/bin:$PATH
+        export PATH=${pkgs.openssl}/bin:$PATH
 
         encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
         unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
@@ -46,9 +51,21 @@ in
         terraform-wrapper output --json > "$unencrypted_output_file"
         sops --encrypt "$unencrypted_output_file" > "$encrypted_output_file"
         rm "$unencrypted_output_file"
-
-        ${extractor}/bin/terraform-output-extractor
       '';
+    }
+
+    {
+      category = "infrastructure";
+      name = "terraform-outputs-extract-secrets";
+      help = "extract secrets from terraform outputs";
+      package = secretExtractor;
+    }
+
+    {
+      category = "infrastructure";
+      name = "terraform-outputs-extract-data";
+      help = "extract data from terraform outputs";
+      package = dataExtractor;
     }
 
     {

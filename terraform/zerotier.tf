@@ -111,7 +111,7 @@ resource "shell_sensitive_script" "generate_moon" {
       function cleanup {
         rm -r "$TMP_DIR"
       }
-      # trap cleanup EXIT
+      trap cleanup EXIT
 
       pushd "$TMP_DIR" > /dev/null
       echo "$ZEROTIER_MOON_JSON" > moon.json
@@ -121,9 +121,8 @@ resource "shell_sensitive_script" "generate_moon" {
       jq --null-input \
         --arg filename "$MOON_FILENAME" \
         --arg content_base64 "$(cat "$MOON_FILENAME" | base64 --wrap=0)" \
-        '{"filename": $filename, "content_base64": $content_base64}' \
-        > output
-      cat output
+        '{"filename": $filename, "content_base64": $content_base64}'
+
       popd > /dev/null
     EOT
     delete = <<EOT

@@ -270,7 +270,7 @@ resource "cloudflare_record" "li7g_dkim" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAozlZRnVQ/ZuPw6ohn2Ahy51KG4MMysqkhDt3irQwopIUpIgDZdP+HnCxlPv3dKKCkwdqXlHC/swoCUdhu5aS/JmUGKsXU21ETy17+VUeyBSs0N3Ytg4RePRfQli7J4setvEhWEyZHpO9ofJEmGfN8H256Cwvqi+2HuZxIQDxpqJXGlfEUqNxj5Ij9bFvWT/hDfGpxvRxLAHd0WrrnizGWHS73S0i7VmRcfLQhZhnc4ujF3MgC7W8BDZuWdIwKUkcOKSUtALq6L8W0edR1xctRFhMa7rvT8wjdIAAneJLrPFgBN1JCV85PMrV4Hch9C/XCd92Nh9gCRuea2Bj3TtuDQIDAQAB"
+  value   = "v=DKIM1; k=${local.dkim_algorithm}; p=${local.dkim_public_key}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 

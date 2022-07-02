@@ -1,19 +1,16 @@
-{ config, lib, ... }:
+{ self, config, lib, ... }:
 
 let
-  devices = {
-    t460p = {
-      id = "ESRNKCW-WFHWAZZ-H7YXVCM-YM43VOE-VIREZYF-EY7DKPO-UUZLHIH-RSHQBQR";
-    };
-    xps8930 = {
-      id = "6TJQETQ-R4ST2CI-3O3K3K7-GSA3XLZ-B7WB7QU-H4UCP2H-ZOMV6KN-G7EF5QS";
-    };
-    nuc = {
-      id = "FN5AKLS-VLUOTUK-RTKQWQ2-M3DOLFK-OMB7VJD-KA627GA-M2TY435-QFFLOQE";
-      addresses = [
-        "tcp://nuc.li7g.com:22000"
-      ];
-    };
+  simpleDeviceNames = [ "t460p" "xps8930" "nuc" ];
+  simpleDevices = lib.listToAttrs (map
+    (h: lib.nameValuePair h {
+      id = self.lib.data.${h}.syncthing_device_id;
+    })
+    simpleDeviceNames);
+  devices = lib.recursiveUpdate simpleDevices {
+    nuc.addresses = [
+      "tcp://nuc.li7g.com:22000"
+    ];
     k40 = {
       id = "BSTUP5D-LGMGCRC-MKM2OZO-SB5RYDK-5N73YYS-YTWEFPK-WWWD3IK-YFUU2QU";
     };
@@ -40,8 +37,12 @@ lib.mkIf (devices ? ${hostName}) {
         hostPath = "/home/yinfeng/Syncthing";
         isReadOnly = false;
       };
-      "/run/secrets/syncthing" = {
-        hostPath = config.sops.secrets."syncthing".path;
+      "/run/secrets/syncthing_cert_pem" = {
+        hostPath = config.sops.secrets."syncthing_cert_pem".path;
+        isReadOnly = true;
+      };
+      "/run/secrets/syncthing_key_pem" = {
+        hostPath = config.sops.secrets."syncthing_key_pem".path;
         isReadOnly = true;
       };
     };
@@ -58,8 +59,8 @@ lib.mkIf (devices ? ${hostName}) {
         enable = true;
         openDefaultPorts = true;
         inherit user group;
-        cert = "${./certs/${hostName}.pem}";
-        key = "/run/secrets/syncthing";
+        cert = "/run/secrets/syncthing_cert_pem";
+        key = "/run/secrets/syncthing_key_pem";
         devices = others;
         folders = {
           "main" = {
@@ -78,7 +79,8 @@ lib.mkIf (devices ? ${hostName}) {
       };
     };
   };
-  sops.secrets."syncthing".sopsFile = config.sops.secretsDir + /hosts/${hostName}.yaml;
+  sops.secrets."syncthing_cert_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."syncthing_key_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
   home-manager.users.yinfeng.home.global-persistence.directories = [
     "Syncthing"
   ];

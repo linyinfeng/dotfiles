@@ -105,9 +105,9 @@ in
         }
       '';
     };
-    sops.secrets."dkim".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    sops.secrets."dkim_private_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     systemd.services.maddy.serviceConfig.LoadCredential = [
-      "dkim.key:${config.sops.secrets."dkim".path}"
+      "dkim.key:${config.sops.secrets."dkim_private_pem".path}"
     ];
     services.postgresql.ensureDatabases = [ "maddy" ];
     services.postgresql.ensureUsers = [

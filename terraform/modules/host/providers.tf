@@ -11,5 +11,8 @@ terraform {
     wireguard = {
       source = "OJFord/wireguard"
     }
+    shell = {
+      source = "linyinfeng/shell"
+    }
   }
 }

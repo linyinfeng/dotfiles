@@ -1,6 +1,6 @@
 { writeShellScriptBin, yq-go, sops, fd }:
 
-writeShellScriptBin "terraform-output-extractor" ''
+writeShellScriptBin "terraform-outputs-extract-secrets" ''
   set -e
 
   export PATH=${yq-go}/bin:${sops}/bin:${fd}/bin:$PATH
@@ -27,10 +27,14 @@ writeShellScriptBin "terraform-output-extractor" ''
     fi
 
     echo "creating '$plain_file'..."
-    sops exec-file terraform-outputs.yaml "yq eval --from-file \"$template_file\" {}" > "$plain_file"
+    sops exec-file terraform-outputs.yaml \
+      "yq eval --from-file \"$template_file\" {}" \
+      > "$plain_file"
     if [ -n "$host_template_file" ]; then
       echo "creating '$host_plain_file'..."
-      sops exec-file terraform-outputs.yaml "yq eval --from-file \"$host_template_file\" {}" > "$host_plain_file"
+      sops exec-file terraform-outputs.yaml \
+        "yq eval --from-file \"$host_template_file\" {}" \
+        > "$host_plain_file"
       echo "merging '$host_plain_file' into '$plain_file'..."
       yq --inplace ". *= load(\"$host_plain_file\")" "$plain_file"
       echo "deleting '$host_plain_file'..."
@@ -49,6 +53,15 @@ writeShellScriptBin "terraform-output-extractor" ''
   for host_name in "''${host_names[@]}"; do
     extract "$host_name" is_host
   done
+
+  popd
+
+  pushd $PRJ_ROOT/data
+
+  echo "creating 'data/data.json'..."
+  sops exec-file $PRJ_ROOT/secrets/terraform-outputs.yaml \
+    "yq eval --from-file \"template.yq\" {} --output-format json" \
+    > "data.json"
 
   popd
 ''

@@ -1,0 +1,8 @@
+.hosts.value | map_values(
+    with_entries(
+        select(
+            .key == "wireguard_public_key" or
+            .key == "syncthing_device_id"
+        )
+    )
+)

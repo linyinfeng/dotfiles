@@ -106,6 +106,10 @@ jobs:
     - name: Terraform update outputs
       run: |
         nix develop --command terraform-update-outputs
+    - name: Terraform extract secret and data
+      run: |
+        nix develop --command terraform-outputs-extract-secrets
+        nix develop --command terraform-outputs-extract-data
     - name: Commit and push
       run: |
         if [ -z "$(git status --porcelain)" ]; then
