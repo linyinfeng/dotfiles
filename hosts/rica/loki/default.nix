@@ -66,5 +66,5 @@ in
     '';
     owner = "nginx";
   };
-  sops.secrets."loki/hashed-password".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."loki/hashed-password".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
 }

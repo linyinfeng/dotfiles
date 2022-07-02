@@ -67,7 +67,7 @@ in
   networking.firewall.allowedTCPPorts = [ port rconPort ];
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
-  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
   sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {

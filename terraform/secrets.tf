@@ -3,5 +3,5 @@ data "sops_file" "terraform" {
 }
 
 data "sops_file" "rica" {
-  source_file = "../secrets/rica-terraform.yaml"
+  source_file = "../secrets/hosts/rica-terraform.yaml"
 }

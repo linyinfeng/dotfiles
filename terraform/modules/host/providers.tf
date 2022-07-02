@@ -7,5 +7,9 @@ terraform {
     zerotier = {
       source = "zerotier/zerotier"
     }
+    # third-party providers
+    wireguard = {
+      source = "OJFord/wireguard"
+    }
   }
 }

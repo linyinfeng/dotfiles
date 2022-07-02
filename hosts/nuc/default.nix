@@ -213,7 +213,7 @@ in
         port = cfg.ports.nixServe;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
-      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
+      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
 
       # TODO broken: cannot determine user's home directory
       systemd.services.nix-serve = {
@@ -228,7 +228,7 @@ in
     # transmission
     # extra settings for suites.transmission
     {
-      sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /nuc.yaml;
+      sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
     }
   ];
 }

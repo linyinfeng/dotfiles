@@ -80,7 +80,7 @@ in
       # limit cpu quota of nix builds
       systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
       sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
+      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
       nix.settings.trusted-users = [ "@hydra" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [

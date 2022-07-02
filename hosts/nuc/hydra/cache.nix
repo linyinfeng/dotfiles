@@ -82,9 +82,9 @@ in
     after = [ "hydra-update-gc-roots.service" ];
   };
 
-  sops.secrets."minio_cache_key_id".sopsFile = config.sops.secretsDir + /terraform/nuc.yaml;
-  sops.secrets."minio_cache_access_key".sopsFile = config.sops.secretsDir + /terraform/nuc.yaml;
-  sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."minio_cache_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  sops.secrets."minio_cache_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
 
   services.notify-failure.services = [
     "copy-cache-li7g-com"

@@ -17,7 +17,7 @@ in
     '';
   };
 
-  sops.secrets."ss/password".sopsFile = config.sops.secretsDir + /g150ts.yaml;
+  sops.secrets."ss/password".sopsFile = config.sops.secretsDir + /hosts/g150ts.yaml;
 
   networking.firewall.allowedTCPPorts = [ port ];
   networking.firewall.allowedUDPPorts = [ port ];

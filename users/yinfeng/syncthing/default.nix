@@ -78,7 +78,7 @@ lib.mkIf (devices ? ${hostName}) {
       };
     };
   };
-  sops.secrets."syncthing".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
+  sops.secrets."syncthing".sopsFile = config.sops.secretsDir + /hosts/${hostName}.yaml;
   home-manager.users.yinfeng.home.global-persistence.directories = [
     "Syncthing"
   ];

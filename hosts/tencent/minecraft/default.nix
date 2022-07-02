@@ -50,7 +50,7 @@ in
   networking.firewall.allowedTCPPorts = [ port rconPort ];
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
-  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /tencent.yaml;
+  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /hosts/tencent.yaml;
 
   security.acme.certs."main".extraDomainNames = [
     "byrmc-retro.li7g.com"

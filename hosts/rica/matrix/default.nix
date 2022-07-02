@@ -8,7 +8,7 @@ let
   };
 in
 {
-  sops.secrets."matrix".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."matrix".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
 
   services.dendrite = {
     enable = true;

@@ -4,6 +4,7 @@ result*
 .data
 secrets/terraform-outputs.plain.yaml
 secrets/terraform/*.plain.yaml
+secrets/terraform/hosts/*.plain.yaml
 terraform/terraform.tfstate
 terraform.tfstate.*.backup
 terraform.tfstate.backup

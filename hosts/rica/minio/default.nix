@@ -23,8 +23,8 @@ in
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
   };
-  sops.secrets."minio/root/user".sopsFile = config.sops.secretsDir + /rica-terraform.yaml;
-  sops.secrets."minio/root/password".sopsFile = config.sops.secretsDir + /rica-terraform.yaml;
+  sops.secrets."minio/root/user".sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
+  sops.secrets."minio/root/password".sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
   sops.templates."minio-root-credentials".content = ''
     MINIO_ROOT_USER=${config.sops.placeholder."minio/root/user"}
     MINIO_ROOT_PASSWORD=${config.sops.placeholder."minio/root/password"}
@@ -117,5 +117,5 @@ in
   systemd.services.telegraf.serviceConfig.LoadCredential = [
     "minio_bearer_token:${config.sops.secrets."minio_metrics_bearer_token".path}"
   ];
-  sops.secrets."minio_metrics_bearer_token".sopsFile = config.sops.secretsDir + /terraform/rica.yaml;
+  sops.secrets."minio_metrics_bearer_token".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
 }

@@ -105,7 +105,7 @@ in
         }
       '';
     };
-    sops.secrets."dkim".sopsFile = config.sops.secretsDir + /rica.yaml;
+    sops.secrets."dkim".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
     systemd.services.maddy.serviceConfig.LoadCredential = [
       "dkim.key:${config.sops.secrets."dkim".path}"
     ];

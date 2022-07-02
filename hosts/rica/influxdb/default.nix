@@ -38,7 +38,7 @@ in
     after = [ "influxdb2.service" ];
     wantedBy = [ "multi-user.target" ];
   };
-  sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /rica.yaml;
+  sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
   sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
   environment.systemPackages = with pkgs; [
     influxdb2

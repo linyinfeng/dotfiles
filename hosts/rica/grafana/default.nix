@@ -97,7 +97,7 @@ in
 
   sops.secrets."grafana/password" = {
     owner = config.users.users.grafana.name;
-    sopsFile = config.sops.secretsDir + /rica.yaml;
+    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
   };
   sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
   sops.secrets."loki/password".sopsFile = config.sops.secretsDir + /infrastructure.yaml;

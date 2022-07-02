@@ -72,7 +72,7 @@
       config.networking.fw-proxy.environment);
   };
   sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /nuc.yaml;
+  sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
 
   services.notify-failure.services = [ "dotfiles-channel-update@" ];
 

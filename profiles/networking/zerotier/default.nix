@@ -60,11 +60,11 @@ in
     restartUnits = units;
   };
   sops.secrets."zerotier_public_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/${hostName}.yaml;
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
     restartUnits = units;
   };
   sops.secrets."zerotier_private_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/${hostName}.yaml;
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
     restartUnits = units;
   };
 

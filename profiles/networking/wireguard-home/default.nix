@@ -6,17 +6,14 @@ let
   hosts = {
     t460p = {
       ip = "192.168.2.2/32";
-      publicKey = "1Z1Z+wNd21Uhd1O9ujCdJVqcv40MTkBCpmSfwFoLrkY=";
       inherit port;
     };
     xps8930 = {
       ip = "192.168.2.3/32";
-      publicKey = "ucLym/N2nVNc2uxEFCTY+KTJhYZ1KSCw35W0C5JGeyE=";
       inherit port;
     };
     tencent = {
       ip = "192.168.2.4/32";
-      publicKey = "Q4sBAq/1ZPJnW13vNKgjLIPsyT2RbzExQZUZ8qpfgyY=";
       inherit port;
     };
   };
@@ -38,12 +35,12 @@ in
       ips = [ hosts.${hostName}.ip ];
       listenPort = hosts.${hostName}.port;
       peers = [ home ];
-      privateKeyFile = config.sops.secrets."wireguard".path;
+      privateKeyFile = config.sops.secrets."wireguard_private_key".path;
     };
   };
   # do not auto start
   systemd.services."wireguard-wg0".wantedBy = lib.mkForce [ ];
-  sops.secrets."wireguard".sopsFile = config.sops.secretsDir + /${hostName}.yaml;
+  sops.secrets."wireguard_private_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];

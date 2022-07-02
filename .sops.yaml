@@ -20,7 +20,7 @@ creation_rules:
       age:
       - *github
   # terraform inputs shared with rica
-  - path_regex: ^secrets/rica-terraform\.yaml$
+  - path_regex: ^secrets/hosts/rica-terraform\.yaml$
     key_groups:
     - pgp:
       - *main
@@ -78,55 +78,55 @@ creation_rules:
       - *tencent
       - *aws
       - *g150ts
-  - path_regex: ^secrets/(terraform/)?t460p(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/t460p(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *t460p
-  - path_regex: ^secrets/(terraform/)?nuc(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/nuc(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *nuc
-  - path_regex: ^secrets/(terraform/)?xps8930(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/xps8930(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *xps8930
-  - path_regex: ^secrets/(terraform/)?x200s(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/x200s(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *x200s
-  - path_regex: ^secrets/(terraform/)?vultr(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/vultr(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *vultr
-  - path_regex: ^secrets/(terraform/)?tencent(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/tencent(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *tencent
-  - path_regex: ^secrets/(terraform/)?rica(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/rica(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *rica
-  - path_regex: ^secrets/(terraform/)?aws(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/aws(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
       age:
       - *aws
-  - path_regex: ^secrets/(terraform/)?g150ts(\.plain)?\.yaml$
+  - path_regex: ^secrets/(terraform/)?hosts/g150ts(\.plain)?\.yaml$
     key_groups:
     - pgp:
       - *main
