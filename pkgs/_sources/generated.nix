@@ -10,7 +10,7 @@
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
-      sha256 = "sha256-+10s2obRlnM7rJR/16QjZrncCaCoSEzjBD00hSOkGsU=";
+      sha256 = "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=";
     };
   };
   pyim-greatdict = {
@@ -22,7 +22,7 @@
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
-      sha256 = "sha256-VYzhQ+yWdE7aJsYVf/J3iirKEe6OVIqUqK1vzDXusnY=";
+      sha256 = "sha256-IvSAFs3TZ84q2FflPyrDbvwkPVVlyvRQTzpCx+JvKGA=";
     };
   };
 }
