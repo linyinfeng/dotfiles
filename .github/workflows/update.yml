@@ -30,15 +30,26 @@ jobs:
       uses: pierotofy/set-swap-space@master
       with:
         swap-size-gb: 10
+    - name: Git config
+      run: |
+        git config --global user.email "nano@linyinfeng.com"
+        git config --global user.name "Nano"
     - name: Terraform update
       run: |
         nix develop --command terraform-init -upgrade
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "repository is clean, skip commit"
+        else
+          git add --all
+          git commit --message "terraform-init -upgrade"
+        fi
     - name: Nix flake update
       run: |
-        nix flake update
+        nix flake update --commit-lock-file
     - name: Update pkgs
       run: |
         nix develop --command nvfetcher
+        nix develop --command nvfetcher-changes-commit "pkgs/_sources/generated.nix"
     - name: Test evaluation
       run: |
         set -e
@@ -49,14 +60,6 @@ jobs:
           nix eval --raw .#checks.$system.$check --accept-flake-config
           echo # add a new line
         done
-    - name: Commit and push
+    - name: Git push
       run: |
-        if [ -z "$(git status --porcelain)" ]; then
-          echo "repository is clean, skip commit and push"
-        else
-          git config --global user.email "nano@linyinfeng.com"
-          git config --global user.name "Nano"
-          git add --all
-          git commit --message "Automated update"
-          git push
-        fi
+        git push

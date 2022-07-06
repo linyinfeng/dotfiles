@@ -8,6 +8,7 @@ let
   docs = pkgWithCategory "docs";
   devos = pkgWithCategory "devos";
   secret = pkgWithCategory "secret";
+  update = pkgWithCategory "update";
 
 in
 {
@@ -36,5 +37,7 @@ in
 
     (secret sops)
     (secret ssh-to-age)
+
+    (update inputs.linyinfeng.packages.${pkgs.system}.nvfetcher-changes-commit)
   ];
 }
