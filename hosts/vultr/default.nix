@@ -24,6 +24,7 @@ in
       services.notify-failure
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
+      ./cache-overlay.nix
     ];
 
   config = lib.mkMerge [

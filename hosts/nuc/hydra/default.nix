@@ -13,6 +13,7 @@ in
   imports = [
     ./dotfiles-channel-update.nix
     ./cache.nix
+    ./cache-overlay.nix
   ];
 
   config = lib.mkMerge [

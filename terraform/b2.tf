@@ -13,6 +13,15 @@ output "b2_download_url" {
   value = data.b2_account_info.main.download_url
 }
 
+module "b2_s3_api_url" {
+  source = "matti/urlparse/external"
+  url = data.b2_account_info.main.s3_api_url
+}
+module "b2_download_url" {
+  source = "matti/urlparse/external"
+  url = data.b2_account_info.main.download_url
+}
+
 resource "b2_bucket" "backup" {
   bucket_name = "yinfeng-backup"
   bucket_type = "allPrivate"
@@ -79,6 +88,10 @@ resource "b2_application_key" "cache" {
     "writeFiles"
   ]
 }
+output "b2_cache_bucket_name" {
+  value = b2_bucket.cache.bucket_name
+  sensitive = false
+}
 output "b2_cache_key_id" {
   value     = b2_application_key.cache.application_key_id
   sensitive = false
@@ -86,4 +99,10 @@ output "b2_cache_key_id" {
 output "b2_cache_access_key" {
   value     = b2_application_key.cache.application_key
   sensitive = true
+}
+resource "b2_bucket_file_version" "nix_cache_info" {
+  bucket_id  = b2_bucket.cache.bucket_id
+  file_name  = "nix-cache-info"
+  content_type = "text/x-nix-cache-info"
+  source      = "${path.module}/resources/nix-cache-info"
 }

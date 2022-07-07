@@ -418,3 +418,39 @@ resource "cloudflare_record" "li7g_cache" {
   value   = "minio.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
+resource "cloudflare_record" "li7g_cache_ng" {
+  name    = "cache-ng"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = module.b2_download_url.host
+  zone_id = cloudflare_zone.com_li7g.id
+}
+resource "cloudflare_record" "li7g_cache_overlay" {
+  name    = "cache-overlay"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = "vultr.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+resource "cloudflare_ruleset" "li7g_rewrite" {
+  kind        = "zone"
+  zone_id     = cloudflare_zone.com_li7g.id
+  name        = "rewrite"
+  description = "URL Rewrite"
+  phase       = "http_request_transform"
+  rules {
+    enabled = true
+    description = "Rewrite cache path"
+    expression  = "(http.host eq \"cache-ng.li7g.com\")"
+    action = "rewrite"
+    action_parameters {
+      uri {
+        path {
+          expression = "concat(\"/file/${b2_bucket.cache.bucket_name}\", http.request.uri.path)"
+        }
+      }
+    }
+  }
+}

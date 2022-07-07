@@ -39,11 +39,7 @@ resource "minio_s3_object" "nix_cache_info" {
   bucket_name  = minio_s3_bucket.cache.bucket
   object_name  = "nix-cache-info"
   content_type = "text/x-nix-cache-info"
-  content      = <<EOF
-StoreDir: /nix/store
-WantMassQuery: 1
-Priority: 50
-EOF
+  content      = file("${path.module}/resources/nix-cache-info")
 }
 
 resource "minio_iam_user" "cache" {

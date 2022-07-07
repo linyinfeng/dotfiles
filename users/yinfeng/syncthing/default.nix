@@ -4,7 +4,7 @@ let
   simpleDeviceNames = [ "t460p" "xps8930" "nuc" ];
   simpleDevices = lib.listToAttrs (map
     (h: lib.nameValuePair h {
-      id = self.lib.data.${h}.syncthing_device_id;
+      id = self.lib.data.hosts.${h}.syncthing_device_id;
     })
     simpleDeviceNames);
   devices = lib.recursiveUpdate simpleDevices {

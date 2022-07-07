@@ -18,6 +18,7 @@ in
         export PATH=${pkgs.syncthing}/bin:$PATH
         export PATH=${pkgs.jq}/bin:$PATH
         export PATH=${pkgs.openssl}/bin:$PATH
+        export PATH=${pkgs.ruby}/bin:$PATH
 
         encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
         unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
