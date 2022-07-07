@@ -21,7 +21,6 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-      services.restic
     ]) ++ (with profiles.users; [
       yinfeng
     ])

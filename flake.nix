@@ -283,6 +283,9 @@
                 security.fail2ban
                 security.firewall
               ];
+              backup = with profiles; [
+                services.restic
+              ];
               multimedia = with profiles; [
                 graphical.gnome
                 graphical.kde
@@ -315,6 +318,7 @@
                 multimediaDev
                 virtualization
                 network
+                backup
                 monitoring
               ]) ++ (with profiles; [
                 networking.network-manager
@@ -334,6 +338,7 @@
               server = (with suites; [
                 base
                 network
+                backup
                 monitoring
               ]) ++
               (with profiles; [

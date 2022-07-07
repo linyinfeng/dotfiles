@@ -12,7 +12,6 @@ in
     location = "${localBackupRoot}/postgresql";
     startAt = preBackupCalendar;
   };
-
   services.restic.backups.b2 = {
     paths = [
       localBackupRoot
@@ -22,16 +21,6 @@ in
       "/var/lib/bitwarden_rs/rsa_key.pub.pem"
       # dendrite
       "/var/lib/private/dendrite/media_store"
-    ];
-    pruneOpts = [
-      "--keep-daily 3"
-      "--keep-weekly 2"
-    ];
-  };
-  services.restic.backups.minio = {
-    pruneOpts = [
-      "--keep-daily 7"
-      "--keep-weekly 4"
     ];
   };
   systemd.services."restic-backups-b2" = {

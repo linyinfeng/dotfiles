@@ -1,19 +1,28 @@
 { config, pkgs, lib, ... }:
 
 let
+  inherit (config.networking) hostName;
   defaultTimerConfig = {
     OnCalendar = "03:00:00";
     RandomizedDelaySec = "30min";
   };
   cfgB2 = {
-    repository = "b2:yinfeng-backup";
+    repository = "b2:yinfeng-backup-${hostName}";
     environmentFile = config.sops.templates."restic-b2-env".path;
-    passwordFile = config.sops.secrets."restic/password".path;
+    passwordFile = config.sops.secrets."restic_password".path;
+    pruneOpts = [
+      "--keep-daily 3"
+      "--keep-weekly 2"
+    ];
   };
   cfgMinio = {
-    repository = "s3:https://minio.li7g.com/backup";
+    repository = "s3:https://minio.li7g.com/backup-${hostName}";
     environmentFile = config.sops.templates."restic-minio-env".path;
-    passwordFile = config.sops.secrets."restic/password".path;
+    passwordFile = config.sops.secrets."restic_password".path;
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 4"
+    ];
   };
 
   mkScript = cfg: pkgs.substituteAll ({
@@ -48,11 +57,11 @@ in
     AWS_ACCESS_KEY_ID="${config.sops.placeholder."minio_backup_key_id"}"
     AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key"}"
   '';
-  sops.secrets."restic/password".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."b2_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
-  sops.secrets."b2_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
-  sops.secrets."minio_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
-  sops.secrets."minio_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+  sops.secrets."restic_password".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."b2_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."b2_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."minio_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."minio_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
 
   environment.systemPackages = [
     scripts

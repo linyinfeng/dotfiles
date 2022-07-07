@@ -1,7 +1,6 @@
 { config, lib, ... }:
 
 let
-  preBackupCalendar = "03:00:00";
   localBackupRoot = "/media/data/backup";
 in
 {
@@ -10,7 +9,6 @@ in
     backupAll = true;
     compression = "zstd";
     location = "${localBackupRoot}/postgresql";
-    startAt = preBackupCalendar;
   };
 
   services.restic.backups.b2 = {
@@ -19,6 +17,7 @@ in
     ];
   };
   systemd.services."restic-backups-b2" = {
+    requires = [ "postgresqlBackup.service" ];
     after = [ "postgresqlBackup.service" ];
   };
 }
