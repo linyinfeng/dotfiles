@@ -258,10 +258,6 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
-            aws = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
           };
           importables = rec {
             profiles = digga.lib.rakeLeaves ./profiles // {

@@ -7,6 +7,7 @@ writeShellScriptBin "terraform-outputs-extract-secrets" ''
 
   pushd $PRJ_ROOT/secrets
 
+  rm -r terraform
   mkdir -p terraform/hosts
 
   function extract {

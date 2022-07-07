@@ -304,15 +304,6 @@ resource "cloudflare_record" "li7g_smtp_spf" {
 # -----------------
 # tailscale records
 
-resource "cloudflare_record" "li7g_ts_aws" {
-  name    = "aws.ts"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = "100.115.115.106"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 resource "cloudflare_record" "li7g_ts_g150t" {
   name    = "g150ts.ts"
   proxied = false

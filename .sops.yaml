@@ -9,7 +9,6 @@ keys:
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
   - &g150ts    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
-  - &aws        age1m6tfhx22rdfd27v2666lqskpuag6fqz9rfdquqv4cktg88mv64yqusulpa
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
 creation_rules:
@@ -39,7 +38,6 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
-      - *aws
   - path_regex: terraform.tfstate$
     key_groups:
     - pgp:
@@ -62,7 +60,6 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
-      - *aws
       # no age key for g150ts
   - path_regex: ^secrets/(terraform/)?infrastructure(\.plain)?\.yaml$
     key_groups:
@@ -76,7 +73,6 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
-      - *aws
       - *g150ts
   - path_regex: ^secrets/(terraform/)?hosts/t460p(\.plain)?\.yaml$
     key_groups:
@@ -120,12 +116,6 @@ creation_rules:
       - *main
       age:
       - *rica
-  - path_regex: ^secrets/(terraform/)?hosts/aws(\.plain)?\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *aws
   - path_regex: ^secrets/(terraform/)?hosts/g150ts(\.plain)?\.yaml$
     key_groups:
     - pgp:

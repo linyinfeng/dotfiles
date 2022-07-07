@@ -1,22 +1,5 @@
 locals {
   hosts = {
-    aws = {
-      records = {
-        a = {
-          proxied = true
-          type    = "A"
-          value   = aws_eip.main.public_ip
-          ddns    = false
-        }
-        aaaa = {
-          proxied = true
-          type    = "AAAA"
-          value   = aws_instance.main.ipv6_addresses[0]
-          ddns    = false
-        }
-      }
-      ddns_records = {}
-    }
     nuc = {
       records = {}
       ddns_records = {

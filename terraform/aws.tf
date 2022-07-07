@@ -6,6 +6,8 @@ provider "aws" {
 }
 
 resource "aws_instance" "main" {
+  count = 0 # disabled
+
   instance_type = "t3.micro"
   ami           = data.aws_ami.nixos.id
 
@@ -29,6 +31,13 @@ resource "aws_instance" "main" {
   })
 }
 
+resource "aws_eip" "main" {
+  count = 0 # disabled
+
+  instance = aws_instance.main[count.index].id
+  vpc      = true
+}
+
 data "aws_ami" "nixos" {
   most_recent = true
   name_regex  = "^NixOS-.*"
@@ -39,11 +48,6 @@ data "aws_ami" "nixos" {
     name   = "architecture"
     values = ["x86_64"]
   }
-}
-
-resource "aws_eip" "main" {
-  instance = aws_instance.main.id
-  vpc      = true
 }
 
 resource "aws_vpc" "main" {
