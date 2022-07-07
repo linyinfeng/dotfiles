@@ -53,7 +53,7 @@ in
       "Source Han Serif K"
     ];
     monospace = [
-      # "Iosevka Yinfeng"
+      "Iosevka Yinfeng"
       "Sarasa Mono Slab SC"
     ];
     emoji = [
