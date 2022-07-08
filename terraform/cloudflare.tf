@@ -428,8 +428,7 @@ resource "cloudflare_record" "li7g_cache_ng" {
 }
 resource "cloudflare_record" "li7g_cache_overlay" {
   name    = "cache-overlay"
-  # bypass cloudflare upload limit
-  proxied = false
+  proxied = true
   ttl     = 1
   type    = "CNAME"
   value   = "vultr.li7g.com"
