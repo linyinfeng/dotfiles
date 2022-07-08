@@ -443,7 +443,7 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
   rules {
     enabled = true
     description = "Rewrite cache path"
-    expression  = "(http.host eq \"cache-ng.li7g.com\")"
+    expression  = "(http.host eq \"cache.li7g.com\")"
     action = "rewrite"
     action_parameters {
       uri {
