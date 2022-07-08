@@ -21,7 +21,7 @@ in
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
           # use multipart-upload to avoid cloudflare limit
-          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true" "$root" --verbose
+          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true&parallel-compression=true" "$root" --verbose
         done
       ) 200>/var/lib/cache-li7g-com/lock
     '';
@@ -41,6 +41,7 @@ in
         "cache-access-key:${config.sops.secrets."cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
+      CPUQuota = "400%"; # limit cpu usage for parallel-compression
     };
     environment = lib.mkMerge [
       {
