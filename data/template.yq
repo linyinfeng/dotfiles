@@ -1,5 +1,6 @@
 {
     "cache_s3_url": .b2_s3_api_url.value,
+    "cache_s3_host": .b2_s3_api_host.value,
     "cache_bucket_name": .b2_cache_bucket_name.value,
     "hosts": .hosts.value | map_values(
         with_entries(

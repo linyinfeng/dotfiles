@@ -12,7 +12,6 @@ output "b2_s3_api_url" {
 output "b2_download_url" {
   value = data.b2_account_info.main.download_url
 }
-
 module "b2_s3_api_url" {
   source = "matti/urlparse/external"
   url = data.b2_account_info.main.s3_api_url
@@ -20,6 +19,9 @@ module "b2_s3_api_url" {
 module "b2_download_url" {
   source = "matti/urlparse/external"
   url = data.b2_account_info.main.download_url
+}
+output "b2_s3_api_host" {
+  value = module.b2_s3_api_url.host
 }
 
 resource "b2_bucket" "backup" {
@@ -62,7 +64,7 @@ output "b2_backup_access_key" {
 
 
 resource "b2_bucket" "cache" {
-  bucket_name = "yinfeng-cache-li7g-com"
+  bucket_name = "cache-li7g-com"
   bucket_type = "allPublic" # files avaliable to download
 
   # keep only the last version of the file

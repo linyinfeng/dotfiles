@@ -1,10 +1,10 @@
-# TODO not working
-
-{ self, config, ... }:
+{ self, config, pkgs, ... }:
 
 let
-  cacheS3Url = self.lib.data.cache_s3_url;
+  cacheS3Host = self.lib.data.cache_s3_host;
   cacheBucketName = self.lib.data.cache_bucket_name;
+  sigv4ProxyPort = 3000;
+  sigv4ProxyAddress = "http://localhost:${toString sigv4ProxyPort}";
 in
 {
   security.acme.certs."main".extraDomainNames = [
@@ -28,13 +28,13 @@ in
 
         rewrite /${cacheBucketName}/(.*) /$1 break;
         error_page 404 = @fallback;
-        proxy_pass  https://cache.nixos.org;
+        proxy_pass https://cache.nixos.org;
       }
       if ($to_cache_nixos_org != 11) {
         set $pass_with_host $host;
         set $pass_with_auth $http_authorization;
 
-        proxy_pass ${cacheS3Url};
+        proxy_pass ${sigv4ProxyAddress};
       }
 
       proxy_intercept_errors on;
@@ -47,14 +47,40 @@ in
     '';
     locations."@fallback".extraConfig = ''
       rewrite /(.*) /${cacheBucketName}/$1 break;
+
       proxy_set_header Host $host;
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header Authorization $http_authorization;
-      proxy_pass ${cacheS3Url};
+      proxy_pass ${sigv4ProxyAddress};
     '';
-    locations."/${cacheBucketName}/nix-cache-info".proxyPass = cacheS3Url;
     extraConfig = ''
       client_max_body_size 4G;
     '';
   };
+
+  systemd.services."cache-sigv4-proxy" = {
+    script = ''
+      export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
+      export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      ${pkgs.nur.repos.linyinfeng.aws-s3-reverse-proxy}/bin/aws-s3-reverse-proxy \
+        --verbose \
+        --allowed-endpoint="cache-overlay.li7g.com" \
+        --aws-credentials="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY" \
+        --listen-addr=":${toString sigv4ProxyPort}" \
+        --allowed-source-subnet=127.0.0.1/8 \
+        --allowed-source-subnet=::1/128 \
+        --upstream-endpoint="${cacheS3Host}"
+    '';
+    serviceConfig = {
+      DynamicUser = true;
+      LoadCredential = [
+        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
+      ];
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  sops.secrets."cache_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/vultr.yaml;
+  sops.secrets."cache_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/vultr.yaml;
 }

@@ -1,6 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ self, config, pkgs, lib, ... }:
 
 let
+  cacheS3Url = self.lib.data.cache_s3_url;
+  cacheBucketName = self.lib.data.cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
 in
 {
@@ -18,7 +20,7 @@ in
         nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
-          nix copy --to "s3://cache?endpoint=minio-overlay.li7g.com" "$root" --verbose
+          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com" "$root" --verbose
         done
       ) 200>/var/lib/cache-li7g-com/lock
     '';
@@ -34,8 +36,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."minio_cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."minio_cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
     };
@@ -58,7 +60,7 @@ in
         echo "enter critical section"
 
         rm -rf /var/lib/cache-li7g-com/.cache
-        nix-gc-s3 cache --endpoint https://minio.li7g.com --roots "${hydraRootsDir}" --jobs 10
+        nix-gc-s3 cache --endpoint "${cacheS3Url}" --roots "${hydraRootsDir}" --jobs 10
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     path = with pkgs; [
@@ -72,8 +74,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."minio_cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."minio_cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
       ];
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable)
@@ -82,8 +84,8 @@ in
     after = [ "hydra-update-gc-roots.service" ];
   };
 
-  sops.secrets."minio_cache_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
-  sops.secrets."minio_cache_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  sops.secrets."cache_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  sops.secrets."cache_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
   sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
 
   services.notify-failure.services = [

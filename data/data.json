@@ -1,6 +1,7 @@
 {
   "cache_s3_url": "https://s3.us-west-004.backblazeb2.com",
-  "cache_bucket_name": "yinfeng-cache-li7g-com",
+  "cache_s3_host": "s3.us-west-004.backblazeb2.com",
+  "cache_bucket_name": "cache-li7g-com",
   "hosts": {
     "g150ts": {
       "syncthing_device_id": "PEZWQI6-F45E5YN-GGDTDTQ-ABSHLAH-3ZS6ZWP-4IYT2CS-WP2QGZN-PTU54QL",

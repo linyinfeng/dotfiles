@@ -35,7 +35,6 @@ in
       ./grafana
       ./loki
       ./git
-      ./cache-overlay
     ];
 
   config = lib.mkMerge [
