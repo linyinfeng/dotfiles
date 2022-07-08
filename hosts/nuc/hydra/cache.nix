@@ -55,20 +55,29 @@ in
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      export B2_APPLICATION_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
+      export B2_APPLICATION_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
 
       (
         echo "wait for lock"
         flock 200
         echo "enter critical section"
 
+        echo "canceling all unfinished multipart uploads..."
+        backblaze-b2 cancel-all-unfinished-large-files "${cacheBucketName}"
+
+        echo "removing narinfo cache..."
         rm -rf /var/lib/cache-li7g-com/.cache
-        nix-gc-s3 cache --endpoint "${cacheS3Url}" --roots "${hydraRootsDir}" --jobs 10
+
+        echo "performing gc..."
+        nix-gc-s3 "${cacheBucketName}" --endpoint "${cacheS3Url}" --roots "${hydraRootsDir}" --jobs 10
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     path = with pkgs; [
       nix-gc-s3
       config.nix.package
       util-linux
+      backblaze-b2
     ];
     serviceConfig = {
       User = "hydra";
