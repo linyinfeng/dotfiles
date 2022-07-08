@@ -20,8 +20,8 @@ in
         nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
         for root in "''${roots[@]}"; do
           echo "push cache to cahche.li7g.com for hydra gcroot: $root"
-          # use multipart-upload and part size 90000000 (90 Mbytes) to avoid cloudflare limit
-          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true&buffer-size=90000000" "$root" --verbose
+          # use multipart-upload to avoid cloudflare limit
+          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true" "$root" --verbose
         done
       ) 200>/var/lib/cache-li7g-com/lock
     '';
