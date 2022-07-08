@@ -410,16 +410,16 @@ resource "cloudflare_page_rule" "acme" {
 
 # cache
 
-resource "cloudflare_record" "li7g_cache" {
-  name    = "cache"
+resource "cloudflare_record" "li7g_cache_old" {
+  name    = "cache-old"
   proxied = true
   ttl     = 1
   type    = "CNAME"
   value   = "minio.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
-resource "cloudflare_record" "li7g_cache_ng" {
-  name    = "cache-ng"
+resource "cloudflare_record" "li7g_cache" {
+  name    = "cache"
   proxied = true
   ttl     = 1
   type    = "CNAME"
