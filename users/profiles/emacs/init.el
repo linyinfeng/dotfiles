@@ -403,6 +403,9 @@
   :config
   (global-undo-tree-mode))
 
+(use-package vterm
+  :ensure t)
+
 (use-package webkit
   :config
   (require 'webkit-ace))
