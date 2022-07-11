@@ -48,7 +48,7 @@ in
     ect = "emacsclient --create-frame --tty";
   };
   home.sessionVariables = {
-    EDITOR = "emacsclient --create-frame";
+    EDITOR = "emacsclient";
   };
   xdg.mimeApps.associations.added = {
     "text/plain" = "emacsclient.desktop";
@@ -62,4 +62,10 @@ in
     ];
   };
   home.link.".ispell_english".target = "${syncPath}/dotfiles/ispell_english";
+
+  programs.fish.interactiveShellInit = ''
+    if test "$INSIDE_EMACS" = 'vterm'
+      source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+    end
+  '';
 }
