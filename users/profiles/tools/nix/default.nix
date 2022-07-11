@@ -15,9 +15,12 @@
     patchelf
   ];
 
+  services.lorri.enable = true;
+
   home.global-persistence.directories = [
     ".config/cachix"
     ".cache/nix"
     ".cache/nix-index"
+    ".cache/lorri"
   ];
 }
