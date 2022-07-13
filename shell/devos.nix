@@ -39,5 +39,6 @@ in
     (secret ssh-to-age)
 
     (update inputs.linyinfeng.packages.${pkgs.system}.nvfetcher-changes-commit)
+    (update inputs.linyinfeng.packages.${pkgs.system}.nvfetcher-changes)
   ];
 }
