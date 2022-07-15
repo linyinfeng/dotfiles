@@ -80,6 +80,7 @@ in
       backblaze-b2
     ];
     serviceConfig = {
+      Restart = "on-failure";
       User = "hydra";
       Group = "hydra";
       Type = "oneshot";
