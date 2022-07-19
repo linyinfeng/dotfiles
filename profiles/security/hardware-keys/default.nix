@@ -24,7 +24,7 @@
   # disabled
   security.pam.u2f = {
     enable = false;
-    cue = true;
+    cue = false;
   };
   environment.global-persistence.user.directories = [
     ".config/Yubico"
