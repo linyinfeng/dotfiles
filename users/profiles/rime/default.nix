@@ -4,7 +4,7 @@ let
   home = "${config.home.homeDirectory}";
   rimeConfig = ".config/ibus/rime";
   installationCustom = ''
-    sync_dir: "${home}/OneDrive/Documents/RIME"
+    sync_dir: "${home}/Syncthing/Main/rime"
     installation_id: "${osConfig.networking.hostName}"
   '';
 in
