@@ -62,9 +62,12 @@ in
   };
   sops.templates."loki-auth-file" = {
     content = ''
-      loki:${config.sops.placeholder."loki/hashed-password"}
+      loki:${config.sops.placeholder."loki_hashed_password"}
     '';
     owner = "nginx";
   };
-  sops.secrets."loki/hashed-password".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+  sops.secrets."loki_hashed_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "nginx.service" ];
+  };
 }

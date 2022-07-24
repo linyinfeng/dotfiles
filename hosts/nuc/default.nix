@@ -227,7 +227,43 @@ in
     # transmission
     # extra settings for suites.transmission
     {
-      sops.secrets."transmission/credentials".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+      security.acme.certs."main".extraDomainNames = [
+        "transmission.li7g.com"
+        "transmission.zt.li7g.com"
+      ];
+      services.nginx.virtualHosts."transmission.li7g.com" = {
+        listen = config.hosts.nuc.listens;
+        serverAliases = [
+          "transmission.zt.li7g.com"
+        ];
+        locations."/transmission".proxyPass =
+          "http://localhost:${toString config.services.transmission.settings.rpc-port}";
+        locations."/files/" = {
+          alias = "/var/lib/transmission/Downloads/";
+          extraConfig = ''
+            charset UTF-8;
+            autoindex on;
+            auth_basic "transmission";
+            auth_basic_user_file ${config.sops.templates."transmission-auth-file".path};
+          '';
+        };
+      };
+      users.users.nginx.extraGroups = [ config.users.groups.transmission.name ];
+      sops.templates."transmission-auth-file" = {
+        content = ''
+          ${config.sops.placeholder."transmission_username"}:${config.sops.placeholder."transmission_hashed_password"}
+        '';
+        owner = "nginx";
+      };
+      sops.secrets."transmission_username" = {
+        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        restartUnits = [ "nginx.service" ];
+      };
+      sops.secrets."transmission_hashed_password" = {
+        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        restartUnits = [ "nginx.service" ];
+      };
+      sops.secrets."transmission_password".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
     }
   ];
 }

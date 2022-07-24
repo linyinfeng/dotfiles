@@ -1,0 +1,46 @@
+provider "htpasswd" {
+}
+
+resource "random_pet" "transmission_username" {
+}
+output "transmission_username" {
+    value = random_pet.transmission_username.id
+    sensitive = true
+}
+resource "random_password" "transmission" {
+  length           = 32
+}
+resource "random_password" "transmission_salt" {
+  length = 8
+}
+resource "htpasswd_password" "transmission" {
+  password = random_password.transmission.result
+  salt     = random_password.transmission_salt.result
+}
+output "transmission_password" {
+    value = random_password.transmission.result
+    sensitive = true
+}
+output "transmission_hashed_password" {
+    value = htpasswd_password.transmission.sha512
+    sensitive = true
+}
+resource "random_password" "loki" {
+  length           = 32
+  special = false
+}
+resource "random_password" "loki_salt" {
+  length = 8
+}
+resource "htpasswd_password" "loki" {
+  password = random_password.loki.result
+  salt     = random_password.loki_salt.result
+}
+output "loki_password" {
+    value = random_password.loki.result
+    sensitive = true
+}
+output "loki_hashed_password" {
+    value = htpasswd_password.loki.sha512
+    sensitive = true
+}

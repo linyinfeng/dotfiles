@@ -7,7 +7,7 @@ in
   services.transmission = {
     enable = true;
     openFirewall = true;
-    credentialsFile = config.sops.secrets."transmission/credentials".path;
+    credentialsFile = config.sops.templates."transmission-credentials".path;
     settings = {
       rpc-port = rpcPort;
       rpc-bind-address = "::";
@@ -15,6 +15,11 @@ in
       rpc-whitelist-enabled = false;
       rpc-host-whitelist-enabled = false;
     };
+  };
+
+  sops.templates."transmission-credentials".content = builtins.toJSON {
+    rpc-username = config.sops.placeholder."transmission_username";
+    rpc-password = config.sops.placeholder."transmission_password";
   };
 
   networking.firewall.allowedTCPPorts = [ rpcPort ];
@@ -25,4 +30,6 @@ in
     "browseable" = true;
     "comment" = "Transmission downloads";
   };
+
+  sops.secrets."transmission_password".restartUnits = [ "transmission.service" ];
 }

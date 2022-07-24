@@ -29,5 +29,8 @@ terraform {
     shell = {
       source = "linyinfeng/shell"
     }
+    htpasswd = {
+      source = "loafoe/htpasswd"
+    }
   }
 }

@@ -61,7 +61,10 @@
     config.sops.templates."promtail-env".path
   ];
   sops.templates."promtail-env".content = ''
-    LOKI_PASSWORD=${config.sops.placeholder."loki/password"}
+    LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
   '';
-  sops.secrets."loki/password".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."loki_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "promtail.service" ];
+  };
 }

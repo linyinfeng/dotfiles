@@ -211,6 +211,24 @@ resource "cloudflare_record" "li7g_git" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+resource "cloudflare_record" "li7g_transmission" {
+  name    = "transmission"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  value   = "nuc.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_record" "li7g_zt_transmission" {
+  name    = "transmission.zt"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  value   = "nuc.zt.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # --------------------------
 # smtp records for receiving
 

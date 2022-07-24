@@ -59,7 +59,7 @@ in
   ];
   sops.templates."grafana-environment".content = ''
     INFLUX_TOKEN=${config.sops.placeholder."influxdb/token"}
-    LOKI_PASSWORD=${config.sops.placeholder."loki/password"}
+    LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
     GF_SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
   '';
   services.grafana.provision = {
@@ -82,7 +82,7 @@ in
           organization = "main-org";
           defaultBucket = "main";
         };
-        jsonData.token = "$INFLUX_TOKEN";
+        secureJsonData.token = "$INFLUX_TOKEN";
       }
       {
         name = "Loki";
@@ -90,7 +90,7 @@ in
         url = "https://loki.li7g.com";
         basicAuth = true;
         basicAuthUser = "loki";
-        jsonData.basicAuthPassword = "$LOKI_PASSWORD";
+        secureJsonData.basicAuthPassword = "$LOKI_PASSWORD";
       }
     ];
   };
@@ -98,8 +98,14 @@ in
   sops.secrets."grafana/password" = {
     owner = config.users.users.grafana.name;
     sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    restartUnits = [ "grafana.service" ];
   };
-  sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."loki/password".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
-
+  sops.secrets."mail/password" = {
+    sopsFile = config.sops.secretsDir + /common.yaml;
+    restartUnits = [ "grafana.service" ];
+  };
+  sops.secrets."loki_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "grafana.service" ];
+  };
 }
