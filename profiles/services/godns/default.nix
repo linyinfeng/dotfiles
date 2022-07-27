@@ -31,7 +31,7 @@ in
     };
   };
   config = {
-    sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
+    sops.secrets."cloudflare_token".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     sops.templates = lib.mapAttrs'
       (_: godnsCfg:
         lib.nameValuePair "${godnsCfg.fullName}.json"
@@ -39,7 +39,7 @@ in
             content = builtins.toJSON (lib.recursiveUpdate
               {
                 provider = "Cloudflare";
-                login_token = config.sops.placeholder."cloudflare-token";
+                login_token = config.sops.placeholder."cloudflare_token";
                 resolver = "8.8.8.8";
               }
               godnsCfg.settings);

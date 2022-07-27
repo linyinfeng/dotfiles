@@ -86,17 +86,11 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        dnsProvider = "cloudflare";
-        credentialsFile = config.sops.templates.acme-credentials.path;
         domain = "tencent.li7g.com";
         extraDomainNames = [
           "shanghai.derp.li7g.com"
         ];
       };
-      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.templates.acme-credentials.content = ''
-        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
-      '';
     }
 
     # nginx
@@ -116,7 +110,6 @@ in
           };
         };
       };
-      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
       # only port 443
       networking.firewall.allowedTCPPorts = [ 443 ];
     }

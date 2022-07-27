@@ -3,14 +3,40 @@ provider "cloudflare" {
   api_key = data.sops_file.terraform.data["cloudflare.api-key"]
 }
 
+# -------------
+# DDNS and ACME token
+
+data "cloudflare_api_token_permission_groups" "all" {}
+
+resource "cloudflare_api_token" "ddns" {
+  name = "ddns-acme"
+
+  policy {
+    permission_groups = [
+      data.cloudflare_api_token_permission_groups.all.permissions["Zone Read"],
+      data.cloudflare_api_token_permission_groups.all.permissions["Zone Settings Read"],
+      data.cloudflare_api_token_permission_groups.all.permissions["DNS Write"],
+    ]
+    resources = {
+      "com.cloudflare.api.account.zone.*" = "*"
+    }
+  }
+}
+
+output "cloudflare_token" {
+  value = cloudflare_api_token.ddns.value
+  sensitive = true
+}
+
+# -------------
+# Zones
+
 resource "cloudflare_zone" "com_li7g" {
   zone = "li7g.com"
 }
 
-
 # ttl = 1 for automatic
 
-# -------------
 # CNAME records
 
 resource "cloudflare_record" "li7g_home" {
@@ -229,7 +255,6 @@ resource "cloudflare_record" "li7g_zt_transmission" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-# --------------------------
 # smtp records for receiving
 
 resource "cloudflare_record" "li7g_mx68" {
@@ -262,7 +287,6 @@ resource "cloudflare_record" "li7g_mx2" {
   zone_id  = cloudflare_zone.com_li7g.id
 }
 
-# ------------------------
 # smtp records for sending
 
 resource "cloudflare_record" "li7g_smtp" {
@@ -319,7 +343,6 @@ resource "cloudflare_record" "li7g_smtp_spf" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-# -----------------
 # tailscale records
 
 resource "cloudflare_record" "li7g_ts_g150t" {

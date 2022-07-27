@@ -140,8 +140,6 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        dnsProvider = "cloudflare";
-        credentialsFile = config.sops.templates.acme-credentials.path;
         domain = "nuc.li7g.com";
         extraDomainNames = [
           "home.li7g.com"
@@ -149,11 +147,6 @@ in
           "vault.li7g.com"
         ];
       };
-      sops.secrets."cloudflare-token".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.templates.acme-credentials.content = ''
-        CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder.cloudflare-token}
-      '';
-      users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
     }
 
     # nginx
