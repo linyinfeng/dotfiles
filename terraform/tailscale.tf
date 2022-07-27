@@ -3,6 +3,17 @@ provider "tailscale" {
   tailnet = data.sops_file.terraform.data["tailscale.tailnet"]
 }
 
+resource "tailscale_tailnet_key" "tailnet_key" {
+  reusable      = true
+  ephemeral     = false
+  preauthorized = true
+}
+
+output "tailscale_tailnet_key" {
+  value = tailscale_tailnet_key.tailnet_key.key
+  sensitive = true
+}
+
 resource "tailscale_acl" "main" {
   acl = jsonencode({
     acls : [
