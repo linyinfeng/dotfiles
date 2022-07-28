@@ -181,8 +181,15 @@ with lib;
         wantedBy = [ "multi-user.target" ];
       };
 
-      sops.secrets."clash/main".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.secrets."clash/alternative".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."clash/main" = {
+        sopsFile = config.sops.secretsDir + /common.yaml;
+        restartUnits = [ "clash-auto-update.service" ];
+      };
+      sops.secrets."clash/alternative" = {
+        sopsFile = config.sops.secretsDir + /common.yaml;
+        restartUnits = [ "clash-auto-update.service" ];
+      };
+
       environment.systemPackages = [
         scripts
         pkgs.proxychains-ng # add proxychains-ng

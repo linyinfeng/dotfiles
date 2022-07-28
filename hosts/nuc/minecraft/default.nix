@@ -57,7 +57,7 @@ in
       StateDirectory = "minecraft";
       WorkingDirectory = "/var/lib/minecraft";
       LoadCredential = [
-        "rcon-password:${config.sops.secrets."minecraft/rcon".path}"
+        "rcon-password:${config.sops.secrets."rcon_password".path}"
         "driver-influxdb:${config.sops.templates."driver-influxdb".path}"
       ];
       CPUQuota = "250%"; # at most 2 cores (4/8 cores in total)
@@ -67,8 +67,14 @@ in
   networking.firewall.allowedTCPPorts = [ port rconPort ];
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
-  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
-  sops.secrets."influxdb_token".sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+  sops.secrets."rcon_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+    restartUnits = [ "minecraft.service" ];
+  };
+  sops.secrets."influxdb_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "minecraft.service" ];
+  };
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {
       url = "https://influxdb.li7g.com";

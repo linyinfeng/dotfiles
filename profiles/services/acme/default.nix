@@ -9,7 +9,10 @@
       credentialsFile = config.sops.templates.acme-credentials.path;
     };
   };
-  sops.secrets."cloudflare_token".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+  sops.secrets."cloudflare_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+    restartUnits = [ ]; # no need to restart units
+  };
   sops.templates.acme-credentials.content = ''
     CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder."cloudflare_token"}
   '';

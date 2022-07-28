@@ -60,8 +60,14 @@
     environment = (lib.mkIf (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment);
   };
-  sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
-  sops.secrets."cachix/linyinfeng".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+  sops.secrets."nano/github-token" = {
+    sopsFile = config.sops.secretsDir + /common.yaml;
+    restartUnits = [ "dotfiles-channel-update@.service" ];
+  };
+  sops.secrets."cachix/linyinfeng" = {
+    sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+    restartUnits = [ "dotfiles-channel-update@.service" ];
+  };
 
   services.notify-failure.services = [ "dotfiles-channel-update@" ];
 

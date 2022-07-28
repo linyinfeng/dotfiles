@@ -205,7 +205,10 @@ in
         port = cfg.ports.nixServe;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
-      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+      sops.secrets."cache-li7g-com/key" = {
+        sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+        restartUnits = [ "nix-serve.service" ];
+      };
 
       # TODO broken: cannot determine user's home directory
       systemd.services.nix-serve = {
@@ -256,7 +259,10 @@ in
         sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
         restartUnits = [ "nginx.service" ];
       };
-      sops.secrets."transmission_password".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+      sops.secrets."transmission_password" = {
+        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        restartUnits = [ "transmission.service" ];
+      };
     }
   ];
 }

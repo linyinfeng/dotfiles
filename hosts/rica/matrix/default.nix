@@ -8,8 +8,6 @@ let
   };
 in
 {
-  sops.secrets."matrix".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
-
   services.dendrite = {
     enable = true;
     httpPort = cfg.ports.matrix.http;
@@ -91,6 +89,15 @@ in
     "matrix:${config.sops.secrets."matrix".path}"
     "mail-password:${config.sops.secrets."mail/password".path}"
   ];
+
+  sops.secrets."matrix" = {
+    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    restartUnits = [ "dendrite.service" ];
+  };
+  sops.secrets."mail/password" = {
+    sopsFile = config.sops.secretsDir + /common.yaml;
+    restartUnits = [ "dendrite.service" ];
+  };
 
   systemd.services.dendrite.after = [ "postgresql.service" ];
   services.postgresql = {

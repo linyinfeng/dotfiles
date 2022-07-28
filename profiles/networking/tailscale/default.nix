@@ -11,6 +11,8 @@ in
   };
   systemd.services.tailscale-setup = {
     script = ''
+      sleep 10
+
       if tailscale status; then
         echo "tailscale already up, skip"
       else
@@ -26,7 +28,10 @@ in
     after = [ "tailscaled.service" ];
     requiredBy = [ "tailscaled.service" ];
   };
-  sops.secrets."tailscale_tailnet_key".sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+  sops.secrets."tailscale_tailnet_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "tailscale-setup.service" ];
+  };
   # no need to open ports
   networking.firewall.allowedUDPPorts = [
     config.services.tailscale.port

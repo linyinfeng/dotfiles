@@ -105,7 +105,10 @@ in
         }
       '';
     };
-    sops.secrets."dkim_private_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sops.secrets."dkim_private_pem" = {
+      sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+      restartUnits = [ "maddy.service" ];
+    };
     systemd.services.maddy.serviceConfig.LoadCredential = [
       "dkim.key:${config.sops.secrets."dkim_private_pem".path}"
     ];
@@ -135,7 +138,10 @@ in
       "smartd@li7g.com"
       "grafana@li7g.com"
     ];
-    sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
+    sops.secrets."mail/password" = {
+      sopsFile = config.sops.secretsDir + /common.yaml;
+      restartUnits = [ "maddy-init.service" ];
+    };
     systemd.services.maddy-init = {
       after = [ "maddy.service" ];
       serviceConfig = {
@@ -152,7 +158,9 @@ in
         function add_user {
           USER="$1"
           if [[ $(maddyctl creds list)  == *"$1"* ]]; then
-            echo "user '$USER' already exists, skip"
+            echo "user '$USER' already exists, updating password..."
+            cat "$PASSWORD_FILE" | maddyctl creds password "$USER"
+            echo "password of '$USER' changed"
           else
             cat "$PASSWORD_FILE" | maddyctl creds create "$USER"
             echo "user '$USER' added"

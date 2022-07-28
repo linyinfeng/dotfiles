@@ -79,8 +79,14 @@ lib.mkIf (devices ? ${hostName}) {
       };
     };
   };
-  sops.secrets."syncthing_cert_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-  sops.secrets."syncthing_key_pem".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."syncthing_cert_pem" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "container@syncthing-yinfeng.service" ];
+  };
+  sops.secrets."syncthing_key_pem" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "container@syncthing-yinfeng.service" ];
+  };
   home-manager.users.yinfeng.home.global-persistence.directories = [
     "Syncthing"
   ];

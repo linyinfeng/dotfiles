@@ -41,7 +41,7 @@ in
       StateDirectory = "minecraft";
       WorkingDirectory = "/var/lib/minecraft";
       LoadCredential = [
-        "rcon-password:${config.sops.secrets."minecraft/rcon".path}"
+        "rcon-password:${config.sops.secrets."rcon_retro_password".path}"
       ];
       CPUQuota = "150%"; # at most 1.5 core (2 cores in total)
     };
@@ -50,7 +50,10 @@ in
   networking.firewall.allowedTCPPorts = [ port rconPort ];
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
-  sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /hosts/tencent.yaml;
+  sops.secrets."rcon_retro_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/tencent.yaml;
+    restartUnits = [ "minecraft.service" ];
+  };
 
   security.acme.certs."main".extraDomainNames = [
     "byrmc-retro.li7g.com"

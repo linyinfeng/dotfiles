@@ -45,13 +45,13 @@ in
   config = lib.mkMerge [
 
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      sops.secrets."portal/client-id".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."portal/client-id" = {
+        sopsFile = config.sops.secretsDir + /common.yaml;
+        restartUnits = [ "v2ray.service" ];
+      };
       services.v2ray = {
         enable = true;
         configFile = config.sops.templates.portal-v2ray.path;
-      };
-      systemd.services.v2ray = {
-        # TODO add a restart trigger
       };
     })
 

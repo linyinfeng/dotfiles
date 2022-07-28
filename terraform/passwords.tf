@@ -60,3 +60,19 @@ output "influxdb_token" {
   value     = random_password.influxdb_token.result
   sensitive = true
 }
+resource "random_password" "rcon" {
+  length  = 32
+  special = false
+}
+output "rcon_password" {
+  value     = random_password.rcon.result
+  sensitive = true
+}
+resource "random_password" "rcon_retro" {
+  length  = 32
+  special = false
+}
+output "rcon_retro_password" {
+  value     = random_password.rcon_retro.result
+  sensitive = true
+}

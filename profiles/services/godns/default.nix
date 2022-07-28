@@ -31,7 +31,10 @@ in
     };
   };
   config = {
-    sops.secrets."cloudflare_token".sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+    sops.secrets."cloudflare_token" = {
+      sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+      restartUnits = lib.mapAttrsToList (_: godnsCfg: "${godnsCfg.fullName}.service") cfg;
+    };
     sops.templates = lib.mapAttrs'
       (_: godnsCfg:
         lib.nameValuePair "${godnsCfg.fullName}.json"

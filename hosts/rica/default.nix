@@ -121,7 +121,10 @@ in
         cron = "0 */5 * * * *";
         tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
       };
-      sops.secrets."telegram-bot/commit-notifier".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+      sops.secrets."telegram-bot/commit-notifier" = {
+        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        restartUnits = [ "commit-notifier.service" ];
+      };
 
       services.notify-failure.services = [
         "commit-notifier"
@@ -164,8 +167,14 @@ in
         };
         wantedBy = [ "multi-user.target" ];
       };
-      sops.secrets."minio_pastebin_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
-      sops.secrets."minio_pastebin_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+      sops.secrets."minio_pastebin_key_id" = {
+        sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+        restartUnits = [ "pastebin.service" ];
+      };
+      sops.secrets."minio_pastebin_access_key" = {
+        sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+        restartUnits = [ "pastebin.service" ];
+      };
 
       services.notify-failure.services = [
         "pastebin"
@@ -176,9 +185,18 @@ in
       networking.useNetworkd = true;
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
-      sops.secrets."network/address".sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
-      sops.secrets."network/subnet".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
-      sops.secrets."network/gateway".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+      sops.secrets."network/address" = {
+        sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
+        restartUnits = [ "systemd-networkd.service" ];
+      };
+      sops.secrets."network/subnet" = {
+        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        restartUnits = [ "systemd-networkd.service" ];
+      };
+      sops.secrets."network/gateway" = {
+        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        restartUnits = [ "systemd-networkd.service" ];
+      };
       sops.templates."enX0" = {
         content = ''
           [Match]

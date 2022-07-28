@@ -40,7 +40,10 @@ in
   };
   # do not auto start
   systemd.services."wireguard-wg0".wantedBy = lib.mkForce [ ];
-  sops.secrets."wireguard_private_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."wireguard_private_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "wireguard-wg0.service" ];
+  };
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];

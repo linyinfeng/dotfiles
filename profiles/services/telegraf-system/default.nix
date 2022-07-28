@@ -74,7 +74,10 @@ in
   systemd.services.telegraf.path = with pkgs; [
     lm_sensors
   ];
-  sops.secrets."influxdb_token".sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+  sops.secrets."influxdb_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "telegraf.service" ];
+  };
   sops.templates."telegraf-environment".content = ''
     INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}
   '';

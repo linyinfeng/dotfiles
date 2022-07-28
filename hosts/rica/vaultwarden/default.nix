@@ -51,7 +51,14 @@ in
     ADMIN_TOKEN=${config.sops.placeholder."vaultwarden/admin-token"}
     SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
   '';
-  sops.secrets."vaultwarden/admin-token".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+  sops.secrets."vaultwarden/admin-token" = {
+    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    restartUnits = [ "vaultwarden.service" ];
+  };
+  sops.secrets."mail/password" = {
+    sopsFile = config.sops.secretsDir + /common.yaml;
+    restartUnits = [ "vaultwarden.service" ];
+  };
 
   services.postgresql.ensureDatabases = [ "vaultwarden" ];
   services.postgresql.ensureUsers = [

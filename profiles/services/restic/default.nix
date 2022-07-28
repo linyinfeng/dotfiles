@@ -57,11 +57,26 @@ in
     AWS_ACCESS_KEY_ID="${config.sops.placeholder."minio_backup_key_id"}"
     AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key"}"
   '';
-  sops.secrets."restic_password".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-  sops.secrets."b2_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-  sops.secrets."b2_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-  sops.secrets."minio_backup_key_id".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-  sops.secrets."minio_backup_access_key".sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+  sops.secrets."restic_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "restic-backups-b2.service" "restic-backups-minio.service" ];
+  };
+  sops.secrets."b2_backup_key_id" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "restic-backups-b2.service" ];
+  };
+  sops.secrets."b2_backup_access_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "restic-backups-b2.service" ];
+  };
+  sops.secrets."minio_backup_key_id" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "restic-backups-minio.service" ];
+  };
+  sops.secrets."minio_backup_access_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    restartUnits = [ "restic-backups-minio.service" ];
+  };
 
   environment.systemPackages = [
     scripts

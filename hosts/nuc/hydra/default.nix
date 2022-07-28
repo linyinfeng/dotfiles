@@ -79,8 +79,14 @@ in
       ];
       # limit cpu quota of nix builds
       systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
-      sops.secrets."nano/github-token".sopsFile = config.sops.secretsDir + /common.yaml;
-      sops.secrets."cache-li7g-com/key".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+      sops.secrets."nano/github-token" = {
+        sopsFile = config.sops.secretsDir + /common.yaml;
+        restartUnits = [ "hydra.service" ];
+      };
+      sops.secrets."cache-li7g-com/key" = {
+        sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+        restartUnits = [ "nix-daemon.service" ];
+      };
       nix.settings.trusted-users = [ "@hydra" ];
       nix.distributedBuilds = true;
       nix.buildMachines = [
@@ -111,7 +117,10 @@ in
         EMAIL_SENDER_TRANSPORT_port=465
         EMAIL_SENDER_TRANSPORT_ssl=1
       '';
-      sops.secrets."mail/password".sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."mail/password" = {
+        sopsFile = config.sops.secretsDir + /common.yaml;
+        restartUnits = [ "hydra-notify.service" ];
+      };
     }
   ];
 }
