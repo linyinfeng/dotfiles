@@ -24,7 +24,7 @@ resource "cloudflare_api_token" "ddns" {
 }
 
 output "cloudflare_token" {
-  value = cloudflare_api_token.ddns.value
+  value     = cloudflare_api_token.ddns.value
   sensitive = true
 }
 
@@ -482,10 +482,10 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
   description = "URL Rewrite"
   phase       = "http_request_transform"
   rules {
-    enabled = true
+    enabled     = true
     description = "Rewrite cache path"
     expression  = "(http.host eq \"cache.li7g.com\")"
-    action = "rewrite"
+    action      = "rewrite"
     action_parameters {
       uri {
         path {

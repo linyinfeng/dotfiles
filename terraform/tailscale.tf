@@ -10,7 +10,7 @@ resource "tailscale_tailnet_key" "tailnet_key" {
 }
 
 output "tailscale_tailnet_key" {
-  value = tailscale_tailnet_key.tailnet_key.key
+  value     = tailscale_tailnet_key.tailnet_key.key
   sensitive = true
 }
 

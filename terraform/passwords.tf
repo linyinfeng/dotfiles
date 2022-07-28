@@ -4,11 +4,11 @@ provider "htpasswd" {
 resource "random_pet" "transmission_username" {
 }
 output "transmission_username" {
-    value = random_pet.transmission_username.id
-    sensitive = true
+  value     = random_pet.transmission_username.id
+  sensitive = true
 }
 resource "random_password" "transmission" {
-  length           = 32
+  length = 32
 }
 resource "random_password" "transmission_salt" {
   length = 8
@@ -18,15 +18,15 @@ resource "htpasswd_password" "transmission" {
   salt     = random_password.transmission_salt.result
 }
 output "transmission_password" {
-    value = random_password.transmission.result
-    sensitive = true
+  value     = random_password.transmission.result
+  sensitive = true
 }
 output "transmission_hashed_password" {
-    value = htpasswd_password.transmission.sha512
-    sensitive = true
+  value     = htpasswd_password.transmission.sha512
+  sensitive = true
 }
 resource "random_password" "loki" {
-  length           = 32
+  length  = 32
   special = false
 }
 resource "random_password" "loki_salt" {
@@ -37,26 +37,26 @@ resource "htpasswd_password" "loki" {
   salt     = random_password.loki_salt.result
 }
 output "loki_password" {
-    value = random_password.loki.result
-    sensitive = true
+  value     = random_password.loki.result
+  sensitive = true
 }
 output "loki_hashed_password" {
-    value = htpasswd_password.loki.sha512
-    sensitive = true
+  value     = htpasswd_password.loki.sha512
+  sensitive = true
 }
 resource "random_password" "influxdb" {
-  length           = 32
+  length  = 32
   special = false
 }
 output "influxdb_password" {
-    value = random_password.influxdb.result
-    sensitive = true
+  value     = random_password.influxdb.result
+  sensitive = true
 }
 resource "random_password" "influxdb_token" {
-  length           = 64
+  length  = 64
   special = false
 }
 output "influxdb_token" {
-    value = random_password.influxdb_token.result
-    sensitive = true
+  value     = random_password.influxdb_token.result
+  sensitive = true
 }

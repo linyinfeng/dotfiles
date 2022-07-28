@@ -28,11 +28,11 @@ resource "shell_sensitive_script" "generate_dkim" {
 }
 
 locals {
-    dkim_algorithm = shell_sensitive_script.generate_dkim.output.dkim_algorithm
-    dkim_public_key = shell_sensitive_script.generate_dkim.output.dkim_public_key
+  dkim_algorithm  = shell_sensitive_script.generate_dkim.output.dkim_algorithm
+  dkim_public_key = shell_sensitive_script.generate_dkim.output.dkim_public_key
 }
 
 output "dkim_private_pem" {
-    value = shell_sensitive_script.generate_dkim.output.dkim_private_pem
-    sensitive = true
+  value     = shell_sensitive_script.generate_dkim.output.dkim_private_pem
+  sensitive = true
 }

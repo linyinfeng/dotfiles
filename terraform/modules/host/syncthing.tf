@@ -30,13 +30,13 @@ resource "shell_sensitive_script" "generate_syncthing_config" {
 }
 
 output "syncthing_device_id" {
-    value = shell_sensitive_script.generate_syncthing_config.output.device_id
+  value = shell_sensitive_script.generate_syncthing_config.output.device_id
 }
 output "syncthing_cert_pem" {
-    value = shell_sensitive_script.generate_syncthing_config.output.cert_pem
-    sensitive = true
+  value     = shell_sensitive_script.generate_syncthing_config.output.cert_pem
+  sensitive = true
 }
 output "syncthing_key_pem" {
-    value = shell_sensitive_script.generate_syncthing_config.output.key_pem
-    sensitive = true
+  value     = shell_sensitive_script.generate_syncthing_config.output.key_pem
+  sensitive = true
 }
