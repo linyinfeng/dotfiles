@@ -100,3 +100,9 @@ output "mail_password" {
   value     = random_password.mail.result
   sensitive = true
 }
+resource "random_uuid" "portal_client_id" {
+}
+output "portal_client_id" {
+  value     = random_uuid.portal_client_id.result
+  sensitive = true
+}

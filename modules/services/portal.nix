@@ -45,8 +45,8 @@ in
   config = lib.mkMerge [
 
     (lib.mkIf (with cfg; server.enable || client.enable) {
-      sops.secrets."portal/client-id" = {
-        sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."portal_client_id" = {
+        sopsFile = config.sops.secretsDir + /terraform/common.yaml;
         restartUnits = [ "v2ray.service" ];
       };
       services.v2ray = {
@@ -85,7 +85,7 @@ in
             settings = {
               clients = [
                 {
-                  id = config.sops.placeholder."portal/client-id";
+                  id = config.sops.placeholder."portal_client_id";
                   level = 0;
                 }
               ];
@@ -133,7 +133,7 @@ in
                       port = 443;
                       users = [
                         {
-                          id = config.sops.placeholder."portal/client-id";
+                          id = config.sops.placeholder."portal_client_id";
                           encryption = "none";
                           level = 0;
                         }
