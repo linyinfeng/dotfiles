@@ -12,7 +12,7 @@ let
     HELO ${domain}
     AUTH LOGIN
     $(echo -n "$account" | base64)
-    $(cat "${config.sops.secrets."mail/password".path}" | base64)
+    $(cat "${config.sops.secrets."mail_password".path}" | base64)
     MAIL FROM: <$account>
     RCPT TO: <$recipient>
     DATA
@@ -35,10 +35,10 @@ in
   };
   config = {
     environment.systemPackages = [ config.programs.service-mail.package ];
-    sops.secrets."mail/password" = {
+    sops.secrets."mail_password" = {
       mode = "440";
       group = config.users.groups.service-mail.name;
-      sopsFile = config.sops.secretsDir + /common.yaml;
+      sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     };
     users.groups.service-mail.gid = config.ids.gids.service-mail;
   };

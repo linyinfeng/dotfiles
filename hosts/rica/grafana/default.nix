@@ -29,7 +29,7 @@ in
     security = {
       adminUser = "yinfeng";
       adminPasswordFile =
-        config.sops.secrets."grafana/password".path;
+        config.sops.secrets."grafana_password".path;
     };
     smtp = {
       enable = true;
@@ -60,7 +60,7 @@ in
   sops.templates."grafana-environment".content = ''
     INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
-    GF_SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
+    GF_SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
   '';
   services.grafana.provision = {
     enable = true;
@@ -95,13 +95,13 @@ in
     ];
   };
 
-  sops.secrets."grafana/password" = {
+  sops.secrets."grafana_password" = {
     owner = config.users.users.grafana.name;
-    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     restartUnits = [ "grafana.service" ];
   };
-  sops.secrets."mail/password" = {
-    sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."mail_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."loki_password" = {

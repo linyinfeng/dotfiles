@@ -138,8 +138,8 @@ in
       "smartd@li7g.com"
       "grafana@li7g.com"
     ];
-    sops.secrets."mail/password" = {
-      sopsFile = config.sops.secretsDir + /common.yaml;
+    sops.secrets."mail_password" = {
+      sopsFile = config.sops.secretsDir + /terraform/common.yaml;
       restartUnits = [ "maddy-init.service" ];
     };
     systemd.services.maddy-init = {
@@ -149,7 +149,7 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
         LoadCredential = [
-          "password:${config.sops.secrets."mail/password".path}"
+          "password:${config.sops.secrets."mail_password".path}"
         ];
       };
       path = [ pkgs.maddy ];

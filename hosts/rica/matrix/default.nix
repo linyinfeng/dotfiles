@@ -87,15 +87,15 @@ in
 
   systemd.services.dendrite.serviceConfig.LoadCredential = [
     "matrix:${config.sops.secrets."matrix".path}"
-    "mail-password:${config.sops.secrets."mail/password".path}"
+    "mail-password:${config.sops.secrets."mail_password".path}"
   ];
 
   sops.secrets."matrix" = {
     sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
     restartUnits = [ "dendrite.service" ];
   };
-  sops.secrets."mail/password" = {
-    sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."mail_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     restartUnits = [ "dendrite.service" ];
   };
 

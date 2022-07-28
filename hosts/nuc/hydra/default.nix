@@ -112,13 +112,13 @@ in
       sops.templates."hydra-email".content = ''
         EMAIL_SENDER_TRANSPORT=SMTP
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
-        EMAIL_SENDER_TRANSPORT_sasl_password=${config.sops.placeholder."mail/password"}
+        EMAIL_SENDER_TRANSPORT_sasl_password=${config.sops.placeholder."mail_password"}
         EMAIL_SENDER_TRANSPORT_host=smtp.zt.li7g.com
         EMAIL_SENDER_TRANSPORT_port=465
         EMAIL_SENDER_TRANSPORT_ssl=1
       '';
-      sops.secrets."mail/password" = {
-        sopsFile = config.sops.secretsDir + /common.yaml;
+      sops.secrets."mail_password" = {
+        sopsFile = config.sops.secretsDir + /terraform/common.yaml;
         restartUnits = [ "hydra-notify.service" ];
       };
     }

@@ -48,15 +48,15 @@ in
     environmentFile = config.sops.templates."vaultwarden-env".path;
   };
   sops.templates."vaultwarden-env".content = ''
-    ADMIN_TOKEN=${config.sops.placeholder."vaultwarden/admin-token"}
-    SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
+    ADMIN_TOKEN=${config.sops.placeholder."vaultwarden_admin_token"}
+    SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
   '';
-  sops.secrets."vaultwarden/admin-token" = {
-    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+  sops.secrets."vaultwarden_admin_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     restartUnits = [ "vaultwarden.service" ];
   };
-  sops.secrets."mail/password" = {
-    sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."mail_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     restartUnits = [ "vaultwarden.service" ];
   };
 

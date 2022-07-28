@@ -76,3 +76,27 @@ output "rcon_retro_password" {
   value     = random_password.rcon_retro.result
   sensitive = true
 }
+resource "random_password" "grafana" {
+  length  = 32
+  special = false
+}
+output "grafana_password" {
+  value     = random_password.grafana.result
+  sensitive = true
+}
+resource "random_password" "vaultwarden_admin_token" {
+  length  = 64
+  special = false
+}
+output "vaultwarden_admin_token" {
+  value     = random_password.vaultwarden_admin_token.result
+  sensitive = true
+}
+resource "random_password" "mail" {
+  length  = 32
+  special = false
+}
+output "mail_password" {
+  value     = random_password.mail.result
+  sensitive = true
+}
