@@ -58,7 +58,7 @@ in
     config.sops.templates."grafana-environment".path
   ];
   sops.templates."grafana-environment".content = ''
-    INFLUX_TOKEN=${config.sops.placeholder."influxdb/token"}
+    INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
     GF_SMTP_PASSWORD=${config.sops.placeholder."mail/password"}
   '';

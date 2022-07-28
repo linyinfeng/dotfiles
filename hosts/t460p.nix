@@ -130,6 +130,8 @@ in
       ];
     };
 
+  services.influxdb2.enable = true;
+
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 

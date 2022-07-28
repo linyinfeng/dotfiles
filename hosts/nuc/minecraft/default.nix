@@ -68,7 +68,7 @@ in
   networking.firewall.allowedUDPPorts = [ port rconPort ];
 
   sops.secrets."minecraft/rcon".sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
-  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."influxdb_token".sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {
       url = "https://influxdb.li7g.com";
@@ -78,7 +78,7 @@ in
     };
     authentication = {
       scheme = "TOKEN";
-      token = config.sops.placeholder."influxdb/token";
+      token = config.sops.placeholder."influxdb_token";
     };
   };
 

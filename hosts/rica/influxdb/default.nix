@@ -26,8 +26,8 @@ in
       ExecStart = "${setup}";
       DynamicUser = true;
       LoadCredential = [
-        "password:${config.sops.secrets."influxdb/password".path}"
-        "token:${config.sops.secrets."influxdb/token".path}"
+        "password:${config.sops.secrets."influxdb_password".path}"
+        "token:${config.sops.secrets."influxdb_token".path}"
       ];
       StateDirectory = "influxdb2-setup";
     };
@@ -38,8 +38,8 @@ in
     after = [ "influxdb2.service" ];
     wantedBy = [ "multi-user.target" ];
   };
-  sops.secrets."influxdb/password".sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
-  sops.secrets."influxdb/token".sopsFile = config.sops.secretsDir + /infrastructure.yaml;
+  sops.secrets."influxdb_password".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+  sops.secrets."influxdb_token".sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
   environment.systemPackages = with pkgs; [
     influxdb2
   ];

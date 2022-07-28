@@ -44,3 +44,19 @@ output "loki_hashed_password" {
     value = htpasswd_password.loki.sha512
     sensitive = true
 }
+resource "random_password" "influxdb" {
+  length           = 32
+  special = false
+}
+output "influxdb_password" {
+    value = random_password.influxdb.result
+    sensitive = true
+}
+resource "random_password" "influxdb_token" {
+  length           = 64
+  special = false
+}
+output "influxdb_token" {
+    value = random_password.influxdb_token.result
+    sensitive = true
+}
