@@ -28,6 +28,10 @@ resource "b2_bucket" "cache" {
   bucket_name = "cache-li7g-com"
   bucket_type = "allPublic" # files avaliable to download
 
+  bucket_info = {
+    cache-control = "public, max-age=604800"
+  }
+
   # keep only the last version of the file
   lifecycle_rules {
     file_name_prefix              = ""
