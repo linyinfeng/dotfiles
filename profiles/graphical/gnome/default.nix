@@ -27,6 +27,10 @@ lib.mkIf
   networking.firewall.allowedTCPPorts = [
     5900 # VNC
   ];
+  networking.firewall.allowedUDPPorts = [
+    53 # DNS  server for hotsport
+    67 # DHCP server for hotsport
+  ];
 
   boot.plymouth.enable = true;
 
