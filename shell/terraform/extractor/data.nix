@@ -3,7 +3,7 @@
 writeShellScriptBin "terraform-outputs-extract-data" ''
   set -e
 
-  export PATH=${yq-go}/bin:${sops}/bin::$PATH
+  export PATH=${yq-go}/bin:${sops}/bin:$PATH
 
   pushd $PRJ_ROOT/data
 

@@ -23,14 +23,24 @@ in
         encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
         unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
         echo "decrypt terraform state to '$unencrypted_state_file'..." >&2
-        sops --decrypt "$encrypted_state_file" > "$unencrypted_state_file"
+        sops --input-type json --output-type json \
+          --decrypt "$encrypted_state_file" > "$unencrypted_state_file"
 
         function cleanup {
           cd $PRJ_ROOT
           if [ -n "$(cat "$unencrypted_state_file")" ]; then
             echo "encrypt terraform state to '$encrypted_state_file'..." >&2
-            sops --encrypt "$unencrypted_state_file" > "$encrypted_state_file"
+            set +e
+            EDITOR="cp \"$unencrypted_state_file\"" \
+              sops --input-type json --output-type json \
+              "$encrypted_state_file"
+            encrypt_status="$?"
+            set -e
             rm "$unencrypted_state_file"
+            if [ "$encrypt_status" -ne 0 -a "$encrypt_status" -ne 200 ]; then
+              echo "failed to encrypt, exiting"
+              exit 1
+            fi
           fi
         }
         trap cleanup EXIT
@@ -50,8 +60,15 @@ in
         encrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.yaml"
         unencrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.plain.yaml"
         terraform-wrapper output --json > "$unencrypted_output_file"
-        sops --encrypt "$unencrypted_output_file" > "$encrypted_output_file"
+        set +e
+        EDITOR="cp \"$unencrypted_output_file\"" sops "$encrypted_output_file"
+        encrypt_status="$?"
+        set -e
         rm "$unencrypted_output_file"
+        if [ "$encrypt_status" -ne 0 -a "$encrypt_status" -ne 200 ]; then
+          echo "failed to encrypt, exiting"
+          exit 1
+        fi
       '';
     }
 

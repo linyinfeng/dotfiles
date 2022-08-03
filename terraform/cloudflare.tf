@@ -447,6 +447,7 @@ resource "cloudflare_record" "github_pages_challenge" {
 resource "cloudflare_page_rule" "acme" {
   zone_id  = cloudflare_zone.com_li7g.id
   target   = "*.li7g.com/.well-known/acme-challenge/*"
+  priority = 1
   actions {
     automatic_https_rewrites = "off"
     ssl                      = "off"
@@ -502,6 +503,7 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
 resource "cloudflare_page_rule" "cache" {
   zone_id  = cloudflare_zone.com_li7g.id
   target   = "cache.li7g.com/*"
+  priority = 2
   actions {
     cache_level = "cache_everything"
   }

@@ -7,7 +7,6 @@ writeShellScriptBin "terraform-outputs-extract-secrets" ''
 
   pushd $PRJ_ROOT/secrets
 
-  rm -r terraform
   mkdir -p terraform/hosts
 
   function extract {
@@ -42,9 +41,16 @@ writeShellScriptBin "terraform-outputs-extract-secrets" ''
       rm "$host_plain_file"
     fi
     echo "encrypting '$plain_file' to '$target_file'..."
-    sops --encrypt "$plain_file" > "$target_file"
+    set +e
+    EDITOR="cp \"$plain_file\"" sops "$target_file"
+    encrypt_status="$?"
+    set -e
     echo "deleting '$plain_file'..."
     rm "$plain_file"
+    if [ "$encrypt_status" -ne 0 -a "$encrypt_status" -ne 200 ]; then
+      echo "failed to encrypt, exiting"
+      exit 1
+    fi
   }
 
   extract common
@@ -54,15 +60,6 @@ writeShellScriptBin "terraform-outputs-extract-secrets" ''
   for host_name in "''${host_names[@]}"; do
     extract "$host_name" is_host
   done
-
-  popd
-
-  pushd $PRJ_ROOT/data
-
-  echo "creating 'data/data.json'..."
-  sops exec-file $PRJ_ROOT/secrets/terraform-outputs.yaml \
-    "yq eval --from-file \"template.yq\" {} --output-format json" \
-    > "data.json"
 
   popd
 ''
