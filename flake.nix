@@ -83,9 +83,13 @@
       mc-config.inputs.nixpkgs.follows = "nixos";
       mc-config.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       mc-config.inputs.minecraft-nix.follows = "minecraft-nix";
+      mc-config.inputs.minecraft-json.follows = "minecraft-json";
       minecraft-nix.url = "github:ninlives/minecraft.nix";
       minecraft-nix.inputs.nixpkgs.follows = "nixos";
       minecraft-nix.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      minecraft-json.url = "github:ninlives/minecraft.json";
+      minecraft-json.inputs.nixpkgs.follows = "nixos";
+      minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
       hydra.url = "github:nixos/hydra";
       # use hydra's bundled nix
