@@ -3,14 +3,14 @@
 {
   ligature-el = {
     pname = "ligature-el";
-    version = "9357156a917a021a87b33ee391567a5d8e44794a";
+    version = "86fce5ce97db83f616fc6915c6610e0334954211";
     src = fetchgit {
       url = "https://github.com/mickeynp/ligature.el.git";
-      rev = "9357156a917a021a87b33ee391567a5d8e44794a";
+      rev = "86fce5ce97db83f616fc6915c6610e0334954211";
       fetchSubmodules = false;
       deepClone = false;
       leaveDotGit = false;
-      sha256 = "sha256-Bgb5wFyx0hMilpihxA8cTrRVw71EBOw2DczlM4lSNMs=";
+      sha256 = "sha256-6r0qy7/H/wONdh+Gt2bvI+7U6RuwVEBFWZtamCRxnqM=";
     };
   };
   pyim-greatdict = {
