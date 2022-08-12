@@ -121,7 +121,7 @@ in
     {
       home.packages = [
         (pkgs.writeShellScriptBin "mc-li7g-com" ''
-          "${pkgs.mc-config.client-launcher}/bin/minecraft" \
+          "${pkgs.mc-config-nuc.client-launcher}/bin/minecraft" \
             --gameDir "${config.home.homeDirectory}/${gameDir}"
         '')
       ];

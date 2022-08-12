@@ -79,6 +79,13 @@
       emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixos";
+
+      mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
+      mc-config-nuc.inputs.nixpkgs.follows = "nixos";
+      mc-config-nuc.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
+      mc-config-nuc.inputs.mc-config.follows = "mc-config";
+      mc-config-nuc.inputs.minecraft-nix.follows = "minecraft-nix";
+      mc-config-nuc.inputs.minecraft-json.follows = "minecraft-json";
       mc-config.url = "github:linyinfeng/mc-config";
       mc-config.inputs.nixpkgs.follows = "nixos";
       mc-config.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
@@ -161,7 +168,7 @@
                   hydra-master = inputs.hydra.defaultPackage.${system};
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                   pastebin = inputs.pastebin.packages.${system}.default;
-                  mc-config = inputs.mc-config.packages.${system};
+                  mc-config-nuc = inputs.mc-config-nuc.packages.${system};
                 })
             ];
           };
