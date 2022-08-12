@@ -31,7 +31,8 @@ in
     wqy_microhei
 
     jetbrains-mono
-    iosevka-yinfeng
+    # TODO https://github.com/NixOS/nixpkgs/issues/185633
+    # iosevka-yinfeng
     font-awesome
     powerline-fonts
     sarasa-gothic
@@ -53,7 +54,8 @@ in
       "Source Han Serif K"
     ];
     monospace = [
-      "Iosevka Yinfeng"
+      # TODO https://github.com/NixOS/nixpkgs/issues/185633
+      # "Iosevka Yinfeng"
       "Sarasa Mono Slab SC"
     ];
     emoji = [
