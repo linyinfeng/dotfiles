@@ -37,7 +37,6 @@ in
   '';
   security.acme.certs."main".extraDomainNames = [
     "minio.li7g.com"
-    "minio-overlay.li7g.com"
     "minio-console.li7g.com"
     "cache.li7g.com"
   ];
@@ -55,53 +54,6 @@ in
     locations."/".extraConfig = ''
       rewrite /(.*) /cache/$1 break;
       ${proxyPassToMinio}
-    '';
-  };
-  services.nginx.virtualHosts."minio-overlay.li7g.com" = {
-    forceSSL = true;
-    useACMEHost = "main";
-    locations."/".extraConfig = ''
-      set $to_cache_nixos_org 0;
-      if ($request_method ~ ^GET|HEAD$) {
-        set $to_cache_nixos_org 1;
-      }
-      if ($uri ~ ^.*\.narinfo$) {
-        set $to_cache_nixos_org 1$to_cache_nixos_org;
-      }
-
-      if ($to_cache_nixos_org = 11) {
-        set $pass_with_host cache.nixos.org;
-        set $pass_with_auth "";
-
-        rewrite /cache/(.*) /$1 break;
-        error_page 404 = @minioFallback;
-        proxy_pass  https://cache.nixos.org;
-      }
-      if ($to_cache_nixos_org != 11) {
-        set $pass_with_host $host;
-        set $pass_with_auth $http_authorization;
-
-        proxy_pass ${minioAddress};
-      }
-
-      proxy_intercept_errors on;
-      proxy_set_header Host $pass_with_host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $pass_with_host;
-      proxy_set_header Authorization $pass_with_auth;
-    '';
-    locations."@minioFallback".extraConfig = ''
-      rewrite /(.*) /cache/$1 break;
-      proxy_set_header Host $host;
-      proxy_set_header X-Forwarded-Host $host;
-      proxy_set_header Authorization $http_authorization;
-      proxy_pass ${minioAddress};
-    '';
-    locations."/cache/nix-cache-info".proxyPass = minioAddress;
-    extraConfig = ''
-      client_max_body_size 4G;
     '';
   };
   services.nginx.virtualHosts."minio-console.li7g.com" = {

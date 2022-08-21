@@ -206,15 +206,6 @@ resource "cloudflare_record" "li7g_minio" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_minio_overlay" {
-  name    = "minio-overlay"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "minio.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 resource "cloudflare_record" "li7g_pb" {
   name    = "pb"
   proxied = true
@@ -456,14 +447,6 @@ resource "cloudflare_page_rule" "acme" {
 
 # cache
 
-resource "cloudflare_record" "li7g_cache_old" {
-  name    = "cache-old"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "minio.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
 resource "cloudflare_record" "li7g_cache" {
   name    = "cache"
   proxied = true
