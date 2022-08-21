@@ -508,6 +508,9 @@ resource "cloudflare_page_rule" "cache" {
     cache_level = "cache_everything"
   }
 }
+
+# pastebin
+
 resource "cloudflare_filter" "li7g_pb_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
   description = "Traffic to pb.li7b.com from CN"
