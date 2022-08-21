@@ -508,16 +508,14 @@ resource "cloudflare_page_rule" "cache" {
     cache_level = "cache_everything"
   }
 }
-resource "cloudflare_ruleset" "li7g_pb_block_cn_traffic" {
-  kind        = "zone"
+resource "cloudflare_filter" "li7g_pb_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
-  name        = "pb-block-cn-traffic"
-  description = "Pastebin block CN traffic"
-  phase       = "http_request_firewall_managed"
-  rules {
-    enabled     = true
-    description = "Block CN traffic"
-    expression  = "(http.host eq \"pb.li7g.com\" and ip.geoip.country eq \"CN\")"
-    action      = "block"
-  }
+  description = "Traffic to pb.li7b.com from CN"
+  expression  = "(http.host eq \"pb.li7g.com\" and ip.geoip.country eq \"CN\")"
+}
+resource "cloudflare_firewall_rule" "li7g_block_pb_cn_traffic" {
+  zone_id     = cloudflare_zone.com_li7g.id
+  description = "Block Traffic to pb.li7b.com from CN"
+  filter_id   = cloudflare_filter.li7g_pb_cn_traffic.id
+  action      = "block"
 }
