@@ -107,7 +107,14 @@ in
   services.nginx.virtualHosts."minio-console.li7g.com" = {
     forceSSL = true;
     useACMEHost = "main";
-    locations."/".proxyPass = "http://localhost:${toString minioConsolePort}";
+    locations."/" = {
+      proxyPass = "http://localhost:${toString minioConsolePort}";
+      extraConfig = ''
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+      '';
+    };
   };
 
   # metrics
