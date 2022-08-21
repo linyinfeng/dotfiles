@@ -508,3 +508,16 @@ resource "cloudflare_page_rule" "cache" {
     cache_level = "cache_everything"
   }
 }
+resource "cloudflare_ruleset" "li7g_pb_block_cn_traffic" {
+  kind        = "zone"
+  zone_id     = cloudflare_zone.com_li7g.id
+  name        = "pb-block-cn-traffic"
+  description = "Pastebin block CN traffic"
+  phase       = "http_request_firewall_managed"
+  rules {
+    enabled     = true
+    description = "Block CN traffic"
+    expression  = "(http.host eq \"pb.li7g.com\" and ip.geoip.country eq \"CN\")"
+    action      = "block"
+  }
+}
