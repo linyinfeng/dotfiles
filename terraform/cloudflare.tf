@@ -489,7 +489,14 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
 resource "cloudflare_filter" "li7g_pb_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
   description = "Traffic to pb.li7b.com from CN"
-  expression  = "(http.host eq \"pb.li7g.com\" and ip.geoip.country eq \"CN\")"
+  expression  = <<EOT
+    (
+      http.host eq "pb.li7g.com" and
+      ip.geoip.country eq "CN" and
+      http.request.method eq "GET" and
+      http.request.uri.path ne "/"
+    )
+  EOT
 }
 resource "cloudflare_firewall_rule" "li7g_block_pb_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
@@ -510,7 +517,12 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
   rules {
     enabled     = true
     action      = "set_cache_settings"
-    expression  = "(http.host eq \"pb.li7g.com\" or http.host eq \"cache.li7g.com\")"
+    expression  = <<EOT
+      (
+        http.host eq "pb.li7g.com" or
+        http.host eq "cache.li7g.com"
+      )
+    EOT
     description = "Set cache settings rule"
     action_parameters {
       cache = true # cache everything
