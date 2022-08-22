@@ -94,6 +94,7 @@
       minecraft-nix.url = "github:ninlives/minecraft.nix";
       minecraft-nix.inputs.nixpkgs.follows = "nixos";
       minecraft-nix.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      minecraft-nix.inputs.metadata.follows = "minecraft-json";
       minecraft-json.url = "github:ninlives/minecraft.json";
       minecraft-json.inputs.nixpkgs.follows = "nixos";
       minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
