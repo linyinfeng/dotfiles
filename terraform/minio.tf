@@ -81,6 +81,7 @@ resource "minio_iam_user_policy_attachment" "cache" {
 resource "minio_s3_bucket" "pastebin" {
   bucket = "pastebin"
   acl    = "private"
+  quota  = 1 * 1024 * 1024 * 1024 # in bytes, 1 GiB
 }
 
 resource "minio_iam_user" "pastebin" {
@@ -121,8 +122,8 @@ resource "minio_ilm_policy" "pastebin_expire_1d" {
   bucket = minio_s3_bucket.pastebin.bucket
 
   rule {
-    id         = "expire-1d"
-    expiration = "1d"
+    id         = "expire-7d"
+    expiration = "7d"
   }
 }
 

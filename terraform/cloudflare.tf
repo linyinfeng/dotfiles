@@ -509,7 +509,7 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
 
   rules {
     enabled     = true
-    action = "set_cache_settings"
+    action      = "set_cache_settings"
     expression  = "(http.host eq \"pb.li7g.com\" or http.host eq \"cache.li7g.com\")"
     description = "Set cache settings rule"
     action_parameters {
