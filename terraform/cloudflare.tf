@@ -483,14 +483,6 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
     }
   }
 }
-resource "cloudflare_page_rule" "cache" {
-  zone_id  = cloudflare_zone.com_li7g.id
-  target   = "cache.li7g.com/*"
-  priority = 2
-  actions {
-    cache_level = "cache_everything"
-  }
-}
 
 # pastebin
 
@@ -504,4 +496,24 @@ resource "cloudflare_firewall_rule" "li7g_block_pb_cn_traffic" {
   description = "Block Traffic to pb.li7b.com from CN"
   filter_id   = cloudflare_filter.li7g_pb_cn_traffic.id
   action      = "block"
+}
+
+# http request cache settings
+
+resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
+  zone_id     = cloudflare_zone.com_li7g.id
+  name        = "cache-settings"
+  description = "Cache settings"
+  kind        = "zone"
+  phase       = "http_request_cache_settings"
+
+  rules {
+    enabled     = true
+    action = "set_cache_settings"
+    expression  = "(http.host eq \"pb.li7g.com\" or http.host eq \"cache.li7g.com\")"
+    description = "Set cache settings rule"
+    action_parameters {
+      cache = true # cache everything
+    }
+  }
 }

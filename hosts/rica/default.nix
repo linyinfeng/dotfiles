@@ -144,7 +144,12 @@ in
       services.nginx.virtualHosts."pb.li7g.com" = {
         forceSSL = true;
         useACMEHost = "main";
-        locations."/".proxyPass = "http://127.0.0.1:${toString cfg.ports.pastebin}";
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString cfg.ports.pastebin}";
+          extraConfig = ''
+            add_header Cache-Control "public, no-cache";
+          '';
+        };
         extraConfig = ''
           client_max_body_size 25M;
         '';
