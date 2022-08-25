@@ -122,15 +122,7 @@
     , nvfetcher
     , deploy
     , ...
-    } @ inputs':
-    let
-      # TODO https://github.com/divnix/digga/issues/464
-      inputs = inputs' // {
-        emacs-overlay = inputs'.emacs-overlay // {
-          overlay = self.lib.overlayNullProtector inputs'.emacs-overlay.overlay;
-        };
-      };
-    in
+    } @ inputs:
     digga.lib.mkFlake
       {
         inherit self inputs;
