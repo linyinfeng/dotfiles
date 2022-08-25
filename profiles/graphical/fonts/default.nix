@@ -53,7 +53,6 @@ in
       "Source Han Serif K"
     ];
     monospace = [
-      # TODO https://github.com/NixOS/nixpkgs/issues/185633
       "Iosevka Yinfeng"
       "Sarasa Mono Slab SC"
     ];

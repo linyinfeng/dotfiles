@@ -210,7 +210,6 @@ in
         restartUnits = [ "nix-serve.service" ];
       };
 
-      # TODO broken: cannot determine user's home directory
       systemd.services.nix-serve = {
         serviceConfig = {
           Group = lib.mkForce "hydra";

@@ -8,9 +8,7 @@ lib.mkIf config.home.graphical {
   home.packages = with pkgs; [
     anki
     bitwarden
-    # TODO python3Packages.apsw broken
-    # https://github.com/NixOS/nixpkgs/issues/167626
-    # calibre
+    calibre
     element-desktop
     gimp
     gnuradio

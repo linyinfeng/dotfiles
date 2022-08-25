@@ -58,7 +58,6 @@
       nixos-generators.inputs.nixlib.follows = "nixos";
       nixos-generators.inputs.nixpkgs.follows = "nixos";
 
-      nur.url = "github:nix-community/nur";
       impermanence.url = "github:nix-community/impermanence";
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
@@ -118,7 +117,6 @@
     , nixos
     , home
     , nixos-hardware
-    , nur
     , nvfetcher
     , deploy
     , ...
@@ -138,11 +136,9 @@
           nixos = {
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
-              # TODO nix flake show broken due to IFD
-              # nur.overlay
+              ./pkgs/default.nix
               nvfetcher.overlay
               deploy.overlay
-              ./pkgs/default.nix
 
               inputs.sops-nix.overlay
               inputs.nixos-cn.overlay
