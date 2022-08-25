@@ -310,7 +310,9 @@
                 services.promtail
               ];
 
-              workstation = (with suites; [
+              workstation = [
+                profiles.system.types.workstation
+              ] ++ (with suites; [
                 base
                 multimediaDev
                 virtualization
@@ -332,7 +334,9 @@
                   services.tlp
                 ]);
 
-              server = (with suites; [
+              server = [
+                profiles.system.types.server
+              ] ++ (with suites; [
                 base
                 network
                 backup
