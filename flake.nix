@@ -104,8 +104,6 @@
       hydra.inputs.nixpkgs.follows = "nixos";
       hydra.inputs.newNixpkgs.follows = "nixos";
 
-      nickpkgs.url = "github:nickcao/nixpkgs/nixos-unstable-small";
-
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
     };
@@ -162,7 +160,6 @@
             ];
           };
           latest = { };
-          nickpkgs = { };
         };
 
         lib = import ./lib { lib = digga.lib // nixos.lib; };

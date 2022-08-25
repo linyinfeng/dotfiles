@@ -550,22 +550,6 @@
         "type": "github"
       }
     },
-    "nickpkgs": {
-      "locked": {
-        "lastModified": 1661430440,
-        "narHash": "sha256-oF0PHUk5UNzIPL3UB+Pb44oncVYC4HEVXXzGICy6WZ4=",
-        "owner": "nickcao",
-        "repo": "nixpkgs",
-        "rev": "c69e84bcf8e745a58cd5fde1ab0d0a7f8dbab9ab",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nickcao",
-        "ref": "nixos-unstable-small",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
@@ -887,7 +871,6 @@
         "mc-config-nuc": "mc-config-nuc",
         "minecraft-json": "minecraft-json",
         "minecraft-nix": "minecraft-nix",
-        "nickpkgs": "nickpkgs",
         "nix": "nix_2",
         "nix-gc-s3": "nix-gc-s3",
         "nixos": "nixos",
