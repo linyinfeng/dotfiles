@@ -155,7 +155,9 @@
   :ensure t)
 
 (use-package idris-mode
-  :ensure t)
+  :ensure t
+  :custom
+  (idris-interpreter-path "idris2"))
 
 (use-package json-mode
   :ensure t)
