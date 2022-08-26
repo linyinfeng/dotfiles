@@ -595,6 +595,21 @@
         "type": "github"
       }
     },
+    "nix-index-database": {
+      "locked": {
+        "lastModified": 1661054523,
+        "narHash": "sha256-aYMS9AHx0Cj4In0lOKZ2/0960P4PEgN5r6WSB86t5Tk=",
+        "owner": "Mic92",
+        "repo": "nix-index-database",
+        "rev": "8294efcc5d5d69f26cd9cd884a3e385dc6ce0d44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
     "nix_2": {
       "inputs": {
         "lowdown-src": "lowdown-src_2",
@@ -873,6 +888,7 @@
         "minecraft-nix": "minecraft-nix",
         "nix": "nix_2",
         "nix-gc-s3": "nix-gc-s3",
+        "nix-index-database": "nix-index-database",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",

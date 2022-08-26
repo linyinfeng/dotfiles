@@ -20,7 +20,8 @@
   home.global-persistence.directories = [
     ".config/cachix"
     ".cache/nix"
-    ".cache/nix-index"
     ".cache/lorri"
   ];
+
+  home.file.".cache/nix-index/files".source = pkgs.nix-index-database;
 }
