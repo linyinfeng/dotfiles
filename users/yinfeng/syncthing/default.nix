@@ -12,7 +12,7 @@ let
       "tcp://nuc.li7g.com:22000"
     ];
     k40 = {
-      id = "BSTUP5D-LGMGCRC-MKM2OZO-SB5RYDK-5N73YYS-YTWEFPK-WWWD3IK-YFUU2QU";
+      id = "IR2Q4MI-T53Q562-SMM2SW2-JXXCMCI-L2HOQUR-KLCRTUE-JCNFMPH-4RIBYQP";
     };
   };
   hostName = config.networking.hostName;
