@@ -78,7 +78,6 @@
       emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixos";
-      nix-index-database.url = "github:Mic92/nix-index-database";
 
       mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
       mc-config-nuc.inputs.nixpkgs.follows = "nixos";
@@ -157,7 +156,6 @@
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                   pastebin = inputs.pastebin.packages.${system}.default;
                   mc-config-nuc = inputs.mc-config-nuc.packages.${system};
-                  nix-index-database = inputs.nix-index-database.legacyPackages.${system}.database;
                 })
             ];
           };

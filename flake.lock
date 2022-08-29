@@ -389,11 +389,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1661618164,
-        "narHash": "sha256-q7e+h9HXyRH39SoAhayJ07JrNf7Oa8SewJkqi253bsA=",
+        "lastModified": 1661763567,
+        "narHash": "sha256-2Yt4RRir8xCYysPDlZ5KOfnspZ6ScuQbdD9vCQmXL38=",
         "owner": "linyinfeng",
         "repo": "nur-packages",
-        "rev": "83fca61ce93c1c0b567f8704e0648e6e53df524e",
+        "rev": "20516d6fb63c02570812f72078a4f2e4888ce314",
         "type": "github"
       },
       "original": {
@@ -595,21 +595,6 @@
         "type": "github"
       }
     },
-    "nix-index-database": {
-      "locked": {
-        "lastModified": 1661660214,
-        "narHash": "sha256-CJ+Sv5pjFJZ3pft981Ln73+/xUDvoEfcFH6Su8+dpqY=",
-        "owner": "Mic92",
-        "repo": "nix-index-database",
-        "rev": "28a115c777c270e778002e519f3eed3e8c6000bb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "nix-index-database",
-        "type": "github"
-      }
-    },
     "nix_2": {
       "inputs": {
         "lowdown-src": "lowdown-src_2",
@@ -713,11 +698,11 @@
     },
     "nixos-stable": {
       "locked": {
-        "lastModified": 1661427965,
-        "narHash": "sha256-LJeSDbiebN0/eRt9vyOm+Bxljdsq5ZdalmmTk9Xpp30=",
+        "lastModified": 1661617163,
+        "narHash": "sha256-NN9Ky47j8ohgPhA9JZyfkYIbbAo6RJkGz+7h8/exVpE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "058de3818577db19d1965c21e2479916a3eaaf95",
+        "rev": "0ba2543f8c855d7be8e90ef6c8dc89c1617e8a08",
         "type": "github"
       },
       "original": {
@@ -888,7 +873,6 @@
         "minecraft-nix": "minecraft-nix",
         "nix": "nix_2",
         "nix-gc-s3": "nix-gc-s3",
-        "nix-index-database": "nix-index-database",
         "nixos": "nixos",
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",

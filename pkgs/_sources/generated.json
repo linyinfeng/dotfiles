@@ -17,6 +17,20 @@
         },
         "version": "5eb950ada991705fdda4456970b0321241ee2bfa"
     },
+    "nix-index-database": {
+        "cargoLocks": null,
+        "extract": null,
+        "name": "nix-index-database",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-McwmTDeYRrHs0BJpkuRmt6ITIZGe4r3BURUzRI4LftI=",
+            "type": "url",
+            "url": "https://tar.li7g.com/https/github.com/Mic92/nix-index-database/releases/download/2022-08-28/index-x86_64-linux.gz"
+        },
+        "version": "2022-08-28"
+    },
     "pyim-greatdict": {
         "cargoLocks": null,
         "extract": null,

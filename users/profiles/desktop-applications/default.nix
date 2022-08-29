@@ -16,7 +16,9 @@ lib.mkIf config.home.graphical {
     gparted
     inkscape
     keepassxc
-    libreoffice-fresh
+    # TODO https://github.com/NixOS/nixpkgs/pull/187562
+    #      depend to gnupg
+    # libreoffice-fresh
     meld
     mplayer
     nur.repos.linyinfeng.clash-for-windows
