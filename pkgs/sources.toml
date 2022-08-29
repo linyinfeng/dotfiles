@@ -6,8 +6,3 @@ fetch.git = "https://github.com/mickeynp/ligature.el.git"
 [pyim-greatdict]
 src.git = "https://github.com/tumashu/pyim-greatdict.git"
 fetch.git = "https://github.com/tumashu/pyim-greatdict.git"
-
-[nix-index-database]
-src.github = "Mic92/nix-index-database"
-# https://github.com/NixOS/nixpkgs/issues/177660
-fetch.url = "https://tar.li7g.com/https/github.com/Mic92/nix-index-database/releases/download/$ver/index-x86_64-linux.gz"

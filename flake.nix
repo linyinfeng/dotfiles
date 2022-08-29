@@ -98,6 +98,8 @@
       minecraft-json.inputs.nixpkgs.follows = "nixos";
       minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
+      nix-index-database.url = "github:Mic92/nix-index-database";
+
       hydra.url = "github:nixos/hydra";
       # use hydra's bundled nix
       # hydra.inputs.nix.follows = "nix";
@@ -156,6 +158,7 @@
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                   pastebin = inputs.pastebin.packages.${system}.default;
                   mc-config-nuc = inputs.mc-config-nuc.packages.${system};
+                  nix-index-database = inputs.nix-index-database.legacyPackages.${system}.database;
                 })
             ];
           };
@@ -355,11 +358,7 @@
 
         home = {
           imports = [ (digga.lib.importExportableModules ./users/modules) ];
-          modules = [
-            # TODO nix flake show broken due to IFD
-            # see https://github.com/nix-community/home-manager/issues/1262
-            { manual.manpages.enable = false; }
-          ];
+          modules = [ ];
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = nixos.lib.fix (suites: {

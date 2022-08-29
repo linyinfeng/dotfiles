@@ -13,14 +13,6 @@
       sha256 = "sha256-o6iL4mwTzfD7JOlWP4Mv27+nRGplcseGjam7WIlHZTc=";
     };
   };
-  nix-index-database = {
-    pname = "nix-index-database";
-    version = "2022-08-28";
-    src = fetchurl {
-      url = "https://tar.li7g.com/https/github.com/Mic92/nix-index-database/releases/download/2022-08-28/index-x86_64-linux.gz";
-      sha256 = "sha256-McwmTDeYRrHs0BJpkuRmt6ITIZGe4r3BURUzRI4LftI=";
-    };
-  };
   pyim-greatdict = {
     pname = "pyim-greatdict";
     version = "87594b2a4d6391cf69475257b286d3b844791571";
