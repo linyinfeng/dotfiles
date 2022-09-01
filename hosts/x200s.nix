@@ -31,7 +31,7 @@
         sub_domains = [ "x200s" ];
       }];
       ip_type = "IPv4";
-      ip_url = "https://myip.biturl.top";
+      ip_urls = [ "https://myip.biturl.top" ];
     };
     ipv6.settings = {
       domains = [{
