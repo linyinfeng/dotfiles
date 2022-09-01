@@ -21,7 +21,7 @@ terraform {
       source = "carlpett/sops"
     }
     tailscale = {
-      source = "davidsbond/tailscale"
+      source = "tailscale/tailscale"
     }
     minio = {
       source = "aminueza/minio"
