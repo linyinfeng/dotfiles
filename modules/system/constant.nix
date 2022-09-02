@@ -1,5 +1,8 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
+let
+  cfg = config.system.constant;
+in
 {
   options.system.constant = lib.mkOption {
     type = lib.types.bool;
@@ -8,7 +11,7 @@
       build a system with "constant" configuration revision
     '';
   };
-  config = {
+  config = lib.mkIf cfg {
     system.configurationRevision = lib.mkForce null;
     nix.registry.self = lib.mkForce {
       exact = false;
