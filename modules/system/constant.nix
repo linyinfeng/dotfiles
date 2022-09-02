@@ -3,7 +3,7 @@
 {
   options.system.constant = lib.mkOption {
     type = lib.types.bool;
-    default = true;
+    default = false;
     description = ''
       build a system with "constant" configuration revision
     '';
