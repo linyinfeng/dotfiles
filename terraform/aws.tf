@@ -159,5 +159,5 @@ resource "aws_security_group" "main" {
 
 resource "aws_key_pair" "pgp" {
   key_name   = "pgp"
-  public_key = file("${path.module}/../users/yinfeng/ssh/authorized-keys/pgp.pub")
+  public_key = file("${path.module}/../users/root/ssh/pgp.pub")
 }
