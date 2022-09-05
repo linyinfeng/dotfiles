@@ -41,32 +41,6 @@
         "type": "github"
       }
     },
-    "bud": {
-      "inputs": {
-        "beautysh": [
-          "beautysh"
-        ],
-        "devshell": [
-          "devshell"
-        ],
-        "nixpkgs": [
-          "nixos"
-        ]
-      },
-      "locked": {
-        "lastModified": 1654190822,
-        "narHash": "sha256-B8z3stYaULNDBBjzJHrFHGgiJHrLqhBkxH+9u5iBP7E=",
-        "owner": "divnix",
-        "repo": "bud",
-        "rev": "0ff3e4e4b8791ea4d827bf5bfcac28cef060f209",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "bud",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -848,7 +822,6 @@
     "root": {
       "inputs": {
         "beautysh": "beautysh",
-        "bud": "bud",
         "deploy": "deploy",
         "devshell": "devshell",
         "digga": "digga",

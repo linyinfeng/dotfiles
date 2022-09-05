@@ -20,11 +20,6 @@
       devshell.inputs.nixpkgs.follows = "nixos";
       devshell.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
-      bud.url = "github:divnix/bud";
-      bud.inputs.nixpkgs.follows = "nixos";
-      bud.inputs.devshell.follows = "devshell";
-      bud.inputs.beautysh.follows = "beautysh";
-
       beautysh.url = "github:lovesegfault/beautysh";
       beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       beautysh.inputs.nixpkgs.follows = "nixos";
@@ -107,7 +102,6 @@
   outputs =
     { self
     , digga
-    , bud
     , nixos
     , home
     , nixos-hardware
@@ -180,7 +174,6 @@
               digga.nixosModules.bootstrapIso
               digga.nixosModules.nixConfig
               home.nixosModules.home-manager
-              bud.nixosModules.bud
 
               inputs.sops-nix.nixosModules.sops
               inputs.impermanence.nixosModules.impermanence
@@ -372,7 +365,6 @@
         };
 
         devshell = ./shell;
-        budModules = { devos = import ./shell/bud; };
 
         homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
 

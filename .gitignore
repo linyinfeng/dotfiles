@@ -13,11 +13,6 @@ terraform/moon
 .terraform.tfstate.lock.info
 .terraform
 
-# Result of bud commands
-vm
-iso
-doi
-
 pkgs/_sources/.shake*
 
 *.qcow2
