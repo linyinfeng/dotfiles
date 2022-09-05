@@ -13,6 +13,8 @@ in
       command = ''
         set -e
 
+        export PATH=${pkgs.sops}/bin:$PATH
+        export PATH=${pkgs.terraform}/bin:$PATH
         export PATH=${pkgs.zerotierone}/bin:$PATH
         export PATH=${pkgs.minio-client}/bin:$PATH
         export PATH=${pkgs.syncthing}/bin:$PATH
@@ -46,7 +48,7 @@ in
         trap cleanup EXIT
 
         cd $PRJ_ROOT/terraform
-        ${pkgs.terraform}/bin/terraform "$@"
+        terraform "$@"
       '';
     }
 
@@ -56,6 +58,8 @@ in
       help = "update terraform outputs";
       command = ''
         set -e
+
+        export PATH=${pkgs.sops}/bin:$PATH
 
         encrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.yaml"
         unencrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.plain.yaml"
