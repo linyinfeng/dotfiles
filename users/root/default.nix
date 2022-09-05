@@ -7,7 +7,8 @@ in
   users.users.root = {
     passwordFile = config.sops.secrets."user-password/root".path;
     openssh.authorizedKeys.keyFiles = [
-      ../yinfeng/ssh/authorized-keys/pgp.pub
+      ssh/pgp.pub
+      ssh/juice.pub
     ];
   };
 

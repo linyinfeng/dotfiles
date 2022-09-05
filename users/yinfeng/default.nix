@@ -38,10 +38,7 @@ in
     groupNameIfPresent "service-mail" ++
     groupNameIfPresent "plugdev";
 
-    openssh.authorizedKeys.keyFiles = [
-      ./ssh/authorized-keys/pgp.pub
-      ./ssh/authorized-keys/t460p-win.pub
-    ];
+    openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
 
   sops.secrets."user-password/${name}" = {
