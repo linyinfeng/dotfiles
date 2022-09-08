@@ -90,10 +90,8 @@
       nix-index-database.url = "github:Mic92/nix-index-database";
 
       hydra.url = "github:nixos/hydra";
-      # use hydra's bundled nix
-      # hydra.inputs.nix.follows = "nix";
+      hydra.inputs.nix.follows = "nix";
       hydra.inputs.nixpkgs.follows = "nixos";
-      hydra.inputs.newNixpkgs.follows = "nixos";
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
@@ -226,11 +224,6 @@
                 common-pc
                 common-cpu-intel
                 common-pc-ssd
-              ] ++ [
-                ({ pkgs, lib, ... }: {
-                  # TODO workaround for hydra https://github.com/NixOS/nix/issues/6981
-                  nix.package = lib.mkForce pkgs.nixVersions.nix_2_10;
-                })
               ];
               tests = import ./lib/tests;
             };
