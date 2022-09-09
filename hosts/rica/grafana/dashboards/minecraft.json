@@ -35,7 +35,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "gridPos": {
         "h": 1,
@@ -895,7 +895,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "gridPos": {
         "h": 1,
@@ -1408,7 +1408,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "gridPos": {
         "h": 1,
@@ -1709,7 +1709,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "gridPos": {
         "h": 1,
@@ -2877,7 +2877,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "GQCF0Gonz"
+          "uid": "influxdb-li7g-com"
         },
         "definition": "import \"influxdata/influxdb/v1\"\r\n\r\nv1.measurementTagValues(\r\n  bucket: \"${bucket}\",\r\n  measurement: \"minecraft_players_count\",\r\n  tag: \"server\"\r\n)",
         "hide": 0,
@@ -3039,7 +3039,7 @@
   },
   "timezone": "",
   "title": "Minecraft",
-  "uid": "xU08wAW7z",
+  "uid": "dashboard-minecraft",
   "version": 3,
   "weekStart": ""
 }

@@ -32,7 +32,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -83,7 +83,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_process_uptime_seconds\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "A"
@@ -95,7 +95,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "description": "",
       "fieldConfig": {
@@ -171,7 +171,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_go_routine_total\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -183,7 +183,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -258,7 +258,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_disk_free_bytes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -270,7 +270,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -345,7 +345,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_disk_used_bytes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -357,7 +357,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -432,7 +432,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_process_resident_memory_bytes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)",
           "refId": "A"
@@ -444,7 +444,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -544,7 +544,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_file_descriptor_limit_total\" or\n                       r[\"_measurement\"] == \"minio_node_file_descriptor_open_total\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -556,7 +556,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -656,7 +656,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_node_io_read_bytes\" or\n                       r[\"_measurement\"] == \"minio_node_io_write_bytes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"counter\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> derivative(unit: 1s, nonNegative: true)\n  |> map(fn: (r) => ({ r with _value: if r[\"_measurement\"] == \"minio_node_io_read_bytes\" then r._value else - r._value }))",
           "refId": "A"
@@ -668,7 +668,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -742,7 +742,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_s3_requests_total\")\n  |> filter(fn: (r) => r[\"_field\"] == \"counter\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> derivative(unit: 1s, nonNegative: true)",
           "refId": "A"
@@ -777,7 +777,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -851,7 +851,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"bucket\"] == \"${bucket}\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_bucket_usage_object_total\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -863,7 +863,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -938,7 +938,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"minio\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"bucket\"] == \"${bucket}\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"minio_bucket_usage_total_bytes\")\n  |> filter(fn: (r) => r[\"_field\"] == \"gauge\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -965,7 +965,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "GQCF0Gonz"
+          "uid": "influxdb-li7g-com"
         },
         "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"minio\", tag: \"bucket\")",
         "hide": 0,
@@ -989,7 +989,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "MinIO",
-  "uid": "Cir8Vt97k",
+  "uid": "dashboard-minio",
   "version": 16,
   "weekStart": ""
 }

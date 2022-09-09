@@ -35,6 +35,10 @@
         type = lib.types.port;
         default = 3006;
       };
+      alertmanager = lib.mkOption {
+        type = lib.types.port;
+        default = 3007;
+      };
     };
   };
 }

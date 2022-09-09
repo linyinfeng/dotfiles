@@ -35,6 +35,7 @@ in
       ./grafana
       ./loki
       ./git
+      ./alertmanager
     ];
 
   config = lib.mkMerge [

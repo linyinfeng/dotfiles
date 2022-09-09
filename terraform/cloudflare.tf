@@ -251,6 +251,24 @@ resource "cloudflare_record" "li7g_zt_transmission" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+resource "cloudflare_record" "li7g_alertmanager" {
+  name    = "alertmanager"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = "rica.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_record" "li7g_zt_alertmanager" {
+  name    = "alertmanager.zt"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  value   = "rica.zt.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # smtp records for receiving
 
 resource "cloudflare_record" "li7g_mx68" {

@@ -6,6 +6,7 @@ in
 {
   services.loki = {
     enable = true;
+    extraFlags = [ "-config.expand-env=true" ];
     configuration = {
       auth_enabled = false;
       server.http_listen_port = cfg.ports.loki;
@@ -38,8 +39,32 @@ in
           };
         }
       ];
+
+      ruler = {
+        # TODO switch to s3 backend
+        storage = {
+          type = "local";
+          local = {
+            directory = "rules";
+          };
+        };
+        rule_path = "rules";
+        enable_api = true;
+        alertmanager_url = "https://alertmanager.li7g.com";
+        alertmanager_client = {
+          basic_auth_username = "alertmanager";
+          basic_auth_password = "$ALERTMANAGER_PASSWORD";
+        };
+      };
     };
   };
+  systemd.services.loki.serviceConfig.EnvironmentFile = [
+    config.sops.templates."loki-env".path
+  ];
+  sops.templates."loki-env".content = ''
+    ALERTMANAGER_PASSWORD=${config.sops.placeholder."alertmanager_password"}
+  '';
+
   security.acme.certs."main".extraDomainNames = [
     "loki.li7g.com"
     "loki.zt.li7g.com"
@@ -69,5 +94,9 @@ in
   sops.secrets."loki_hashed_password" = {
     sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     restartUnits = [ "nginx.service" ];
+  };
+  sops.secrets."alertmanager_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "loki.service" ];
   };
 }

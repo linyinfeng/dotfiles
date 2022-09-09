@@ -61,6 +61,7 @@ in
     INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
     GF_SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
+    ALERTMANAGER_PASSWORD=${config.sops.placeholder."alertmanager_password"}
   '';
   services.grafana.provision = {
     enable = true;
@@ -73,10 +74,10 @@ in
     ];
     datasources = [
       {
+        uid = "influxdb-li7g-com";
         name = "InflexDB";
         type = "influxdb";
         url = "https://influxdb.li7g.com";
-        uid = "GQCF0Gonz";
         jsonData = {
           version = "Flux";
           organization = "main-org";
@@ -85,12 +86,29 @@ in
         secureJsonData.token = "$INFLUX_TOKEN";
       }
       {
+        uid = "loki-li7g-com";
         name = "Loki";
         type = "loki";
         url = "https://loki.li7g.com";
         basicAuth = true;
         basicAuthUser = "loki";
         secureJsonData.basicAuthPassword = "$LOKI_PASSWORD";
+        jsonData = {
+          alertmanagerUid = "alertmanager-li7g-com";
+        };
+      }
+      {
+        uid = "alertmanager-li7g-com";
+        name = "Alertmanager";
+        type = "alertmanager";
+        url = "https://alertmanager.li7g.com";
+        basicAuth = true;
+        basicAuthUser = "alertmanager";
+        secureJsonData.basicAuthPassword = "$ALERTMANAGER_PASSWORD";
+        jsonData = {
+          handleGrafanaManagedAlerts = true;
+          implementation = "prometheus";
+        };
       }
     ];
   };
@@ -105,6 +123,10 @@ in
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."loki_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    restartUnits = [ "grafana.service" ];
+  };
+  sops.secrets."alertmanager_password" = {
     sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
     restartUnits = [ "grafana.service" ];
   };

@@ -42,7 +42,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -89,7 +89,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"uptime\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "A"
@@ -101,7 +101,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -179,7 +179,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"cpu\")\n  |> filter(fn: (r) => r._field == \"usage_idle\")\n  |> filter(fn: (r) => r.cpu == \"cpu-total\")\n  |> toFloat()\n  |> map(fn: (r) => ({ r with _field: \"usage_total\", _value: 100.0 - r._value }))\n  |> drop(columns: [\"cpu\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -191,7 +191,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -238,7 +238,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load1\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
@@ -250,7 +250,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -297,7 +297,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load5\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
@@ -309,7 +309,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -380,7 +380,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"processes\")\n  |> filter(fn: (r) => r._field == \"running\" or r._field == \"blocked\" or r._field == \"idle\" or r._field == \"unknown\")\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: true)\n  |> yield(name: \"max\")",
           "refId": "A"
@@ -392,7 +392,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -439,7 +439,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load15\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
@@ -451,7 +451,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -528,7 +528,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -540,7 +540,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -617,7 +617,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"swap\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -629,7 +629,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -680,7 +680,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"disk\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> last()\n  |> map(fn: (r) => ({_value: r._value, _time: r._time, _field: r.device}))\n",
           "refId": "A"
@@ -692,7 +692,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -767,7 +767,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"net\")\n  |> filter(fn: (r) => r._field == \"bytes_recv\" or r._field == \"bytes_sent\")\n  |> filter(fn: (r) => r.interface != \"all\")\n  |> group(columns: [\"_time\", \"_field\"])\n  |> sum(column: \"_value\")\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> derivative(unit: 1s, nonNegative: false)\n  |> map(fn: (r) => ({ r with _value: if r._field == \"bytes_recv\" then r._value else - r._value, _field: if r._field == \"bytes_recv\" then \"receive\" else \"send\" }))",
           "refId": "A"
@@ -779,7 +779,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "GQCF0Gonz"
+        "uid": "influxdb-li7g-com"
       },
       "fieldConfig": {
         "defaults": {
@@ -854,7 +854,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "GQCF0Gonz"
+            "uid": "influxdb-li7g-com"
           },
           "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> drop(columns: [\"host\"])\n  |> filter(fn: (r) => r._measurement == \"sensors\")\n  |> filter(fn: (r) => r._field == \"temp_input\")\n  |> map(fn: (r) => ({ _field: r.chip, _value: r._value, _time: r._time }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
           "refId": "A"
@@ -866,7 +866,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "uid": "loki-li7g-com"
       },
       "description": "",
       "gridPos": {
@@ -890,7 +890,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "uid": "loki-li7g-com"
           },
           "expr": "{host=\"${host}\", job=\"systemd-journal\", unit=\"nixos-upgrade.service\"}",
           "refId": "A"
@@ -918,7 +918,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "GQCF0Gonz"
+          "uid": "influxdb-li7g-com"
         },
         "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"system\", tag: \"host\")",
         "hide": 0,
@@ -942,7 +942,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Systems",
-  "uid": "hrDFJGT7z",
+  "uid": "dashboard-system",
   "version": 1,
   "weekStart": ""
 }

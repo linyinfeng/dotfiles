@@ -137,6 +137,7 @@ in
       "vault@li7g.com"
       "smartd@li7g.com"
       "grafana@li7g.com"
+      "alertmanager@li7g.com"
     ];
     sops.secrets."mail_password" = {
       sopsFile = config.sops.secretsDir + /terraform/common.yaml;

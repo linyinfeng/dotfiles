@@ -106,3 +106,22 @@ output "portal_client_id" {
   value     = random_uuid.portal_client_id.result
   sensitive = true
 }
+resource "random_password" "alertmanager" {
+  length  = 32
+  special = false
+}
+resource "random_password" "alertmanager_salt" {
+  length = 8
+}
+resource "htpasswd_password" "alertmanager" {
+  password = random_password.alertmanager.result
+  salt     = random_password.alertmanager_salt.result
+}
+output "alertmanager_password" {
+  value     = random_password.alertmanager.result
+  sensitive = true
+}
+output "alertmanager_hashed_password" {
+  value     = htpasswd_password.alertmanager.bcrypt
+  sensitive = true
+}
