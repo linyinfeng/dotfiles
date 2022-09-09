@@ -7,8 +7,8 @@ in
   systemd.services.minecraft-backup = {
     script = ''
       systemctl stop  minecraft
-      mkdir -p "${backupDir}"
-      tar --zstd -cvf "${backupDir}/backup.tar.zst" /var/lib/private/minecraft
+      rm -rf "${backupDir}"
+      cp --recursive --reflink=always /var/lib/private/minecraft "${backupDir}"
       systemctl start minecraft
     '';
     path = with pkgs; [ gnutar zstd ];
