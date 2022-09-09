@@ -140,7 +140,7 @@
                       master = inputs.nix.packages.${system}.nix;
                       selected = final'.unstable;
                     });
-                  hydra-master = inputs.hydra.defaultPackage.${system};
+                  hydra-master = inputs.hydra.packages.${system}.default;
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                   pastebin = inputs.pastebin.packages.${system}.default;
                   mc-config-nuc = inputs.mc-config-nuc.packages.${system};
