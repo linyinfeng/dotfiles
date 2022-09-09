@@ -23,7 +23,7 @@ in
     extraOptions = {
       "SERVER_SERVE_FROM_SUB_PATH" = "true";
       "USERS_DEFAULT_THEME" = "light";
-      "DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH" = "${./home.json}";
+      "DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH" = "${./dashboards/home.json}";
       "SMTP_STARTTLS_POLICY" = "true";
     };
     security = {
