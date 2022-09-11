@@ -3,7 +3,10 @@ let
   emacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = emacsConfig;
-    package = pkgs.emacsPgtkNativeComp;
+    package = pkgs.emacsPgtkNativeComp.override {
+      # TODO https://github.com/nix-community/emacs-overlay/issues/244
+      withGTK3 = true;
+    };
     alwaysEnsure = true;
     override = epkgs: epkgs // {
       inherit (epkgs.melpaPackages) telega;
