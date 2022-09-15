@@ -2,7 +2,7 @@
 
 (message "Start loading init.el")
 
-(defvar host-dir "~/.emacs.d/host/")
+(defvar host-dir (concat user-emacs-directory "host/"))
 (if (file-exists-p host-dir)
     (progn
       (message "Start loading host init")
@@ -13,6 +13,7 @@
 
 ;; customize file
 (defvar var-dir (concat user-emacs-directory "var/"))
+(defvar sync-dir "@syncDir@/")
 (make-directory var-dir :parents)
 (setq custom-file (concat var-dir "custom.el"))
 
@@ -35,7 +36,7 @@
 ;; default font
 (set-face-attribute 'default nil
                     :family "Sarasa Mono Slab SC"
-                    :height 100
+                    :height 110
                     :weight 'normal
                     :width 'normal)
 
@@ -53,13 +54,6 @@
 (setq read-quoted-char-radix 16)
 
 ;; open init.el command
-(defun open-dotfiles ()
-  "Open dotfiles"
-  (find-file "~/Source/dotfiles"))
-(defun open-init-el ()
-  "Open init.el file"
-  (interactive)
-  (find-file "~/Source/dotfiles/users/profiles/emacs/init.el"))
 (defun nixos-rebuild-switch ()
   "NixOS rebuild"
   (interactive)
@@ -162,15 +156,6 @@
 (use-package json-mode
   :ensure t)
 
-(use-package ligature
-  :config
-  (ligature-set-ligatures '(prog-mode)
-                          ;; lists of default ligations of Iosevka
-                          '("<--" "<---" "<<-" "<-" "->" "->>" "-->" "--->" "<->" "<-->" "<--->" "<---->" "<!--"
-                            "<==" "<===" "<<=" "<=" "=>" "=>>" "==>" ">=" ">>=" "<=>" "<==>" "<===>" "<====>" "<!---"
-                            "<~~" "<~" "~>" "~~>" "::" ":::" "==" "!=" "===" "!==" ":>"
-                            ":=" ":-" ":+" "<*" "<*>" "*>" "<|" "<|>" "|>" "+:" "-:" "=:" "<***>" "++" "+++"))
-
 (use-package lsp-haskell
   :ensure t)
 
@@ -230,7 +215,7 @@
 (use-package org
   :ensure t
   :custom
-  (org-directory "~/Syncthing/Main/orgs")
+  (org-directory (concat sync-dir "orgs"))
   (org-startup-indented t)
   ;; done with time information
   (org-log-done 'time)
@@ -243,7 +228,7 @@
   :custom
   (org-agenda-file-regexp "\\`[^.].*\\.org\\'\\|[0-9-]+")
   :config
-  (add-to-list 'org-agenda-files "~/Syncthing/Main/orgs/tasks"))
+  (add-to-list 'org-agenda-files (concat sync-dir "orgs/tasks")))
 
 (use-package org-bullets
   :ensure t
@@ -262,25 +247,25 @@
   :init
   (setq org-journal-prefix-key "C-c j ")
   :custom
-  (org-journal-dir "~/Syncthing/Main/orgs/journal")
+  (org-journal-dir (concat sync-dir "orgs/journal"))
   (org-journal-file-format "%Y-%m-%d")
   :config
   ;; include journal in agenda
-  (add-to-list 'org-agenda-files "~/Syncthing/Main/orgs/journal"))
+  (add-to-list 'org-agenda-files (concat sync-dir "orgs/journal")))
 
 (use-package org-roam
   :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
-  (org-roam-directory (file-truename "~/Syncthing/Main/orgs/notes"))
+  (org-roam-directory (file-truename (concat sync-dir "orgs/notes")))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
      `(("d" "default" plain "%?"
         :target (file+head ,file-format "#+title: ${title}")
         :unnarrowed t)
-       ("p" "paper" plain (file "~/.emacs.d/var/orgs/templates/paper.org")
+       ("p" "paper" plain (file (concat var-dir "orgs/templates/paper.org"))
         :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
         :unnarrowed t))))
   :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -305,12 +290,6 @@
 (use-package paredit
   :ensure t)
 
-(use-package proof-general
-  :ensure t
-  :custom
-  (proof-three-window-enable t)
-  (proof-three-window-mode-policy 'hybrid))
-
 (use-package pdf-tools
   :ensure t
   :custom
@@ -318,6 +297,9 @@
   (pdf-view-use-scaling t)
   :config
   (pdf-tools-install))
+
+(use-package popup
+  :ensure t)
 
 (use-package projectile
   :ensure t
@@ -333,9 +315,7 @@
   :delight pyim-isearch-mode
   :custom
   (default-input-method "pyim")
-  ;; TODO very slow under pgtk emacs
-  ;; (pyim-page-tooltip '(popup minibuffer))
-  (pyim-page-tooltip '(minibuffer posframe popup))
+  (pyim-page-tooltip 'popup)
   (pyim-default-scheme 'quanpin)
   (pyim-page-length 5)
   (pyim-english-input-switch-functions
@@ -354,6 +334,12 @@
   (define-key pyim-mode-map "," 'pyim-page-previous-page)
   :bind
   (("C-|" . pyim-convert-string-at-point)))
+
+(use-package proof-general
+  :ensure t
+  :custom
+  (proof-three-window-enable t)
+  (proof-three-window-mode-policy 'hybrid))
 
 (use-package racket-mode
   :ensure t)
@@ -380,8 +366,10 @@
   :ensure t
   :defer t
   :custom
-  (telega-proxies '((:server "localhost" :port 8899 :enable t
-                             :type (:@type "proxyTypeSocks5")))))
+  (telega-proxies '(( :enable @telegaProxyEnable@
+                      :server "@telegaProxyServer@"
+                      :port @telegaProxyPort@
+                      :type (:@type "proxyTypeSocks5") ))))
 
 (use-package terraform-mode
   :ensure t)

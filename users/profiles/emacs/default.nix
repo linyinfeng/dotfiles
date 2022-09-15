@@ -1,13 +1,10 @@
 { config, pkgs, lib, inputs, osConfig, ... }:
 let
-  emacsConfig = ./init.el;
+  rawEmacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
-    config = emacsConfig;
-    package = pkgs.emacsPgtkNativeComp.override {
-      # TODO https://github.com/nix-community/emacs-overlay/issues/244
-      withGTK3 = true;
-    };
-    alwaysEnsure = true;
+    config = rawEmacsConfig;
+    package = pkgs.emacsPgtkNativeComp;
+    alwaysEnsure = false;
     override = epkgs: epkgs // {
       inherit (epkgs.melpaPackages) telega;
       webkit = pkgs.callPackage inputs.emacs-webkit {
@@ -19,9 +16,28 @@ let
     };
   });
   fw-proxy = osConfig.networking.fw-proxy;
-  syncPath = "${config.home.homeDirectory}/Syncthing/Main";
+  syncDir = "${config.home.homeDirectory}/Syncthing/Main";
+  emacsConfig = pkgs.substituteAll {
+    src = rawEmacsConfig;
+    inherit syncDir;
+    telegaProxyEnable = if fw-proxy.enable then "t" else "nil";
+    telegaProxyServer = "localhost";
+    telegaProxyPort = fw-proxy.mixinConfig.mixed-port;
+  };
 in
 {
+  passthru.emacs-packages =
+    let
+      parse = pkgs.callPackage "${inputs.emacs-overlay}/parse.nix" { };
+      parsed = parse.parsePackagesFromUsePackage {
+        configText = builtins.readFile ./init.el;
+        alwaysEnsure = false;
+        isOrgModeFile = false;
+        alwaysTangle = false;
+      };
+    in
+    lib.lists.sort (a: b: a < b) parsed;
+
   home.packages = [ emacs ] ++
     (with pkgs; [
       ispell
@@ -64,7 +80,7 @@ in
       ".emacs.d"
     ];
   };
-  home.link.".ispell_english".target = "${syncPath}/dotfiles/ispell_english";
+  home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
 
   programs.fish.interactiveShellInit = ''
     if test "$INSIDE_EMACS" = 'vterm'
