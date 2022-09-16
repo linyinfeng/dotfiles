@@ -16,13 +16,11 @@ lib.mkIf config.home.graphical {
     gparted
     inkscape
     keepassxc
-    # TODO https://github.com/NixOS/nixpkgs/pull/187562
-    #      depend to gnupg
-    # libreoffice-fresh
+    libreoffice-fresh
     meld
     mplayer
-    nur.repos.linyinfeng.clash-for-windows
     nur.repos.linyinfeng.icalingua-plus-plus
+    nur.repos.linyinfeng.wemeet
     picard
     tdesktop
     teamspeak_client
