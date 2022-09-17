@@ -22,7 +22,7 @@ let
     inherit syncDir;
     telegaProxyEnable = if fw-proxy.enable then "t" else "nil";
     telegaProxyServer = "localhost";
-    telegaProxyPort = fw-proxy.mixinConfig.mixed-port;
+    telegaProxyPort = if fw-proxy.enable then fw-proxy.mixinConfig.mixed-port else "nil";
   };
 in
 {
