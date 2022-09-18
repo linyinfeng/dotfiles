@@ -125,3 +125,11 @@ output "alertmanager_hashed_password" {
   value     = htpasswd_password.alertmanager.bcrypt
   sensitive = true
 }
+resource "random_password" "seahub" {
+  length  = 32
+  special = false
+}
+output "seahub_password" {
+  value     = random_password.seahub.result
+  sensitive = true
+}

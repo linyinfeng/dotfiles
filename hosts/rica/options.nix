@@ -39,6 +39,10 @@
         type = lib.types.port;
         default = 3007;
       };
+      seafileFileServer = lib.mkOption {
+        type = lib.types.port;
+        default = 3008;
+      };
     };
   };
 }

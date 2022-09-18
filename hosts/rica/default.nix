@@ -21,10 +21,7 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-    ]) ++ (with profiles.users; [
-      yinfeng
-    ])
-    ++ [
+    ]) ++ [
       ./options.nix
       ./minio
       ./maddy
@@ -36,6 +33,7 @@ in
       ./loki
       ./git
       ./alertmanager
+      ./seafile
     ];
 
   config = lib.mkMerge [
