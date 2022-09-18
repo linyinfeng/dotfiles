@@ -3,7 +3,9 @@
 
   inputs =
     {
-      nixos.url = "github:nixos/nixpkgs/nixos-unstable";
+      # TODO https://github.com/NixOS/nixpkgs/issues/191742
+      # nixos.url = "github:nixos/nixpkgs/nixos-unstable";
+      nixos.url = "github:nixos/nixpkgs/5f326e2a403e1cebaec378e72ceaf5725983376d";
       latest.url = "github:nixos/nixpkgs/master";
 
       digga.url = "github:divnix/digga";
