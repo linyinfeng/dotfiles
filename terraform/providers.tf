@@ -16,6 +16,9 @@ terraform {
     b2 = {
       source = "Backblaze/b2"
     }
+    oci = {
+      source = "oracle/oci"
+    }
     # third-party providers
     sops = {
       source = "carlpett/sops"
