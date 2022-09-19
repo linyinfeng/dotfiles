@@ -16,7 +16,7 @@ lib.mkIf config.home.graphical {
     gparted
     inkscape
     keepassxc
-    libreoffice-fresh
+    # libreoffice-fresh
     meld
     mplayer
     nur.repos.linyinfeng.icalingua-plus-plus
