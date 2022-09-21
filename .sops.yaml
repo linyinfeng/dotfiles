@@ -8,7 +8,8 @@ keys:
   - &rica       age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
-  - &g150ts    age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
+  - &g150ts     age1vxyz8za0se99gcne8yzzez7lx3w7jf9rlg7a0qt4gt7q03ca7urquhun6a
+  - &a1         age1khx72jeejaz9epypfg4ev2y086qntvk9gfwtc8gkjnxv6m92lsfsg8ysv9
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
 creation_rules:
@@ -55,6 +56,7 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
+      - *a1
       # no age key for g150ts
   - path_regex: ^secrets/(terraform/)?infrastructure(\.plain)?\.yaml$
     key_groups:
@@ -70,6 +72,7 @@ creation_rules:
       - *vultr
       - *tencent
       - *g150ts
+      - *a1
   - path_regex: ^secrets/(terraform/)?hosts/t460p(\.plain)?\.yaml$
     key_groups:
     - pgp:
@@ -126,6 +129,13 @@ creation_rules:
       age:
       - *github
       - *g150ts
+  - path_regex: ^secrets/(terraform/)?hosts/a1(\.plain)?\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *github
+      - *a1
   - path_regex: ^modules/sops/vm-test/test-secrets/.*\.yaml$
     key_groups:
     - pgp:

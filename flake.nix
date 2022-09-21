@@ -115,7 +115,7 @@
 
         supportedSystems = [
           "x86_64-linux"
-          # "aarch64-linux"
+          "aarch64-linux"
         ];
 
         channelsConfig = { allowUnfree = true; };
@@ -142,11 +142,17 @@
                       master = inputs.nix.packages.${system}.nix;
                       selected = final'.unstable;
                     });
-                  hydra-master = inputs.hydra.packages.${system}.default;
+                  hydra-master =
+                    if system == "x86_64-linux"
+                    then inputs.hydra.packages.${system}.default
+                    else null;
                   nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
                   pastebin = inputs.pastebin.packages.${system}.default;
                   mc-config-nuc = inputs.mc-config-nuc.packages.${system};
-                  nix-index-database = inputs.nix-index-database.legacyPackages.${system}.database;
+                  nix-index-database =
+                    if system == "x86_64-linux"
+                    then inputs.nix-index-database.legacyPackages.${system}.database
+                    else null;
                 })
             ];
           };
@@ -188,10 +194,6 @@
 
           imports = [ (digga.lib.importHosts ./hosts) ];
           hosts = {
-            /* set host specific properties here */
-            NixOS = {
-              tests = import ./lib/tests;
-            };
             t460p = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
@@ -243,6 +245,19 @@
             };
             g150ts = {
               system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
+            a1 = {
+              system = "aarch64-linux";
+              tests = import ./lib/tests;
+            };
+            netboot-installer = {
+              system = "x86_64-linux";
+              tests = import ./lib/tests;
+            };
+            netboot-installer-aarch64 = {
+              system = "aarch64-linux";
+              modules = [ ./hosts/netboot-installer.nix ];
               tests = import ./lib/tests;
             };
           };
@@ -349,9 +364,9 @@
           importables = rec {
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = nixos.lib.fix (suites: {
-              base = with profiles; [ direnv git shells ];
+              base = with profiles; [ git ];
               multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
-              development = with profiles; [ development emacs tools tex postmarketos awscli terraform ];
+              development = with profiles; [ development direnv emacs tools tex postmarketos awscli terraform shells ];
               virtualization = [ ];
               multimediaDev = suites.multimedia ++ suites.development ++
                 (with profiles; [ xdg-dirs vscode ]);

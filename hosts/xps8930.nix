@@ -25,7 +25,6 @@ in
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
-      virtualization.binfmt
       services.godns
       services.smartd
       programs.service-mail
@@ -61,6 +60,10 @@ in
       };
     };
   };
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+  ];
+
   networking.campus-network = {
     enable = true;
     auto-login.enable = true;

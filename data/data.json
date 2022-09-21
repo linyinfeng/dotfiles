@@ -3,6 +3,10 @@
   "cache_s3_host": "s3.us-west-004.backblazeb2.com",
   "cache_bucket_name": "cache-li7g-com",
   "hosts": {
+    "a1": {
+      "syncthing_device_id": "SWGR7AG-3FEDS6J-FBV3OOA-3ZZVLVA-63FYDL5-K4LDJBD-YS4VHBD-2H5ZBQO",
+      "wireguard_public_key": "FB6sSuqrfdnPE9OdhB3OhJvRd5jFTvpcgIzsnRU4Y2Y="
+    },
     "g150ts": {
       "syncthing_device_id": "PEZWQI6-F45E5YN-GGDTDTQ-ABSHLAH-3ZS6ZWP-4IYT2CS-WP2QGZN-PTU54QL",
       "wireguard_public_key": "WhqrXj9mra1Wl3VrV+BD+fs0A2scyoIxtZ/Zs/FENSY="
@@ -35,5 +39,6 @@
       "syncthing_device_id": "CGCSINN-QRV3SD4-4ZP7QA4-7GXE6RR-WS5LWG4-Q3MFXMA-AR3FOGB-T27EEAR",
       "wireguard_public_key": "bRPXUUpthdW3QrNsfq3wms/torS5fdip3V5HzY1BtkU="
     }
-  }
+  },
+  "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n"
 }

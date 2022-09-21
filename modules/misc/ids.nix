@@ -14,6 +14,7 @@
     # nixbuild = 401; # not using
     # telegram-send = 402;
     # service-mail = 403;
+    hydra-builder = 404;
   };
   ids.gids = {
     # service groups
@@ -21,5 +22,6 @@
     nixbuild = 401;
     telegram-send = 402;
     service-mail = 403;
+    hydra-builder = 404;
   };
 }

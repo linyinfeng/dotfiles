@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   security.acme = {
@@ -9,6 +9,9 @@
       credentialsFile = config.sops.templates.acme-credentials.path;
     };
   };
+  systemd.services.acme-main.environment =
+    lib.mkIf (config.networking.fw-proxy.enable)
+      config.networking.fw-proxy.environment;
   sops.secrets."cloudflare_token" = {
     sopsFile = config.sops.secretsDir + /terraform/common.yaml;
     restartUnits = [ ]; # no need to restart units

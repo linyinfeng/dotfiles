@@ -17,6 +17,9 @@ in
   };
   systemd.services.zerotierone-presetup = {
     script = ''
+      echo "create directory"
+      mkdir -p "${stateDir}"
+
       echo "setting up identity files..."
       cp "${config.sops.secrets."zerotier_public_key".path}" "${stateDir}/identity.public"
       cp "${config.sops.secrets."zerotier_private_key".path}" "${stateDir}/identity.secret"

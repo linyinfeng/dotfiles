@@ -9,5 +9,6 @@
                 .key == "syncthing_device_id"
             )
         )
-    )
+    ),
+    "hydra_builder_public_key": .hydra_builder_public_key.value
 }

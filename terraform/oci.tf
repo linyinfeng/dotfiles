@@ -177,17 +177,6 @@ resource "oci_core_default_security_list" "public" {
   ingress_security_rules {
     protocol = local.protocol_icmp
     source = "0.0.0.0/0"
-    icmp_options {
-      type = 3 # Destination Unreachable
-      code = 4 # Fragmentation Needed and Don't Fragment was Set
-    }
-  }
-  ingress_security_rules {
-    protocol = local.protocol_icmp
-    source = local.main_cidr_block
-    icmp_options {
-      type = 3 # Destination Unreachable
-    }
   }
   ingress_security_rules {
     protocol = local.protocol_ipv6_icmp
@@ -215,17 +204,6 @@ resource "oci_core_security_list" "private" {
   ingress_security_rules {
     protocol = local.protocol_icmp
     source = "0.0.0.0/0"
-    icmp_options {
-      type = 3 # Destination Unreachable
-      code = 4 # Fragmentation Needed and Don't Fragment was Set
-    }
-  }
-  ingress_security_rules {
-    protocol = local.protocol_icmp
-    source = local.main_cidr_block
-    icmp_options {
-      type = 3 # Destination Unreachable
-    }
   }
   ingress_security_rules {
     protocol = local.protocol_ipv6_icmp

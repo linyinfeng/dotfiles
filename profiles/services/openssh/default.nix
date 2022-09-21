@@ -7,7 +7,6 @@ in
 {
   services.openssh = {
     enable = true;
-    forwardX11 = true;
     openFirewall = true;
     extraConfig = ''
       ClientAliveInterval ${aliveInterval}
@@ -22,8 +21,6 @@ in
     '';
   };
 
-  networking.firewall.allowedTCPPorts = [ 22 ];
-
   environment.global-persistence = {
     files = [
       # ssh daemon host keys
@@ -32,8 +29,8 @@ in
       "/etc/ssh/ssh_host_ed25519_key"
       "/etc/ssh/ssh_host_ed25519_key.pub"
     ];
-    user.files = [
-      ".ssh/known_hosts"
+    user.directories = [
+      ".ssh"
     ];
   };
 }

@@ -133,3 +133,17 @@ output "seahub_password" {
   value     = random_password.seahub.result
   sensitive = true
 }
+resource "tls_private_key" "hydra_builder" {
+  algorithm = "ED25519"
+}
+data "tls_public_key" "hydra_builder" {
+  private_key_pem = tls_private_key.hydra_builder.private_key_pem
+}
+output "hydra_builder_private_key" {
+  value     = tls_private_key.hydra_builder.private_key_openssh
+  sensitive = true
+}
+output "hydra_builder_public_key" {
+  value     = data.tls_public_key.hydra_builder.public_key_openssh
+  sensitive = false
+}

@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.git = {
     enable = true;
-    package = pkgs.gitFull;
+    package = if config.home.graphical then pkgs.gitFull else pkgs.git;
     lfs.enable = true;
 
     extraConfig = {

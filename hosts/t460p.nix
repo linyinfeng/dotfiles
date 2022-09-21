@@ -28,7 +28,6 @@ in
       networking.behind-fw
       networking.fw-proxy
       virtualization.waydroid
-      virtualization.binfmt
       services.godns
       services.smartd
       programs.service-mail
@@ -83,6 +82,9 @@ in
       };
     };
   };
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+  ];
 
   services.xserver.desktopManager.gnome.enable = true;
 

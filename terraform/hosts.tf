@@ -26,13 +26,22 @@ locals {
       }
       ddns_records = {}
     }
+    a1 = {
+      records = {
+        a = {
+          proxied = true
+          type = "A"
+          value = oci_core_instance.a1.public_ip
+        }
+      }
+      ddns_records = {}
+    }
     tencent = {
       records = {
         a = {
           proxied = false
           type    = "A"
           value   = data.sops_file.terraform.data["ip.tencent"]
-          ddns    = false
         }
       }
       ddns_records = {}
@@ -43,13 +52,11 @@ locals {
           proxied = true
           type    = "A"
           value   = vultr_instance.main.main_ip
-          ddns    = false
         }
         aaaa = {
           proxied = true
           type    = "AAAA"
           value   = vultr_instance.main.v6_main_ip
-          ddns    = false
         }
       }
       ddns_records = {}

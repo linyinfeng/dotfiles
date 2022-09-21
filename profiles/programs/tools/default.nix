@@ -16,14 +16,12 @@
     file
     git
     gptfdisk
-    gptfdisk
     jq
     lm_sensors
     manix
     moreutils
     ncdu
-    neofetch
-    nix-index
+    parted
     pciutils
     procs
     ripgrep

@@ -105,6 +105,9 @@ in
           speedFactor = 1;
         }
       ];
+      boot.binfmt.emulatedSystems = [
+        "aarch64-linux"
+      ];
     }
 
     {
