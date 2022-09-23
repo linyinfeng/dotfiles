@@ -33,6 +33,9 @@ max_line_length = off
 [*.el]
 indent_size = unset
 
+[*.lock]
+indent_size = unset
+
 [*.org]
 indent_size = unset
 

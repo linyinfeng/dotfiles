@@ -423,11 +423,19 @@
                 devShell = self.devShell.${system};
               };
 
-            hydraJobs = self.checks.${system} // {
-              all-checks = pkgs.linkFarm "all-checks"
-                (lib.mapAttrsToList (name: drv: { inherit name; path = drv; })
-                  self.checks.${system});
-            };
+            hydraJobs = self.checks.${system};
+          };
+        hydraJobs =
+          let
+            hydraSystem = "x86_64-linux";
+            pkgs = self.pkgs.${hydraSystem}.nixos;
+            inherit (pkgs) lib;
+          in
+          {
+            all-checks.${hydraSystem} = pkgs.linkFarm "all-checks"
+              (lib.flatten (lib.mapAttrsToList
+                (system: lib.mapAttrsToList (name: drv: { name = "${name}-${system}"; path = drv; }))
+                self.checks));
           };
       };
 }
