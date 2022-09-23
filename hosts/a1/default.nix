@@ -21,7 +21,7 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-      nix.hydra-builder
+      nix.hydra-builder-server
     ]) ++ [
       ./options.nix
       "${modulesPath}/profiles/qemu-guest.nix"

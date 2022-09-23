@@ -72,6 +72,10 @@ in
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
+      boot.binfmt.emulatedSystems = [
+        "aarch64-linux"
+      ];
+
       systemd.watchdog.runtimeTime = "60s";
 
       services.btrfs.autoScrub = {
