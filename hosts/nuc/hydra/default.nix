@@ -95,16 +95,24 @@ in
       nix.distributedBuilds = true;
       nix.buildMachines = [
         {
-          hostName = "localhost";
+          hostName = "nuc.zt.li7g.com";
           systems = [
             "x86_64-linux"
             "i686-linux"
             "aarch64-linux"
           ];
+          sshKey = config.sops.secrets."hydra_builder_private_key".path;
           supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
           speedFactor = 1;
         }
       ];
+      services.openssh.knownHosts = {
+        nuc = {
+          extraHostNames = [ "nuc.zt.li7g.com" ];
+          publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzE483giZI140MvDx3S/rWUzZzuyylGHOArhdSRQmyG";
+        };
+      };
+      sops.secrets."hydra_builder_private_key".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
       boot.binfmt.emulatedSystems = [
         "aarch64-linux"
       ];
