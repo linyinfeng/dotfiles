@@ -26,7 +26,10 @@ in
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
     };
   };
-  sops.secrets."nixbuild/id-ed25519".sopsFile = config.sops.secretsDir + /common.yaml;
+  sops.secrets."nixbuild/id-ed25519" = {
+    neededForUsers = true; # needed for /ect
+    sopsFile = config.sops.secretsDir + /common.yaml;
+  };
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519

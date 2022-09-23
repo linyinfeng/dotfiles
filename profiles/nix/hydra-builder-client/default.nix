@@ -16,7 +16,10 @@
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzE483giZI140MvDx3S/rWUzZzuyylGHOArhdSRQmyG";
     };
   };
-  sops.secrets."hydra_builder_private_key".sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  sops.secrets."hydra_builder_private_key" = {
+    neededForUsers = true; # needed for /ect
+    sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+  };
   programs.ssh.extraConfig = ''
     Host nuc.zt.li7g.com
       PubkeyAcceptedKeyTypes ssh-ed25519
