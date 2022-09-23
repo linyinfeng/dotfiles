@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   nix = {
@@ -21,7 +21,6 @@
     Host nuc.zt.li7g.com
       PubkeyAcceptedKeyTypes ssh-ed25519
       IdentityFile /etc/nix-build-machines/hydra-builder/key
-      ${proxyCommand}
   '';
   environment.etc."nix-build-machines/hydra-builder/key" = {
     mode = "copy";

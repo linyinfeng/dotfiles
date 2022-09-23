@@ -43,6 +43,7 @@ in
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
+          "/etc/nix-build-machines/hydra-builder/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
         extraConfig = ''
@@ -94,9 +95,6 @@ in
         restartUnits = [ "nix-daemon.service" ];
       };
       nix.settings.trusted-users = [ "@hydra" ];
-      services.hydra.buildMachinesFiles = [
-        "/etc/nix-build-machines/hydra-builder/machines"
-      ];
     }
 
     {
