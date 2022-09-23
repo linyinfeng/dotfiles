@@ -26,7 +26,7 @@
       IdentityFile /etc/nix-build-machines/hydra-builder/key
   '';
   environment.etc."nix-build-machines/hydra-builder/key" = {
-    mode = "copy";
+    mode = "400";
     source = config.sops.secrets."hydra_builder_private_key".path;
   };
   systemd.tmpfiles.rules = [

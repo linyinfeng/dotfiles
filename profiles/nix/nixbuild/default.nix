@@ -37,7 +37,7 @@ in
       ${proxyCommand}
   '';
   environment.etc."nix-build-machines/nixbuild/key" = {
-    mode = "copy";
+    mode = "400";
     source = config.sops.secrets."nixbuild/id-ed25519".path;
   };
   systemd.tmpfiles.rules = [
