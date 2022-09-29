@@ -3,6 +3,11 @@ provider "tailscale" {
   tailnet = data.sops_file.terraform.data["tailscale.tailnet"]
 }
 
+locals {
+  # the suffix is actually non-sensitive
+  tailscale_account_suffix = nonsensitive(data.sops_file.terraform.data["tailscale.suffix"])
+}
+
 resource "tailscale_tailnet_key" "tailnet_key" {
   reusable      = true
   ephemeral     = false
@@ -43,4 +48,24 @@ resource "tailscale_acl" "main" {
     #   },
     # },
   })
+}
+
+data "tailscale_devices" "all" {
+}
+
+resource "cloudflare_record" "li7g_ts" {
+  for_each = {
+    for device in data.tailscale_devices.all.devices :
+    device.name =>
+    [ for address in device.addresses : address
+      if can(cidrnetmask("${address}/32")) # ipv4 address only
+    ][0] # first ipv4 address
+  }
+
+  name    = trimsuffix(each.key, ".${local.tailscale_account_suffix}")
+  proxied = false
+  ttl     = 1
+  type    = "A" # ipv4
+  value   = each.value
+  zone_id = cloudflare_zone.com_li7g.id
 }
