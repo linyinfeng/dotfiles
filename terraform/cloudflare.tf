@@ -62,227 +62,62 @@ resource "cloudflare_record" "li7g" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_dst" {
-  name    = "dst"
+locals {
+  service_cname_mappings = {
+    matrix          = { on = "rica", proxy = true }
+    nuc-proxy       = { on = "vultr", proxy = true }
+    portal          = { on = "vultr", proxy = true }
+    tar             = { on = "vultr", proxy = true }
+    vault           = { on = "rica", proxy = true }
+    grafana         = { on = "rica", proxy = true }
+    hydra           = { on = "nuc", proxy = false }
+    transmission    = { on = "nuc", proxy = false }
+    pb              = { on = "rica", proxy = true }
+    git             = { on = "rica", proxy = true }
+    box             = { on = "rica", proxy = true }
+    influxdb        = { on = "rica", proxy = true }
+    loki            = { on = "rica", proxy = true }
+    alertmanager    = { on = "rica", proxy = true }
+    smtp            = { on = "rica", proxy = false }
+    minio           = { on = "rica", proxy = false }
+    minio-console   = { on = "rica", proxy = true }
+    "shanghai.derp" = { on = "tencent", proxy = false }
+    dst             = { on = "tencent", proxy = false }
+    mc              = { on = "nuc", proxy = false }
+    byrmc-retro     = { on = "tencent", proxy = false }
+  }
+}
+
+resource "cloudflare_record" "general_cname" {
+  for_each = local.service_cname_mappings
+
+  name    = each.key
+  proxied = each.value.proxy
+  ttl     = 1
+  type    = "CNAME"
+  value   = "${each.value.on}.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_record" "general_zerotier_cname" {
+  for_each = local.service_cname_mappings
+
+  name    = "${each.key}.zt"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "tencent.li7g.com"
+  value   = "${each.value.on}.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_mc" {
-  name    = "mc"
+resource "cloudflare_record" "general_tailscale_cname" {
+  for_each = local.service_cname_mappings
+
+  name    = "${each.key}.ts"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "nuc.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_byrmc_retro" {
-  name    = "byrmc-retro"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "tencent.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_matrix" {
-  name    = "matrix"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_nuc_proxy" {
-  name    = "nuc-proxy"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "vultr.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_portal" {
-  name    = "portal"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "vultr.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_derp_shanghai" {
-  name    = "shanghai.derp"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "tencent.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_tar" {
-  name    = "tar"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "vultr.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_vault" {
-  name    = "vault"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_influxdb" {
-  name    = "influxdb"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_influxdb_zt" {
-  name    = "influxdb.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.zt.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_loki" {
-  name    = "loki"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_loki_zt" {
-  name    = "loki.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.zt.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_grafana" {
-  name    = "grafana"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_hydra" {
-  name    = "hydra"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "nuc.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_minio" {
-  name    = "minio"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_pb" {
-  name    = "pb"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_minio_console" {
-  name    = "minio-console"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "minio.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_git" {
-  name    = "git"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_transmission" {
-  name    = "transmission"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "nuc.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_zt_transmission" {
-  name    = "transmission.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "nuc.zt.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_alertmanager" {
-  name    = "alertmanager"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_zt_alertmanager" {
-  name    = "alertmanager.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.zt.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_box" {
-  name    = "box"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-resource "cloudflare_record" "li7g_zt_box" {
-  name    = "box.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.zt.li7g.com"
+  value   = "${each.value.on}.ts.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -319,24 +154,6 @@ resource "cloudflare_record" "li7g_mx2" {
 }
 
 # smtp records for sending
-
-resource "cloudflare_record" "li7g_smtp" {
-  name    = "smtp"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_smtp_zt" {
-  name    = "smtp.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "rica.zt.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
 
 resource "cloudflare_record" "li7g_dkim" {
   name    = "default._domainkey"

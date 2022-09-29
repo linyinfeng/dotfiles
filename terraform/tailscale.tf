@@ -57,12 +57,12 @@ resource "cloudflare_record" "li7g_ts" {
   for_each = {
     for device in data.tailscale_devices.all.devices :
     device.name =>
-    [ for address in device.addresses : address
+    [for address in device.addresses : address
       if can(cidrnetmask("${address}/32")) # ipv4 address only
-    ][0] # first ipv4 address
+    ][0]                                   # first ipv4 address
   }
 
-  name    = trimsuffix(each.key, ".${local.tailscale_account_suffix}")
+  name    = "${trimsuffix(each.key, ".${local.tailscale_account_suffix}")}.ts"
   proxied = false
   ttl     = 1
   type    = "A" # ipv4
