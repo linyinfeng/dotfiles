@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.services.portal;
@@ -49,9 +49,17 @@ in
         sopsFile = config.sops.secretsDir + /terraform/common.yaml;
         restartUnits = [ "v2ray.service" ];
       };
-      services.v2ray = {
-        enable = true;
-        configFile = config.sops.templates.portal-v2ray.path;
+      systemd.packages = [ pkgs.v2ray ];
+      systemd.services.v2ray = {
+        serviceConfig = {
+          ExecStart = [
+            "" # override ExecStart
+            "${pkgs.v2ray}/bin/v2ray run --config %d/config"
+          ];
+          LoadCredential = [
+            "config:${config.sops.templates.portal-v2ray.path}"
+          ];
+        };
       };
     })
 
