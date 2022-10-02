@@ -4,10 +4,7 @@ let
   cfg = config.hosts.rica;
 in
 {
-  security.acme.certs."main".extraDomainNames = [
-    "grafana.li7g.com"
-  ];
-  services.nginx.virtualHosts."grafana.li7g.com" = {
+  services.nginx.virtualHosts."grafana.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {

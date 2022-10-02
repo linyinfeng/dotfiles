@@ -8,6 +8,9 @@ in
     host = lib.mkOption {
       type = with lib.types; str;
     };
+    nginxVirtualHost = lib.mkOption {
+      type = with lib.types; str;
+    };
     logLevel = lib.mkOption {
       type = with lib.types; str;
       default = "info";
@@ -64,7 +67,7 @@ in
     })
 
     (lib.mkIf cfg.server.enable {
-      services.nginx.virtualHosts.${cfg.host} = {
+      services.nginx.virtualHosts.${cfg.nginxVirtualHost} = {
         locations."/${cfg.grpcServiceName}/Tun".extraConfig = ''
           # if the request method is not POST for this location, return 404
           if ($request_method != "POST") {

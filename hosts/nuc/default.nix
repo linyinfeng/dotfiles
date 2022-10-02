@@ -144,11 +144,10 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "nuc.li7g.com";
+        domain = "*.li7g.com";
         extraDomainNames = [
-          "home.li7g.com"
-          "nuc.zt.li7g.com" # for nuc-proxy
-          "vault.li7g.com"
+          "*.zt.li7g.com"
+          "*.ts.li7g.com"
         ];
       };
     }
@@ -161,19 +160,12 @@ in
         recommendedTlsSettings = true;
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
-        virtualHosts = {
-          "nuc.li7g.com" = {
-            forceSSL = true;
-            useACMEHost = "main";
-            listen = config.hosts.nuc.listens;
-            serverAliases = [
-              "home.li7g.com"
-              "nuc.zt.li7g.com"
-              "nuc-proxy.li7g.com"
-            ];
-            locations."/" = {
-              root = ./www;
-            };
+        virtualHosts."nuc.*" = {
+          forceSSL = true;
+          useACMEHost = "main";
+          listen = config.hosts.nuc.listens;
+          locations."/" = {
+            root = ./www;
           };
         };
       };
@@ -192,14 +184,12 @@ in
     # store serving
     {
       services.nginx = {
-        virtualHosts = {
-          "nuc.li7g.com" = {
-            locations."/store/" = {
-              proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
-              extraConfig = ''
-                proxy_max_temp_file_size 0;
-              '';
-            };
+        virtualHosts."nuc.*" = {
+          locations."/store/" = {
+            proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
+            extraConfig = ''
+              proxy_max_temp_file_size 0;
+            '';
           };
         };
       };
@@ -226,15 +216,8 @@ in
     # transmission
     # extra settings for suites.transmission
     {
-      security.acme.certs."main".extraDomainNames = [
-        "transmission.li7g.com"
-        "transmission.zt.li7g.com"
-      ];
-      services.nginx.virtualHosts."transmission.li7g.com" = {
+      services.nginx.virtualHosts."transmission.*" = {
         listen = config.hosts.nuc.listens;
-        serverAliases = [
-          "transmission.zt.li7g.com"
-        ];
         locations."/transmission".proxyPass =
           "http://localhost:${toString config.services.transmission.settings.rpc-port}";
         locations."/files/" = {

@@ -55,10 +55,7 @@ in
     restartUnits = [ "minecraft.service" ];
   };
 
-  security.acme.certs."main".extraDomainNames = [
-    "byrmc-retro.li7g.com"
-  ];
-  services.nginx.virtualHosts."byrmc-retro.li7g.com" = {
+  services.nginx.virtualHosts."byrmc-retro.*" = {
     onlySSL = true;
     listen = config.hosts.tencent.listens;
     useACMEHost = "main";

@@ -49,17 +49,10 @@ in
     };
   };
 
-  security.acme.certs."main".extraDomainNames = [
-    "alertmanager.li7g.com"
-    "alertmanager.zt.li7g.com"
-  ];
   services.nginx = {
-    virtualHosts."alertmanager.li7g.com" = {
+    virtualHosts."alertmanager.*" = {
       forceSSL = true;
       useACMEHost = "main";
-      serverAliases = [
-        "alertmanager.zt.li7g.com" # for internal connection
-      ];
       locations."/".proxyPass = "http://localhost:${toString cfg.ports.alertmanager}";
     };
   };

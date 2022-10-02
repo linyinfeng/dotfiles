@@ -112,10 +112,7 @@ in
     ];
   };
 
-  security.acme.certs."main".extraDomainNames = [
-    "matrix.li7g.com"
-  ];
-  services.nginx.virtualHosts."matrix.li7g.com" = {
+  services.nginx.virtualHosts."matrix.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/_matrix" = {

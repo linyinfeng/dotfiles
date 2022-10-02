@@ -12,7 +12,6 @@ let
   ];
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 
-  portalHost = "portal.li7g.com";
   dotTarPort = 8001;
 in
 {
@@ -79,12 +78,11 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "vultr.li7g.com";
+        domain = "*.li7g.com";
         extraDomainNames = [
-          "li7g.com"
-          "portal.li7g.com"
-          "tar.li7g.com"
-          "nuc-proxy.li7g.com"
+          "*.zt.li7g.com"
+          "*.ts.li7g.com"
+          "shanghai.derp.li7g.com"
         ];
       };
     }
@@ -120,7 +118,7 @@ in
 
     # portal
     {
-      services.nginx.virtualHosts.${config.services.portal.host} = {
+      services.nginx.virtualHosts."portal.*" = {
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
@@ -128,14 +126,15 @@ in
         };
       };
       services.portal = {
-        host = portalHost;
+        host = "portal.li7g.com";
+        nginxVirtualHost = "portal.*";
         server.enable = true;
       };
     }
 
     # dot-tar
     {
-      services.nginx.virtualHosts."tar.li7g.com" = {
+      services.nginx.virtualHosts."tar.*" = {
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
@@ -161,7 +160,7 @@ in
 
     # nuc-proxy
     {
-      services.nginx.virtualHosts."nuc-proxy.li7g.com" = {
+      services.nginx.virtualHosts."nuc-proxy.*" = {
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {

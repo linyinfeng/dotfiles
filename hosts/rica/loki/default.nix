@@ -65,24 +65,15 @@ in
     ALERTMANAGER_PASSWORD=${config.sops.placeholder."alertmanager_password"}
   '';
 
-  security.acme.certs."main".extraDomainNames = [
-    "loki.li7g.com"
-    "loki.zt.li7g.com"
-  ];
-  services.nginx = {
-    virtualHosts."loki.li7g.com" = {
-      forceSSL = true;
-      useACMEHost = "main";
-      serverAliases = [
-        "loki.zt.li7g.com" # for internal connection
-      ];
-      locations."/" = {
-        proxyPass = "http://localhost:${toString cfg.ports.loki}";
-        extraConfig = ''
-          auth_basic "loki";
-          auth_basic_user_file ${config.sops.templates."loki-auth-file".path};
-        '';
-      };
+  services.nginx.virtualHosts."loki.*" = {
+    forceSSL = true;
+    useACMEHost = "main";
+    locations."/" = {
+      proxyPass = "http://localhost:${toString cfg.ports.loki}";
+      extraConfig = ''
+        auth_basic "loki";
+        auth_basic_user_file ${config.sops.templates."loki-auth-file".path};
+      '';
     };
   };
   sops.templates."loki-auth-file" = {

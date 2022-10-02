@@ -86,8 +86,10 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "tencent.li7g.com";
+        domain = "*.li7g.com";
         extraDomainNames = [
+          "*.zt.li7g.com"
+          "*.ts.li7g.com"
           "shanghai.derp.li7g.com"
         ];
       };
@@ -102,12 +104,10 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
 
-        virtualHosts = {
-          "tencent.li7g.com" = {
-            onlySSL = true;
-            listen = config.hosts.tencent.listens;
-            useACMEHost = "main";
-          };
+        virtualHosts."tencent.*" = {
+          onlySSL = true;
+          listen = config.hosts.tencent.listens;
+          useACMEHost = "main";
         };
       };
       # only port 443

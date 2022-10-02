@@ -4,10 +4,6 @@ let
   gitRoot = "/srv/git";
 in
 {
-  security.acme.certs."main".extraDomainNames = [
-    "git.li7g.com"
-  ];
-
   services.gitweb = {
     projectroot = gitRoot;
     gitwebTheme = true;
@@ -20,10 +16,10 @@ in
 
   services.nginx.gitweb = {
     enable = true;
-    virtualHost = "git.li7g.com";
+    virtualHost = "git.*";
     location = "/gitweb";
   };
-  services.nginx.virtualHosts."git.li7g.com" = {
+  services.nginx.virtualHosts."git.*" = {
     forceSSL = true;
     useACMEHost = "main";
   };

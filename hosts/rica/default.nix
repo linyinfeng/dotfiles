@@ -95,12 +95,10 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
 
-        virtualHosts = {
-          "rica.li7g.com" = {
-            default = true;
-            forceSSL = true;
-            useACMEHost = "main";
-          };
+        virtualHosts."rica.*" = {
+          default = true;
+          forceSSL = true;
+          useACMEHost = "main";
         };
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
@@ -109,7 +107,11 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "rica.li7g.com";
+        domain = "*.li7g.com";
+        extraDomainNames = [
+          "*.zt.li7g.com"
+          "*.ts.li7g.com"
+        ];
       };
     }
 
@@ -137,10 +139,7 @@ in
 
     # pastebin
     {
-      security.acme.certs."main".extraDomainNames = [
-        "pb.li7g.com"
-      ];
-      services.nginx.virtualHosts."pb.li7g.com" = {
+      services.nginx.virtualHosts."pb.*" = {
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {

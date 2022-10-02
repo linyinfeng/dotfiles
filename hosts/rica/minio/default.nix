@@ -35,12 +35,7 @@ in
     MINIO_ROOT_USER=${config.sops.placeholder."minio/root/user"}
     MINIO_ROOT_PASSWORD=${config.sops.placeholder."minio/root/password"}
   '';
-  security.acme.certs."main".extraDomainNames = [
-    "minio.li7g.com"
-    "minio-console.li7g.com"
-    "cache.li7g.com"
-  ];
-  services.nginx.virtualHosts."minio.li7g.com" = {
+  services.nginx.virtualHosts."minio.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/".proxyPass = minioAddress;
@@ -48,7 +43,7 @@ in
       client_max_body_size 4G;
     '';
   };
-  services.nginx.virtualHosts."cache.li7g.com" = {
+  services.nginx.virtualHosts."cache.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/".extraConfig = ''
@@ -56,7 +51,7 @@ in
       ${proxyPassToMinio}
     '';
   };
-  services.nginx.virtualHosts."minio-console.li7g.com" = {
+  services.nginx.virtualHosts."minio-console.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {

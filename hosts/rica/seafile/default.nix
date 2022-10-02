@@ -27,16 +27,9 @@ in
     '';
   };
 
-  security.acme.certs."main".extraDomainNames = [
-    "box.li7g.com"
-    "box.zt.li7g.com"
-  ];
-  services.nginx.virtualHosts."box.li7g.com" = {
+  services.nginx.virtualHosts."box.*" = {
     forceSSL = true;
     useACMEHost = "main";
-    serverAliases = [
-      "box.zt.li7g.com"
-    ];
     locations."/".proxyPass = "http://unix:/run/seahub/gunicorn.sock";
     locations."/seafhttp/" = {
       proxyPass = "http://127.0.0.1:${toString cfg.ports.seafileFileServer}/";

@@ -2,7 +2,6 @@
 
 let
   cfg = config.hosts.nuc;
-  serverDomain = "mc.li7g.com";
   port = 25565; # also port for voice (udp)
   rconPort = 25575;
   mapPort = 8123;
@@ -27,7 +26,7 @@ in
         sed -i "/^enable-rcon=/ s/=.*/=true/" server.properties
         sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
         sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
-        sed -i "/^motd=/ s/=.*/=${serverDomain}/" server.properties
+        sed -i "/^motd=/ s/=.*/=mc.li7g.com/" server.properties
         # disable online-mode
         sed -i "/^online-mode=/ s/=.*/=false/" server.properties
       fi
@@ -88,10 +87,7 @@ in
     };
   };
 
-  security.acme.certs."main".extraDomainNames = [
-    serverDomain
-  ];
-  services.nginx.virtualHosts.${serverDomain} = {
+  services.nginx.virtualHosts."mc.*" = {
     onlySSL = true;
     listen = config.hosts.nuc.listens;
     useACMEHost = "main";

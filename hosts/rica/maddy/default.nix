@@ -181,10 +181,5 @@ in
       465
       587
     ];
-
-    security.acme.certs."main".extraDomainNames = [
-      "smtp.li7g.com"
-      "smtp.zt.li7g.com" # for internal connection
-    ];
   };
 }

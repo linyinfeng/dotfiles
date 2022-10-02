@@ -83,12 +83,10 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
 
-        virtualHosts = {
-          "a1.li7g.com" = {
-            default = true;
-            forceSSL = true;
-            useACMEHost = "main";
-          };
+        virtualHosts."a1.*" = {
+          default = true;
+          forceSSL = true;
+          useACMEHost = "main";
         };
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
@@ -97,7 +95,11 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "a1.li7g.com";
+        domain = "*.li7g.com";
+        extraDomainNames = [
+          "*.zt.li7g.com"
+          "*.ts.li7g.com"
+        ];
       };
     }
 

@@ -4,25 +4,18 @@ let
   cfg = config.hosts.rica;
 in
 {
-  security.acme.certs."main".extraDomainNames = [
-    "vault.li7g.com"
-  ];
-  services.nginx = {
-    virtualHosts = {
-      "vault.li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
-        };
-        locations."/notifications/hub/negotiate" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
-        };
-        locations."/notifications/hub" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.websocket}";
-          proxyWebsockets = true;
-        };
-      };
+  services.nginx.virtualHosts."vault.*" = {
+    forceSSL = true;
+    useACMEHost = "main";
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
+    };
+    locations."/notifications/hub/negotiate" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
+    };
+    locations."/notifications/hub" = {
+      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.websocket}";
+      proxyWebsockets = true;
     };
   };
   services.vaultwarden = {

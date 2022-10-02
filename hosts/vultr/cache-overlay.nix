@@ -7,10 +7,7 @@ let
   sigv4ProxyAddress = "http://localhost:${toString sigv4ProxyPort}";
 in
 {
-  security.acme.certs."main".extraDomainNames = [
-    "cache-overlay.li7g.com"
-  ];
-  services.nginx.virtualHosts."cache-overlay.li7g.com" = {
+  services.nginx.virtualHosts."cache-overlay.*" = {
     forceSSL = true;
     useACMEHost = "main";
     locations."/".extraConfig = ''
