@@ -137,7 +137,7 @@
                 {
                   nixVersions = prev.nixVersions.extend
                     (final': prev': {
-                      master = inputs.nix.packages.${system}.nix;
+                      # master = inputs.nix.packages.${system}.nix;
                       selected = final'.unstable;
                     });
                   hydra-master =
