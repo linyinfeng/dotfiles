@@ -13,7 +13,7 @@ in
     };
     logLevel = lib.mkOption {
       type = with lib.types; str;
-      default = "info";
+      default = "Info";
     };
     grpcServiceName = lib.mkOption {
       type = with lib.types; str;
@@ -57,12 +57,15 @@ in
         serviceConfig = {
           ExecStart = [
             "" # override ExecStart
-            "${pkgs.v2ray}/bin/v2ray run --config %d/config"
+            "${pkgs.v2ray}/bin/v2ray run --config %d/config --format jsonv5"
           ];
           LoadCredential = [
             "config:${config.sops.templates.portal-v2ray.path}"
           ];
         };
+        restartTriggers = [
+          config.sops.templates.portal-v2ray.content
+        ];
       };
     })
 
@@ -77,9 +80,6 @@ in
           grpc_socket_keepalive on;
           grpc_intercept_errors on;
           grpc_pass grpc://127.0.0.1:${toString cfg.server.internalPort};
-          grpc_set_header Upgrade $http_upgrade;
-          grpc_set_header Connection "upgrade";
-          grpc_set_header Host $host;
 
           # show real IP in v2ray access.log
           grpc_set_header X-Real-IP $remote_addr;
@@ -88,25 +88,26 @@ in
       };
 
       sops.templates.portal-v2ray.content = builtins.toJSON {
-        log.loglevel = cfg.logLevel;
+        log = {
+          access = {
+            type = "Console";
+            level = cfg.logLevel;
+          };
+          error = {
+            type = "Console";
+            level = cfg.logLevel;
+          };
+        };
         inbounds = [
           {
+            protocol = "trojan";
+            settings.users = [
+              config.sops.placeholder."portal_client_id"
+            ];
             port = cfg.server.internalPort;
-            protocol = "vless";
-            settings = {
-              clients = [
-                {
-                  id = config.sops.placeholder."portal_client_id";
-                  level = 0;
-                }
-              ];
-              decryption = "none";
-            };
             streamSettings = {
-              network = "grpc";
-              grpcSettings = {
-                serviceName = cfg.grpcServiceName;
-              };
+              transport = "grpc";
+              transportSettings.serviceName = cfg.grpcServiceName;
             };
           }
         ];
@@ -122,47 +123,38 @@ in
       sops.templates.portal-v2ray.content =
         let
           basicConfig = {
-            log.loglevel = cfg.logLevel;
+            log = {
+              access = {
+                type = "Console";
+                level = cfg.logLevel;
+              };
+              error = {
+                type = "Console";
+                level = cfg.logLevel;
+              };
+            };
             inbounds = [
               {
-                port = cfg.client.port;
-                listen = "127.0.0.1";
                 protocol = "socks";
                 settings = {
-                  auth = "noauth";
-                  udp = true;
+                  udpEnabled = true;
                 };
+                port = cfg.client.port;
+                listen = "127.0.0.1";
               }
             ];
             outbounds = [
               {
-                protocol = "vless";
+                protocol = "trojan";
                 settings = {
-                  vnext = [
-                    {
-                      address = cfg.host;
-                      port = 443;
-                      users = [
-                        {
-                          id = config.sops.placeholder."portal_client_id";
-                          encryption = "none";
-                          level = 0;
-                        }
-                      ];
-                    }
-                  ];
+                  address = cfg.host;
+                  port = 443;
+                  password = config.sops.placeholder."portal_client_id";
                 };
                 streamSettings = {
-                  network = "grpc";
+                  transport = "grpc";
+                  transportSettings.serviceName = cfg.grpcServiceName;
                   security = "tls";
-                  grpcSettings = {
-                    serviceName = cfg.grpcServiceName;
-                  };
-                };
-                mux = {
-                  enabled = true;
-                  # mux as much as possible
-                  concurrency = 1024;
                 };
               }
             ];

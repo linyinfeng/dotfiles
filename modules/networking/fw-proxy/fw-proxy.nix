@@ -251,7 +251,6 @@ with lib;
               chmod 666 "${path}/tasks"
             '';
           wantedBy = [ "multi-user.target" ];
-          restartTriggers = [ name classId ];
         };
       systemd.services.clash-premium = {
         requires = [ "fw-proxy-cgroup.service" ];
