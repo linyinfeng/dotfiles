@@ -90,8 +90,9 @@
       nix-index-database.url = "github:Mic92/nix-index-database";
 
       hydra.url = "github:nixos/hydra";
-      hydra.inputs.nix.follows = "nix";
-      hydra.inputs.nixpkgs.follows = "nixos";
+      # TODO workaround for incompatibility
+      # hydra.inputs.nix.follows = "nix";
+      # hydra.inputs.nixpkgs.follows = "nixos";
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
@@ -137,7 +138,7 @@
                 {
                   nixVersions = prev.nixVersions.extend
                     (final': prev': {
-                      # master = inputs.nix.packages.${system}.nix;
+                      master = inputs.nix.packages.${system}.nix;
                       selected = final'.unstable;
                     });
                   hydra-master =
