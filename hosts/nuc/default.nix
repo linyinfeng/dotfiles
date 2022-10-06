@@ -163,6 +163,9 @@ in
         virtualHosts."nuc.*" = {
           forceSSL = true;
           useACMEHost = "main";
+          serverAliases = [
+            "nuc-proxy.*"
+          ];
           listen = config.hosts.nuc.listens;
           locations."/" = {
             root = ./www;
