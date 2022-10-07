@@ -64,11 +64,6 @@ in
 
       services.thermald.enable = true;
 
-      networking.campus-network = {
-        enable = true;
-        auto-login.enable = true;
-      };
-
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
