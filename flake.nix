@@ -54,6 +54,10 @@
       nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
       nix-gc-s3.inputs.nixpkgs.follows = "nixos";
       nix-gc-s3.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
+      nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
+      poetry2nix.url = "github:nix-community/poetry2nix";
+      poetry2nix.inputs.nixpkgs.follows = "nixos";
+      poetry2nix.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       pastebin.url = "github:linyinfeng/pastebin";
       pastebin.inputs.nixpkgs.follows = "nixos";
       pastebin.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
