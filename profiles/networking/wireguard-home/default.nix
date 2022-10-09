@@ -16,6 +16,10 @@ let
       ip = "192.168.2.4/32";
       inherit port;
     };
+    framework = {
+      ip = "192.168.2.5/32";
+      inherit port;
+    };
   };
   home = {
     allowedIPs = [
