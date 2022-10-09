@@ -206,6 +206,7 @@
                 common-pc
                 common-cpu-intel
                 common-pc-ssd
+                framework-12th-gen-intel
               ];
               tests = import ./lib/tests;
             };
