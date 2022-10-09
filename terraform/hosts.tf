@@ -61,6 +61,16 @@ locals {
       }
       ddns_records = {}
     }
+    framework = {
+      records = {}
+      ddns_records = {
+        aaaa = {
+          proxied = false
+          type    = "AAAA"
+          value   = "::1"
+        }
+      }
+    }
     t460p = {
       records = {}
       ddns_records = {

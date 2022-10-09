@@ -11,9 +11,7 @@ let
     extraConfig
   ];
 
-  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d";
-
-  windowsCMountPoint = "/media/windows/c";
+  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 
 in
 {
@@ -49,6 +47,7 @@ in
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  boot.kernelModules = [ "kvm-intel" ];
 
   hardware.enableRedistributableFirmware = true;
   hardware.video.hidpi.enable = true;
@@ -59,29 +58,9 @@ in
 
   services.thermald.enable = true;
   services.power-profiles-daemon.enable = false;
-  services.tlp = {
-    enable = true;
-    settings = {
-      START_CHARGE_THRESH_BAT0 = 75;
-      STOP_CHARGE_THRESH_BAT0 = 80;
-    };
-  };
-
+  services.tlp.enable = true;
   services.fwupd.enable = true;
 
-  boot.blacklistedKernelModules = [ "nouveau" ];
-
-  virtualisation.kvmgt = {
-    enable = true;
-    device = "0000:00:02.0";
-    vgpus = {
-      i915-GVTg_V5_4 = {
-        uuid = [
-          "fb70adc6-d612-4af4-bfcd-94939e5ca225"
-        ];
-      };
-    };
-  };
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
   ];
@@ -97,64 +76,32 @@ in
     client.enable = true;
   };
   services.godns = {
-    # ipv4.settings = {
-    #   domains = [{
-    #     domain_name = "li7g.com";
-    #     sub_domains = [ "t460p" ];
-    #   }];
-    #   ip_type = "IPv4";
-    #   ip_interface = "enp0s31f6";
-    # };
     ipv6.settings = {
       domains = [{
         domain_name = "li7g.com";
-        sub_domains = [ "t460p" ];
+        sub_domains = [ "framework" ];
       }];
       ip_type = "IPv6";
-      ip_interface = "enp0s31f6";
+      ip_interface = "enp0s13f0u4u1";
     };
   };
-
-  # mc-client
-  home-manager.users.yinfeng = { config, ... }:
-    let
-      gameDir = ".local/share/mc-li7g-com";
-    in
-    {
-      home.packages = [
-        (pkgs.writeShellScriptBin "mc-li7g-com" ''
-          "${pkgs.mc-config-nuc.client-launcher}/bin/minecraft" \
-            --gameDir "${config.home.homeDirectory}/${gameDir}"
-        '')
-      ];
-      home.global-persistence.directories = [
-        gameDir
-      ];
-    };
 
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
 
-  fonts.fontconfig.localConf = ''
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-    <fontconfig>
-      <dir>${windowsCMountPoint}/Windows/Fonts</dir>
-    </fontconfig>
-  '';
-
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [
-      "/dev/disk/by-uuid/61c8be1d-7cb6-4a6d-bfa1-1fef8cadbe2d"
+      "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227"
     ];
   };
 
   boot.initrd.luks.forceLuksSupportInInitrd = true;
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
   boot.initrd.preLVMCommands = ''
-    waitDevice /dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd
-    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/65aa660c-5b99-4663-a9cb-c69e18b6b6fd -n crypt-root
+    waitDevice /dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227
+    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227 -n crypt-root
   '';
   fileSystems."/" =
     {
@@ -168,14 +115,8 @@ in
   fileSystems."/swap" = btrfsSubvolMain "@swap" { };
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/8F31-70B2";
+      device = "/dev/disk/by-uuid/5C56-7693";
       fsType = "vfat";
-    };
-  fileSystems.${windowsCMountPoint} =
-    {
-      device = "/dev/disk/by-uuid/ECB0C2DCB0C2AD00";
-      fsType = "ntfs";
-      options = [ "ro" "fmask=333" "dmask=222" ];
     };
   swapDevices =
     [{

@@ -200,6 +200,15 @@
 
           imports = [ (digga.lib.importHosts ./hosts) ];
           hosts = {
+            framework = {
+              system = "x86_64-linux";
+              modules = with nixos-hardware.nixosModules; [
+                common-pc
+                common-cpu-intel
+                common-pc-ssd
+              ];
+              tests = import ./lib/tests;
+            };
             t460p = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
