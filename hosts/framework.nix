@@ -100,8 +100,8 @@ in
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
   boot.initrd.preLVMCommands = ''
-    waitDevice /dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227
-    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227 -n crypt-root
+    waitDevice /dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85
+    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85 -n crypt-root
   '';
   fileSystems."/" =
     {
