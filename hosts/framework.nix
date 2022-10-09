@@ -50,7 +50,7 @@ in
   boot.kernelModules = [ "kvm-intel" ];
 
   hardware.enableRedistributableFirmware = true;
-  hardware.video.hidpi.enable = true;
+  # hardware.video.hidpi.enable = true;
   programs.steam.hidpi = {
     enable = true;
     scale = "2";
