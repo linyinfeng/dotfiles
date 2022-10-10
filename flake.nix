@@ -282,7 +282,12 @@
               users = digga.lib.rakeLeaves ./users;
             };
             suites = nixos.lib.fix (suites: {
-              core = suites.nixSettings ++ (with profiles; [ programs.tools services.openssh ]);
+              core = suites.nixSettings ++
+                (with profiles; [
+                  programs.tools
+                  services.openssh
+                  system.sysrq
+                ]);
               nixSettings = with profiles.nix; [ gc settings version cachix ];
               base = suites.core ++
                 (with profiles; [
