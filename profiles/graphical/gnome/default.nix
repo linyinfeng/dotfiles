@@ -32,8 +32,6 @@ lib.mkIf
     67 # DHCP server for hotsport
   ];
 
-  boot.plymouth.enable = true;
-
   environment.global-persistence.user = {
     directories = [
       ".config/dconf"
