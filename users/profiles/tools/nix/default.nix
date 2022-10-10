@@ -8,13 +8,12 @@
     nixpkgs-fmt
     nixpkgs-lint
     nixpkgs-review
-    nix-index
     nix-update
     nixfmt
     cabal2nix
     patchelf
   ];
-
+  programs.nix-index.enable = true;
   services.lorri.enable = true;
 
   home.global-persistence.directories = [
