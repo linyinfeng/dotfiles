@@ -18,6 +18,7 @@
     easyeffects
   ];
   environment.global-persistence.user.directories = [
+    ".local/state/wireplumber"
     ".config/easyeffects"
   ];
 }
