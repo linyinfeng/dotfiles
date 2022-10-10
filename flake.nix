@@ -93,6 +93,8 @@
 
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=194870
       fix-seahub.url = "github:linyinfeng/nixpkgs/nixos-unstable-fix-seahub";
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=195324
+      fix-fwupd.url = "github:zhaofengli/nixpkgs/fwupd-config-merging";
 
       nix-index-database.url = "github:Mic92/nix-index-database";
 
@@ -195,6 +197,14 @@
               inputs.linyinfeng.nixosModules.telegram-send
               inputs.linyinfeng.nixosModules.commit-notifier
               inputs.linyinfeng.nixosModules.dot-tar
+
+              # TODO wait for https://nixpk.gs/pr-tracker.html?pr=195324
+              {
+                disabledModules = [ "services/hardware/fwupd.nix" ];
+                imports = [
+                  "${inputs.fix-fwupd}/nixos/modules/services/hardware/fwupd.nix"
+                ];
+              }
             ];
           };
 
