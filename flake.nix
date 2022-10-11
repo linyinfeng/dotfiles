@@ -365,10 +365,7 @@
                 hardware.rtl-sdr
                 nix.nix-ld
               ]);
-              mobileWorkstation = suites.workstation ++
-                (with profiles; [
-                  services.tlp
-                ]);
+              mobileWorkstation = suites.workstation;
 
               server = [
                 profiles.system.types.server
