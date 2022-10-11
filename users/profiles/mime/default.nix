@@ -4,6 +4,8 @@ let
   webBrowser = "chromium-browser.desktop";
   imageViewer = "org.gnome.eog.desktop";
   archiveViewer = "org.gnome.FileRoller.desktop";
+  audioPlayer = "vlc.desktop";
+  videoPlayer = "vlc.desktop";
 
   webFormats = [
     "x-scheme-handler/http"
@@ -43,6 +45,123 @@ let
     "x-gtar"
     "zip"
   ];
+  audioFormats = map (f: "audio/${f}") [
+    "x-vorbis+ogg"
+    "ogg"
+    "vorbis"
+    "x-vorbis"
+    "x-speex"
+    "opus"
+    "flac"
+    "x-flac"
+    "x-ms-asf"
+    "x-ms-asx"
+    "x-ms-wax"
+    "x-ms-wma"
+    "x-pn-windows-acm"
+    "vnd.rn-realaudio"
+    "x-pn-realaudio"
+    "x-pn-realaudio-plugin"
+    "x-real-audio"
+    "x-realaudio"
+    "mpeg"
+    "mpg"
+    "mp1"
+    "mp2"
+    "mp3"
+    "x-mp1"
+    "x-mp2"
+    "x-mp3"
+    "x-mpeg"
+    "x-mpg"
+    "aac"
+    "m4a"
+    "mp4"
+    "x-m4a"
+    "x-aac"
+    "x-matroska"
+    "webm"
+    "3gpp"
+    "3gpp2"
+    "AMR"
+    "AMR-WB"
+    "mpegurl"
+    "x-mpegurl"
+    "scpls"
+    "x-scpls"
+    "dv"
+    "x-aiff"
+    "x-pn-aiff"
+    "wav"
+    "x-pn-au"
+    "x-pn-wav"
+    "x-wav"
+    "x-adpcm"
+    "ac3"
+    "eac3"
+    "vnd.dts"
+    "vnd.dts.hd"
+    "vnd.dolby.heaac.1"
+    "vnd.dolby.heaac.2"
+    "vnd.dolby.mlp"
+    "basic"
+    "midi"
+    "x-ape"
+    "x-gsm"
+    "x-musepack"
+    "x-tta"
+    "x-wavpack"
+    "x-shorten"
+    "x-it"
+    "x-mod"
+    "x-s3m"
+    "x-xm"
+  ];
+  videoFormats = map (f: "video/${f}") [
+    "x-ogm+ogg"
+    "ogg"
+    "x-ogm"
+    "x-theora+ogg"
+    "x-theora"
+    "x-ms-asf"
+    "x-ms-asf-plugin"
+    "x-ms-asx"
+    "x-ms-wm"
+    "x-ms-wmv"
+    "x-ms-wmx"
+    "x-ms-wvx"
+    "x-msvideo"
+    "divx"
+    "msvideo"
+    "vnd.divx"
+    "avi"
+    "x-avi"
+    "vnd.rn-realvideo"
+    "mp2t"
+    "mpeg"
+    "mpeg-system"
+    "x-mpeg"
+    "x-mpeg2"
+    "x-mpeg-system"
+    "mp4"
+    "mp4v-es"
+    "x-m4v"
+    "quicktime"
+    "x-matroska"
+    "webm"
+    "3gp"
+    "3gpp"
+    "3gpp2"
+    "vnd.mpegurl"
+    "dv"
+    "x-anim"
+    "x-nsv"
+    "fli"
+    "flv"
+    "x-flc"
+    "x-fli"
+    "x-flv"
+  ];
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
 in
@@ -52,8 +171,11 @@ lib.mkIf config.home.graphical {
     defaultApplications =
       buildMap [ webBrowser ] webFormats //
       buildMap [ imageViewer ] imageFormats //
-      buildMap [ archiveViewer ] archiveFormats // {
-        "application/pdf" = "org.gnome.Evince.desktop";
+      buildMap [ archiveViewer ] archiveFormats //
+      buildMap [ audioPlayer ] audioFormats //
+      buildMap [ videoPlayer ] videoFormats // {
+        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "x-scheme-handler/mailto" = [ "org.gnome.Geary.desktop" ];
       };
   };
 
