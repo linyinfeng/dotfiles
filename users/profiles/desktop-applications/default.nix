@@ -7,6 +7,7 @@ lib.mkIf config.home.graphical {
 
   home.packages = with pkgs; [
     anki
+    amberol
     bitwarden
     calibre
     element-desktop

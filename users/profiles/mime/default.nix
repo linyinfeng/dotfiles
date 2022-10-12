@@ -4,7 +4,7 @@ let
   webBrowser = "chromium-browser.desktop";
   imageViewer = "org.gnome.eog.desktop";
   archiveViewer = "org.gnome.FileRoller.desktop";
-  audioPlayer = "vlc.desktop";
+  audioPlayer = "io.bassi.Amberol.desktop";
   videoPlayer = "vlc.desktop";
 
   webFormats = [
