@@ -91,10 +91,8 @@
       minecraft-json.inputs.nixpkgs.follows = "nixos";
       minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=194870
-      fix-seahub.url = "github:linyinfeng/nixpkgs/nixos-unstable-fix-seahub";
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=195324
-      fix-fwupd.url = "github:zhaofengli/nixpkgs/fwupd-config-merging";
+      fix-fwupd.url = "github:nixos/nixpkgs/pull/195324/head";
 
       nix-index-database.url = "github:Mic92/nix-index-database";
 
