@@ -248,10 +248,6 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
-            g150ts = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
             a1 = {
               system = "aarch64-linux";
               tests = import ./lib/tests;
@@ -393,7 +389,7 @@
         deploy.nodes =
           let
             inherit (nixos) lib;
-            disabledHosts = [ "NixOS" "bootstrap" "g150ts" ];
+            disabledHosts = [ "NixOS" "bootstrap" ];
             configs = lib.filterAttrs (name: cfg: !(lib.elem name disabledHosts)) self.nixosConfigurations;
           in
           digga.lib.mkDeployNodes

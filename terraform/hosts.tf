@@ -86,10 +86,6 @@ locals {
         }
       }
     }
-    g150ts = {
-      records      = {}
-      ddns_records = {}
-    }
   }
 }
 
