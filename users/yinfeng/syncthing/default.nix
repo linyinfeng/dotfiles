@@ -1,7 +1,7 @@
 { self, config, lib, ... }:
 
 let
-  simpleDeviceNames = [ "framework" "t460p" "xps8930" "nuc" ];
+  simpleDeviceNames = [ "framework" "xps8930" "nuc" ];
   simpleDevices = lib.listToAttrs (map
     (h: lib.nameValuePair h {
       id = self.lib.data.hosts.${h}.syncthing_device_id;

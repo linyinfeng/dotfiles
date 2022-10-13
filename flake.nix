@@ -218,16 +218,6 @@
               ];
               tests = import ./lib/tests;
             };
-            t460p = {
-              system = "x86_64-linux";
-              modules = with nixos-hardware.nixosModules; [
-                common-pc
-                common-cpu-intel
-                common-pc-ssd
-                lenovo-thinkpad-t460s
-              ];
-              tests = import ./lib/tests;
-            };
             xps8930 = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [

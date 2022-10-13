@@ -1,7 +1,6 @@
 keys:
   - &main       7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F
   - &github     age143hpp7hqp4708z2dy868llsj8u9lc2jyq59ahnzusjvwg5g2u3cs3jaltg
-  - &t460p      age1c8ex4vam0qx6kldl3w2tddhmejxkrlf90mmfe334myq2l9cnfq9sgehs5d
   - &framework  age1qrrwcee244ak7ax9xwuxdttzsan24g655lpmvry3275j6v4n2pesjwyawu
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
@@ -49,7 +48,6 @@ creation_rules:
       - *main
       age:
       - *github
-      - *t460p
       - *framework
       - *xps8930
       - *nuc
@@ -64,7 +62,6 @@ creation_rules:
       - *main
       age:
       - *github
-      - *t460p
       - *framework
       - *xps8930
       - *nuc
@@ -80,13 +77,6 @@ creation_rules:
       age:
       - *github
       - *framework
-  - path_regex: ^secrets/(terraform/)?hosts/t460p(\.plain)?\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *github
-      - *t460p
   - path_regex: ^secrets/(terraform/)?hosts/nuc(\.plain)?\.yaml$
     key_groups:
     - pgp:

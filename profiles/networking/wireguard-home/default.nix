@@ -4,7 +4,7 @@ let
   hostName = config.networking.hostName;
   port = 51820;
   hosts = {
-    t460p = {
+    framework = {
       ip = "192.168.2.2/32";
       inherit port;
     };
@@ -14,10 +14,6 @@ let
     };
     tencent = {
       ip = "192.168.2.4/32";
-      inherit port;
-    };
-    framework = {
-      ip = "192.168.2.5/32";
       inherit port;
     };
   };

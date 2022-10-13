@@ -71,16 +71,6 @@ locals {
         }
       }
     }
-    t460p = {
-      records = {}
-      ddns_records = {
-        aaaa = {
-          proxied = false
-          type    = "AAAA"
-          value   = "::1"
-        }
-      }
-    }
     xps8930 = {
       records = {}
       ddns_records = {
