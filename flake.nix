@@ -389,7 +389,7 @@
         deploy.nodes =
           let
             inherit (nixos) lib;
-            disabledHosts = [ "NixOS" "bootstrap" ];
+            disabledHosts = [ "bootstrap" "netboot-installer" "netboot-installer-aarch64" ];
             configs = lib.filterAttrs (name: cfg: !(lib.elem name disabledHosts)) self.nixosConfigurations;
           in
           digga.lib.mkDeployNodes
