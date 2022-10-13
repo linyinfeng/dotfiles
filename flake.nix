@@ -237,15 +237,6 @@
               ];
               tests = import ./lib/tests;
             };
-            x200s = {
-              system = "x86_64-linux";
-              modules = with nixos-hardware.nixosModules; [
-                common-pc
-                common-cpu-intel
-                common-pc-ssd
-              ];
-              tests = import ./lib/tests;
-            };
             nuc = {
               system = "x86_64-linux";
               modules = with nixos-hardware.nixosModules; [
@@ -412,7 +403,7 @@
         deploy.nodes =
           let
             inherit (nixos) lib;
-            disabledHosts = [ "NixOS" "bootstrap" "x200s" "g150ts" ];
+            disabledHosts = [ "NixOS" "bootstrap" "g150ts" ];
             configs = lib.filterAttrs (name: cfg: !(lib.elem name disabledHosts)) self.nixosConfigurations;
           in
           digga.lib.mkDeployNodes

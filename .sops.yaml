@@ -4,7 +4,6 @@ keys:
   - &t460p      age1c8ex4vam0qx6kldl3w2tddhmejxkrlf90mmfe334myq2l9cnfq9sgehs5d
   - &framework  age1qrrwcee244ak7ax9xwuxdttzsan24g655lpmvry3275j6v4n2pesjwyawu
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
-  - &x200s      age1naq9xtdmugcede56kpgfu8tu3gq20g6tgrt2x3vz08ge86rwvpqqfxaw2e
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
   - &rica       age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
@@ -53,7 +52,6 @@ creation_rules:
       - *t460p
       - *framework
       - *xps8930
-      - *x200s
       - *nuc
       - *rica
       - *vultr
@@ -69,7 +67,6 @@ creation_rules:
       - *t460p
       - *framework
       - *xps8930
-      - *x200s
       - *nuc
       - *rica
       - *vultr
@@ -104,13 +101,6 @@ creation_rules:
       age:
       - *github
       - *xps8930
-  - path_regex: ^secrets/(terraform/)?hosts/x200s(\.plain)?\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *github
-      - *x200s
   - path_regex: ^secrets/(terraform/)?hosts/vultr(\.plain)?\.yaml$
     key_groups:
     - pgp:

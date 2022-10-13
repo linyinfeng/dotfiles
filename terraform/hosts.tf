@@ -96,10 +96,6 @@ locals {
         }
       }
     }
-    x200s = {
-      records      = {}
-      ddns_records = {}
-    }
     g150ts = {
       records      = {}
       ddns_records = {}
