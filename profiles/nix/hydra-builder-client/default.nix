@@ -8,7 +8,7 @@
     '';
   };
   environment.etc."nix-build-machines/hydra-builder/machines".text = ''
-    hydra-builder@nuc.zt.li7g.com x86_64-linux,i686-linux,aarch64-linux - 1 1 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@nuc.zt.li7g.com x86_64-linux,i686-linux - 1 1 kvm,nixos-test,benchmark,big-parallel
   '';
   services.openssh.knownHosts = {
     nuc = {

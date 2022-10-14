@@ -15,7 +15,10 @@ in
     '';
   };
   environment.etc."nix-build-machines/nixbuild/machines".text = ''
-    eu.nixbuild.net x86_64-linux,i686-linux,aarch64-linux - 100 2 benchmark,big-parallel
+    eu.nixbuild.net x86_64-linux,i686-linux,aarch64-linux - 100 1 benchmark,big-parallel
+  '';
+  environment.etc."nix-build-machines/nixbuild/machines-aarch64-linux-only".text = ''
+    eu.nixbuild.net aarch64-linux - 100 1 benchmark,big-parallel
   '';
   environment.shellAliases = {
     nixbuild = ''nix --builders @/etc/nix-build-machines/nixbuild/machines'';
