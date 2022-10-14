@@ -22,7 +22,7 @@ lib.mkIf
     gnome.polari
   ];
 
-  services.gnome.chrome-gnome-shell.enable = true;
+  services.gnome.gnome-browser-connector.enable = true;
 
   networking.firewall.allowedTCPPorts = [
     5900 # VNC
@@ -52,31 +52,31 @@ lib.mkIf
   };
 
   security.pam.services = {
-      gdm-password.text = lib.mkForce ''
-        auth     requisite      pam_nologin.so
-        auth     required       pam_succeed_if.so uid >= 1000 quiet
-        auth     optional       pam_unix.so nullok likeauth
-        auth     optional       ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
-        auth     sufficient     pam_unix.so nullok likeauth try_first_pass
-        auth     required       pam_deny.so
+    gdm-password.text = lib.mkForce ''
+      auth     requisite      pam_nologin.so
+      auth     required       pam_succeed_if.so uid >= 1000 quiet
+      auth     optional       pam_unix.so nullok likeauth
+      auth     optional       ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+      auth     sufficient     pam_unix.so nullok likeauth try_first_pass
+      auth     required       pam_deny.so
 
-        account  include        login
-        password substack       login
+      account  include        login
+      password substack       login
 
-        session  optional       pam_keyinit.so revoke
-        session  include        login
-      '';
-      gdm-fingerprint.text = ''
-        auth     requisite      pam_nologin.so
-        auth     required       pam_succeed_if.so uid >= 1000 quiet
-        auth     required       ${pkgs.fprintd}/lib/security/pam_fprintd.so
-        auth     optional       ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+      session  optional       pam_keyinit.so revoke
+      session  include        login
+    '';
+    gdm-fingerprint.text = ''
+      auth     requisite      pam_nologin.so
+      auth     required       pam_succeed_if.so uid >= 1000 quiet
+      auth     required       ${pkgs.fprintd}/lib/security/pam_fprintd.so
+      auth     optional       ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
 
-        account  include        login
-        password required       ${pkgs.fprintd}/lib/security/pam_fprintd.so
+      account  include        login
+      password required       ${pkgs.fprintd}/lib/security/pam_fprintd.so
 
-        session  optional       pam_keyinit.so revoke
-        session  include        login
-      '';
-    };
+      session  optional       pam_keyinit.so revoke
+      session  include        login
+    '';
+  };
 }

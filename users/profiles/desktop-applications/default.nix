@@ -9,7 +9,8 @@ lib.mkIf config.home.graphical {
     anki
     amberol
     bitwarden
-    calibre
+    # TODO broken
+    # calibre
     element-desktop
     gimp
     gnuradio
@@ -17,7 +18,7 @@ lib.mkIf config.home.graphical {
     gparted
     inkscape
     keepassxc
-    # libreoffice-fresh
+    libreoffice-fresh
     meld
     mplayer
     nur.repos.linyinfeng.icalingua-plus-plus
