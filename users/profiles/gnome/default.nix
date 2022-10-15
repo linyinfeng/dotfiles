@@ -22,12 +22,24 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
   # Remove initial setup dialog
   home.file.".config/gnome-initial-setup-done".text = "yes";
 
-  dconf.settings = {
-    # Do not sleep when ac power connected
-    "org/gnome/settings-daemon/plugins/power" = {
-      sleep-inactive-ac-type = "nothing";
-    };
-  };
+  dconf.settings = lib.mkMerge [
+    {
+      # Do not sleep when ac power connected
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type = "nothing";
+      };
+    }
+    (lib.mkIf (osConfig.networking.fw-proxy.enable) {
+      "system/proxy" = {
+        mode = "manual";
+        use-same-proxy = true;
+      };
+      "system/proxy/http" = {
+        host = "localhost";
+        port = osConfig.networking.fw-proxy.mixinConfig.mixed-port;
+      };
+    })
+  ];
 
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
