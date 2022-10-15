@@ -15,6 +15,7 @@
 
   home.packages = with pkgs; [
     ffmpeg
+    ghostscript
     github-cli
     imagemagick
     minio-client

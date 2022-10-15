@@ -1,12 +1,7 @@
 { config, lib, pkgs, ... }:
 
 lib.mkIf config.home.graphical {
-  programs = {
-    mpv.enable = true;
-  };
-
   home.packages = with pkgs; [
-    anki
     amberol
     bitwarden
     # TODO broken
@@ -14,13 +9,10 @@ lib.mkIf config.home.graphical {
     element-desktop
     gimp
     gnuradio
-    goldendict
     gparted
     inkscape
-    keepassxc
     libreoffice-fresh
     meld
-    mplayer
     nur.repos.linyinfeng.icalingua-plus-plus
     nur.repos.linyinfeng.wemeet
     picard
