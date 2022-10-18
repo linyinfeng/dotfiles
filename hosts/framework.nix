@@ -56,8 +56,6 @@ in
     scale = "2";
   };
 
-  services.thermald.enable = true;
-  services.power-profiles-daemon.enable = true;
   services.fwupd.enable = true;
 
   boot.binfmt.emulatedSystems = [

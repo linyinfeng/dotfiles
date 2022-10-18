@@ -44,7 +44,6 @@ in
     };
   };
   hardware.enableRedistributableFirmware = true;
-  services.thermald.enable = true;
   services.fwupd.enable = true;
 
   services.xserver.desktopManager.gnome.enable = true;
