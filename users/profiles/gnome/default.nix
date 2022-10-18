@@ -29,16 +29,23 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         sleep-inactive-ac-type = "nothing";
       };
     }
-    (lib.mkIf (osConfig.networking.fw-proxy.enable) {
-      "system/proxy" = {
-        mode = "manual";
-        use-same-proxy = true;
-      };
-      "system/proxy/http" = {
-        host = "localhost";
-        port = osConfig.networking.fw-proxy.mixinConfig.mixed-port;
-      };
-    })
+    (
+      let
+        proxy = {
+          host = "localhost";
+          port = osConfig.networking.fw-proxy.mixinConfig.mixed-port;
+        };
+      in
+      lib.mkIf (osConfig.networking.fw-proxy.enable) {
+        "system/proxy" = {
+          mode = "manual";
+          use-same-proxy = true;
+        };
+        "system/proxy/http" = proxy;
+        "system/proxy/https" = proxy;
+        "system/proxy/socks" = proxy;
+      }
+    )
   ];
 
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
