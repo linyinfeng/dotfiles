@@ -56,6 +56,14 @@ in
     scale = "2";
   };
 
+  services.power-profiles-daemon.enable = false;
+  services.tlp = {
+    enable = true;
+    settings = {
+      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+    };
+  };
   services.fwupd.enable = true;
 
   boot.binfmt.emulatedSystems = [
@@ -63,6 +71,7 @@ in
   ];
 
   services.xserver.desktopManager.gnome.enable = true;
+  services.fprintd.enable = true;
 
   networking.campus-network = {
     enable = true;

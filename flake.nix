@@ -214,7 +214,8 @@
                 common-pc
                 common-cpu-intel
                 common-pc-ssd
-                framework-12th-gen-intel
+                # disabled infavor of hosts/framework/hardware.nix
+                # framework-12th-gen-intel
               ];
               tests = import ./lib/tests;
             };
