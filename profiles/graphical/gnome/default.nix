@@ -18,6 +18,7 @@ lib.mkIf
     gnome.devhelp
     gnome.dconf-editor
     gnome.gnome-sound-recorder
+    gnome.gnome-power-manager
     gnome.gnome-tweaks
     gnome.polari
   ];
