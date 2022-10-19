@@ -17,9 +17,12 @@
     ffmpeg
     ghostscript
     github-cli
+    i7z
     imagemagick
     minio-client
     p7zip
+    powerstat
+    powertop
     speedread
     trash-cli
     unar

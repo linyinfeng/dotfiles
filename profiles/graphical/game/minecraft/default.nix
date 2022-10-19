@@ -3,7 +3,9 @@
 {
   environment.systemPackages = with pkgs; [
     lunar-client
-    polymc
+    # TODO https://github.com/NixOS/nixpkgs/pull/196476
+    # OVE-20221017-0001
+    # polymc
     minecraft
   ];
 
