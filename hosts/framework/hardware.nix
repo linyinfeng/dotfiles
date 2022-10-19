@@ -1,5 +1,5 @@
 # customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/12th-gen-intel/default.nix
-{}:
+{ ... }:
 
 {
   boot.kernelParams = [
@@ -20,9 +20,9 @@
 
   # Fix TRRS headphones missing a mic
   # https://community.frame.work/t/headset-microphone-on-linux/12387/3
-  boot.extraModprobeConfig = ''
-    options snd-hda-intel model=dell-headset-multi
-  '';
+  # boot.extraModprobeConfig = ''
+  #   options snd-hda-intel model=dell-headset-multi
+  # '';
 
   # Fix headphone noise when on powersave
   # https://community.frame.work/t/headphone-jack-intermittent-noise/5246/55
@@ -33,5 +33,5 @@
   # Mis-detected by nixos-generate-config
   # https://github.com/NixOS/nixpkgs/issues/171093
   # https://wiki.archlinux.org/title/Framework_Laptop#Changing_the_brightness_of_the_monitor_does_not_work
-  hardware.acpilight.enable = lib.mkDefault true;
+  # hardware.acpilight.enable = lib.mkDefault true;
 }
