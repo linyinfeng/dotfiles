@@ -6,7 +6,7 @@ let
     {
       inherit device;
       fsType = "btrfs";
-      options = [ "subvol=${subvol}" "compress=zstd" ];
+      options = [ "subvol=${subvol}" "compress=zstd" "x-gvfs-hide" ];
     }
     extraConfig
   ];
