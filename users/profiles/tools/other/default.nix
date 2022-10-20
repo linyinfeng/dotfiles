@@ -25,7 +25,8 @@
     powertop
     speedread
     trash-cli
-    unar
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=196916
+    # unar
     unrar
     unzip
     wl-clipboard
