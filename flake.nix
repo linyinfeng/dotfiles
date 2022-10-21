@@ -91,9 +91,6 @@
       minecraft-json.inputs.nixpkgs.follows = "nixos";
       minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
 
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=195324
-      fix-fwupd.url = "github:nixos/nixpkgs/pull/195324/head";
-
       nix-index-database.url = "github:Mic92/nix-index-database";
 
       hydra.url = "github:nixos/hydra";
@@ -195,14 +192,6 @@
               inputs.linyinfeng.nixosModules.telegram-send
               inputs.linyinfeng.nixosModules.commit-notifier
               inputs.linyinfeng.nixosModules.dot-tar
-
-              # TODO wait for https://nixpk.gs/pr-tracker.html?pr=195324
-              {
-                disabledModules = [ "services/hardware/fwupd.nix" ];
-                imports = [
-                  "${inputs.fix-fwupd}/nixos/modules/services/hardware/fwupd.nix"
-                ];
-              }
             ];
           };
 

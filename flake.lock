@@ -200,22 +200,6 @@
         "type": "github"
       }
     },
-    "fix-fwupd": {
-      "locked": {
-        "lastModified": 1665381692,
-        "narHash": "sha256-Tm1cAso9ue3i5M3AYYVAYMZNAzTRFTB9iRRVLrHZ0zM=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "bbbda58c4e99601935728cc568874897d98221c1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "pull/195324/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -872,7 +856,6 @@
         "digga": "digga",
         "emacs-overlay": "emacs-overlay",
         "emacs-webkit": "emacs-webkit",
-        "fix-fwupd": "fix-fwupd",
         "flake-compat": "flake-compat",
         "home": "home",
         "hydra": "hydra",
