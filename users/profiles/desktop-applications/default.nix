@@ -26,6 +26,17 @@ lib.mkIf config.home.graphical {
     zotero
   ];
 
+  dconf.settings = {
+    "org/gnome/shell" = {
+      favorite-apps = [
+        "zotero-${pkgs.zotero.version}.desktop"
+      ];
+    };
+    "org/virt-manager/virt-manager/connections" = {
+      uris = [ "qemu+ssh://root@nuc.zt.li7g.com/system" ];
+    };
+  };
+
   home.global-persistence = {
     directories = [
       ".ts3client"

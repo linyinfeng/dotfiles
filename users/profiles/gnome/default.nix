@@ -1,13 +1,9 @@
 { config, pkgs, lib, osConfig, ... }:
 let
   extensionPkgs = with pkgs.gnomeExtensions; [
-    # arc-menu
     gsconnect
-    dash-to-dock
-    # dash-to-panel
     appindicator
-    # caffeine
-    gtile
+    workspace-indicator-2
   ];
 in
 lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
@@ -27,6 +23,16 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
       # Do not sleep when ac power connected
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-type = "nothing";
+      };
+      "org/gnome/shell" = {
+        disable-user-extensions = false;
+        enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
+        favorite-apps = lib.mkBefore [
+          "org.gnome.Console.desktop"
+          "org.gnome.Nautilus.desktop"
+          "chromium-browser.desktop"
+          "firefox.desktop"
+        ];
       };
     }
     (
