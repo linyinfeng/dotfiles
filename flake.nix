@@ -305,7 +305,7 @@
                 virtualization.wine
                 virtualization.podman
               ];
-              games = with profiles.graphical.game; [ steam minecraft ];
+              games = with profiles.graphical.game; [ steam ];
               monitoring = with profiles; [
                 services.telegraf-system
                 services.promtail
@@ -358,7 +358,7 @@
             profiles = digga.lib.rakeLeaves ./users/profiles;
             suites = nixos.lib.fix (suites: {
               base = with profiles; [ git ];
-              multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio ];
+              multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio minecraft ];
               development = with profiles; [ development direnv emacs tools tex postmarketos awscli terraform shells ];
               virtualization = [ ];
               multimediaDev = suites.multimedia ++ suites.development ++
