@@ -11,7 +11,7 @@
     # "nvme.noacpi=1"
     # Workaround iGPU hangs
     # https://discourse.nixos.org/t/intel-12th-gen-igpu-freezes/21768/4
-    "i915.enable_psr=1"
+    "i915.enable_psr=0"
   ];
 
   # This enables the brightness keys to work
