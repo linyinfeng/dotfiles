@@ -26,11 +26,13 @@ lib.mkIf
   services.gnome.gnome-browser-connector.enable = true;
 
   networking.firewall.allowedTCPPorts = [
-    5900 # VNC
+    3389 # RDP
+    # 5900 # VNC
   ];
   networking.firewall.allowedUDPPorts = [
     53 # DNS  server for hotsport
     67 # DHCP server for hotsport
+    3389 # RDP
   ];
 
   environment.global-persistence.user = {
