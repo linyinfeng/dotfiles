@@ -16,7 +16,7 @@
 
   # This enables the brightness keys to work
   # https://community.frame.work/t/12th-gen-not-sending-xf86monbrightnessup-down/20605/11
-  boot.blacklistedKernelModules = [ "hid-sensor-hub" ];
+  # boot.blacklistedKernelModules = [ "hid-sensor-hub" ];
 
   # Fix TRRS headphones missing a mic
   # https://community.frame.work/t/headset-microphone-on-linux/12387/3
