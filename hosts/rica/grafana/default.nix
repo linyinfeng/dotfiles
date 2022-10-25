@@ -12,33 +12,33 @@ in
     };
   };
   services.grafana = {
-    addr = "127.0.0.1";
     enable = true;
-    port = cfg.ports.grafana;
-    rootUrl = "https://grafana.li7g.com";
-    auth.anonymous.enable = true;
-    extraOptions = {
-      "SERVER_SERVE_FROM_SUB_PATH" = "true";
-      "USERS_DEFAULT_THEME" = "light";
-      "DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH" = "${./dashboards/home.json}";
-      "SMTP_STARTTLS_POLICY" = "true";
-    };
-    security = {
-      adminUser = "yinfeng";
-      adminPasswordFile =
-        config.sops.secrets."grafana_password".path;
-    };
-    smtp = {
-      enable = true;
-      fromAddress = "grafana@li7g.com";
-      user = "grafana@li7g.com";
-      host = "smtp.zt.li7g.com:587";
-    };
-    database = {
-      type = "postgres";
-      host = "/run/postgresql";
-      name = "grafana";
-      user = "grafana";
+    settings = {
+      server = {
+        root_url = "https://grafana.li7g.com";
+        http_addr = "127.0.0.1";
+        http_port = cfg.ports.grafana;
+      };
+      "auth.anonymous".enabled = true;
+      users.default_theme = "light";
+      dashboards.default_home_dashboard_path = "${./dashboards/home.json}";
+      smtp = {
+        enable = true;
+        from_address = "grafana@li7g.com";
+        user = "grafana@li7g.com";
+        host = "smtp.zt.li7g.com:587";
+        startTLS_policy = "MandatoryStartTLS";
+      };
+      security = {
+        admin_user = "yinfeng";
+        admin_password = "$__env{GRAFANA_PASSWORD}";
+      };
+      database = {
+        type = "postgres";
+        host = "/run/postgresql";
+        name = "grafana";
+        user = "grafana";
+      };
     };
     declarativePlugins = [ ];
   };
@@ -62,56 +62,59 @@ in
   '';
   services.grafana.provision = {
     enable = true;
-    dashboards = [
-      {
-        name = "dashboards";
-        type = "file";
-        options.path = ./dashboards;
-      }
-    ];
-    datasources = [
-      {
-        uid = "influxdb-li7g-com";
-        name = "InflexDB";
-        type = "influxdb";
-        url = "https://influxdb.li7g.com";
-        jsonData = {
-          version = "Flux";
-          organization = "main-org";
-          defaultBucket = "main";
-        };
-        secureJsonData.token = "$INFLUX_TOKEN";
-      }
-      {
-        uid = "loki-li7g-com";
-        name = "Loki";
-        type = "loki";
-        url = "https://loki.li7g.com";
-        basicAuth = true;
-        basicAuthUser = "loki";
-        secureJsonData.basicAuthPassword = "$LOKI_PASSWORD";
-        jsonData = {
-          alertmanagerUid = "alertmanager-li7g-com";
-        };
-      }
-      {
-        uid = "alertmanager-li7g-com";
-        name = "Alertmanager";
-        type = "alertmanager";
-        url = "https://alertmanager.li7g.com";
-        basicAuth = true;
-        basicAuthUser = "alertmanager";
-        secureJsonData.basicAuthPassword = "$ALERTMANAGER_PASSWORD";
-        jsonData = {
-          handleGrafanaManagedAlerts = true;
-          implementation = "prometheus";
-        };
-      }
-    ];
+    dashboards.settings = {
+      providers = [
+        {
+          name = "dashboards";
+          type = "file";
+          options.path = ./dashboards;
+        }
+      ];
+    };
+    datasources.settings = {
+      datasources = [
+        {
+          uid = "influxdb-li7g-com";
+          name = "InflexDB";
+          type = "influxdb";
+          url = "https://influxdb.li7g.com";
+          jsonData = {
+            version = "Flux";
+            organization = "main-org";
+            defaultBucket = "main";
+          };
+          secureJsonData.token = "$__env{INFLUX_TOKEN}";
+        }
+        {
+          uid = "loki-li7g-com";
+          name = "Loki";
+          type = "loki";
+          url = "https://loki.li7g.com";
+          basicAuth = true;
+          basicAuthUser = "loki";
+          secureJsonData.basicAuthPassword = "$__env{LOKI_PASSWORD}";
+          jsonData = {
+            alertmanagerUid = "alertmanager-li7g-com";
+          };
+        }
+        {
+          uid = "alertmanager-li7g-com";
+          name = "Alertmanager";
+          type = "alertmanager";
+          url = "https://alertmanager.li7g.com";
+          basicAuth = true;
+          basicAuthUser = "alertmanager";
+          secureJsonData.basicAuthPassword = "$__env{ALERTMANAGER_PASSWORD}";
+          jsonData = {
+            handleGrafanaManagedAlerts = true;
+            implementation = "prometheus";
+          };
+        }
+      ];
+    };
   };
 
   sops.secrets."grafana_password" = {
-    owner = config.users.users.grafana.name;
     sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     restartUnits = [ "grafana.service" ];
   };
