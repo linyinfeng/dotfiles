@@ -295,7 +295,7 @@
               ];
               development = with profiles; [
                 development.shells
-                services.adb
+                programs.adb
                 services.gnupg
               ];
               multimediaDev = suites.multimedia ++ suites.development ++
