@@ -27,6 +27,7 @@ in
       networking.fw-proxy
       services.godns
       services.smartd
+      services.acme
       programs.service-mail
       programs.telegram-send
     ]) ++
@@ -63,6 +64,13 @@ in
     "aarch64-linux"
   ];
 
+  security.acme.certs."main" = {
+    domain = "*.li7g.com";
+    extraDomainNames = [
+      "*.zt.li7g.com"
+      "*.ts.li7g.com"
+    ];
+  };
   networking.campus-network = {
     enable = true;
     auto-login.enable = true;

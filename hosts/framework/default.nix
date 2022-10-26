@@ -28,6 +28,7 @@ in
       virtualization.waydroid
       services.godns
       services.smartd
+      services.acme
       programs.service-mail
       programs.telegram-send
     ]) ++
@@ -77,6 +78,13 @@ in
   services.xserver.desktopManager.gnome.enable = true;
   services.fprintd.enable = true;
 
+  security.acme.certs."main" = {
+    domain = "*.li7g.com";
+    extraDomainNames = [
+      "*.zt.li7g.com"
+      "*.ts.li7g.com"
+    ];
+  };
   networking.campus-network = {
     enable = true;
     auto-login.enable = true;

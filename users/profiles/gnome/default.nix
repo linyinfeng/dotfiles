@@ -34,6 +34,13 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
           "firefox.desktop"
         ];
       };
+      "org/gnome/desktop/remote-desktop/rdp" =
+        lib.mkIf (osConfig.security.acme.certs ? "main") {
+          enable = true;
+          tls-cert = "${osConfig.security.acme.certs."main".directory}/cert.pem";
+          tls-key = "${osConfig.security.acme.certs."main".directory}/key.pem";
+          view-only = false;
+        };
     }
     (
       let
