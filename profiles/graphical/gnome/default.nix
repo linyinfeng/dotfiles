@@ -47,6 +47,7 @@ lib.mkIf
       ".local/share/backgrounds"
       ".local/share/gnome-boxes"
       ".cache/tracker3"
+      ".cache/thumbnails"
     ];
     files = [
       ".face"
