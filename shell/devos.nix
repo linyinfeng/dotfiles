@@ -33,7 +33,7 @@ in
     (docs python3Packages.grip)
     (docs mdbook)
     (devos inputs.deploy.packages.${pkgs.system}.deploy-rs)
-    (devos inputs.nixos-generators.packages.${pkgs.system}.nixos-generators)
+    (devos inputs.nixos-generators.packages.${pkgs.system}.nixos-generate)
 
     (secret sops)
     (secret ssh-to-age)
