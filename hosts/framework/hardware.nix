@@ -34,4 +34,7 @@
   # https://github.com/NixOS/nixpkgs/issues/171093
   # https://wiki.archlinux.org/title/Framework_Laptop#Changing_the_brightness_of_the_monitor_does_not_work
   # hardware.acpilight.enable = lib.mkDefault true;
+
+  # Needed for desktop environments to detect/manage display brightness
+  hardware.sensor.iio.enable = true;
 }
