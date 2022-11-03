@@ -84,7 +84,6 @@ locals {
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     mc              = { on = "nuc", proxy = false }
-    byrmc-retro     = { on = "tencent", proxy = false }
   }
 }
 

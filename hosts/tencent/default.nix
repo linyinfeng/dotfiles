@@ -23,7 +23,6 @@ in
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
-      ./minecraft
     ];
 
   options.hosts.tencent = {
