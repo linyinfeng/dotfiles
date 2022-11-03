@@ -2,111 +2,116 @@
 
 let
   cfg = config.hosts.rica;
-  database = {
-    connection_string = "postgres:///dendrite?host=/run/postgresql";
-    max_open_conns = 20;
-  };
 in
 {
-  services.dendrite = {
+  services.matrix-synapse = {
     enable = true;
-    httpPort = cfg.ports.matrix.http;
+    withJemalloc = true;
     settings = {
-      global = {
-        server_name = "li7g.com";
-        # `private_key` has the type `path`
-        # prefix a `/` to make `path` happy
-        private_key = "/$CREDENTIALS_DIRECTORY/matrix";
-        trusted_third_party_id_servers = [
-          "matrix.org"
-          "vector.im"
-        ];
+      server_name = "li7g.com";
+      public_baseurl = "https://matrix.li7g.com";
+
+      database = {
+        name = "psycopg2";
+        args = {
+          # local database
+          database = "matrix-synapse";
+        };
       };
-      logging = [{
-        type = "std";
-        level = "warn";
+
+      # trust the default key server matrix.org
+      suppress_key_server_warning = true;
+
+      enable_search = true;
+      dynamic_thumbnails = true;
+      allow_public_rooms_over_federation = true;
+
+      enable_registration = true;
+      registration_requires_token = true;
+      registrations_require_3pid = [
+        "email"
+      ];
+
+      listeners = [{
+        bind_addresses = [ "127.0.0.1" ];
+        port = cfg.ports.matrix.http;
+        tls = false;
+        type = "http";
+        x_forwarded = true;
+        resources = [{
+          compress = true;
+          names = [ "client" "federation" ];
+        }];
       }];
-      app_service_api = {
-        inherit database;
-        config_files = [ ];
+    };
+    extraConfigFiles = [
+      # configurations with secrets
+      config.sops.templates."synapse-extra-config".path
+    ];
+  };
+
+
+  # copy singing key to signing key path
+  systemd.services.matrix-synapse.serviceConfig.ExecStartPre =
+    lib.mkBefore [
+      ("+" + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
+        cp "${config.sops.secrets."synapse/signing-key".path}" "${config.services.matrix-synapse.settings.signing_key_path}"
+        chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
+      ''))
+    ];
+
+  sops.templates."synapse-extra-config" = {
+    owner = "matrix-synapse";
+    content = builtins.toJSON {
+      email = {
+        smtp_host = "smtp.zt.li7g.com";
+        smtp_user = "matrix@li7g.com";
+        notif_from = "matrix@li7g.com";
+        force_tls = true;
+        smtp_pass = config.sops.placeholder."mail_password";
       };
-      client_api = {
-        registration_disabled = true;
-        rate_limiting.enabled = false;
-      };
-      media_api = {
-        inherit database;
-        max_file_size_bytes = 100 * 1024 * 1024;
-        dynamic_thumbnails = true;
-      };
-      room_server = {
-        inherit database;
-      };
-      push_server = {
-        inherit database;
-      };
-      mscs = {
-        inherit database;
-        mscs = [ "msc2836" "msc2946" ];
-      };
-      sync_api = {
-        inherit database;
-        real_ip_header = "X-Real-IP";
-      };
-      key_server = {
-        inherit database;
-      };
-      federation_api = {
-        inherit database;
-        key_perspectives = [
-          {
-            server_name = "matrix.org";
-            keys = [
-              {
-                key_id = "ed25519:auto";
-                public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
-              }
-              {
-                key_id = "ed25519:a_RXGa";
-                public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ";
-              }
-            ];
-          }
-        ];
-        prefer_direct_fetch = false;
-      };
-      user_api = {
-        account_database = database;
-        device_database = database;
-      };
+      # TODO make package for the provider or host a standalone media repo
+      # media_storage_providers = [
+      #   {
+      #     module = "s3_storage_provider.S3StorageProviderBackend";
+      #     store_remote = true;
+      #     config = {
+      #       bucket = "synapse-media";
+      #       endpoint_url = "minio.li7g.com";
+      #       access_key_id = config.sops.placeholder."minio_synapse_media_key_id";
+      #       secret_access_key = config.sops.placeholder."minio_synapse_media_access_key";
+      #     };
+      #   }
+      # ];
     };
   };
 
-  systemd.services.dendrite.environment = lib.mkIf (config.networking.fw-proxy.enable)
-    config.networking.fw-proxy.environment;
-
-  systemd.services.dendrite.serviceConfig.LoadCredential = [
-    "matrix:${config.sops.secrets."matrix".path}"
-    "mail-password:${config.sops.secrets."mail_password".path}"
-  ];
-
-  sops.secrets."matrix" = {
+  sops.secrets."synapse/signing-key" = {
     sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
-    restartUnits = [ "dendrite.service" ];
+    owner = "matrix-synapse";
+    restartUnits = [ "matrix-synapse.service" ];
   };
   sops.secrets."mail_password" = {
     sopsFile = config.sops.secretsDir + /terraform/common.yaml;
-    restartUnits = [ "dendrite.service" ];
+    restartUnits = [ "matrix-synapse.service" ];
+  };
+  sops.secrets."minio_synapse_media_key_id" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "matrix-synapse.service" ];
+  };
+  sops.secrets."minio_synapse_media_access_key" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "matrix-synapse.service" ];
   };
 
-  systemd.services.dendrite.after = [ "postgresql.service" ];
+  systemd.services.matrix-synapse.after = [ "postgresql.service" ];
   services.postgresql = {
-    ensureDatabases = [ "dendrite" ];
+    ensureDatabases = [ "matrix-synapse" ];
     ensureUsers = [
       {
-        name = "dendrite";
+        name = "matrix-synapse";
         ensurePermissions = {
-          "DATABASE dendrite" = "ALL PRIVILEGES";
+          "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
         };
       }
     ];
