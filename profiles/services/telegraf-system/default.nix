@@ -68,6 +68,9 @@ in
         sensors = [{
           tags.output_bucket = "system";
         }];
+        systemd_units = [{
+          tags.output_bucket = "system";
+        }];
       };
     };
   };
