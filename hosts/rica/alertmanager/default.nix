@@ -38,7 +38,7 @@ in
     };
     extraFlags = [
       "--web.config.file \"\${CREDENTIALS_DIRECTORY}/web-config\""
-      "--web.external-url=alertmanager.li7g.com"
+      ''--web.external-url="https://alertmanager.li7g.com"''
     ];
   };
   systemd.services.alertmanager.serviceConfig.LoadCredential = [
