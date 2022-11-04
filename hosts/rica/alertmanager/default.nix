@@ -11,7 +11,7 @@ in
     environmentFile = config.sops.templates."alertmanager-env".path;
     configuration = {
       global = {
-        smtp_smarthost = "smtp.zt.li7g.com:465";
+        smtp_smarthost = "smtp.zt.li7g.com:587";
         smtp_from = "alertmanager@li7g.com";
         smtp_auth_username = "alertmanager@li7g.com";
         smtp_auth_password = "$SMTP_AUTH_PASSWORD";
@@ -38,6 +38,7 @@ in
     };
     extraFlags = [
       "--web.config.file \"\${CREDENTIALS_DIRECTORY}/web-config\""
+      "--web.external-url=alertmanager.li7g.com"
     ];
   };
   systemd.services.alertmanager.serviceConfig.LoadCredential = [

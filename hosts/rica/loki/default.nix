@@ -52,7 +52,7 @@ in
         alertmanager_url = "https://alertmanager.li7g.com";
         alertmanager_client = {
           basic_auth_username = "alertmanager";
-          basic_auth_password = "$ALERTMANAGER_PASSWORD";
+          basic_auth_password = "\${ALERTMANAGER_PASSWORD}";
         };
       };
       storage_config = {
