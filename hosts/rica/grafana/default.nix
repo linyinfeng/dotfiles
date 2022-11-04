@@ -23,7 +23,7 @@ in
       users.default_theme = "light";
       dashboards.default_home_dashboard_path = "${./dashboards/home.json}";
       smtp = {
-        enable = true;
+        enabled = true;
         from_address = "grafana@li7g.com";
         user = "grafana@li7g.com";
         host = "smtp.zt.li7g.com:587";
