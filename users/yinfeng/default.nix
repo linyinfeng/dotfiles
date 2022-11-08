@@ -36,7 +36,8 @@ in
     groupNameIfPresent "nixbuild" ++
     groupNameIfPresent "telegram-send" ++
     groupNameIfPresent "service-mail" ++
-    groupNameIfPresent "plugdev";
+    groupNameIfPresent "plugdev" ++
+    groupNameIfPresent "windows";
 
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };

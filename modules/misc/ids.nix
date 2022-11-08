@@ -15,6 +15,7 @@
     # telegram-send = 402;
     # service-mail = 403;
     hydra-builder = 404;
+    # windows = 405;
   };
   ids.gids = {
     # service groups
@@ -23,5 +24,6 @@
     telegram-send = 402;
     service-mail = 403;
     hydra-builder = 404;
+    windows = 405;
   };
 }
