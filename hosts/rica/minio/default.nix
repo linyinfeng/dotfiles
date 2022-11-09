@@ -19,6 +19,7 @@ in
 {
   services.minio = {
     enable = true;
+    package = pkgs.minio-latest;
     listenAddress = "127.0.0.1:${toString minioPort}";
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
