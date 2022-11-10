@@ -12,6 +12,7 @@ in
 
   # don't starve togather
   users.users.steam = {
+    uid = config.ids.uids.steam;
     isSystemUser = true;
     createHome = true;
     home = gameHome;
@@ -19,7 +20,9 @@ in
     # for debug
     shell = pkgs.bash;
   };
-  users.groups.steam = { };
+  users.groups.steam = {
+    gid = config.ids.gids.steam;
+  };
   environment.global-persistence.user.users = [ "steam" ];
   home-manager.users.steam = {
     home.global-persistence = {
