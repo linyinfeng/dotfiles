@@ -34,6 +34,7 @@ in
       ./git
       ./alertmanager
       ./seafile
+      ./mastodon
     ];
 
   config = lib.mkMerge [

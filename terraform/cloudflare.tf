@@ -81,6 +81,7 @@ locals {
     smtp            = { on = "rica", proxy = false }
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
+    mastodon        = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     mc              = { on = "nuc", proxy = false }
