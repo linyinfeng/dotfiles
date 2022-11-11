@@ -37,6 +37,7 @@ in
     groupNameIfPresent "telegram-send" ++
     groupNameIfPresent "service-mail" ++
     groupNameIfPresent "plugdev" ++
+    groupNameIfPresent "acme" ++
     groupNameIfPresent "windows";
 
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
