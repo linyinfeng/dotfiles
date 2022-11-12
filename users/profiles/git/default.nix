@@ -53,4 +53,12 @@
       bdm = "!git branch --merged | grep -v '*' | xargs -n 1 git branch -d";
     };
   };
+
+  home.packages = with pkgs; [
+    github-cli
+  ];
+
+  home.global-persistence.directories = [
+    ".config/gh" # github-cli
+  ];
 }

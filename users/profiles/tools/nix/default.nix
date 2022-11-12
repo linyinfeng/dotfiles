@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.packages = with pkgs; [
@@ -22,5 +22,7 @@
     ".cache/lorri"
   ];
 
-  home.file.".cache/nix-index/files".source = pkgs.nix-index-database;
+  home.file = lib.mkIf (pkgs ? nix-index-database && pkgs.nix-index-database != null) {
+    ".cache/nix-index/files".source = pkgs.nix-index-database;
+  };
 }

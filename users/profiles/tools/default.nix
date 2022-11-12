@@ -1,9 +1,0 @@
-{ ... }:
-
-{
-  imports = [
-    ./network
-    ./nix
-    ./other
-  ];
-}

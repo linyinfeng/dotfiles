@@ -16,7 +16,6 @@
   home.packages = with pkgs; [
     ffmpeg
     ghostscript
-    github-cli
     i7z
     imagemagick
     minio-client
@@ -32,7 +31,6 @@
   ];
 
   home.global-persistence.directories = [
-    ".config/gh" # github-cli
     ".mc" # minio-client
   ];
 }

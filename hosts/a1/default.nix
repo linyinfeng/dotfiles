@@ -136,6 +136,17 @@ in
           '';
         };
       };
+      nix.settings.allowed-users = [
+        "code-server"
+      ];
+      home-manager.users.code-server = { profiles, ... }: {
+        imports = with profiles; [
+          direnv
+          git
+          development
+          tools.nix
+        ];
+      };
     }
   ];
 }
