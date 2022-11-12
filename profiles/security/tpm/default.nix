@@ -3,7 +3,8 @@
 {
   security.tpm2 = {
     enable = true;
-    abrmd.enable = true;
+    # TODO broken on framework
+    # abrmd.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
