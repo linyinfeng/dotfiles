@@ -175,6 +175,22 @@ resource "oci_core_default_security_list" "public" {
     }
   }
   ingress_security_rules {
+    protocol = local.protocol_tcp
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+  ingress_security_rules {
+    protocol = local.protocol_tcp
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 443
+      max = 443
+    }
+  }
+  ingress_security_rules {
     protocol = local.protocol_icmp
     source   = "0.0.0.0/0"
   }
@@ -199,6 +215,22 @@ resource "oci_core_security_list" "private" {
     tcp_options {
       min = 22
       max = 22
+    }
+  }
+  ingress_security_rules {
+    protocol = local.protocol_tcp
+    source   = local.main_cidr_block
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+  ingress_security_rules {
+    protocol = local.protocol_tcp
+    source   = local.main_cidr_block
+    tcp_options {
+      min = 443
+      max = 443
     }
   }
   ingress_security_rules {

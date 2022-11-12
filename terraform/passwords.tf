@@ -147,3 +147,11 @@ output "hydra_builder_public_key" {
   value     = data.tls_public_key.hydra_builder.public_key_openssh
   sensitive = false
 }
+resource "random_password" "code_server" {
+  length  = 32
+  special = false
+}
+output "code_server_hashed_password" {
+  value     = sha256(random_password.code_server.result)
+  sensitive = true
+}

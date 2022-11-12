@@ -27,7 +27,7 @@
   systemd.services.mastodon-init-dirs.serviceConfig.LoadCredential = [
     "mail-password:${config.sops.secrets."mail_password".path}"
   ];
-  services.nginx.virtualHosts."${config.services.mastodon.localDomain}" = {
+  services.nginx.virtualHosts."mastodon.*" = {
     enableACME = lib.mkForce false;
     useACMEHost = "main";
   };
