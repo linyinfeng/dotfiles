@@ -70,6 +70,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
           show-mounts = false;
           scroll-action = "switch-workspace";
           intellihide-mode = "ALL_WINDOWS";
+          show-dock-urgent-notify = false;
         };
     }
     (
