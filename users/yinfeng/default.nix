@@ -73,6 +73,27 @@ in
         trust = "ultimate";
       }
     ];
+
+    # TODO a service for debug
+    systemd.user.services.user-units-debug =
+      let
+        script = pkgs.writeShellScript "user-units-debug" ''
+          set -e
+          export PATH="${pkgs.coreutils}/bin:$PATH"
+          export PATH="${pkgs.systemd}/bin:$PATH"
+          while true; do
+            echo "units report -- failed"
+            systemctl --user list-units --failed
+            echo "units report -- jobs"
+            systemctl --user list-jobs --full
+            sleep 60
+          done
+        '';
+      in
+      {
+        Service.ExecStart = "${script}";
+        Install.WantedBy = [ "default.target" ];
+      };
   };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
