@@ -51,6 +51,7 @@ in
           consoleMode = "auto";
         };
       };
+      boot.initrd.systemd.enable = true;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelModules = [ "kvm-intel" ];
 
@@ -116,13 +117,13 @@ in
         ];
       };
 
-      boot.initrd.luks.forceLuksSupportInInitrd = true;
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
-      boot.initrd.kernelModules = [ "tpm" "tpm_tis" "tpm_crb" ];
-      boot.initrd.preLVMCommands = ''
-        waitDevice /dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85
-        ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85 -n crypt-root
-      '';
+      boot.initrd.luks.devices = {
+        crypt-root = {
+          device = "/dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85";
+          allowDiscards = true;
+        };
+      };
       fileSystems."/" =
         {
           device = "tmpfs";
