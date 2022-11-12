@@ -59,9 +59,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
           tls-key = "${osConfig.security.acme.certs."main".directory}/key.pem";
           view-only = false;
         };
-      "org/gnome/gnome-session" = {
-        auto-save-session = true;
-      };
       "org/gnome/desktop/calendar" = {
         show-weekdate = true;
       };
