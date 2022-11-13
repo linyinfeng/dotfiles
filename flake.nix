@@ -10,7 +10,6 @@
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixpkgs-unstable.follows = "nixos";
       digga.inputs.nixlib.follows = "nixos";
-      digga.inputs.latest.follows = "latest";
       digga.inputs.home-manager.follows = "home";
       digga.inputs.deploy.follows = "deploy";
       digga.inputs.flake-compat.follows = "flake-compat";
