@@ -294,6 +294,7 @@
               ];
               development = with profiles; [
                 development.shells
+                development.documentation
                 programs.adb
                 services.gnupg
               ];
