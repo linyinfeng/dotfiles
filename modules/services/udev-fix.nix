@@ -6,6 +6,6 @@
   boot.initrd.systemd.additionalUpstreamUnits = [ "initrd-udevadm-cleanup-db.service" ];
   boot.initrd.services.udev.rules = ''
     # Mark dm devices as db_persist so that they are kept active after switching root
-    SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
+    SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS+="db_persist"
   '';
 }
