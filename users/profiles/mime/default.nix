@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  webBrowser = "chromium-browser.desktop";
+  webBrowser = "firefox.desktop";
   imageViewer = "org.gnome.eog.desktop";
   archiveViewer = "org.gnome.FileRoller.desktop";
   audioPlayer = "io.bassi.Amberol.desktop";
@@ -12,6 +12,11 @@ let
     "x-scheme-handler/https"
     "text/html"
     "application/xhtml+xml"
+    "application/x-extension-htm"
+    "application/x-extension-html"
+    "application/x-extension-shtml"
+    "application/x-extension-xhtml"
+    "application/x-extension-xht"
   ];
   imageFormats = map (f: "image/${f}") [
     "jpeg"
