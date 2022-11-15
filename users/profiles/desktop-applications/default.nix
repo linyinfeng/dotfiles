@@ -15,8 +15,7 @@ lib.mkIf config.home.graphical {
     meld
     nur.repos.linyinfeng.icalingua-plus-plus
     nur.repos.linyinfeng.wemeet
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=199617
-    # picard
+    picard
     tdesktop
     teamspeak_client
     transmission-remote-gtk
