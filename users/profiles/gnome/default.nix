@@ -32,7 +32,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         favorite-apps = lib.mkBefore [
           "org.gnome.Console.desktop"
           "org.gnome.Nautilus.desktop"
-          "chromium-browser.desktop"
           "firefox.desktop"
           "gnome-system-monitor.desktop"
           "code.desktop"
