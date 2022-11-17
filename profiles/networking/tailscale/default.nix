@@ -9,14 +9,14 @@ in
     port = 41641;
     inherit interfaceName;
   };
-  # don't auto start tailscaled if
-  # - system is a workstation (easy reachable machines)
-  # - zerotier is on
-  systemd.services.tailscaled.wantedBy =
-    lib.mkIf
-      (lib.elem "workstation" config.system.types &&
-        config.services.zerotierone.enable)
-      (lib.mkForce [ ]);
+  # # don't auto start tailscaled if
+  # # - system is a workstation (easy reachable machines)
+  # # - zerotier is on
+  # systemd.services.tailscaled.wantedBy =
+  #   lib.mkIf
+  #     (lib.elem "workstation" config.system.types &&
+  #       config.services.zerotierone.enable)
+  #     (lib.mkForce [ ]);
   systemd.services.tailscale-setup = {
     script = ''
       sleep 10
