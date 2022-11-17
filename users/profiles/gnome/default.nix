@@ -3,7 +3,6 @@ let
   extensionPkgs = with pkgs.gnomeExtensions; [
     gsconnect
     appindicator
-    workspace-indicator-2
     dash-to-dock
   ];
 in
