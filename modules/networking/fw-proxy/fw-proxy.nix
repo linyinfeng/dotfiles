@@ -275,7 +275,11 @@ with lib;
         script = ''
           "${scripts}/bin/update-clash" "${cfg.auto-update.service}"
         '';
-        serviceConfig.Type = "oneshot";
+        serviceConfig = {
+          Type = "oneshot";
+          Restart = "on-failure";
+          RestartSec = 30;
+        };
         after = [ "network-online.target" "clash-premium.service" ];
       };
       systemd.timers.clash-auto-update = {
