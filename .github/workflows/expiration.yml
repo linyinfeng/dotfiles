@@ -7,6 +7,9 @@ on:
 
 concurrency: push-to-main
 
+env:
+  SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+
 jobs:
   expiration:
     runs-on: ubuntu-latest
