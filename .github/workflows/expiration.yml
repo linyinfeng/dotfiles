@@ -46,6 +46,7 @@ jobs:
           nix develop --command terraform-wrapper taint "$r"
         done
     - name: Commit and push
+      run: |
         git add --all
         git commit --message "Rotate keys"
         git push
