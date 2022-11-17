@@ -8,7 +8,7 @@ on:
 concurrency: push-to-main
 
 jobs:
-  update:
+  expiration:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -48,5 +48,5 @@ jobs:
     - name: Commit and push
       run: |
         git add --all
-        git commit --message "Rotate keys"
+        git commit --message "Terraform resource expiration"
         git push
