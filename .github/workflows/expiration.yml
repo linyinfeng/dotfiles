@@ -1,0 +1,51 @@
+name: "Expiration"
+on:
+  schedule:
+    # at 00:00 on day-of-month 1
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+concurrency: push-to-master
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        ref: main
+        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        install_url: https://github.com/numtide/nix-unstable-installer/releases/latest/download/install
+        nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+    - name: Setup cachix
+      uses: cachix/cachix-action@master
+      with:
+        name: linyinfeng
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+    - name: Git config
+      run: |
+        git config --global user.email "nano@linyinfeng.com"
+        git config --global user.name "Nano"
+    - name: Terraform init
+      run: |
+        nix develop --command terraform-init
+    - name: Terraform taint resources
+      run: |
+        # resources to be tainted
+        resources=(
+          # https://github.com/tailscale/terraform-provider-tailscale/issues/144
+          "tailscale_tailnet_key.tailnet_key"
+        )
+        for r in "${resources[@]}"; do
+          nix develop --command terraform-wrapper taint "$r"
+        done
+    - name: Commit and push
+        git add --all
+        git commit --message "Rotate keys"
+        git push
