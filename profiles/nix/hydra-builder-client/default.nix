@@ -8,11 +8,11 @@
     '';
   };
   environment.etc."nix-build-machines/hydra-builder/machines".text = ''
-    hydra-builder@nuc.zt.li7g.com x86_64-linux,i686-linux - 1 1 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@nuc.ts.li7g.com x86_64-linux,i686-linux - 1 1 kvm,nixos-test,benchmark,big-parallel
   '';
   services.openssh.knownHosts = {
     nuc = {
-      extraHostNames = [ "nuc.zt.li7g.com" ];
+      extraHostNames = [ "nuc.ts.li7g.com" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzE483giZI140MvDx3S/rWUzZzuyylGHOArhdSRQmyG";
     };
   };
@@ -21,7 +21,7 @@
     sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
   };
   programs.ssh.extraConfig = ''
-    Host nuc.zt.li7g.com
+    Host nuc.ts.li7g.com
       PubkeyAcceptedKeyTypes ssh-ed25519
       IdentityFile /etc/nix-build-machines/hydra-builder/key
   '';

@@ -33,7 +33,7 @@ lib.mkIf config.home.graphical {
       ];
     };
     "org/virt-manager/virt-manager/connections" = {
-      uris = [ "qemu+ssh://root@nuc.zt.li7g.com/system" ];
+      uris = [ "qemu+ssh://root@nuc.ts.li7g.com/system" ];
     };
   };
 
