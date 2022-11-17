@@ -64,7 +64,7 @@ in
     owner = "matrix-synapse";
     content = builtins.toJSON {
       email = {
-        smtp_host = "smtp.zt.li7g.com";
+        smtp_host = "smtp.li7g.com";
         smtp_user = "matrix@li7g.com";
         notif_from = "matrix@li7g.com";
         force_tls = true;

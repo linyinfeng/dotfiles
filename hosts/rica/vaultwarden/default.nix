@@ -31,7 +31,7 @@ in
       websocketPort = cfg.ports.vaultwarden.websocket;
       rocketAddress = "127.0.0.1";
       rocketPort = cfg.ports.vaultwarden.http;
-      smtpHost = "smtp.zt.li7g.com";
+      smtpHost = "smtp.li7g.com";
       smtpFrom = "vault@li7g.com";
       smtpPort = 465;
       smtpSecurity = "force_tls";

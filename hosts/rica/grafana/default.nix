@@ -26,7 +26,7 @@ in
         enabled = true;
         from_address = "grafana@li7g.com";
         user = "grafana@li7g.com";
-        host = "smtp.zt.li7g.com:587";
+        host = "smtp.li7g.com:587";
         startTLS_policy = "MandatoryStartTLS";
       };
       security = {

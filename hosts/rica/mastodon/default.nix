@@ -15,7 +15,7 @@
     };
     smtp = {
       authenticate = true;
-      host = "smtp.zt.li7g.com";
+      host = "smtp.li7g.com";
       port = 587;
       user = "mastodon@li7g.com";
       fromAddress = "mastodon@li7g.com";
