@@ -4,7 +4,7 @@ on:
   pull_request:
   workflow_dispatch:
 
-concurrency: push-to-master
+concurrency: push-to-main
 
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
