@@ -56,11 +56,6 @@ in
       home = homeDirectory;
     };
 
-    home.file.".ssh/config".source = pkgs.substituteAll {
-      src = ./ssh/config;
-      inherit uid;
-    };
-
     programs.git = {
       userName = "Lin Yinfeng";
       userEmail = "lin.yinfeng@outlook.com";

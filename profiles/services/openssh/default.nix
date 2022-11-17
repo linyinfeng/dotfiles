@@ -1,4 +1,4 @@
-{ ... }:
+{ self, lib, ... }:
 
 let
   aliveInterval = "15";
@@ -18,7 +18,16 @@ in
     extraConfig = ''
       ServerAliveInterval ${aliveInterval}
       ServerAliveCountMax ${aliveCountMax}
-    '';
+    '' + lib.concatMapStringsSep "\n"
+      (h: ''
+        Host ${h}
+          HostName ${h}.ts.li7g.com
+        Host ${h}.zt
+          HostName ${h}.zt.li7g.com
+        Host ${h}.ts
+          HostName ${h}.ts.li7g.com
+      '')
+      (lib.attrNames self.lib.data.hosts);
   };
 
   environment.global-persistence = {
