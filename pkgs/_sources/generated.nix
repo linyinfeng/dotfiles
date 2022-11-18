@@ -16,13 +16,13 @@
   };
   minio = {
     pname = "minio";
-    version = "RELEASE.2022-11-11T03-44-20Z";
+    version = "RELEASE.2022-11-17T23-20-09Z";
     src = fetchFromGitHub ({
       owner = "minio";
       repo = "minio";
-      rev = "RELEASE.2022-11-11T03-44-20Z";
+      rev = "RELEASE.2022-11-17T23-20-09Z";
       fetchSubmodules = false;
-      sha256 = "sha256-QdG4WExtU/XCEjNaOIhRMbY+PYltFZPUvC0ey1u4s+w=";
+      sha256 = "sha256-9Ww4wCK8rzUXwP2i/774PxIBb42y/DG6oMbVp26lxWw=";
     });
   };
   pyim-greatdict = {
