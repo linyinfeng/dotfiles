@@ -103,7 +103,7 @@ in
             sub_domains = [ "framework" ];
           }];
           ip_type = "IPv6";
-          ip_interface = "enp0s13f0u4u1c2";
+          ip_interface = "enp0s13f0u4u4u5";
         };
       };
 
