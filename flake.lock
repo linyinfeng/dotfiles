@@ -26,6 +26,42 @@
         "type": "github"
       }
     },
+    "bootspec-rfc": {
+      "locked": {
+        "lastModified": 1668028721,
+        "narHash": "sha256-fg/I3WMwa0vQbkk39jr8xhDtituJKxHa+p72Mex3iRs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "827be5ae2acda2aec759dc0df4cf5e4883af2547",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "pull/172237/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "bootspec-secureboot": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1663598402,
+        "narHash": "sha256-z2Hqm2lciJcD00+YG1vO1PGbRBGDrj99MTt+QEEs6KI=",
+        "owner": "DeterminateSystems",
+        "repo": "bootspec-secureboot",
+        "rev": "31cc8d0acd716f93ee8fdc1fb618cc1145b19e09",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DeterminateSystems",
+        "repo": "bootspec-secureboot",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -832,6 +868,8 @@
     "root": {
       "inputs": {
         "beautysh": "beautysh",
+        "bootspec-rfc": "bootspec-rfc",
+        "bootspec-secureboot": "bootspec-secureboot",
         "deploy": "deploy",
         "devshell": "devshell",
         "digga": "digga",

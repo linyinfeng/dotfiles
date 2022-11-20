@@ -1,4 +1,4 @@
-{ config, pkgs, suites, profiles, lib, ... }:
+{ inputs, config, pkgs, suites, profiles, lib, ... }:
 
 let
 
@@ -35,6 +35,7 @@ in
     (with profiles.users; [
       yinfeng
     ]) ++ [
+      inputs.bootspec-secureboot.nixosModules.bootspec-secureboot
       ./hardware.nix
     ];
 
@@ -44,13 +45,19 @@ in
       console.keyMap = "us";
       time.timeZone = "Asia/Shanghai";
 
-      boot.loader = {
-        efi.canTouchEfiVariables = true;
-        systemd-boot = {
-          enable = true;
-          consoleMode = "auto";
-        };
+      # use bootspec-secureboot
+      boot.loader.efi.canTouchEfiVariables = true;
+      boot.loader.systemd-boot = {
+        consoleMode = "auto";
+        # every boot entry takes about 40MB for EFI partition with bootspec-secureboot
+        configurationLimit = 10;
       };
+      boot.loader.secureboot = {
+        enable = true;
+        signingKeyPath = "/sbkeys/generated/db.key";
+        signingCertPath = "/sbkeys/generated/db.crt";
+      };
+
       boot.initrd.systemd.enable = true;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelModules = [ "kvm-intel" ];
@@ -72,6 +79,7 @@ in
           CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
         };
       };
+      # TODO see https://github.com/DeterminateSystems/bootspec-secureboot/issues/203
       services.fwupd.enable = true;
 
       boot.binfmt.emulatedSystems = [
@@ -134,6 +142,7 @@ in
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
       fileSystems."/swap" = btrfsSubvolMain "@swap" { };
+      fileSystems."/sbkeys" = btrfsSubvolMain "@sbkeys" { };
       fileSystems."/boot" =
         {
           device = "/dev/disk/by-uuid/5C56-7693";
