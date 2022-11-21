@@ -96,7 +96,8 @@ in
       };
       boot = {
         tmpOnTmpfs = true;
-        tmpOnTmpfsSize = "50%";
+        # reasonable because of swap
+        tmpOnTmpfsSize = "100%";
       };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
       fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
