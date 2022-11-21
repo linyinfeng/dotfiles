@@ -295,7 +295,6 @@
                 graphical.sway
                 graphical.fonts
                 graphical.i18n
-                graphical.v4l2
                 services.pipewire
               ];
               development = with profiles; [

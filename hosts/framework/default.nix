@@ -57,6 +57,26 @@ in
         signingKeyPath = "/sbkeys/generated/db.key";
         signingCertPath = "/sbkeys/generated/db.crt";
       };
+      boot.kernelParams = [
+        "lockdown=integrity"
+      ];
+      boot.kernelPatches = [
+        # this patch makes the linux kernel unreproducible
+        {
+          name = "lockdown";
+          patch = null;
+          extraConfig = ''
+            MODULE_SIG y
+            SECURITY_LOCKDOWN_LSM y
+          '';
+        }
+      ];
+      assertions = [
+        {
+          assertion = lib.length config.boot.extraModulePackages == 0;
+          message = "out-of-tree and unsigned kernel module";
+        }
+      ];
 
       boot.initrd.systemd.enable = true;
       boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -141,7 +161,7 @@ in
       fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
-      fileSystems."/swap" = btrfsSubvolMain "@swap" { };
+      fileSystems."/swap" = btrfsSubvolMain "@swap" { neededForBoot = true; };
       fileSystems."/sbkeys" = btrfsSubvolMain "@sbkeys" { };
       fileSystems."/boot" =
         {

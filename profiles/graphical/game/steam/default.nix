@@ -21,7 +21,8 @@ in
         ".steam"
         ".local/share/Steam"
       ];
-      hardware.xpadneo.enable = true;
+      # require out-of-tree kernel module
+      # hardware.xpadneo.enable = true;
     }
     (lib.mkIf cfg.hidpi.enable {
       environment.systemPackages = [
