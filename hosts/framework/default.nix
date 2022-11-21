@@ -151,6 +151,10 @@ in
           device = "/dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85";
           allowDiscards = true;
         };
+        crypt-swap = {
+          device = "/dev/disk/by-uuid/bbf7e2ee-1a3b-4110-ac2a-1cd9169f2684";
+          allowDiscards = true;
+        };
       };
       fileSystems."/" =
         {
@@ -161,7 +165,6 @@ in
       fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
-      fileSystems."/swap" = btrfsSubvolMain "@swap" { neededForBoot = true; };
       fileSystems."/sbkeys" = btrfsSubvolMain "@sbkeys" { };
       fileSystems."/boot" =
         {
@@ -170,7 +173,8 @@ in
         };
       swapDevices =
         [{
-          device = "/swap/swapfile";
+          device = "/dev/disk/by-uuid/f9eb9a3a-2185-4f7e-83f0-76d88fa98557";
+          discardPolicy = "once";
         }];
     }
 
