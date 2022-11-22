@@ -44,7 +44,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         locate-pointer = true;
       };
       "org/gnome/desktop/input-sources" = {
-        mru-sources =
+        sources =
           mkArray (type.tupleOf [ type.string type.string ]) [
             (mkTuple [ (mkString "xkb") (mkString "us") ])
             (mkTuple [ (mkString "ibus") (mkString "rime") ])
