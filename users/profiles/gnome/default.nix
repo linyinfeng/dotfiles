@@ -5,6 +5,7 @@ let
     appindicator
     dash-to-dock
   ];
+  inherit (lib.hm.gvariant) mkArray mkTuple mkString type;
 in
 lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
 {
@@ -35,11 +36,23 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
           "gnome-system-monitor.desktop"
           "code.desktop"
         ];
+        welcome-dialog-last-shown-version = "43.1";
       };
       "org/gnome/desktop/interface" = {
         clock-show-weekday = true;
         show-battery-percentage = true;
         locate-pointer = true;
+      };
+      "org/gnome/desktop/input-sources" = {
+        mru-sources =
+          mkArray (type.tupleOf [ type.string type.string ]) [
+            (mkTuple [ (mkString "xkb") (mkString "us") ])
+            (mkTuple [ (mkString "ibus") (mkString "rime") ])
+            (mkTuple [ (mkString "ibus") (mkString "mozc-jp") ])
+          ];
+      };
+      "org/gnome/system/location" = {
+        enabled = true;
       };
       # just use the standard touchpad and mouse speed
       "org/gnome/desktop/peripherals/mouse" = {
@@ -60,16 +73,39 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
       "org/gnome/desktop/calendar" = {
         show-weekdate = true;
       };
-      "org/gnome/shell/extensions/dash-to-dock" =
-        {
-          apply-custom-theme = true;
-          custom-theme-shrink = true;
-          dash-max-icon-size = 32;
-          show-mounts = false;
-          scroll-action = "switch-workspace";
-          intellihide-mode = "ALL_WINDOWS";
-          show-dock-urgent-notify = false;
-        };
+      "org/gnome/shell/extensions/dash-to-dock" = {
+        apply-custom-theme = true;
+        custom-theme-shrink = true;
+        dash-max-icon-size = 32;
+        show-mounts = false;
+        scroll-action = "switch-workspace";
+        intellihide-mode = "ALL_WINDOWS";
+        show-dock-urgent-notify = false;
+      };
+      "org/gnome/shell/extensions/gsconnect" = {
+        show-indicators = true;
+      };
+      "org/gnome/Console" = {
+        theme = "auto";
+      };
+      "ca/desrt/dconf-editor" = {
+        show-warning = false;
+      };
+      "org/gnome/desktop/background" = {
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/field-l.svg";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/field-d.svg";
+        primary-color = "#26a269";
+        secondary-color = "#000000";
+        color-shading-type = "solid";
+        picture-options = "zoom";
+      };
+      "org/gnome/desktop/screensaver" = {
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/field-l.svg";
+        primary-color = "#26a269";
+        secondary-color = "#000000";
+        color-shading-type = "solid";
+        picture-options = "zoom";
+      };
     }
     (
       let

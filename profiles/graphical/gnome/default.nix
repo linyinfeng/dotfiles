@@ -40,7 +40,7 @@ lib.mkIf
 
   environment.global-persistence.user = {
     directories = [
-      ".config/dconf"
+      # ".config/dconf"
       ".config/goa-1.0" # gnome accounts
       ".config/gnome-boxes"
       ".local/share/keyrings"
