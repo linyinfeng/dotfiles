@@ -45,5 +45,5 @@ $systemctl restart clash-premium
 $systemctl status clash-premium
 if [ -f "$dir/config.yaml.old" ]; then
     echo 'Remove old config.yaml'
-    rm "$dir/config.yaml.old" "$dir/config.yaml"
+    rm "$dir/config.yaml.old"
 fi
