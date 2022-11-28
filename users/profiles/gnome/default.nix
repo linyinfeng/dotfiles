@@ -81,6 +81,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         scroll-action = "switch-workspace";
         intellihide-mode = "ALL_WINDOWS";
         show-dock-urgent-notify = false;
+        show-trash = false;
       };
       "org/gnome/shell/extensions/gsconnect" = {
         show-indicators = true;
