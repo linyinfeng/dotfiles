@@ -5,6 +5,7 @@
   environment.systemPackages = (with pkgs.fishPlugins; [
     foreign-env
     done
+    autopair-fish
   ]) ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
     git
     bang-bang
