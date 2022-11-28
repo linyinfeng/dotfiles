@@ -1,0 +1,12 @@
+diff --git a/plugins/linux-lockdown/fu-plugin-linux-lockdown.c b/plugins/linux-lockdown/fu-plugin-linux-lockdown.c
+index c7895d0..591d67c 100644
+--- a/plugins/linux-lockdown/fu-plugin-linux-lockdown.c
++++ b/plugins/linux-lockdown/fu-plugin-linux-lockdown.c
+@@ -133,7 +133,7 @@ fu_plugin_linux_lockdown_add_security_attrs(FuPlugin *plugin, FuSecurityAttrs *a
+ 	fu_security_attrs_append(attrs, attr);
+
+ 	if (priv == NULL || priv->lockdown == FU_PLUGIN_LINUX_LOCKDOWN_UNKNOWN) {
+-		fwupd_security_attr_add_flag(attr, FWUPD_SECURITY_ATTR_FLAG_MISSING_DATA);
++		fwupd_security_attr_set_result(attr, FWUPD_SECURITY_ATTR_RESULT_NOT_VALID);
+ 		return;
+ 	}
