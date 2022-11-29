@@ -12,6 +12,12 @@ resource "tailscale_tailnet_key" "tailnet_key" {
   reusable      = true
   ephemeral     = false
   preauthorized = true
+
+  lifecycle {
+    replace_triggered_by = [
+      time_static.rotate_monthly
+    ]
+  }
 }
 
 output "tailscale_tailnet_key" {
