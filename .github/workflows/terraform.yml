@@ -46,10 +46,10 @@ jobs:
         set -e
         if [ "$exit_code" -eq 0 ]; then
           # success, empty diff
-          echo '::set-output name=diff::false'
+          echo "diff=false" >> $GITHUB_OUTPUT
         elif [ "$exit_code" -eq 2 ]; then
           # success, non-empty diff
-          echo '::set-output name=diff::true'
+          echo "diff=true" >> $GITHUB_OUTPUT
         else
           exit "$exit_code"
         fi
