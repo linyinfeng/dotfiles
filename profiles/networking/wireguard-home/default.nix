@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
+  interfaceName = "wg0";
   hostName = config.networking.hostName;
   port = 51820;
   hosts = {
@@ -30,24 +31,21 @@ let
   };
 in
 {
-  networking.wireguard.interfaces = {
-    wg0 = {
-      ips = [ hosts.${hostName}.ip ];
-      listenPort = hosts.${hostName}.port;
-      peers = [ home ];
-      privateKeyFile = config.sops.secrets."wireguard_private_key".path;
-    };
+  networking.wireguard.interfaces.${interfaceName} = {
+    ips = [ hosts.${hostName}.ip ];
+    listenPort = hosts.${hostName}.port;
+    peers = [ home ];
+    privateKeyFile = config.sops.secrets."wireguard_private_key".path;
   };
-  # do not auto start
-  systemd.services."wireguard-wg0".wantedBy = lib.mkForce [ ];
   sops.secrets."wireguard_private_key" = {
     sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
-    restartUnits = [ "wireguard-wg0.service" ];
+    restartUnits = [ "wireguard-${interfaceName}.service" ];
   };
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];
   networking.firewall.allowedUDPPorts = [
-    config.networking.wireguard.interfaces.wg0.listenPort
+    config.networking.wireguard.interfaces.${interfaceName}.listenPort
   ];
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

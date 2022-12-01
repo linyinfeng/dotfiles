@@ -2,8 +2,6 @@
 let
   cfg = config.networking.fw-proxy;
 
-  tunDev = "utun"; # fixed
-
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "fw-proxy-scripts";
     buildCommand = ''
@@ -11,10 +9,11 @@ let
       install -Dm644 $disableProxy   $out/bin/disable-proxy
       install -Dm755 $updateClashUrl $out/bin/update-clash-url
       install -Dm755 $updateClash    $out/bin/update-clash
-      install -Dm755 $tunSetup       $out/bin/clash-tun-setup
-      install -Dm755 $tunClean       $out/bin/clash-tun-clean
-      install -Dm755 $useTunProxy    $out/bin/use-tun-proxy
-      install -Dm755 $useTunProxyPid $out/bin/use-tun-proxy-pid
+      install -Dm755 $tproxySetup    $out/bin/clash-tproxy-setup
+      install -Dm755 $tproxyClean    $out/bin/clash-tproxy-clean
+      install -Dm755 $tproxyUse      $out/bin/clash-tproxy-use
+      install -Dm755 $tproxyUsePid   $out/bin/clash-tproxy-use-pid
+      install -Dm755 $tproxyCgroup   $out/bin/clash-tproxy-cgroup
     '';
     enableProxy = pkgs.substituteAll {
       src = ./enable-proxy;
@@ -40,34 +39,40 @@ let
       mainUrl = config.sops.secrets."clash/main".path;
       alternativeUrl = config.sops.secrets."clash/alternative".path;
     };
-    tunSetup = pkgs.substituteAll {
-      src = ./tun-setup.sh;
+    tproxySetup =
+      let
+        cgroupElements = lib.concatMapStringsSep ", " (c: "\"${c}\"");
+      in
+      pkgs.substituteAll {
+        src = ./tproxy-setup.sh;
+        isExecutable = true;
+        inherit (pkgs.stdenvNoCC) shell;
+        inherit (pkgs) iproute2 nftables;
+        tproxyPort = cfg.mixinConfig.tproxy-port;
+        inherit (cfg.tproxy) routeTable fwmark cgroup extraPreroutingRules extraOutputRules;
+        proxiedInterfaceElements = lib.concatStringsSep ", " ([ "lo" ] ++ cfg.tproxy.proxiedInterfaceElements);
+        level1CgroupElements = cgroupElements cfg.tproxy.allCgroups.level1;
+        level2CgroupElements = cgroupElements cfg.tproxy.allCgroups.level2;
+      };
+    tproxyClean = pkgs.substituteAll {
+      src = ./tproxy-clean.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) iproute2 iptables;
-      inherit (cfg.tun) routeTable fwmark;
-      inherit (cfg.tun.cgroup.netCls) classId;
-      inherit tunDev;
+      inherit (pkgs) iproute2 nftables;
+      inherit (cfg.tproxy) routeTable fwmark cgroup;
     };
-    tunClean = pkgs.substituteAll {
-      src = ./tun-clean.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) iproute2 iptables;
-      inherit (cfg.tun) routeTable fwmark;
-      inherit (cfg.tun.cgroup.netCls) classId;
-    };
-    useTunProxy = pkgs.writeScript "use-tun-proxy" ''
-      #!${pkgs.stdenvNoCC.shell}
-      ${useTunProxyPid} $$ 2>&1 > /dev/null
+    tproxyUse = pkgs.writeShellScript "clash-tproxy-use" ''
+      set -e
+      sudo ${tproxyUsePid} $$ 2>&1 > /dev/null
       exec "$@"
     '';
-    useTunProxyPid =
+    tproxyUsePid =
       let
-        cgroupPath = "/sys/fs/cgroup/net_cls/${cfg.tun.cgroup.netCls.name}";
+        cgroupPath = "/sys/fs/cgroup/${cfg.tproxy.cgroup}";
       in
-      pkgs.writeScript "use-tun-proxy-pid" ''
-        #!${pkgs.stdenvNoCC.shell}
+      pkgs.writeShellScript "clash-tproxy-use-pid" ''
+        set -e
+
         if [ "$#" != "1" ]; then exit 1; fi
 
         if [ ! -d "${cgroupPath}" ];then
@@ -75,7 +80,37 @@ let
           exit 1
         fi
 
-        echo $1 > "${cgroupPath}/tasks"
+        echo $1 > "${cgroupPath}/cgroup.procs"
+      '';
+    tproxyCgroup =
+      pkgs.writeShellScript "clash-tproxy-cgroup-list" ''
+        set -e
+
+        action="$1"
+        level="$2"
+        path="$3"
+
+        case "$action" in
+
+          list)
+            nft list set inet clash-tproxy level"$level"-cgroups
+            ;;
+
+          add|delete)
+            nft "$action" element inet clash-tproxy level"$level"-cgroups \
+              "{ \"$path\" }"
+            ;;
+
+          *)
+            cat <<EOF
+        Usage:
+
+          $0 list   LEVEL
+          $0 add    LEVEL PATH
+          $0 delete LEVEL PATH
+        EOF
+            ;;
+        esac
       '';
   };
 in
@@ -86,10 +121,14 @@ with lib;
       type = with types; bool;
       default = false;
     };
-    tun = {
+    tproxy = {
       enable = mkOption {
         type = with types; bool;
         default = false;
+      };
+      proxiedInterfaceElements = mkOption {
+        type = with types; listOf str;
+        default = [ ];
       };
       routeTable = mkOption {
         type = with types; str;
@@ -99,15 +138,27 @@ with lib;
         type = with types; str;
         default = "0x356";
       };
-      cgroup.netCls = {
-        name = mkOption {
-          type = with types; str;
-          default = "fw_proxy";
+      cgroup = mkOption {
+        type = with types; str;
+        default = "tproxy";
+      };
+      allCgroups = {
+        level1 = mkOption {
+          type = with types; listOf str;
+          default = [ ];
         };
-        classId = mkOption {
-          type = with types; str;
-          default = "0x00010356";
+        level2 = mkOption {
+          type = with types; listOf str;
+          default = [ ];
         };
+      };
+      extraPreroutingRules = mkOption {
+        type = with types; lines;
+        default = "";
+      };
+      extraOutputRules = mkOption {
+        type = with types; lines;
+        default = "";
       };
     };
     mixinConfig = mkOption {
@@ -224,51 +275,22 @@ with lib;
       };
     })
 
-    (mkIf (cfg.tun.enable) {
-      systemd.services.fw-proxy-cgroup =
-        let
-          inherit (cfg.tun.cgroup.netCls) name classId;
-          path = "/sys/fs/cgroup/net_cls/${name}";
-        in
-        {
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-          };
-          script =
-            ''
-              if [ -d "${path}" ];then
-                  exit 0
-              fi
-
-              if [ ! -d "/sys/fs/cgroup/net_cls" ]; then
-                  mkdir -p /sys/fs/cgroup/net_cls
-                  "${config.security.wrapperDir}/mount" -onet_cls -t cgroup net_cls /sys/fs/cgroup/net_cls
-              fi
-
-              mkdir -p "${path}"
-              echo "${classId}" > "${path}/net_cls.classid"
-              chmod 666 "${path}/tasks"
-            '';
-          wantedBy = [ "multi-user.target" ];
+    (mkIf (cfg.tproxy.enable) {
+      systemd.services.clash-tproxy = {
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${scripts}/bin/clash-tproxy-setup";
+          ExecStopPost = "${scripts}/bin/clash-tproxy-clean";
         };
-      systemd.services.clash-premium = {
-        requires = [ "fw-proxy-cgroup.service" ];
-        after = [ "fw-proxy-cgroup.service" ];
+        after = [ "clash-premium.service" ];
+        requires = [ "clash-premium.service" ];
+        wantedBy = [ "multi-user.target" ];
       };
-      networking.fw-proxy.mixinConfig = {
-        tun = {
-          enable = true;
-          stack = "gvisor";
-        };
-      };
-      # Manual enable and disable use clash-tun-setup/clean
-      # services.udev.extraRules = ''
-      #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="add",RUN+="${scripts}/bin/clash-tun-setup"
-      #   SUBSYSTEM=="net",ENV{INTERFACE}=="${tunDev}",ACTION=="remove",RUN+="${scripts}/bin/clash-tun-clean"
-      # '';
 
-      networking.networkmanager.unmanaged = [ tunDev ];
+      networking.fw-proxy.tproxy.allCgroups.level1 = [ cfg.tproxy.cgroup ];
+
+      system.build.fw-proxy-tproxy-scripts = scripts;
     })
     (mkIf cfg.auto-update.enable {
       systemd.services.clash-auto-update = {
