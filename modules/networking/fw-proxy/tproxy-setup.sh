@@ -70,6 +70,7 @@ table inet clash-tproxy {
     counter
     elements = { $level2_cgroups }
   }
+
   chain prerouting {
     type filter hook prerouting priority mangle; policy accept;
     fib daddr type local return
@@ -82,6 +83,7 @@ table inet clash-tproxy {
       tproxy to :$tproxy_port \
       counter
   }
+
   chain output {
     type route hook output priority mangle; policy accept;
     socket cgroupv2 level 2 "system.slice/clash-premium.service" counter return
