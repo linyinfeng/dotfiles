@@ -19,7 +19,8 @@
       port = 587;
       user = "mastodon@li7g.com";
       fromAddress = "mastodon@li7g.com";
-      passwordFile = "$CREDENTIALS_DIRECTORY/mail-password";
+      # type is null or path, add a leading /
+      passwordFile = "/$CREDENTIALS_DIRECTORY/mail-password";
     };
     localDomain = "mastodon.li7g.com";
     configureNginx = true;
