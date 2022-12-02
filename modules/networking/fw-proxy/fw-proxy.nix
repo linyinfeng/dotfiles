@@ -5,15 +5,16 @@ let
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "fw-proxy-scripts";
     buildCommand = ''
-      install -Dm644 $enableProxy    $out/bin/enable-proxy
-      install -Dm644 $disableProxy   $out/bin/disable-proxy
-      install -Dm755 $updateClashUrl $out/bin/update-clash-url
-      install -Dm755 $updateClash    $out/bin/update-clash
-      install -Dm755 $tproxySetup    $out/bin/clash-tproxy-setup
-      install -Dm755 $tproxyClean    $out/bin/clash-tproxy-clean
-      install -Dm755 $tproxyUse      $out/bin/clash-tproxy-use
-      install -Dm755 $tproxyUsePid   $out/bin/clash-tproxy-use-pid
-      install -Dm755 $tproxyCgroup   $out/bin/clash-tproxy-cgroup
+      install -Dm644 $enableProxy     $out/bin/enable-proxy
+      install -Dm644 $disableProxy    $out/bin/disable-proxy
+      install -Dm755 $updateClashUrl  $out/bin/update-clash-url
+      install -Dm755 $updateClash     $out/bin/update-clash
+      install -Dm755 $tproxySetup     $out/bin/fw-tproxy-setup
+      install -Dm755 $tproxyClean     $out/bin/fw-tproxy-clean
+      install -Dm755 $tproxyUse       $out/bin/fw-tproxy-use
+      install -Dm755 $tproxyUsePid    $out/bin/fw-tproxy-use-pid
+      install -Dm755 $tproxyCgroup    $out/bin/fw-tproxy-cgroup
+      install -Dm755 $tproxyInterface $out/bin/fw-tproxy-if
     '';
     enableProxy = pkgs.substituteAll {
       src = ./enable-proxy;
@@ -41,7 +42,9 @@ let
     };
     tproxySetup =
       let
+        interfaceElements = lib.concatStringsSep ", ";
         cgroupElements = lib.concatMapStringsSep ", " (c: "\"${c}\"");
+        buildElementsSyntax = f: list: if list == [ ] then "" else "elements = { ${f list} }";
       in
       pkgs.substituteAll {
         src = ./tproxy-setup.sh;
@@ -49,69 +52,42 @@ let
         inherit (pkgs.stdenvNoCC) shell;
         inherit (pkgs) iproute2 nftables;
         tproxyPort = cfg.mixinConfig.tproxy-port;
-        inherit (cfg.tproxy) routeTable fwmark cgroup extraPreroutingRules extraOutputRules;
-        proxiedInterfaceElements = lib.concatStringsSep ", " ([ "lo" ] ++ cfg.tproxy.proxiedInterfaceElements);
-        level1CgroupElements = cgroupElements cfg.tproxy.allCgroups.level1;
-        level2CgroupElements = cgroupElements cfg.tproxy.allCgroups.level2;
+        inherit (cfg.tproxy) routeTable fwmark cgroup nftTable extraFilterRules bypassCgroup bypassCgroupLevel;
+        proxiedInterfaceElements = buildElementsSyntax interfaceElements cfg.tproxy.proxiedInterfaceElements;
+        level1CgroupElements = buildElementsSyntax cgroupElements cfg.tproxy.allCgroups.level1;
+        level2CgroupElements = buildElementsSyntax cgroupElements cfg.tproxy.allCgroups.level2;
       };
     tproxyClean = pkgs.substituteAll {
       src = ./tproxy-clean.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) iproute2 nftables;
-      inherit (cfg.tproxy) routeTable fwmark cgroup;
+      inherit (cfg.tproxy) routeTable fwmark cgroup nftTable;
     };
-    tproxyUse = pkgs.writeShellScript "clash-tproxy-use" ''
-      set -e
-      sudo ${tproxyUsePid} $$ 2>&1 > /dev/null
-      exec "$@"
-    '';
-    tproxyUsePid =
-      let
-        cgroupPath = "/sys/fs/cgroup/${cfg.tproxy.cgroup}";
-      in
-      pkgs.writeShellScript "clash-tproxy-use-pid" ''
-        set -e
-
-        if [ "$#" != "1" ]; then exit 1; fi
-
-        if [ ! -d "${cgroupPath}" ];then
-          echo "cgroup not setup" >&2
-          exit 1
-        fi
-
-        echo $1 > "${cgroupPath}/cgroup.procs"
-      '';
-    tproxyCgroup =
-      pkgs.writeShellScript "clash-tproxy-cgroup-list" ''
-        set -e
-
-        action="$1"
-        level="$2"
-        path="$3"
-
-        case "$action" in
-
-          list)
-            nft list set inet clash-tproxy level"$level"-cgroups
-            ;;
-
-          add|delete)
-            nft "$action" element inet clash-tproxy level"$level"-cgroups \
-              "{ \"$path\" }"
-            ;;
-
-          *)
-            cat <<EOF
-        Usage:
-
-          $0 list   LEVEL
-          $0 add    LEVEL PATH
-          $0 delete LEVEL PATH
-        EOF
-            ;;
-        esac
-      '';
+    tproxyUse = pkgs.substituteAll {
+      src = ./tproxy-use.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit tproxyUsePid;
+    };
+    tproxyUsePid = pkgs.substituteAll {
+      src = ./tproxy-use-pid.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      cgroupPath = "/sys/fs/cgroup/${cfg.tproxy.cgroup}";
+    };
+    tproxyCgroup = pkgs.substituteAll {
+      src = ./tproxy-cgroup.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (cfg.tproxy) nftTable;
+    };
+    tproxyInterface = pkgs.substituteAll {
+      src = ./tproxy-interface.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (cfg.tproxy) nftTable;
+    };
   };
 in
 with lib;
@@ -138,6 +114,19 @@ with lib;
         type = with types; str;
         default = "0x356";
       };
+      nftTable = mkOption {
+        type = with types; str;
+        # tproxy is a keyword in nft
+        default = "fw-tproxy";
+      };
+      bypassCgroupLevel = mkOption {
+        type = with types; int;
+        default = 2;
+      };
+      bypassCgroup = mkOption {
+        type = with types; str;
+        default = "system.slice/clash-premium.service";
+      };
       cgroup = mkOption {
         type = with types; str;
         default = "tproxy";
@@ -152,11 +141,7 @@ with lib;
           default = [ ];
         };
       };
-      extraPreroutingRules = mkOption {
-        type = with types; lines;
-        default = "";
-      };
-      extraOutputRules = mkOption {
+      extraFilterRules = mkOption {
         type = with types; lines;
         default = "";
       };
@@ -276,20 +261,25 @@ with lib;
     })
 
     (mkIf (cfg.tproxy.enable) {
-      systemd.services.clash-tproxy = {
+      systemd.services.fw-tproxy = {
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = "${scripts}/bin/clash-tproxy-setup";
-          ExecStopPost = "${scripts}/bin/clash-tproxy-clean";
+          ExecStart = "${scripts}/bin/fw-tproxy-setup";
+          ExecStopPost = "${scripts}/bin/fw-tproxy-clean";
         };
         after = [ "clash-premium.service" ];
         requires = [ "clash-premium.service" ];
         wantedBy = [ "multi-user.target" ];
       };
+      networking.firewall.extraCommands = ''
+        ${optionalString (config.networking.firewall.checkReversePath != false) ''
+          iptables --table mangle --insert nixos-fw-rpfilter --match mark --mark ${cfg.tproxy.fwmark} --jump RETURN
+        ''}
+        iptables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
+      '';
 
       networking.fw-proxy.tproxy.allCgroups.level1 = [ cfg.tproxy.cgroup ];
-
       system.build.fw-proxy-tproxy-scripts = scripts;
     })
     (mkIf cfg.auto-update.enable {

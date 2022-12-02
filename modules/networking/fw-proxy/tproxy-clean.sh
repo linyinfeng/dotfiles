@@ -5,11 +5,12 @@ export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 route_table="@routeTable@"
 fwmark="@fwmark@"
 cgroup="@cgroup@"
+nft_table="@nftTable@"
 
 set -x
 
 # delete nftables
-nft delete table inet clash-tproxy
+nft delete table inet $nft_table
 
 # delete cgroup
 rmdir "/sys/fs/cgroup/$cgroup"

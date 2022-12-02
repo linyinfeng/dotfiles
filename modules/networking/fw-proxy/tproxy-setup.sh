@@ -5,10 +5,13 @@ export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 tproxy_port="@tproxyPort@"
 route_table="@routeTable@"
 fwmark="@fwmark@"
+nft_table="@nftTable@"
+bypass_cgroup="@bypassCgroup@"
+bypass_cgroup_level="@bypassCgroupLevel@"
 cgroup="@cgroup@"
-proxied_interfaces="@proxiedInterfaceElements@"
 level1_cgroups='@level1CgroupElements@'
 level2_cgroups='@level2CgroupElements@'
+proxied_interfaces="@proxiedInterfaceElements@"
 
 set -x
 
@@ -22,10 +25,10 @@ mkdir "/sys/fs/cgroup/$cgroup"
 
 # setup nftables
 nft --file - <<EOF
-table inet clash-tproxy
-delete table inet clash-tproxy
+table inet $nft_table
+delete table inet $nft_table
 
-table inet clash-tproxy {
+table inet $nft_table {
   set reserved-ip {
     typeof ip daddr
     flags interval
@@ -47,53 +50,74 @@ table inet clash-tproxy {
     typeof ip6 daddr
     flags interval
     elements = {
-      ::1/128,        # loopback
-      fc00::/7,       # private
-      fe80::/10       # link-local
+      ::1/128,  # loopback
+      fc00::/7, # private
+      fe80::/10 # link-local
     }
   }
 
   set proxied-interfaces {
-    type ifname
+    typeof iif
     counter
-    elements = { $proxied_interfaces }
+    $proxied_interfaces
   }
 
   set level1-cgroups {
     typeof socket cgroupv2 level 1
     counter
-    elements = { $level1_cgroups }
+    $level1_cgroups
   }
 
   set level2-cgroups {
-    typeof  socket cgroupv2 level 2
+    typeof socket cgroupv2 level 2
     counter
-    elements = { $level2_cgroups }
+    $level2_cgroups
   }
 
   chain prerouting {
     type filter hook prerouting priority mangle; policy accept;
-    fib daddr type local return
-    ip  daddr @reserved-ip  return
-    ip6 daddr @reserved-ip6 return
-    @extraPreroutingRules@
-    meta l4proto {tcp, udp} \
-      iifname @proxied-interfaces \
-      meta mark set $fwmark \
+
+    mark $fwmark \
+      meta l4proto {tcp, udp} \
       tproxy to :$tproxy_port \
+      counter \
+      accept \
+      comment "tproxy and accept marked packets (marked by the output chain)"
+
+    jump filter
+
+    meta l4proto {tcp, udp} \
+      iif @proxied-interfaces \
+      tproxy to :$tproxy_port \
+      mark set $fwmark \
       counter
   }
 
   chain output {
     type route hook output priority mangle; policy accept;
-    socket cgroupv2 level 2 "system.slice/clash-premium.service" counter return
-    @extraOutputRules@
+
+    socket cgroupv2 level $bypass_cgroup_level "$bypass_cgroup" \
+      counter \
+      return \
+      comment "bypass packets of proxy service"
+
+    jump filter
+
     meta l4proto {tcp, udp} \
       socket cgroupv2 level 1 @level1-cgroups \
       meta mark set $fwmark
     meta l4proto {tcp, udp} \
       socket cgroupv2 level 2 @level2-cgroups \
       meta mark set $fwmark
+    comment "marked packets will be routed to lo"
+  }
+
+  chain filter {
+    fib daddr type local accept
+    ip  daddr @reserved-ip  accept
+    ip6 daddr @reserved-ip6 accept
+
+    @extraFilterRules@
   }
 }
 EOF
