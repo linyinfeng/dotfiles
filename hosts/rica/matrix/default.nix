@@ -125,7 +125,6 @@
     ];
   };
 
-
   services.mautrix-telegram = {
     enable = true;
     environmentFile = config.sops.templates."mautrix-telegram-config".path;
@@ -147,7 +146,7 @@
         public_portals = true;
         delivery_error_reports = true;
         animated_sticker = {
-          target = "webp";
+          target = "webp"; # require ffmpeg in path
           convert_from_webm = true;
         };
         permissions = {
@@ -175,9 +174,14 @@
     };
   };
 
-  systemd.services.mautrix-telegram.restartTriggers = [
-    config.sops.templates."mautrix-telegram-config".file
-  ];
+  systemd.services.mautrix-telegram = {
+    path = with pkgs; [
+      ffmpeg-full # for animated sticker conversion
+    ];
+    restartTriggers = [
+      config.sops.templates."mautrix-telegram-config".file
+    ];
+  };
 
   sops.templates."mautrix-telegram-config".content = ''
     MAUTRIX_TELEGRAM_APPSERVICE_AS_TOKEN=${config.sops.placeholder."mautrix_appservice_as_token"}
