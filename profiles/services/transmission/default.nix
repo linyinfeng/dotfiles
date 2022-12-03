@@ -1,7 +1,7 @@
 { config, ... }:
 
 let
-  rpcPort = 9091;
+  rpcPort = config.ports.transmission-rpc;
 in
 {
   services.transmission = {
@@ -21,8 +21,6 @@ in
     rpc-username = config.sops.placeholder."transmission_username";
     rpc-password = config.sops.placeholder."transmission_password";
   };
-
-  networking.firewall.allowedTCPPorts = [ rpcPort ];
 
   services.samba.shares.transmission = {
     "path" = "/var/lib/transmission/Downloads";

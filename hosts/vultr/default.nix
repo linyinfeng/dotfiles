@@ -12,7 +12,6 @@ let
   ];
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 
-  dotTarPort = 8001;
 in
 {
   imports =
@@ -138,14 +137,14 @@ in
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
-          proxyPass = "http://localhost:${toString dotTarPort}";
+          proxyPass = "http://localhost:${toString config.ports.dot-tar}";
         };
       };
       services.dot-tar = {
         enable = true;
         config = {
           release = {
-            port = dotTarPort;
+            port = config.ports.dot-tar;
             authority_allow_list = [
               "github.com"
             ];

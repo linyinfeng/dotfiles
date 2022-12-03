@@ -4,7 +4,7 @@ let
   stateDir = "/var/lib/zerotier-one";
   interfaceName = "zt0";
   hostName = config.networking.hostName;
-  port = 9993;
+  port = config.ports.zerotier;
   units = [
     "zerotierone-presetup.service"
     "zerotierone.service"

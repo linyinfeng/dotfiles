@@ -3,7 +3,7 @@
 let
   cacheS3Host = self.lib.data.cache_s3_host;
   cacheBucketName = self.lib.data.cache_bucket_name;
-  sigv4ProxyPort = 3000;
+  sigv4ProxyPort = config.ports.sigv4-proxy;
   sigv4ProxyAddress = "http://localhost:${toString sigv4ProxyPort}";
 in
 {

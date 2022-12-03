@@ -148,7 +148,7 @@ in
                 protocol = "trojan";
                 settings = {
                   address = cfg.host;
-                  port = 443;
+                  port = config.ports.https;
                   password = config.sops.placeholder."portal_client_id";
                 };
                 streamSettings = {

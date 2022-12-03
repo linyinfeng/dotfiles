@@ -6,7 +6,7 @@ in
 {
   services.tailscale = {
     enable = true;
-    port = 41641;
+    port = config.ports.tailscale;
     inherit interfaceName;
   };
   # # don't auto start tailscaled if

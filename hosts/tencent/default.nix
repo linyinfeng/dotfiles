@@ -29,10 +29,10 @@ in
     listens = lib.mkOption {
       type = with lib.types; listOf anything;
       default = [
-        { addr = "[::]"; port = 443; ssl = true; }
-        { addr = "[::]"; port = 8443; ssl = true; }
-        { addr = "0.0.0.0"; port = 443; ssl = true; }
-        { addr = "0.0.0.0"; port = 8443; ssl = true; }
+        { addr = "[::]"; port = config.ports.https; ssl = true; }
+        { addr = "[::]"; port = config.ports.https-alternative; ssl = true; }
+        { addr = "0.0.0.0"; port = config.ports.https; ssl = true; }
+        { addr = "0.0.0.0"; port = config.ports.https-alternative; ssl = true; }
       ];
     };
   };
@@ -116,7 +116,7 @@ in
     # tailscale derp server
     (
       let
-        derperPort = 8443;
+        derperPort = config.ports.https-alternative;
       in
       {
         systemd.services.derper = {

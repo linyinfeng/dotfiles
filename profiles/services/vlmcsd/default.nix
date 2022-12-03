@@ -1,7 +1,7 @@
-{ ... }:
+{ config, ... }:
 
 let
-  port = 40044;
+  port = config.ports.vlmcsd;
 in
 {
   services.vlmcsd = {

@@ -3,7 +3,7 @@
 let
   interfaceName = "wg0";
   hostName = config.networking.hostName;
-  port = 51820;
+  port = config.ports.wireguard;
   hosts = {
     framework = {
       ip = "192.168.2.2/32";

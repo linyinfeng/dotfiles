@@ -20,6 +20,9 @@
     ];
 
     ports = {
+      http = 80;
+      https = 443;
+      https-alternative = 8443;
       smtp-tls = 465;
       smtp-starttls = 587;
       pastebin = 3000;
@@ -36,9 +39,24 @@
       mautrix-telegram-appservice = 3100;
       minio = 3110;
       minio-console = 3111;
+      sigv4-proxy = 3120;
+      dot-tar = 3130;
+      proxy-http = 3140;
+      proxy-socks = 3141;
+      proxy-mixed = 3142;
+      proxy-tproxy = 3143;
+      clash-controller = 3150;
+      transmission-rpc = 3160;
+      zerotier = 9993;
       minecraft = 25565;
       minecraft-rcon = 25566;
       minecraft-map = 25567;
+      teamspeak-voice = 9987;
+      teamspeak-file-transfer = 30033;
+      teamspeak-query = 10011;
+      vlmcsd = 40044;
+      tailscale = 41641;
+      wireguard = 51820;
     };
   };
 }

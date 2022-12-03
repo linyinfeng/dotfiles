@@ -11,12 +11,12 @@ in
       cgroup = "tproxy";
     };
     mixinConfig = {
-      port = 7890;
-      socks-port = 7891;
-      mixed-port = 8899;
-      tproxy-port = 8900;
+      port = config.ports.proxy-http;
+      socks-port = config.ports.proxy-socks;
+      mixed-port = config.ports.proxy-mixed;
+      tproxy-port = config.ports.proxy-tproxy;
       log-level = "info";
-      external-controller = "127.0.0.1:9090";
+      external-controller = "127.0.0.1:${toString config.ports.clash-controller}";
     };
   };
 
