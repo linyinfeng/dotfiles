@@ -84,23 +84,47 @@
       url = "http://localhost:${toString config.ports.mautrix-telegram-appservice}";
       as_token = config.sops.placeholder."mautrix_appservice_as_token";
       hs_token = config.sops.placeholder."mautrix_appservice_hs_token";
-      sender_localpart = "telegram";
+      sender_localpart = "mautrix-telegram";
+      rate_limited = false;
+      de.sorunome.msc2409.push_ephemeral = true;
+      push_ephemeral = true;
       namespaces = {
-        users = [ ];
+        users = [
+          {
+            exclusive = true;
+            regex = "@telegram_.*:li7g\\.com";
+          }
+          {
+            exclusive = true;
+            regex = "@telegrambot:li7g\.com";
+          }
+        ];
         rooms = [ ];
-        aliases = [ ];
+        aliases = [
+          {
+            exclusive = true;
+            regex = "\\#telegram_.*:li7g\\.com";
+          }
+        ];
       };
     };
   };
 
   # copy singing key to signing key path
-  systemd.services.matrix-synapse.serviceConfig.ExecStartPre =
-    lib.mkBefore [
-      ("+" + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
-        cp "${config.sops.secrets."synapse/signing-key".path}" "${config.services.matrix-synapse.settings.signing_key_path}"
-        chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
-      ''))
+  systemd.services.matrix-synapse = {
+    serviceConfig.ExecStartPre =
+      lib.mkBefore [
+        ("+" + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
+          cp "${config.sops.secrets."synapse/signing-key".path}" "${config.services.matrix-synapse.settings.signing_key_path}"
+          chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
+        ''))
+      ];
+    restartTriggers = [
+      config.sops.templates."mautrix-registration-appservice".content
+      config.sops.templates."synapse-extra-config".content
     ];
+  };
+
 
   services.mautrix-telegram = {
     enable = true;
@@ -147,6 +171,10 @@
       };
     };
   };
+
+  systemd.services.mautrix-telegram.restartTriggers = [
+    config.sops.templates."mautrix-telegram-config".content
+  ];
 
   sops.templates."mautrix-telegram-config".content = ''
     MAUTRIX_TELEGRAM_APPSERVICE_AS_TOKEN=${config.sops.placeholder."mautrix_appservice_as_token"}
