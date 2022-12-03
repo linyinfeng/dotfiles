@@ -8,7 +8,7 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.grafana}/";
+      proxyPass = "http://127.0.0.1:${toString config.ports.grafana}/";
     };
   };
   services.grafana = {
@@ -17,7 +17,7 @@ in
       server = {
         root_url = "https://grafana.li7g.com";
         http_addr = "127.0.0.1";
-        http_port = cfg.ports.grafana;
+        http_port = config.ports.grafana;
       };
       "auth.anonymous".enabled = true;
       users.default_theme = "light";
@@ -26,7 +26,7 @@ in
         enabled = true;
         from_address = "grafana@li7g.com";
         user = "grafana@li7g.com";
-        host = "smtp.li7g.com:587";
+        host = "smtp.li7g.com:${toString config.ports.smtp-starttls}";
         startTLS_policy = "MandatoryStartTLS";
       };
       security = {

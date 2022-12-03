@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 
 let
-  minioPort = 9000;
-  minioConsolePort = 9001;
+  minioPort = config.ports.minio;
+  minioConsolePort = config.ports.minio-console;
   minioAddress = "http://localhost:${toString minioPort}";
   minioRequiredProxyHeaders = pkgs.writeText "minio-required-proxy-headers.conf" ''
     proxy_set_header Host $host;

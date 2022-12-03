@@ -2,9 +2,9 @@
 
 let
   cfg = config.hosts.nuc;
-  port = 25565; # also port for voice (udp)
-  rconPort = 25575;
-  mapPort = 8123;
+  port = config.ports.minecraft; # also port for voice (udp)
+  rconPort = config.ports.minecraft-rcon;
+  mapPort = config.ports.minecraft-map;
   server = "${pkgs.mc-config-nuc.server-launcher}/bin/minecraft-server --nogui";
 in
 {

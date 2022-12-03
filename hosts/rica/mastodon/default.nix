@@ -16,7 +16,7 @@
     smtp = {
       authenticate = true;
       host = "smtp.li7g.com";
-      port = 587;
+      port = config.ports.smtp-starttls;
       user = "mastodon@li7g.com";
       fromAddress = "mastodon@li7g.com";
       # type is null or path, add a leading /

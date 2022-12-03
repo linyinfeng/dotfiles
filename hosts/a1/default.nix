@@ -11,8 +11,6 @@ let
   ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
-
-  cfg = config.hosts.a1;
 in
 {
   imports =
@@ -23,7 +21,6 @@ in
       services.notify-failure
       nix.hydra-builder-server
     ]) ++ [
-      ./options.nix
       "${modulesPath}/profiles/qemu-guest.nix"
     ];
 

@@ -9,7 +9,7 @@ in
     extraFlags = [ "-config.expand-env=true" ];
     configuration = {
       auth_enabled = false;
-      server.http_listen_port = cfg.ports.loki;
+      server.http_listen_port = config.ports.loki;
       common = {
         path_prefix = config.services.loki.dataDir;
         ring.kvstore.store = "inmemory";
@@ -93,7 +93,7 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {
-      proxyPass = "http://localhost:${toString cfg.ports.loki}";
+      proxyPass = "http://localhost:${toString config.ports.loki}";
       extraConfig = ''
         auth_basic "loki";
         auth_basic_user_file ${config.sops.templates."loki-auth-file".path};

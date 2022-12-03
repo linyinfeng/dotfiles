@@ -185,7 +185,7 @@ in
       services.nginx = {
         virtualHosts."nuc.*" = {
           locations."/store/" = {
-            proxyPass = "http://127.0.0.1:${toString cfg.ports.nixServe}/";
+            proxyPass = "http://127.0.0.1:${toString config.ports.nix-serve}/";
             extraConfig = ''
               proxy_max_temp_file_size 0;
             '';
@@ -195,7 +195,7 @@ in
       services.nix-serve = {
         enable = true;
         bindAddress = "0.0.0.0";
-        port = cfg.ports.nixServe;
+        port = config.ports.nix-serve;
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
       sops.secrets."cache-li7g-com/key" = {

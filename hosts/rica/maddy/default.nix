@@ -41,7 +41,7 @@ in
           }
         }
 
-        submission tls://0.0.0.0:465 tcp://0.0.0.0:587 {
+        submission tls://0.0.0.0:${toString config.ports.smtp-tls} tcp://0.0.0.0:${toString config.ports.smtp-starttls} {
           limits {
             # Up to 50 msgs/sec across any amount of SMTP connections.
             all rate 50 1s
@@ -179,9 +179,9 @@ in
       '';
     };
 
-    networking.firewall.allowedTCPPorts = [
-      465
-      587
+    networking.firewall.allowedTCPPorts = with config.ports; [
+      smtp-tls
+      smtp-starttls
     ];
   };
 }

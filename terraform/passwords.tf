@@ -155,3 +155,19 @@ output "code_server_hashed_password" {
   value     = sha256(random_password.code_server.result)
   sensitive = true
 }
+resource "random_password" "mautrix_appservice_as_token" {
+  length  = 32
+  special = false
+}
+output "mautrix_appservice_as_token" {
+  value     = random_password.mautrix_appservice_as_token.result
+  sensitive = true
+}
+resource "random_password" "mautrix_appservice_hs_token" {
+  length  = 32
+  special = false
+}
+output "mautrix_appservice_hs_token" {
+  value     = random_password.mautrix_appservice_hs_token.result
+  sensitive = true
+}

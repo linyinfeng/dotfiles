@@ -14,7 +14,7 @@ in
     seafileSettings = {
       fileserver = {
         host = "127.0.0.1";
-        port = cfg.ports.seafileFileServer;
+        port = config.ports.seafile-file-server;
       };
       quota.default = 2;
       history.keep_days = 30;
@@ -32,7 +32,7 @@ in
     useACMEHost = "main";
     locations."/".proxyPass = "http://unix:/run/seahub/gunicorn.sock";
     locations."/seafhttp/" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.seafileFileServer}/";
+      proxyPass = "http://127.0.0.1:${toString config.ports.seafile-file-server}/";
     };
   };
 

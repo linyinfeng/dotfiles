@@ -8,13 +8,13 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
+      proxyPass = "http://127.0.0.1:${toString config.ports.vaultwarden-http}";
     };
     locations."/notifications/hub/negotiate" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.http}";
+      proxyPass = "http://127.0.0.1:${toString config.ports.vaultwarden-http}";
     };
     locations."/notifications/hub" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.vaultwarden.websocket}";
+      proxyPass = "http://127.0.0.1:${toString config.ports.vaultwarden-websocket}";
       proxyWebsockets = true;
     };
   };
@@ -28,12 +28,12 @@ in
       emergencyAccessAllowed = false;
       websocketEnabled = true;
       websocketAddress = "127.0.0.1";
-      websocketPort = cfg.ports.vaultwarden.websocket;
+      websocketPort = config.ports.vaultwarden-websocket;
       rocketAddress = "127.0.0.1";
-      rocketPort = cfg.ports.vaultwarden.http;
+      rocketPort = config.ports.vaultwarden-http;
       smtpHost = "smtp.li7g.com";
       smtpFrom = "vault@li7g.com";
-      smtpPort = 465;
+      smtpPort = config.ports.smtp-tls;
       smtpSecurity = "force_tls";
       smtpExplicitTls = true; # workaround for v1.24.0 and before
       smtpUsername = "vault@li7g.com";

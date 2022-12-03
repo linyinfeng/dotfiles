@@ -8,7 +8,7 @@ let
     account="$1"
     recipient="$2"
     subject="$3"
-    ${pkgs.openssl}/bin/openssl s_client -quiet -ign_eof smtp.li7g.com:465 <<EOF
+    ${pkgs.openssl}/bin/openssl s_client -quiet -ign_eof smtp.li7g.com:${toString config.ports.smtp-tls} <<EOF
     HELO ${domain}
     AUTH LOGIN
     $(echo -n "$account" | base64)

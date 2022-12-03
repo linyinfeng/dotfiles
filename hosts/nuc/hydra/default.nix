@@ -22,7 +22,7 @@ in
       services.nginx = {
         virtualHosts."nuc.*" = {
           locations."/hydra/" = {
-            proxyPass = "http://127.0.0.1:${toString cfg.ports.hydra}/";
+            proxyPass = "http://127.0.0.1:${toString config.ports.hydra}/";
             extraConfig = ''
               proxy_set_header X-Forwarded-Port $server_port;
               proxy_set_header X-Request-Base /hydra;
@@ -35,7 +35,7 @@ in
         enable = true;
         package = pkgs.hydra-master;
         listenHost = "127.0.0.1";
-        port = cfg.ports.hydra;
+        port = config.ports.hydra;
         hydraURL = "https://nuc.li7g.com:8443/hydra";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
@@ -108,7 +108,7 @@ in
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
         EMAIL_SENDER_TRANSPORT_sasl_password=${config.sops.placeholder."mail_password"}
         EMAIL_SENDER_TRANSPORT_host=smtp.li7g.com
-        EMAIL_SENDER_TRANSPORT_port=465
+        EMAIL_SENDER_TRANSPORT_port=${toString config.ports.smtp-tls}
         EMAIL_SENDER_TRANSPORT_ssl=1
       '';
       sops.secrets."mail_password" = {

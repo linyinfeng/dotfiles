@@ -1,8 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let
-  cfg = config.hosts.rica;
-in
 {
   services.matrix-synapse = {
     enable = true;
@@ -26,6 +23,10 @@ in
       dynamic_thumbnails = true;
       allow_public_rooms_over_federation = true;
 
+      app_service_config_files = [
+        config.sops.templates."mautrix-registration-appservice".path
+      ];
+
       enable_registration = true;
       registration_requires_token = true;
       registrations_require_3pid = [
@@ -34,7 +35,7 @@ in
 
       listeners = [{
         bind_addresses = [ "127.0.0.1" ];
-        port = cfg.ports.matrix.http;
+        port = config.ports.matrix;
         tls = false;
         type = "http";
         x_forwarded = true;
@@ -49,16 +50,6 @@ in
       config.sops.templates."synapse-extra-config".path
     ];
   };
-
-
-  # copy singing key to signing key path
-  systemd.services.matrix-synapse.serviceConfig.ExecStartPre =
-    lib.mkBefore [
-      ("+" + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
-        cp "${config.sops.secrets."synapse/signing-key".path}" "${config.services.matrix-synapse.settings.signing_key_path}"
-        chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
-      ''))
-    ];
 
   sops.templates."synapse-extra-config" = {
     owner = "matrix-synapse";
@@ -86,6 +77,83 @@ in
     };
   };
 
+  sops.templates."mautrix-registration-appservice" = {
+    owner = "matrix-synapse";
+    content = builtins.toJSON {
+      id = "mautrix-registration";
+      url = "http://localhost:${toString config.ports.mautrix-telegram-appservice}";
+      as_token = config.sops.placeholder."mautrix_appservice_as_token";
+      hs_token = config.sops.placeholder."mautrix_appservice_hs_token";
+      sender_localpart = "telegram";
+      namespaces = {
+        users = [ ];
+        rooms = [ ];
+        aliases = [ ];
+      };
+    };
+  };
+
+  # copy singing key to signing key path
+  systemd.services.matrix-synapse.serviceConfig.ExecStartPre =
+    lib.mkBefore [
+      ("+" + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
+        cp "${config.sops.secrets."synapse/signing-key".path}" "${config.services.matrix-synapse.settings.signing_key_path}"
+        chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
+      ''))
+    ];
+
+  services.mautrix-telegram = {
+    enable = true;
+    environmentFile = config.sops.templates."mautrix-telegram-config".path;
+    serviceDependencies = [ "matrix-synapse.service" ];
+    settings = {
+      homeserver = {
+        address = "http://127.0.0.1:${toString config.ports.matrix}";
+        domain = "li7g.com";
+      };
+      appservice = {
+        address = "http://127.0.0.1:${toString config.ports.mautrix-telegram-appservice}";
+        database = "postgres:///mautrix-telegram?host=/run/postgresql";
+        hostname = "127.0.0.1";
+        port = config.ports.mautrix-telegram-appservice;
+        provisioning.enabled = false;
+      };
+      bridge = {
+        displayname_template = "{displayname}";
+        public_portals = true;
+        delivery_error_reports = true;
+        animated_sticker = {
+          target = "webp";
+          convert_from_webm = true;
+        };
+        permissions = {
+          "*" = "relaybot";
+          "@yinfeng:li7g.com" = "admin";
+        };
+      };
+      telegram = {
+        # app id and hash from Fedora tdesktop
+        api_id = 611335;
+        api_hash = "d524b414d21f4d37f08684c1df41ac9c";
+        device_info = {
+          app_version = pkgs.tdesktop.version;
+        };
+      };
+      logging = {
+        loggers = {
+          mau.level = "WARNING";
+          telethon.level = "WARNING";
+        };
+      };
+    };
+  };
+
+  sops.templates."mautrix-telegram-config".content = ''
+    MAUTRIX_TELEGRAM_APPSERVICE_AS_TOKEN=${config.sops.placeholder."mautrix_appservice_as_token"}
+    MAUTRIX_TELEGRAM_APPSERVICE_HS_TOKEN=${config.sops.placeholder."mautrix_appservice_hs_token"}
+    MAUTRIX_TELEGRAM_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram-bot/matrix-bridge"}
+  '';
+
   sops.secrets."synapse/signing-key" = {
     sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
     owner = "matrix-synapse";
@@ -103,15 +171,37 @@ in
     sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
     restartUnits = [ "matrix-synapse.service" ];
   };
+  sops.secrets."mautrix_appservice_as_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
+  };
+  sops.secrets."mautrix_appservice_hs_token" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
+  };
+  sops.secrets."telegram-bot/matrix-bridge" = {
+    sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+    restartUnits = [ "mautrix-telegram.service" ];
+  };
 
   systemd.services.matrix-synapse.after = [ "postgresql.service" ];
+  systemd.services.mautrix-telegram.after = [ "postgresql.service" ];
   services.postgresql = {
-    ensureDatabases = [ "matrix-synapse" ];
+    ensureDatabases = [
+      "matrix-synapse"
+      "mautrix-telegram"
+    ];
     ensureUsers = [
       {
         name = "matrix-synapse";
         ensurePermissions = {
           "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
+        };
+      }
+      {
+        name = "mautrix-telegram";
+        ensurePermissions = {
+          "DATABASE \"mautrix-telegram\"" = "ALL PRIVILEGES";
         };
       }
     ];
@@ -121,7 +211,7 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/_matrix" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.matrix.http}";
+      proxyPass = "http://127.0.0.1:${toString config.ports.matrix}";
     };
     locations."/" = {
       root = pkgs.element-web-li7g-com;

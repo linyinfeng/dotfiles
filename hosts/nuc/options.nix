@@ -13,15 +13,5 @@
         { addr = "0.0.0.0"; port = 8443; ssl = true; }
       ];
     };
-    ports = {
-      hydra = lib.mkOption {
-        type = lib.types.port;
-        default = 3001;
-      };
-      nixServe = lib.mkOption {
-        type = lib.types.port;
-        default = 3002;
-      };
-    };
   };
 }

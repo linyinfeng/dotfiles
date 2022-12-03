@@ -17,7 +17,7 @@ in
   services.influxdb2 = {
     enable = true;
     settings = {
-      http-bind-address = ":${toString cfg.ports.influxdb}";
+      http-bind-address = ":${toString config.ports.influxdb}";
     };
   };
   systemd.services.influxdb2-setup = {
@@ -32,7 +32,7 @@ in
       StateDirectory = "influxdb2-setup";
     };
     environment = {
-      INFLUX_HOST = "http://localhost:${toString cfg.ports.influxdb}";
+      INFLUX_HOST = "http://localhost:${toString config.ports.influxdb}";
       INFLUX_CONFIGS_PATH = "/var/lib/influxdb2-setup/configs";
     };
     after = [ "influxdb2.service" ];
@@ -54,7 +54,7 @@ in
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString cfg.ports.influxdb}/";
+      proxyPass = "http://127.0.0.1:${toString config.ports.influxdb}/";
     };
   };
 }

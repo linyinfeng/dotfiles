@@ -6,12 +6,12 @@ in
 {
   services.prometheus.alertmanager = {
     enable = true;
-    port = cfg.ports.alertmanager;
+    port = config.ports.alertmanager;
     logLevel = "info";
     environmentFile = config.sops.templates."alertmanager-env".path;
     configuration = {
       global = {
-        smtp_smarthost = "smtp.li7g.com:587";
+        smtp_smarthost = "smtp.li7g.com:${toString config.ports.smtp-starttls}";
         smtp_from = "alertmanager@li7g.com";
         smtp_auth_username = "alertmanager@li7g.com";
         smtp_auth_password = "$SMTP_AUTH_PASSWORD";
@@ -54,7 +54,7 @@ in
     virtualHosts."alertmanager.*" = {
       forceSSL = true;
       useACMEHost = "main";
-      locations."/".proxyPass = "http://localhost:${toString cfg.ports.alertmanager}";
+      locations."/".proxyPass = "http://localhost:${toString config.ports.alertmanager}";
     };
   };
   sops.templates."alertmanager-env".content = ''

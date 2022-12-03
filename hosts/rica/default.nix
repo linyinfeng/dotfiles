@@ -22,7 +22,6 @@ in
       services.acme
       services.notify-failure
     ]) ++ [
-      ./options.nix
       ./minio
       ./maddy
       ./vaultwarden
@@ -145,7 +144,7 @@ in
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
-          proxyPass = "http://127.0.0.1:${toString cfg.ports.pastebin}";
+          proxyPass = "http://127.0.0.1:${toString config.ports.pastebin}";
           extraConfig = ''
             add_header Cache-Control "public, no-cache";
           '';
@@ -161,7 +160,7 @@ in
           ${pkgs.pastebin}/bin/pastebin \
             --endpoint-host minio.li7g.com \
             --bucket pastebin \
-            --port "${toString cfg.ports.pastebin}"
+            --port "${toString config.ports.pastebin}"
         '';
         serviceConfig = {
           DynamicUser = true;
