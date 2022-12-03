@@ -142,7 +142,6 @@
         provisioning.enabled = false;
       };
       bridge = {
-        displayname_template = "{displayname}";
         public_portals = true;
         delivery_error_reports = true;
         animated_sticker = {
