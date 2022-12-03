@@ -120,8 +120,8 @@
         ''))
       ];
     restartTriggers = [
-      config.sops.templates."mautrix-registration-appservice".content
-      config.sops.templates."synapse-extra-config".content
+      config.sops.templates."mautrix-registration-appservice".file
+      config.sops.templates."synapse-extra-config".file
     ];
   };
 
@@ -176,7 +176,7 @@
   };
 
   systemd.services.mautrix-telegram.restartTriggers = [
-    config.sops.templates."mautrix-telegram-config".content
+    config.sops.templates."mautrix-telegram-config".file
   ];
 
   sops.templates."mautrix-telegram-config".content = ''
