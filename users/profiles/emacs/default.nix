@@ -3,7 +3,7 @@ let
   rawEmacsConfig = ./init.el;
   emacs = (pkgs.emacsWithPackagesFromUsePackage {
     config = rawEmacsConfig;
-    package = pkgs.emacsPgtkNativeComp;
+    package = pkgs.emacsPgtk;
     alwaysEnsure = false;
     override = epkgs: epkgs // {
       inherit (epkgs.melpaPackages) telega;
