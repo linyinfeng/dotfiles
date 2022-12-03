@@ -154,6 +154,9 @@
           "*" = "relaybot";
           "@yinfeng:li7g.com" = "admin";
         };
+        encryption = {
+          allow = true;
+        };
       };
       telegram = {
         # app id and hash from Fedora tdesktop
