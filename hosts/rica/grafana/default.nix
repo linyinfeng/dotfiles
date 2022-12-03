@@ -77,7 +77,7 @@ in
           uid = "influxdb-li7g-com";
           name = "InflexDB";
           type = "influxdb";
-          url = "https://influxdb.li7g.com";
+          url = "https://influxdb.ts.li7g.com";
           jsonData = {
             version = "Flux";
             organization = "main-org";
@@ -89,7 +89,7 @@ in
           uid = "loki-li7g-com";
           name = "Loki";
           type = "loki";
-          url = "https://loki.li7g.com";
+          url = "https://loki.ts.li7g.com";
           basicAuth = true;
           basicAuthUser = "loki";
           secureJsonData.basicAuthPassword = "$__env{LOKI_PASSWORD}";
@@ -101,7 +101,7 @@ in
           uid = "alertmanager-li7g-com";
           name = "Alertmanager";
           type = "alertmanager";
-          url = "https://alertmanager.li7g.com";
+          url = "https://alertmanager.ts.li7g.com";
           basicAuth = true;
           basicAuthUser = "alertmanager";
           secureJsonData.basicAuthPassword = "$__env{ALERTMANAGER_PASSWORD}";
