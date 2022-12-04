@@ -36,9 +36,17 @@ in
     };
   };
 
-  systemd.services.seahub.serviceConfig.EnvironmentFile = config.sops.templates."seahub-env".path;
+  systemd.services.seahub = {
+    serviceConfig.EnvironmentFile = config.sops.templates."seahub-env".path;
+    restartTriggers = [
+      config.sops.templates."seahub-env".file
+    ];
+  };
   sops.templates."seahub-env".content = ''
     ADMIN_PASSWORD=${config.sops.placeholder."seahub_password"}
   '';
-  sops.secrets."seahub_password".sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+  sops.secrets."seahub_password" = {
+    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    restartUnits = [ "seahub.service" ];
+  };
 }

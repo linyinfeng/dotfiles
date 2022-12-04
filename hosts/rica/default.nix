@@ -32,8 +32,7 @@ in
       ./loki
       ./git
       ./alertmanager
-      # TODO broken
-      # ./seafile
+      ./seafile
       ./mastodon
     ];
 
