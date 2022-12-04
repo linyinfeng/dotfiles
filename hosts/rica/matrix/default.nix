@@ -4,6 +4,9 @@
   services.matrix-synapse = {
     enable = true;
     withJemalloc = true;
+    plugins = [
+      pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
+    ];
     settings = {
       server_name = "li7g.com";
       public_baseurl = "https://matrix.li7g.com";
@@ -61,21 +64,26 @@
         force_tls = true;
         smtp_pass = config.sops.placeholder."mail_password";
       };
-      # TODO make package for the provider or host a standalone media repo
-      # media_storage_providers = [
-      #   {
-      #     module = "s3_storage_provider.S3StorageProviderBackend";
-      #     store_remote = true;
-      #     config = {
-      #       bucket = "synapse-media";
-      #       endpoint_url = "minio.li7g.com";
-      #       access_key_id = config.sops.placeholder."minio_synapse_media_key_id";
-      #       secret_access_key = config.sops.placeholder."minio_synapse_media_access_key";
-      #     };
-      #   }
-      # ];
+      media_storage_providers = [
+        {
+          module = "s3_storage_provider.S3StorageProviderBackend";
+          store_local = true;
+          store_remote = true;
+          store_synchronous = true;
+          config = {
+            bucket = "synapse-media";
+            endpoint_url = "https://minio.ts.li7g.com";
+            access_key_id = config.sops.placeholder."minio_synapse_media_key_id";
+            secret_access_key = config.sops.placeholder."minio_synapse_media_access_key";
+          };
+        }
+      ];
     };
   };
+
+  environment.systemPackages = [
+    pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
+  ];
 
   sops.templates."mautrix-registration-appservice" = {
     owner = "matrix-synapse";

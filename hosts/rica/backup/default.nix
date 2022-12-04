@@ -19,8 +19,6 @@ in
       "/var/lib/bitwarden_rs/attachments"
       "/var/lib/bitwarden_rs/rsa_key.pem"
       "/var/lib/bitwarden_rs/rsa_key.pub.pem"
-      # synapse
-      "/var/lib/private/synapse"
     ];
   };
   systemd.services."restic-backups-b2" = {
