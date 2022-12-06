@@ -98,81 +98,87 @@ in
       networking.firewall.allowedTCPPorts = [ 80 443 ];
     }
 
-    # matrix well-known
+    # well-known
     {
-      services.nginx.virtualHosts."li7g.com" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/.well-known/matrix/server".extraConfig = ''
-          default_type application/json;
-          return 200 '{ "m.server": "matrix.li7g.com:443" }';
-        '';
-        locations."/.well-known/matrix/client".extraConfig = ''
-          add_header Access-Control-Allow-Origin '*';
-          default_type application/json;
-          return 200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com" } }';
-        '';
-      };
-    }
+      services.nginx.virtualHosts."li7g.com" =
+        {
+          forceSSL = true;
+          useACMEHost = "main";
+          # matrix
+          locations."/.well-known/matrix/server".extraConfig = ''
+            default_type application/json;
+            return 200 '{ "m.server": "matrix.li7g.com:443" }';
+          '';
+          locations."/.well-known/matrix/client".extraConfig = ''
+            add_header Access-Control-Allow-Origin '*';
+            default_type application/json;
+            return 200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com" } }';
+          '';
+          # mastodon
+          location."/.well-known/host-meta".extraConfig = ''
+            return 301 https://mastodon.li7g.com$request_uri;
+          ''
+            };
+        }
 
-    # portal
-    {
-      services.nginx.virtualHosts."portal.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          root = pkgs.element-web-li7g-com;
-        };
-      };
-      services.portal = {
-        host = "portal.li7g.com";
-        nginxVirtualHost = "portal.*";
-        server.enable = true;
-      };
-    }
+          # portal
+          {
+            services.nginx.virtualHosts."portal.*" = {
+              forceSSL = true;
+              useACMEHost = "main";
+              locations."/" = {
+                root = pkgs.element-web-li7g-com;
+              };
+            };
+            services.portal = {
+              host = "portal.li7g.com";
+              nginxVirtualHost = "portal.*";
+              server.enable = true;
+            };
+          }
 
-    # dot-tar
-    {
-      services.nginx.virtualHosts."tar.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.ports.dot-tar}";
-        };
-      };
-      services.dot-tar = {
-        enable = true;
-        config = {
-          release = {
-            port = config.ports.dot-tar;
-            authority_allow_list = [
-              "github.com"
+          # dot-tar
+          {
+            services.nginx.virtualHosts."tar.*" = {
+              forceSSL = true;
+              useACMEHost = "main";
+              locations."/" = {
+                proxyPass = "http://localhost:${toString config.ports.dot-tar}";
+              };
+            };
+            services.dot-tar = {
+              enable = true;
+              config = {
+                release = {
+                  port = config.ports.dot-tar;
+                  authority_allow_list = [
+                    "github.com"
+                  ];
+                };
+              };
+            };
+
+            services.notify-failure.services = [
+              "dot-tar"
             ];
-          };
-        };
-      };
+          }
 
-      services.notify-failure.services = [
-        "dot-tar"
-      ];
-    }
+          # nuc-proxy
+          {
+            services.nginx.virtualHosts."nuc-proxy.*" = {
+              forceSSL = true;
+              useACMEHost = "main";
+              locations."/" = {
+                proxyPass = "https://nuc.ts.li7g.com";
+              };
+            };
+          }
 
-    # nuc-proxy
-    {
-      services.nginx.virtualHosts."nuc-proxy.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "https://nuc.ts.li7g.com";
-        };
-      };
+          {
+            networking = lib.mkIf (!config.system.is-vm) {
+              useNetworkd = true;
+              interfaces.ens3.useDHCP = true;
+            };
+          }
+        ];
     }
-
-    {
-      networking = lib.mkIf (!config.system.is-vm) {
-        useNetworkd = true;
-        interfaces.ens3.useDHCP = true;
-      };
-    }
-  ];
-}

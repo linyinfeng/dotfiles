@@ -82,6 +82,7 @@ locals {
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
     mastodon        = { on = "rica", proxy = true }
+    social          = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     mc              = { on = "nuc", proxy = false }
