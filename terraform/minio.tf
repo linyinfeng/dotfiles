@@ -315,3 +315,28 @@ resource "minio_iam_user_policy_attachment" "mastodon_media" {
   policy_name = minio_iam_policy.mastodon_media.name
   user_name   = minio_iam_user.mastodon_media.name
 }
+
+resource "minio_s3_bucket_policy" "mastodon_media_bucket" {
+  bucket = minio_s3_bucket.mastodon_media.bucket
+  policy = <<EOT
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "*"
+                ]
+            },
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::mastodon-media/*"
+            ]
+        }
+    ]
+}
+EOT
+}

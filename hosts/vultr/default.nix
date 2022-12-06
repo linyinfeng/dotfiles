@@ -115,70 +115,73 @@ in
             return 200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com" } }';
           '';
           # mastodon
-          location."/.well-known/host-meta".extraConfig = ''
+          locations."/.well-known/host-meta".extraConfig = ''
             return 301 https://mastodon.li7g.com$request_uri;
-          ''
-            };
-        }
-
-          # portal
-          {
-            services.nginx.virtualHosts."portal.*" = {
-              forceSSL = true;
-              useACMEHost = "main";
-              locations."/" = {
-                root = pkgs.element-web-li7g-com;
-              };
-            };
-            services.portal = {
-              host = "portal.li7g.com";
-              nginxVirtualHost = "portal.*";
-              server.enable = true;
-            };
-          }
-
-          # dot-tar
-          {
-            services.nginx.virtualHosts."tar.*" = {
-              forceSSL = true;
-              useACMEHost = "main";
-              locations."/" = {
-                proxyPass = "http://localhost:${toString config.ports.dot-tar}";
-              };
-            };
-            services.dot-tar = {
-              enable = true;
-              config = {
-                release = {
-                  port = config.ports.dot-tar;
-                  authority_allow_list = [
-                    "github.com"
-                  ];
-                };
-              };
-            };
-
-            services.notify-failure.services = [
-              "dot-tar"
-            ];
-          }
-
-          # nuc-proxy
-          {
-            services.nginx.virtualHosts."nuc-proxy.*" = {
-              forceSSL = true;
-              useACMEHost = "main";
-              locations."/" = {
-                proxyPass = "https://nuc.ts.li7g.com";
-              };
-            };
-          }
-
-          {
-            networking = lib.mkIf (!config.system.is-vm) {
-              useNetworkd = true;
-              interfaces.ens3.useDHCP = true;
-            };
-          }
-        ];
+          '';
+          locations."/.well-known/webfinger".extraConfig = ''
+            return 301 https://mastodon.li7g.com$request_uri;
+          '';
+        };
     }
+
+    # portal
+    {
+      services.nginx.virtualHosts."portal.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
+          root = pkgs.element-web-li7g-com;
+        };
+      };
+      services.portal = {
+        host = "portal.li7g.com";
+        nginxVirtualHost = "portal.*";
+        server.enable = true;
+      };
+    }
+
+    # dot-tar
+    {
+      services.nginx.virtualHosts."tar.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
+          proxyPass = "http://localhost:${toString config.ports.dot-tar}";
+        };
+      };
+      services.dot-tar = {
+        enable = true;
+        config = {
+          release = {
+            port = config.ports.dot-tar;
+            authority_allow_list = [
+              "github.com"
+            ];
+          };
+        };
+      };
+
+      services.notify-failure.services = [
+        "dot-tar"
+      ];
+    }
+
+    # nuc-proxy
+    {
+      services.nginx.virtualHosts."nuc-proxy.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
+          proxyPass = "https://nuc.ts.li7g.com";
+        };
+      };
+    }
+
+    {
+      networking = lib.mkIf (!config.system.is-vm) {
+        useNetworkd = true;
+        interfaces.ens3.useDHCP = true;
+      };
+    }
+  ];
+}
