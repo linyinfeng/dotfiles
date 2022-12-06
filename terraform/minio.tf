@@ -274,3 +274,44 @@ resource "minio_iam_user_policy_attachment" "synapse_media" {
   policy_name = minio_iam_policy.synapse_media.name
   user_name   = minio_iam_user.synapse_media.name
 }
+
+# Mastodon media storage
+
+resource "minio_s3_bucket" "mastodon_media" {
+  bucket = "mastodon-media"
+  acl    = "private"
+}
+
+resource "minio_iam_user" "mastodon_media" {
+  name = "mastodon-media"
+}
+
+output "minio_mastodon_media_key_id" {
+  value     = minio_iam_user.mastodon_media.id
+  sensitive = false
+}
+output "minio_mastodon_media_access_key" {
+  value     = minio_iam_user.mastodon_media.secret
+  sensitive = true
+}
+
+data "minio_iam_policy_document" "mastodon_media" {
+  statement {
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::mastodon-media/*",
+    ]
+  }
+}
+
+resource "minio_iam_policy" "mastodon_media" {
+  name   = "mastodon-media"
+  policy = data.minio_iam_policy_document.mastodon_media.json
+}
+
+resource "minio_iam_user_policy_attachment" "mastodon_media" {
+  policy_name = minio_iam_policy.mastodon_media.name
+  user_name   = minio_iam_user.mastodon_media.name
+}

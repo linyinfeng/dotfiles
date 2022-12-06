@@ -257,22 +257,22 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
 
 # pastebin
 
-resource "cloudflare_filter" "li7g_pb_cn_traffic" {
+resource "cloudflare_filter" "li7g_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
-  description = "Traffic to pb.li7b.com from CN"
+  description = "Get traffic to some site from CN"
   expression  = <<EOT
     (
-      http.host eq "pb.li7g.com" and
       ip.geoip.country eq "CN" and
-      http.request.method eq "GET" and
-      http.request.uri.path ne "/"
+      ( http.host eq "pb.li7g.com" or
+        http.host eq "social.li7g.com" or
+        http.host eq "mastodon.li7g.com")
     )
   EOT
 }
-resource "cloudflare_firewall_rule" "li7g_block_pb_cn_traffic" {
+resource "cloudflare_firewall_rule" "li7g_block_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
-  description = "Block Traffic to pb.li7b.com from CN"
-  filter_id   = cloudflare_filter.li7g_pb_cn_traffic.id
+  description = "Block Traffic to some site from CN"
+  filter_id   = cloudflare_filter.li7g_cn_traffic.id
   action      = "block"
 }
 
