@@ -30,7 +30,8 @@ lib.mkMerge [
         port = config.ports.smtp-starttls;
         user = "mastodon@li7g.com";
         fromAddress = "mastodon@li7g.com";
-        passwordFile = config.sops.secrets."mail_password".path;
+        # type is null or path, add a leading /
+        passwordFile = "/$CREDENTIALS_DIRECTORY/mail-password";
       };
       localDomain = "li7g.com";
       configureNginx = false;
@@ -64,7 +65,11 @@ lib.mkMerge [
               config.sops.templates."mastodon-extra-env".file
             ];
           })
-        serviceNames);
+        serviceNames) // {
+      mastodon-init-dirs.serviceConfig.LoadCredential = [
+        "mail-password:${config.sops.secrets."mail_password".path}"
+      ];
+    };
     sops.templates."mastodon-extra-env".content = ''
       AWS_ACCESS_KEY_ID=${config.sops.placeholder."minio_mastodon_media_key_id"}
       AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."minio_mastodon_media_access_key"}
