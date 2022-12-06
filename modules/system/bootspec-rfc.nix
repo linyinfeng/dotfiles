@@ -8,7 +8,7 @@
     "${inputs.bootspec-rfc}/nixos/modules/system/activation/bootspec.nix"
   ];
   system.extraSystemBuilderCmds = ''
-    ${lib.optionalString (!config.boot.isContainer) ''
+    ${lib.optionalString (!config.boot.isContainer && config.boot.bootspec.enable) ''
       ${config.boot.bootspec.writer}
       ${config.boot.bootspec.validator} "$out/bootspec/${config.boot.bootspec.filename}"
     ''}
@@ -16,7 +16,7 @@
   nixpkgs.overlays = [
     (final: prev:
       let system = final.stdenv.hostPlatform.system; in {
-        inherit (inputs.bootspec-rfc.legacyPackages.${system}) writeCueValidator;
+        inherit (inputs.bootspec-rfc.legacyPackages.${system}) bootspec writeCueValidator;
       })
   ];
 }
