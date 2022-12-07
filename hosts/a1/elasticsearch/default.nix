@@ -1,8 +1,10 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   services.elasticsearch = {
     enable = true;
+    # mastodon requires elasticsearch 7
+    package = pkgs.elasticsearch7;
     cluster_name = "elasticsearch-a1";
     port = config.ports.elasticsearch;
     tcp_port = config.ports.elasticsearch-node-to-node;
