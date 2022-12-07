@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   serviceNames = [
@@ -47,11 +47,11 @@ lib.mkMerge [
         S3_ENABLED = "true";
         S3_BUCKET = "mastodon-media";
         S3_REGION = "us-east-1"; # just minio default region
-        # S3_PROTOCOL = "https";
         S3_ENDPOINT = "https://minio.ts.li7g.com";
         S3_ALIAS_HOST = "minio.li7g.com/mastodon-media";
       };
     };
+    users.users.${config.services.mastodon.user}.shell = pkgs.bash;
     systemd.services = lib.listToAttrs
       (lib.lists.map
         (serviceName:

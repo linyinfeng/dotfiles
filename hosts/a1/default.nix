@@ -22,6 +22,8 @@ in
       nix.hydra-builder-server
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
+      ./backup
+      ./elasticsearch
     ];
 
   config = lib.mkMerge [

@@ -47,6 +47,8 @@
       proxy-tproxy = 3143;
       clash-controller = 3150;
       transmission-rpc = 3160;
+      elasticsearch = 3170;
+      elasticsearch-node-to-node = 3171;
       zerotier = 9993;
       minecraft = 25565;
       minecraft-rcon = 25566;
