@@ -255,17 +255,17 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
   }
 }
 
-# pastebin
+# CN Block
 
 resource "cloudflare_filter" "li7g_cn_traffic" {
   zone_id     = cloudflare_zone.com_li7g.id
-  description = "Get traffic to some site from CN"
+  description = "Traffic to some site from CN"
   expression  = <<EOT
     (
       ip.geoip.country eq "CN" and
       ( http.host eq "pb.li7g.com" or
         http.host eq "social.li7g.com" or
-        http.host eq "mastodon.li7g.com")
+        http.host eq "mastodon.li7g.com" )
     )
   EOT
 }
