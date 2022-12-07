@@ -86,7 +86,8 @@ locals {
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     mc              = { on = "nuc", proxy = false }
-    code            = { on = "a1", proxy = false }
+    code            = { on = "a1", proxy = true }
+    elasticsearch   = { on = "a1", proxy = true }
   }
 }
 
@@ -201,6 +202,17 @@ resource "cloudflare_record" "github_pages_challenge" {
   ttl     = 1
   type    = "TXT"
   value   = "6d2a79cedb6068b2a2b13ed18ccf4e"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+# local proxy for elasticsearch
+
+resource "cloudflare_record" "li7g_elasticsearch_proxy" {
+  name    = "elasticsearch-proxy"
+  proxied = false
+  ttl     = 1
+  type    = "A"
+  value   = "127.0.0.1"
   zone_id = cloudflare_zone.com_li7g.id
 }
 

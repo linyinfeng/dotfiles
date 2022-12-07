@@ -21,6 +21,7 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
+      services.elasticsearch-proxy
     ]) ++ [
       ./minio
       ./maddy
