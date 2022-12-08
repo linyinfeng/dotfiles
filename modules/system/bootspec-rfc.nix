@@ -1,4 +1,4 @@
-# TODO wait for https://nixpk.gs/pr-tracker.html?pr=185116
+# TODO wait for https://nixpk.gs/pr-tracker.html?pr=172237
 { inputs, config, lib, pkgs, ... }:
 
 {

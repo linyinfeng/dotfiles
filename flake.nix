@@ -97,7 +97,7 @@
       # hydra.inputs.nix.follows = "nix";
       # hydra.inputs.nixpkgs.follows = "nixos";
 
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=185116
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=172237
       # see ./modules/system/bootspec-secureboot.nix
       bootspec-rfc.url = "github:NixOS/nixpkgs/pull/172237/head";
       bootspec-secureboot.url = "github:DeterminateSystems/bootspec-secureboot";

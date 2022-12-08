@@ -19,6 +19,7 @@ in
 {
   services.minio = {
     enable = true;
+    # TODO wait for https://github.com/NixOS/nixpkgs/issues/199318
     package = pkgs.nur.repos.linyinfeng.minio-latest;
     listenAddress = "127.0.0.1:${toString minioPort}";
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
