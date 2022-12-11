@@ -4,8 +4,7 @@ lib.mkIf config.home.graphical {
   home.packages = with pkgs; [
     amberol
     bitwarden
-    # TODO broken
-    # calibre
+    calibre
     element-desktop
     gimp
     gnuradio
