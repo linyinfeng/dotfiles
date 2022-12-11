@@ -40,23 +40,18 @@ let
       mainUrl = config.sops.secrets."clash/main".path;
       alternativeUrl = config.sops.secrets."clash/alternative".path;
     };
-    tproxySetup =
-      let
-        interfaceElements = lib.concatStringsSep ", ";
-        cgroupElements = lib.concatMapStringsSep ", " (c: "\"${c}\"");
-        buildElementsSyntax = f: list: if list == [ ] then "" else "elements = { ${f list} }";
-      in
-      pkgs.substituteAll {
-        src = ./tproxy-setup.sh;
-        isExecutable = true;
-        inherit (pkgs.stdenvNoCC) shell;
-        inherit (pkgs) iproute2 nftables;
-        tproxyPort = cfg.mixinConfig.tproxy-port;
-        inherit (cfg.tproxy) routeTable fwmark cgroup nftTable extraFilterRules bypassCgroup bypassCgroupLevel;
-        proxiedInterfaceElements = buildElementsSyntax interfaceElements cfg.tproxy.proxiedInterfaceElements;
-        level1CgroupElements = buildElementsSyntax cgroupElements cfg.tproxy.allCgroups.level1;
-        level2CgroupElements = buildElementsSyntax cgroupElements cfg.tproxy.allCgroups.level2;
-      };
+    tproxySetup = pkgs.substituteAll {
+      src = ./tproxy-setup.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) iproute2 nftables;
+      tproxyPort = cfg.mixinConfig.tproxy-port;
+      inherit (cfg.tproxy) routeTable fwmark cgroup nftTable extraFilterRules
+        maxCgroupLevel bypassCgroup bypassCgroupLevel;
+      allCgroups = lib.concatStringsSep " " cfg.tproxy.allCgroups;
+      proxiedInterfaces = lib.concatStringsSep " " cfg.tproxy.proxiedInterfaces;
+      inherit tproxyCgroup tproxyInterface;
+    };
     tproxyClean = pkgs.substituteAll {
       src = ./tproxy-clean.sh;
       isExecutable = true;
@@ -80,7 +75,7 @@ let
       src = ./tproxy-cgroup.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit (cfg.tproxy) nftTable;
+      inherit (cfg.tproxy) nftTable maxCgroupLevel;
     };
     tproxyInterface = pkgs.substituteAll {
       src = ./tproxy-interface.sh;
@@ -102,7 +97,7 @@ with lib;
         type = with types; bool;
         default = false;
       };
-      proxiedInterfaceElements = mkOption {
+      proxiedInterfaces = mkOption {
         type = with types; listOf str;
         default = [ ];
       };
@@ -127,19 +122,17 @@ with lib;
         type = with types; str;
         default = "system.slice/clash-premium.service";
       };
+      maxCgroupLevel = mkOption {
+        type = with types; int;
+        default = 6;
+      };
       cgroup = mkOption {
         type = with types; str;
-        default = "tproxy";
+        default = "tproxy.slice";
       };
-      allCgroups = {
-        level1 = mkOption {
-          type = with types; listOf str;
-          default = [ ];
-        };
-        level2 = mkOption {
-          type = with types; listOf str;
-          default = [ ];
-        };
+      allCgroups = mkOption {
+        type = with types; listOf str;
+        default = [ ];
       };
       extraFilterRules = mkOption {
         type = with types; lines;
@@ -279,7 +272,7 @@ with lib;
         iptables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
       '';
 
-      networking.fw-proxy.tproxy.allCgroups.level1 = [ cfg.tproxy.cgroup ];
+      networking.fw-proxy.tproxy.allCgroups = [ cfg.tproxy.cgroup ];
       system.build.fw-proxy-tproxy-scripts = scripts;
     })
     (mkIf cfg.auto-update.enable {

@@ -8,7 +8,7 @@ in
     enable = true;
     tproxy = {
       enable = true;
-      cgroup = "tproxy";
+      cgroup = "tproxy.slice";
     };
     mixinConfig = {
       port = config.ports.proxy-http;

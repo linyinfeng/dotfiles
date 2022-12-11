@@ -8,12 +8,12 @@ fwmark="@fwmark@"
 nft_table="@nftTable@"
 bypass_cgroup="@bypassCgroup@"
 bypass_cgroup_level="@bypassCgroupLevel@"
+max_level="@maxCgroupLevel@"
 cgroup="@cgroup@"
-level1_cgroups='@level1CgroupElements@'
-level2_cgroups='@level2CgroupElements@'
-proxied_interfaces="@proxiedInterfaceElements@"
+all_cgroups=(@allCgroups@)
+proxied_interfaces=(@proxiedInterfaces@)
 
-set -x
+set -ex
 
 # setup route tables
 ip rule add fwmark "$fwmark" table "$route_table"
@@ -59,19 +59,6 @@ table inet $nft_table {
   set proxied-interfaces {
     typeof iif
     counter
-    $proxied_interfaces
-  }
-
-  set level1-cgroups {
-    typeof socket cgroupv2 level 1
-    counter
-    $level1_cgroups
-  }
-
-  set level2-cgroups {
-    typeof socket cgroupv2 level 2
-    counter
-    $level2_cgroups
   }
 
   chain prerouting {
@@ -96,20 +83,14 @@ table inet $nft_table {
   chain output {
     type route hook output priority mangle; policy accept;
 
+    comment "marked packets will be routed to lo"
+
     socket cgroupv2 level $bypass_cgroup_level "$bypass_cgroup" \
       counter \
       return \
       comment "bypass packets of proxy service"
 
     jump filter
-
-    meta l4proto {tcp, udp} \
-      socket cgroupv2 level 1 @level1-cgroups \
-      meta mark set $fwmark
-    meta l4proto {tcp, udp} \
-      socket cgroupv2 level 2 @level2-cgroups \
-      meta mark set $fwmark
-    comment "marked packets will be routed to lo"
   }
 
   chain filter {
@@ -121,3 +102,19 @@ table inet $nft_table {
   }
 }
 EOF
+
+for level in $(seq 1 $max_level); do
+  nft add set     inet "$nft_table" cgroups-level"$level" { typeof socket cgroupv2 level $level \; }
+  nft add rule    inet "$nft_table" output \
+    meta l4proto '{tcp, udp}' \
+    socket cgroupv2 level $level @cgroups-level"$level" \
+    meta mark set $fwmark
+done
+
+for cgroup in "${all_cgroups[@]}"; do
+  "@tproxyCgroup@" add "$cgroup"
+done
+
+for if in "${proxied_interfaces[@]}"; do
+  "@tproxyInterface@" add "$cgroup"
+done
