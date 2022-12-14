@@ -347,6 +347,7 @@
               ]) ++
               (with profiles; [
                 services.auto-upgrade
+                networking.bbr
               ]);
               homeServer = suites.server ++
                 (with profiles; [
