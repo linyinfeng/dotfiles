@@ -38,7 +38,7 @@ in
     privateKeyFile = config.sops.secrets."wireguard_private_key".path;
   };
   sops.secrets."wireguard_private_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/${hostName}.yaml";
     restartUnits = [ "wireguard-${interfaceName}.service" ];
   };
   environment.systemPackages = with pkgs; [

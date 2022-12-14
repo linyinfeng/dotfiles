@@ -46,7 +46,7 @@ in
     ADMIN_PASSWORD=${config.sops.placeholder."seahub_password"}
   '';
   sops.secrets."seahub_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "seahub.service" ];
   };
 }

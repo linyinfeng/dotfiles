@@ -115,19 +115,19 @@ in
   };
 
   sops.secrets."grafana_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."loki_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."alertmanager_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = [ "grafana.service" ];
   };
 }

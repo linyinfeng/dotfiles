@@ -30,11 +30,11 @@ in
     let cfg = config.services.minio;
     in lib.mkForce "${cfg.package}/bin/minio server --address ${cfg.listenAddress} --console-address ${cfg.consoleAddress} --certs-dir /var/lib/minio/certs ${toString cfg.dataDir}";
   sops.secrets."minio/root/user" = {
-    sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
+    sopsFile = config.sops.getSopsFile "hosts/rica-terraform.yaml";
     restartUnits = [ "minio.service" ];
   };
   sops.secrets."minio/root/password" = {
-    sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
+    sopsFile = config.sops.getSopsFile "hosts/rica-terraform.yaml";
     restartUnits = [ "minio.service" ];
   };
   sops.templates."minio-root-credentials".content = ''
@@ -84,7 +84,7 @@ in
     "minio_bearer_token:${config.sops.secrets."minio_metrics_bearer_token".path}"
   ];
   sops.secrets."minio_metrics_bearer_token" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "telegraf.service" ];
   };
 }

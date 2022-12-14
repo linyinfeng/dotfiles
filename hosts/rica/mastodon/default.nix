@@ -88,15 +88,15 @@ lib.mkMerge [
       }
     ];
     sops.secrets."mail_password" = {
-      sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+      sopsFile = config.sops.getSopsFile "terraform/common.yaml";
       restartUnits = [ "mastodon-init-dirs.service" ];
     };
     sops.secrets."minio_mastodon_media_key_id" = {
-      sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+      sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
       restartUnits = serviceUnits;
     };
     sops.secrets."minio_mastodon_media_access_key" = {
-      sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+      sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
       restartUnits = serviceUnits;
     };
   }

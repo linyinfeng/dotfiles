@@ -107,19 +107,19 @@ in
     owner = "nginx";
   };
   sops.secrets."loki_hashed_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "nginx.service" ];
   };
   sops.secrets."alertmanager_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = [ "loki.service" ];
   };
   sops.secrets."minio_loki_key_id" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "loki.service" ];
   };
   sops.secrets."minio_loki_access_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "loki.service" ];
   };
 }

@@ -35,7 +35,7 @@
     owner = "nginx";
   };
   sops.secrets."elasticsearch_hashed_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/a1.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/a1.yaml";
     restartUnits = [ "nginx.service" ];
   };
 }

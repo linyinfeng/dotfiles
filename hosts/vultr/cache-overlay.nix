@@ -79,11 +79,11 @@ in
   };
 
   sops.secrets."cache_key_id" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/vultr.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/vultr.yaml";
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
   sops.secrets."cache_access_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/vultr.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/vultr.yaml";
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
 }

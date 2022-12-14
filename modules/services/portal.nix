@@ -49,7 +49,7 @@ in
 
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal_client_id" = {
-        sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/common.yaml";
         restartUnits = [ "v2ray.service" ];
       };
       systemd.packages = [ pkgs.v2ray ];

@@ -199,7 +199,7 @@ in
         secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
       };
       sops.secrets."cache-li7g-com/key" = {
-        sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+        sopsFile = config.sops.getSopsFile "hosts/nuc.yaml";
         restartUnits = [ "nix-serve.service" ];
       };
 
@@ -237,15 +237,15 @@ in
         owner = "nginx";
       };
       sops.secrets."transmission_username" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
         restartUnits = [ "nginx.service" ];
       };
       sops.secrets."transmission_hashed_password" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
         restartUnits = [ "nginx.service" ];
       };
       sops.secrets."transmission_password" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
         restartUnits = [ "transmission.service" ];
       };
     }

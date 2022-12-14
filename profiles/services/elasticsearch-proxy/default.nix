@@ -25,7 +25,7 @@
     owner = config.users.users.nginx.name;
   };
   sops.secrets."elasticsearch_auth_header" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/${config.networking.hostName}.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/${config.networking.hostName}.yaml";
     restartUnits = [ "nginx.service" ];
   };
 }

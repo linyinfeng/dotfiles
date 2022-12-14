@@ -51,23 +51,23 @@ in
     "zerotierone-presetup.service"
   ];
   sops.secrets."zerotier_network_id" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = units;
   };
   sops.secrets."zerotier_moon/filename" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = units;
   };
   sops.secrets."zerotier_moon/content_base64" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = units;
   };
   sops.secrets."zerotier_public_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/${hostName}.yaml";
     restartUnits = units;
   };
   sops.secrets."zerotier_private_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/${hostName}.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/${hostName}.yaml";
     restartUnits = units;
   };
 

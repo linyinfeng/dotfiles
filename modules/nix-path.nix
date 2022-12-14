@@ -1,7 +1,7 @@
-{ channel, inputs, ... }: {
+{ self, channel, inputs, ... }: {
   nix.nixPath = [
     "nixpkgs=${channel.input}"
-    "nixos-config=${../lib/compat/nixos}"
+    "nixos-config=${self}/lib/compat/nixos"
     "home-manager=${inputs.home}"
   ];
 }

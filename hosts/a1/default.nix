@@ -120,7 +120,7 @@ in
         HASHED_PASSWORD=${config.sops.placeholder."code_server_hashed_password"}
       '';
       sops.secrets."code_server_hashed_password" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/a1.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/a1.yaml";
         restartUnits = [ "code-server.service" ];
       };
       services.nginx.virtualHosts."code.*" = {

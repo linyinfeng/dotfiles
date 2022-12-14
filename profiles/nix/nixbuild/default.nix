@@ -31,7 +31,7 @@ in
   };
   sops.secrets."nixbuild/id-ed25519" = {
     neededForUsers = true; # needed for /ect
-    sopsFile = config.sops.secretsDir + /common.yaml;
+    sopsFile = config.sops.getSopsFile "common.yaml";
   };
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net

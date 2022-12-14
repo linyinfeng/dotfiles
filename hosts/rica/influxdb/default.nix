@@ -40,11 +40,11 @@ in
   };
   # TODO restartUnits: can't change password and token currently
   sops.secrets."influxdb_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "influxdb2-setup.service" ];
   };
   sops.secrets."influxdb_token" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = [ "influxdb2-setup.service" ];
   };
   environment.systemPackages = with pkgs; [

@@ -61,11 +61,11 @@
       config.networking.fw-proxy.environment);
   };
   sops.secrets."nano/github-token" = {
-    sopsFile = config.sops.secretsDir + /common.yaml;
+    sopsFile = config.sops.getSopsFile "common.yaml";
     restartUnits = [ "dotfiles-channel-update@.service" ];
   };
   sops.secrets."cachix/linyinfeng" = {
-    sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+    sopsFile = config.sops.getSopsFile "hosts/nuc.yaml";
     restartUnits = [ "dotfiles-channel-update@.service" ];
   };
 

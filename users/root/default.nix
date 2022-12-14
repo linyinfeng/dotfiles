@@ -23,6 +23,6 @@ in
 
   sops.secrets."user-password/root" = {
     neededForUsers = true;
-    sopsFile = config.sops.secretsDir + /common.yaml;
+    sopsFile = config.sops.getSopsFile "common.yaml";
   };
 }

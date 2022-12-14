@@ -97,15 +97,15 @@ in
   };
 
   sops.secrets."cache_key_id" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
     restartUnits = [ "copy-cache-li7g-com.service" "gc-cache-li7g-com.service" ];
   };
   sops.secrets."cache_access_key" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/nuc.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
     restartUnits = [ "copy-cache-li7g-com.service" "gc-cache-li7g-com.service" ];
   };
   sops.secrets."cache-li7g-com/key" = {
-    sopsFile = config.sops.secretsDir + /hosts/nuc.yaml;
+    sopsFile = config.sops.getSopsFile "hosts/nuc.yaml";
     restartUnits = [ "copy-cache-li7g-com.service" ];
   };
 

@@ -124,7 +124,7 @@ in
         tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
       };
       sops.secrets."telegram-bot/commit-notifier" = {
-        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
         restartUnits = [ "commit-notifier.service" ];
       };
 
@@ -172,11 +172,11 @@ in
         wantedBy = [ "multi-user.target" ];
       };
       sops.secrets."minio_pastebin_key_id" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
         restartUnits = [ "pastebin.service" ];
       };
       sops.secrets."minio_pastebin_access_key" = {
-        sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+        sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
         restartUnits = [ "pastebin.service" ];
       };
 
@@ -190,15 +190,15 @@ in
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
-        sopsFile = config.sops.secretsDir + /hosts/rica-terraform.yaml;
+        sopsFile = config.sops.getSopsFile "hosts/rica-terraform.yaml";
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/subnet" = {
-        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/gateway" = {
-        sopsFile = config.sops.secretsDir + /hosts/rica.yaml;
+        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.templates."enX0" = {

@@ -211,11 +211,11 @@ with lib;
       };
 
       sops.secrets."clash/main" = {
-        sopsFile = config.sops.secretsDir + /common.yaml;
+        sopsFile = config.sops.getSopsFile "common.yaml";
         restartUnits = [ "clash-auto-update.service" ];
       };
       sops.secrets."clash/alternative" = {
-        sopsFile = config.sops.secretsDir + /common.yaml;
+        sopsFile = config.sops.getSopsFile "common.yaml";
         restartUnits = [ "clash-auto-update.service" ];
       };
 

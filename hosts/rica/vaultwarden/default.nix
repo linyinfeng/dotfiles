@@ -45,11 +45,11 @@ in
     SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
   '';
   sops.secrets."vaultwarden_admin_token" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "vaultwarden.service" ];
   };
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
     restartUnits = [ "vaultwarden.service" ];
   };
 

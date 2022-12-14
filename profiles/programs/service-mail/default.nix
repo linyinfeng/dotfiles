@@ -38,7 +38,7 @@ in
     sops.secrets."mail_password" = {
       mode = "440";
       group = config.users.groups.service-mail.name;
-      sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+      sopsFile = config.sops.getSopsFile "terraform/common.yaml";
     };
     users.groups.service-mail.gid = config.ids.gids.service-mail;
   };

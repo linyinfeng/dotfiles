@@ -68,6 +68,7 @@ locals {
     nuc-proxy       = { on = "vultr", proxy = true }
     portal          = { on = "vultr", proxy = true }
     tar             = { on = "vultr", proxy = true }
+    pgp-public-key  = { on = "vultr", proxy = true }
     vault           = { on = "rica", proxy = true }
     grafana         = { on = "rica", proxy = true }
     hydra           = { on = "nuc", proxy = false }

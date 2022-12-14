@@ -62,15 +62,15 @@ in
     HTTP_PASSWORD=${config.sops.placeholder."alertmanager_password"}
   '';
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/common.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
     restartUnits = [ "alertmanager.service" ];
   };
   sops.secrets."alertmanager_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/infrastructure.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
     restartUnits = [ "alertmanager.service" ];
   };
   sops.secrets."alertmanager_hashed_password" = {
-    sopsFile = config.sops.secretsDir + /terraform/hosts/rica.yaml;
+    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
     restartUnits = [ "alertmanager.service" ];
   };
 }
