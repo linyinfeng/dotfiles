@@ -1,5 +1,14 @@
 { config, lib, pkgs, ... }:
 
+let
+  element-web-config = pkgs.runCommand "element-web-config" { } ''
+    mkdir -p $out
+    "${pkgs.jq}/bin/jq" -s ".[0] * .[1]" \
+      "${pkgs.element-web}/config.json" \
+      ${./mixin-config.json} \
+      > $out/config.json
+  '';
+in
 {
   services.matrix-synapse = {
     enable = true;
@@ -256,7 +265,11 @@
       proxyPass = "http://127.0.0.1:${toString config.ports.matrix}";
     };
     locations."/" = {
-      root = pkgs.element-web-li7g-com;
+      root = pkgs.element-web;
+    };
+    locations."/config.json" = {
+      root = element-web-config;
     };
   };
+  passthru.element-web-config = element-web-config;
 }

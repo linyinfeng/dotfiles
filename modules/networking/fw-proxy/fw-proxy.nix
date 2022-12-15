@@ -273,7 +273,7 @@ with lib;
       '';
 
       networking.fw-proxy.tproxy.allCgroups = [ cfg.tproxy.cgroup ];
-      system.build.fw-proxy-tproxy-scripts = scripts;
+      passthru.fw-proxy-tproxy-scripts = scripts;
     })
     (mkIf cfg.auto-update.enable {
       systemd.services.clash-auto-update = {

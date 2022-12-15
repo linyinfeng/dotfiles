@@ -61,7 +61,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    system.build.campusNetScripts = scripts;
+    passthru.campus-net-scripts = scripts;
     environment.systemPackages = [
       scripts
     ];
