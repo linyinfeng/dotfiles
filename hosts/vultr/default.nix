@@ -131,7 +131,7 @@ in
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
-          root = pkgs.element-web-li7g-com;
+          root = pkgs.element-web;
         };
       };
       services.portal = {
