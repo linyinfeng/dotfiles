@@ -34,6 +34,8 @@ in
       # ./alertmanager
       # ./seafile
       # ./mastodon
+      # ./commit-notifier
+      # ./pastebin
     ];
 
   config = lib.mkMerge [
