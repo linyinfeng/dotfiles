@@ -1,8 +1,5 @@
 { config, ... }:
 
-let
-  cfg = config.hosts.rica;
-in
 {
   services.loki = {
     enable = true;

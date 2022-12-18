@@ -21,20 +21,19 @@ in
       services.notify-failure
       services.elasticsearch-proxy
     ]) ++ [
-      ./minio
-      ./maddy
-      ./vaultwarden
-      ./matrix
-      ./backup
-      ./influxdb
-      ./grafana
-      ./loki
-      ./git
-      ./alertmanager
-      ./seafile
-      ./mastodon
-      ./commit-notifier
-      ./pastebin
+      "${modulesPath}/profiles/qemu-guest.nix"
+      # ./minio
+      # ./maddy
+      # ./vaultwarden
+      # ./matrix
+      # ./backup
+      # ./influxdb
+      # ./grafana
+      # ./loki
+      # ./git
+      # ./alertmanager
+      # ./seafile
+      # ./mastodon
     ];
 
   config = lib.mkMerge [
@@ -43,12 +42,18 @@ in
       console.keyMap = "us";
       time.timeZone = "Asia/Shanghai";
 
-      boot.loader.grub = {
-        enable = true;
-        version = 2;
-        device = "/dev/xvda";
+      boot.loader = {
+        # efi support of hetzner is in beta
+        # no efi variables to touch
+        efi.canTouchEfiVariables = false;
+        grub = {
+          enable = true;
+          efiSupport = true;
+          version = 2;
+          device = "/dev/sda";
+        };
       };
-      boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "sr_mod" "xen_blkfront" ];
+      boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sd_mod" "sr_mod" ];
 
       boot.tmpOnTmpfs = true;
       services.fstrim.enable = true;
@@ -78,8 +83,8 @@ in
       fileSystems."/swap" = btrfsSubvolMain "@swap" { };
       fileSystems."/boot" =
         {
-          device = "/dev/disk/by-uuid/4a186796-5865-4b47-985c-9354adec09a4";
-          fsType = "ext4";
+          device = "/dev/disk/by-uuid/5C56-7693";
+          fsType = "vfat";
         };
       swapDevices =
         [{
@@ -96,7 +101,7 @@ in
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
 
-        virtualHosts."rica.*" = {
+        virtualHosts."hil0.*" = {
           default = true;
           forceSSL = true;
           useACMEHost = "main";
@@ -121,34 +126,12 @@ in
       services.postgresql.enable = true;
     }
 
-    (lib.mkIf (!config.system.is-vm) {
-      networking.useNetworkd = true;
-      environment.etc."systemd/network/50-enX0.network".source =
-        config.sops.templates."enX0".path;
-      sops.secrets."network/address" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica-terraform.yaml";
-        restartUnits = [ "systemd-networkd.service" ];
+    # networking
+    {
+      networking = lib.mkIf (!config.system.is-vm) {
+        useNetworkd = true;
+        interfaces.enp1s0.useDHCP = true;
       };
-      sops.secrets."network/subnet" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
-        restartUnits = [ "systemd-networkd.service" ];
-      };
-      sops.secrets."network/gateway" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
-        restartUnits = [ "systemd-networkd.service" ];
-      };
-      sops.templates."enX0" = {
-        content = ''
-          [Match]
-          Name=enX0
-
-          [Network]
-          Address=${config.sops.placeholder."network/address"}/${config.sops.placeholder."network/subnet"}
-          Gateway=${config.sops.placeholder."network/gateway"}
-          DNS=8.8.8.8 8.8.4.4
-        '';
-        owner = "systemd-network";
-      };
-    })
+    }
   ];
 }

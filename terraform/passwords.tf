@@ -191,6 +191,6 @@ output "elasticsearch_hashed_password" {
   sensitive = true
 }
 output "elasticsearch_auth_header" {
-  value = base64encode("elasticsearch:${random_password.elasticsearch.result}")
+  value     = base64encode("elasticsearch:${random_password.elasticsearch.result}")
   sensitive = true
 }

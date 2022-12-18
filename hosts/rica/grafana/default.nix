@@ -1,8 +1,5 @@
 { config, lib, ... }:
 
-let
-  cfg = config.hosts.rica;
-in
 {
   services.nginx.virtualHosts."grafana.*" = {
     forceSSL = true;

@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  cfg = config.hosts.rica;
-in
 {
   services.nginx.virtualHosts."vault.*" = {
     forceSSL = true;

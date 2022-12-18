@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  cfg = config.hosts.rica;
   setup = pkgs.substituteAll {
     src = ./setup.sh;
     isExecutable = true;

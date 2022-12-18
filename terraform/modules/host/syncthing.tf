@@ -12,7 +12,7 @@ resource "shell_sensitive_script" "generate_syncthing_config" {
       pushd "$TMP_DIR" > /dev/null
 
       DEVICE_ID=$(
-        syncthing generate --skip-port-probing --no-default-folder --config . 2>&1 1>/dev/null |\
+        syncthing generate --skip-port-probing --no-default-folder --config . |\
           grep --only-matching --perl-regex 'Device ID: \K[A-Z0-9-]+'
       )
       jq --null-input \

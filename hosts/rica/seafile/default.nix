@@ -1,8 +1,5 @@
 { config, ... }:
 
-let
-  cfg = config.hosts.rica;
-in
 {
   services.seafile = {
     enable = true;

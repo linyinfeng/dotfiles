@@ -35,5 +35,8 @@ terraform {
     htpasswd = {
       source = "loafoe/htpasswd"
     }
+    hcloud = {
+      source = "hetznercloud/hcloud"
+    }
   }
 }

@@ -5,6 +5,7 @@ keys:
   - &xps8930    age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0
   - &nuc        age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj
   - &rica       age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa
+  - &hil0       age1q4f93vlxr4k5a9tnu5r8p7q3ks597fnu7kyc42kp0qsg6y0zxekqpmpj7g
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
   - &a1         age1khx72jeejaz9epypfg4ev2y086qntvk9gfwtc8gkjnxv6m92lsfsg8ysv9
@@ -54,6 +55,7 @@ creation_rules:
       - *vultr
       - *tencent
       - *a1
+      - *hil0
       # no age key for not self-owned machines
   - path_regex: ^secrets/(terraform/)?infrastructure(\.plain)?\.yaml$
     key_groups:
@@ -68,6 +70,7 @@ creation_rules:
       - *vultr
       - *tencent
       - *a1
+      - *hil0
   - path_regex: ^secrets/(terraform/)?hosts/framework(\.plain)?\.yaml$
     key_groups:
     - pgp:
@@ -110,6 +113,13 @@ creation_rules:
       age:
       - *github
       - *rica
+  - path_regex: ^secrets/(terraform/)?hosts/hil0(\.plain)?\.yaml$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *github
+      - *hil0
   - path_regex: ^secrets/(terraform/)?hosts/a1(\.plain)?\.yaml$
     key_groups:
     - pgp:

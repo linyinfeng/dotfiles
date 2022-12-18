@@ -1,8 +1,8 @@
 provider "minio" {
-  minio_server     = "minio.li7g.com"
-  minio_user = data.sops_file.rica.data["minio.root.user"]
+  minio_server   = "minio.li7g.com"
+  minio_user     = data.sops_file.rica.data["minio.root.user"]
   minio_password = data.sops_file.rica.data["minio.root.password"]
-  minio_ssl        = true
+  minio_ssl      = true
 }
 
 # Storage for cache.li7g.com

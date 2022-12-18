@@ -15,13 +15,27 @@ locals {
         }
       }
     }
+    hil0 = {
+      records = {
+        a = {
+          proxied = true
+          type    = "A"
+          value   = hcloud_server.hil0.ipv4_address
+        }
+        aaaa = {
+          proxied = true
+          type    = "AAAA"
+          value   = hcloud_server.hil0.ipv6_address
+        }
+      }
+      ddns_records = {}
+    }
     rica = {
       records = {
         a = {
           proxied = true
           type    = "A"
           value   = data.sops_file.rica.data["network.address"]
-          ddns    = false
         }
       }
       ddns_records = {}
