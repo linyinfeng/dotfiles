@@ -108,8 +108,8 @@ in
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
         EMAIL_SENDER_TRANSPORT_sasl_password=${config.sops.placeholder."mail_password"}
         EMAIL_SENDER_TRANSPORT_host=smtp.li7g.com
-        EMAIL_SENDER_TRANSPORT_port=${toString config.ports.smtp-tls}
-        EMAIL_SENDER_TRANSPORT_ssl=1
+        EMAIL_SENDER_TRANSPORT_port=${toString config.ports.smtp-starttls}
+        EMAIL_SENDER_TRANSPORT_ssl=starttls
       '';
       sops.secrets."mail_password" = {
         sopsFile = config.sops.getSopsFile "terraform/common.yaml";

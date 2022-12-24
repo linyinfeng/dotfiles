@@ -30,9 +30,8 @@
       rocketPort = config.ports.vaultwarden-http;
       smtpHost = "smtp.li7g.com";
       smtpFrom = "vault@li7g.com";
-      smtpPort = config.ports.smtp-tls;
-      smtpSecurity = "force_tls";
-      smtpExplicitTls = true; # workaround for v1.24.0 and before
+      smtpPort = config.ports.smtp-starttls;
+      smtpSecurity = "starttls";
       smtpUsername = "vault@li7g.com";
     };
     environmentFile = config.sops.templates."vaultwarden-env".path;
