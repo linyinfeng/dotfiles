@@ -78,7 +78,7 @@ in
     lm_sensors
   ];
   sops.secrets."influxdb_token" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "telegraf.service" ];
   };
   sops.templates."telegraf-environment".content = ''

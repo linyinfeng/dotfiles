@@ -7,7 +7,7 @@
     tokenFile = config.sops.secrets."telegram-bot/commit-notifier".path;
   };
   sops.secrets."telegram-bot/commit-notifier" = {
-    sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
+    sopsFile = config.sops-file.host;
     restartUnits = [ "commit-notifier.service" ];
   };
 

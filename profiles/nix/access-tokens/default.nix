@@ -14,7 +14,7 @@
   };
   users.groups.nix-access-tokens.gid = config.ids.gids.nix-access-tokens;
   sops.secrets."nano/github-token" = {
-    sopsFile = config.sops.getSopsFile "common.yaml";
+    sopsFile = config.sops-file.get "common.yaml";
     restartUnits = [ "nix-daemon.service" ];
   };
 }

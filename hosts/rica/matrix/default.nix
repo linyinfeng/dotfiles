@@ -206,32 +206,32 @@ in
   '';
 
   sops.secrets."synapse/signing-key" = {
-    sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
+    sopsFile = config.sops-file.host;
     owner = "matrix-synapse";
     restartUnits = [ "matrix-synapse.service" ];
   };
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
+    sopsFile = config.sops-file.get "terraform/common.yaml";
     restartUnits = [ "matrix-synapse.service" ];
   };
   sops.secrets."minio_synapse_media_key_id" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "matrix-synapse.service" ];
   };
   sops.secrets."minio_synapse_media_access_key" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "matrix-synapse.service" ];
   };
   sops.secrets."mautrix_appservice_as_token" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
   };
   sops.secrets."mautrix_appservice_hs_token" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
   };
   sops.secrets."telegram-bot/matrix-bridge" = {
-    sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
+    sopsFile = config.sops-file.host;
     restartUnits = [ "mautrix-telegram.service" ];
   };
 
@@ -256,6 +256,10 @@ in
         };
       }
     ];
+  };
+  systemd.services.matrix = {
+    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
   };
 
   services.nginx.virtualHosts."matrix.*" = {

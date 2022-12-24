@@ -106,7 +106,7 @@ in
       '';
     };
     sops.secrets."dkim_private_pem" = {
-      sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+      sopsFile = config.sops-file.terraform;
       restartUnits = [ "maddy.service" ];
     };
     systemd.services.maddy.serviceConfig.LoadCredential = [
@@ -142,7 +142,7 @@ in
       "mastodon@li7g.com"
     ];
     sops.secrets."mail_password" = {
-      sopsFile = config.sops.getSopsFile "terraform/common.yaml";
+      sopsFile = config.sops-file.get "terraform/common.yaml";
       restartUnits = [ "maddy-init.service" ];
     };
     systemd.services.maddy-init = {

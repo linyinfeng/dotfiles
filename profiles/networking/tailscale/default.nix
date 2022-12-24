@@ -37,7 +37,7 @@ in
     requiredBy = [ "tailscaled.service" ];
   };
   sops.secrets."tailscale_tailnet_key" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "tailscale-setup.service" ];
   };
   # no need to open ports

@@ -48,10 +48,15 @@
       };
     }
   ];
-  systemd.services.grafana.serviceConfig.EnvironmentFile = [
-    config.sops.templates."grafana-environment".path
-  ];
+  systemd.services.grafana = {
+    serviceConfig.EnvironmentFile = [
+      config.sops.templates."grafana-environment".path
+    ];
+    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
+  };
   sops.templates."grafana-environment".content = ''
+    GRAFANA_PASSWORD=${config.sops.placeholder."grafana_password"}
     INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
     GF_SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
@@ -112,19 +117,19 @@
   };
 
   sops.secrets."grafana_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
+    sopsFile = config.sops-file.get "terraform/common.yaml";
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."loki_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "grafana.service" ];
   };
   sops.secrets."alertmanager_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "grafana.service" ];
   };
 }

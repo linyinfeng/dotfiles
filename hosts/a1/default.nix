@@ -23,6 +23,10 @@ in
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./backup
+      ./alertmanager
+      ./influxdb
+      ./loki
+      ./grafana
     ];
 
   config = lib.mkMerge [
@@ -104,47 +108,6 @@ in
     # postgresql
     {
       services.postgresql.enable = true;
-    }
-
-    # code server
-    {
-      services.code-server = {
-        enable = true;
-        auth = "password";
-      };
-      systemd.services.code-server.serviceConfig.EnvironmentFile = [
-        config.sops.templates."code-server-env".path
-      ];
-      sops.templates."code-server-env".content = ''
-        HASHED_PASSWORD=${config.sops.placeholder."code_server_hashed_password"}
-      '';
-      sops.secrets."code_server_hashed_password" = {
-        sopsFile = config.sops.getSopsFile "terraform/hosts/a1.yaml";
-        restartUnits = [ "code-server.service" ];
-      };
-      services.nginx.virtualHosts."code.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.services.code-server.port}";
-          extraConfig = ''
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection upgrade;
-            proxy_set_header Accept-Encoding gzip;
-          '';
-        };
-      };
-      nix.settings.allowed-users = [
-        "code-server"
-      ];
-      home-manager.users.code-server = { profiles, ... }: {
-        imports = with profiles; [
-          direnv
-          git
-          development
-          tools.nix
-        ];
-      };
     }
   ];
 }

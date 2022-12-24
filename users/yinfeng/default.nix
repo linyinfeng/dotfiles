@@ -45,7 +45,7 @@ in
 
   sops.secrets."user-password/${name}" = {
     neededForUsers = true;
-    sopsFile = config.sops.getSopsFile "common.yaml";
+    sopsFile = config.sops-file.get "common.yaml";
   };
 
   environment.global-persistence.user.users = [ name ];

@@ -87,11 +87,11 @@ in
       # limit cpu quota of nix builds
       systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
       sops.secrets."nano/github-token" = {
-        sopsFile = config.sops.getSopsFile "common.yaml";
+        sopsFile = config.sops-file.get "common.yaml";
         restartUnits = [ "hydra.service" ];
       };
       sops.secrets."cache-li7g-com/key" = {
-        sopsFile = config.sops.getSopsFile "hosts/nuc.yaml";
+        sopsFile = config.sops-file.host;
         restartUnits = [ "nix-daemon.service" ];
       };
       nix.settings.trusted-users = [ "@hydra" ];
@@ -112,7 +112,7 @@ in
         EMAIL_SENDER_TRANSPORT_ssl=starttls
       '';
       sops.secrets."mail_password" = {
-        sopsFile = config.sops.getSopsFile "terraform/common.yaml";
+        sopsFile = config.sops-file.get "terraform/common.yaml";
         restartUnits = [ "hydra-notify.service" ];
       };
     }

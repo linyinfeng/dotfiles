@@ -1,17 +1,29 @@
 { self, config, lib, ... }:
 
+let
+  inherit (config.networking) hostName;
+in
 {
-  options.sops = {
-    secretsDir = lib.mkOption {
+  options.sops-file = {
+    directory = lib.mkOption {
       type = lib.types.path;
     };
-    getSopsFile = lib.mkOption {
+    get = lib.mkOption {
       type = with lib.types; functionTo path;
+    };
+    host = lib.mkOption {
+      type = lib.types.path;
+    };
+    terraform = lib.mkOption {
+      type = lib.types.path;
     };
   };
   config = {
-    sops.secretsDir = lib.mkDefault "${self}/secrets";
-    sops.getSopsFile = p: "${config.sops.secretsDir}/${p}";
+    sops-file.directory = lib.mkDefault "${self}/secrets";
+    sops-file.get = p: "${config.sops-file.directory}/${p}";
+    sops-file.host = config.sops-file.get "hosts/${hostName}.yaml";
+    sops-file.terraform = config.sops-file.get "terraform/hosts/${hostName}.yaml";
+
     sops.gnupg.sshKeyPaths = [ ];
     sops.age.sshKeyPaths = lib.mkDefault [
       (if config.environment.global-persistence.enable

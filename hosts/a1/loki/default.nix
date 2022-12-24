@@ -7,23 +7,28 @@
     configuration = {
       auth_enabled = false;
       server.http_listen_port = config.ports.loki;
+
       common = {
         path_prefix = config.services.loki.dataDir;
-        ring.kvstore.store = "inmemory";
-      };
-      ingester = {
-        lifecycler = {
-          ring.replication_factor = 1;
-          final_sleep = "0s";
+        replication_factor = 1;
+        ring = {
+          instance_addr = "127.0.0.1";
+          kvstore.store = "inmemory";
         };
-        chunk_idle_period = "5m";
-        chunk_retain_period = "30s";
       };
+
+      compactor = {
+        retention_enabled = true;
+      };
+      limits_config = {
+        retention_period = "336h"; # 14 days
+      };
+
       schema_config.configs = [
         {
           from = "2020-10-24";
           store = "boltdb-shipper";
-          object_store = "s3";
+          object_store = "filesystem";
           schema = "v11";
           index = {
             prefix = "index_";
@@ -31,49 +36,22 @@
           };
         }
       ];
+
       ruler = {
+        # TODO switch to s3 backend
         storage = {
-          type = "s3";
-          s3 = {
-            bucketnames = "loki-ruler";
-            endpoint = "minio.li7g.com";
-            region = "us-east-1";
-            access_key_id = "\${MINIO_LOKI_KEY_ID}";
-            secret_access_key = "\${MINIO_LOKI_ACCESS_KEY}";
-            s3forcepathstyle = true;
+          type = "local";
+          local = {
+            directory = "rules";
           };
         };
         rule_path = "rules";
         enable_api = true;
-        enable_alertmanager_v2 = true;
         alertmanager_url = "https://alertmanager.li7g.com";
         alertmanager_client = {
           basic_auth_username = "alertmanager";
-          basic_auth_password = "\${ALERTMANAGER_PASSWORD}";
+          basic_auth_password = "$ALERTMANAGER_PASSWORD";
         };
-      };
-      storage_config = {
-        boltdb_shipper = {
-          active_index_directory = "loki/index";
-          cache_location = "loki/index_cache";
-          shared_store = "s3";
-        };
-        aws = {
-          bucketnames = "loki";
-          endpoint = "minio.li7g.com";
-          region = "us-east-1";
-          access_key_id = "\${MINIO_LOKI_KEY_ID}";
-          secret_access_key = "\${MINIO_LOKI_ACCESS_KEY}";
-          s3forcepathstyle = true;
-        };
-      };
-      limits_config = {
-        retention_period = "336h"; # 14 days
-      };
-      compactor = {
-        working_directory = "data/compactor";
-        shared_store = "s3";
-        retention_enabled = true;
       };
     };
   };
@@ -104,19 +82,19 @@
     owner = "nginx";
   };
   sops.secrets."loki_hashed_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "nginx.service" ];
   };
   sops.secrets."alertmanager_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "loki.service" ];
   };
   sops.secrets."minio_loki_key_id" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "loki.service" ];
   };
   sops.secrets."minio_loki_access_key" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "loki.service" ];
   };
 }

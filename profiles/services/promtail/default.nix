@@ -64,7 +64,7 @@
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
   '';
   sops.secrets."loki_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/infrastructure.yaml";
+    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = [ "promtail.service" ];
   };
 }

@@ -64,21 +64,17 @@ resource "cloudflare_record" "li7g" {
 
 locals {
   service_cname_mappings = {
-    matrix          = { on = "rica", proxy = true }
     nuc-proxy       = { on = "vultr", proxy = true }
     portal          = { on = "vultr", proxy = true }
     tar             = { on = "vultr", proxy = true }
     pgp-public-key  = { on = "vultr", proxy = true }
-    vault           = { on = "rica", proxy = true }
-    grafana         = { on = "rica", proxy = true }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
+    matrix          = { on = "rica", proxy = true }
+    vault           = { on = "rica", proxy = true }
     pb              = { on = "rica", proxy = true }
     git             = { on = "rica", proxy = true }
     box             = { on = "rica", proxy = true }
-    influxdb        = { on = "rica", proxy = true }
-    loki            = { on = "rica", proxy = true }
-    alertmanager    = { on = "rica", proxy = true }
     smtp            = { on = "rica", proxy = false }
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
@@ -87,7 +83,10 @@ locals {
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     mc              = { on = "nuc", proxy = false }
-    code            = { on = "a1", proxy = true }
+    grafana         = { on = "a1", proxy = true }
+    influxdb        = { on = "a1", proxy = true }
+    loki            = { on = "a1", proxy = true }
+    alertmanager    = { on = "a1", proxy = true }
   }
 }
 

@@ -18,7 +18,7 @@
   };
   sops.secrets."hydra_builder_private_key" = {
     neededForUsers = true; # needed for /ect
-    sopsFile = config.sops.getSopsFile "terraform/hosts/nuc.yaml";
+    sopsFile = config.sops-file.terraform;
   };
   programs.ssh.extraConfig = ''
     Host nuc.ts.li7g.com

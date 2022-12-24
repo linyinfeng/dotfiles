@@ -25,11 +25,7 @@ in
       ./vaultwarden
       ./matrix
       ./backup
-      ./influxdb
-      ./grafana
-      ./loki
       ./git
-      ./alertmanager
       ./seafile
       ./mastodon
       ./commit-notifier
@@ -125,15 +121,15 @@ in
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica-terraform.yaml";
+        sopsFile = config.sops-file.get "hosts/rica-terraform.yaml";
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/subnet" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
+        sopsFile = config.sops-file.host;
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/gateway" = {
-        sopsFile = config.sops.getSopsFile "hosts/rica.yaml";
+        sopsFile = config.sops-file.host;
         restartUnits = [ "systemd-networkd.service" ];
       };
       sops.templates."enX0" = {

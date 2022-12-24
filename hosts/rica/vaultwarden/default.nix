@@ -41,11 +41,11 @@
     SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
   '';
   sops.secrets."vaultwarden_admin_token" = {
-    sopsFile = config.sops.getSopsFile "terraform/hosts/rica.yaml";
+    sopsFile = config.sops-file.terraform;
     restartUnits = [ "vaultwarden.service" ];
   };
   sops.secrets."mail_password" = {
-    sopsFile = config.sops.getSopsFile "terraform/common.yaml";
+    sopsFile = config.sops-file.get "terraform/common.yaml";
     restartUnits = [ "vaultwarden.service" ];
   };
 
@@ -58,4 +58,8 @@
       };
     }
   ];
+  systemd.services.vaultwarden = {
+    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
+  };
 }
