@@ -19,7 +19,6 @@ in
       programs.telegram-send
       services.acme
       services.notify-failure
-      services.elasticsearch-proxy
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       # ./minio

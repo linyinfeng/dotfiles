@@ -33,10 +33,6 @@ lib.mkMerge [
         # type is null or path, add a leading /
         passwordFile = "/$CREDENTIALS_DIRECTORY/mail-password";
       };
-      elasticsearch = {
-        host = "elasticsearch-proxy.li7g.com";
-        port = config.ports.http;
-      };
       localDomain = "li7g.com";
       configureNginx = false;
       extraConfig = {

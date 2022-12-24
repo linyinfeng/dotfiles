@@ -23,7 +23,6 @@ in
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./backup
-      ./elasticsearch
     ];
 
   config = lib.mkMerge [

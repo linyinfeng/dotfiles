@@ -171,26 +171,3 @@ output "mautrix_appservice_hs_token" {
   value     = random_password.mautrix_appservice_hs_token.result
   sensitive = true
 }
-resource "random_password" "elasticsearch" {
-  length  = 32
-  special = false
-}
-resource "random_password" "elasticsearch_salt" {
-  length = 8
-}
-resource "htpasswd_password" "elasticsearch" {
-  password = random_password.elasticsearch.result
-  salt     = random_password.elasticsearch_salt.result
-}
-output "elasticsearch_password" {
-  value     = random_password.elasticsearch.result
-  sensitive = true
-}
-output "elasticsearch_hashed_password" {
-  value     = htpasswd_password.elasticsearch.bcrypt
-  sensitive = true
-}
-output "elasticsearch_auth_header" {
-  value     = base64encode("elasticsearch:${random_password.elasticsearch.result}")
-  sensitive = true
-}
