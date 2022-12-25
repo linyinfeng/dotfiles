@@ -70,7 +70,6 @@ locals {
     pgp-public-key  = { on = "vultr", proxy = true }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
-    matrix          = { on = "rica", proxy = true }
     vault           = { on = "rica", proxy = true }
     pb              = { on = "rica", proxy = true }
     git             = { on = "rica", proxy = true }
@@ -87,6 +86,7 @@ locals {
     influxdb        = { on = "a1", proxy = true }
     loki            = { on = "a1", proxy = true }
     alertmanager    = { on = "a1", proxy = true }
+    matrix          = { on = "hil0", proxy = true }
   }
 }
 

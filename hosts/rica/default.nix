@@ -23,7 +23,6 @@ in
       ./minio
       ./maddy
       ./vaultwarden
-      ./matrix
       ./backup
       ./git
       ./seafile

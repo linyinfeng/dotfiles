@@ -239,7 +239,7 @@ in
   systemd.services.mautrix-telegram.after = [ "postgresql.service" ];
   services.postgresql = {
     ensureDatabases = [
-      "matrix-synapse"
+      "matrix-synapse" # TODO locale problem
       "mautrix-telegram"
     ];
     ensureUsers = [

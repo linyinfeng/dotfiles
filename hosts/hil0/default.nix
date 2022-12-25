@@ -21,20 +21,7 @@ in
       services.notify-failure
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
-      # ./minio
-      # ./maddy
-      # ./vaultwarden
-      # ./matrix
-      # ./backup
-      # ./influxdb
-      # ./grafana
-      # ./loki
-      # ./git
-      # ./alertmanager
-      # ./seafile
-      # ./mastodon
-      # ./commit-notifier
-      # ./pastebin
+      ./matrix
     ];
 
   config = lib.mkMerge [
