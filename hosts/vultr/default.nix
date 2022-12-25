@@ -95,6 +95,7 @@ in
         recommendedTlsSettings = true;
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
+        validateConfig = false; # false positive
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
     }
@@ -169,11 +170,16 @@ in
 
     # nuc-proxy
     {
+      services.nginx.upstreams."nuc".servers = {
+        "nuc.ts.li7g.com:${toString config.ports.https}" = { };
+        "nuc.zt.li7g.com:${toString config.ports.https}" = { backup = true; };
+        "nuc.li7g.com:${toString config.ports.https-alternative}" = { backup = true; };
+      };
       services.nginx.virtualHosts."nuc-proxy.*" = {
         forceSSL = true;
         useACMEHost = "main";
         locations."/" = {
-          proxyPass = "https://nuc.ts.li7g.com";
+          proxyPass = "https://nuc";
         };
       };
     }
