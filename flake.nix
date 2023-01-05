@@ -22,6 +22,7 @@
       beautysh.url = "github:lovesegfault/beautysh";
       beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
       beautysh.inputs.nixpkgs.follows = "nixos";
+      beautysh.inputs.poetry2nix.follows = "poetry2nix";
 
       home.url = "github:nix-community/home-manager";
       home.inputs.nixpkgs.follows = "nixos";
@@ -97,8 +98,20 @@
       # hydra.inputs.nix.follows = "nix";
       # hydra.inputs.nixpkgs.follows = "nixos";
 
-      bootspec-secureboot.url = "github:DeterminateSystems/bootspec-secureboot";
-      bootspec-secureboot.inputs.nixpkgs.follows = "nixos";
+      lanzaboote.url = "github:nix-community/lanzaboote";
+      lanzaboote.inputs.nixpkgs.follows = "nixos";
+      lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
+      lanzaboote.inputs.crane.follows = "crane";
+      lanzaboote.inputs.flake-compat.follows = "flake-compat";
+      lanzaboote.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      rust-overlay.url = "github:oxalica/rust-overlay";
+      rust-overlay.inputs.nixpkgs.follows = "nixos";
+      rust-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      crane.url = "github:ipetkov/crane";
+      crane.inputs.nixpkgs.follows = "nixos";
+      crane.inputs.rust-overlay.follows = "rust-overlay";
+      crane.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      crane.inputs.flake-compat.follows = "flake-compat";
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
@@ -189,6 +202,7 @@
               inputs.sops-nix.nixosModules.sops
               inputs.impermanence.nixosModules.impermanence
               inputs.nixos-cn.nixosModules.nixos-cn
+              inputs.lanzaboote.nixosModules.lanzaboote
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
               inputs.linyinfeng.nixosModules.telegram-send

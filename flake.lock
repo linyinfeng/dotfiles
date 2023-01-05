@@ -5,7 +5,9 @@
         "nixpkgs": [
           "nixos"
         ],
-        "poetry2nix": "poetry2nix",
+        "poetry2nix": [
+          "poetry2nix"
+        ],
         "utils": [
           "digga",
           "flake-utils-plus",
@@ -26,23 +28,34 @@
         "type": "github"
       }
     },
-    "bootspec-secureboot": {
+    "crane": {
       "inputs": {
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-utils": [
+          "digga",
+          "flake-utils-plus",
+          "flake-utils"
+        ],
         "nixpkgs": [
           "nixos"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
         ]
       },
       "locked": {
-        "lastModified": 1663598402,
-        "narHash": "sha256-z2Hqm2lciJcD00+YG1vO1PGbRBGDrj99MTt+QEEs6KI=",
-        "owner": "DeterminateSystems",
-        "repo": "bootspec-secureboot",
-        "rev": "31cc8d0acd716f93ee8fdc1fb618cc1145b19e09",
+        "lastModified": 1672894003,
+        "narHash": "sha256-OLm40t8wEhyHlZKHmAkh2W+BpRnyLXVRBNjKV0IGI98=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "42e2fab6bc3dcbeea9d557c4eba2508e50abea18",
         "type": "github"
       },
       "original": {
-        "owner": "DeterminateSystems",
-        "repo": "bootspec-secureboot",
+        "owner": "ipetkov",
+        "repo": "crane",
         "type": "github"
       }
     },
@@ -311,6 +324,41 @@
       "original": {
         "owner": "nix-community",
         "repo": "impermanence",
+        "type": "github"
+      }
+    },
+    "lanzaboote": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-utils": [
+          "digga",
+          "flake-utils-plus",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ],
+        "nixpkgs-test": "nixpkgs-test",
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1672868360,
+        "narHash": "sha256-z9B5DBWRF2TVim+OoDeg9nipxEatbu1ukQf0maMKs3s=",
+        "owner": "nix-community",
+        "repo": "lanzaboote",
+        "rev": "2f36f1119a0e32ea92ed570a3ce0ac6656b6ea5a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "lanzaboote",
         "type": "github"
       }
     },
@@ -750,6 +798,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-test": {
+      "locked": {
+        "lastModified": 1671812130,
+        "narHash": "sha256-GALBK+qB9rhnB+lVnxdgtMoXCySXughZZ3+qGO1Ke/k=",
+        "owner": "RaitoBezarius",
+        "repo": "nixpkgs",
+        "rev": "e51bf8cc8e2c75192e930ad83ed272938729e7be",
+        "type": "github"
+      },
+      "original": {
+        "owner": "RaitoBezarius",
+        "ref": "simplified-qemu-boot-disks",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1671722432,
@@ -821,31 +885,6 @@
     "poetry2nix": {
       "inputs": {
         "flake-utils": [
-          "beautysh",
-          "utils"
-        ],
-        "nixpkgs": [
-          "beautysh",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1658665240,
-        "narHash": "sha256-/wkx7D7enyBPRjIkK0w7QxLQhzEkb3UxNQnjyc3FTUI=",
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "rev": "8b8edc85d24661d5a6d0d71d6a7011f3e699780f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "poetry2nix",
-        "type": "github"
-      }
-    },
-    "poetry2nix_2": {
-      "inputs": {
-        "flake-utils": [
           "digga",
           "flake-utils-plus",
           "flake-utils"
@@ -871,7 +910,7 @@
     "root": {
       "inputs": {
         "beautysh": "beautysh",
-        "bootspec-secureboot": "bootspec-secureboot",
+        "crane": "crane",
         "deploy": "deploy",
         "devshell": "devshell",
         "digga": "digga",
@@ -881,6 +920,7 @@
         "home": "home",
         "hydra": "hydra",
         "impermanence": "impermanence",
+        "lanzaboote": "lanzaboote",
         "latest": "latest",
         "linyinfeng": "linyinfeng",
         "mc-config": "mc-config",
@@ -896,8 +936,34 @@
         "nixos-hardware": "nixos-hardware",
         "nvfetcher": "nvfetcher",
         "pastebin": "pastebin",
-        "poetry2nix": "poetry2nix_2",
+        "poetry2nix": "poetry2nix",
+        "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "flake-utils": [
+          "digga",
+          "flake-utils-plus",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1672885572,
+        "narHash": "sha256-+VHU1lVXZM8DHuUrTvE4t/2i/ACwCd/ksMHA5pswGt4=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "1be785a7a3e9f3ac669d80befbe671cf96f6aae4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "sops-nix": {

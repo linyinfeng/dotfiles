@@ -35,7 +35,6 @@ in
     (with profiles.users; [
       yinfeng
     ]) ++ [
-      inputs.bootspec-secureboot.nixosModules.bootspec-secureboot
       ./hardware.nix
     ];
 
@@ -45,17 +44,16 @@ in
       console.keyMap = "us";
       time.timeZone = "Asia/Shanghai";
 
-      # use bootspec-secureboot
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
         consoleMode = "auto";
         # every boot entry takes about 40MB for EFI partition with bootspec-secureboot
         configurationLimit = 10;
       };
-      boot.loader.secureboot = {
+      boot.lanzaboote = {
         enable = true;
-        signingKeyPath = "/sbkeys/generated/db.key";
-        signingCertPath = "/sbkeys/generated/db.crt";
+        publicKeyFile = "/sbkeys/generated/db.crt";
+        privateKeyFile = "/sbkeys/generated/db.key";
       };
 
       # TODO kernel lockdown
