@@ -15,6 +15,7 @@ lib.mkIf config.home.graphical {
     nur.repos.linyinfeng.icalingua-plus-plus
     nur.repos.linyinfeng.wemeet
     picard
+    qq
     tdesktop
     teamspeak_client
     transmission-remote-gtk
@@ -46,6 +47,7 @@ lib.mkIf config.home.graphical {
       ".config/calibre"
       ".config/Element"
       ".config/icalingua"
+      ".config/QQ"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
       ".config/MusicBrainz" # picard configs
