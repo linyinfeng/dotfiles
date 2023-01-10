@@ -19,6 +19,7 @@ in
     suites.mobileWorkstation ++
     suites.games ++
     (with profiles; [
+      boot.secure-boot
       nix.access-tokens
       nix.nixbuild
       security.tpm
@@ -49,11 +50,6 @@ in
         consoleMode = "auto";
         # every boot entry takes about 40MB for EFI partition with bootspec-secureboot
         configurationLimit = 10;
-      };
-      boot.lanzaboote = {
-        enable = true;
-        publicKeyFile = "/sbkeys/generated/db.crt";
-        privateKeyFile = "/sbkeys/generated/db.key";
       };
 
       # TODO kernel lockdown
