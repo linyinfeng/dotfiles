@@ -30,6 +30,7 @@ in
       services.godns
       services.smartd
       services.acme
+      services.flatpak
       programs.service-mail
       programs.telegram-send
     ]) ++
@@ -48,32 +49,7 @@ in
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
         consoleMode = "auto";
-        # every boot entry takes about 40MB for EFI partition with bootspec-secureboot
-        configurationLimit = 10;
       };
-
-      # TODO kernel lockdown
-
-      # boot.kernelParams = [
-      #   "lockdown=integrity"
-      # ];
-      # boot.kernelPatches = [
-      #   # this patch makes the linux kernel unreproducible
-      #   {
-      #     name = "lockdown";
-      #     patch = null;
-      #     extraConfig = ''
-      #       MODULE_SIG y
-      #       SECURITY_LOCKDOWN_LSM y
-      #     '';
-      #   }
-      # ];
-      # assertions = [
-      #   {
-      #     assertion = lib.length config.boot.extraModulePackages == 0;
-      #     message = "out-of-tree and unsigned kernel module";
-      #   }
-      # ];
 
       boot.initrd.systemd.enable = true;
       boot.kernelPackages = pkgs.linuxPackages_latest;
