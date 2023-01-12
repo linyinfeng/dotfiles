@@ -11,7 +11,6 @@
     dnsutils
     inetutils
     iputils
-    whois
     nftables
   ];
 }

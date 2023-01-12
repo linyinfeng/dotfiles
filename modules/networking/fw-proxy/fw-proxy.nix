@@ -221,20 +221,7 @@ with lib;
 
       environment.systemPackages = [
         scripts
-        pkgs.proxychains-ng # add proxychains-ng
       ];
-      programs.proxychains = {
-        enable = true;
-        chain.type = "strict";
-        proxies = {
-          clash = {
-            enable = true;
-            type = "socks5";
-            host = "127.0.0.1";
-            port = cfg.mixinConfig.mixed-port;
-          };
-        };
-      };
       security.sudo.extraConfig = ''
         Defaults env_keep += "HTTP_PROXY HTTPS_PROXY FTP_PROXY ALL_PROXY NO_PROXY"
         Defaults env_keep += "http_proxy https_proxy ftp_proxy all_proxy no_proxy"
