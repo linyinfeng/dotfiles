@@ -4,7 +4,8 @@
   nix = {
     settings.system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-    settings.auto-optimise-store = true;
+    # use periodic store optimisation
+    # settings.auto-optimise-store = true;
     optimise.automatic = true;
 
     settings.sandbox = true;
