@@ -67,8 +67,6 @@
       emacs-overlay.url = "github:nix-community/emacs-overlay";
       emacs-overlay.inputs.nixpkgs.follows = "nixos";
       emacs-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      emacs-webkit.url = "github:akirakyle/emacs-webkit";
-      emacs-webkit.flake = false;
       nix.url = "github:nixos/nix";
       nix.inputs.nixpkgs.follows = "nixos";
 

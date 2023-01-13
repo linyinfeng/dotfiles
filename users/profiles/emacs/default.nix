@@ -7,9 +7,6 @@ let
     alwaysEnsure = false;
     override = epkgs: epkgs // {
       inherit (epkgs.melpaPackages) telega;
-      webkit = pkgs.callPackage inputs.emacs-webkit {
-        inherit (epkgs) trivialBuild;
-      };
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };

@@ -198,22 +198,6 @@
         "type": "github"
       }
     },
-    "emacs-webkit": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1630368460,
-        "narHash": "sha256-qrDZZwG49j3lP7ZMhSg8v0J6ft38RXGu+QtKY9WzzUU=",
-        "owner": "akirakyle",
-        "repo": "emacs-webkit",
-        "rev": "96a4850676b74ffa55b52ff8e9824f7537df6a47",
-        "type": "github"
-      },
-      "original": {
-        "owner": "akirakyle",
-        "repo": "emacs-webkit",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -915,7 +899,6 @@
         "devshell": "devshell",
         "digga": "digga",
         "emacs-overlay": "emacs-overlay",
-        "emacs-webkit": "emacs-webkit",
         "flake-compat": "flake-compat",
         "home": "home",
         "hydra": "hydra",

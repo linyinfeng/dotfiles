@@ -395,10 +395,6 @@
 (use-package vterm
   :ensure t)
 
-(use-package webkit
-  :config
-  (require 'webkit-ace))
-
 (use-package which-key
   :ensure t
   :delight
