@@ -141,7 +141,7 @@
             imports = [ (digga.lib.importOverlays ./overlays) ];
             overlays = [
               ./pkgs/default.nix
-              nvfetcher.overlay
+              nvfetcher.overlays.default
               deploy.overlay
 
               inputs.sops-nix.overlay
