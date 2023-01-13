@@ -15,6 +15,7 @@ lib.mkIf config.home.graphical {
     nur.repos.linyinfeng.icalingua-plus-plus
     nur.repos.linyinfeng.wemeet
     picard
+    praat
     qq
     tdesktop
     teamspeak_client
