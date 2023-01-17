@@ -4,6 +4,7 @@ let
     gsconnect
     appindicator
     dash-to-dock
+    clipboard-history
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString type;
 in
