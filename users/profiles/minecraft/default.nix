@@ -3,6 +3,7 @@
 lib.mkIf config.home.graphical {
   home.packages = with pkgs; [
     lunar-client
+    prismlauncher
     minecraft
   ];
 
