@@ -315,7 +315,7 @@
   :delight pyim-isearch-mode
   :custom
   (default-input-method "pyim")
-  (pyim-page-tooltip 'popup)
+  ; (pyim-page-tooltip 'popup)
   (pyim-default-scheme 'quanpin)
   (pyim-page-length 5)
   (pyim-english-input-switch-functions
@@ -329,6 +329,8 @@
   (pyim-dicts
    `((:name "Greatdict" :file ,(concat var-dir "pyim/greatdict.pyim.gz"))))
   :config
+  (use-package posframe
+    :ensure t)
   (pyim-isearch-mode 1)
   (define-key pyim-mode-map "." 'pyim-page-next-page)
   (define-key pyim-mode-map "," 'pyim-page-previous-page)
