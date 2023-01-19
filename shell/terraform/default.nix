@@ -15,7 +15,14 @@ in
 
         export PATH=${pkgs.sops}/bin:$PATH
         export PATH=${pkgs.terraform}/bin:$PATH
-        export PATH=${pkgs.zerotierone}/bin:$PATH
+        ${
+          # TODO workaround for broken zerotierone on aarch64-linux
+          # original:
+          # export PATH=${pkgs.zerotierone}/bin:$PATH
+          if !pkgs.zerotierone.meta.broken
+          then "export PATH=${pkgs.zerotierone}/bin:$PATH"
+          else ""
+        }
         export PATH=${pkgs.minio-client}/bin:$PATH
         export PATH=${pkgs.syncthing}/bin:$PATH
         export PATH=${pkgs.jq}/bin:$PATH
