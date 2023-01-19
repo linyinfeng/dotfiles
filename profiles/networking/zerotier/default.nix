@@ -10,6 +10,7 @@ let
     "zerotierone.service"
   ];
 in
+lib.mkIf (!pkgs.zerotierone.meta.broken)
 {
   services.zerotierone = {
     enable = true;
