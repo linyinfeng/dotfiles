@@ -14,7 +14,7 @@
   hardware.pulseaudio.enable = false;
 
   environment.systemPackages = with pkgs; [
-    helvum
+    # helvum # TODO borken
     easyeffects
   ];
   environment.global-persistence.user.directories = [
