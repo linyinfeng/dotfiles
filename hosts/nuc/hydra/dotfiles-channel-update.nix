@@ -28,7 +28,7 @@
         git merge --ff-only "$commit"
         git push --set-upstream origin tested
 
-        ${config.programs.telegram-send.withConfig} --stdin <<EOF
+        ${config.programs.tg-send.wrapped} <<EOF
       dotfiles/tested
 
       $(git show HEAD --no-patch)
@@ -48,7 +48,7 @@
       Group = "hydra";
       Type = "oneshot";
       SupplementaryGroups = [
-        config.users.groups.telegram-send.name
+        config.users.groups.tg-send.name
       ];
       StateDirectory = "dotfiles-channel-update";
       Restart = "on-failure";

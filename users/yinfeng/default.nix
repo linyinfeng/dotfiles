@@ -34,7 +34,7 @@ in
     groupNameIfPresent "tss" ++
     groupNameIfPresent "nix-access-tokens" ++
     groupNameIfPresent "nixbuild" ++
-    groupNameIfPresent "telegram-send" ++
+    groupNameIfPresent "tg-send" ++
     groupNameIfPresent "service-mail" ++
     groupNameIfPresent "plugdev" ++
     groupNameIfPresent "acme" ++

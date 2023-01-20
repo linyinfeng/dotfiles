@@ -29,7 +29,7 @@ in
       services.smartd
       services.acme
       programs.service-mail
-      programs.telegram-send
+      programs.tg-send
     ]) ++
     (with profiles.users; [ yinfeng ]);
 

@@ -206,7 +206,7 @@
               inputs.lanzaboote.nixosModules.lanzaboote
               inputs.linyinfeng.nixosModules.vlmcsd
               inputs.linyinfeng.nixosModules.tprofile
-              inputs.linyinfeng.nixosModules.telegram-send
+              inputs.linyinfeng.nixosModules.tg-send
               inputs.linyinfeng.nixosModules.commit-notifier
               inputs.linyinfeng.nixosModules.dot-tar
             ];

@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
 
 let
-  telegram-send = config.programs.telegram-send.withConfig;
+  tgSend = config.programs.tg-send.wrapped;
 in
 {
-  services.notify-failure = lib.mkIf (config.programs.telegram-send.enable) {
+  services.notify-failure = lib.mkIf (config.programs.tg-send.enable) {
     enable = true;
     config = {
       script = ''
@@ -14,7 +14,7 @@ in
           extra_information+="$e"$'\n'
         done
 
-        "${telegram-send}" --stdin <<EOF
+        "${tgSend}" <<EOF
         $(systemctl status "$unit")
 
         $extra_information

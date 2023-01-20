@@ -16,7 +16,7 @@ in
   imports =
     suites.server ++
     (with profiles; [
-      programs.telegram-send
+      programs.tg-send
       services.acme
       services.notify-failure
     ]) ++ [

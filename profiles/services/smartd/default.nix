@@ -2,7 +2,7 @@
 
 let
   serviceMail = "${config.programs.service-mail.package}/bin/service-mail";
-  telegramSend = config.programs.telegram-send.withConfig;
+  tgSend = config.programs.tg-send.wrapped;
   mailAddress = "lin.yinfeng@outlook.com";
   smartdNotify = pkgs.writeShellScript "smartd-notify" ''
     set -e
@@ -16,7 +16,7 @@ let
     echo "$SMARTD_MESSAGE" | ${serviceMail} "smartd@li7g.com" "$SMARTD_ADDRESS" "$subject"
 
     echo "telegram push"
-    ${telegramSend} --stdin <<EOF
+    ${tgSend} <<EOF
     $subject
 
     $SMARTD_MESSAGE

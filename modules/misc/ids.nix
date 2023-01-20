@@ -12,7 +12,7 @@
     # service users
     # nix-access-tokens = 400; # not using
     # nixbuild = 401; # not using
-    # telegram-send = 402;
+    # tg-send = 402;
     # service-mail = 403;
     hydra-builder = 404;
     # windows = 405;
@@ -22,7 +22,7 @@
     # service groups
     nix-access-tokens = 400;
     nixbuild = 401;
-    telegram-send = 402;
+    tg-send = 402;
     service-mail = 403;
     hydra-builder = 404;
     windows = 405;
