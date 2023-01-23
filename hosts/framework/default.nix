@@ -118,6 +118,7 @@ in
         ];
       };
 
+      boot.supportedFilesystems = [ "ntfs" ];
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
       boot.initrd.luks.devices = {
         crypt-root = {
