@@ -53,16 +53,27 @@ in
         restartUnits = [ "v2ray.service" ];
       };
       systemd.packages = [ pkgs.v2ray ];
-      systemd.services.v2ray = {
+      systemd.services.v2ray-portal = {
         serviceConfig = {
           ExecStart = [
-            "" # override ExecStart
             "${pkgs.v2ray}/bin/v2ray run --config %d/config --format jsonv5"
           ];
           LoadCredential = [
             "config:${config.sops.templates.portal-v2ray.path}"
           ];
+          DynamicUser = true;
+          CapabilityBoundingSet = [
+            "CAP_NET_ADMIN"
+            "CAP_NET_BIND_SERVICE"
+          ];
+          AmbientCapabilities = [
+            "CAP_NET_ADMIN"
+            "CAP_NET_BIND_SERVICE"
+          ];
+          NoNewPrivileges = true;
         };
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
         restartTriggers = [
           config.sops.templates.portal-v2ray.content
         ];
