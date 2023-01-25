@@ -95,7 +95,6 @@ in
         recommendedTlsSettings = true;
         recommendedOptimisation = true;
         recommendedGzipSettings = true;
-        validateConfig = false; # false positive
       };
       networking.firewall.allowedTCPPorts = [ 80 443 ];
     }
