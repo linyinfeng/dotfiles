@@ -29,6 +29,7 @@ in
       networking.behind-fw
       networking.fw-proxy
       services.transmission
+      services.plex
       services.samba
       services.vlmcsd
       services.teamspeak
