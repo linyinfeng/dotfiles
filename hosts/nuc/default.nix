@@ -217,6 +217,8 @@ in
     # extra settings for suites.transmission
     {
       services.nginx.virtualHosts."transmission.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
         listen = config.hosts.nuc.listens;
         locations."/transmission".proxyPass =
           "http://localhost:${toString config.services.transmission.settings.rpc-port}";
@@ -248,6 +250,17 @@ in
       sops.secrets."transmission_password" = {
         sopsFile = config.sops-file.terraform;
         restartUnits = [ "transmission.service" ];
+      };
+    }
+
+    # plex
+    {
+      services.nginx.virtualHosts."plex.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        listen = config.hosts.nuc.listens;
+        locations."/".proxyPass =
+          "http://localhost:${toString config.ports.plex}";
       };
     }
   ];

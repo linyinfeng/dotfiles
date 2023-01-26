@@ -70,6 +70,7 @@ locals {
     pgp-public-key  = { on = "vultr", proxy = true }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
+    plex            = { on = "nuc", proxy = false }
     vault           = { on = "rica", proxy = true }
     pb              = { on = "rica", proxy = true }
     git             = { on = "rica", proxy = true }

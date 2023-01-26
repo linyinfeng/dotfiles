@@ -56,6 +56,7 @@
       teamspeak-voice = 9987;
       teamspeak-file-transfer = 30033;
       teamspeak-query = 10011;
+      plex = 32400;
       vlmcsd = 40044;
       tailscale = 41641;
       wireguard = 51820;
