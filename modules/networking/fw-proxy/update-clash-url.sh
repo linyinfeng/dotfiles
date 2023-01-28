@@ -41,8 +41,8 @@ echo 'Remove raw config.yaml...'
 rm "$tmpfile"
 
 echo 'Restarting clash...'
-$systemctl restart clash-premium
-$systemctl status clash-premium
+$systemctl restart clash
+$systemctl status clash
 if [ -f "$dir/config.yaml.old" ]; then
     echo 'Remove old config.yaml'
     rm "$dir/config.yaml.old"

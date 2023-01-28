@@ -10,7 +10,8 @@ lib.mkIf config.home.graphical {
     gnuradio
     gparted
     inkscape
-    libreoffice-fresh
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=212583
+    # libreoffice-fresh
     meld
     nur.repos.linyinfeng.icalingua-plus-plus
     nur.repos.linyinfeng.wemeet

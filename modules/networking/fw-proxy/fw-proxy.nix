@@ -30,7 +30,7 @@ let
       inherit (pkgs) coreutils curl systemd;
       yqGo = pkgs.yq-go;
       mixinConfig = builtins.toJSON cfg.mixinConfig;
-      directory = "/var/lib/clash-premium";
+      directory = "/var/lib/clash";
     };
     updateClash = pkgs.substituteAll {
       src = ./update-clash.sh;
@@ -120,7 +120,7 @@ with lib;
       };
       bypassCgroup = mkOption {
         type = with types; str;
-        default = "system.slice/clash-premium.service";
+        default = "system.slice/clash.service";
       };
       maxCgroupLevel = mkOption {
         type = with types; int;
@@ -193,15 +193,15 @@ with lib;
 
   config = mkIf (cfg.enable) (mkMerge [
     {
-      systemd.services.clash-premium = {
+      systemd.services.clash = {
         description = "A rule based proxy in GO";
         script = ''
-          "${pkgs.nur.repos.linyinfeng.clash-premium}/bin/clash-premium" -d "$STATE_DIRECTORY"
+          "${pkgs.nur.repos.linyinfeng.clash-meta}/bin/clash" -d "$STATE_DIRECTORY"
         '';
         serviceConfig = {
           Type = "exec";
           DynamicUser = true;
-          StateDirectory = "clash-premium";
+          StateDirectory = "clash";
           AmbientCapabilities = [
             "CAP_NET_BIND_SERVICE"
             "CAP_NET_ADMIN"
@@ -248,8 +248,8 @@ with lib;
           ExecStart = "${scripts}/bin/fw-tproxy-setup";
           ExecStopPost = "${scripts}/bin/fw-tproxy-clean";
         };
-        after = [ "clash-premium.service" ];
-        requires = [ "clash-premium.service" ];
+        after = [ "clash.service" ];
+        requires = [ "clash.service" ];
         wantedBy = [ "multi-user.target" ];
       };
       networking.firewall.extraCommands = ''
@@ -272,7 +272,7 @@ with lib;
           Restart = "on-failure";
           RestartSec = 30;
         };
-        after = [ "network-online.target" "clash-premium.service" ];
+        after = [ "network-online.target" "clash.service" ];
       };
       systemd.timers.clash-auto-update = {
         timerConfig = {
