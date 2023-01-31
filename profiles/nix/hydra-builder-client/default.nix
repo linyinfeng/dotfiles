@@ -26,7 +26,7 @@ in
     };
   };
   sops.secrets."hydra_builder_private_key" = {
-    # neededForUsers = true; # needed for /etc
+    neededForUsers = true; # needed for /etc
     sopsFile = config.sops-file.terraform;
   };
   environment.etc.${keyFile} = {
