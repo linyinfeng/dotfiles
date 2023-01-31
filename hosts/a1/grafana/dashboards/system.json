@@ -99,18 +99,80 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "influxdb-li7g-com"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"uptime\")\n  |> last()\n  |> yield(name: \"last\")",
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"uptime\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "A"
         }
       ],
       "title": "Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-li7g-com"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 2,
+        "x": 4,
+        "y": 1
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-li7g-com"
+          },
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
+          "refId": "A"
+        }
+      ],
+      "title": "Failed Units",
       "type": "stat"
     },
     {
@@ -173,8 +235,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 8,
-        "x": 4,
+        "w": 6,
+        "x": 6,
         "y": 1
       },
       "id": 2,
@@ -251,7 +313,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -310,7 +372,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -455,7 +517,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -702,7 +764,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.6",
       "targets": [
         {
           "datasource": {
@@ -944,8 +1006,12 @@
       {
         "current": {
           "selected": true,
-          "text": "a1",
-          "value": "a1"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
@@ -953,8 +1019,8 @@
         },
         "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"system\", tag: \"host\")",
         "hide": 0,
-        "includeAll": false,
-        "multi": false,
+        "includeAll": true,
+        "multi": true,
         "name": "host",
         "options": [],
         "query": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"system\", tag: \"host\")",
@@ -967,7 +1033,7 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},

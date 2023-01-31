@@ -41,7 +41,8 @@ in
         useSubstitutes = true;
         buildMachinesFiles = [
           "/etc/nix/machines"
-          "/etc/nix-build-machines/nixbuild/machines-aarch64-linux-only"
+          # use a1 instread (free oracle aarch64-linux machine)
+          # "/etc/nix-build-machines/nixbuild/machines-aarch64-linux-only"
           "/etc/nix-build-machines/hydra-builder/machines"
         ];
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;

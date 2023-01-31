@@ -34,6 +34,7 @@ in
     groupNameIfPresent "tss" ++
     groupNameIfPresent "nix-access-tokens" ++
     groupNameIfPresent "nixbuild" ++
+    groupNameIfPresent "hydra-builder" ++
     groupNameIfPresent "tg-send" ++
     groupNameIfPresent "service-mail" ++
     groupNameIfPresent "plugdev" ++

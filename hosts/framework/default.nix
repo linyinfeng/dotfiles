@@ -22,6 +22,7 @@ in
       boot.secure-boot
       nix.access-tokens
       nix.nixbuild
+      nix.hydra-builder-client
       security.tpm
       networking.wireguard-home
       networking.behind-fw
