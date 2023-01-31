@@ -320,7 +320,7 @@
             "type": "influxdb",
             "uid": "influxdb-li7g-com"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load1\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
         }
       ],
@@ -379,7 +379,7 @@
             "type": "influxdb",
             "uid": "influxdb-li7g-com"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load5\")\n  |> last()\n  |> yield(name: \"last\")",
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load5\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
         }
       ],
@@ -524,7 +524,7 @@
             "type": "influxdb",
             "uid": "influxdb-li7g-com"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load15\")\n  |> last()\n  |> yield(name: \"last\")",
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load15\")\n  |> last()\n  |> yield(name: \"last\")",
           "refId": "load1"
         }
       ],
@@ -997,7 +997,7 @@
       "type": "logs"
     }
   ],
-  "refresh": "5m",
+  "refresh": "5s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -1007,10 +1007,10 @@
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "a1"
           ],
           "value": [
-            "$__all"
+            "a1"
           ]
         },
         "datasource": {
@@ -1033,7 +1033,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
