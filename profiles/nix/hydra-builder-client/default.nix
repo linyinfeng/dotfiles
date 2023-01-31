@@ -12,8 +12,8 @@ in
     '';
   };
   environment.etc.${machineFile}.text = ''
-    hydra-builder@nuc.ts.li7g.com x86_64-linux,i686-linux /etc/${keyFile} 1 1 kvm,nixos-test,benchmark,big-parallel
-    hydra-builder@a1.ts.li7g.com aarch64-linux /etc/${keyFile} 1 1 benchmark,big-parallel
+    hydra-builder@nuc.ts.li7g.com x86_64-linux,i686-linux /etc/${keyFile} 8 1 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@a1.ts.li7g.com aarch64-linux /etc/${keyFile} 4 1 benchmark,big-parallel
   '';
   services.openssh.knownHosts = {
     nuc = {
