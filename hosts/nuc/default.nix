@@ -125,7 +125,7 @@ in
             sub_domains = [ "nuc" ];
           }];
           ip_type = "IPv4";
-          ip_urls = [ "https://myip.biturl.top" ];
+          ip_urls = [ "https://ifconfig.me" ];
         };
         ipv6.settings = {
           domains = [{
