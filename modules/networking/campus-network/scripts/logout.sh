@@ -1,5 +1,7 @@
 #!@shell@
 
+set -e
+
 curl="@curl@/bin/curl"
 
-$curl -X POST http://p.nju.edu.cn/portal_io/logout
+$curl -X POST https://p.nju.edu.cn/api/portal/v1/logout --json "{}"
