@@ -113,9 +113,6 @@
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
-
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=211323
-      pin-mastodon.url = "github:nixos/nixpkgs/befc83905c965adfd33e5cae49acb0351f6e0404";
     };
 
   outputs =

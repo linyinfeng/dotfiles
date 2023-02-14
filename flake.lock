@@ -962,22 +962,6 @@
         "type": "github"
       }
     },
-    "pin-mastodon": {
-      "locked": {
-        "lastModified": 1673631141,
-        "narHash": "sha256-AprpYQ5JvLS4wQG/ghm2UriZ9QZXvAwh1HlgA/6ZEVQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "befc83905c965adfd33e5cae49acb0351f6e0404",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "befc83905c965adfd33e5cae49acb0351f6e0404",
-        "type": "github"
-      }
-    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": [
@@ -1059,7 +1043,6 @@
         "nixos-hardware": "nixos-hardware",
         "nvfetcher": "nvfetcher",
         "pastebin": "pastebin",
-        "pin-mastodon": "pin-mastodon",
         "poetry2nix": "poetry2nix",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix"
