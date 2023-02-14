@@ -66,7 +66,7 @@ in
       systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [
         config.users.groups.nix-access-tokens.name
         config.users.groups.nixbuild.name
-        config.users.groups.hydra-builder.name
+        config.users.groups.hydra-builder-client.name
       ];
       sops.templates."hydra-extra-config" = {
         group = "hydra";

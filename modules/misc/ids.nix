@@ -15,8 +15,9 @@
     # tg-send = 402;
     # service-mail = 403;
     hydra-builder = 404;
-    # windows = 405;
-    steam = 406;
+    hydra-builder-client = 405;
+    # windows = 406;
+    steam = 407;
   };
   ids.gids = {
     # service groups
@@ -25,7 +26,8 @@
     tg-send = 402;
     service-mail = 403;
     hydra-builder = 404;
-    windows = 405;
-    steam = 406;
+    hydra-builder-client = 405;
+    windows = 406;
+    steam = 407;
   };
 }

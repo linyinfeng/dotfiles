@@ -30,13 +30,17 @@ in
     sopsFile = config.sops-file.terraform;
   };
   environment.etc.${keyFile} = {
-    mode = "400";
+    mode = "440";
+    user = config.users.users.hydra-builder-client.name;
+    group = config.users.groups.hydra-builder-client.name;
     source = config.sops.secrets."hydra_builder_private_key".path;
   };
-  systemd.tmpfiles.rules = [
-    "a+ /etc/${keyFile} - - - - group:hydra-builder:r"
-  ];
-  users.groups.hydra-builder = {
-    gid = config.ids.gids.hydra-builder;
+  users.users.hydra-builder-client = {
+    uid = config.ids.uids.hydra-builder-client;
+    isSystemUser = true;
+    group = config.users.groups.hydra-builder-client.name;
+  };
+  users.groups.hydra-builder-client = {
+    gid = config.ids.gids.hydra-builder-client;
   };
 }
