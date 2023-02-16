@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  nucInfluxdb = bucket: {
+  mainInfluxdb = bucket: {
     urls = [ "https://influxdb.li7g.com" ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
@@ -26,10 +26,10 @@ in
         flush_jitter = "5s";
       };
       outputs.influxdb_v2 = [
-        (nucInfluxdb "main")
-        (nucInfluxdb "system")
-        (nucInfluxdb "minio")
-        (nucInfluxdb "minecraft")
+        (mainInfluxdb "main")
+        (mainInfluxdb "system")
+        (mainInfluxdb "minio")
+        (mainInfluxdb "minecraft")
       ];
       inputs = {
         cpu = [
@@ -38,6 +38,12 @@ in
             totalcpu = true;
             collect_cpu_time = false;
             report_active = false;
+            tags.output_bucket = "system";
+          }
+        ];
+        procstat = [
+          {
+            pattern = ".*";
             tags.output_bucket = "system";
           }
         ];
@@ -72,10 +78,24 @@ in
           tags.output_bucket = "system";
         }];
       };
+      processors = {
+        topk = [
+          {
+            namepass = [ "procstat" ];
+            period = 10;
+            k = 5;
+            fields = [
+              "cpu_usage"
+              "memory_rss"
+            ];
+          }
+        ];
+      };
     };
   };
   systemd.services.telegraf.path = with pkgs; [
     lm_sensors
+    procps # for pgrep
   ];
   sops.secrets."influxdb_token" = {
     sopsFile = config.sops-file.get "terraform/infrastructure.yaml";

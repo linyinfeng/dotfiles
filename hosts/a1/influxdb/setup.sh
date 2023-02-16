@@ -32,7 +32,7 @@ if [ ! -f "$INFLUX_CONFIGS_PATH" ]; then
 fi
 
 # ensure buckets
-buckets=(system minio minecraft)
+buckets=(@ensureBuckets@)
 for bucket in "${buckets[@]}"; do
   echo "ensure bucket '$bucket'"
   if "$influx" bucket list --org "$org" \

@@ -9,7 +9,12 @@ let
     username = "yinfeng";
     org = "main-org";
     bucket = "main";
-    retention = "14d";
+    retention = "30d";
+    ensureBuckets = [
+      "system"
+      "minio"
+      "minecraft"
+    ];
   };
 in
 {
@@ -19,10 +24,11 @@ in
       http-bind-address = ":${toString config.ports.influxdb}";
     };
   };
+  system.build.influxdb2-setup-script = setup;
   systemd.services.influxdb2-setup = {
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${setup}";
+      ExecStart = "${config.system.build.influxdb2-setup-script}";
       DynamicUser = true;
       LoadCredential = [
         "password:${config.sops.secrets."influxdb_password".path}"

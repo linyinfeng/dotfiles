@@ -21,7 +21,7 @@
         retention_enabled = true;
       };
       limits_config = {
-        retention_period = "336h"; # 14 days
+        retention_period = "720h"; # 30 days
       };
 
       schema_config.configs = [
