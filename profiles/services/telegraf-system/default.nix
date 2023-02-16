@@ -44,6 +44,8 @@ in
         procstat = [
           {
             pattern = ".*";
+            cmdline_tag = true;
+            pid_tag = true;
             tags.output_bucket = "system";
           }
         ];

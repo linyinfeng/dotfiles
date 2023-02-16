@@ -1048,15 +1048,7 @@
         }
       ],
       "title": "CPU Usage TopK",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*process_name=\"([^\"]*)\".*",
-            "renamePattern": "$1"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
@@ -1147,15 +1139,7 @@
         }
       ],
       "title": "Memory RSS TopK",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": ".*process_name=\"([^\"]*)\".*",
-            "renamePattern": "$1"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     }
   ],
