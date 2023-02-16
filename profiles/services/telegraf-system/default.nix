@@ -88,6 +88,10 @@ in
               "cpu_usage"
               "memory_rss"
             ];
+            add_aggregate_fields = [
+              "cpu_usage"
+              "memory_rss"
+            ];
           }
         ];
       };
