@@ -1047,7 +1047,7 @@
           "refId": "A"
         }
       ],
-      "title": "CPU Usage Top 5",
+      "title": "CPU Usage Selected",
       "transformations": [
         {
           "id": "renameByRegex",
@@ -1146,7 +1146,7 @@
           "refId": "A"
         }
       ],
-      "title": "Memory RSS Top 5",
+      "title": "Memory RSS Selected",
       "transformations": [
         {
           "id": "renameByRegex",
