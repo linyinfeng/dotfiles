@@ -375,7 +375,7 @@
             suites = nixos.lib.fix (suites: {
               base = with profiles; [ git ];
               multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio minecraft ];
-              development = with profiles; [ development direnv emacs tools.nix tools.network tools.other tex postmarketos awscli terraform shells ];
+              development = with profiles; [ development direnv emacs pssh tools.nix tools.network tools.other tex postmarketos awscli terraform shells ];
               virtualization = [ ];
               multimediaDev = suites.multimedia ++ suites.development ++
                 (with profiles; [ xdg-dirs vscode ]);
