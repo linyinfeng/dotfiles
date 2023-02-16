@@ -84,6 +84,8 @@
   :config
   (global-set-key (kbd "C-:") 'avy-goto-char-timer))
 
+(use-package cl) ; builtin
+
 (use-package cdlatex
   :ensure t
   :config
@@ -130,6 +132,9 @@
   :ensure t
   :config
   (global-set-key (kbd "C-=") 'er/expand-region))
+
+(use-package f
+  :ensure t)
 
 (use-package fish-mode
   :ensure t)
@@ -261,13 +266,22 @@
   (org-roam-directory (file-truename (concat sync-dir "orgs/notes")))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
-   (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org"))
-     `(("d" "default" plain "%?"
-        :target (file+head ,file-format "#+title: ${title}")
-        :unnarrowed t)
-       ("p" "paper" plain (file (concat var-dir "orgs/templates/paper.org"))
-        :target (file+head ,file-format "#+title: ${title}\n#+filetags: Paper")
-        :unnarrowed t))))
+   (let ((file-format "%<%Y%m%d%H%M%S>-${slug}.org")
+         (common-header-before
+          [ "#+title: ${title}" ])
+         (common-header-after
+          [ "#+options: tex:t"
+            "#+startup: latexpreview" ]))
+     (flet ((append-newline (s) (concat s "\n"))
+            (build-header (l)
+                          (apply 'concat (mapcar #'append-newline
+                                                 (vconcat common-header-before l common-header-after)))))
+       `(("d" "default" plain "%?"
+          :target (file+head ,file-format ,(build-header [ ]))
+          :unnarrowed t)
+         ("p" "paper" plain (file ,(concat var-dir "orgs/templates/paper.org"))
+          :target (file+head ,file-format ,(build-header [ "#+filetags: Paper" ]))
+          :unnarrowed t)))))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -315,7 +329,7 @@
   :delight pyim-isearch-mode
   :custom
   (default-input-method "pyim")
-  ; (pyim-page-tooltip 'popup)
+  (pyim-page-tooltip 'posframe)
   (pyim-default-scheme 'quanpin)
   (pyim-page-length 5)
   (pyim-english-input-switch-functions
