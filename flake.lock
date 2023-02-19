@@ -1041,6 +1041,9 @@
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
+        "nixpkgs": [
+          "nixos"
+        ],
         "nvfetcher": "nvfetcher",
         "pastebin": "pastebin",
         "poetry2nix": "poetry2nix",

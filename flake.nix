@@ -6,6 +6,8 @@
       nixos.url = "github:nixos/nixpkgs/nixos-unstable";
       latest.url = "github:nixos/nixpkgs/master";
 
+      nixpkgs.follows = "nixos"; # for nix registry
+
       digga.url = "github:divnix/digga";
       digga.inputs.nixpkgs.follows = "nixos";
       digga.inputs.nixpkgs-unstable.follows = "nixos";
