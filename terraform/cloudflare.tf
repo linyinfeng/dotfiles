@@ -29,15 +29,18 @@ output "cloudflare_token" {
 }
 
 # -------------
+# Account ID
+
+locals {
+  cloudflare_main_account_id = data.sops_file.terraform.data["cloudflare.account-id"]
+}
+
+# -------------
 # Zones
 
 resource "cloudflare_zone" "com_li7g" {
+  account_id = local.cloudflare_main_account_id
   zone = "li7g.com"
-  lifecycle {
-    ignore_changes = [
-      account_id
-    ]
-  }
 }
 
 # ttl = 1 for automatic
