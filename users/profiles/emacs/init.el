@@ -9,7 +9,7 @@
       (add-to-list 'load-path host-dir)
       (require 'init-host)
       (message "Finish loading host init"))
-  (warn "Host file not found"))
+  (message "Host file not found"))
 
 ;; customize file
 (defvar var-dir (concat user-emacs-directory "var/"))
@@ -399,6 +399,11 @@
   (TeX-source-correlate-mode t)
   :config
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
+
+(use-package treesit-auto
+  :ensure t
+  :config
+  (global-treesit-auto-mode))
 
 (use-package undo-tree
   :ensure t
