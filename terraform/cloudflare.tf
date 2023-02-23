@@ -85,7 +85,6 @@ locals {
     social          = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
-    mc              = { on = "nuc", proxy = false }
     grafana         = { on = "a1", proxy = true }
     influxdb        = { on = "a1", proxy = true }
     loki            = { on = "a1", proxy = true }
@@ -157,6 +156,17 @@ resource "cloudflare_record" "li7g_mx2" {
   type     = "MX"
   value    = "isaac.mx.cloudflare.net"
   zone_id  = cloudflare_zone.com_li7g.id
+}
+
+# ad-hoc ddns record
+
+resource "cloudflare_record" "mc" {
+  name    = "mc"
+  proxied = false
+  ttl     = 1
+  type    = "A"
+  value   = "127.0.0.1"
+  zone_id = cloudflare_zone.com_li7g.id
 }
 
 # smtp records for sending

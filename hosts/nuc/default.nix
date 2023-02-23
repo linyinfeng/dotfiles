@@ -122,7 +122,7 @@ in
         ipv4.settings = {
           domains = [{
             domain_name = "li7g.com";
-            sub_domains = [ "nuc" ];
+            sub_domains = [ "nuc" "mc" ];
           }];
           ip_type = "IPv4";
           ip_urls = [ "https://ifconfig.me" ];
