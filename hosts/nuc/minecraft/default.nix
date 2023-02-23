@@ -27,18 +27,17 @@ in
         sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
         sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
         sed -i "/^motd=/ s/=.*/=mc.li7g.com/" server.properties
-        # disable online-mode
-        sed -i "/^online-mode=/ s/=.*/=false/" server.properties
+        # # disable online-mode
+        # sed -i "/^online-mode=/ s/=.*/=false/" server.properties
       fi
 
-      if [ -f config/bluemap/core.conf ]; then
-        yq -i '.accept-download = true' config/bluemap/core.conf
-        yq -i '.renderThreadCount = 2' config/bluemap/core.conf
+      if [ -f dynmap/configuration.txt ]; then
+        yq -i '.webserver-port = ${toString mapPort}' dynmap/configuration.txt
       fi
 
-      if [ -f config/PlasmoVoice/server.yml ]; then
-        yq -i '.udp.port = ${toString port}' config/PlasmoVoice/server.yml
-      fi
+      # if [ -f config/PlasmoVoice/server.yml ]; then
+      #   yq -i '.udp.port = ${toString port}' config/PlasmoVoice/server.yml
+      # fi
 
       if [ -f config/unifiedmetrics/config.yml ]; then
         mkdir -p config/unifiedmetrics/driver
@@ -59,8 +58,10 @@ in
         "rcon-password:${config.sops.secrets."rcon_password".path}"
         "driver-influxdb:${config.sops.templates."driver-influxdb".path}"
       ];
-      CPUQuota = "250%"; # at most 2 cores (4/8 cores in total)
+      CPUQuota = "400%"; # at most 2 cores (4/8 cores in total)
     };
+    environment.JAVA_TOOL_OPTIONS = lib.mkIf config.networking.fw-proxy.enable
+      "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.mixinConfig.mixed-port}";
     wantedBy = [ "multi-user.target" ];
   };
   networking.firewall.allowedTCPPorts = [ port rconPort ];

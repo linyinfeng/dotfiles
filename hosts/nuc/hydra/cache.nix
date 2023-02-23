@@ -41,7 +41,7 @@ in
         "cache-access-key:${config.sops.secrets."cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
-      CPUQuota = "600%"; # limit cpu usage for parallel-compression
+      CPUQuota = "400%"; # limit cpu usage for parallel-compression
     };
     environment = lib.mkMerge [
       {
