@@ -167,6 +167,7 @@ resource "cloudflare_record" "mc" {
   type    = "A"
   value   = "127.0.0.1"
   zone_id = cloudflare_zone.com_li7g.id
+  lifecycle { ignore_changes = [value] }
 }
 
 # smtp records for sending
