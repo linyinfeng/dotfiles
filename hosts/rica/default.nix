@@ -29,6 +29,10 @@ in
       ./mastodon
       ./commit-notifier
       ./pastebin
+      ./alertmanager
+      ./influxdb
+      ./loki
+      ./grafana
     ];
 
   config = lib.mkMerge [

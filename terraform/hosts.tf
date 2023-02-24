@@ -40,16 +40,6 @@ locals {
       }
       ddns_records = {}
     }
-    a1 = {
-      records = {
-        a = {
-          proxied = true
-          type    = "A"
-          value   = oci_core_instance.a1.public_ip
-        }
-      }
-      ddns_records = {}
-    }
     tencent = {
       records = {
         a = {

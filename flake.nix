@@ -254,17 +254,8 @@
               system = "x86_64-linux";
               tests = import ./lib/tests;
             };
-            a1 = {
-              system = "aarch64-linux";
-              tests = import ./lib/tests;
-            };
             netboot-installer = {
               system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
-            netboot-installer-aarch64 = {
-              system = "aarch64-linux";
-              modules = [ ./hosts/netboot-installer.nix ];
               tests = import ./lib/tests;
             };
           };

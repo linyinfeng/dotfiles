@@ -8,7 +8,6 @@ keys:
   - &hil0       age1q4f93vlxr4k5a9tnu5r8p7q3ks597fnu7kyc42kp0qsg6y0zxekqpmpj7g
   - &vultr      age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv
   - &tencent    age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf
-  - &a1         age1khx72jeejaz9epypfg4ev2y086qntvk9gfwtc8gkjnxv6m92lsfsg8ysv9
   - &vm-test    age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu
 
 creation_rules:
@@ -54,7 +53,6 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
-      - *a1
       - *hil0
       # no age key for not self-owned machines
   - path_regex: ^secrets/(terraform/)?infrastructure(\.plain)?\.yaml$
@@ -69,7 +67,6 @@ creation_rules:
       - *rica
       - *vultr
       - *tencent
-      - *a1
       - *hil0
   - path_regex: ^secrets/(terraform/)?hosts/framework(\.plain)?\.yaml$
     key_groups:
@@ -120,13 +117,6 @@ creation_rules:
       age:
       - *github
       - *hil0
-  - path_regex: ^secrets/(terraform/)?hosts/a1(\.plain)?\.yaml$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *github
-      - *a1
   - path_regex: ^modules/sops/vm-test/test-secrets/.*\.yaml$
     key_groups:
     - pgp:

@@ -3,10 +3,6 @@
   "cache_s3_host": "s3.us-west-004.backblazeb2.com",
   "cache_bucket_name": "cache-li7g-com",
   "hosts": {
-    "a1": {
-      "syncthing_device_id": "SWGR7AG-3FEDS6J-FBV3OOA-3ZZVLVA-63FYDL5-K4LDJBD-YS4VHBD-2H5ZBQO",
-      "wireguard_public_key": "FB6sSuqrfdnPE9OdhB3OhJvRd5jFTvpcgIzsnRU4Y2Y="
-    },
     "framework": {
       "syncthing_device_id": "ELGVHKD-UWUBGRR-STQQMIO-NZUY2J2-5E6D5II-L4SWXNZ-JL323RL-U5T6GQB",
       "wireguard_public_key": "aRmihxibpfOJc3zwaPkZHtz7plxO9rSAfEMEfFMuDSk="
