@@ -3,7 +3,7 @@
 let
   mc-li7g-com = pkgs.writeShellScriptBin "mc-li7g-com" ''
     ${pkgs.mc-config-nuc.client-launcher}/bin/minecraft \
-      --gameDir .local/share/mc-li7g-com
+      --gameDir "$HOME/.local/share/mc-li7g-com"
   '';
 in
 lib.mkIf config.home.graphical {
