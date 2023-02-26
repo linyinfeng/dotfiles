@@ -22,6 +22,7 @@ in
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./matrix
+      ./backup
     ];
 
   config = lib.mkMerge [

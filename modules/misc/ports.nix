@@ -37,6 +37,7 @@
       nix-serve = 3080;
       matrix = 3090;
       mautrix-telegram-appservice = 3100;
+      matrix-qq-appservice = 3101;
       minio = 3110;
       minio-console = 3111;
       sigv4-proxy = 3120;

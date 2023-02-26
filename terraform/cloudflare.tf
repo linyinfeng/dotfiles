@@ -89,6 +89,7 @@ locals {
     alertmanager    = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
+    matrix-qq       = { on = "tencent", proxy = false }
     matrix          = { on = "hil0", proxy = true }
   }
 }

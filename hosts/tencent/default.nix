@@ -23,6 +23,8 @@ in
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./steam
+      ./matrix-qq
+      ./backup
     ];
 
   options.hosts.tencent = {
@@ -111,6 +113,11 @@ in
       };
       # only port 443
       networking.firewall.allowedTCPPorts = [ 443 ];
+    }
+
+    # postgresql
+    {
+      services.postgresql.enable = true;
     }
 
     # tailscale derp server
