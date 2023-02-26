@@ -48,6 +48,11 @@ in
         yq -i '.metrics.driver = "influx"' config/unifiedmetrics/config.yml
       fi
 
+      if [ -f config/EssentialCommands.properties ]; then
+        sed -i "/^use_permissions_api=/ s/=.*/=true/" config/EssentialCommands.properties
+        sed -i "/^home_limit=/ s/=.*/=[1, 10, 100]/" config/EssentialCommands.properties
+      fi
+
       # start the server
       ${server}
     '';
