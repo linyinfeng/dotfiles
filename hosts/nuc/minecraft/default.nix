@@ -29,6 +29,8 @@ in
         sed -i "/^motd=/ s/=.*/=mc.li7g.com/" server.properties
         # # disable online-mode
         # sed -i "/^online-mode=/ s/=.*/=false/" server.properties
+        # disable enforce-secure-profile
+        sed -i "/^enforce-secure-profile=/ s/=.*/=false/" server.properties
       fi
 
       if [ -f dynmap/configuration.txt ]; then
