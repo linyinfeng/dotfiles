@@ -13,7 +13,7 @@ in
     '';
     path = with pkgs; [ gnutar zstd ];
     serviceConfig = {
-      type = "oneshot";
+      Type = "oneshot";
     };
   };
 

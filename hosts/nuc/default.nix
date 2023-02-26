@@ -29,7 +29,7 @@ in
       networking.behind-fw
       networking.fw-proxy
       services.transmission
-      services.plex
+      services.jellyfin
       services.samba
       services.vlmcsd
       services.teamspeak
@@ -253,14 +253,35 @@ in
       };
     }
 
-    # plex
+    # jellyfin
     {
-      services.nginx.virtualHosts."plex.*" = {
+      # for vaapi support
+      hardware.opengl.enable = true;
+
+      services.nginx.virtualHosts."jellyfin.*" = {
         forceSSL = true;
         useACMEHost = "main";
         listen = config.hosts.nuc.listens;
-        locations."/".proxyPass =
-          "http://localhost:${toString config.ports.plex}";
+        locations."= /" = {
+          extraConfig = ''
+            return 302 /web/;
+          '';
+        };
+        locations."/" = {
+          proxyPass = "http://localhost:${toString config.ports.jellyfin}";
+          extraConfig = ''
+            proxy_buffering off;
+          '';
+        };
+        locations."= /web/".proxyPass = "http://localhost:${toString config.ports.jellyfin}/web/index.html";
+        locations."/socket" = {
+          proxyPass = "http://localhost:${toString config.ports.jellyfin}";
+          extraConfig = ''
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "Upgrade";
+          '';
+        };
       };
     }
   ];
