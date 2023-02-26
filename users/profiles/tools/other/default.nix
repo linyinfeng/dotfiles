@@ -19,6 +19,7 @@
     i7z
     imagemagick
     minio-client
+    nur.repos.linyinfeng.mstickereditor
     p7zip
     powerstat
     powertop
@@ -32,5 +33,6 @@
 
   home.global-persistence.directories = [
     ".mc" # minio-client
+    ".config/mstickereditor"
   ];
 }
