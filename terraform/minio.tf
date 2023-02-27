@@ -234,47 +234,6 @@ output "minio_metrics_bearer_token" {
   sensitive = true
 }
 
-# Synapse media storage
-
-resource "minio_s3_bucket" "synapse_media" {
-  bucket = "synapse-media"
-  acl    = "private"
-}
-
-resource "minio_iam_user" "synapse_media" {
-  name = "synapse-media"
-}
-
-output "minio_synapse_media_key_id" {
-  value     = minio_iam_user.synapse_media.id
-  sensitive = false
-}
-output "minio_synapse_media_access_key" {
-  value     = minio_iam_user.synapse_media.secret
-  sensitive = true
-}
-
-data "minio_iam_policy_document" "synapse_media" {
-  statement {
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      "arn:aws:s3:::synapse-media/*",
-    ]
-  }
-}
-
-resource "minio_iam_policy" "synapse_media" {
-  name   = "synapse-media"
-  policy = data.minio_iam_policy_document.synapse_media.json
-}
-
-resource "minio_iam_user_policy_attachment" "synapse_media" {
-  policy_name = minio_iam_policy.synapse_media.name
-  user_name   = minio_iam_user.synapse_media.name
-}
-
 # Mastodon media storage
 
 resource "minio_s3_bucket" "mastodon_media" {

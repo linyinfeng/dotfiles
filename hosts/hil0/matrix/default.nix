@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ self, config, lib, pkgs, ... }:
 
 let
   element-web-config = pkgs.runCommand "element-web-config" { } ''
@@ -80,10 +80,10 @@ lib.mkMerge [
             store_remote = true;
             store_synchronous = true;
             config = {
-              bucket = "synapse-media";
-              endpoint_url = "https://minio.ts.li7g.com";
-              access_key_id = config.sops.placeholder."minio_synapse_media_key_id";
-              secret_access_key = config.sops.placeholder."minio_synapse_media_access_key";
+              bucket = self.lib.data.synapse_media_bucket_name;
+              endpoint_url = self.lib.data.synapse_media_url;
+              access_key_id = config.sops.placeholder."b2_synapse_media_key_id";
+              secret_access_key = config.sops.placeholder."b2_synapse_media_access_key";
             };
           }
         ];
@@ -262,11 +262,11 @@ lib.mkMerge [
       sopsFile = config.sops-file.get "terraform/common.yaml";
       restartUnits = [ "matrix-synapse.service" ];
     };
-    sops.secrets."minio_synapse_media_key_id" = {
+    sops.secrets."b2_synapse_media_key_id" = {
       sopsFile = config.sops-file.terraform;
       restartUnits = [ "matrix-synapse.service" ];
     };
-    sops.secrets."minio_synapse_media_access_key" = {
+    sops.secrets."b2_synapse_media_access_key" = {
       sopsFile = config.sops-file.terraform;
       restartUnits = [ "matrix-synapse.service" ];
     };
