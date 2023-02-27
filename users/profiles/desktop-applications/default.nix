@@ -5,7 +5,6 @@ lib.mkIf config.home.graphical {
     amberol
     bitwarden
     calibre
-    element-desktop
     gimp
     gnuradio
     gparted
@@ -17,6 +16,7 @@ lib.mkIf config.home.graphical {
     picard
     praat
     qq
+    schildichat-desktop
     tdesktop
     teamspeak_client
     transmission-remote-gtk
@@ -46,7 +46,7 @@ lib.mkIf config.home.graphical {
 
       ".config/Bitwarden"
       ".config/calibre"
-      ".config/Element"
+      ".config/SchildiChat"
       ".config/icalingua"
       ".config/QQ"
       ".config/unity3d" # unity3d game saves
