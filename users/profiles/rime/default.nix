@@ -9,15 +9,25 @@ let
   '';
 in
 lib.mkIf config.home.graphical {
-  home.activation.patchRimeInstallation = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    target="${home}/${rimeConfig}/installation.yaml"
-    if [ -e "$target" ]; then
-      ${yq} eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$target" - --inplace <<EOF
-    ${installationCustom}
-    EOF
-    fi
+  # sync causing problem
+  # home.activation.patchRimeInstallation = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #   target="${home}/${rimeConfig}/installation.yaml"
+  #   if [ -e "$target" ]; then
+  #     ${yq} eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$target" - --inplace <<EOF
+  #   ${installationCustom}
+  #   EOF
+  #   fi
+  # '';
+  home.file.".config/ibus/rime" = {
+    source = pkgs.sources.rime-ice.src;
+    recursive = true;
+  };
+  home.file.".config/ibus/rime/default.custom.yaml".text = ''
+    switcher:
+      hotkeys:
+        - Control+grave
   '';
-  home.file.".config/ibus/rime/build/ibus_rime.yaml".text = ''
+  home.file.".config/ibus/rime/ibus_rime.yaml".text = ''
     style:
       horizontal: true
   '';
