@@ -5,6 +5,7 @@ let
     appindicator
     dash-to-dock
     clipboard-history
+    ibus-tweaker
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString type;
 in
@@ -107,6 +108,10 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         secondary-color = "#000000";
         color-shading-type = "solid";
         picture-options = "zoom";
+      };
+      "org/gnome/shell/extensions/ibus-tweaker" = {
+        use-custom-font = true;
+        custom-font = "sans-serif 10";
       };
     }
     (
