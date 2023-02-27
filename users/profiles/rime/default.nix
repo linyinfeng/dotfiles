@@ -23,9 +23,10 @@ lib.mkIf config.home.graphical {
     recursive = true;
   };
   home.file.".config/ibus/rime/default.custom.yaml".text = ''
-    switcher:
-      hotkeys:
-        - Control+grave
+    patch:
+      switcher:
+        hotkeys:
+          - Control+grave
   '';
   home.file.".config/ibus/rime/ibus_rime.yaml".text = ''
     style:
