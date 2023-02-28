@@ -52,6 +52,7 @@ lib.mkIf config.home.graphical {
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
       ".config/MusicBrainz" # picard configs
+      ".config/inkscape"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
