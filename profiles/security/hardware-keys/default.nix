@@ -16,7 +16,6 @@
   hardware.gpgSmartcards.enable = true;
 
   environment.systemPackages = with pkgs; [
-    yubikey-manager-qt
     yubikey-manager
     pcsctools
   ];
