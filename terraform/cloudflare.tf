@@ -1,6 +1,5 @@
 provider "cloudflare" {
-  email   = data.sops_file.terraform.data["cloudflare.email"]
-  api_key = data.sops_file.terraform.data["cloudflare.api-key"]
+  api_token = data.sops_file.terraform.data["cloudflare.api-token"]
 }
 
 # -------------
