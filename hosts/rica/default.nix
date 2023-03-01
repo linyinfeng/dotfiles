@@ -33,6 +33,7 @@ in
       ./influxdb
       ./loki
       ./grafana
+      ./static-file-hosting
     ];
 
   config = lib.mkMerge [

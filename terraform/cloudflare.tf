@@ -86,6 +86,7 @@ locals {
     influxdb        = { on = "rica", proxy = true }
     loki            = { on = "rica", proxy = true }
     alertmanager    = { on = "rica", proxy = true }
+    static          = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     matrix-qq       = { on = "tencent", proxy = false }
