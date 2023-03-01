@@ -126,38 +126,6 @@ resource "cloudflare_record" "general_tailscale_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-# smtp records for receiving
-
-resource "cloudflare_record" "li7g_mx68" {
-  name     = "li7g.com"
-  priority = 68
-  proxied  = false
-  ttl      = 1
-  type     = "MX"
-  value    = "amir.mx.cloudflare.net"
-  zone_id  = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_mx43" {
-  name     = "li7g.com"
-  priority = 43
-  proxied  = false
-  ttl      = 1
-  type     = "MX"
-  value    = "linda.mx.cloudflare.net"
-  zone_id  = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "li7g_mx2" {
-  name     = "li7g.com"
-  priority = 2
-  proxied  = false
-  ttl      = 1
-  type     = "MX"
-  value    = "isaac.mx.cloudflare.net"
-  zone_id  = cloudflare_zone.com_li7g.id
-}
-
 # ad-hoc ddns record
 
 resource "cloudflare_record" "mc" {
@@ -313,5 +281,55 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
     action_parameters {
       cache = true # cache everything
     }
+  }
+}
+
+# Email routing
+
+resource "cloudflare_email_routing_settings" "li7g" {
+  zone_id = cloudflare_zone.com_li7g.id
+  enabled = true
+}
+
+resource "cloudflare_email_routing_rule" "postmaster_li7g" {
+  zone_id = cloudflare_zone.com_li7g.id
+  name = "postmaster"
+  enabled = true
+  matcher {
+    type  = "literal"
+    field = "to"
+    value = "postmaster@li7g.com"
+  }
+  action {
+    type  = "forward"
+    value = ["lin.yinfeng@outlook.com"]
+  }
+}
+
+resource "cloudflare_email_routing_rule" "admin_li7g" {
+  zone_id = cloudflare_zone.com_li7g.id
+  name = "admin"
+  enabled = true
+  matcher {
+    type  = "literal"
+    field = "to"
+    value = "admin@li7g.com"
+  }
+  action {
+    type  = "forward"
+    value = ["lin.yinfeng@outlook.com"]
+  }
+}
+
+resource "cloudflare_email_routing_catch_all" "li7g" {
+  zone_id = cloudflare_zone.com_li7g.id
+  name    = "catch all"
+  enabled = true
+  matcher {
+    type = "all"
+  }
+  action {
+    type  = "drop"
+    value = []
   }
 }
