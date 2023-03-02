@@ -179,3 +179,11 @@ output "matrix_qq_appservice_hs_token" {
   value     = random_password.matrix_qq_appservice_hs_token.result
   sensitive = true
 }
+resource "random_password" "fw_proxy_external_controller_secret" {
+  length  = 32
+  special = false
+}
+output "fw_proxy_external_controller_secret" {
+  value     = random_password.fw_proxy_external_controller_secret.result
+  sensitive = true
+}

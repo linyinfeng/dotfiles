@@ -18,6 +18,7 @@ in
     suites.server ++
     (with profiles; [
       programs.tg-send
+      services.nginx
       services.acme
       services.notify-failure
     ]) ++ [
@@ -73,30 +74,6 @@ in
         [{
           device = "/swap/swapfile";
         }];
-    }
-
-    # acme
-    {
-      security.acme.certs."main" = {
-        domain = "*.li7g.com";
-        extraDomainNames = [
-          "*.zt.li7g.com"
-          "*.ts.li7g.com"
-          "shanghai.derp.li7g.com"
-        ];
-      };
-    }
-
-    # nginx
-    {
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
-      };
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
     }
 
     # well-known

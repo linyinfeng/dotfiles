@@ -31,6 +31,8 @@ let
       yqGo = pkgs.yq-go;
       mixinConfig = builtins.toJSON cfg.mixinConfig;
       directory = "/var/lib/clash";
+      externalControllerSecretFile = cfg.externalController.secretFile;
+      webui = pkgs.nur.repos.linyinfeng.yacd;
     };
     updateClash = pkgs.substituteAll {
       src = ./update-clash.sh;
@@ -142,14 +144,20 @@ with lib;
     mixinConfig = mkOption {
       type = with types; attrs;
     };
-    webui = {
-      enable = mkOption {
+    externalController = {
+      expose = mkOption {
         type = with types; bool;
-        default = true;
       };
-      port = mkOption {
-        type = with types; int;
-        default = 7901;
+      virtualHost = mkOption {
+        type = with types; str;
+        default = "localhost";
+      };
+      location = mkOption {
+        type = with types; str;
+        default = "/";
+      };
+      secretFile = mkOption {
+        type = with types; path;
       };
     };
     environment = mkOption {
@@ -228,14 +236,12 @@ with lib;
       '';
     }
 
-    (mkIf (cfg.webui.enable) {
+    (mkIf (cfg.externalController.expose) {
       services.nginx.enable = true;
-      services.nginx.virtualHosts.localhost = {
+      services.nginx.virtualHosts.${cfg.externalController.virtualHost} = {
         locations = {
-          "/yacd/" = {
-            alias = "${pkgs.nur.repos.linyinfeng.yacd}/";
-            index = "index.html";
-          };
+          "${cfg.externalController.location}".proxyPass =
+            "http://${cfg.mixinConfig.external-controller}/";
         };
       };
     })

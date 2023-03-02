@@ -34,6 +34,7 @@ in
       services.vlmcsd
       services.teamspeak
       services.godns
+      services.nginx
       services.acme
       services.notify-failure
       services.smartd
@@ -139,40 +140,21 @@ in
       };
     }
 
-    # acme
-    {
-      security.acme.certs."main" = {
-        domain = "*.li7g.com";
-        extraDomainNames = [
-          "*.zt.li7g.com"
-          "*.ts.li7g.com"
-        ];
-      };
-    }
-
     # nginx
     {
       services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
         virtualHosts."nuc.*" = {
-          forceSSL = true;
-          useACMEHost = "main";
+          listen = config.hosts.nuc.listens;
           serverAliases = [
             "nuc-proxy.*"
           ];
-          listen = config.hosts.nuc.listens;
           locations."/" = {
             root = ./www;
           };
         };
       };
+      # extra nginx port
       networking.firewall.allowedTCPPorts = [
-        80
-        443
         8443
       ];
     }

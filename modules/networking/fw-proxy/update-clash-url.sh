@@ -33,9 +33,14 @@ $curl "$url" \
   --output "$tmpfile"
 
 echo 'Build config.yaml...'
-$yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$tmpfile" - <<EOF > "$dir/config.yaml"
+$yq eval-all "select(fileIndex == 0) * select(fileIndex == 1)" "$tmpfile" - <<EOF > "$dir/config.yaml"
 @mixinConfig@
 EOF
+external_controller_secrets=$(cat "@externalControllerSecretFile@")
+$yq --inplace "
+  .secret = \"${external_controller_secrets}\" |
+  .ui = \"@webui@\"
+" "$dir/config.yaml"
 
 echo 'Remove raw config.yaml...'
 rm "$tmpfile"

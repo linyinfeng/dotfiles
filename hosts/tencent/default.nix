@@ -19,6 +19,7 @@ in
       networking.behind-fw
       networking.fw-proxy
       networking.wireguard-home
+      services.nginx
       services.acme
     ]) ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
@@ -87,10 +88,7 @@ in
     # acme
     {
       security.acme.certs."main" = {
-        domain = "*.li7g.com";
         extraDomainNames = [
-          "*.zt.li7g.com"
-          "*.ts.li7g.com"
           "shanghai.derp.li7g.com"
         ];
       };
@@ -99,16 +97,9 @@ in
     # nginx
     {
       services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedTlsSettings = true;
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
-
+        openFirewall = false;
         virtualHosts."tencent.*" = {
-          onlySSL = true;
           listen = config.hosts.tencent.listens;
-          useACMEHost = "main";
         };
       };
       # only port 443

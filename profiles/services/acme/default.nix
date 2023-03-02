@@ -20,4 +20,12 @@
     CLOUDFLARE_DNS_API_TOKEN=${config.sops.placeholder."cloudflare_token"}
   '';
   users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
+
+  security.acme.certs."main" = {
+    domain = "*.li7g.com";
+    extraDomainNames = [
+      "*.zt.li7g.com"
+      "*.ts.li7g.com"
+    ];
+  };
 }

@@ -2,6 +2,7 @@
 
 let
   cfg = config.networking.fw-proxy;
+  inherit (config.networking) hostName;
 in
 {
   networking.fw-proxy = {
@@ -18,6 +19,17 @@ in
       log-level = "info";
       external-controller = "127.0.0.1:${toString config.ports.clash-controller}";
     };
+    externalController = {
+      expose = true;
+      virtualHost = "${hostName}.*";
+      location = "/clash/";
+      secretFile = config.sops.secrets."fw_proxy_external_controller_secret".path;
+    };
+  };
+
+  sops.secrets."fw_proxy_external_controller_secret" = {
+    sopsFile = config.sops-file.get "terraform/common.yaml";
+    restartUnits = [ "clash-auto-update.service" ];
   };
 
   networking.fw-proxy.auto-update = {
