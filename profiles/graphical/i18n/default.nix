@@ -20,9 +20,11 @@ lib.mkMerge [
     };
   })
   {
+    i18n.inputMethod.rime.packages = [
+      pkgs.nur.repos.linyinfeng.rime-ice
+    ];
     environment.global-persistence.user.directories = [
       ".config/mozc"
     ];
   }
 ]
-
