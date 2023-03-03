@@ -39,7 +39,7 @@ EOF
 external_controller_secrets=$(cat "@externalControllerSecretFile@")
 $yq --inplace "
   .secret = \"${external_controller_secrets}\" |
-  .ui = \"@webui@\"
+  .external-ui = \"@webui@\"
 " "$dir/config.yaml"
 
 echo 'Remove raw config.yaml...'
