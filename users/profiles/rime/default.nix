@@ -18,16 +18,6 @@ lib.mkIf config.home.graphical {
   #   EOF
   #   fi
   # '';
-  home.file.".config/ibus/rime" = {
-    source = pkgs.sources.rime-ice.src;
-    recursive = true;
-  };
-  home.file.".config/ibus/rime/default.custom.yaml".text = ''
-    patch:
-      switcher:
-        hotkeys:
-          - Control+grave
-  '';
   home.file.".config/ibus/rime/ibus_rime.yaml".text = ''
     style:
       horizontal: true
