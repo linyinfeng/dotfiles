@@ -18,9 +18,16 @@ lib.mkIf config.home.graphical {
   #   EOF
   #   fi
   # '';
-  home.file.".config/ibus/rime/ibus_rime.yaml".text = ''
-    style:
-      horizontal: true
+  home.file.".config/ibus/rime/default.custom.yaml".text = ''
+    patch:
+      schema_list:
+        - schema: rime_ice
+  '';
+
+  home.file.".config/ibus/rime/ibus_rime.custom.yaml".text = ''
+    patch:
+      style:
+        horizontal: true
   '';
 
   home.global-persistence.directories = [
