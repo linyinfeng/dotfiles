@@ -36,24 +36,5 @@
             "url": "https://github.com/tumashu/pyim-greatdict.git"
         },
         "version": "87594b2a4d6391cf69475257b286d3b844791571"
-    },
-    "rime-ice": {
-        "cargoLocks": null,
-        "date": "2023-03-01",
-        "extract": null,
-        "name": "rime-ice",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "rev": "e57442e5143fbe17baa29958ebfa627976393b28",
-            "sha256": "sha256-YWpIYufbiMDvIDq3NjTmn/d4l85zNcA9K1+rgB6p6RI=",
-            "type": "git",
-            "url": "https://github.com/iDvel/rime-ice"
-        },
-        "version": "e57442e5143fbe17baa29958ebfa627976393b28"
     }
 }

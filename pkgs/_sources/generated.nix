@@ -27,17 +27,4 @@
     };
     date = "2019-07-19";
   };
-  rime-ice = {
-    pname = "rime-ice";
-    version = "e57442e5143fbe17baa29958ebfa627976393b28";
-    src = fetchgit {
-      url = "https://github.com/iDvel/rime-ice";
-      rev = "e57442e5143fbe17baa29958ebfa627976393b28";
-      fetchSubmodules = false;
-      deepClone = false;
-      leaveDotGit = false;
-      sha256 = "sha256-YWpIYufbiMDvIDq3NjTmn/d4l85zNcA9K1+rgB6p6RI=";
-    };
-    date = "2023-03-01";
-  };
 }

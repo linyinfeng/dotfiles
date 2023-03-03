@@ -118,7 +118,7 @@
 
 
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
-      nixpkgs-ibus-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
+      nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
     };
 
   outputs =

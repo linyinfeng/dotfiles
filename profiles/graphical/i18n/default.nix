@@ -25,9 +25,13 @@
       };
     })
     {
-      i18n.inputMethod.rime.packages = [
-        pkgs.nur.repos.linyinfeng.rime-ice
-      ];
+      i18n.inputMethod.rime = {
+        enableDefaultRimeData = false;
+        packages =
+          with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [
+            rime-ice
+          ];
+      };
       environment.global-persistence.user.directories = [
         ".config/mozc"
       ];
