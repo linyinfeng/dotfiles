@@ -9,26 +9,18 @@ let
   '';
 in
 lib.mkIf config.home.graphical {
-  # sync causing problem
-  # home.activation.patchRimeInstallation = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #   target="${home}/${rimeConfig}/installation.yaml"
-  #   if [ -e "$target" ]; then
-  #     ${yq} eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$target" - --inplace <<EOF
-  #   ${installationCustom}
-  #   EOF
-  #   fi
-  # '';
-  home.file.".config/ibus/rime/default.custom.yaml".text = ''
-    patch:
-      schema_list:
-        - schema: rime_ice
+  home.activation.patchRimeInstallation = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    target="${home}/${rimeConfig}/installation.yaml"
+    if [ -e "$target" ]; then
+      ${yq} eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' "$target" - --inplace <<EOF
+    ${installationCustom}
+    EOF
+    fi
   '';
-
-  home.file.".config/ibus/rime/ibus_rime.custom.yaml".text = ''
-    patch:
-      style:
-        horizontal: true
-  '';
+  home.file.".config/ibus/rime" = {
+    source = ./user-data;
+    recursive = true;
+  };
 
   home.global-persistence.directories = [
     ".config/ibus/rime"
