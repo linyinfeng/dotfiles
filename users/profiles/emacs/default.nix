@@ -20,7 +20,7 @@ let
           cp *.so /build/rime-lib
         '';
         postInstall = (old.postInstall or "") + ''
-          install -m555 -t $out/share/emacs/site-lisp/elpa/rime-* /build/rime-lib/*.so
+          install -m444 -t $out/share/emacs/site-lisp/elpa/rime-* /build/rime-lib/*.so
         '';
       });
     };
