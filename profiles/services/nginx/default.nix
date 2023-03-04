@@ -22,6 +22,7 @@ in
 
         virtualHosts."${hostName}.*" = {
           default = true;
+          serverAliases = [ "localhost.*" ];
         };
       };
       networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [ 80 443 ];

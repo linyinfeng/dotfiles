@@ -127,6 +127,26 @@ resource "cloudflare_record" "general_tailscale_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+# localhost record
+
+resource "cloudflare_record" "localhost_a" {
+  name    = "localhost"
+  proxied = false
+  ttl     = 1
+  type    = "A"
+  value   = "127.0.0.1"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_record" "localhost_aaaa" {
+  name    = "localhost"
+  proxied = false
+  ttl     = 1
+  type    = "AAAA"
+  value   = "::1"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # ad-hoc ddns record
 
 resource "cloudflare_record" "mc" {
