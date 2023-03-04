@@ -10,30 +10,38 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
+      rime = epkgs.rime.overrideAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [
+          pkgs.librime
+        ];
+        preBuild = (old.preBuild or "") + ''
+          make lib
+          mkdir -p /build/rime-lib
+          cp *.so /build/rime-lib
+        '';
+        postInstall = (old.postInstall or "") + ''
+          install -m555 -t $out/share/emacs/site-lisp/elpa/rime-* /build/rime-lib/*.so
+        '';
+      });
     };
   });
   fw-proxy = osConfig.networking.fw-proxy;
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
+  rimeShareData = pkgs.symlinkJoin {
+    name = "emacs-rime-share-data";
+    paths = osConfig.i18n.inputMethod.rime.packages;
+  };
+  rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.substituteAll {
     src = rawEmacsConfig;
-    inherit syncDir;
+    inherit syncDir rimeShareDataDir;
     telegaProxyEnable = if fw-proxy.enable then "t" else "nil";
     telegaProxyServer = "localhost";
     telegaProxyPort = if fw-proxy.enable then fw-proxy.mixinConfig.mixed-port else "nil";
   };
 in
 {
-  passthru.emacs-packages =
-    let
-      parse = pkgs.callPackage "${inputs.emacs-overlay}/parse.nix" { };
-      parsed = parse.parsePackagesFromUsePackage {
-        configText = builtins.readFile ./init.el;
-        alwaysEnsure = false;
-        isOrgModeFile = false;
-        alwaysTangle = false;
-      };
-    in
-    lib.lists.sort (a: b: a < b) parsed;
+  passthru = { inherit emacs; };
 
   home.packages = [ emacs ] ++
     (with pkgs; [
@@ -46,6 +54,10 @@ in
   home.file = {
     ".emacs.d/var/orgs/templates".source = ./org-roam/templates;
     ".emacs.d/var/pyim/greatdict.pyim.gz".source = "${pkgs.sources.pyim-greatdict.src}/pyim-greatdict.pyim.gz";
+    ".emacs.d/rime" = {
+      source = ./rime;
+      recursive = true;
+    };
   };
   fonts.fontconfig.enable = lib.mkDefault true; # for fira-code-symbols
 

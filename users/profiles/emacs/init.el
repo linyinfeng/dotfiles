@@ -84,8 +84,6 @@
   :config
   (global-set-key (kbd "C-:") 'avy-goto-char-timer))
 
-(use-package cl) ; builtin
-
 (use-package cdlatex
   :ensure t
   :config
@@ -272,9 +270,8 @@
          (common-header-after
           [ "#+options: tex:t"
             "#+startup: latexpreview" ]))
-     (flet ((append-newline (s) (concat s "\n"))
-            (build-header (l)
-                          (apply 'concat (mapcar #'append-newline
+     (cl-flet ((build-header (l)
+                          (apply 'concat (mapcar (lambda (s) (concat s "\n"))
                                                  (vconcat common-header-before l common-header-after)))))
        `(("d" "default" plain "%?"
           :target (file+head ,file-format ,(build-header [ ]))
@@ -362,6 +359,11 @@
 
 (use-package rainbow-delimiters
   :ensure t)
+
+(use-package rime
+  :ensure t
+  :custom
+  (rime-share-data-dir "@rimeShareDataDir@"))
 
 (use-package rg
   :ensure t)
