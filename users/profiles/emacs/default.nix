@@ -10,6 +10,7 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219469
       rime = epkgs.rime.overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [
           pkgs.librime
