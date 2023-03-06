@@ -212,6 +212,19 @@
               inputs.linyinfeng.nixosModules.tg-send
               inputs.linyinfeng.nixosModules.commit-notifier
               inputs.linyinfeng.nixosModules.dot-tar
+
+              # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
+              {
+                disabledModules = [
+                  "i18n/input-method/fcitx5.nix"
+                  "i18n/input-method/ibus.nix"
+                ];
+                imports = [
+                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/rime.nix"
+                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/ibus.nix"
+                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/fcitx5.nix"
+                ];
+              }
             ];
           };
 

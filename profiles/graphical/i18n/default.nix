@@ -1,10 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-  # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
-  imports = [
-    ./rime-patch.nix
-  ];
   config = lib.mkMerge [
     (lib.mkIf config.services.xserver.desktopManager.gnome.enable {
       i18n.inputMethod = {
