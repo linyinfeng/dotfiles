@@ -22,7 +22,6 @@ in
       services.notify-failure
     ]) ++ [
       ./minio
-      ./maddy
       ./vaultwarden
       ./backup
       ./git

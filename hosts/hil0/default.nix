@@ -89,11 +89,34 @@ in
     }
 
     # networking
-    {
-      networking = lib.mkIf (!config.system.is-vm) {
-        useNetworkd = true;
-        interfaces.enp1s0.useDHCP = true;
+    (lib.mkIf (!config.system.is-vm) {
+      networking.useNetworkd = true;
+      environment.etc."systemd/network/45-enp1s0.network".source =
+        config.sops.templates."enp1s0".path;
+      sops.templates."enp1s0" = {
+        content = ''
+          [Match]
+          Name=enp1s0
+
+          [Network]
+          DHCP=ipv4
+
+          # manual ipv6 configuration
+          Address=${config.sops.placeholder."hil0_ipv6_address"}/${config.sops.placeholder."hil0_ipv6_prefix_length"}
+          Gateway=fe80::1
+          DNS=2a01:4ff:ff00::add:1
+          DNS=2a01:4ff:ff00::add:2
+        '';
+        owner = "systemd-network";
       };
-    }
+      sops.secrets."hil0_ipv6_address" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = [ "systemd-networkd.service" ];
+      };
+      sops.secrets."hil0_ipv6_prefix_length" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = [ "systemd-networkd.service" ];
+      };
+    })
   ];
 }

@@ -99,3 +99,18 @@ resource "hcloud_rdns" "hil0_ipv6" {
   ip_address = hcloud_server.hil0.ipv6_address
   dns_ptr    = "hil0.li7g.com"
 }
+
+output "hil0_ipv6_address" {
+  value = hcloud_server.hil0.ipv6_address
+  sensitive = true
+}
+
+output "hil0_ipv6_prefix" {
+  value = split("/", hcloud_server.hil0.ipv6_network)[0]
+  sensitive = true
+}
+
+output "hil0_ipv6_prefix_length" {
+  value = split("/", hcloud_server.hil0.ipv6_network)[1]
+  sensitive = true
+}
