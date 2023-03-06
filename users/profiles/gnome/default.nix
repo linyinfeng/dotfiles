@@ -82,6 +82,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         custom-theme-shrink = true;
         dash-max-icon-size = 32;
         show-mounts = false;
+        click-action = "focus-or-appspread";
         scroll-action = "switch-workspace";
         intellihide-mode = "ALL_WINDOWS";
         show-dock-urgent-notify = false;
