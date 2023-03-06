@@ -91,13 +91,13 @@ resource "hcloud_primary_ip" "hil0_ipv6" {
 resource "hcloud_rdns" "hil0_ipv4" {
   server_id  = hcloud_server.hil0.id
   ip_address = hcloud_server.hil0.ipv4_address
-  dns_ptr    = "hil0.li7g.com"
+  dns_ptr    = "smtp.li7g.com"
 }
 
 resource "hcloud_rdns" "hil0_ipv6" {
   server_id  = hcloud_server.hil0.id
   ip_address = hcloud_server.hil0.ipv6_address
-  dns_ptr    = "hil0.li7g.com"
+  dns_ptr    = "smtp.li7g.com"
 }
 
 output "hil0_ipv6_address" {
