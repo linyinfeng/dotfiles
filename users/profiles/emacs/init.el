@@ -35,8 +35,8 @@
 
 ;; default font
 (set-face-attribute 'default nil
-                    :family "Sarasa Mono Slab SC"
-                    :height 110
+                    :family "monospace"
+                    :height 100
                     :weight 'normal
                     :width 'normal)
 
