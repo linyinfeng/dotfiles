@@ -77,7 +77,6 @@ locals {
     pb              = { on = "rica", proxy = true }
     git             = { on = "rica", proxy = true }
     box             = { on = "rica", proxy = true }
-    smtp            = { on = "rica", proxy = false }
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
     mastodon        = { on = "rica", proxy = true }
@@ -91,6 +90,7 @@ locals {
     dst             = { on = "tencent", proxy = false }
     matrix-qq       = { on = "tencent", proxy = false }
     matrix          = { on = "hil0", proxy = true }
+    smtp            = { on = "hil0", proxy = false }
   }
 }
 

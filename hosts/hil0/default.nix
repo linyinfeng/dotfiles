@@ -23,6 +23,7 @@ in
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./matrix
+      ./maddy
       ./backup
     ];
 
