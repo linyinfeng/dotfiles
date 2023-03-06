@@ -7,11 +7,13 @@ let
     clipboard-history
     ibus-tweaker
   ];
-  inherit (lib.hm.gvariant) mkArray mkTuple mkString type;
+  inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in
 lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
 {
-  home.packages = extensionPkgs;
+  home.packages = extensionPkgs ++ (with pkgs; [
+    blackbox-terminal
+  ]);
 
   programs.chromium.extensions = [
     "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
@@ -32,7 +34,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
         enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
         disabled-extensions = [ ];
         favorite-apps = lib.mkBefore [
-          "org.gnome.Console.desktop"
+          "com.raggesilver.BlackBox.desktop"
           "org.gnome.Nautilus.desktop"
           "firefox.desktop"
           "gnome-system-monitor.desktop"
@@ -112,6 +114,13 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
       "org/gnome/shell/extensions/ibus-tweaker" = {
         use-custom-font = true;
         custom-font = "sans-serif 10";
+      };
+      "com/raggesilver/BlackBox" = {
+        terminal-padding = mkTuple [ (mkUint32 5) (mkUint32 5) (mkUint32 5) (mkUint32 5) ];
+        font = "monospace 10";
+        theme-light = "Tomorrow";
+        theme-dark = "Tomorrow Night";
+        show-menu-button = false;
       };
     }
     (
