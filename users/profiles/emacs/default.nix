@@ -10,20 +10,6 @@ let
       ligature = epkgs.trivialBuild {
         inherit (pkgs.sources.ligature-el) pname version src;
       };
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219469
-      rime = epkgs.rime.overrideAttrs (old: {
-        buildInputs = (old.buildInputs or [ ]) ++ [
-          pkgs.librime
-        ];
-        preBuild = (old.preBuild or "") + ''
-          make lib
-          mkdir -p /build/rime-lib
-          cp *.so /build/rime-lib
-        '';
-        postInstall = (old.postInstall or "") + ''
-          install -m444 -t $out/share/emacs/site-lisp/elpa/rime-* /build/rime-lib/*.so
-        '';
-      });
     };
   });
   fw-proxy = osConfig.networking.fw-proxy;
