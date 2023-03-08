@@ -40,7 +40,6 @@ in
       services.smartd
       programs.service-mail
       programs.tg-send
-      graphical.fonts # for jellyfin
     ]) ++
     (with profiles.users; [
       yinfeng
