@@ -94,24 +94,24 @@
       nix-index-database.url = "github:Mic92/nix-index-database";
 
       hydra.url = "github:nixos/hydra";
-      # TODO workaround for incompatibility
-      # hydra.inputs.nix.follows = "nix";
-      # hydra.inputs.nixpkgs.follows = "nixos";
+      hydra.inputs.nix.follows = "nix";
+      hydra.inputs.nixpkgs.follows = "nixos";
 
       lanzaboote.url = "github:nix-community/lanzaboote";
       lanzaboote.inputs.nixpkgs.follows = "nixos";
       lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
-      lanzaboote.inputs.crane.follows = "crane";
+      # TODO use pinned crane
+      # lanzaboote.inputs.crane.follows = "crane";
       lanzaboote.inputs.flake-compat.follows = "flake-compat";
       lanzaboote.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
       rust-overlay.url = "github:oxalica/rust-overlay";
       rust-overlay.inputs.nixpkgs.follows = "nixos";
       rust-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      crane.url = "github:ipetkov/crane";
-      crane.inputs.nixpkgs.follows = "nixos";
-      crane.inputs.rust-overlay.follows = "rust-overlay";
-      crane.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      crane.inputs.flake-compat.follows = "flake-compat";
+      # crane.url = "github:ipetkov/crane";
+      # crane.inputs.nixpkgs.follows = "nixos";
+      # crane.inputs.rust-overlay.follows = "rust-overlay";
+      # crane.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+      # crane.inputs.flake-compat.follows = "flake-compat";
 
       flake-compat.url = "github:edolstra/flake-compat";
       flake-compat.flake = false;
