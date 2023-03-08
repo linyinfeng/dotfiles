@@ -20,6 +20,7 @@ in
       services.nginx
       services.acme
       services.notify-failure
+      virtualization.podman
     ]) ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./matrix

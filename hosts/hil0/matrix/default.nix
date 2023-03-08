@@ -213,6 +213,18 @@ lib.mkMerge [
         };
       };
     };
+    sops.secrets."mautrix_telegram_appservice_as_token" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
+    };
+    sops.secrets."mautrix_telegram_appservice_hs_token" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
+    };
+    sops.secrets."telegram-bot/matrix-bridge" = {
+      sopsFile = config.sops-file.host;
+      restartUnits = [ "mautrix-telegram.service" ];
+    };
   }
 
   # matrix-qq
@@ -250,6 +262,79 @@ lib.mkMerge [
         };
       };
     };
+
+    sops.secrets."matrix_qq_appservice_as_token" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = [ "matrix-synapse.service" "matrix-qq.service" ];
+    };
+    sops.secrets."matrix_qq_appservice_hs_token" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = [ "matrix-synapse.service" "matrix-qq.service" ];
+    };
+  }
+
+  # matrix-chatgpt-bot
+  {
+    virtualisation.oci-containers.containers."matrix-chatgpt-bot" = {
+      image = "ghcr.io/matrixgpt/matrix-chatgpt-bot:latest";
+      extraOptions = [
+        "--label"
+        "io.containers.autoupdate=registry"
+      ];
+      volumes = [
+        "/var/lib/matrix-chatgpt-bot:/storage"
+      ];
+      environment = {
+        CHATGPT_CONTEXT = "thread";
+        CHATGPT_API_MODEL = "gpt-3.5-turbo";
+
+        KEYV_BACKEND = "file";
+        KEYV_URL = "";
+        KEYV_BOT_ENCRYPTION = "false";
+        KEYV_BOT_STORAGE = "true";
+
+        MATRIX_HOMESERVER_URL = "https://matrix.li7g.com";
+        MATRIX_BOT_USERNAME = "@chatgptbot:li7g.com";
+
+        MATRIX_DEFAULT_PREFIX = "!chatgpt";
+        MATRIX_DEFAULT_PREFIX_REPLY = "false";
+
+        # MATRIX_BLACKLIST = "";
+        # MATRIX_WHITELIST = "@yinfeng:li7g.com";
+        # MATRIX_ROOM_BLACKLIST = "";
+        # CyrWyMAIbpeyWPYWZw:li7g.com : #chatgpt:li7g.com - private
+        # vXzxwXAzWxuDADWQcn:li7g.com : #njulug:li7g.com  - private
+        MATRIX_ROOM_WHITELIST = "!CyrWyMAIbpeyWPYWZw:li7g.com !vXzxwXAzWxuDADWQcn:li7g.com";
+
+        MATRIX_AUTOJOIN = "true";
+        MATRIX_ENCRYPTION = "true";
+        MATRIX_THREADS = "true";
+        MATRIX_PREFIX_DM = "false";
+        MATRIX_RICH_TEXT = "true";
+      };
+      environmentFiles = [
+        config.sops.templates."matrix-chatgpt-extra-env".path
+      ];
+    };
+    systemd.services."podman-matrix-chatgpt-bot" = {
+      serviceConfig = {
+        StateDirectory = "matrix-chatgpt-bot";
+        # TODO graceful stop is broken
+        TimeoutStopSec = lib.mkForce 10;
+      };
+    };
+    sops.templates."matrix-chatgpt-extra-env".content = ''
+      OPENAI_API_KEY=${config.sops.placeholder."chatgpt-bot/openai-api-key"}
+      MATRIX_ACCESS_TOKEN=${config.sops.placeholder."chatgpt-bot/matrix-access-token"}
+    '';
+    sops.secrets."chatgpt-bot/openai-api-key" = {
+      sopsFile = config.sops-file.host;
+      restartUnits = [ "podman-matrix-chatgpt-bot.service" ];
+    };
+    sops.secrets."chatgpt-bot/matrix-access-token" = {
+      sopsFile = config.sops-file.host;
+      restartUnits = [ "podman-matrix-chatgpt-bot.service" ];
+    };
   }
 
   # secrets
@@ -274,26 +359,6 @@ lib.mkMerge [
     sops.secrets."b2_synapse_media_access_key" = {
       sopsFile = config.sops-file.terraform;
       restartUnits = [ "matrix-synapse.service" ];
-    };
-    sops.secrets."mautrix_telegram_appservice_as_token" = {
-      sopsFile = config.sops-file.terraform;
-      restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
-    };
-    sops.secrets."mautrix_telegram_appservice_hs_token" = {
-      sopsFile = config.sops-file.terraform;
-      restartUnits = [ "matrix-synapse.service" "mautrix-telegram.service" ];
-    };
-    sops.secrets."telegram-bot/matrix-bridge" = {
-      sopsFile = config.sops-file.host;
-      restartUnits = [ "mautrix-telegram.service" ];
-    };
-    sops.secrets."matrix_qq_appservice_as_token" = {
-      sopsFile = config.sops-file.terraform;
-      restartUnits = [ "matrix-synapse.service" "matrix-qq.service" ];
-    };
-    sops.secrets."matrix_qq_appservice_hs_token" = {
-      sopsFile = config.sops-file.terraform;
-      restartUnits = [ "matrix-synapse.service" "matrix-qq.service" ];
     };
   }
 
