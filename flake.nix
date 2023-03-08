@@ -94,8 +94,8 @@
       nix-index-database.url = "github:Mic92/nix-index-database";
 
       hydra.url = "github:nixos/hydra";
-      hydra.inputs.nix.follows = "nix";
-      hydra.inputs.nixpkgs.follows = "nixos";
+      # hydra.inputs.nix.follows = "nix";
+      # hydra.inputs.nixpkgs.follows = "nixos";
 
       lanzaboote.url = "github:nix-community/lanzaboote";
       lanzaboote.inputs.nixpkgs.follows = "nixos";
