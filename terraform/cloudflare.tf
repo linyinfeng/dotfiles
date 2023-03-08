@@ -39,7 +39,7 @@ locals {
 
 resource "cloudflare_zone" "com_li7g" {
   account_id = local.cloudflare_main_account_id
-  zone = "li7g.com"
+  zone       = "li7g.com"
 }
 
 # ttl = 1 for automatic
@@ -314,7 +314,7 @@ resource "cloudflare_email_routing_settings" "li7g" {
 
 resource "cloudflare_email_routing_rule" "postmaster_li7g" {
   zone_id = cloudflare_zone.com_li7g.id
-  name = "postmaster"
+  name    = "postmaster"
   enabled = true
   matcher {
     type  = "literal"
@@ -329,7 +329,7 @@ resource "cloudflare_email_routing_rule" "postmaster_li7g" {
 
 resource "cloudflare_email_routing_rule" "admin_li7g" {
   zone_id = cloudflare_zone.com_li7g.id
-  name = "admin"
+  name    = "admin"
   enabled = true
   matcher {
     type  = "literal"

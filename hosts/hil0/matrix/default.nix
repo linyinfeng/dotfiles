@@ -66,6 +66,7 @@ lib.mkMerge [
     sops.templates."synapse-extra-config" = {
       owner = "matrix-synapse";
       content = builtins.toJSON {
+        registration_shared_secret = config.sops.placeholder."matrix_registration_shared_secret";
         email = {
           smtp_host = "smtp.li7g.com";
           smtp_user = "matrix@li7g.com";
@@ -260,6 +261,10 @@ lib.mkMerge [
     };
     sops.secrets."mail_password" = {
       sopsFile = config.sops-file.get "terraform/common.yaml";
+      restartUnits = [ "matrix-synapse.service" ];
+    };
+    sops.secrets."matrix_registration_shared_secret" = {
+      sopsFile = config.sops-file.terraform;
       restartUnits = [ "matrix-synapse.service" ];
     };
     sops.secrets."b2_synapse_media_key_id" = {

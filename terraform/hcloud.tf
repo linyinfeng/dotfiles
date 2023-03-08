@@ -52,8 +52,8 @@ data "hcloud_datacenters" "all_datacenters" {
 }
 
 variable "hclouod_datacenter" {
-    type = string
-    default = "hil-dc1"
+  type    = string
+  default = "hil-dc1"
 }
 
 resource "hcloud_server" "hil0" {
@@ -63,7 +63,7 @@ resource "hcloud_server" "hil0" {
   image              = "debian-11"
   delete_protection  = true
   rebuild_protection = true
-  firewall_ids = [ hcloud_firewall.main.id ]
+  firewall_ids       = [hcloud_firewall.main.id]
   public_net {
     ipv4 = hcloud_primary_ip.hil0_ipv4.id
     ipv6 = hcloud_primary_ip.hil0_ipv6.id
@@ -101,16 +101,16 @@ resource "hcloud_rdns" "hil0_ipv6" {
 }
 
 output "hil0_ipv6_address" {
-  value = hcloud_server.hil0.ipv6_address
+  value     = hcloud_server.hil0.ipv6_address
   sensitive = true
 }
 
 output "hil0_ipv6_prefix" {
-  value = split("/", hcloud_server.hil0.ipv6_network)[0]
+  value     = split("/", hcloud_server.hil0.ipv6_network)[0]
   sensitive = true
 }
 
 output "hil0_ipv6_prefix_length" {
-  value = split("/", hcloud_server.hil0.ipv6_network)[1]
+  value     = split("/", hcloud_server.hil0.ipv6_network)[1]
   sensitive = true
 }
