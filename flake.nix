@@ -333,7 +333,7 @@
               monitoring = with profiles; [
                 services.telegraf-system
                 services.promtail
-                security.audit
+                # security.audit
               ];
 
               workstation = [
