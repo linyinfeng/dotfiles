@@ -302,9 +302,11 @@ lib.mkMerge [
         # MATRIX_BLACKLIST = "";
         # MATRIX_WHITELIST = "@yinfeng:li7g.com";
         # MATRIX_ROOM_BLACKLIST = "";
-        # CyrWyMAIbpeyWPYWZw:li7g.com : #chatgpt:li7g.com - private
-        # vXzxwXAzWxuDADWQcn:li7g.com : #njulug:li7g.com  - private
-        MATRIX_ROOM_WHITELIST = "!CyrWyMAIbpeyWPYWZw:li7g.com !vXzxwXAzWxuDADWQcn:li7g.com";
+        MATRIX_ROOM_WHITELIST = lib.concatStringsSep " " [
+          "!CyrWyMAIbpeyWPYWZw:li7g.com" # private - #chatgpt:li7g.com
+          "!vXzxwXAzWxuDADWQcn:li7g.com" # private - #njulug:li7g.com
+          "!MPQSzGQmrbZGaDnPaL:li7g.com" # private - #apartment-five:li7g.com
+        ];
 
         MATRIX_AUTOJOIN = "true";
         MATRIX_ENCRYPTION = "true";
