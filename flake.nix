@@ -53,6 +53,7 @@
       linyinfeng.url = "github:linyinfeng/nur-packages";
       linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
       linyinfeng.inputs.nixpkgs.follows = "nixos";
+      linyinfeng.inputs.nixos-stable.follows = "nixos";
       nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
       nix-gc-s3.inputs.nixpkgs.follows = "nixos";
       nix-gc-s3.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
@@ -119,6 +120,8 @@
 
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
       nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
+      nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
     };
 
   outputs =

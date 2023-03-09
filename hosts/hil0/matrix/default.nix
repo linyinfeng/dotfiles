@@ -275,16 +275,20 @@ lib.mkMerge [
 
   # matrix-chatgpt-bot
   {
-    virtualisation.oci-containers.containers."matrix-chatgpt-bot" = {
-      image = "ghcr.io/matrixgpt/matrix-chatgpt-bot:latest";
-      extraOptions = [
-        "--label"
-        "io.containers.autoupdate=registry"
-      ];
-      volumes = [
-        "/var/lib/matrix-chatgpt-bot:/storage"
-      ];
+    systemd.services."matrix-chatgpt-bot" = {
+      script = ''
+        ${pkgs.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
+      '';
+      serviceConfig = {
+        DynamicUser = true;
+        StateDirectory = "matrix-chatgpt-bot";
+        EnvironmentFile = [
+          config.sops.templates."matrix-chatgpt-extra-env".path
+        ];
+      };
       environment = {
+        DATA_PATH = "/var/lib/matrix-chatgpt-bot";
+
         CHATGPT_CONTEXT = "thread";
         CHATGPT_API_MODEL = "gpt-3.5-turbo";
 
@@ -314,16 +318,9 @@ lib.mkMerge [
         MATRIX_PREFIX_DM = "false";
         MATRIX_RICH_TEXT = "true";
       };
-      environmentFiles = [
-        config.sops.templates."matrix-chatgpt-extra-env".path
-      ];
-    };
-    systemd.services."podman-matrix-chatgpt-bot" = {
-      serviceConfig = {
-        StateDirectory = "matrix-chatgpt-bot";
-        # TODO graceful stop is broken
-        TimeoutStopSec = lib.mkForce 10;
-      };
+      # on same machine
+      after = [ "matrix-synapse.service" ];
+      wantedBy = [ "multi-user.target" ];
     };
     sops.templates."matrix-chatgpt-extra-env".content = ''
       OPENAI_API_KEY=${config.sops.placeholder."chatgpt-bot/openai-api-key"}

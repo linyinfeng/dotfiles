@@ -443,17 +443,19 @@
           "digga",
           "flake-utils-plus"
         ],
-        "nixos-stable": "nixos-stable",
+        "nixos-stable": [
+          "nixos"
+        ],
         "nixpkgs": [
           "nixos"
         ]
       },
       "locked": {
-        "lastModified": 1678253198,
-        "narHash": "sha256-9yu8yr1Fhmv15oNWhgkqUDWbbwA5MiDJFnTJ3de4TLc=",
+        "lastModified": 1678354973,
+        "narHash": "sha256-G/bWIJZwI5GoCNsegE72lP9/nu3RjR0QHH0nrosbaCc=",
         "owner": "linyinfeng",
         "repo": "nur-packages",
-        "rev": "c69b39829b1b2fe836103ae1676eb744f7637b29",
+        "rev": "02cb7f5c40406abd3d28f0efe5aef628cfd5fe5f",
         "type": "github"
       },
       "original": {
@@ -777,22 +779,6 @@
         "type": "github"
       }
     },
-    "nixos-stable": {
-      "locked": {
-        "lastModified": 1678137616,
-        "narHash": "sha256-T+lWTRdcYaOnZQW+Ehdlg+YldC2l9cq2GXJFPq22Nxc=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "7edcdf7b169c33cd3eef9aba50521ce93ee666b8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-22.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1657693803,
@@ -823,6 +809,22 @@
         "dir": "lib",
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-matrix-sdk-crypto-nodejs": {
+      "locked": {
+        "lastModified": 1678350907,
+        "narHash": "sha256-WvHZTpSO6vZzd2Gb+VS8wW6/5vAymOay1dbdhTsekYM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "563377967006bfe98e85ee3871c74d6291f14c5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/220317/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1072,6 +1074,7 @@
         "nixpkgs": [
           "nixos"
         ],
+        "nixpkgs-matrix-sdk-crypto-nodejs": "nixpkgs-matrix-sdk-crypto-nodejs",
         "nixpkgs-rime-data": "nixpkgs-rime-data",
         "nvfetcher": "nvfetcher",
         "pastebin": "pastebin",
