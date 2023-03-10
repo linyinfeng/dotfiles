@@ -55,6 +55,9 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
             (mkTuple [ (mkString "ibus") (mkString "mozc-jp") ])
           ];
       };
+      "org/gnome/desktop/wm/preferences" = {
+        action-middle-click-titlebar = "lower";
+      };
       "org/gnome/system/location" = {
         enabled = true;
       };
