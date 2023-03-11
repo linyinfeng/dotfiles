@@ -48,10 +48,9 @@ jobs:
     - name: Nix flake update
       run: |
         nix flake update --commit-lock-file
-    - name: Update pkgs
+    - name: Test nix flake show
       run: |
-        nix develop --command nvfetcher
-        nix develop --command nvfetcher-changes-commit "pkgs/_sources/generated.nix"
+        nix flake show
     - name: Test evaluation
       run: |
         set -e

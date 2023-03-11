@@ -5,6 +5,6 @@ let
     url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
     sha256 = narHash;
   };
-  flake = import flake-compat { src = ../../.; };
+  flake = import flake-compat {src = ../../.;};
 in
-flake
+  flake

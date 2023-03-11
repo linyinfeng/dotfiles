@@ -1,5 +1,0 @@
-{ ... }:
-
-{
-  system.types = [ "server" ];
-}
