@@ -3,5 +3,5 @@
   lib,
   ...
 }: {
-  system.stateVersion = lib.mkDefault config.lib.self.flakeStateVersion;
+  system.stateVersion = config.lib.self.flakeStateVersion;
 }
