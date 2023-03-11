@@ -1,465 +1,200 @@
 {
   description = "A highly structured configuration database.";
 
-  inputs =
-    {
-      nixos.url = "github:nixos/nixpkgs/nixos-unstable";
-      latest.url = "github:nixos/nixpkgs/master";
+  inputs = {
+    # flake-parts
 
-      nixpkgs.follows = "nixos"; # for nix registry
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-      digga.url = "github:divnix/digga";
-      digga.inputs.nixpkgs.follows = "nixos";
-      digga.inputs.nixpkgs-unstable.follows = "nixos";
-      digga.inputs.nixlib.follows = "nixos";
-      digga.inputs.home-manager.follows = "home";
-      digga.inputs.deploy.follows = "deploy";
-      digga.inputs.flake-compat.follows = "flake-compat";
-      digga.inputs.devshell.follows = "devshell";
+    # nixpkgs
 
-      devshell.url = "github:numtide/devshell";
-      devshell.inputs.nixpkgs.follows = "nixos";
-      devshell.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    latest.url = "github:nixos/nixpkgs/master";
 
-      beautysh.url = "github:lovesegfault/beautysh";
-      beautysh.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
-      beautysh.inputs.nixpkgs.follows = "nixos";
-      beautysh.inputs.poetry2nix.follows = "poetry2nix";
+    # flake modules
 
-      home.url = "github:nix-community/home-manager";
-      home.inputs.nixpkgs.follows = "nixos";
-      home.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
+    devshell.url = "github:numtide/devshell";
+    devshell.inputs.nixpkgs.follows = "nixpkgs";
+    devshell.inputs.flake-utils.follows = "flake-utils";
 
-      deploy.url = "github:serokell/deploy-rs";
-      deploy.inputs.nixpkgs.follows = "nixos";
-      deploy.inputs.utils.follows = "digga/flake-utils-plus/flake-utils";
-      deploy.inputs.flake-compat.follows = "flake-compat";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-      sops-nix.url = "github:Mic92/sops-nix";
-      sops-nix.inputs.nixpkgs.follows = "nixos";
+    pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
+    pre-commit-hooks-nix.inputs.flake-compat.follows = "flake-compat";
+    pre-commit-hooks-nix.inputs.flake-utils.follows = "flake-utils";
+    pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
+    pre-commit-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    pre-commit-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
 
-      nvfetcher.url = "github:berberman/nvfetcher";
-      nvfetcher.inputs.nixpkgs.follows = "nixos";
-      nvfetcher.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      nvfetcher.inputs.flake-compat.follows = "flake-compat";
+    # nixos modules
 
-      nixos-hardware.url = "github:nixos/nixos-hardware";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.utils.follows = "flake-utils";
 
-      nixos-generators.url = "github:nix-community/nixos-generators";
-      nixos-generators.inputs.nixlib.follows = "nixos";
-      nixos-generators.inputs.nixpkgs.follows = "nixos";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
 
-      impermanence.url = "github:nix-community/impermanence";
-      linyinfeng.url = "github:linyinfeng/nur-packages";
-      linyinfeng.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      linyinfeng.inputs.nixpkgs.follows = "nixos";
-      linyinfeng.inputs.nixos-stable.follows = "nixos";
-      nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
-      nix-gc-s3.inputs.nixpkgs.follows = "nixos";
-      nix-gc-s3.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
-      poetry2nix.url = "github:nix-community/poetry2nix";
-      poetry2nix.inputs.nixpkgs.follows = "nixos";
-      poetry2nix.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      pastebin.url = "github:linyinfeng/pastebin";
-      pastebin.inputs.nixpkgs.follows = "nixos";
-      pastebin.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      nixos-cn.url = "github:nixos-cn/flakes";
-      nixos-cn.inputs.nixpkgs.follows = "nixos";
-      nixos-cn.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      emacs-overlay.url = "github:nix-community/emacs-overlay";
-      emacs-overlay.inputs.nixpkgs.follows = "nixos";
-      emacs-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      nix.url = "github:nixos/nix";
-      nix.inputs.nixpkgs.follows = "nixos";
+    hydra.url = "github:nixos/hydra";
+    # hydra.inputs.nix.follows = "nix";
+    # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
-      mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
-      mc-config-nuc.inputs.nixpkgs.follows = "nixos";
-      mc-config-nuc.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      mc-config-nuc.inputs.mc-config.follows = "mc-config";
-      mc-config-nuc.inputs.minecraft-nix.follows = "minecraft-nix";
-      mc-config-nuc.inputs.minecraft-json.follows = "minecraft-json";
-      mc-config.url = "github:linyinfeng/mc-config";
-      mc-config.inputs.nixpkgs.follows = "nixos";
-      mc-config.inputs.flake-utils-plus.follows = "digga/flake-utils-plus";
-      mc-config.inputs.minecraft-nix.follows = "minecraft-nix";
-      mc-config.inputs.minecraft-json.follows = "minecraft-json";
-      minecraft-nix.url = "github:ninlives/minecraft.nix";
-      minecraft-nix.inputs.nixpkgs.follows = "nixos";
-      minecraft-nix.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      minecraft-nix.inputs.metadata.follows = "minecraft-json";
-      minecraft-json.url = "github:ninlives/minecraft.json";
-      minecraft-json.inputs.nixpkgs.follows = "nixos";
-      minecraft-json.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
+    lanzaboote.inputs.flake-compat.follows = "flake-compat";
+    lanzaboote.inputs.flake-utils.follows = "flake-utils";
+    lanzaboote.inputs.flake-parts.follows = "flake-parts";
+    lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
+    # TODO use pinned crane
+    # lanzaboote.inputs.crane.follows = "crane";
 
-      nix-index-database.url = "github:Mic92/nix-index-database";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
 
-      hydra.url = "github:nixos/hydra";
-      # hydra.inputs.nix.follows = "nix";
-      # hydra.inputs.nixpkgs.follows = "nixos";
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixlib.follows = "nixpkgs";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
-      lanzaboote.url = "github:nix-community/lanzaboote";
-      lanzaboote.inputs.nixpkgs.follows = "nixos";
-      lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
-      # TODO use pinned crane
-      # lanzaboote.inputs.crane.follows = "crane";
-      lanzaboote.inputs.flake-compat.follows = "flake-compat";
-      lanzaboote.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      rust-overlay.url = "github:oxalica/rust-overlay";
-      rust-overlay.inputs.nixpkgs.follows = "nixos";
-      rust-overlay.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      # crane.url = "github:ipetkov/crane";
-      # crane.inputs.nixpkgs.follows = "nixos";
-      # crane.inputs.rust-overlay.follows = "rust-overlay";
-      # crane.inputs.flake-utils.follows = "digga/flake-utils-plus/flake-utils";
-      # crane.inputs.flake-compat.follows = "flake-compat";
+    impermanence.url = "github:nix-community/impermanence";
 
-      flake-compat.url = "github:edolstra/flake-compat";
-      flake-compat.flake = false;
+    # home-manager modules
 
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    emacs-overlay.inputs.flake-utils.follows = "flake-utils";
 
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
-      nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
-      nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
-    };
+    # programs
 
-  outputs =
-    { self
-    , digga
-    , nixos
-    , home
-    , nixos-hardware
-    , nvfetcher
-    , deploy
-    , ...
-    } @ inputs:
-    digga.lib.mkFlake
-      {
-        inherit self inputs;
+    nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
+    nix-gc-s3.inputs.nixpkgs.follows = "nixpkgs";
+    nix-gc-s3.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
 
-        supportedSystems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
+    pastebin.url = "github:linyinfeng/pastebin";
+    pastebin.inputs.nixpkgs.follows = "nixpkgs";
+    pastebin.inputs.flake-utils-plus.follows = "flake-utils-plus";
 
-        channelsConfig = { allowUnfree = true; };
+    # nix.url = "github:nixos/nix";
+    # nix.inputs.nixpkgs.follows = "nixpkgs";
 
-        channels = rec {
-          nixos = {
-            imports = [ (digga.lib.importOverlays ./overlays) ];
-            overlays = [
-              ./pkgs/default.nix
-              nvfetcher.overlays.default
-              deploy.overlay
+    mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
+    mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
+    mc-config-nuc.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    mc-config-nuc.inputs.mc-config.follows = "mc-config";
+    mc-config-nuc.inputs.minecraft-nix.follows = "minecraft-nix";
+    mc-config-nuc.inputs.minecraft-json.follows = "minecraft-json";
 
-              inputs.sops-nix.overlay
-              inputs.nixos-cn.overlay
-              inputs.linyinfeng.overlays.singleRepoNur
-              inputs.emacs-overlay.overlay
-              (final: prev:
-                let
-                  system = final.stdenv.hostPlatform.system;
-                in
-                {
-                  nixVersions = prev.nixVersions.extend
-                    (final': prev': {
-                      master = inputs.nix.packages.${system}.nix;
-                      selected = final'.unstable;
-                    });
-                  hydra-master =
-                    if system == "x86_64-linux"
-                    then inputs.hydra.packages.${system}.default
-                    else null;
-                  nix-gc-s3 = inputs.nix-gc-s3.packages.${system}.nix-gc-s3;
-                  pastebin = inputs.pastebin.packages.${system}.default;
-                  mc-config-nuc = inputs.mc-config-nuc.packages.${system};
-                  nix-index-database =
-                    if system == "x86_64-linux"
-                    then inputs.nix-index-database.legacyPackages.${system}.database
-                    else null;
-                })
-            ];
-          };
-          latest = { };
-        };
+    # combined flakes
 
-        lib = import ./lib { lib = digga.lib // nixos.lib; };
+    linyinfeng.url = "github:linyinfeng/nur-packages";
+    linyinfeng.inputs.flake-parts.follows = "flake-parts";
+    linyinfeng.inputs.flake-utils.follows = "flake-utils";
+    linyinfeng.inputs.nixpkgs.follows = "nixpkgs";
+    linyinfeng.inputs.nixos-stable.follows = "blank";
+    linyinfeng.inputs.devshell.follows = "devshell";
+    linyinfeng.inputs.treefmt-nix.follows = "treefmt-nix";
 
-        sharedOverlays = [
-          (final: prev: {
-            __dontExport = true;
-            lib = prev.lib.extend (lfinal: lprev: {
-              our = self.lib;
-            });
-          })
-        ];
+    nixos-cn.url = "github:nixos-cn/flakes";
+    nixos-cn.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-cn.inputs.flake-utils.follows = "flake-utils";
 
-        nixos = {
-          hostDefaults = {
-            system = "x86_64-linux";
-            channelName = "nixos";
-            imports = [ (digga.lib.importExportableModules ./modules) ];
-            modules = [
-              { lib.our = self.lib; }
-              digga.nixosModules.bootstrapIso
-              digga.nixosModules.nixConfig
-              home.nixosModules.home-manager
+    # libraries
 
-              inputs.sops-nix.nixosModules.sops
-              inputs.impermanence.nixosModules.impermanence
-              inputs.nixos-cn.nixosModules.nixos-cn
-              inputs.lanzaboote.nixosModules.lanzaboote
-              inputs.linyinfeng.nixosModules.vlmcsd
-              inputs.linyinfeng.nixosModules.tprofile
-              inputs.linyinfeng.nixosModules.tg-send
-              inputs.linyinfeng.nixosModules.commit-notifier
-              inputs.linyinfeng.nixosModules.dot-tar
+    blank.url = "github:divnix/blank";
 
-              # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
-              {
-                disabledModules = [
-                  "i18n/input-method/fcitx5.nix"
-                  "i18n/input-method/ibus.nix"
-                ];
-                imports = [
-                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/rime.nix"
-                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/ibus.nix"
-                  "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/fcitx5.nix"
-                ];
-              }
-            ];
-          };
+    flake-utils.url = "github:numtide/flake-utils";
 
-          imports = [ (digga.lib.importHosts ./hosts) ];
-          hosts = {
-            framework = {
-              system = "x86_64-linux";
-              modules = with nixos-hardware.nixosModules; [
-                common-pc
-                common-cpu-intel
-                common-pc-ssd
-                # disabled infavor of hosts/framework/hardware.nix
-                # framework-12th-gen-intel
-              ];
-              tests = import ./lib/tests;
-            };
-            xps8930 = {
-              system = "x86_64-linux";
-              modules = with nixos-hardware.nixosModules; [
-                common-pc
-                common-cpu-intel
-                common-pc-ssd
-              ];
-              tests = import ./lib/tests;
-            };
-            nuc = {
-              system = "x86_64-linux";
-              modules = with nixos-hardware.nixosModules; [
-                common-pc
-                common-cpu-intel
-                common-pc-ssd
-              ];
-              tests = import ./lib/tests;
-            };
-            vultr = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
-            rica = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
-            tencent = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
-            netboot-installer = {
-              system = "x86_64-linux";
-              tests = import ./lib/tests;
-            };
-          };
-          importables = rec {
-            profiles = digga.lib.rakeLeaves ./profiles // {
-              users = digga.lib.rakeLeaves ./users;
-            };
-            suites = nixos.lib.fix (suites: {
-              core = suites.nixSettings ++
-                (with profiles; [
-                  programs.tools
-                  services.openssh
-                  system.sysrq
-                ]);
-              nixSettings = with profiles.nix; [ gc settings version cachix ];
-              base = suites.core ++
-                (with profiles; [
-                  security.polkit
-                  services.oom-killer
-                  global-persistence
-                  users.root
-                ]);
+    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
+    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
-              network = with profiles; [
-                networking.avahi
-                networking.resolved
-                networking.tailscale
-                networking.zerotier
-                networking.tools
-                security.fail2ban
-                security.firewall
-              ];
-              backup = with profiles; [
-                services.restic
-              ];
-              multimedia = with profiles; [
-                graphical.gnome
-                graphical.kde
-                graphical.sway
-                graphical.fonts
-                graphical.i18n
-                services.pipewire
-              ];
-              development = with profiles; [
-                development.shells
-                development.documentation
-                programs.adb
-                services.gnupg
-              ];
-              multimediaDev = suites.multimedia ++ suites.development ++
-                (with profiles; [ development.ides ]);
-              virtualization = with profiles; [
-                virtualization.libvirt
-                virtualization.wine
-                virtualization.podman
-              ];
-              games = with profiles.graphical.game; [ steam ];
-              monitoring = with profiles; [
-                services.telegraf-system
-                services.promtail
-                # security.audit
-              ];
+    digga.url = "github:divnix/digga";
+    digga.inputs.nixlib.follows = "nixpkgs";
+    digga.inputs.nixpkgs.follows = "nixpkgs";
+    digga.inputs.nixpkgs-unstable.follows = "nixpkgs";
+    digga.inputs.darwin.follows = "blank";
+    digga.inputs.home-manager.follows = "home-manager";
+    digga.inputs.deploy.follows = "blank";
+    digga.inputs.flake-compat.follows = "flake-compat";
+    digga.inputs.devshell.follows = "devshell";
+    digga.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    digga.inputs.flake-utils.follows = "flake-utils";
 
-              workstation = [
-                profiles.system.types.workstation
-              ] ++ (with suites; [
-                base
-                multimediaDev
-                virtualization
-                network
-                backup
-                monitoring
-              ]) ++ (with profiles; [
-                networking.network-manager
-                services.bluetooth
-                services.auto-upgrade
-                services.kde-connect
-                services.printing
-                security.hardware-keys
-                hardware.rtl-sdr
-                nix.nix-ld
-              ]);
-              mobileWorkstation = suites.workstation;
+    rust-overlay.url = "github:oxalica/rust-overlay";
+    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    rust-overlay.inputs.flake-utils.follows = "flake-utils";
 
-              server = [
-                profiles.system.types.server
-              ] ++ (with suites; [
-                base
-                network
-                backup
-                monitoring
-              ]) ++
-              (with profiles; [
-                services.auto-upgrade
-                networking.bbr
-              ]);
-              homeServer = suites.server ++
-                (with profiles; [
-                  networking.network-manager
-                ]);
-            });
-          };
-        };
+    crane.url = "github:ipetkov/crane";
+    crane.inputs.nixpkgs.follows = "nixpkgs";
+    crane.inputs.rust-overlay.follows = "rust-overlay";
+    crane.inputs.flake-utils.follows = "flake-utils";
+    crane.inputs.flake-compat.follows = "flake-compat";
 
-        home = {
-          imports = [ (digga.lib.importExportableModules ./users/modules) ];
-          modules = [ ];
-          importables = rec {
-            profiles = digga.lib.rakeLeaves ./users/profiles;
-            suites = nixos.lib.fix (suites: {
-              base = with profiles; [ git ];
-              multimedia = with profiles; [ gnome sway desktop-applications chromium firefox rime fonts mime obs-studio minecraft ];
-              development = with profiles; [ development direnv emacs pssh tools.nix tools.network tools.other tex postmarketos awscli terraform shells ];
-              virtualization = [ ];
-              multimediaDev = suites.multimedia ++ suites.development ++
-                (with profiles; [ xdg-dirs vscode ]);
-              synchronize = with profiles; [ onedrive digital-paper ];
-              security = with profiles; [ gpg ];
+    gitignore-nix.url = "github:hercules-ci/gitignore.nix";
+    gitignore-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-              full = with suites; base ++ multimediaDev ++ virtualization ++ synchronize ++ security;
-            });
-          };
-          users = digga.lib.rakeLeaves ./users/hm;
-        };
+    poetry2nix.url = "github:nix-community/poetry2nix";
+    poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
+    poetry2nix.inputs.flake-utils.follows = "flake-utils";
 
-        devshell = ./shell;
+    mc-config.url = "github:linyinfeng/mc-config";
+    mc-config.inputs.nixpkgs.follows = "nixpkgs";
+    mc-config.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    mc-config.inputs.minecraft-nix.follows = "minecraft-nix";
+    mc-config.inputs.minecraft-json.follows = "minecraft-json";
 
-        homeConfigurations = digga.lib.mkHomeConfigurations self.nixosConfigurations;
+    minecraft-nix.url = "github:ninlives/minecraft.nix";
+    minecraft-nix.inputs.nixpkgs.follows = "nixpkgs";
+    minecraft-nix.inputs.flake-utils.follows = "flake-utils";
+    minecraft-nix.inputs.metadata.follows = "minecraft-json";
 
-        deploy.nodes =
-          let
-            inherit (nixos) lib;
-            disabledHosts = [ "bootstrap" "netboot-installer" "netboot-installer-aarch64" ];
-            configs = lib.filterAttrs (name: cfg: !(lib.elem name disabledHosts)) self.nixosConfigurations;
-          in
-          digga.lib.mkDeployNodes
-            configs
-            (lib.mapAttrs
-              (name: cfg: {
-                hostname = "${cfg.config.networking.hostName}.zt.li7g.com";
-              })
-              configs);
-        deploy.sshUser = "root";
+    minecraft-json.url = "github:ninlives/minecraft.json";
+    minecraft-json.inputs.nixpkgs.follows = "nixpkgs";
+    minecraft-json.inputs.flake-utils.follows = "flake-utils";
 
-        templates.default = self.templates.project;
-        templates.project.path = ./templates/project;
-        templates.project.description = "simple project template";
+    # data
 
-        outputsBuilder = channels:
-          let
-            pkgs = channels.nixos;
-            inherit (pkgs) system lib;
-          in
-          {
-            checks =
-              deploy.lib.${system}.deployChecks self.deploy //
-              (
-                lib.foldl lib.recursiveUpdate { }
-                  (lib.mapAttrsToList
-                    (host: cfg:
-                      lib.optionalAttrs (cfg.pkgs.system == system)
-                        { "toplevel-${host}" = cfg.config.system.build.toplevel; })
-                    self.nixosConfigurations)
-              ) // (
-                lib.mapAttrs'
-                  (name: drv: lib.nameValuePair "package-${name}" drv)
-                  self.packages.${system}
-              ) // {
-                devShell = self.devShell.${system};
-              };
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-            hydraJobs = self.checks.${system};
-          };
-        hydraJobs =
-          let
-            hydraSystem = "x86_64-linux";
-            pkgs = self.pkgs.${hydraSystem}.nixos;
-            inherit (pkgs) lib;
-          in
-          {
-            all-checks.${hydraSystem} = pkgs.linkFarm "all-checks"
-              (lib.flatten (lib.mapAttrsToList
-                (system: lib.mapAttrsToList (name: drv: { name = "${name}-${system}"; path = drv; }))
-                self.checks));
-          };
-      };
+    # compatibility layer
+
+    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat.flake = false;
+
+    # patches
+
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
+    nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
+    nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
+  };
+
+  outputs = inputs @ {flake-parts, ...}:
+    flake-parts.lib.mkFlake {inherit inputs;}
+    ({
+      self,
+      lib,
+      ...
+    }: let
+      selfLib = import ./lib {inherit inputs lib;};
+    in {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
+      flake.lib = selfLib;
+      imports =
+        [
+          inputs.flake-parts.flakeModules.easyOverlay
+          inputs.devshell.flakeModule
+          inputs.treefmt-nix.flakeModule
+          inputs.pre-commit-hooks-nix.flakeModule
+          inputs.linyinfeng.flakeModules.nixpkgs
+          inputs.linyinfeng.flakeModules.passthru
+        ]
+        ++ selfLib.buildModuleList ./flake;
+    });
 }

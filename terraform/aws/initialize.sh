@@ -12,12 +12,12 @@ echo "start initialization"
 CONFIG_NAME="${config_name}"
 
 echo "install host private key"
-cat > /etc/ssh/ssh_host_ed25519_key <<EOF
+cat >/etc/ssh/ssh_host_ed25519_key <<EOF
 ${host_ed25519_key}
 EOF
 chmod 600 /etc/ssh/ssh_host_ed25519_key
 echo "install host public key"
-cat > /etc/ssh/ssh_host_ed25519_key.pub <<EOF
+cat >/etc/ssh/ssh_host_ed25519_key.pub <<EOF
 ${host_ed25519_key_pub}
 EOF
 chmod 644 /etc/ssh/ssh_host_ed25519_key.pub
