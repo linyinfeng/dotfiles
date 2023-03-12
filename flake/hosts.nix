@@ -183,6 +183,7 @@
           sharedModules = commonHmModules;
           extraSpecialArgs = hmSpecialArgs;
           useGlobalPkgs = true;
+          useUserPackages = true;
         };
       }
 
