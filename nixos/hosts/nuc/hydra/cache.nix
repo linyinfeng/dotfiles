@@ -8,25 +8,25 @@
   cacheBucketName = config.lib.self.data.cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
 in {
-  systemd.services."copy-cache-li7g-com" = {
+  systemd.services."copy-cache-li7g-com@" = {
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      root="$1"
+      echo "root = $root"
 
       (
         echo "wait for lock"
         flock 200
         echo "enter critical section"
 
-        roots=($(fd "^.*-all-checks$" "${hydraRootsDir}" --exec echo "/nix/store/{/}"))
-        nix store sign "''${roots[@]}" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
-        for root in "''${roots[@]}"; do
-          echo "push cache to cahche.li7g.com for hydra gcroot: $root"
-          # use multipart-upload to avoid cloudflare limit
-          nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true&parallel-compression=true" "$root" --verbose
-        done
+        nix store sign "$root" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
+        echo "push cache to cahche.li7g.com for hydra gcroot: $root"
+        # use multipart-upload to avoid cloudflare limit
+        nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&multipart-upload=true&parallel-compression=true" "$root" --verbose
       ) 200>/var/lib/cache-li7g-com/lock
     '';
+    scriptArgs = "%I";
     path = with pkgs; [
       config.nix.package
       fd

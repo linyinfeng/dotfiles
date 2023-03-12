@@ -3,16 +3,13 @@
   lib,
   ...
 }: let
-  cacheMachine = "nuc";
+  hostName = config.networking.hostName;
 in {
   system.autoUpgrade = {
     enable = true;
-    flake = "github:linyinfeng/dotfiles/tested";
+    flake = "github:linyinfeng/dotfiles/nixos-tested-${hostName}";
     allowReboot = true;
-    dates =
-      if config.networking.hostName == cacheMachine
-      then "05:00"
-      else "04:00";
+    dates = "03:00";
     randomizedDelaySec = "30min";
     flags = ["--refresh"];
   };

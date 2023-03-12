@@ -7,14 +7,26 @@
   systemd.services."dotfiles-channel-update@" = {
     script = ''
       cd "$STATE_DIRECTORY"
-      commit="$1"
+
+      update_file="$1"
+      echo "update_file = $update_file"
+
+      host=$(jq -r '.host' "$update_file")
+      echo "host = $host"
+      commit=$(jq -r '.commit' "$update_file")
+      echo "commit = $commit"
+      out=$(jq -r '.out' "$update_file")
+      echo "out = $out"
+
+      target_branch="nixos-tested-$host"
+      echo "target_branch = $target_branch"
 
       (
         echo "wait for lock"
         flock 200
         echo "enter critical section"
 
-        systemctl start copy-cache-li7g-com.service
+        systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service"
 
         # update channel
         if [ ! -d dotfiles ]; then
@@ -25,14 +37,14 @@
           popd
         fi
         cd dotfiles
-        git checkout tested || git checkout -b tested
-        git pull origin tested
+        git checkout "$target_branch" || git checkout -b "$target_branch"
+        git pull origin "$target_branch" || true
         git fetch
         git merge --ff-only "$commit"
-        git push --set-upstream origin tested
+        git push --set-upstream origin "$target_branch"
 
         ${config.programs.tg-send.wrapped} <<EOF
-      dotfiles/tested
+      dotfiles/$target_branch
 
       $(git show HEAD --no-patch)
       EOF
@@ -78,7 +90,7 @@
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&
-          RegExp('dotfiles-channel-update@[A-Za-z0-9_-]+\.service|copy-cache-li7g-com\.service').test(action.lookup("unit")) === true &&
+          RegExp('dotfiles-channel-update@.+\.service|copy-cache-li7g-com@.+\.service').test(action.lookup("unit")) === true &&
           subject.isInGroup("hydra")) {
         return polkit.Result.YES;
       }
