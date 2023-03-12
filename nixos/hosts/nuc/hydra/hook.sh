@@ -29,7 +29,7 @@ echo "expected = $expected"
 if [ "$event" = "$expected" ]; then
   job=$("$jq" -r ".job" "$HYDRA_JSON")
 
-  if [[ "$job" =~ ^(.*)\.nixos/(.*)$ ]]; then
+  if [[ $job =~ ^(.*)\.nixos/(.*)$ ]]; then
     system="${BASH_REMATCH[1]}"
     host="${BASH_REMATCH[2]}"
 
@@ -47,7 +47,7 @@ if [ "$event" = "$expected" ]; then
 
     mkdir -p "/tmp/dotfiles-channel-update"
     update_file="/tmp/dotfiles-channel-update/$(basename "$dump_file")"
-    cat > "$update_file" <<EOF
+    cat >"$update_file" <<EOF
 {
   "host": "$host",
   "commit": "$commit",
