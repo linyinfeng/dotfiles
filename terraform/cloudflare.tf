@@ -42,6 +42,13 @@ resource "cloudflare_zone" "com_li7g" {
   zone       = "li7g.com"
 }
 
+resource "cloudflare_zone_settings_override" "com_li7g" {
+  zone_id = cloudflare_zone.com_li7g.id
+  settings {
+    ssl = "strict"
+  }
+}
+
 # ttl = 1 for automatic
 
 # CNAME records
