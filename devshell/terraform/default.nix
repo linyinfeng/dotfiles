@@ -1,7 +1,58 @@
 {...}: {
   perSystem = {pkgs, ...}: let
-    secretExtractor = pkgs.callPackage ./extractor/secrets.nix {};
-    dataExtractor = pkgs.callPackage ./extractor/data.nix {};
+    common = pkgs.substituteAll {
+      src = ./common.sh;
+      isExecutable = true;
+      inherit (pkgs.stdenvNoCC) shell;
+    };
+
+    encryptTo = pkgs.substituteAll {
+      src = ./encrypt-to.sh;
+      isExecutable = true;
+      inherit common;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) sops;
+    };
+
+    terraformInit = pkgs.substituteAll {
+      src = ./terraform-init.sh;
+      isExecutable = true;
+      inherit common;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) terraform;
+    };
+
+    terraformOutputsExtractData = pkgs.substituteAll {
+      src = ./terraform-outputs-extract-data.sh;
+      isExecutable = true;
+      inherit common;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) yq-go sops;
+    };
+
+    terraformOutputsExtractSecrets = pkgs.substituteAll {
+      src = ./terraform-outputs-extract-secrets.sh;
+      isExecutable = true;
+      inherit common encryptTo;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) yq-go sops fd;
+    };
+
+    terraformUpdateOutputs = pkgs.substituteAll {
+      src = ./terraform-update-outputs.sh;
+      isExecutable = true;
+      inherit common encryptTo terraformWrapper;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) yq-go;
+    };
+
+    terraformWrapper = pkgs.substituteAll {
+      src = ./terraform-wrapper.sh;
+      isExecutable = true;
+      inherit common encryptTo;
+      inherit (pkgs.stdenvNoCC) shell;
+      inherit (pkgs) sops terraform zerotierone minio-client syncthing jq openssl ruby yq-go;
+    };
   in {
     devshells.default.commands = [
       {
@@ -23,44 +74,7 @@
         name = "terraform-wrapper";
         help = pkgs.terraform.meta.description;
         command = ''
-          set -e
-
-          export PATH=${pkgs.sops}/bin:$PATH
-          export PATH=${pkgs.terraform}/bin:$PATH
-          export PATH=${pkgs.zerotierone}/bin:$PATH
-          export PATH=${pkgs.minio-client}/bin:$PATH
-          export PATH=${pkgs.syncthing}/bin:$PATH
-          export PATH=${pkgs.jq}/bin:$PATH
-          export PATH=${pkgs.openssl}/bin:$PATH
-          export PATH=${pkgs.ruby}/bin:$PATH
-
-          encrypted_state_file="$PRJ_ROOT/secrets/terraform.tfstate"
-          unencrypted_state_file="$PRJ_ROOT/terraform/terraform.tfstate"
-          echo "decrypt terraform state to '$unencrypted_state_file'..." >&2
-          sops --input-type json --output-type json \
-            --decrypt "$encrypted_state_file" > "$unencrypted_state_file"
-
-          function cleanup {
-            cd $PRJ_ROOT
-            if [ -n "$(cat "$unencrypted_state_file")" ]; then
-              echo "encrypt terraform state to '$encrypted_state_file'..." >&2
-              set +e
-              EDITOR="cp \"$unencrypted_state_file\"" \
-                sops --input-type json --output-type json \
-                "$encrypted_state_file"
-              encrypt_status="$?"
-              set -e
-              rm "$unencrypted_state_file"
-              if [ "$encrypt_status" -ne 0 -a "$encrypt_status" -ne 200 ]; then
-                echo "failed to encrypt, exiting"
-                exit 1
-              fi
-            fi
-          }
-          trap cleanup EXIT
-
-          cd $PRJ_ROOT/terraform
-          terraform "$@"
+          ${terraformWrapper} "$@"
         '';
       }
 
@@ -69,22 +83,7 @@
         name = "terraform-update-outputs";
         help = "update terraform outputs";
         command = ''
-          set -e
-
-          export PATH=${pkgs.sops}/bin:$PATH
-
-          encrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.yaml"
-          unencrypted_output_file="$PRJ_ROOT/secrets/terraform-outputs.plain.yaml"
-          terraform-wrapper output --json > "$unencrypted_output_file"
-          set +e
-          EDITOR="cp \"$unencrypted_output_file\"" sops "$encrypted_output_file"
-          encrypt_status="$?"
-          set -e
-          rm "$unencrypted_output_file"
-          if [ "$encrypt_status" -ne 0 -a "$encrypt_status" -ne 200 ]; then
-            echo "failed to encrypt, exiting"
-            exit 1
-          fi
+          ${terraformUpdateOutputs} "$@"
         '';
       }
 
@@ -92,14 +91,18 @@
         category = "infrastructure";
         name = "terraform-outputs-extract-secrets";
         help = "extract secrets from terraform outputs";
-        package = secretExtractor;
+        command = ''
+          ${terraformOutputsExtractSecrets} "$@"
+        '';
       }
 
       {
         category = "infrastructure";
         name = "terraform-outputs-extract-data";
         help = "extract data from terraform outputs";
-        package = dataExtractor;
+        command = ''
+          ${terraformOutputsExtractData} "$@"
+        '';
       }
 
       {
@@ -107,10 +110,16 @@
         name = "terraform-init";
         help = "upgrade terraform providers";
         command = ''
-          set -e
+          ${terraformInit} "$@"
+        '';
+      }
 
-          cd $PRJ_ROOT/terraform
-          ${pkgs.terraform}/bin/terraform init "$@"
+      {
+        category = "infrastructure";
+        name = "encrypt-to";
+        help = "sops encrypt helper";
+        command = ''
+          ${encryptTo} "$@"
         '';
       }
     ];

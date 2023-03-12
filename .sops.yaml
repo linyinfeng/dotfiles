@@ -123,3 +123,9 @@ creation_rules:
       - *main
       age:
       - *vm-test
+  - path_regex: ^/tmp/encrypt.*$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *github
