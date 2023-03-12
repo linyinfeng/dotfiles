@@ -9,7 +9,7 @@ in {
     enable = true;
     flake = "github:linyinfeng/dotfiles/nixos-tested-${hostName}";
     allowReboot = true;
-    dates = "03:00";
+    dates = "04:00";
     randomizedDelaySec = "30min";
     flags = ["--refresh"];
   };
@@ -19,6 +19,7 @@ in {
 
   services.scheduled-reboot = {
     enable = true;
-    calendar = "04:00";
+    # scheduled reboot before auto upgrade
+    calendar = "03:00";
   };
 }
