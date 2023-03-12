@@ -38,7 +38,8 @@ if [ "$event" = "$expected" ]; then
     flake_url=$(psql -t -U hydra -d hydra -c "
           SELECT flake FROM jobsetevals
           WHERE id = (SELECT eval FROM jobsetevalmembers
-                      WHERE build = $build_id)
+                      WHERE build = $build_id
+                      LIMIT 1)
           ORDER BY id DESC
           LIMIT 1
       ")
