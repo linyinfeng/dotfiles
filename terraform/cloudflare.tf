@@ -97,6 +97,7 @@ locals {
     dst             = { on = "tencent", proxy = false }
     matrix-qq       = { on = "tencent", proxy = false }
     matrix          = { on = "hil0", proxy = true }
+    synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }
   }
 }

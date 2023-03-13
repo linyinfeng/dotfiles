@@ -314,7 +314,7 @@ in
           # MATRIX_WHITELIST = "@yinfeng:li7g.com";
           # MATRIX_ROOM_BLACKLIST = "";
           MATRIX_ROOM_WHITELIST = lib.concatStringsSep " " [
-            "!CyrWyMAIbpeyWPYWZw:li7g.com" # private - #chatgpt:li7g.com
+            "!ZcyNnUjSsEKYLfgpBu:li7g.com" # private - #chatgpt:li7g.com
             "!vXzxwXAzWxuDADWQcn:li7g.com" # private - #njulug:li7g.com
             "!MPQSzGQmrbZGaDnPaL:li7g.com" # private - #apartment-five:li7g.com
           ];
@@ -331,9 +331,14 @@ in
       };
       sops.templates."matrix-chatgpt-extra-env".content = ''
         OPENAI_API_KEY=${config.sops.placeholder."chatgpt-bot/openai-api-key"}
+        MATRIX_BOT_PASSWORD=${config.sops.placeholder."chatgpt-bot/matrix-password"}
         MATRIX_ACCESS_TOKEN=${config.sops.placeholder."chatgpt-bot/matrix-access-token"}
       '';
       sops.secrets."chatgpt-bot/openai-api-key" = {
+        sopsFile = config.sops-file.host;
+        restartUnits = ["podman-matrix-chatgpt-bot.service"];
+      };
+      sops.secrets."chatgpt-bot/matrix-password" = {
         sopsFile = config.sops-file.host;
         restartUnits = ["podman-matrix-chatgpt-bot.service"];
       };
@@ -403,6 +408,9 @@ in
         locations."/_matrix" = {
           proxyPass = "http://127.0.0.1:${toString config.ports.matrix}";
         };
+        locations."/_synapse" = {
+          proxyPass = "http://127.0.0.1:${toString config.ports.matrix}";
+        };
         locations."/" = {
           root = pkgs.element-web;
         };
@@ -411,5 +419,14 @@ in
         };
       };
       passthru.element-web-config = element-web-config;
+    }
+
+    # synapse admin
+    {
+      services.nginx.virtualHosts."synapse-admin.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/".root = pkgs.synapse-admin;
+      };
     }
   ]
