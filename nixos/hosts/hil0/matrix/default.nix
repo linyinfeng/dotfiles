@@ -287,6 +287,7 @@ in
           ${pkgs.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
         '';
         serviceConfig = {
+          Restart = "on-failure";
           DynamicUser = true;
           StateDirectory = "matrix-chatgpt-bot";
           EnvironmentFile = [
