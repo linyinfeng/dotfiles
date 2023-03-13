@@ -181,7 +181,10 @@
           sharedModules = commonHmModules;
           extraSpecialArgs = hmSpecialArgs;
         };
-        system.configurationRevision = if self ? rev then self.rev else null;
+        system.configurationRevision =
+          if self ? rev
+          then self.rev
+          else null;
       }
 
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
