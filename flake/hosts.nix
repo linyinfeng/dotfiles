@@ -167,6 +167,7 @@
       inputs.sops-nix.nixosModules.sops
       inputs.impermanence.nixosModules.impermanence
       inputs.nixos-cn.nixosModules.nixos-cn
+      inputs.flake-utils-plus.nixosModules.autoGenFromInputs
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.linyinfeng.nixosModules.vlmcsd
       inputs.linyinfeng.nixosModules.tprofile
@@ -176,14 +177,9 @@
 
       {
         lib.self = self.lib;
-        # rebuild nixpkgs is slower than pass pkgs to nixosSystem
-        # nixpkgs = config.nixpkgs;
-
         home-manager = {
           sharedModules = commonHmModules;
           extraSpecialArgs = hmSpecialArgs;
-          useGlobalPkgs = true;
-          useUserPackages = true;
         };
       }
 
