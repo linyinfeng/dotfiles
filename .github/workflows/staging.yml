@@ -1,0 +1,21 @@
+name: "Merge to staging"
+on:
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        ref: staging
+        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
+    - name: Rebase and push
+      run: |
+        git fetch
+        git merge origin/main --no-edit
+        git push
