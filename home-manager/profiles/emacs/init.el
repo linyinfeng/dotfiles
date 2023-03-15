@@ -427,6 +427,9 @@
 (use-package yaml-mode
   :ensure t)
 
+(use-package ztree
+  :ensure t)
+
 (defun load-agda-mode ()
   "Open init.el file"
   (interactive)

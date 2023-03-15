@@ -78,6 +78,7 @@ in
             };
           };
         };
+        system.stateVersion = config.system.stateVersion;
       };
     };
     sops.secrets."syncthing_cert_pem" = {

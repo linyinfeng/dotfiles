@@ -800,11 +800,9 @@
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1678654296,
-        "narHash": "sha256-aVfw3ThpY7vkUeF1rFy10NAkpKDS2imj3IakrzT0Occ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5a1dc8acd977ff3dccd1328b7c4a6995429a656b",
-        "type": "github"
+        "narHash": "sha256-kMk+hUmftOlCJl+dv7VmnKBTcYy4S2iZf7deYSmoIao=",
+        "type": "git",
+        "url": "file:///home/yinfeng/Source/nixpkgs"
       },
       "original": {
         "owner": "nixos",

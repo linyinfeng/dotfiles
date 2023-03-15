@@ -2,7 +2,6 @@
   self,
   lib,
   inputs,
-  withSystem,
   ...
 }: let
   mkNode = name: cfg: let

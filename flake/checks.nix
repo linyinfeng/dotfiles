@@ -1,7 +1,6 @@
 {
   self,
   lib,
-  withSystem,
   ...
 }: let
   getHostToplevel = name: cfg: let

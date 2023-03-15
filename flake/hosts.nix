@@ -3,7 +3,7 @@
   self,
   inputs,
   lib,
-  withSystem,
+  getSystem,
   ...
 }: let
   inherit (inputs.nixpkgs.lib) nixosSystem;
@@ -228,8 +228,8 @@
   }: {
     ${name} = nixosSystem {
       inherit system;
+      inherit ((getSystem system).allModuleArgs) pkgs;
       specialArgs = nixosSpecialArgs;
-      pkgs = withSystem system ({pkgs, ...}: pkgs);
       modules =
         commonNixosModules
         ++ extraModules
