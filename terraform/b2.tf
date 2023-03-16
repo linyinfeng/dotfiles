@@ -29,7 +29,7 @@ output "b2_s3_region" {
 
 resource "b2_application_key" "manage" {
   # key for data management
-  key_name  = "manage"
+  key_name = "manage"
   # read and write to all buckets
   capabilities = [
     "deleteFiles",
