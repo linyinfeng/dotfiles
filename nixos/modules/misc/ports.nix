@@ -51,6 +51,7 @@
       transmission-rpc = 3160;
       elasticsearch = 3170;
       elasticsearch-node-to-node = 3171;
+      atticd = 3180;
       jellyfin = 8096;
       zerotier = 9993;
       minecraft = 25565;

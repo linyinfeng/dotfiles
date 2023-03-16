@@ -80,6 +80,7 @@ locals {
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
+    attic           = { on = "rica", proxy = true }
     vault           = { on = "rica", proxy = true }
     pb              = { on = "rica", proxy = true }
     git             = { on = "rica", proxy = true }

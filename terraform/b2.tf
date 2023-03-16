@@ -192,9 +192,8 @@ output "b2_mastodon_media_access_key" {
 }
 
 
-resource "b2_bucket" "attic" {
-  # bucket name must be at least 6 characters long
-  bucket_name = "attic-store"
+resource "b2_bucket" "atticd" {
+  bucket_name = "yinfeng-atticd"
   bucket_type = "allPrivate"
 
   # keep only the last version of the file
@@ -204,9 +203,9 @@ resource "b2_bucket" "attic" {
     days_from_hiding_to_deleting  = 1
   }
 }
-resource "b2_application_key" "attic" {
-  key_name  = "attic"
-  bucket_id = b2_bucket.attic.id
+resource "b2_application_key" "atticd" {
+  key_name  = "atticd"
+  bucket_id = b2_bucket.atticd.id
   capabilities = [
     "deleteFiles",
     "listAllBucketNames",
@@ -220,15 +219,15 @@ resource "b2_application_key" "attic" {
     "writeFiles"
   ]
 }
-output "b2_attic_bucket_name" {
-  value     = b2_bucket.attic.bucket_name
+output "b2_atticd_bucket_name" {
+  value     = b2_bucket.atticd.bucket_name
   sensitive = false
 }
-output "b2_attic_key_id" {
-  value     = b2_application_key.attic.application_key_id
+output "b2_atticd_key_id" {
+  value     = b2_application_key.atticd.application_key_id
   sensitive = false
 }
-output "b2_attic_access_key" {
-  value     = b2_application_key.attic.application_key
+output "b2_atticd_access_key" {
+  value     = b2_application_key.atticd.application_key
   sensitive = true
 }

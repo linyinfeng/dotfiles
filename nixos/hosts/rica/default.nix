@@ -40,6 +40,7 @@ in {
       ./loki
       ./grafana
       ./static-file-hosting
+      ./atticd
     ];
 
   config = lib.mkMerge [

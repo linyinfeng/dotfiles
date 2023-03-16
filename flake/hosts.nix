@@ -174,6 +174,7 @@
       inputs.linyinfeng.nixosModules.tg-send
       inputs.linyinfeng.nixosModules.commit-notifier
       inputs.linyinfeng.nixosModules.dot-tar
+      inputs.attic.nixosModules.atticd
 
       {
         lib.self = self.lib;

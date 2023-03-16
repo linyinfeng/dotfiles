@@ -8,6 +8,7 @@
     inputs.sops-nix.overlay
     inputs.nixos-cn.overlay
     inputs.linyinfeng.overlays.singleRepoNur
+    inputs.attic.overlays.default
     inputs.emacs-overlay.overlay
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;

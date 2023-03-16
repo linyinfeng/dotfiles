@@ -196,3 +196,12 @@ output "matrix_registration_shared_secret" {
   value     = random_password.matrix_registration_shared_secret.result
   sensitive = true
 }
+
+resource "random_password" "atticd_token_hs256_secret" {
+  length  = 64
+  special = false
+}
+output "atticd_token_hs256_secret_base64" {
+  value     = base64encode(random_password.atticd_token_hs256_secret.result)
+  sensitive = true
+}

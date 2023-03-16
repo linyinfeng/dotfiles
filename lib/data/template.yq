@@ -9,6 +9,10 @@
     "mastodon_media_host": .b2_s3_api_host.value,
     "mastodon_media_region": .b2_s3_region.value,
     "mastodon_media_bucket_name": .b2_mastodon_media_bucket_name.value,
+    "atticd_url": .b2_s3_api_url.value,
+    "atticd_host": .b2_s3_api_host.value,
+    "atticd_region": .b2_s3_region.value,
+    "atticd_bucket_name": .b2_atticd_bucket_name.value,
     "hosts": .hosts.value | map_values(
         with_entries(
             select(
