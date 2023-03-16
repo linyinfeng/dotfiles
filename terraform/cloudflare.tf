@@ -86,7 +86,6 @@ locals {
     box             = { on = "rica", proxy = true }
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
-    mastodon        = { on = "rica", proxy = true }
     social          = { on = "rica", proxy = true }
     grafana         = { on = "rica", proxy = true }
     influxdb        = { on = "rica", proxy = true }
@@ -99,6 +98,7 @@ locals {
     matrix          = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }
+    mastodon        = { on = "hil0", proxy = true }
   }
 }
 
@@ -230,6 +230,14 @@ resource "cloudflare_page_rule" "acme" {
 
 # cache
 
+resource "cloudflare_record" "li7g_b2" {
+  name    = "b2"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = module.b2_download_url.host
+  zone_id = cloudflare_zone.com_li7g.id
+}
 resource "cloudflare_record" "li7g_cache" {
   name    = "cache"
   proxied = true

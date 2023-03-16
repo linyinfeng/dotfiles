@@ -48,10 +48,10 @@ in
             "social.zt.li7g.com"
           ];
           S3_ENABLED = "true";
-          S3_BUCKET = "mastodon-media";
-          S3_REGION = "us-east-1"; # just minio default region
-          S3_ENDPOINT = "https://minio.ts.li7g.com";
-          S3_ALIAS_HOST = "minio.li7g.com/mastodon-media";
+          S3_BUCKET = config.lib.self.data.mastodon_media_bucket_name;
+          S3_REGION = config.lib.self.data.mastodon_media_region;
+          S3_ENDPOINT = config.lib.self.data.mastodon_media_url;
+          S3_ALIAS_HOST = "b2.li7g.com/file/${config.lib.self.data.mastodon_media_bucket_name}";
         };
       };
       users.users.${config.services.mastodon.user}.shell = pkgs.bash;
@@ -74,8 +74,8 @@ in
           ];
         };
       sops.templates."mastodon-extra-env".content = ''
-        AWS_ACCESS_KEY_ID=${config.sops.placeholder."minio_mastodon_media_key_id"}
-        AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."minio_mastodon_media_access_key"}
+        AWS_ACCESS_KEY_ID=${config.sops.placeholder."b2_mastodon_media_key_id"}
+        AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."b2_mastodon_media_access_key"}
       '';
       services.postgresql.ensureDatabases = ["mastodon"];
       services.postgresql.ensureUsers = [
@@ -90,11 +90,11 @@ in
         sopsFile = config.sops-file.get "terraform/common.yaml";
         restartUnits = ["mastodon-init-dirs.service"];
       };
-      sops.secrets."minio_mastodon_media_key_id" = {
+      sops.secrets."b2_mastodon_media_key_id" = {
         sopsFile = config.sops-file.terraform;
         restartUnits = serviceUnits;
       };
-      sops.secrets."minio_mastodon_media_access_key" = {
+      sops.secrets."b2_mastodon_media_access_key" = {
         sopsFile = config.sops-file.terraform;
         restartUnits = serviceUnits;
       };

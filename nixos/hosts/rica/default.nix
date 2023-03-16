@@ -33,7 +33,6 @@ in {
       ./backup
       ./git
       ./seafile
-      ./mastodon
       ./commit-notifier
       ./pastebin
       ./alertmanager

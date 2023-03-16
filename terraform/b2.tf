@@ -23,6 +23,27 @@ module "b2_download_url" {
 output "b2_s3_api_host" {
   value = module.b2_s3_api_url.host
 }
+output "b2_s3_region" {
+  value = regex("^s3.([a-z0-9\\-]+).backblazeb2.com$", module.b2_s3_api_url.host)[0]
+}
+
+resource "b2_application_key" "manage" {
+  # key for data management
+  key_name  = "manage"
+  # read and write to all buckets
+  capabilities = [
+    "deleteFiles",
+    "listAllBucketNames",
+    "listBuckets",
+    "listFiles",
+    "readBucketEncryption",
+    "readBuckets",
+    "readFiles",
+    "shareFiles",
+    "writeBucketEncryption",
+    "writeFiles"
+  ]
+}
 
 resource "b2_bucket" "cache" {
   bucket_name = "cache-li7g-com"
@@ -111,5 +132,103 @@ output "b2_synapse_media_key_id" {
 }
 output "b2_synapse_media_access_key" {
   value     = b2_application_key.synapse_media.application_key
+  sensitive = true
+}
+
+resource "b2_bucket" "mastodon_media" {
+  # prefix with yinfeng- to prevent name conflict
+  # the name mastodon-media and mastodon is already taken
+  bucket_name = "yinfeng-mastodon-media"
+  bucket_type = "allPublic"
+
+  # keep only the last version of the file
+  lifecycle_rules {
+    file_name_prefix              = ""
+    days_from_uploading_to_hiding = null
+    days_from_hiding_to_deleting  = 1
+  }
+
+  cors_rules {
+    cors_rule_name = "allow-media-on-li7g-com"
+    allowed_operations = [
+      "s3_head",
+      "b2_download_file_by_id",
+      "b2_download_file_by_name",
+      "s3_get"
+    ]
+    allowed_origins = [
+      "https://*.li7g.com"
+    ]
+    max_age_seconds = 86400
+  }
+}
+resource "b2_application_key" "mastodon_media" {
+  key_name  = "mastodon-media"
+  bucket_id = b2_bucket.mastodon_media.id
+  capabilities = [
+    "deleteFiles",
+    "listAllBucketNames",
+    "listBuckets",
+    "listFiles",
+    "readBucketEncryption",
+    "readBuckets",
+    "readFiles",
+    "shareFiles",
+    "writeBucketEncryption",
+    "writeFiles"
+  ]
+}
+output "b2_mastodon_media_bucket_name" {
+  value     = b2_bucket.mastodon_media.bucket_name
+  sensitive = false
+}
+output "b2_mastodon_media_key_id" {
+  value     = b2_application_key.mastodon_media.application_key_id
+  sensitive = false
+}
+output "b2_mastodon_media_access_key" {
+  value     = b2_application_key.mastodon_media.application_key
+  sensitive = true
+}
+
+
+resource "b2_bucket" "attic" {
+  # bucket name must be at least 6 characters long
+  bucket_name = "attic-store"
+  bucket_type = "allPrivate"
+
+  # keep only the last version of the file
+  lifecycle_rules {
+    file_name_prefix              = ""
+    days_from_uploading_to_hiding = null
+    days_from_hiding_to_deleting  = 1
+  }
+}
+resource "b2_application_key" "attic" {
+  key_name  = "attic"
+  bucket_id = b2_bucket.attic.id
+  capabilities = [
+    "deleteFiles",
+    "listAllBucketNames",
+    "listBuckets",
+    "listFiles",
+    "readBucketEncryption",
+    "readBuckets",
+    "readFiles",
+    "shareFiles",
+    "writeBucketEncryption",
+    "writeFiles"
+  ]
+}
+output "b2_attic_bucket_name" {
+  value     = b2_bucket.attic.bucket_name
+  sensitive = false
+}
+output "b2_attic_key_id" {
+  value     = b2_application_key.attic.application_key_id
+  sensitive = false
+}
+output "b2_attic_access_key" {
+  value     = b2_application_key.attic.application_key
   sensitive = true
 }

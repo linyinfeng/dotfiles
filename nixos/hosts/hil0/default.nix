@@ -30,6 +30,7 @@ in {
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
       ./matrix
+      ./mastodon
       ./maddy
       ./backup
     ];

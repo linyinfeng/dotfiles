@@ -49,7 +49,6 @@
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
     lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
-    # TODO use pinned crane
     # lanzaboote.inputs.crane.follows = "crane";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -77,8 +76,12 @@
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
     pastebin.inputs.flake-utils-plus.follows = "flake-utils-plus";
 
-    # nix.url = "github:nixos/nix";
-    # nix.inputs.nixpkgs.follows = "nixpkgs";
+    attic.url = "github:zhaofengli/attic";
+    attic.inputs.crane.follows = "crane";
+    attic.inputs.flake-compat.follows = "flake-compat";
+    attic.inputs.flake-utils.follows = "flake-utils";
+    attic.inputs.nixpkgs.follows = "nixpkgs";
+    attic.inputs.nixpkgs-stable.follows = "nixpkgs";
 
     mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
     mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
