@@ -4,6 +4,7 @@
   ...
 }: {
   home.packages = with pkgs; [
+    attic
     cachix
     nil
     nix-output-monitor
@@ -27,6 +28,7 @@
   '';
 
   home.global-persistence.directories = [
+    ".config/attic"
     ".config/cachix"
     ".cache/nix"
     ".cache/lorri"
