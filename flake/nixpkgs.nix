@@ -41,6 +41,7 @@
         soapysdr = final.soapysdr-with-plugins;
       };
     };
+
     # TODO upstream
     tailscale-derp = final.tailscale.overrideAttrs (old: {
       subPackages =
@@ -49,7 +50,8 @@
           "cmd/derper"
         ];
     });
-    # TODO upstream
+
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=221434
     mautrix-telegram = prev.mautrix-telegram.overrideAttrs (old: {
       propagatedBuildInputs = (old.propagatedBuildInputs or [] ++ [
         final.python3.pkgs.setuptools
