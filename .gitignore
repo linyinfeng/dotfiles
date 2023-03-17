@@ -2,6 +2,7 @@ result*
 .direnv
 .vscode
 .data
+.pre-commit-config.yaml
 secrets/terraform-outputs.plain.yaml
 secrets/terraform/*.plain.yaml
 secrets/terraform/hosts/*.plain.yaml
@@ -12,7 +13,5 @@ terraform.plan
 terraform/moon
 .terraform.tfstate.lock.info
 .terraform
-
-pkgs/_sources/.shake*
 
 *.qcow2

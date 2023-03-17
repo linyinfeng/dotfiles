@@ -250,10 +250,12 @@
   }:
     lib.mkMerge (
       lib.lists.map
-      (system: mkHost {
-        name = "${name}-${system}";
-        configurationName = name;
-        inherit system extraModules;})
+      (system:
+        mkHost {
+          name = "${name}-${system}";
+          configurationName = name;
+          inherit system extraModules;
+        })
       config.systems
     );
 in {
