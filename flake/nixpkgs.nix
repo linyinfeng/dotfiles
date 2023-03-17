@@ -49,6 +49,12 @@
           "cmd/derper"
         ];
     });
+    # TODO upstream
+    mautrix-telegram = prev.mautrix-telegram.overrideAttrs (old: {
+      propagatedBuildInputs = (old.propagatedBuildInputs or [] ++ [
+        final.python3.pkgs.setuptools
+      ]);
+    });
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
     inherit
