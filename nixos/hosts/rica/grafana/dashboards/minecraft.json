@@ -93,9 +93,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
+          "calcs": ["mean"],
           "fields": "",
           "values": false
         },
@@ -108,15 +106,11 @@
           "expr": "time()-avg(process_start_time_seconds{instance=~\"$instance\",job=\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -132,9 +126,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -142,9 +134,7 @@
                 "type": "mean"
               },
               {
-                "params": [
-                  " / 100"
-                ],
+                "params": [" / 100"],
                 "type": "math"
               }
             ]
@@ -218,9 +208,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -282,9 +270,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -297,15 +283,11 @@
           "expr": "sum(minecraft_world_entities_count{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -321,9 +303,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -382,9 +362,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -397,15 +375,11 @@
           "expr": "sum(minecraft_world_loaded_chunks{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -421,9 +395,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -497,9 +469,7 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -513,15 +483,11 @@
           "expr": "avg(minecraft_tps{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -537,9 +503,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -613,9 +577,7 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -629,15 +591,11 @@
           "expr": "avg(minecraft_tick_duration_seconds{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -653,9 +611,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -729,9 +685,7 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -745,15 +699,11 @@
           "expr": "sum(process_cpu_load_ratio{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -769,9 +719,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -834,9 +782,7 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -849,15 +795,11 @@
           "expr": "sum(jvm_memory_bytes_used{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -874,9 +816,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -970,11 +910,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
+          "calcs": ["min", "max", "mean"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -990,15 +926,11 @@
           "expr": "minecraft_tps{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1013,9 +945,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1099,11 +1029,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1119,15 +1045,11 @@
           "expr": "minecraft_tick_duration_seconds{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1142,9 +1064,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1221,11 +1141,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1241,15 +1157,11 @@
           "expr": "minecraft_players_count{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1264,9 +1176,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1363,15 +1273,11 @@
           "format": "time_series",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1387,9 +1293,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1488,11 +1392,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1506,15 +1406,11 @@
           "alias": "world: chunks",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1527,9 +1423,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1610,11 +1504,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1628,15 +1518,11 @@
           "alias": "world: entities",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1649,9 +1535,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1666,15 +1550,11 @@
           "alias": "world: entities",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1688,9 +1568,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1787,11 +1665,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1806,15 +1680,11 @@
           "expr": "process_cpu_load_ratio{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1829,9 +1699,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1912,11 +1780,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -1931,15 +1795,11 @@
           "expr": "rate(process_cpu_seconds_total{instance=~\"$instance\",job=~\"$job\"}[1m])",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -1954,9 +1814,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2036,11 +1894,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2055,15 +1909,11 @@
           "expr": "jvm_threads_current_count{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2078,9 +1928,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2156,11 +2004,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2175,15 +2019,11 @@
           "expr": "jvm_threads_current_count{instance=~\"$instance\",job=~\"$job\"}",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2198,9 +2038,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2278,11 +2116,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2297,15 +2131,11 @@
           "expr": "sum(increase(jvm_threads_started_total{instance=~\"$instance\",job=~\"$job\"}[1m]))",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2320,9 +2150,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2419,11 +2247,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2438,15 +2262,11 @@
           "expr": "sum(jvm_memory_bytes_used{instance=~\"$instance\",job=~\"$job\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2462,9 +2282,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2544,11 +2362,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "max",
-            "min"
-          ],
+          "calcs": ["mean", "max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2563,15 +2377,11 @@
           "expr": "sum(jvm_memory_bytes_used{instance=~\"$instance\",job=~\"$job\",area=\"heap\"})",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2586,9 +2396,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2666,9 +2474,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "max"
-          ],
+          "calcs": ["max"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2683,15 +2489,11 @@
           "expr": "sum(increase(jvm_threads_started_total{instance=~\"$instance\",job=~\"$job\"}[1m]))",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2706,9 +2508,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -2786,10 +2586,7 @@
       "interval": "$interval",
       "options": {
         "legend": {
-          "calcs": [
-            "max",
-            "min"
-          ],
+          "calcs": ["max", "min"],
           "displayMode": "table",
           "placement": "bottom"
         },
@@ -2804,15 +2601,11 @@
           "expr": "sum(increase(jvm_threads_started_total{instance=~\"$instance\",job=~\"$job\"}[1m]))",
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
@@ -2827,9 +2620,7 @@
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
