@@ -29,6 +29,84 @@
   "panels": [
     {
       "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 125,
+      "panels": [],
+      "title": "Systemd Failed Units",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "influxdb-li7g-com"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 217,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.3",
+      "repeat": "host",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb-li7g-com"
+          },
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
+          "refId": "A"
+        }
+      ],
+      "title": "${host}",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
       "datasource": {
         "type": "datasource",
         "uid": "grafana"
@@ -37,7 +115,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 7
       },
       "id": 4,
       "panels": [],
@@ -82,7 +160,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 1
+        "y": 8
       },
       "id": 6,
       "options": {
@@ -99,7 +177,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -144,7 +222,7 @@
         "h": 4,
         "w": 2,
         "x": 4,
-        "y": 1
+        "y": 8
       },
       "id": 29,
       "options": {
@@ -161,7 +239,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -237,7 +315,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 8
       },
       "id": 2,
       "options": {
@@ -296,7 +374,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 1
+        "y": 8
       },
       "id": 8,
       "options": {
@@ -313,7 +391,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -355,7 +433,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 1
+        "y": 8
       },
       "id": 9,
       "options": {
@@ -372,7 +450,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -443,7 +521,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 1
+        "y": 8
       },
       "id": 18,
       "options": {
@@ -500,7 +578,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 3
+        "y": 10
       },
       "id": 10,
       "options": {
@@ -517,7 +595,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -594,7 +672,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 5
+        "y": 12
       },
       "id": 12,
       "options": {
@@ -686,7 +764,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 5
+        "y": 12
       },
       "id": 19,
       "options": {
@@ -749,7 +827,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 5
+        "y": 12
       },
       "id": 14,
       "options": {
@@ -764,7 +842,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.3.6",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": {
@@ -839,7 +917,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 5
+        "y": 12
       },
       "id": 25,
       "options": {
@@ -929,7 +1007,7 @@
         "h": 5,
         "w": 8,
         "x": 0,
-        "y": 9
+        "y": 16
       },
       "id": 23,
       "options": {
@@ -1020,7 +1098,7 @@
         "h": 5,
         "w": 8,
         "x": 8,
-        "y": 9
+        "y": 16
       },
       "id": 31,
       "options": {
@@ -1113,7 +1191,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 9
+        "y": 16
       },
       "id": 33,
       "options": {
@@ -1144,7 +1222,8 @@
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 37,
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
