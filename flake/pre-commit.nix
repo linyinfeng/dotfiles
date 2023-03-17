@@ -4,8 +4,10 @@
     pkgs,
     ...
   }: let
-    nix = "${pkgs.nixVersions.selected}/bin/nix";
+    nix = ''${pkgs.nixVersions.selected}/bin/nix --experimental-features "nix-command flakes"'';
   in {
+    # disable in checks
+    pre-commit.check.enable = false;
     pre-commit.settings.hooks = {
       self-formatter = {
         enable = true;
