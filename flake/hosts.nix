@@ -224,6 +224,7 @@
 
   mkHost = {
     name,
+    configurationName ? name,
     system,
     extraModules ? [],
   }: {
@@ -234,15 +235,27 @@
       modules =
         commonNixosModules
         ++ extraModules
+        ++ lib.optional (configurationName != null) ../nixos/hosts/${configurationName}
         ++ [
-          ../nixos/hosts/${name}
-
           ({lib, ...}: {
             networking.hostName = lib.mkDefault name;
           })
         ];
     };
   };
+
+  mkHostAllSystems = {
+    name,
+    extraModules ? [],
+  }:
+    lib.mkMerge (
+      lib.lists.map
+      (system: mkHost {
+        name = "${name}-${system}";
+        configurationName = name;
+        inherit system extraModules;})
+      config.systems
+    );
 in {
   passthru = {
     inherit nixosProfiles nixosModules nixosSuites hmProfiles hmModules hmSuites;
