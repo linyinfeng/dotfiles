@@ -83,6 +83,15 @@
     attic.inputs.nixpkgs.follows = "nixpkgs";
     attic.inputs.nixpkgs-stable.follows = "nixpkgs";
 
+    oranc.url = "github:linyinfeng/oranc";
+    oranc.inputs.crane.follows = "crane";
+    oranc.inputs.flake-compat.follows = "flake-compat";
+    oranc.inputs.flake-parts.follows = "flake-parts";
+    oranc.inputs.flake-utils.follows = "flake-utils";
+    oranc.inputs.rust-overlay.follows = "rust-overlay";
+    oranc.inputs.nixpkgs.follows = "nixpkgs";
+    oranc.inputs.treefmt-nix.follows = "treefmt-nix";
+
     mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
     mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
     mc-config-nuc.inputs.flake-utils-plus.follows = "flake-utils-plus";

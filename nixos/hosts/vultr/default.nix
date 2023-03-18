@@ -163,6 +163,22 @@ in {
       };
     }
 
+    # oranc
+    {
+      services.oranc = {
+        enable = true;
+        listen = "127.0.0.1:${toString config.ports.oranc}";
+      };
+      services.nginx.virtualHosts."oranc.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        serverAliases = ["upload.oranc.*"];
+        locations."/" = {
+          proxyPass = "http://${config.services.oranc.listen}";
+        };
+      };
+    }
+
     {
       networking = lib.mkIf (!config.system.is-vm) {
         useNetworkd = true;

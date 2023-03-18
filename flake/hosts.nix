@@ -175,6 +175,7 @@
       inputs.linyinfeng.nixosModules.commit-notifier
       inputs.linyinfeng.nixosModules.dot-tar
       inputs.attic.nixosModules.atticd
+      inputs.oranc.nixosModules.oranc
 
       {
         lib.self = self.lib;

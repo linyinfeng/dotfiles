@@ -77,6 +77,8 @@ locals {
     portal          = { on = "vultr", proxy = true }
     tar             = { on = "vultr", proxy = true }
     pgp-public-key  = { on = "vultr", proxy = true }
+    oranc           = { on = "vultr", proxy = true }
+    "upload.oranc"  = { on = "vultr", proxy = false }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
@@ -313,7 +315,8 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
     expression  = <<EOT
       (
         http.host eq "pb.li7g.com" or
-        http.host eq "cache.li7g.com"
+        http.host eq "cache.li7g.com" or
+        http.host eq "oranc.li7g.com"
       )
     EOT
     description = "Set cache settings rule"
