@@ -78,7 +78,7 @@ locals {
     tar             = { on = "vultr", proxy = true }
     pgp-public-key  = { on = "vultr", proxy = true }
     oranc           = { on = "vultr", proxy = true }
-    "upload.oranc"  = { on = "vultr", proxy = false }
+    oranc-upload    = { on = "vultr", proxy = false }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
