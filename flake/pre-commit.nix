@@ -6,25 +6,12 @@
   }: let
     nix = ''${pkgs.nixVersions.selected}/bin/nix --experimental-features "nix-command flakes"'';
   in {
-    # disable in checks
-    pre-commit.check.enable = false;
+    pre-commit.check.enable = true;
     pre-commit.settings.hooks = {
       self-formatter = {
         enable = true;
         description = "The nix fmt command";
         entry = "${nix} fmt";
-        pass_filenames = false;
-      };
-      show = {
-        enable = true;
-        description = "The nix flake show command";
-        entry = "${nix} flake show";
-        pass_filenames = false;
-      };
-      check-no-build = {
-        enable = true;
-        description = "The nix flake check --no-build command";
-        entry = "${nix} flake check --no-build";
         pass_filenames = false;
       };
     };
