@@ -5,7 +5,7 @@
   ...
 }: let
   packages = [
-    inputs.sops-nix.overlay
+    inputs.sops-nix.overlays.default
     inputs.nixos-cn.overlay
     inputs.linyinfeng.overlays.singleRepoNur
     inputs.attic.overlays.default
