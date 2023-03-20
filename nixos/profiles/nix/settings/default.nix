@@ -18,6 +18,7 @@
 
     settings.substituters = [
       "https://cache.li7g.com"
+      "https://oranc.li7g.com/ghcr.io/linyinfeng/oranc-cache"
     ];
     settings.trusted-public-keys = [
       "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
