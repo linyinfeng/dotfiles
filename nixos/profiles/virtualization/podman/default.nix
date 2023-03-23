@@ -12,8 +12,7 @@ in
         enable = true;
         dockerCompat = true;
         autoPrune.enable = true;
-        # not working with systemd-resolved
-        # defaultNetwork.settings.dns_enabled = true;
+        defaultNetwork.settings.dns_enabled = true;
       };
       virtualisation.oci-containers.backend = "podman";
       systemd.services.podman-auto-update.environment =
@@ -22,6 +21,7 @@ in
     }
     {
       environment.systemPackages = with pkgs; [
+        podman-compose
         distrobox
       ];
     }
