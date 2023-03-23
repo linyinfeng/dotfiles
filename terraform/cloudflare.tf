@@ -258,11 +258,12 @@ resource "cloudflare_record" "li7g_cache_overlay" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 resource "cloudflare_ruleset" "li7g_rewrite" {
+  name        = "url-rewrite"
+  description = "URL Rewrite"
   kind        = "zone"
   zone_id     = cloudflare_zone.com_li7g.id
-  name        = "rewrite"
-  description = "URL Rewrite"
   phase       = "http_request_transform"
+
   rules {
     enabled     = true
     description = "Rewrite cache path"
@@ -303,10 +304,10 @@ resource "cloudflare_firewall_rule" "li7g_block_cn_traffic" {
 # http request cache settings
 
 resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
-  zone_id     = cloudflare_zone.com_li7g.id
   name        = "cache-settings"
   description = "Cache settings"
   kind        = "zone"
+  zone_id     = cloudflare_zone.com_li7g.id
   phase       = "http_request_cache_settings"
 
   rules {
