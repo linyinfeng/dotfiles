@@ -11,7 +11,9 @@ in
       virtualisation.podman = {
         enable = true;
         dockerCompat = true;
-        defaultNetwork.settings.dns_enabled = true;
+        autoPrune.enable = true;
+        # not working with systemd-resolved
+        # defaultNetwork.settings.dns_enabled = true;
       };
       virtualisation.oci-containers.backend = "podman";
       systemd.services.podman-auto-update.environment =
