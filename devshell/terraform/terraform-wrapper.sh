@@ -20,14 +20,23 @@ sops --input-type json --output-type json \
   --decrypt "$encrypted" >"$plain"
 
 function cleanup {
+  exit_code=$?
+
+  set -e
+
   cd $PRJ_ROOT
   if [ -n "$(cat "$plain")" ]; then
     @encryptTo@ "$plain" "$encrypted" json "yq --prettyPrint"
   fi
   message "deleting terraform state '$plain'..."
   rm -f "$plain"* # remove plain and backup files
+
+  echo "terraform exit code: $exit_code"
+  exit $exit_code
 }
 trap cleanup EXIT
 
 cd $PRJ_ROOT/terraform
+
+set +e
 terraform "$@"
