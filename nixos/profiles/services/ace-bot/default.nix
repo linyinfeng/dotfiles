@@ -16,9 +16,6 @@
       MemoryMax = "128M";
       MemorySwapMax = "512M";
       LimitNPROC = "100";
-      ReadWritePaths = [
-        "/nix/var/nix/profiles/per-user/ace-bot"
-      ];
     };
     path = with pkgs; [
       nixVersions.selected
