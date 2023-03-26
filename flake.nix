@@ -92,6 +92,15 @@
     oranc.inputs.nixpkgs.follows = "nixpkgs";
     oranc.inputs.treefmt-nix.follows = "treefmt-nix";
 
+    ace-bot.url = "github:linyinfeng/ace-bot";
+    ace-bot.inputs.crane.follows = "crane";
+    ace-bot.inputs.flake-compat.follows = "flake-compat";
+    ace-bot.inputs.flake-parts.follows = "flake-parts";
+    ace-bot.inputs.flake-utils.follows = "flake-utils";
+    ace-bot.inputs.rust-overlay.follows = "rust-overlay";
+    ace-bot.inputs.nixpkgs.follows = "nixpkgs";
+    ace-bot.inputs.treefmt-nix.follows = "treefmt-nix";
+
     mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
     mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
     mc-config-nuc.inputs.flake-utils-plus.follows = "flake-utils-plus";

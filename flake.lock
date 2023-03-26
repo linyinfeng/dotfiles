@@ -1,5 +1,43 @@
 {
   "nodes": {
+    "ace-bot": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1679825116,
+        "narHash": "sha256-8k6pdtNcqiNJeqeBhO2e54huId0cYyU1bJ0ohJlB8E8=",
+        "owner": "linyinfeng",
+        "repo": "ace-bot",
+        "rev": "e5aeecf8690799be682bfbbc9583442ed2d40281",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "ace-bot",
+        "type": "github"
+      }
+    },
     "attic": {
       "inputs": {
         "crane": [
@@ -963,6 +1001,7 @@
     },
     "root": {
       "inputs": {
+        "ace-bot": "ace-bot",
         "attic": "attic",
         "blank": "blank",
         "crane": "crane",

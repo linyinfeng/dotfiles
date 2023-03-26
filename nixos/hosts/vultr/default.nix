@@ -25,6 +25,7 @@ in {
       services.nginx
       services.acme
       services.notify-failure
+      services.ace-bot
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")

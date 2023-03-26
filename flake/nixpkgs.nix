@@ -10,6 +10,7 @@
     inputs.linyinfeng.overlays.singleRepoNur
     inputs.attic.overlays.default
     inputs.oranc.overlays.default
+    inputs.ace-bot.overlays.default
     inputs.emacs-overlay.overlay
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;

@@ -176,6 +176,7 @@
       inputs.linyinfeng.nixosModules.dot-tar
       inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
+      inputs.ace-bot.nixosModules.ace-bot
 
       {
         lib.self = self.lib;
