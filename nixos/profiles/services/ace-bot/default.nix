@@ -11,7 +11,10 @@
   };
   systemd.services.ace-bot = {
     serviceConfig = {
-      CPUQuota = "20%";
+      CPUWeight = "idle";
+      CPUQuota = "50%";
+      MemoryMax = "128M";
+      MemorySwapMax = "512M";
       LimitNPROC = "100";
       ReadWritePaths = [
         "/nix/var/nix/profiles/per-user/ace-bot"
