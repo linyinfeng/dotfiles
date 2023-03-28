@@ -2,7 +2,6 @@
   services.pipewire = {
     enable = true;
     wireplumber.enable = true;
-    media-session.enable = false;
 
     # emulations
     pulse.enable = true;
