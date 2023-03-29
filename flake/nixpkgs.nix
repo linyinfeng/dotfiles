@@ -26,6 +26,10 @@
         nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
         pastebin = inputs'.pastebin.packages.default;
         mc-config-nuc = inputs'.mc-config-nuc.packages;
+        nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
+        comma = prev.comma.override {
+          nix-index-unwrapped = final.nix-index-with-db;
+        };
       }
       // lib.optionalAttrs (system == "x86_64-linux") {
         hydra-master = inputs'.hydra.packages.default;
