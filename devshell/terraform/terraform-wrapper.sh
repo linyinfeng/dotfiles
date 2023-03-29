@@ -31,7 +31,7 @@ function cleanup {
   message "deleting terraform state '$plain'..."
   rm -f "$plain"* # remove plain and backup files
 
-  echo "terraform exit code: $exit_code"
+  message "terraform exit code: $exit_code"
   exit $exit_code
 }
 trap cleanup EXIT
