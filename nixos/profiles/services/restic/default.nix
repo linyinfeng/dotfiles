@@ -52,39 +52,41 @@
     resticMinio = mkScript cfgMinio;
   };
 in {
-  services.restic.backups.b2 = mkServiceCfg cfgB2;
-  services.restic.backups.minio = mkServiceCfg cfgMinio;
+  config = {
+    services.restic.backups.b2 = mkServiceCfg cfgB2;
+    services.restic.backups.minio = mkServiceCfg cfgMinio;
 
-  sops.templates."restic-b2-env".content = ''
-    B2_ACCOUNT_ID="${config.sops.placeholder."b2_backup_key_id"}"
-    B2_ACCOUNT_KEY="${config.sops.placeholder."b2_backup_access_key"}"
-  '';
-  sops.templates."restic-minio-env".content = ''
-    AWS_ACCESS_KEY_ID="${config.sops.placeholder."minio_backup_key_id"}"
-    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key"}"
-  '';
-  sops.secrets."restic_password" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["restic-backups-b2.service" "restic-backups-minio.service"];
-  };
-  sops.secrets."b2_backup_key_id" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["restic-backups-b2.service"];
-  };
-  sops.secrets."b2_backup_access_key" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["restic-backups-b2.service"];
-  };
-  sops.secrets."minio_backup_key_id" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["restic-backups-minio.service"];
-  };
-  sops.secrets."minio_backup_access_key" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["restic-backups-minio.service"];
-  };
+    sops.templates."restic-b2-env".content = ''
+      B2_ACCOUNT_ID="${config.sops.placeholder."b2_backup_key_id"}"
+      B2_ACCOUNT_KEY="${config.sops.placeholder."b2_backup_access_key"}"
+    '';
+    sops.templates."restic-minio-env".content = ''
+      AWS_ACCESS_KEY_ID="${config.sops.placeholder."minio_backup_key_id"}"
+      AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key"}"
+    '';
+    sops.secrets."restic_password" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = ["restic-backups-b2.service" "restic-backups-minio.service"];
+    };
+    sops.secrets."b2_backup_key_id" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = ["restic-backups-b2.service"];
+    };
+    sops.secrets."b2_backup_access_key" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = ["restic-backups-b2.service"];
+    };
+    sops.secrets."minio_backup_key_id" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = ["restic-backups-minio.service"];
+    };
+    sops.secrets."minio_backup_access_key" = {
+      sopsFile = config.sops-file.terraform;
+      restartUnits = ["restic-backups-minio.service"];
+    };
 
-  environment.systemPackages = [
-    scripts
-  ];
+    environment.systemPackages = [
+      scripts
+    ];
+  };
 }

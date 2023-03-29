@@ -173,7 +173,6 @@ in {
       services.nginx.virtualHosts."oranc.*" = {
         forceSSL = true;
         useACMEHost = "main";
-        serverAliases = ["oranc-upload.*"];
         locations."/" = {
           proxyPass = "http://${config.services.oranc.listen}";
         };

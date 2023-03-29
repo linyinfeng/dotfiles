@@ -803,6 +803,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-mastodon": {
+      "locked": {
+        "lastModified": 1680027914,
+        "narHash": "sha256-3f63NF4JWGAGpw6bamwe57JMuNiqtNLDzsuAA9zyXtk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "27b738188ccf62e19911ab581245545715d0d055",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/223547/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-matrix-sdk-crypto-nodejs": {
       "locked": {
         "lastModified": 1678350907,
@@ -1030,6 +1046,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-mastodon": "nixpkgs-mastodon",
         "nixpkgs-matrix-sdk-crypto-nodejs": "nixpkgs-matrix-sdk-crypto-nodejs",
         "nixpkgs-rime-data": "nixpkgs-rime-data",
         "oranc": "oranc",

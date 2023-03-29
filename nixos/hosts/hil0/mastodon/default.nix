@@ -99,6 +99,8 @@ in
         restartUnits = serviceUnits;
       };
     }
+
+    # reverse proxy
     {
       services.nginx.virtualHosts."mastodon.*" = {
         forceSSL = true;
@@ -120,6 +122,13 @@ in
       };
       systemd.services.nginx.serviceConfig.SupplementaryGroups = [
         config.services.mastodon.group
+      ];
+    }
+
+    # backup
+    {
+      services.restic.backups.b2.paths = [
+        "/var/lib/mastodon"
       ];
     }
   ]

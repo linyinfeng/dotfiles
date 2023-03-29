@@ -65,4 +65,10 @@
     requires = ["postgresql.service"];
     after = ["postgresql.service"];
   };
+
+  services.restic.backups.b2.paths = [
+    "/var/lib/bitwarden_rs/attachments"
+    "/var/lib/bitwarden_rs/rsa_key.pem"
+    "/var/lib/bitwarden_rs/rsa_key.pub.pem"
+  ];
 }

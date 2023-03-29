@@ -26,11 +26,11 @@ in {
       services.nginx
       services.acme
       services.notify-failure
+      services.postgresql
     ])
     ++ [
       ./minio
       ./vaultwarden
-      ./backup
       ./git
       ./seafile
       ./commit-notifier
@@ -90,11 +90,6 @@ in {
           device = "/swap/swapfile";
         }
       ];
-    }
-
-    # postgresql
-    {
-      services.postgresql.enable = true;
     }
 
     (lib.mkIf (!config.system.is-vm) {

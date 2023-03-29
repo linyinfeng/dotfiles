@@ -67,7 +67,7 @@ resource "cloudflare_record" "li7g" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = "vultr.li7g.com"
+  value   = "hil0.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -78,7 +78,6 @@ locals {
     tar             = { on = "vultr", proxy = true }
     pgp-public-key  = { on = "vultr", proxy = true }
     oranc           = { on = "vultr", proxy = true }
-    oranc-upload    = { on = "vultr", proxy = false }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }

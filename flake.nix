@@ -195,6 +195,8 @@
     nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/219315/head";
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
     nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=223547
+    nixpkgs-mastodon.url = "github:nixos/nixpkgs/pull/223547/head";
   };
 
   outputs = inputs @ {flake-parts, ...}:

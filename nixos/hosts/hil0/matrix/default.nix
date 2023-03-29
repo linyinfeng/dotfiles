@@ -435,4 +435,11 @@ in
         locations."/".root = pkgs.synapse-admin;
       };
     }
+
+    # backup
+    {
+      services.restic.backups.b2.paths = [
+        "/var/lib/matrix-synapse/homeserver.signing.key"
+      ];
+    }
   ]

@@ -80,6 +80,9 @@
       // {
         inherit (inputs'.nixpkgs-rime-data.legacyPackages.ibus-engines) rime;
       };
+
+    # TODO wait for htt
+    inherit (inputs'.nixpkgs-mastodon.legacyPackages) mastodon;
   };
 in {
   nixpkgs = {

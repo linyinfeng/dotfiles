@@ -42,6 +42,7 @@ in {
       services.acme
       services.notify-failure
       services.smartd
+      services.postgresql
       programs.service-mail
       programs.tg-send
       users.yinfeng
@@ -51,7 +52,6 @@ in {
       ./options.nix
       ./hydra
       ./minecraft
-      ./backup
     ];
 
   config = lib.mkMerge [
@@ -164,11 +164,6 @@ in {
       networking.firewall.allowedTCPPorts = [
         8443
       ];
-    }
-
-    # postgresql
-    {
-      services.postgresql.enable = true;
     }
 
     # store serving
