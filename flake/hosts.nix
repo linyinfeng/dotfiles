@@ -187,6 +187,12 @@
           else null;
       }
 
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=223530
+      ({pkgs, ...}: {
+        hardware.opengl.mesaPackage = pkgs.mesa;
+        hardware.opengl.mesaPackage32 = pkgs.pkgsi686Linux.mesa;
+      })
+
       # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
       {
         disabledModules = [
