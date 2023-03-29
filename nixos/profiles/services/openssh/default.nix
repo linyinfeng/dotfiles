@@ -13,6 +13,17 @@ in {
       ClientAliveInterval ${aliveInterval}
       ClientAliveCountMax ${aliveCountMax}
     '';
+    hostKeys = [
+      {
+        bits = 4096;
+        path = config.sops.secrets."ssh_host_rsa_key".path;
+        type = "rsa";
+      }
+      {
+        path = config.sops.secrets."ssh_host_ed25519_key".path;
+        type = "ed25519";
+      }
+    ];
   };
 
   programs.ssh = {
@@ -33,14 +44,16 @@ in {
       (lib.attrNames config.lib.self.data.hosts);
   };
 
+  sops.secrets."ssh_host_rsa_key" = {
+    sopsFile = config.sops-file.terraform;
+    restartUnits = [ "sshd.service" ];
+  };
+  sops.secrets."ssh_host_ed25519_key" = {
+    sopsFile = config.sops-file.terraform;
+    restartUnits = [ "sshd.service" ];
+  };
+
   environment.global-persistence = {
-    files = [
-      # ssh daemon host keys
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-    ];
     user.directories = [
       ".ssh"
     ];

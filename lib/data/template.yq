@@ -13,7 +13,9 @@
         with_entries(
             select(
                 .key == "wireguard_public_key" or
-                .key == "syncthing_device_id"
+                .key == "syncthing_device_id" or
+                .key == "ssh_host_rsa_key_pub" or
+                .key == "ssh_host_ed25519_key_pub"
             )
         )
     ),
