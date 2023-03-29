@@ -20,7 +20,7 @@
 in {
   services.openssh = {
     enable = true;
-    ports = [ config.ports.ssh ];
+    ports = [config.ports.ssh];
     openFirewall = true;
     extraConfig = ''
       ClientAliveInterval ${aliveInterval}
