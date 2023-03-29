@@ -29,7 +29,6 @@
       }
       // lib.optionalAttrs (system == "x86_64-linux") {
         hydra-master = inputs'.hydra.packages.default;
-        nix-index-database = inputs'.nix-index-database.legacyPackages.database;
       })
   ];
 

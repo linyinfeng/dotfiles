@@ -18,7 +18,6 @@
     cabal2nix
     patchelf
   ];
-  programs.nix-index.enable = true;
   services.lorri.enable = true;
 
   programs.fish.interactiveShellInit = ''
@@ -33,8 +32,4 @@
     ".cache/nix"
     ".cache/lorri"
   ];
-
-  home.file = lib.mkIf (pkgs ? nix-index-database && pkgs.nix-index-database != null) {
-    ".cache/nix-index/files".source = pkgs.nix-index-database;
-  };
 }

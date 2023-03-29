@@ -108,6 +108,9 @@
     mc-config-nuc.inputs.minecraft-nix.follows = "minecraft-nix";
     mc-config-nuc.inputs.minecraft-json.follows = "minecraft-json";
 
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
@@ -174,11 +177,6 @@
     minecraft-json.url = "github:ninlives/minecraft.json";
     minecraft-json.inputs.nixpkgs.follows = "nixpkgs";
     minecraft-json.inputs.flake-utils.follows = "flake-utils";
-
-    # data
-
-    nix-index-database.url = "github:Mic92/nix-index-database";
-    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     # compatibility layer
 

@@ -177,6 +177,7 @@
       inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot
+      inputs.nix-index-database.nixosModules.nix-index
 
       {
         lib.self = self.lib;
@@ -201,6 +202,11 @@
           "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/ibus.nix"
           "${inputs.nixpkgs-rime-data}/nixos/modules/i18n/input-method/fcitx5.nix"
         ];
+      }
+
+      {
+        # use nix-index instead
+        programs.command-not-found.enable = lib.mkDefault false;
       }
     ];
 

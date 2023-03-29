@@ -85,7 +85,7 @@ in {
       nix.settings.allowed-uris = [
         "https://github.com/" # for nix-index-database
         "https://gitlab.com/" # for home-manager nmd source
-        "https://git.sr.ht/" # for home-manager nmd source
+        "https://git.sr.ht/"  # for home-manager nmd source
       ];
       # limit cpu quota of nix builds
       systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
