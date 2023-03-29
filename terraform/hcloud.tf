@@ -17,7 +17,7 @@ resource "hcloud_firewall" "main" {
   rule {
     direction = "in"
     protocol  = "tcp"
-    port      = "22"
+    port      = tostring(var.ssh_port)
     source_ips = [
       "0.0.0.0/0",
       "::/0"

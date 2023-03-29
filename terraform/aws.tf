@@ -104,8 +104,8 @@ resource "aws_security_group" "main" {
 
   ingress {
     description      = "ssh"
-    from_port        = 22
-    to_port          = 22
+    from_port        = var.ssh_port
+    to_port          = var.ssh_port
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -131,8 +131,8 @@ resource "aws_security_group" "main" {
 
   ingress {
     description      = "zerotier"
-    from_port        = 9993
-    to_port          = 9993
+    from_port        = var.zerotier_port
+    to_port          = var.zerotier_port
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
