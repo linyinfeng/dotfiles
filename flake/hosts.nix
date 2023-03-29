@@ -13,20 +13,17 @@
   nixosModules = self.lib.buildModuleList ../nixos/modules;
   nixosProfiles = rakeLeaves ../nixos/profiles;
   nixosSuites = buildSuites nixosProfiles (profiles: suites: {
-    core =
+    nixSettings = with profiles.nix; [gc settings cachix];
+    base =
       suites.nixSettings
       ++ (with profiles; [
         programs.tools
+        programs.nix-index
         services.openssh
-        system.sysrq
-      ]);
-    nixSettings = with profiles.nix; [gc settings cachix];
-    base =
-      suites.core
-      ++ (with profiles; [
-        security.polkit
         services.oom-killer
+        security.polkit
         global-persistence
+        system.sysrq
         users.root
       ]);
 
