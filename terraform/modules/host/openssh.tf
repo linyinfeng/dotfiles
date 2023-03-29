@@ -3,7 +3,7 @@ resource "tls_private_key" "host_rsa" {
   rsa_bits  = 4096
 }
 output "ssh_host_rsa_key_pub" {
-  value     = tls_private_key.host_rsa.public_key_openssh
+  value     = trimspace(tls_private_key.host_rsa.public_key_openssh)
   sensitive = false
 }
 output "ssh_host_rsa_key" {
@@ -15,7 +15,7 @@ resource "tls_private_key" "host_ed25519" {
   algorithm = "ED25519"
 }
 output "ssh_host_ed25519_key_pub" {
-  value     = tls_private_key.host_ed25519.public_key_openssh
+  value     = trimspace(tls_private_key.host_ed25519.public_key_openssh)
   sensitive = false
 }
 output "ssh_host_ed25519_key" {
