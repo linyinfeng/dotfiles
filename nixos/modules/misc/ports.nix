@@ -21,6 +21,7 @@
     ];
 
     ports = {
+      ssh-honeypot = 22;
       http = 80;
       https = 443;
       https-alternative = 8443;
@@ -55,6 +56,7 @@
       oranc = 3190;
       jellyfin = 8096;
       zerotier = 9993;
+      ssh = 22222;
       minecraft = 25565;
       minecraft-rcon = 25566;
       minecraft-map = 25567;

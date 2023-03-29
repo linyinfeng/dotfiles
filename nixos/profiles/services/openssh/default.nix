@@ -20,6 +20,7 @@
 in {
   services.openssh = {
     enable = true;
+    ports = [ config.ports.ssh ];
     openFirewall = true;
     extraConfig = ''
       ClientAliveInterval ${aliveInterval}
@@ -50,10 +51,13 @@ in {
       (h: ''
         Host ${h}
           HostName ${h}.ts.li7g.com
+          Port ${toString config.ports.ssh}
         Host ${h}.zt
           HostName ${h}.zt.li7g.com
+          Port ${toString config.ports.ssh}
         Host ${h}.ts
           HostName ${h}.ts.li7g.com
+          Port ${toString config.ports.ssh}
       '')
       (lib.attrNames config.lib.self.data.hosts);
   };
@@ -67,9 +71,7 @@ in {
     restartUnits = ["sshd.service"];
   };
 
-  environment.global-persistence = {
-    user.directories = [
-      ".ssh"
-    ];
-  };
+  environment.global-persistence.user.directories = [
+    ".ssh"
+  ];
 }
