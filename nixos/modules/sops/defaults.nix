@@ -26,12 +26,15 @@ in {
     sops-file.terraform = config.sops-file.get "terraform/hosts/${hostName}.yaml";
 
     sops.gnupg.sshKeyPaths = [];
-    sops.age.sshKeyPaths = lib.mkDefault [
-      (
-        if config.environment.global-persistence.enable
-        then "/persist/etc/ssh/ssh_host_ed25519_key"
-        else "/etc/ssh/ssh_host_ed25519_key"
-      )
-    ];
+    sops.age = {
+      sshKeyPaths = [];
+      keyFile =
+        lib.mkDefault
+        (
+          if config.environment.global-persistence.enable
+          then "/persist/var/lib/sops-nix/key"
+          else "/var/lib/sops-nix/key"
+        );
+    };
   };
 }
