@@ -175,10 +175,6 @@
     minecraft-json.inputs.nixpkgs.follows = "nixpkgs";
     minecraft-json.inputs.flake-utils.follows = "flake-utils";
 
-    deploy-rs.url = "github:serokell/deploy-rs";
-    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    deploy-rs.inputs.utils.follows = "flake-utils";
-
     # data
 
     nix-index-database.url = "github:Mic92/nix-index-database";
