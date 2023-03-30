@@ -15,7 +15,7 @@
     '';
   };
 in {
-  passthru = { inherit cowrieSrc; };
+  passthru = {inherit cowrieSrc;};
   systemd.services.cowrie = {
     # setting up environment as
     # https://github.com/cowrie/cowrie/blob/master/docker/Dockerfile
@@ -80,7 +80,7 @@ in {
       // lib.optionalAttrs (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment;
     after = ["network-online.target"];
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
   sops.templates."cowrie-extra-env".content = ''
     COWRIE_OUTPUT_TELEGRAM_ENABLED=true
