@@ -32,6 +32,7 @@ in {
       services.smartd
       services.nginx
       services.acme
+      services.ssh-honeypot
       programs.service-mail
       programs.tg-send
       users.yinfeng

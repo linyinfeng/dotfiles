@@ -186,6 +186,20 @@ in
           https_proxy = proxyUrl;
         };
       };
+      environmentContainter = mkOption {
+        type = with types; attrsOf str;
+        description = ''
+          Proxy environment for containers.
+        '';
+        default = let
+          proxyUrl = "http://host.containers.internal:${toString cfg.mixinConfig.mixed-port}";
+        in {
+          HTTP_PROXY = proxyUrl;
+          HTTPS_PROXY = proxyUrl;
+          http_proxy = proxyUrl;
+          https_proxy = proxyUrl;
+        };
+      };
       stringEnvironment = mkOption {
         type = with types; listOf str;
         description = ''
@@ -279,6 +293,7 @@ in
         networking.fw-proxy.tproxy.allCgroups = [cfg.tproxy.cgroup];
         passthru.fw-proxy-tproxy-scripts = scripts;
       })
+
       (mkIf cfg.auto-update.enable {
         systemd.services.clash-auto-update = {
           script = ''
@@ -298,5 +313,14 @@ in
           wantedBy = ["timers.target"];
         };
       })
+
+      (mkIf (config.virtualisation.podman.enable)
+        (let
+          podmanInterface = config.virtualisation.podman.defaultNetwork.settings.network_interface;
+        in {
+          networking.firewall.interfaces.${podmanInterface}.allowedTCPPorts = [
+            cfg.mixinConfig.mixed-port
+          ];
+        }))
     ]);
   }
