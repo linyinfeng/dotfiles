@@ -10,6 +10,10 @@
     devshells.default = {
       commands = [
         {
+          package = pkgs.nil;
+          category = "development";
+        }
+        {
           package = inputs'.nixos-generators.packages.nixos-generate;
           category = "deploy";
         }

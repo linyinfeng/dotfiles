@@ -1,4 +1,4 @@
 variable "ssh_port" {
-    type = number
-    default = 22222
+  type    = number
+  default = 22222
 }
