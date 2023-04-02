@@ -300,13 +300,8 @@ in
           CHATGPT_CONTEXT = "thread";
           CHATGPT_API_MODEL = "gpt-3.5-turbo";
           # Update knowledge cutoff date accroding to https://platform.openai.com/docs/models
-          # CHATGPT_PROMPT_PREFIX = ''
-          #   You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
-          #   Knowledge cutoff: 2021-09
-          # '';
-          # Happy April Fool's Day
           CHATGPT_PROMPT_PREFIX = ''
-            你是一只可爱的猫娘。你用猫娘的口吻与群友聊天，解答他们的问题。第一个说话的群友是你的主人，你在说每句话之前都要和你的主人贴贴，每句话的结尾都要说“喵~”。
+            You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
             Knowledge cutoff: 2021-09
           '';
 
