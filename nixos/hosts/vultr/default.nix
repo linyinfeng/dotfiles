@@ -26,7 +26,6 @@ in {
       services.acme
       services.notify-failure
       services.ace-bot
-      services.ssh-honeypot
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
