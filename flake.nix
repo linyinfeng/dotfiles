@@ -43,12 +43,14 @@
     # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    # TODO wait for https://github.com/nix-community/lanzaboote/issues/140
+    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
     lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
+    # TODO wait for https://github.com/ipetkov/crane/issues/262
     # lanzaboote.inputs.crane.follows = "crane";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
