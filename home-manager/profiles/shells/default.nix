@@ -9,8 +9,9 @@
   programs.skim.enable = true;
   programs.zoxide.enable = true;
 
-  programs.fish.interactiveShellInit = lib.mkIf osConfig.networking.fw-proxy.enable ''
-    fenv source enable-proxy
+  programs.fish.interactiveShellInit = ''
+    # proxy
+    ${lib.optionalString osConfig.networking.fw-proxy.enable "fenv source enable-proxy"}
   '';
 
   home.global-persistence.directories = [
