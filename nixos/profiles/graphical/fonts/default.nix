@@ -12,6 +12,26 @@
     };
     set = "yinfeng";
   };
+  iosevka-yinfeng-nf = pkgs.stdenv.mkDerivation {
+    name = "iosevka-yinfeng-nf";
+    src = iosevka-yinfeng;
+    nativeBuildInputs = with pkgs; [
+      nerd-font-patcher
+    ];
+    unpackPhase = ''
+      cp -r $src/share/fonts/truetype/. .
+      chmod u+w .
+    '';
+    buildPhase = ''
+      mkdir patched
+      for font in *.ttf; do
+        nerd-font-patcher "$font" \
+          --complete \
+          --careful \
+          --outputdir $out/share/fonts/truetype
+      done
+    '';
+  };
 in {
   fonts.fonts = with pkgs; [
     noto-fonts-emoji
@@ -28,7 +48,7 @@ in {
     wqy_microhei
 
     jetbrains-mono
-    iosevka-yinfeng
+    iosevka-yinfeng-nf
     font-awesome
     powerline-fonts
     sarasa-gothic
@@ -58,5 +78,5 @@ in {
     ];
   };
 
-  passthru = {inherit iosevka-yinfeng;};
+  passthru = {inherit iosevka-yinfeng iosevka-yinfeng-nf;};
 }
