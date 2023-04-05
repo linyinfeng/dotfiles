@@ -20,6 +20,7 @@
         programs.tools
         programs.nix-index
         services.openssh
+        services.dbus
         services.oom-killer
         security.polkit
         global-persistence
