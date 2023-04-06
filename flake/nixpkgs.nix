@@ -72,20 +72,16 @@
       matrix-sdk-crypto-nodejs
       ;
 
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=219315
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=224042
     inherit
       (inputs'.nixpkgs-rime-data.legacyPackages)
-      fcitx5-with-addons
-      ibus-with-plugins
+      fcitx5-rime
       ;
     ibus-engines =
       prev.ibus-engines
       // {
         inherit (inputs'.nixpkgs-rime-data.legacyPackages.ibus-engines) rime;
       };
-
-    # TODO wait for htt
-    inherit (inputs'.nixpkgs-mastodon.legacyPackages) mastodon;
   };
 in {
   nixpkgs = {

@@ -9,7 +9,12 @@
       i18n.inputMethod = {
         enabled = "ibus";
         ibus.engines = with pkgs.ibus-engines; [
-          rime
+          (rime.override {
+            rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
+              withRimeDeps [
+                rime-ice
+              ];
+          })
           mozc
         ];
       };
@@ -18,19 +23,17 @@
       i18n.inputMethod = {
         enabled = "fcitx5";
         fcitx5.addons = with pkgs; [
-          fcitx5-rime
+          (fcitx5-rime {
+            rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
+              withRimeDeps [
+                rime-ice
+              ];
+          })
           fcitx5-mozc
         ];
       };
     })
     {
-      i18n.inputMethod.rime = {
-        enableDefaultRimeData = false;
-        packages = with pkgs.nur.repos.linyinfeng.rimePackages;
-          withRimeDeps [
-            rime-ice
-          ];
-      };
       environment.global-persistence.user.directories = [
         ".config/mozc"
       ];

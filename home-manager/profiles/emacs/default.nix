@@ -25,7 +25,10 @@
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";
-    paths = osConfig.i18n.inputMethod.rime.packages;
+    paths = with pkgs.nur.repos.linyinfeng.rimePackages;
+      withRimeDeps [
+        rime-ice
+      ];
   };
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.substituteAll {
