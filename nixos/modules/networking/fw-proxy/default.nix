@@ -322,5 +322,18 @@ in
             cfg.mixinConfig.mixed-port
           ];
         }))
+
+      (mkIf (config.virtualisation.libvirtd.enable)
+        (let
+          libvirtdInterfaces = config.virtualisation.libvirtd.allowedBridges;
+          mkIfCfg = name: {
+            ${name}.allowedTCPPorts = [
+              cfg.mixinConfig.mixed-port
+            ];
+          };
+          ifCfgs = lib.mkMerge (lib.lists.map mkIfCfg libvirtdInterfaces);
+        in {
+          networking.firewall.interfaces = ifCfgs;
+        }))
     ]);
   }
