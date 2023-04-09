@@ -113,6 +113,9 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
+    hyprland.url = "github:hyprwm/hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";

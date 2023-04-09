@@ -43,6 +43,7 @@
     multimedia = with profiles; [
       graphical.gnome
       graphical.kde
+      graphical.hyprland
       graphical.sway
       graphical.fonts
       graphical.i18n
@@ -118,6 +119,7 @@
     base = with profiles; [git];
     multimedia = with profiles; [
       gnome
+      hyprland
       sway
       desktop-applications
       chromium
@@ -175,6 +177,7 @@
       inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot
+      inputs.hyprland.nixosModules.default
 
       {
         lib.self = self.lib;
@@ -198,6 +201,8 @@
   commonHmModules =
     hmModules
     ++ [
+      inputs.hyprland.homeManagerModules.default
+
       {
         lib.self = self.lib;
       }

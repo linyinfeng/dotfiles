@@ -1,0 +1,106 @@
+@import "common";
+
+* {
+  padding: 0;
+  margin: 0;
+
+  font-family: monospace;
+  font-size: 12px;
+}
+
+window#waybar {
+  color: $text;
+  background-color: $primary;
+
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+button {
+  border: none;
+  border-radius: 0;
+  background-image: none !important;
+
+  box-shadow: inset 0 -3px transparent;
+
+  :hover {
+    text-shadow: inherit;
+    background-color: $light-primary;
+    box-shadow: inset 0 -3px $text;
+  }
+}
+
+#workspaces button {
+  padding: 0 2px;
+
+  &.active {
+    box-shadow: inset 0 -3px $text;
+  }
+
+  &.urgent {
+    background-color: $warn;
+  }
+}
+
+#taskbar button {
+  padding: 0 2px;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#mpd {
+  padding: 0 10px;
+}
+
+#battery {
+  &.charging,
+  &.plugged {
+    color: $good;
+  }
+
+  &.critical:not(.charging) {
+    color: $warn;
+  }
+}
+
+#network {
+  &.disabled {
+    color: $warn;
+  }
+}
+
+#pulseaudio {
+  &.muted {
+    color: $warn;
+  }
+}
+
+#wireplumber {
+  .muted {
+    color: $warn;
+  }
+}
+
+#tray {
+  &.passive {
+    -gtk-icon-effect: dim;
+  }
+
+  &.needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: $warn;
+  }
+}

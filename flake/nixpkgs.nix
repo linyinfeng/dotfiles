@@ -12,6 +12,7 @@
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
     inputs.emacs-overlay.overlay
+    inputs.hyprland.overlays.default
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';

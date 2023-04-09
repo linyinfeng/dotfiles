@@ -1,0 +1,33 @@
+@import "common";
+
+* {
+    font-family: monospace;
+}
+
+window {
+    color: $text;
+    background-color: $primary;
+
+    border-radius: 10px;
+}
+
+#input {
+    border: none;
+    background-color: $light-primary;
+}
+
+// #inner-box {}
+
+// #outer-box {}
+
+// #text {}
+
+#entry:selected {
+    background-color: $accent;
+}
+
+// #text:selected {}
+
+// #scroll {}
+
+// #img {}
