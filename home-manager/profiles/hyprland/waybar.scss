@@ -10,22 +10,24 @@
 
 window#waybar {
   color: $text;
-  background-color: $primary;
+  background-color: $dark-primary;
 
   transition-property: background-color;
   transition-duration: 0.5s;
 }
 
 button {
+  color: $text;
   border: none;
   border-radius: 0;
-  background-image: none !important;
+  background-image: none;
 
   box-shadow: inset 0 -3px transparent;
 
-  :hover {
+  &:hover {
     text-shadow: inherit;
-    background-color: $light-primary;
+    background-image: none;
+    background-color: $primary;
     box-shadow: inset 0 -3px $text;
   }
 }
