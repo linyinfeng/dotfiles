@@ -165,9 +165,9 @@ in
       )
     '';
     xdg.configFile."hypr/hyperpaper.conf".text = ''
-      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/field-l.svg
-      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/field-d.svg
+      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp
+      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.webp
 
-      wallpaper = , ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/field-l.svg
+      wallpaper = , ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp
     '';
   }
