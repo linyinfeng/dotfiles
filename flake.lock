@@ -1024,22 +1024,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-rime-data": {
-      "locked": {
-        "lastModified": 1680402996,
-        "narHash": "sha256-xmBx6Hl4WuJPkjr/+eNn2YZydiDd8iwzXm7GQcHdMm4=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "e4246ae1e7f78b7087dce9c9da10d28d3725025f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "pull/224042/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-test": {
       "locked": {
         "lastModified": 1679009563,
@@ -1221,7 +1205,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-matrix-sdk-crypto-nodejs": "nixpkgs-matrix-sdk-crypto-nodejs",
-        "nixpkgs-rime-data": "nixpkgs-rime-data",
         "oranc": "oranc",
         "pastebin": "pastebin",
         "poetry2nix": "poetry2nix",
