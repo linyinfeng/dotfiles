@@ -72,17 +72,6 @@
       (inputs'.nixpkgs-matrix-sdk-crypto-nodejs.legacyPackages)
       matrix-sdk-crypto-nodejs
       ;
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=224042
-    inherit
-      (inputs'.nixpkgs-rime-data.legacyPackages)
-      fcitx5-rime
-      ;
-    ibus-engines =
-      prev.ibus-engines
-      // {
-        inherit (inputs'.nixpkgs-rime-data.legacyPackages.ibus-engines) rime;
-      };
   };
 in {
   nixpkgs = {

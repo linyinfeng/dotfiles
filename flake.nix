@@ -192,9 +192,6 @@
     flake-compat.flake = false;
 
     # patches
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=224042
-    nixpkgs-rime-data.url = "github:nixos/nixpkgs/pull/224042/head";
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
     nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
   };
