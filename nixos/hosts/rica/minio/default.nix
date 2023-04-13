@@ -21,18 +21,12 @@
 in {
   services.minio = {
     enable = true;
-    # TODO wait for https://github.com/NixOS/nixpkgs/issues/199318
+    # use self-maintained minio
     package = pkgs.nur.repos.linyinfeng.minio-latest;
     listenAddress = "127.0.0.1:${toString minioPort}";
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
   };
-  systemd.services.minio.serviceConfig.ExecStart =
-    # TODO wait for https://github.com/NixOS/nixpkgs/issues/199318
-    let
-      cfg = config.services.minio;
-    in
-      lib.mkForce "${cfg.package}/bin/minio server --address ${cfg.listenAddress} --console-address ${cfg.consoleAddress} --certs-dir /var/lib/minio/certs ${toString cfg.dataDir}";
   sops.secrets."minio/root/user" = {
     sopsFile = config.sops-file.get "hosts/rica-terraform.yaml";
     restartUnits = ["minio.service"];
