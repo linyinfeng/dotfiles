@@ -22,6 +22,14 @@
           category = "secrets";
         }
         {
+          package = pkgs.age;
+          category = "secrets";
+        }
+          {
+          package = pkgs.age-plugin-yubikey;
+          category = "secrets";
+        }
+        {
           package = pkgs.ssh-to-age;
           category = "secrets";
         }

@@ -3,9 +3,6 @@ result*
 .vscode
 .data
 .pre-commit-config.yaml
-secrets/terraform-outputs.plain.yaml
-secrets/terraform/*.plain.yaml
-secrets/terraform/hosts/*.plain.yaml
 terraform/terraform.tfstate
 terraform.tfstate.*.backup
 terraform.tfstate.backup
@@ -15,3 +12,7 @@ terraform/moon
 .terraform
 
 *.qcow2
+
+# nixago: ignore-linked-files
+.sops.yaml
+sops.yaml

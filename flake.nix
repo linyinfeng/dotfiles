@@ -43,8 +43,7 @@
     # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
-    # TODO wait for https://github.com/nix-community/lanzaboote/issues/140
-    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
@@ -183,6 +182,10 @@
     minecraft-json.inputs.nixpkgs.follows = "nixpkgs";
     minecraft-json.inputs.flake-utils.follows = "flake-utils";
 
+    nixago.url = "github:nix-community/nixago";
+    nixago.inputs.nixpkgs.follows = "nixpkgs";
+    nixago.inputs.flake-utils.follows = "flake-utils";
+
     # compatibility layer
 
     flake-compat.url = "github:edolstra/flake-compat";
@@ -218,6 +221,7 @@
           inputs.pre-commit-hooks-nix.flakeModule
           inputs.linyinfeng.flakeModules.nixpkgs
           inputs.linyinfeng.flakeModules.passthru
+          inputs.linyinfeng.flakeModules.nixago
         ]
         ++ selfLib.buildModuleList ./flake;
     });
