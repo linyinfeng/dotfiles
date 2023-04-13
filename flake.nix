@@ -43,7 +43,8 @@
     # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    # TODO broken with current nixos-unstable
+    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";

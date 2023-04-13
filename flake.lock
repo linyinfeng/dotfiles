@@ -524,9 +524,7 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_2",
         "nixpkgs-test": "nixpkgs-test",
         "pre-commit-hooks-nix": [
           "pre-commit-hooks-nix"
@@ -1042,6 +1040,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1681109905,
+        "narHash": "sha256-2dBz4WSjYzkjCzDgepH5i2BsN0fVQOlLseG/kt6FhZg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4fba351146e26d9e09d455687b75089ac50b9b13",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable-small",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1681303793,
         "narHash": "sha256-JEdQHsYuCfRL2PICHlOiH/2ue3DwoxUX7DJ6zZxZXFk=",
         "owner": "nixos",
@@ -1203,7 +1217,7 @@
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-matrix-sdk-crypto-nodejs": "nixpkgs-matrix-sdk-crypto-nodejs",
         "oranc": "oranc",
         "pastebin": "pastebin",
