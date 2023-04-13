@@ -25,7 +25,7 @@
           package = pkgs.age;
           category = "secrets";
         }
-          {
+        {
           package = pkgs.age-plugin-yubikey;
           category = "secrets";
         }
