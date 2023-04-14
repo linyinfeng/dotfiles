@@ -116,6 +116,10 @@ in
         }
       ];
     };
+    systemd.user.services.waybar.Service.Environment = [
+      # hyprctl
+      "PATH=${pkgs.hyprland}/bin"
+    ];
     xdg.configFile."waybar/style.css".source =
       pkgs.runCommand "waybar-style.css" {
         src = ./.;
