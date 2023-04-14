@@ -174,6 +174,7 @@
       inputs.linyinfeng.nixosModules.tg-send
       inputs.linyinfeng.nixosModules.commit-notifier
       inputs.linyinfeng.nixosModules.dot-tar
+      inputs.linyinfeng.nixosModules.matrix-media-repo
       inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot

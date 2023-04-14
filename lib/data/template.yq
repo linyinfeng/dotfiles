@@ -2,13 +2,14 @@
     "cache_s3_url": .b2_s3_api_url.value,
     "cache_s3_host": .b2_s3_api_host.value,
     "cache_bucket_name": .b2_cache_bucket_name.value,
-    "synapse_media_url": .b2_s3_api_url.value,
-    "synapse_media_host": .b2_s3_api_host.value,
-    "synapse_media_bucket_name": .b2_synapse_media_bucket_name.value,
     "mastodon_media_url": .b2_s3_api_url.value,
     "mastodon_media_host": .b2_s3_api_host.value,
     "mastodon_media_region": .b2_s3_region.value,
     "mastodon_media_bucket_name": .b2_mastodon_media_bucket_name.value,
+    "matrix_media_repo_url": .b2_s3_api_url.value,
+    "matrix_media_repo_host": .b2_s3_api_host.value,
+    "matrix_media_repo_region": .b2_s3_region.value,
+    "matrix_media_repo_bucket_name": .b2_matrix_media_repo_bucket_name.value,
     "hosts": .hosts.value | map_values(
         with_entries(
             select(

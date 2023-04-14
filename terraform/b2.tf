@@ -95,6 +95,7 @@ resource "b2_bucket_file_version" "nix_cache_info" {
   source       = "${path.module}/resources/nix-cache-info"
 }
 
+# TODO delete bucket
 resource "b2_bucket" "synapse_media" {
   bucket_name = "synapse-media"
   bucket_type = "allPrivate"
@@ -105,34 +106,6 @@ resource "b2_bucket" "synapse_media" {
     days_from_uploading_to_hiding = null
     days_from_hiding_to_deleting  = 1
   }
-}
-resource "b2_application_key" "synapse_media" {
-  key_name  = "synapse-media"
-  bucket_id = b2_bucket.synapse_media.id
-  capabilities = [
-    "deleteFiles",
-    "listAllBucketNames",
-    "listBuckets",
-    "listFiles",
-    "readBucketEncryption",
-    "readBuckets",
-    "readFiles",
-    "shareFiles",
-    "writeBucketEncryption",
-    "writeFiles"
-  ]
-}
-output "b2_synapse_media_bucket_name" {
-  value     = b2_bucket.synapse_media.bucket_name
-  sensitive = false
-}
-output "b2_synapse_media_key_id" {
-  value     = b2_application_key.synapse_media.application_key_id
-  sensitive = false
-}
-output "b2_synapse_media_access_key" {
-  value     = b2_application_key.synapse_media.application_key
-  sensitive = true
 }
 
 resource "b2_bucket" "mastodon_media" {
@@ -188,5 +161,45 @@ output "b2_mastodon_media_key_id" {
 }
 output "b2_mastodon_media_access_key" {
   value     = b2_application_key.mastodon_media.application_key
+  sensitive = true
+}
+
+resource "b2_bucket" "matrix_media_repo" {
+  bucket_name = "yinfeng-matrix-media-repo"
+  bucket_type = "allPrivate"
+
+  # keep only the last version of the file
+  lifecycle_rules {
+    file_name_prefix              = ""
+    days_from_uploading_to_hiding = null
+    days_from_hiding_to_deleting  = 1
+  }
+}
+resource "b2_application_key" "matrix_media_repo" {
+  key_name  = "matrix-media-repo"
+  bucket_id = b2_bucket.matrix_media_repo.id
+  capabilities = [
+    "deleteFiles",
+    "listAllBucketNames",
+    "listBuckets",
+    "listFiles",
+    "readBucketEncryption",
+    "readBuckets",
+    "readFiles",
+    "shareFiles",
+    "writeBucketEncryption",
+    "writeFiles"
+  ]
+}
+output "b2_matrix_media_repo_bucket_name" {
+  value     = b2_bucket.matrix_media_repo.bucket_name
+  sensitive = false
+}
+output "b2_matrix_media_repo_key_id" {
+  value     = b2_application_key.matrix_media_repo.application_key_id
+  sensitive = false
+}
+output "b2_matrix_media_repo_access_key" {
+  value     = b2_application_key.matrix_media_repo.application_key
   sensitive = true
 }

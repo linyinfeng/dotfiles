@@ -81,26 +81,8 @@ in
             force_tls = true;
             smtp_pass = config.sops.placeholder."mail_password";
           };
-          media_storage_providers = [
-            {
-              module = "s3_storage_provider.S3StorageProviderBackend";
-              store_local = true;
-              store_remote = true;
-              store_synchronous = true;
-              config = {
-                bucket = config.lib.self.data.synapse_media_bucket_name;
-                endpoint_url = config.lib.self.data.synapse_media_url;
-                access_key_id = config.sops.placeholder."b2_synapse_media_key_id";
-                secret_access_key = config.sops.placeholder."b2_synapse_media_access_key";
-              };
-            }
-          ];
         };
       };
-
-      environment.systemPackages = [
-        pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
-      ];
 
       systemd.services.matrix-synapse = {
         # copy singing key to signing key path
@@ -113,6 +95,122 @@ in
         ];
         restartTriggers = [
           config.sops.templates."synapse-extra-config".file
+        ];
+      };
+
+      systemd.services.matrix-synapse.after = ["postgresql.service"];
+      services.postgresql = {
+        ensureDatabases = [
+          "matrix-synapse" # TODO locale problem
+        ];
+        ensureUsers = [
+          {
+            name = "matrix-synapse";
+            ensurePermissions = {
+              "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
+            };
+          }
+        ];
+      };
+    }
+
+    # matrix-media-repo
+    {
+      services.matrix-media-repo = {
+        enable = true;
+        configFile = config.sops.templates."matrix-media-repo.yaml".path;
+      };
+      sops.templates."matrix-media-repo.yaml".content = builtins.toJSON {
+        repo = {
+          bindAddress = "127.0.0.1";
+          port = config.ports.matrix-media-repo;
+        };
+        database.postgres = "postgres:///matrix-media-repo?host=/run/postgresql";
+        homeservers = [
+          {
+            name = "li7g.com";
+            csApi = "https://matrix.li7g.com";
+          }
+        ];
+        admins = [
+          "@yinfeng:li7g.com"
+        ];
+        datastores = [
+          {
+            type = "s3";
+            enabled = true;
+            forKinds = ["all"];
+            opts = {
+              tempPath = "/tmp/mediarepo_s3_upload"; # safe with private /tmp
+              endpoint = config.lib.self.data.matrix_media_repo_host;
+              bucketName = config.lib.self.data.matrix_media_repo_bucket_name;
+              region = config.lib.self.data.matrix_media_repo_region;
+              ssl = true;
+              accessKeyId = config.sops.placeholder."b2_matrix_media_repo_key_id";
+              accessSecret = config.sops.placeholder."b2_matrix_media_repo_access_key";
+            };
+          }
+        ];
+        thumbnails = {
+          expireAfterDays = 14;
+          types = [
+            "image/jpeg"
+            "image/jpg"
+            "image/png"
+            "image/gif"
+            "image/heif"
+            "image/webp"
+            "image/jxl"
+            "image/svg+xml"
+          ];
+        };
+        identicons.enabled = true;
+        downloads.expireAfterDays = 14;
+        urlPreviews = {
+          enabled = true;
+          expireAfterDays = 14;
+        };
+      };
+      systemd.services.matrix-media-repo = {
+        restartTriggers = [
+          config.sops.templates."matrix-media-repo.yaml".content
+        ];
+      };
+      sops.secrets."b2_matrix_media_repo_key_id" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = ["matrix-media-repo.service"];
+      };
+      sops.secrets."b2_matrix_media_repo_access_key" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = ["matrix-media-repo.service"];
+      };
+      services.nginx.virtualHosts."matrix.*" = {
+        locations."/_matrix/media" = {
+          proxyPass = "http://127.0.0.1:${toString config.ports.matrix-media-repo}";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-Host li7g.com; # required by matrix-media-repo
+          '';
+        };
+      };
+      systemd.services.matrix-media-repo.after = ["postgresql.service"];
+      services.postgresql = {
+        ensureDatabases = [
+          "matrix-media-repo"
+        ];
+        ensureUsers = [
+          {
+            name = "matrix-media-repo";
+            ensurePermissions = {
+              "DATABASE \"matrix-media-repo\"" = "ALL PRIVILEGES";
+            };
+          }
+          {
+            name = "migration";
+            ensurePermissions = {
+              "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
+              "DATABASE \"matrix-media-repo\"" = "ALL PRIVILEGES";
+            };
+          }
         ];
       };
     }
@@ -231,6 +329,21 @@ in
       sops.secrets."telegram-bot/matrix-bridge" = {
         sopsFile = config.sops-file.host;
         restartUnits = ["mautrix-telegram.service"];
+      };
+
+      systemd.services.mautrix-telegram.after = ["postgresql.service"];
+      services.postgresql = {
+        ensureDatabases = [
+          "mautrix-telegram"
+        ];
+        ensureUsers = [
+          {
+            name = "mautrix-telegram";
+            ensurePermissions = {
+              "DATABASE \"mautrix-telegram\"" = "ALL PRIVILEGES";
+            };
+          }
+        ];
       };
     }
 
@@ -368,41 +481,6 @@ in
       sops.secrets."matrix_registration_shared_secret" = {
         sopsFile = config.sops-file.terraform;
         restartUnits = ["matrix-synapse.service"];
-      };
-      sops.secrets."b2_synapse_media_key_id" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-synapse.service"];
-      };
-      sops.secrets."b2_synapse_media_access_key" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-synapse.service"];
-      };
-    }
-
-    # database
-    {
-      systemd.services.matrix-synapse.after = ["postgresql.service"];
-      systemd.services.mautrix-telegram.after = ["postgresql.service"];
-      services.postgresql = {
-        ensureDatabases = [
-          "matrix-synapse" # TODO locale problem
-          "mautrix-telegram"
-          "matrix-qq"
-        ];
-        ensureUsers = [
-          {
-            name = "matrix-synapse";
-            ensurePermissions = {
-              "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
-            };
-          }
-          {
-            name = "mautrix-telegram";
-            ensurePermissions = {
-              "DATABASE \"mautrix-telegram\"" = "ALL PRIVILEGES";
-            };
-          }
-        ];
       };
     }
 

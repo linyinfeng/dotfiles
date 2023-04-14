@@ -2,13 +2,14 @@
   "cache_s3_url": "https://s3.us-west-004.backblazeb2.com",
   "cache_s3_host": "s3.us-west-004.backblazeb2.com",
   "cache_bucket_name": "cache-li7g-com",
-  "synapse_media_url": "https://s3.us-west-004.backblazeb2.com",
-  "synapse_media_host": "s3.us-west-004.backblazeb2.com",
-  "synapse_media_bucket_name": "synapse-media",
   "mastodon_media_url": "https://s3.us-west-004.backblazeb2.com",
   "mastodon_media_host": "s3.us-west-004.backblazeb2.com",
   "mastodon_media_region": "us-west-004",
   "mastodon_media_bucket_name": "yinfeng-mastodon-media",
+  "matrix_media_repo_url": "https://s3.us-west-004.backblazeb2.com",
+  "matrix_media_repo_host": "s3.us-west-004.backblazeb2.com",
+  "matrix_media_repo_region": "us-west-004",
+  "matrix_media_repo_bucket_name": "yinfeng-matrix-media-repo",
   "hosts": {
     "framework": {
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVqC3OlslCMAMksx048JExd3YlllT1he7jSnmLolUlr",

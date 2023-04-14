@@ -38,6 +38,7 @@
       hydra = 3070;
       nix-serve = 3080;
       matrix = 3090;
+      matrix-media-repo = 3091;
       mautrix-telegram-appservice = 3100;
       matrix-qq-appservice = 3101;
       minio = 3110;
