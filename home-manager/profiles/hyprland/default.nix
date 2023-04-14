@@ -5,7 +5,6 @@
   osConfig,
   ...
 }: let
-  inherit (pkgs.nur.repos.linyinfeng) anyrun;
   proxyCfg = osConfig.networking.fw-proxy;
   proxyUrl = "http://localhost:${toString proxyCfg.mixinConfig.mixed-port}";
 in
@@ -34,19 +33,18 @@ in
       kitty
       wofi
       eww-wayland
-      anyrun
     ];
     programs.waybar = {
       enable = true;
       package = pkgs.waybar-hyprland;
-      systemd.enable = false;
+      systemd.enable = true;
       settings = [
         {
           layer = "top";
           position = "top";
           modules-left = [
             "wlr/workspaces"
-            "wlr/taskbar"
+            # "wlr/taskbar" # broken in systemd service
           ];
           modules-center = [
             # "wlr/window"
@@ -153,17 +151,6 @@ in
     programs.swaylock.settings = {
       color = "000000";
     };
-    xdg.configFile."anyrun/config.ron".text = ''
-      Config(
-        width: 500,
-        position: Top,
-        hide_icons: false,
-        plugins: [
-          "${anyrun}/lib/libapplications.so",
-          "${anyrun}/lib/libshell.so",
-        ],
-      )
-    '';
     xdg.configFile."hypr/hyperpaper.conf".text = ''
       preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp
       preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.webp
