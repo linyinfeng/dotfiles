@@ -7,14 +7,22 @@
 }: let
   proxyCfg = osConfig.networking.fw-proxy;
   proxyUrl = "http://localhost:${toString proxyCfg.mixinConfig.mixed-port}";
+  wallPaperLight = "${pkgs.nixos-artwork.wallpapers.nineish}/share/backgrounds/nixos/nix-wallpaper-nineish.png";
+  wallPaperDark = "${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nix-wallpaper-nineish-dark-gray.png";
+  buildScss = name:
+    pkgs.runCommand "${name}.css" {
+      src = ./styles;
+      nativeBuildInputs = with pkgs; [sass];
+    } "sass $src/${name}.scss $out";
+  swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
 in
   lib.mkIf config.home.graphical {
     wayland.windowManager.hyprland = {
       enable = true;
+      recommendedEnvironment = false;
       extraConfig = ''
-        ${
-          builtins.readFile ./hyprland.conf
-        }
+        ${builtins.readFile ./hyprland.conf}
 
         ${
           lib.optionalString proxyCfg.enable ''
@@ -30,21 +38,19 @@ in
       hyprpaper
       hyprpicker
       clipman
-      kitty
       wofi
-      eww-wayland
     ];
     programs.waybar = {
       enable = true;
       package = pkgs.waybar-hyprland;
-      systemd.enable = true;
+      systemd.enable = false;
       settings = [
         {
           layer = "top";
           position = "top";
           modules-left = [
             "wlr/workspaces"
-            # "wlr/taskbar" # broken in systemd service
+            # "wlr/taskbar"
           ];
           modules-center = [
             # "wlr/window"
@@ -116,29 +122,9 @@ in
         }
       ];
     };
-    systemd.user.services.waybar.Service.Environment = [
-      # hyprctl
-      "PATH=${pkgs.hyprland}/bin"
-    ];
-    xdg.configFile."waybar/style.css".source =
-      pkgs.runCommand "waybar-style.css" {
-        src = ./.;
-        nativeBuildInputs = with pkgs; [
-          sass
-        ];
-      } ''
-        sass $src/waybar.scss $out
-      '';
+    xdg.configFile."waybar/style.css".source = buildScss "waybar";
     xdg.configFile."wofi/config".source = ./wofi.conf;
-    xdg.configFile."wofi/style.css".source =
-      pkgs.runCommand "wofi-style.css" {
-        src = ./.;
-        nativeBuildInputs = with pkgs; [
-          sass
-        ];
-      } ''
-        sass $src/wofi.scss $out
-      '';
+    xdg.configFile."wofi/style.css".source = buildScss "wofi";
     services.dunst = {
       enable = true;
       settings = {
@@ -153,12 +139,41 @@ in
       };
     };
     programs.swaylock.settings = {
-      color = "000000";
+      screenshots = true;
+      clock = true;
+      effect-blur = "10x10";
+      grace = 5;
+      fade-in = 5;
     };
-    xdg.configFile."hypr/hyperpaper.conf".text = ''
-      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp
-      preload = ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.webp
+    services.swayidle = {
+      enable = true;
+      systemdTarget = "hyprland-session.target";
+      events = [
+        {
+          event = "before-sleep";
+          command = swaylock;
+        }
+        {
+          event = "lock";
+          command = swaylock;
+        }
+      ];
+      timeouts = [
+        {
+          timeout = 300;
+          command = swaylock;
+        }
+        {
+          timeout = 310;
+          command = "${hyprctl} dispatch dpms off";
+          resumeCommand = "${hyprctl} dispatch dpms on";
+        }
+      ];
+    };
+    xdg.configFile."hypr/hyprpaper.conf".text = ''
+      preload = ${wallPaperLight}
+      preload = ${wallPaperDark}
 
-      wallpaper = , ${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp
+      wallpaper = , ${wallPaperLight}
     '';
   }

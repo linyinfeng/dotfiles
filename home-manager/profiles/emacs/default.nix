@@ -87,13 +87,12 @@ in {
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
-
-  home.global-persistence = {
-    directories = [
-      ".emacs.d"
-    ];
-  };
   home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
+
+  # do not persist .emacs.d
+  # home.global-persistence.directories = [
+  #   ".emacs.d"
+  # ];
 
   programs.fish.interactiveShellInit = ''
     if test "$INSIDE_EMACS" = 'vterm'

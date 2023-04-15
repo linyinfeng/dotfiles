@@ -5,7 +5,9 @@
   ...
 }: let
   cfg = config.home.graphical;
-  sysGraphical = osConfig.services.xserver.enable;
+  sysGraphical =
+    osConfig.services.xserver.enable
+    || osConfig.services.greetd.enable;
 in
   with lib; {
     options.home.graphical = lib.mkOption {

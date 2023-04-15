@@ -10,7 +10,7 @@
 
 window#waybar {
   color: $text;
-  background-color: $dark-primary;
+  background-color: $bar-background;
 
   transition-property: background-color;
   transition-duration: 0.5s;

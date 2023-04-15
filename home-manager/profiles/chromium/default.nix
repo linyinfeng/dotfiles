@@ -10,6 +10,7 @@ lib.mkIf config.home.graphical {
       # TODO disabled
       # ibus not working
       # "--ozone-platform-hint=auto"
+      # "--enable-wayland-ime"
       # "--gtk-version=4"
     ];
   };

@@ -7,7 +7,7 @@
 }: let
   yq = "${pkgs.yq-go}/bin/yq";
   home = "${config.home.homeDirectory}";
-  rimeConfig = ".config/ibus/rime";
+  rimeConfig = ".local/share/fcitx5/rime";
   installationCustom = ''
     sync_dir: "${home}/Syncthing/Main/rime"
     installation_id: "${osConfig.networking.hostName}"
@@ -22,12 +22,12 @@ in
       EOF
       fi
     '';
-    home.file.".config/ibus/rime" = {
+    home.file.${rimeConfig} = {
       source = ./user-data;
       recursive = true;
     };
 
     home.global-persistence.directories = [
-      ".config/ibus/rime"
+      rimeConfig
     ];
   }

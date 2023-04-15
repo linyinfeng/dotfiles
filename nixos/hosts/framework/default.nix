@@ -39,6 +39,7 @@ in {
       services.ssh-honeypot
       programs.service-mail
       programs.tg-send
+      graphical.greetd
       users.yinfeng
     ])
     ++ [
@@ -83,7 +84,6 @@ in {
         "aarch64-linux"
       ];
 
-      services.xserver.desktopManager.gnome.enable = true;
       services.fprintd.enable = true;
 
       networking.campus-network = {

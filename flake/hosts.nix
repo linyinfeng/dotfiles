@@ -125,6 +125,7 @@
       chromium
       firefox
       rime
+      fcitx5
       fonts
       mime
       obs-studio
@@ -143,6 +144,7 @@
       awscli
       terraform
       shells
+      kitty
     ];
     virtualization = [];
     multimediaDev =

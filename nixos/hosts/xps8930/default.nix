@@ -35,6 +35,7 @@ in {
       services.ssh-honeypot
       programs.service-mail
       programs.tg-send
+      graphical.greetd
       users.yinfeng
     ]);
 
@@ -51,8 +52,6 @@ in {
   };
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
-
-  services.xserver.desktopManager.gnome.enable = true;
 
   virtualisation.kvmgt = {
     enable = true;
