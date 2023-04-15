@@ -148,6 +148,9 @@ in
     services.swayidle = {
       enable = true;
       systemdTarget = "hyprland-session.target";
+      extraArgs = [
+        "-d" # debug log
+      ];
       events = [
         {
           event = "before-sleep";
@@ -163,11 +166,11 @@ in
           timeout = 300;
           command = swaylock;
         }
-        {
-          timeout = 310;
-          command = "${hyprctl} dispatch dpms off";
-          resumeCommand = "${hyprctl} dispatch dpms on";
-        }
+        # {
+        #   timeout = 310;
+        #   command = "${hyprctl} dispatch dpms off";
+        #   resumeCommand = "${hyprctl} dispatch dpms on";
+        # }
       ];
     };
     xdg.configFile."hypr/hyprpaper.conf".text = ''
