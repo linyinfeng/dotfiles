@@ -11,8 +11,6 @@
       ${./mixin-config.json} \
       > $out/config.json
   '';
-
-  yamlFormat = pkgs.formats.yaml {};
 in
   lib.mkMerge [
     # matrix-synapse
@@ -20,9 +18,6 @@ in
       services.matrix-synapse = {
         enable = true;
         withJemalloc = true;
-        plugins = [
-          pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
-        ];
         settings = {
           server_name = "li7g.com";
           public_baseurl = "https://matrix.li7g.com";
@@ -83,6 +78,9 @@ in
           };
         };
       };
+      environment.systemPackages = [
+        pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
+      ];
 
       systemd.services.matrix-synapse = {
         # copy singing key to signing key path
@@ -184,14 +182,14 @@ in
         sopsFile = config.sops-file.terraform;
         restartUnits = ["matrix-media-repo.service"];
       };
-      services.nginx.virtualHosts."matrix.*" = {
-        locations."/_matrix/media" = {
-          proxyPass = "http://127.0.0.1:${toString config.ports.matrix-media-repo}";
-          extraConfig = ''
-            proxy_set_header X-Forwarded-Host li7g.com; # required by matrix-media-repo
-          '';
-        };
-      };
+      # services.nginx.virtualHosts."matrix.*" = {
+      #   locations."/_matrix/media" = {
+      #     proxyPass = "http://127.0.0.1:${toString config.ports.matrix-media-repo}";
+      #     extraConfig = ''
+      #       proxy_set_header X-Forwarded-Host li7g.com; # required by matrix-media-repo
+      #     '';
+      #   };
+      # };
       systemd.services.matrix-media-repo.after = ["postgresql.service"];
       services.postgresql = {
         ensureDatabases = [
@@ -479,6 +477,14 @@ in
         restartUnits = ["matrix-synapse.service"];
       };
       sops.secrets."matrix_registration_shared_secret" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = ["matrix-synapse.service"];
+      };
+      sops.secrets."b2_synapse_media_key_id" = {
+        sopsFile = config.sops-file.terraform;
+        restartUnits = ["matrix-synapse.service"];
+      };
+      sops.secrets."b2_synapse_media_access_key" = {
         sopsFile = config.sops-file.terraform;
         restartUnits = ["matrix-synapse.service"];
       };
