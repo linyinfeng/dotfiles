@@ -5,6 +5,8 @@
       name = "monospace";
       size = 11;
     };
-    theme = "Tomorrow";
+    extraConfig = ''
+      include ${./theme.conf}
+    '';
   };
 }
