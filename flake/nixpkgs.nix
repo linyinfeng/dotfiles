@@ -57,11 +57,8 @@
         ];
     });
 
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
-    inherit
-      (inputs'.nixpkgs-matrix-sdk-crypto-nodejs.legacyPackages)
-      matrix-sdk-crypto-nodejs
-      ;
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
+    inherit (inputs'.nixpkgs-wluma.legacyPackages) wluma;
   };
 in {
   nixpkgs = {

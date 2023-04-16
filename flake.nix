@@ -192,8 +192,8 @@
     flake-compat.flake = false;
 
     # patches
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=220317
-    nixpkgs-matrix-sdk-crypto-nodejs.url = "github:nixos/nixpkgs/pull/220317/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
+    nixpkgs-wluma.url = "github:nixos/nixpkgs/pull/226427/head";
   };
 
   outputs = inputs @ {flake-parts, ...}:
