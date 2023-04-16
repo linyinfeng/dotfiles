@@ -2,6 +2,7 @@ result*
 .direnv
 .vscode
 .data
+.sass-cache
 .pre-commit-config.yaml
 terraform/terraform.tfstate
 terraform.tfstate.*.backup
