@@ -1,5 +1,5 @@
 # customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/12th-gen-intel/default.nix
-{...}: {
+{pkgs, ...}: {
   boot.kernelParams = [
     # For Power consumption
     # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
@@ -35,4 +35,20 @@
 
   # Needed for desktop environments to detect/manage display brightness
   hardware.sensor.iio.enable = true;
+  environment.systemPackages = with pkgs; [
+    wluma
+  ];
+  environment.etc."xdg/wluma/config.toml".text = ''
+    [als.iio]
+    path = "/sys/bus/iio/devices"
+    thresholds = { 0 = "night", 20 = "dark", 80 = "dim", 250 = "normal", 500 = "bright", 800 = "outdoors" }
+
+    [[output.backlight]]
+    name = "embedded"
+    path = "/sys/class/backlight/intel_backlight"
+    capturer = "wlroots"
+  '';
+  environment.global-persistence.user.directories = [
+    ".local/share/wluma"
+  ];
 }

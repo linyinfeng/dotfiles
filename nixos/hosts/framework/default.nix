@@ -39,7 +39,7 @@ in {
       services.ssh-honeypot
       programs.service-mail
       programs.tg-send
-      graphical.greetd
+      hardware.backlight
       users.yinfeng
     ])
     ++ [

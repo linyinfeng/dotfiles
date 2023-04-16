@@ -32,6 +32,7 @@ in {
         keys.name
       ]
       ++ groupNameIfPresent "adbusers"
+      ++ groupNameIfPresent "video"
       ++ groupNameIfPresent "libvirtd"
       ++ groupNameIfPresent "transmission"
       ++ groupNameIfPresent "networkmanager"
