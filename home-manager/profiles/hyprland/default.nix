@@ -139,18 +139,21 @@ in
       };
     };
     programs.swaylock.settings = {
+      daemonize = true;
       screenshots = true;
+      indicator = true;
       clock = true;
-      effect-blur = "10x10";
+      show-failed-attempts = true;
+      indicator-caps-lock = true;
       grace = 5;
+      font = "monospace";
+
+      effect-blur = "10x10";
       fade-in = 5;
     };
     services.swayidle = {
       enable = true;
       systemdTarget = "hyprland-session.target";
-      extraArgs = [
-        "-d" # debug log
-      ];
       events = [
         {
           event = "before-sleep";
@@ -161,16 +164,19 @@ in
           command = swaylock;
         }
       ];
-      timeouts = [
+      timeouts = let
+        screenTimeout = 300;
+        graceDelay = config.programs.swaylock.settings.grace;
+      in [
         {
-          timeout = 300;
+          timeout = screenTimeout;
           command = swaylock;
         }
-        # {
-        #   timeout = 310;
-        #   command = "${hyprctl} dispatch dpms off";
-        #   resumeCommand = "${hyprctl} dispatch dpms on";
-        # }
+        {
+          timeout = screenTimeout + graceDelay;
+          command = "${hyprctl} dispatch dpms off";
+          resumeCommand = "${hyprctl} dispatch dpms on";
+        }
       ];
     };
     xdg.configFile."hypr/hyprpaper.conf".text = ''
