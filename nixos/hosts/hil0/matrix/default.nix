@@ -18,9 +18,13 @@ in
       services.matrix-synapse = {
         enable = true;
         withJemalloc = true;
+        plugins = [
+          pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
+        ];
         settings = {
           server_name = "li7g.com";
           public_baseurl = "https://matrix.li7g.com";
+          admin_contact = "mailto:lin.yinfeng@outlook.com";
 
           database = {
             name = "psycopg2";
@@ -42,6 +46,12 @@ in
           registrations_require_3pid = [
             "email"
           ];
+
+          media_retention = {
+            # no retention for local media to keep stickers
+            # local_media_lifetime = "180d";
+            remote_media_lifetime = "14d";
+          };
 
           listeners = [
             {
@@ -76,6 +86,21 @@ in
             force_tls = true;
             smtp_pass = config.sops.placeholder."mail_password";
           };
+          media_storage_providers = [
+            # as backup of all local media
+            {
+              module = "s3_storage_provider.S3StorageProviderBackend";
+              store_local = true;
+              store_remote = false;
+              store_synchronous = true;
+              config = {
+                bucket = config.lib.self.data.synapse_media_bucket_name;
+                endpoint_url = config.lib.self.data.synapse_media_url;
+                access_key_id = config.sops.placeholder."b2_synapse_media_key_id";
+                secret_access_key = config.sops.placeholder."b2_synapse_media_access_key";
+              };
+            }
+          ];
         };
       };
       environment.systemPackages = [
@@ -106,107 +131,6 @@ in
             name = "matrix-synapse";
             ensurePermissions = {
               "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
-            };
-          }
-        ];
-      };
-    }
-
-    # matrix-media-repo
-    {
-      services.matrix-media-repo = {
-        enable = true;
-        configFile = config.sops.templates."matrix-media-repo.yaml".path;
-      };
-      sops.templates."matrix-media-repo.yaml".content = builtins.toJSON {
-        repo = {
-          bindAddress = "127.0.0.1";
-          port = config.ports.matrix-media-repo;
-        };
-        database.postgres = "postgres:///matrix-media-repo?host=/run/postgresql";
-        homeservers = [
-          {
-            name = "li7g.com";
-            csApi = "https://matrix.li7g.com";
-          }
-        ];
-        admins = [
-          "@yinfeng:li7g.com"
-        ];
-        datastores = [
-          {
-            type = "s3";
-            enabled = true;
-            forKinds = ["all"];
-            opts = {
-              tempPath = "/tmp/mediarepo_s3_upload"; # safe with private /tmp
-              endpoint = config.lib.self.data.matrix_media_repo_host;
-              bucketName = config.lib.self.data.matrix_media_repo_bucket_name;
-              region = config.lib.self.data.matrix_media_repo_region;
-              ssl = true;
-              accessKeyId = config.sops.placeholder."b2_matrix_media_repo_key_id";
-              accessSecret = config.sops.placeholder."b2_matrix_media_repo_access_key";
-            };
-          }
-        ];
-        thumbnails = {
-          expireAfterDays = 14;
-          types = [
-            "image/jpeg"
-            "image/jpg"
-            "image/png"
-            "image/gif"
-            "image/heif"
-            "image/webp"
-            "image/jxl"
-            "image/svg+xml"
-          ];
-        };
-        identicons.enabled = true;
-        downloads.expireAfterDays = 14;
-        urlPreviews = {
-          enabled = true;
-          expireAfterDays = 14;
-        };
-      };
-      systemd.services.matrix-media-repo = {
-        restartTriggers = [
-          config.sops.templates."matrix-media-repo.yaml".content
-        ];
-      };
-      sops.secrets."b2_matrix_media_repo_key_id" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-media-repo.service"];
-      };
-      sops.secrets."b2_matrix_media_repo_access_key" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-media-repo.service"];
-      };
-      # services.nginx.virtualHosts."matrix.*" = {
-      #   locations."/_matrix/media" = {
-      #     proxyPass = "http://127.0.0.1:${toString config.ports.matrix-media-repo}";
-      #     extraConfig = ''
-      #       proxy_set_header X-Forwarded-Host li7g.com; # required by matrix-media-repo
-      #     '';
-      #   };
-      # };
-      systemd.services.matrix-media-repo.after = ["postgresql.service"];
-      services.postgresql = {
-        ensureDatabases = [
-          "matrix-media-repo"
-        ];
-        ensureUsers = [
-          {
-            name = "matrix-media-repo";
-            ensurePermissions = {
-              "DATABASE \"matrix-media-repo\"" = "ALL PRIVILEGES";
-            };
-          }
-          {
-            name = "migration";
-            ensurePermissions = {
-              "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
-              "DATABASE \"matrix-media-repo\"" = "ALL PRIVILEGES";
             };
           }
         ];
@@ -431,9 +355,10 @@ in
           # MATRIX_WHITELIST = "@yinfeng:li7g.com";
           # MATRIX_ROOM_BLACKLIST = "";
           MATRIX_ROOM_WHITELIST = lib.concatStringsSep " " [
-            "!ZcyNnUjSsEKYLfgpBu:li7g.com" # private - #chatgpt:li7g.com
+            "!rNHQmObOrazwgQUPvf:li7g.com" # private - #chatgpt:li7g.com
             "!vXzxwXAzWxuDADWQcn:li7g.com" # private - #njulug:li7g.com
             "!MPQSzGQmrbZGaDnPaL:li7g.com" # private - #apartment-five:li7g.com
+            "!cacbMwUwsLZ6GKac:nichi.co" # public - #zh-cn:nixos.org
           ];
 
           MATRIX_AUTOJOIN = "true";
