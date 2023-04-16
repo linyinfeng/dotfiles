@@ -46,7 +46,7 @@ in {
       };
       boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
 
-      boot.tmpOnTmpfs = true;
+      boot.tmp.useTmpfs = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 

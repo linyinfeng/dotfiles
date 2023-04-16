@@ -101,9 +101,10 @@ in {
     };
   };
 
+  boot.tmp.useTmpfs = true;
+  services.fstrim.enable = true;
   environment.global-persistence.enable = true;
   environment.global-persistence.root = "/persist";
-
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [

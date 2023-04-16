@@ -78,6 +78,7 @@ in {
 
       systemd.watchdog.runtimeTime = "60s";
 
+      services.fstrim.enable = true;
       services.btrfs.autoScrub = {
         enable = true;
         fileSystems = [
@@ -99,10 +100,10 @@ in {
         fsType = "tmpfs";
         options = ["defaults" "size=2G" "mode=755"];
       };
-      boot = {
-        tmpOnTmpfs = true;
+      boot.tmp = {
+        useTmpfs = true;
         # reasonable because of swap
-        tmpOnTmpfsSize = "100%";
+        tmpfsSize = "100%";
       };
       fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
       fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};

@@ -54,7 +54,7 @@ in {
       };
       boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "sd_mod" "sr_mod"];
 
-      boot.tmpOnTmpfs = true;
+      boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";

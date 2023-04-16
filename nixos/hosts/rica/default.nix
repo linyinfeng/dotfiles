@@ -56,8 +56,7 @@ in {
       };
       boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "sr_mod" "xen_blkfront"];
 
-      boot.tmpOnTmpfs = true;
-      services.fstrim.enable = true;
+      boot.tmp.useTmpfs = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
