@@ -53,6 +53,8 @@ in {
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
 
+  services.xserver.desktopManager.gnome.enable = true;
+
   virtualisation.kvmgt = {
     enable = true;
     device = "0000:00:02.0";
@@ -97,9 +99,6 @@ in {
       ip_type = "IPv6";
       ip_interface = "enp4s0";
     };
-  };
-  services.hercules-ci-agent.settings = {
-    concurrentTasks = 2;
   };
 
   environment.global-persistence.enable = true;

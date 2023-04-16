@@ -67,6 +67,7 @@ in {
         scale = "2";
       };
 
+      services.xserver.desktopManager.gnome.enable = true;
       services.power-profiles-daemon.enable = false;
       services.tlp = {
         enable = true;
