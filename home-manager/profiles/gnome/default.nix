@@ -52,12 +52,21 @@ in
           show-battery-percentage = true;
           locate-pointer = true;
         };
+        # use fcitx5
+        "org/gnome/desktop/wm/keybindings" = {
+          switch-input-source = mkArray type.string [];
+          switch-input-source-backward = mkArray type.string [];
+        };
         # "org/gnome/desktop/input-sources" = {
         #   sources = mkArray (type.tupleOf [type.string type.string]) [
         #     (mkTuple [(mkString "xkb") (mkString "us")])
         #     (mkTuple [(mkString "ibus") (mkString "rime")])
         #     (mkTuple [(mkString "ibus") (mkString "mozc-jp")])
         #   ];
+        # };
+        # "org/gnome/shell/extensions/ibus-tweaker" = {
+        #   use-custom-font = true;
+        #   custom-font = "sans-serif 10";
         # };
         "org/gnome/desktop/wm/preferences" = {
           action-middle-click-titlebar = "lower";
@@ -118,10 +127,6 @@ in
           color-shading-type = "solid";
           picture-options = "zoom";
         };
-        # "org/gnome/shell/extensions/ibus-tweaker" = {
-        #   use-custom-font = true;
-        #   custom-font = "sans-serif 10";
-        # };
         "com/raggesilver/BlackBox" = {
           terminal-padding = mkTuple [(mkUint32 5) (mkUint32 5) (mkUint32 5) (mkUint32 5)];
           font = "monospace 10";
