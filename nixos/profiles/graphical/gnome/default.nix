@@ -53,6 +53,7 @@ config.services.xserver.desktopManager.gnome.enable
       ".local/share/webkitgtk" # gnome accounts
       ".local/share/backgrounds"
       ".local/share/gnome-boxes"
+      ".local/share/icc" # user icc files
       ".cache/tracker3"
       ".cache/thumbnails"
     ];
