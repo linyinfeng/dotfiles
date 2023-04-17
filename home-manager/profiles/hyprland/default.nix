@@ -17,8 +17,7 @@
 
   proxyCfg = osConfig.networking.fw-proxy;
   variables =
-    osConfig.environment.variables
-    // config.home.sessionVariables
+    config.home.sessionVariables
     // (lib.optionalAttrs proxyCfg.enable proxyCfg.environment);
   mkVariableCfg = name: value: "env = ${name},${value}";
 in
