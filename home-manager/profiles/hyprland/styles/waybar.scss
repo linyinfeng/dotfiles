@@ -68,11 +68,6 @@ button {
 }
 
 #battery {
-  &.charging,
-  &.plugged {
-    color: $good;
-  }
-
   &.critical:not(.charging) {
     color: $warn;
   }

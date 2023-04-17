@@ -7,9 +7,6 @@
 lib.mkMerge [
   {
     programs.hyprland.enable = true;
-    environment.sessionVariables = {
-      NIXOS_OZONE_WL = ""; # input method not working
-    };
 
     systemd.user.services.xdg-desktop-portal-hyprland = {
       unitConfig = {
@@ -35,22 +32,8 @@ lib.mkMerge [
       session required pam_env.so conffile=/etc/pam/environment readenv=0
       session required pam_unix.so
     '';
-
-    environment.systemPackages = with pkgs; [
-      light
-    ];
-    security.sudo.extraRules = [
-      {
-        groups = ["users"];
-        commands = [
-          {
-            command = "/run/current-system/sw/bin/light";
-            options = ["NOPASSWD"];
-          }
-        ];
-      }
-    ];
   }
+
   (lib.mkIf (!config.services.xserver.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;
     environment.global-persistence.user.directories = [

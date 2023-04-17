@@ -115,6 +115,9 @@
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
+    hyprwm-contrib.url = "github:hyprwm/contrib";
+    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";

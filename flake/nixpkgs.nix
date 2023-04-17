@@ -13,6 +13,7 @@
     inputs.ace-bot.overlays.default
     inputs.emacs-overlay.overlay
     inputs.hyprland.overlays.default
+    inputs.hyprwm-contrib.overlays.default
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';
@@ -41,6 +42,11 @@
     inherit (prev.stdenv.hostPlatform) system;
     inherit ((getSystem system).allModuleArgs) inputs';
   in {
+    # use waybar-git
+    waybar = prev.waybar.overrideAttrs (old: {
+      inherit (final.nur.repos.linyinfeng.sources.waybar-git) version src;
+    });
+
     # TODO upstream
     gnuradio = prev.gnuradio.override {
       unwrapped = prev.gnuradio.unwrapped.override {

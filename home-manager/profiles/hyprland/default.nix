@@ -5,8 +5,6 @@
   osConfig,
   ...
 }: let
-  proxyCfg = osConfig.networking.fw-proxy;
-  proxyUrl = "http://localhost:${toString proxyCfg.mixinConfig.mixed-port}";
   wallPaperLight = "${pkgs.nixos-artwork.wallpapers.nineish}/share/backgrounds/nixos/nix-wallpaper-nineish.png";
   wallPaperDark = "${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nix-wallpaper-nineish-dark-gray.png";
   buildScss = name:
@@ -16,30 +14,34 @@
     } "sass $src/${name}.scss $out";
   swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+
+  proxyCfg = osConfig.networking.fw-proxy;
+  variables =
+    osConfig.environment.variables
+    // config.home.sessionVariables
+    // (lib.optionalAttrs proxyCfg.enable proxyCfg.environment);
+  mkVariableCfg = name: value: "env = ${name},${value}";
 in
   lib.mkIf config.home.graphical {
     wayland.windowManager.hyprland = {
       enable = true;
       recommendedEnvironment = false;
       extraConfig = ''
-        ${builtins.readFile ./hyprland.conf}
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList mkVariableCfg variables)}
 
-        ${
-          lib.optionalString proxyCfg.enable ''
-            env = HTTP_PROXY,${proxyUrl}
-            env = http_proxy,${proxyUrl}
-            env = HTTPS_PROXY,${proxyUrl}
-            env = https_proxy,${proxyUrl}
-          ''
-        }
+        ${builtins.readFile ./hyprland.conf}
       '';
     };
     home.packages = with pkgs; [
       hyprpaper
       hyprpicker
+      avizo
       clipman
       wofi
+      grimblast
     ];
+
+    # waybar
     programs.waybar = {
       enable = true;
       package = pkgs.waybar-hyprland;
@@ -50,10 +52,12 @@ in
           position = "top";
           modules-left = [
             "wlr/workspaces"
+            # TODO causing problem
+            # https://github.com/Alexays/Waybar/issues/1968
             # "wlr/taskbar"
           ];
           modules-center = [
-            # "wlr/window"
+            "wlr/window"
           ];
           modules-right = [
             "tray"
@@ -66,9 +70,11 @@ in
           ];
           "wlr/workspaces" = {
             format = "{name}";
-            on-click = "activate";
-            on-scroll-up = "hyprctl dispatch workspace e+1";
-            on-scroll-down = "hyprctl dispatch workspace e-1";
+            # TODO causing problem
+            # https://github.com/Alexays/Waybar/issues/1968
+            # on-click = "activate";
+            # on-scroll-up = "hyprctl dispatch workspace e+1";
+            # on-scroll-down = "hyprctl dispatch workspace e-1";
           };
           "wlr/taskbar" = {
             all-outputs = false;
@@ -91,18 +97,21 @@ in
             format-icons = {
               default = ["" "" ""];
             };
-            scroll-step = 1;
+            on-scroll-up = "volumectl up";
+            on-scroll-down = "volumectl down";
           };
           "wireplumber" = {
             format = "{volume}% {icon}";
             format-muted = "";
             format-icons = ["" "" ""];
+            on-scroll-up = "volumectl up";
+            on-scroll-down = "volumectl down";
           };
           "backlight" = {
             format = "{percent}% {icon}";
             format-icons = ["" ""];
-            on-scroll-up = "sudo light -A 1";
-            on-scroll-down = "sudo light -U 1";
+            on-scroll-up = "lightctl up";
+            on-scroll-down = "lightctl down";
           };
           "battery" = {
             interval = 60;
@@ -123,8 +132,17 @@ in
       ];
     };
     xdg.configFile."waybar/style.css".source = buildScss "waybar";
+
+    # grimblast
+    home.sessionVariables = {
+      XDG_SCREENSHOTS_DIR = "${config.xdg.userDirs.pictures}/Screenshots";
+    };
+
+    # wofi
     xdg.configFile."wofi/config".source = ./wofi.conf;
     xdg.configFile."wofi/style.css".source = buildScss "wofi";
+
+    # dunst
     services.dunst = {
       enable = true;
       settings = {
@@ -138,6 +156,8 @@ in
         };
       };
     };
+
+    # swaylock
     programs.swaylock.settings = {
       daemonize = true;
       screenshots = true;
@@ -151,6 +171,8 @@ in
       effect-blur = "10x10";
       fade-in = 5;
     };
+
+    # swayidle
     services.swayidle = {
       enable = true;
       systemdTarget = "hyprland-session.target";
@@ -179,6 +201,8 @@ in
         }
       ];
     };
+
+    # hyprpaper
     xdg.configFile."hypr/hyprpaper.conf".text = ''
       preload = ${wallPaperLight}
       preload = ${wallPaperDark}
