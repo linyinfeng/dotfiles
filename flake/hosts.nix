@@ -168,7 +168,6 @@
       inputs.home-manager.nixosModules.home-manager
       inputs.sops-nix.nixosModules.sops
       inputs.impermanence.nixosModules.impermanence
-      inputs.nixos-cn.nixosModules.nixos-cn
       inputs.flake-utils-plus.nixosModules.autoGenFromInputs
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.linyinfeng.nixosModules.vlmcsd
