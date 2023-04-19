@@ -35,7 +35,6 @@ in {
       services.ssh-honeypot
       programs.service-mail
       programs.tg-send
-      graphical.greetd
       users.yinfeng
     ]);
 
