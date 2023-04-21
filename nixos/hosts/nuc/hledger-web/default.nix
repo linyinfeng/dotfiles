@@ -5,6 +5,7 @@ let
 in{
   services.hledger-web = {
     enable = true;
+    baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
     capabilities = {
       view = true;
       add = true;
