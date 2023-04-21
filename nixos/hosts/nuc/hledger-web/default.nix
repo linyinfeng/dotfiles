@@ -5,7 +5,6 @@ let
 in{
   services.hledger-web = {
     enable = true;
-    baseUrl = "https://hledger.li7g.com";
     capabilities = {
       view = true;
       add = true;
