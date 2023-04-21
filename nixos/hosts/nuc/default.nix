@@ -52,6 +52,7 @@ in {
       ./options.nix
       ./hydra
       ./minecraft
+      ./hledger-web
     ];
 
   config = lib.mkMerge [
@@ -222,7 +223,7 @@ in {
         content = ''
           ${config.sops.placeholder."transmission_username"}:${config.sops.placeholder."transmission_hashed_password"}
         '';
-        owner = "nginx";
+        owner = config.users.users.nginx.name;
       };
       sops.secrets."transmission_username" = {
         sopsFile = config.sops-file.terraform;

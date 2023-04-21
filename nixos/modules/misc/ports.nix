@@ -55,6 +55,13 @@
       elasticsearch-node-to-node = 3171;
       atticd = 3180;
       oranc = 3190;
+      hledger-web = 3200;
+      syncthing = 3210;
+      syncthing-yinfeng = 3211;
+      syncthing-discovery = 3220;
+      syncthing-discovery-yinfeng = 21027; # TODO change to 3221
+      syncthing-transfer = 3230;
+      syncthing-transfer-yinfeng = 22000; # TODO change to 3231
       jellyfin = 8096;
       zerotier = 9993;
       ssh = 22222;

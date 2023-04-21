@@ -5,7 +5,7 @@
   ...
 }: let
   mc-li7g-com = pkgs.writeShellScriptBin "mc-li7g-com" ''
-    ${pkgs.mc-config-nuc.client-launcher}/bin/minecraft \
+    ${pkgs.mc-config-nuc.minecraft-default-client}/bin/minecraft \
       --gameDir "$HOME/.local/share/mc-li7g-com"
   '';
 in

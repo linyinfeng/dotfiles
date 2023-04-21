@@ -8,20 +8,25 @@
     (h:
       lib.nameValuePair h {
         id = config.lib.self.data.hosts.${h}.syncthing_device_id;
+        addresses =
+          [
+            "dynamic"
+          ]
+          ++ lib.flatten (lib.lists.map
+            (middle:
+              lib.lists.map
+              (protocol: "${protocol}://${h}.${middle}li7g.com:${toString config.ports.syncthing-transfer-yinfeng}")
+              ["tcp" "tcp6" "udp" "udp6"])
+            ["" "ts." "zt."]);
       })
     simpleDeviceNames);
   devices = lib.recursiveUpdate simpleDevices {
-    nuc.addresses = [
-      "tcp://nuc.li7g.com:22000"
-    ];
     k40 = {
       id = "IR2Q4MI-T53Q562-SMM2SW2-JXXCMCI-L2HOQUR-KLCRTUE-JCNFMPH-4RIBYQP";
     };
   };
   hostName = config.networking.hostName;
-  me = devices.${hostName};
   others = lib.filterAttrs (h: _: h != hostName) devices;
-  deviceNames = lib.attrNames devices;
   otherNames = lib.attrNames others;
 
   user = "yinfeng";
@@ -58,6 +63,7 @@ in
         };
         services.syncthing = {
           enable = true;
+          guiAddress = "127.0.0.1:${toString config.ports.syncthing-yinfeng}";
           openDefaultPorts = true;
           inherit user group;
           cert = "/run/secrets/syncthing_cert_pem";
@@ -91,5 +97,9 @@ in
     };
     home-manager.users.yinfeng.home.global-persistence.directories = [
       "Syncthing"
+    ];
+    networking.firewall.allowedTCPPorts = with config.ports; [
+      syncthing-transfer-yinfeng
+      syncthing-discovery-yinfeng
     ];
   }

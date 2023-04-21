@@ -104,10 +104,10 @@
 
     mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
     mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
-    mc-config-nuc.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    mc-config-nuc.inputs.flake-parts.follows = "flake-parts";
+    mc-config-nuc.inputs.flake-utils.follows = "flake-utils";
     mc-config-nuc.inputs.mc-config.follows = "mc-config";
-    mc-config-nuc.inputs.minecraft-nix.follows = "minecraft-nix";
-    mc-config-nuc.inputs.minecraft-json.follows = "minecraft-json";
+    mc-config-nuc.inputs.treefmt-nix.follows = "treefmt-nix";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -170,11 +170,16 @@
     poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
     poetry2nix.inputs.flake-utils.follows = "flake-utils";
 
+    systems.url = "github:nix-systems/default";
+
     mc-config.url = "github:linyinfeng/mc-config";
     mc-config.inputs.nixpkgs.follows = "nixpkgs";
-    mc-config.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    mc-config.inputs.flake-parts.follows = "flake-parts";
+    mc-config.inputs.flake-utils.follows = "flake-utils";
     mc-config.inputs.minecraft-nix.follows = "minecraft-nix";
     mc-config.inputs.minecraft-json.follows = "minecraft-json";
+    mc-config.inputs.systems.follows = "systems";
+    mc-config.inputs.treefmt-nix.follows = "treefmt-nix";
 
     minecraft-nix.url = "github:ninlives/minecraft.nix";
     minecraft-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -188,6 +193,12 @@
     nixago.url = "github:nix-community/nixago";
     nixago.inputs.nixpkgs.follows = "nixpkgs";
     nixago.inputs.flake-utils.follows = "flake-utils";
+    nixago.inputs.nixago-exts.follows = "nixago-exts";
+
+    nixago-exts.url = "github:nix-community/nixago-extensions";
+    nixago-exts.inputs.flake-utils.follows = "flake-utils";
+    nixago-exts.inputs.nixago.follows = "nixago";
+    nixago-exts.inputs.nixpkgs.follows = "nixpkgs";
 
     # compatibility layer
 

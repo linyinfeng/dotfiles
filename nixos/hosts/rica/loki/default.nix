@@ -77,7 +77,7 @@
     content = ''
       loki:${config.sops.placeholder."loki_hashed_password"}
     '';
-    owner = "nginx";
+    owner = config.users.users.nginx.name;
   };
   sops.secrets."loki_hashed_password" = {
     sopsFile = config.sops-file.terraform;

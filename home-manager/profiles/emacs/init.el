@@ -140,6 +140,10 @@
 (use-package flycheck
   :ensure t)
 
+(use-package flycheck-hledger
+  :ensure t
+  :after(flycheck hledger-mode))
+
 (use-package flycheck-projectile
   :ensure t)
 
@@ -150,6 +154,18 @@
 
 (use-package haskell-mode
   :ensure t)
+
+(use-package hledger-mode
+  :ensure t
+  :after (company)
+  :mode ("\\.journal\\'" "\\.hledger\\'")
+  :custom
+  (hledger-jfile "/ssh:root@vultr:/var/lib/hledger-web/main.journal")
+  :bind (("C-c j" . hledger-run-command)
+         :map hledger-mode-map
+         ("C-c e" . hledger-jentry))
+  :config
+  (add-to-list 'company-backends 'hledger-company))
 
 (use-package idris-mode
   :ensure t

@@ -9,6 +9,7 @@
     appindicator
     dash-to-dock
     clipboard-history
+    kimpanel
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in

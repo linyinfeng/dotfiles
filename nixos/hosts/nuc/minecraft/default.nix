@@ -4,11 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.hosts.nuc;
   port = config.ports.minecraft; # also port for voice (udp)
   rconPort = config.ports.minecraft-rcon;
   mapPort = config.ports.minecraft-map;
-  server = "${pkgs.mc-config-nuc.server-launcher}/bin/minecraft-server --nogui";
+  server = "${pkgs.mc-config-nuc.minecraft-default-server}/bin/minecraft-server --nogui";
 in {
   imports = [
     ./backup.nix
@@ -17,10 +16,6 @@ in {
   systemd.services.minecraft = {
     script = ''
       rcon_password=$(cat $CREDENTIALS_DIRECTORY/rcon-password)
-
-      if [ -f eula.txt ]; then
-        echo "eula=true" > eula.txt
-      fi
 
       if [ -f server.properties ]; then
         echo "setting up server.properties..."

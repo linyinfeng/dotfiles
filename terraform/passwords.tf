@@ -11,7 +11,8 @@ resource "random_password" "transmission" {
   length = 32
 }
 resource "random_password" "transmission_salt" {
-  length = 8
+  length  = 8
+  special = false
 }
 resource "htpasswd_password" "transmission" {
   password = random_password.transmission.result
@@ -30,7 +31,8 @@ resource "random_password" "loki" {
   special = false
 }
 resource "random_password" "loki_salt" {
-  length = 8
+  length  = 8
+  special = false
 }
 resource "htpasswd_password" "loki" {
   password = random_password.loki.result
@@ -103,7 +105,8 @@ resource "random_password" "alertmanager" {
   special = false
 }
 resource "random_password" "alertmanager_salt" {
-  length = 8
+  length  = 8
+  special = false
 }
 resource "htpasswd_password" "alertmanager" {
   password = random_password.alertmanager.result
@@ -203,5 +206,30 @@ resource "random_password" "atticd_token_hs256_secret" {
 }
 output "atticd_token_hs256_secret_base64" {
   value     = base64encode(random_password.atticd_token_hs256_secret.result)
+  sensitive = true
+}
+resource "random_pet" "hledger_username" {
+}
+output "hledger_username" {
+  value     = random_pet.hledger_username.id
+  sensitive = true
+}
+resource "random_password" "hledger" {
+  length = 32
+}
+resource "random_password" "hledger_salt" {
+  length  = 8
+  special = false
+}
+resource "htpasswd_password" "hledger" {
+  password = random_password.hledger.result
+  salt     = random_password.hledger_salt.result
+}
+output "hledger_password" {
+  value     = random_password.hledger.result
+  sensitive = true
+}
+output "hledger_hashed_password" {
+  value     = htpasswd_password.hledger.sha512
   sensitive = true
 }
