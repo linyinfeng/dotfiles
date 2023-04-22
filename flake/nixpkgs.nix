@@ -65,7 +65,7 @@
 
     # TODO upstream
     tailscale-derp = final.tailscale.overrideAttrs (old: {
-      subPackages = old.subPackages ++ [ "cmd/derper" ];
+      subPackages = old.subPackages ++ ["cmd/derper"];
     });
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
