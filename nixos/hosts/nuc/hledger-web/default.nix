@@ -1,8 +1,6 @@
-{config, ...}:
-
-let
+{config, ...}: let
   stateDir = "/home/yinfeng/Syncthing/Main/ledger";
-in{
+in {
   services.hledger-web = {
     enable = true;
     baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";

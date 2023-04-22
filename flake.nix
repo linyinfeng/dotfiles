@@ -208,6 +208,8 @@
     # patches
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
     nixpkgs-wluma.url = "github:nixos/nixpkgs/pull/226427/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
+    nixpkgs-wayland.url = "github:nixos/nixpkgs/pull/226283/head";
   };
 
   outputs = inputs @ {flake-parts, ...}:

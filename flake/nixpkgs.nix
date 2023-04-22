@@ -32,6 +32,11 @@
         comma = prev.comma.override {
           nix-index-unwrapped = final.nix-index-with-db;
         };
+        gnuradio = prev.gnuradio.override {
+          unwrapped = prev.gnuradio.unwrapped.override {
+            soapysdr = final.soapysdr-with-plugins;
+          };
+        };
       }
       // lib.optionalAttrs (system == "x86_64-linux") {
         hydra-master = inputs'.hydra.packages.default;
@@ -48,13 +53,6 @@
     });
 
     # TODO upstream
-    gnuradio = prev.gnuradio.override {
-      unwrapped = prev.gnuradio.unwrapped.override {
-        soapysdr = final.soapysdr-with-plugins;
-      };
-    };
-
-    # TODO upstream
     tailscale-derp = final.tailscale.overrideAttrs (old: {
       subPackages =
         old.subPackages
@@ -65,6 +63,12 @@
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
     inherit (inputs'.nixpkgs-wluma.legacyPackages) wluma;
+
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
+    inherit (inputs'.nixpkgs-wayland.legacyPackages) wayland;
+    hyprland = prev.wlroots-hyprland.override {
+      hidpiXWayland = true;
+    };
   };
 in {
   nixpkgs = {
