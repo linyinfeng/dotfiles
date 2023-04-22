@@ -112,7 +112,9 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/hyprland";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
+    # pinned, due to broken wlroots
+    hyprland.url = "github:hyprwm/hyprland/2df0d034bc4a18fafb3524401eeeceaa6b23e753";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";
@@ -208,8 +210,6 @@
     # patches
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
     nixpkgs-wluma.url = "github:nixos/nixpkgs/pull/226427/head";
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
-    nixpkgs-wayland.url = "github:nixos/nixpkgs/pull/226283/head";
   };
 
   outputs = inputs @ {flake-parts, ...}:
