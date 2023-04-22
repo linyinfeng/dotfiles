@@ -153,7 +153,7 @@
       ++ (with profiles; [xdg-dirs vscode]);
     synchronize = with profiles; [onedrive digital-paper];
     security = with profiles; [gpg];
-    other = with profiles; [ hledger ];
+    other = with profiles; [hledger];
 
     full = with suites;
       base
