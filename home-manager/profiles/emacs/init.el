@@ -160,7 +160,7 @@
   :after (company)
   :mode ("\\.journal\\'" "\\.hledger\\'")
   :custom
-  (hledger-jfile "/ssh:root@vultr:/var/lib/hledger-web/main.journal")
+  (hledger-jfile (concat sync-dir "ledger/main.journal"))
   :bind (("C-c j" . hledger-run-command)
          :map hledger-mode-map
          ("C-c e" . hledger-jentry))
