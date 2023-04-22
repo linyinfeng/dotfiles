@@ -39,7 +39,7 @@ in {
         "token:${config.sops.secrets."hledger/repo-token".path}"
       ];
     };
-    before = [ "hledger-web.service" ];
+    before = ["hledger-web.service"];
     requiredBy = ["hledger-web.service"];
   };
   services.nginx.virtualHosts."hledger.*" = {
