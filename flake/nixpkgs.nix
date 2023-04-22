@@ -66,7 +66,7 @@
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
     inherit (inputs'.nixpkgs-wayland.legacyPackages) wayland;
-    hyprland = prev.wlroots-hyprland.override {
+    hyprland = prev.hyprland.override {
       hidpiXWayland = true;
     };
   };
