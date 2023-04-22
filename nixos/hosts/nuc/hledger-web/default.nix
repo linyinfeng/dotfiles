@@ -31,13 +31,15 @@ in {
       git
     ];
     serviceConfig = {
+      Type = "oneshot";
       User = config.users.users.hledger.name;
       Group = config.users.groups.hledger.name;
       WorkingDirectory = config.services.hledger-web.stateDir;
       LoadCredential = [
-        "token:${config.sops.placeholder."hledger/repo-token"}"
+        "token:${config.sops.secrets."hledger/repo-token".path}"
       ];
     };
+    before = [ "hledger-web.service" ];
     requiredBy = ["hledger-web.service"];
   };
   services.nginx.virtualHosts."hledger.*" = {
