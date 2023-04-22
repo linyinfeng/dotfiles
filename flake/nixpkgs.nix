@@ -42,8 +42,15 @@
         hydra-master = inputs'.hydra.packages.default;
       })
   ];
+  earlyFixes = final: prev: let
+    inherit (prev.stdenv.hostPlatform) system;
+    inherit ((getSystem system).allModuleArgs) inputs';
+  in {
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
+    inherit (inputs'.nixpkgs-wayland.legacyPackages) wayland;
+  };
 
-  fixes = final: prev: let
+  lateFixes = final: prev: let
     inherit (prev.stdenv.hostPlatform) system;
     inherit ((getSystem system).allModuleArgs) inputs';
   in {
@@ -65,7 +72,6 @@
     inherit (inputs'.nixpkgs-wluma.legacyPackages) wluma;
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
-    inherit (inputs'.nixpkgs-wayland.legacyPackages) wayland;
     hyprland = prev.hyprland.override {
       hidpiXWayland = true;
     };
@@ -75,10 +81,6 @@ in {
     config = {
       allowUnfree = true;
     };
-    overlays =
-      packages
-      ++ [
-        fixes
-      ];
+    overlays = [earlyFixes] ++ packages ++ [lateFixes];
   };
 }
