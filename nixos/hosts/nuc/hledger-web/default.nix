@@ -25,7 +25,10 @@ in {
         git clone "https://-:$token@github.com/linyinfeng/${repoName}.git" "${repoName}"
       fi
       cd "${repoName}"
-      git pull --ff-only
+      while true; do
+        git pull --ff-only
+        sleep 60
+      done
     '';
     path = with pkgs; [
       git
