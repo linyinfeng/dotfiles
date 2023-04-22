@@ -1,26 +1,45 @@
-{config, ...}: let
-  stateDir = "/home/yinfeng/Syncthing/Main/ledger";
+{
+  config,
+  pkgs,
+  ...
+}: let
+  repoName = "hledger-journal";
 in {
   services.hledger-web = {
     enable = true;
     baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
     capabilities = {
       view = true;
-      add = true;
-      manage = true;
+      add = false;
+      manage = false;
     };
     port = config.ports.hledger-web;
-    stateDir = stateDir;
     journalFiles = [
-      "main.journal"
+      "hledger-journal/main.journal"
     ];
   };
-  systemd.tmpfiles.rules = [
-    ''a+ "/home/yinfeng" - - - - mask::r-x,user:${config.users.users.hledger.name}:r-x''
-    ''a+ "/home/yinfeng/Syncthing" - - - - mask::r-x,user:${config.users.users.hledger.name}:r-x''
-    ''a+ "${stateDir}" - - - - mask::rwx,user:${config.users.users.hledger.name}:rwx''
-    ''a+ "${stateDir}/main.journal" - - - - mask::rw-,user:${config.users.users.hledger.name}:rw-''
-  ];
+  systemd.services.hledger-web-fetch = {
+    script = ''
+      token=$(cat "$CREDENTIALS_DIRECTORY/token")
+      if [ ! -d "${repoName}" ]; then
+        git clone "https://-:$token@github.com/linyinfeng/${repoName}.git" "${repoName}"
+      fi
+      cd "${repoName}"
+      git pull --ff-only
+    '';
+    path = with pkgs; [
+      git
+    ];
+    serviceConfig = {
+      User = config.users.users.hledger.name;
+      Group = config.users.groups.hledger.name;
+      WorkingDirectory = config.services.hledger-web.stateDir;
+      LoadCredential = [
+        "token:${config.sops.placeholder."hledger/repo-token"}"
+      ];
+    };
+    requiredBy = ["hledger-web.service"];
+  };
   services.nginx.virtualHosts."hledger.*" = {
     listen = config.hosts.nuc.listens;
     forceSSL = true;
@@ -41,6 +60,10 @@ in {
       ${config.sops.placeholder."hledger_username"}:${config.sops.placeholder."hledger_hashed_password"}
     '';
     owner = config.users.users.nginx.name;
+  };
+  sops.secrets."hledger/repo-token" = {
+    sopsFile = config.sops-file.host;
+    restartUnits = ["hledger-web-fetch.service"];
   };
   sops.secrets."hledger_username" = {
     sopsFile = config.sops-file.terraform;

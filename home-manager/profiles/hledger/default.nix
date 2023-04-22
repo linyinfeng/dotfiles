@@ -4,6 +4,6 @@
     hledger-ui
   ];
   home.sessionVariables = {
-    "LEDGER_FILE" = "$HOME/Syncthing/Main/ledger/main.journal";
+    "LEDGER_FILE" = "$HOME/Sources/hledger-journal/main.journal";
   };
 }

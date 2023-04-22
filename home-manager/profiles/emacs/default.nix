@@ -43,6 +43,7 @@
       if fw-proxy.enable
       then fw-proxy.mixinConfig.mixed-port
       else "nil";
+    ledgerFile = config.home.sessionVariables."LEDGER_FILE";
   };
 in {
   passthru = {inherit emacs;};
