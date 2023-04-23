@@ -30,8 +30,8 @@ in {
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
-      ./steam
-      ./matrix-qq
+      ./_steam
+      ./_matrix-qq
     ];
 
   options.hosts.tencent = {

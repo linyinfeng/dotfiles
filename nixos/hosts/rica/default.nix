@@ -29,18 +29,18 @@ in {
       services.postgresql
     ])
     ++ [
-      ./minio
-      ./vaultwarden
-      ./git
-      ./seafile
-      ./commit-notifier
-      ./pastebin
-      ./alertmanager
-      ./influxdb
-      ./loki
-      ./grafana
-      ./static-file-hosting
-      ./atticd
+      ./_minio
+      ./_vaultwarden
+      ./_git
+      ./_seafile
+      ./_commit-notifier
+      ./_pastebin
+      ./_alertmanager
+      ./_influxdb
+      ./_loki
+      ./_grafana
+      ./_static-file-hosting
+      ./_atticd
     ];
 
   config = lib.mkMerge [

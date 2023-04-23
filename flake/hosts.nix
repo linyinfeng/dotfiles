@@ -7,11 +7,10 @@
   ...
 }: let
   inherit (inputs.nixpkgs.lib) nixosSystem;
-  inherit (inputs.digga.lib) rakeLeaves;
   buildSuites = profiles: f: lib.mapAttrs (_: lib.flatten) (lib.fix (f profiles));
 
   nixosModules = self.lib.buildModuleList ../nixos/modules;
-  nixosProfiles = rakeLeaves ../nixos/profiles;
+  nixosProfiles = self.lib.rakeLeaves ../nixos/profiles;
   nixosSuites = buildSuites nixosProfiles (profiles: suites: {
     nixSettings = with profiles.nix; [gc settings cachix];
     base =
@@ -114,7 +113,7 @@
   });
 
   hmModules = self.lib.buildModuleList ../home-manager/modules;
-  hmProfiles = rakeLeaves ../home-manager/profiles;
+  hmProfiles = self.lib.rakeLeaves ../home-manager/profiles;
   hmSuites = buildSuites hmProfiles (profiles: suites: {
     base = with profiles; [git];
     multimedia = with profiles; [

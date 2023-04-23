@@ -43,7 +43,7 @@ in {
       users.yinfeng
     ])
     ++ [
-      ./hardware.nix
+      ./_hardware.nix
     ];
 
   config = lib.mkMerge [

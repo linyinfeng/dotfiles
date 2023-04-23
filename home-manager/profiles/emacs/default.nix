@@ -58,10 +58,10 @@ in {
       ripgrep # rg
     ]);
   home.file = {
-    ".emacs.d/var/orgs/templates".source = ./org-roam/templates;
+    ".emacs.d/var/orgs/templates".source = ./_org-roam/templates;
     ".emacs.d/var/pyim/greatdict.pyim.gz".source = "${pkgs.nur.repos.linyinfeng.emacsPackages.pyim-greatdict}/share/emacs/site-lisp/pyim-greatdict.pyim.gz";
     ".emacs.d/rime" = {
-      source = ./rime;
+      source = ./_rime;
       recursive = true;
     };
   };

@@ -30,9 +30,9 @@ in {
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
-      ./matrix
-      ./mastodon
-      ./maddy
+      ./_matrix
+      ./_mastodon
+      ./_maddy
     ];
 
   config = lib.mkMerge [

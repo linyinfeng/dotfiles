@@ -1,8 +1,7 @@
 {
-  inputs,
+  self,
   lib,
 }: let
-  inherit (inputs.digga.lib) rakeLeaves flattenTree;
+  inherit (self) flattenTree rakeLeaves;
 in
-  dir:
-    lib.attrValues (flattenTree (rakeLeaves dir))
+  dir: lib.attrValues (flattenTree (rakeLeaves dir))

@@ -23,7 +23,7 @@ in
       fi
     '';
     home.file.${rimeConfig} = {
-      source = ./user-data;
+      source = ./_user-data;
       recursive = true;
     };
 

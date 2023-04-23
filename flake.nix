@@ -143,17 +143,8 @@
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
-    digga.url = "github:divnix/digga";
-    digga.inputs.nixlib.follows = "nixpkgs";
-    digga.inputs.nixpkgs.follows = "nixpkgs";
-    digga.inputs.nixpkgs-unstable.follows = "nixpkgs";
-    digga.inputs.darwin.follows = "blank";
-    digga.inputs.home-manager.follows = "home-manager";
-    digga.inputs.deploy.follows = "blank";
-    digga.inputs.flake-compat.follows = "flake-compat";
-    digga.inputs.devshell.follows = "devshell";
-    digga.inputs.flake-utils-plus.follows = "flake-utils-plus";
-    digga.inputs.flake-utils.follows = "flake-utils";
+    haumea.url = "github:nix-community/haumea";
+    haumea.inputs.nixpkgs.follows = "nixpkgs";
 
     rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";

@@ -4,7 +4,7 @@
   ...
 }: {
   xdg.configFile."fcitx5" = {
-    source = ./config;
+    source = ./_config;
     recursive = true;
   };
   home.activation.removeExistingFcitx5Profile = lib.hm.dag.entryBefore ["checkLinkTargets"] ''

@@ -25,7 +25,7 @@ in {
     ];
 
     openssh.authorizedKeys.keyFiles = [
-      ./ssh/id_rsa.pub
+      ./_ssh/id_rsa.pub
     ];
   };
 

@@ -49,10 +49,10 @@ in {
       users.nianyi
     ])
     ++ [
-      ./options.nix
-      ./hydra
-      ./minecraft
-      ./hledger-web
+      ./_options.nix
+      ./_hydra
+      ./_minecraft
+      ./_hledger-web
     ];
 
   config = lib.mkMerge [
@@ -158,7 +158,7 @@ in {
             "nuc-proxy.*"
           ];
           locations."/" = {
-            root = ./www;
+            root = ./_www;
           };
         };
       };

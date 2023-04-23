@@ -9,7 +9,7 @@
   wallPaperDark = "${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nix-wallpaper-nineish-dark-gray.png";
   buildScss = name:
     pkgs.runCommand "${name}.css" {
-      src = ./styles;
+      src = ./_styles;
       nativeBuildInputs = with pkgs; [sass];
     } "sass $src/${name}.scss $out";
   swaylock = "${pkgs.swaylock-effects}/bin/swaylock";

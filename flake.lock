@@ -167,53 +167,6 @@
         "type": "github"
       }
     },
-    "digga": {
-      "inputs": {
-        "darwin": [
-          "blank"
-        ],
-        "deploy": [
-          "blank"
-        ],
-        "devshell": [
-          "devshell"
-        ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "flake-utils-plus": [
-          "flake-utils-plus"
-        ],
-        "home-manager": [
-          "home-manager"
-        ],
-        "nixlib": [
-          "nixpkgs"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nixpkgs-unstable": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1674665318,
-        "narHash": "sha256-k3soI+AnNz+9WRU64qv23arssUjnYSwXdJXsPEiFu9I=",
-        "owner": "divnix",
-        "repo": "digga",
-        "rev": "0595ae70cdb5ccf1ab031199fe98551c4b378bd9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "divnix",
-        "repo": "digga",
-        "type": "github"
-      }
-    },
     "emacs-overlay": {
       "inputs": {
         "flake-utils": [
@@ -344,6 +297,26 @@
       "original": {
         "owner": "hercules-ci",
         "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "haumea": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1681873442,
+        "narHash": "sha256-wsOEGbDKf+M/THE7JZi43s4szXTuIaiQNBxlb5Lnxs0=",
+        "owner": "nix-community",
+        "repo": "haumea",
+        "rev": "85038436851caf5bbf652a2fedf38b2b28e38caf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "haumea",
         "type": "github"
       }
     },
@@ -1090,13 +1063,13 @@
         "blank": "blank",
         "crane": "crane",
         "devshell": "devshell",
-        "digga": "digga",
         "emacs-overlay": "emacs-overlay",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "flake-utils-plus": "flake-utils-plus",
         "gitignore-nix": "gitignore-nix",
+        "haumea": "haumea",
         "home-manager": "home-manager",
         "hydra": "hydra",
         "hyprland": "hyprland",

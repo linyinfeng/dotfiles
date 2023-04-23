@@ -6,8 +6,6 @@
 }: let
   name = "yinfeng";
   uid = config.ids.uids.${name};
-  user = config.users.users.${name};
-  homeManager = config.home-manager.users.${name};
   homeDirectory = "/home/${name}";
 
   groupNameIfPresent = name:
@@ -16,7 +14,7 @@
     config.users.groups.${name}.name;
 in {
   imports = [
-    ./syncthing
+    ./_syncthing
   ];
 
   users.users.${name} = {
@@ -70,7 +68,7 @@ in {
     };
     programs.gpg.publicKeys = [
       {
-        source = ./pgp/pub.asc;
+        source = ./_pgp/pub.asc;
         trust = "ultimate";
       }
     ];

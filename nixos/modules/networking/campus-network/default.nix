@@ -5,11 +5,6 @@
   ...
 }: let
   cfg = config.networking.campus-network;
-  secretConfig = file: {
-    inherit file;
-    mode = "440";
-    group = config.users.groups.wheel.name;
-  };
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "campus-network-scripts";
     buildCommand = ''
@@ -18,7 +13,7 @@
       install -Dm755 $autoLogin       $out/bin/campus-net-auto-login
     '';
     campusNetLogin = pkgs.substituteAll {
-      src = ./scripts/login.sh;
+      src = ./_scripts/login.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) curl;
@@ -26,13 +21,13 @@
       passwordFile = config.sops.secrets."campus-net/password".path;
     };
     campusNetLogout = pkgs.substituteAll {
-      src = ./scripts/logout.sh;
+      src = ./_scripts/logout.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) curl;
     };
     autoLogin = pkgs.substituteAll {
-      src = ./scripts/auto-login.sh;
+      src = ./_scripts/auto-login.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) curl;

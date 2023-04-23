@@ -29,8 +29,8 @@ in {
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
-      ./cache-overlay.nix
-      ./pgp
+      ./_cache-overlay.nix
+      ./_pgp
     ];
 
   config = lib.mkMerge [
