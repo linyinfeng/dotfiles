@@ -78,8 +78,11 @@ in {
           CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
         };
       };
-      # TODO see https://github.com/DeterminateSystems/bootspec-secureboot/issues/203
-      services.fwupd.enable = true;
+
+      services.fwupd = {
+        enable = true;
+        extraRemotes = [ "lvfs-testing" ];
+      };
 
       boot.binfmt.emulatedSystems = [
         "aarch64-linux"
