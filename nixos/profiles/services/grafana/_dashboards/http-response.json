@@ -24,7 +24,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 45,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -118,21 +117,25 @@
       {
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "influxdb",
           "uid": "influxdb-li7g-com"
         },
-        "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"http\", tag: \"server\")",
+        "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(\n  bucket: \"http\",\n  tag: \"server\",\n  start: v.timeRangeStart,\n  stop: v.timeRangeStop)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "server",
         "options": [],
-        "query": "import \"influxdata/influxdb/schema\"\nschema.tagValues(bucket: \"http\", tag: \"server\")",
-        "refresh": 1,
+        "query": "import \"influxdata/influxdb/schema\"\nschema.tagValues(\n  bucket: \"http\",\n  tag: \"server\",\n  start: v.timeRangeStart,\n  stop: v.timeRangeStop)",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
