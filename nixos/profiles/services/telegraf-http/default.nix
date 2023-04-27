@@ -14,10 +14,12 @@
       }
     ];
     transmission = [
-      {
-        url = "https://transmission.ts.li7g.com/transmission";
-        code = 401;
-      }
+      # do not test transmission daemon:
+      # too many unsuccessful login attempts. please restart transmission-daemon.
+      # {
+      #   url = "https://transmission.ts.li7g.com/transmission";
+      #   code = 401;
+      # }
       {
         url = "https://transmission.ts.li7g.com/files/";
         code = 401;
