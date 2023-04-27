@@ -10,6 +10,7 @@
     "synapse_media_host": .b2_s3_api_host.value,
     "synapse_media_region": .b2_s3_region.value,
     "synapse_media_bucket_name": .b2_synapse_media_bucket_name.value,
+    "hydra_builder_public_key": .hydra_builder_public_key.value,
     "hosts": .hosts.value | map_values(
         with_entries(
             select(
@@ -20,5 +21,5 @@
             )
         )
     ),
-    "hydra_builder_public_key": .hydra_builder_public_key.value
+    "service_cname_mappings": .service_cname_mappings.value
 }

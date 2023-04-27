@@ -22,15 +22,18 @@ in {
 
   config = lib.mkMerge [
     {
-      services.nginx = {
-        virtualHosts."nuc.*" = {
-          locations."/hydra/" = {
-            proxyPass = "http://127.0.0.1:${toString config.ports.hydra}/";
-            extraConfig = ''
-              proxy_set_header X-Forwarded-Port $server_port;
-              proxy_set_header X-Request-Base /hydra;
-            '';
-          };
+      services.nginx.virtualHosts."nuc.*" = {
+        locations."/hydra/" = {
+          proxyPass = "http://127.0.0.1:${toString config.ports.hydra}/";
+          extraConfig = ''
+            proxy_set_header X-Forwarded-Port $server_port;
+            proxy_set_header X-Request-Base /hydra;
+          '';
+        };
+      };
+      services.nginx.virtualHosts."hydra.*" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:${toString config.ports.hydra}";
         };
       };
 

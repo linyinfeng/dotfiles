@@ -16,6 +16,7 @@
       "system"
       "minio"
       "minecraft"
+      "http"
     ];
   };
 in {

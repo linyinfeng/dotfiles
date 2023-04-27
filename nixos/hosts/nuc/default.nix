@@ -201,7 +201,7 @@ in {
     }
 
     # transmission
-    # extra settings for suites.transmission
+    # extra settings for profies.services.transmission
     {
       services.nginx.virtualHosts."transmission.*" = {
         forceSSL = true;

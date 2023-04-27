@@ -10,6 +10,7 @@
   "synapse_media_host": "s3.us-west-004.backblazeb2.com",
   "synapse_media_region": "us-west-004",
   "synapse_media_bucket_name": "yinfeng-synapse-media",
+  "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",
   "hosts": {
     "framework": {
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVqC3OlslCMAMksx048JExd3YlllT1he7jSnmLolUlr",
@@ -54,5 +55,122 @@
       "wireguard_public_key": "bRPXUUpthdW3QrNsfq3wms/torS5fdip3V5HzY1BtkU="
     }
   },
-  "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n"
+  "service_cname_mappings": {
+    "alertmanager": {
+      "on": "rica",
+      "proxy": true
+    },
+    "attic": {
+      "on": "rica",
+      "proxy": true
+    },
+    "box": {
+      "on": "rica",
+      "proxy": true
+    },
+    "dst": {
+      "on": "tencent",
+      "proxy": false
+    },
+    "git": {
+      "on": "rica",
+      "proxy": true
+    },
+    "grafana": {
+      "on": "rica",
+      "proxy": true
+    },
+    "hledger": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "hydra": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "influxdb": {
+      "on": "rica",
+      "proxy": true
+    },
+    "jellyfin": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "loki": {
+      "on": "rica",
+      "proxy": true
+    },
+    "mastodon": {
+      "on": "hil0",
+      "proxy": true
+    },
+    "matrix": {
+      "on": "hil0",
+      "proxy": true
+    },
+    "matrix-qq": {
+      "on": "tencent",
+      "proxy": false
+    },
+    "minio": {
+      "on": "rica",
+      "proxy": false
+    },
+    "minio-console": {
+      "on": "rica",
+      "proxy": true
+    },
+    "nuc-proxy": {
+      "on": "vultr",
+      "proxy": true
+    },
+    "oranc": {
+      "on": "vultr",
+      "proxy": true
+    },
+    "pb": {
+      "on": "rica",
+      "proxy": true
+    },
+    "pgp-public-key": {
+      "on": "vultr",
+      "proxy": true
+    },
+    "portal": {
+      "on": "vultr",
+      "proxy": true
+    },
+    "shanghai.derp": {
+      "on": "tencent",
+      "proxy": false
+    },
+    "smtp": {
+      "on": "hil0",
+      "proxy": false
+    },
+    "social": {
+      "on": "rica",
+      "proxy": true
+    },
+    "static": {
+      "on": "rica",
+      "proxy": true
+    },
+    "synapse-admin": {
+      "on": "hil0",
+      "proxy": true
+    },
+    "tar": {
+      "on": "vultr",
+      "proxy": true
+    },
+    "transmission": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "vault": {
+      "on": "rica",
+      "proxy": true
+    }
+  }
 }

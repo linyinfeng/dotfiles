@@ -39,6 +39,7 @@ in {
       services.grafana
       services.static-file-hosting
       services.atticd
+      services.telegraf-http
     ]);
 
   config = lib.mkMerge [

@@ -104,6 +104,10 @@ locals {
     mastodon        = { on = "hil0", proxy = true }
   }
 }
+output "service_cname_mappings" {
+  value     = local.service_cname_mappings
+  sensitive = false
+}
 
 resource "cloudflare_record" "general_cname" {
   for_each = local.service_cname_mappings

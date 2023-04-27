@@ -65,6 +65,7 @@
     ];
     games = with profiles.graphical.game; [steam];
     monitoring = with profiles; [
+      services.telegraf
       services.telegraf-system
       services.promtail
     ];
