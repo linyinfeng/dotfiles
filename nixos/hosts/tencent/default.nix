@@ -27,11 +27,11 @@ in {
       services.nginx
       services.acme
       services.postgresql
+      services.matrix-qq
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
       ./_steam
-      ./_matrix-qq
     ];
 
   options.hosts.tencent = {

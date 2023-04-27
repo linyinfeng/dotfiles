@@ -26,11 +26,14 @@ in {
       services.acme
       services.notify-failure
       services.ace-bot
+      services.cache-overlay
+      services.pgp-public-key-web
+      services.nuc-proxy
+      services.oranc
+      services.dot-tar
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
-      ./_cache-overlay.nix
-      ./_pgp
     ];
 
   config = lib.mkMerge [
@@ -94,63 +97,6 @@ in {
         host = "portal.li7g.com";
         nginxVirtualHost = "portal.*";
         server.enable = true;
-      };
-    }
-
-    # dot-tar
-    {
-      services.nginx.virtualHosts."tar.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "http://localhost:${toString config.ports.dot-tar}";
-        };
-      };
-      services.dot-tar = {
-        enable = true;
-        config = {
-          release = {
-            port = config.ports.dot-tar;
-            authority_allow_list = [
-              "github.com"
-            ];
-          };
-        };
-      };
-
-      services.notify-failure.services = [
-        "dot-tar"
-      ];
-    }
-
-    # nuc-proxy
-    {
-      services.nginx.upstreams."nuc".servers = {
-        "nuc.ts.li7g.com:${toString config.ports.https}" = {};
-        "nuc.zt.li7g.com:${toString config.ports.https}" = {backup = true;};
-        "nuc.li7g.com:${toString config.ports.https-alternative}" = {backup = true;};
-      };
-      services.nginx.virtualHosts."nuc-proxy.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "https://nuc";
-        };
-      };
-    }
-
-    # oranc
-    {
-      services.oranc = {
-        enable = true;
-        listen = "127.0.0.1:${toString config.ports.oranc}";
-      };
-      services.nginx.virtualHosts."oranc.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          proxyPass = "http://${config.services.oranc.listen}";
-        };
       };
     }
 

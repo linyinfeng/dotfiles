@@ -27,21 +27,19 @@ in {
       services.acme
       services.notify-failure
       services.postgresql
-    ])
-    ++ [
-      ./_minio
-      ./_vaultwarden
-      ./_git
-      ./_seafile
-      ./_commit-notifier
-      ./_pastebin
-      ./_alertmanager
-      ./_influxdb
-      ./_loki
-      ./_grafana
-      ./_static-file-hosting
-      ./_atticd
-    ];
+      services.minio
+      services.vaultwarden
+      services.gitweb
+      services.seafile
+      services.commit-notifier
+      services.pastebin
+      services.alertmanager
+      services.influxdb
+      services.loki
+      services.grafana
+      services.static-file-hosting
+      services.atticd
+    ]);
 
   config = lib.mkMerge [
     {

@@ -1,13 +1,14 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   repoName = "hledger-journal";
 in {
   services.hledger-web = {
     enable = true;
-    baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
+    baseUrl = lib.mkDefault "https://hledger.li7g.com";
     capabilities = {
       view = true;
       add = false;
@@ -26,7 +27,9 @@ in {
       fi
       cd "${repoName}"
       while true; do
+        set +e
         git pull --ff-only
+        set -e
         sleep 60
       done
     '';
@@ -34,7 +37,6 @@ in {
       git
     ];
     serviceConfig = {
-      Type = "oneshot";
       User = config.users.users.hledger.name;
       Group = config.users.groups.hledger.name;
       WorkingDirectory = config.services.hledger-web.stateDir;
@@ -46,7 +48,6 @@ in {
     requiredBy = ["hledger-web.service"];
   };
   services.nginx.virtualHosts."hledger.*" = {
-    listen = config.hosts.nuc.listens;
     forceSSL = true;
     useACMEHost = "main";
     locations."/" = {

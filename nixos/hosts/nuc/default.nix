@@ -43,6 +43,7 @@ in {
       services.notify-failure
       services.smartd
       services.postgresql
+      services.hledger-web
       programs.service-mail
       programs.tg-send
       users.yinfeng
@@ -52,7 +53,6 @@ in {
       ./_options.nix
       ./_hydra
       ./_minecraft
-      ./_hledger-web
     ];
 
   config = lib.mkMerge [
@@ -269,6 +269,12 @@ in {
           '';
         };
       };
+    }
+
+    # hledger-web
+    {
+      services.hledger-web.baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
+      services.nginx.virtualHosts."hledger.*".listen = config.hosts.nuc.listens;
     }
   ];
 }

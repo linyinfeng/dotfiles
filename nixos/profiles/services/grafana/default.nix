@@ -20,7 +20,7 @@
       };
       "auth.anonymous".enabled = true;
       users.default_theme = "light";
-      dashboards.default_home_dashboard_path = "${./dashboards/home.json}";
+      dashboards.default_home_dashboard_path = "${./_dashboards/home.json}";
       smtp = {
         enabled = true;
         from_address = "grafana@li7g.com";
@@ -71,7 +71,7 @@
         {
           name = "dashboards";
           type = "file";
-          options.path = ./dashboards;
+          options.path = ./_dashboards;
         }
       ];
     };
