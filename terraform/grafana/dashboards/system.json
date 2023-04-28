@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 55,
+  "id": 18,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -71,7 +71,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 3.4285714285714284,
+        "w": 4,
         "x": 0,
         "y": 1
       },
@@ -89,7 +89,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "repeat": "host",
       "repeatDirection": "h",
       "targets": [
@@ -175,7 +175,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
@@ -235,7 +235,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
@@ -383,7 +383,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
@@ -440,7 +440,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
@@ -583,7 +583,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
@@ -828,14 +828,14 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "9.5.0-cloud.5.a016665c",
       "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"disk\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> last()\n  |> map(fn: (r) => ({_value: r._value, _time: r._time, _field: r.device}))\n",
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"disk\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> drop(columns: [\"path\"])\n  |> last()\n  |> map(fn: (r) => ({_value: r._value, _time: r._time, _field: r.device}))\n",
           "refId": "A"
         }
       ],
