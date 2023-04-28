@@ -24,6 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 16,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -94,7 +95,7 @@
       "type": "state-timeline"
     }
   ],
-  "refresh": false,
+  "refresh": "1m",
   "revision": 1,
   "schemaVersion": 38,
   "style": "dark",
@@ -127,7 +128,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
