@@ -4,7 +4,6 @@
   suites,
   profiles,
   lib,
-  modulesPath,
   ...
 }: let
   btrfsSubvol = device: subvol: extraConfig:
@@ -33,10 +32,6 @@ in {
       services.seafile
       services.commit-notifier
       services.pastebin
-      services.alertmanager
-      services.influxdb
-      services.loki
-      services.grafana
       services.static-file-hosting
       services.atticd
       services.telegraf-http

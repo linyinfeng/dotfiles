@@ -1,10 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{config, ...}: let
   mainInfluxdb = bucket: {
-    urls = ["https://influxdb.li7g.com"];
+    urls = [config.lib.self.data.influxdb_url];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
     bucket = bucket;
@@ -27,7 +23,6 @@ in {
         flush_jitter = "5s";
       };
       outputs.influxdb_v2 = [
-        (mainInfluxdb "main")
         (mainInfluxdb "system")
         (mainInfluxdb "minio")
         (mainInfluxdb "minecraft")

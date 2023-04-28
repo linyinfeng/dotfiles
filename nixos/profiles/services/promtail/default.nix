@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  inherit (config.lib.self.data) loki_username loki_host;
+in {
   services.promtail = {
     enable = true;
     extraFlags = [
@@ -12,7 +14,7 @@
       positions.filename = "/tmp/positions.yaml";
       clients = [
         {
-          url = "https://loki:\${LOKI_PASSWORD}@loki.li7g.com/loki/api/v1/push";
+          url = "https://${loki_username}:\${LOKI_PASSWORD}@${loki_host}/api/prom/push";
         }
       ];
       scrape_configs = [

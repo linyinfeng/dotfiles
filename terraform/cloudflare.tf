@@ -90,10 +90,6 @@ locals {
     minio           = { on = "rica", proxy = false }
     minio-console   = { on = "rica", proxy = true }
     social          = { on = "rica", proxy = true }
-    grafana         = { on = "rica", proxy = true }
-    influxdb        = { on = "rica", proxy = true }
-    loki            = { on = "rica", proxy = true }
-    alertmanager    = { on = "rica", proxy = true }
     static          = { on = "rica", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }

@@ -82,7 +82,7 @@ in {
   };
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {
-      url = "https://influxdb.li7g.com";
+      url = config.lib.self.data.influxdb_url;
       organization = "main-org";
       bucket = "minecraft";
       interval = 10;

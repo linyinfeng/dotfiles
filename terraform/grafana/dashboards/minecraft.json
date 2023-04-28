@@ -35,7 +35,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-li7g-com"
+        "uid": "influxdb"
       },
       "gridPos": {
         "h": 1,
@@ -835,7 +835,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-li7g-com"
+        "uid": "influxdb"
       },
       "gridPos": {
         "h": 1,
@@ -1312,7 +1312,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-li7g-com"
+        "uid": "influxdb"
       },
       "gridPos": {
         "h": 1,
@@ -1587,7 +1587,7 @@
       "collapsed": false,
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-li7g-com"
+        "uid": "influxdb"
       },
       "gridPos": {
         "h": 1,
@@ -2668,7 +2668,7 @@
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "influxdb-li7g-com"
+          "uid": "influxdb"
         },
         "definition": "import \"influxdata/influxdb/v1\"\r\n\r\nv1.measurementTagValues(\r\n  bucket: \"${bucket}\",\r\n  measurement: \"minecraft_players_count\",\r\n  tag: \"server\"\r\n)",
         "hide": 0,

@@ -11,6 +11,9 @@
   "synapse_media_region": "us-west-004",
   "synapse_media_bucket_name": "yinfeng-synapse-media",
   "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",
+  "loki_host": "logs-prod-006.grafana.net",
+  "loki_username": "584508",
+  "influxdb_url": "https://us-east-1-1.aws.cloud2.influxdata.com",
   "hosts": {
     "framework": {
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVqC3OlslCMAMksx048JExd3YlllT1he7jSnmLolUlr",
@@ -56,10 +59,6 @@
     }
   },
   "service_cname_mappings": {
-    "alertmanager": {
-      "on": "rica",
-      "proxy": true
-    },
     "attic": {
       "on": "rica",
       "proxy": true
@@ -76,10 +75,6 @@
       "on": "rica",
       "proxy": true
     },
-    "grafana": {
-      "on": "rica",
-      "proxy": true
-    },
     "hledger": {
       "on": "nuc",
       "proxy": false
@@ -88,17 +83,9 @@
       "on": "nuc",
       "proxy": false
     },
-    "influxdb": {
-      "on": "rica",
-      "proxy": true
-    },
     "jellyfin": {
       "on": "nuc",
       "proxy": false
-    },
-    "loki": {
-      "on": "rica",
-      "proxy": true
     },
     "mastodon": {
       "on": "hil0",

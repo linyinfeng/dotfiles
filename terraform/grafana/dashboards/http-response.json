@@ -30,7 +30,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "influxdb-li7g-com"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -84,7 +84,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "influxdb-li7g-com"
+            "uid": "influxdb"
           },
           "query": "from(bucket: \"http\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"http_response\")\n  |> filter(fn: (r) => r[\"server\"] == \"${server}\")\n  |> filter(fn: (r) => r[\"_field\"] == \"result_code\")\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: true)\n  |> map(fn: (r) => ({_time: r._time, _value: r._value}))\n  |> yield(name: \"max\")\n",
           "refId": "A"
@@ -104,16 +104,12 @@
       {
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": ["All"],
+          "value": ["$__all"]
         },
         "datasource": {
           "type": "influxdb",
-          "uid": "influxdb-li7g-com"
+          "uid": "influxdb"
         },
         "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(\n  bucket: \"http\",\n  tag: \"server\",\n  start: v.timeRangeStart,\n  stop: v.timeRangeStop)",
         "hide": 0,
@@ -137,7 +133,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "HTTP Response",
-  "uid": "73poPZyVk",
+  "uid": "http-response",
   "version": 1,
   "weekStart": ""
 }

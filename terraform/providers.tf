@@ -19,12 +19,18 @@ terraform {
     oci = {
       source = "oracle/oci"
     }
-    # third-party providers
-    sops = {
-      source = "carlpett/sops"
+    hcloud = {
+      source = "hetznercloud/hcloud"
     }
     tailscale = {
       source = "tailscale/tailscale"
+    }
+    grafana = {
+      source = "grafana/grafana"
+    }
+    # third-party providers
+    sops = {
+      source = "carlpett/sops"
     }
     minio = {
       source = "aminueza/minio"
@@ -35,8 +41,8 @@ terraform {
     htpasswd = {
       source = "loafoe/htpasswd"
     }
-    hcloud = {
-      source = "hetznercloud/hcloud"
+    influx = {
+      source = "schubergphilis/influx"
     }
   }
 }
