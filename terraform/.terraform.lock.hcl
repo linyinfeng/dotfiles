@@ -308,16 +308,6 @@ provider "registry.terraform.io/oracle/oci" {
   ]
 }
 
-provider "registry.terraform.io/schubergphilis/influx" {
-  version = "0.2.2"
-  hashes = [
-    "h1:Qygv1F5AKBJnXxnPKQzZL2YMzqcsgPJEU+HVkK+DVVg=",
-    "zh:6599b52c4ba86b4793c305e514161e974e848e22b3ffd949c132636eaf90df3d",
-    "zh:83ea9fe8dacb0c33b21adf8f52fd4c0b08a5ba2220e3fdd3babd07b58e566a3a",
-    "zh:fee62d5153a7dd571c11be15bbfb18e11ebb8d1c8fdd3ced0a76ef1ef14724f1",
-  ]
-}
-
 provider "registry.terraform.io/tailscale/tailscale" {
   version = "0.13.7"
   hashes = [

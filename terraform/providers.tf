@@ -41,8 +41,5 @@ terraform {
     htpasswd = {
       source = "loafoe/htpasswd"
     }
-    influx = {
-      source = "schubergphilis/influx"
-    }
   }
 }
