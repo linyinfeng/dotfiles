@@ -60,7 +60,7 @@
     gdm-prepare = {
       script = ''
         mkdir -p .config
-        ln -s ${./monitors.xml} .config/monitors.xml
+        ln -sf ${./monitors.xml} .config/monitors.xml
       '';
       serviceConfig = {
         User = config.users.users.gdm.name;
