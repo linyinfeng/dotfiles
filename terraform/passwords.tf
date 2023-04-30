@@ -50,6 +50,14 @@ output "influxdb_password" {
   value     = random_password.influxdb.result
   sensitive = true
 }
+resource "random_password" "influxdb_token" {
+  length  = 64
+  special = false
+}
+output "influxdb_token" {
+  value     = random_password.influxdb_token.result
+  sensitive = true
+}
 resource "random_password" "rcon" {
   length  = 32
   special = false

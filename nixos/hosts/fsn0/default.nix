@@ -15,6 +15,7 @@
       services.acme
       services.notify-failure
       services.postgresql
+      services.influxdb
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"

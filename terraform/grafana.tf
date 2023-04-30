@@ -53,10 +53,10 @@ resource "grafana_data_source" "influxdb" {
   url  = local.influxdb_url
   json_data_encoded = jsonencode({
     version      = "Flux"
-    organization = "infrastructure"
+    organization = "main-org"
   })
   secure_json_data_encoded = jsonencode({
-    token = influx_authorization.grafana.token
+    token = random_password.influxdb_token.result
   })
 }
 resource "grafana_folder" "infrastructure" {

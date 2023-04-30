@@ -98,6 +98,7 @@ locals {
     synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }
     mastodon        = { on = "hil0", proxy = true }
+    influxdb        = { on = "fsn0", proxy = true }
   }
 }
 output "service_cname_mappings" {

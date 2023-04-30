@@ -1,9 +1,13 @@
 provider "influx" {
-  url   = local.influxdb_url
+  url   = local.influxdb_url_cloud
   token = data.sops_file.terraform.data["influxdb.token"]
 }
 locals {
-  influxdb_url = "https://us-east-1-1.aws.cloud2.influxdata.com"
+  influxdb_url_cloud = "https://us-east-1-1.aws.cloud2.influxdata.com"
+  # influxdb_url = influxdb_url_cloud
+  # currently use self-hosted influxdb
+  # influxdb_url is too expensive
+  influxdb_url = "https://influxdb.li7g.com"
 }
 output "influxdb_url" {
   value     = local.influxdb_url
@@ -34,10 +38,11 @@ resource "influx_authorization" "write" {
     type   = "buckets"
   }
 }
-output "influxdb_token" {
-  value     = influx_authorization.write.token
-  sensitive = true
-}
+# currently use self-hosted influxdb
+# output "influxdb_token" {
+#   value     = influx_authorization.write.token
+#   sensitive = true
+# }
 resource "influx_authorization" "grafana" {
   name = "grafana"
   permission {
