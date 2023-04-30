@@ -27,6 +27,10 @@
       key = "age1q4f93vlxr4k5a9tnu5r8p7q3ks597fnu7kyc42kp0qsg6y0zxekqpmpj7g";
       owned = true;
     };
+    fsn0 = {
+      key = "age1q8rds85ppw8uas9jk4dl4ynfvwm9qp92m0mry9aqse7zjvh5fpms5c98at";
+      owned = true;
+    };
     vultr = {
       key = "age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv";
       owned = true;

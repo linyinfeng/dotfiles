@@ -30,6 +30,21 @@ locals {
       }
       ddns_records = {}
     }
+    fsn0 = {
+      records = {
+        a = {
+          proxied = true
+          type    = "A"
+          value   = hcloud_server.fsn0.ipv4_address
+        }
+        aaaa = {
+          proxied = true
+          type    = "AAAA"
+          value   = hcloud_server.fsn0.ipv6_address
+        }
+      }
+      ddns_records = {}
+    }
     rica = {
       records = {
         a = {

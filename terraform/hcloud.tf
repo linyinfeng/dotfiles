@@ -2,6 +2,11 @@ provider "hcloud" {
   token = data.sops_file.terraform.data["hcloud.token"]
 }
 
+resource "hcloud_ssh_key" "pgp" {
+  name       = "PGP"
+  public_key = file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub")
+}
+
 resource "hcloud_firewall" "main" {
   name = "main"
 
@@ -45,25 +50,21 @@ resource "hcloud_firewall" "main" {
   }
 }
 
-data "hcloud_locations" "all_locations" {
+data "hcloud_locations" "all" {
 }
 
-data "hcloud_datacenters" "all_datacenters" {
-}
-
-variable "hclouod_datacenter" {
-  type    = string
-  default = "hil-dc1"
+data "hcloud_datacenters" "all" {
 }
 
 resource "hcloud_server" "hil0" {
   name               = "hil0"
   server_type        = "cpx31"
-  datacenter         = var.hclouod_datacenter
+  datacenter         = "hil-dc1"
   image              = "debian-11"
   delete_protection  = true
   rebuild_protection = true
   firewall_ids       = [hcloud_firewall.main.id]
+  # ssh_keys           = [hcloud_ssh_key.pgp.id]
   public_net {
     ipv4 = hcloud_primary_ip.hil0_ipv4.id
     ipv6 = hcloud_primary_ip.hil0_ipv6.id
@@ -73,7 +74,7 @@ resource "hcloud_server" "hil0" {
 resource "hcloud_primary_ip" "hil0_ipv4" {
   name              = "hil0-v4"
   type              = "ipv4"
-  datacenter        = var.hclouod_datacenter
+  datacenter        = "hil-dc1"
   assignee_type     = "server"
   auto_delete       = false
   delete_protection = true
@@ -82,7 +83,7 @@ resource "hcloud_primary_ip" "hil0_ipv4" {
 resource "hcloud_primary_ip" "hil0_ipv6" {
   name              = "hil0-v6"
   type              = "ipv6"
-  datacenter        = var.hclouod_datacenter
+  datacenter        = "hil-dc1"
   assignee_type     = "server"
   auto_delete       = false
   delete_protection = true
@@ -112,5 +113,53 @@ output "hil0_ipv6_prefix" {
 
 output "hil0_ipv6_prefix_length" {
   value     = split("/", hcloud_server.hil0.ipv6_network)[1]
+  sensitive = true
+}
+
+resource "hcloud_server" "fsn0" {
+  name               = "fsn0"
+  server_type        = "cax11"
+  datacenter         = "fsn1-dc14"
+  image              = "debian-11"
+  delete_protection  = true
+  rebuild_protection = true
+  firewall_ids       = [hcloud_firewall.main.id]
+  ssh_keys           = [hcloud_ssh_key.pgp.id]
+  public_net {
+    ipv4 = hcloud_primary_ip.fsn0_ipv4.id
+    ipv6 = hcloud_primary_ip.fsn0_ipv6.id
+  }
+}
+
+resource "hcloud_primary_ip" "fsn0_ipv4" {
+  name              = "fsn0-v4"
+  type              = "ipv4"
+  datacenter        = "fsn1-dc14"
+  assignee_type     = "server"
+  auto_delete       = false
+  delete_protection = true
+}
+
+resource "hcloud_primary_ip" "fsn0_ipv6" {
+  name              = "fsn0-v6"
+  type              = "ipv6"
+  datacenter        = "fsn1-dc14"
+  assignee_type     = "server"
+  auto_delete       = false
+  delete_protection = true
+}
+
+output "fsn0_ipv6_address" {
+  value     = hcloud_server.fsn0.ipv6_address
+  sensitive = true
+}
+
+output "fsn0_ipv6_prefix" {
+  value     = split("/", hcloud_server.fsn0.ipv6_network)[0]
+  sensitive = true
+}
+
+output "fsn0_ipv6_prefix_length" {
+  value     = split("/", hcloud_server.fsn0.ipv6_network)[1]
   sensitive = true
 }

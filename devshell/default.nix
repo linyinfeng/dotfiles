@@ -22,6 +22,16 @@
           category = "secrets";
         }
         {
+          category = "secrets";
+          name = "sops-update-keys";
+          help = "update keys for all sops file";
+          command = ''
+            set -e
+
+            ${pkgs.fd}/bin/fd '.*\.yaml' $PRJ_ROOT/secrets --exec sops updatekeys --yes
+          '';
+        }
+        {
           package = pkgs.age;
           category = "secrets";
         }

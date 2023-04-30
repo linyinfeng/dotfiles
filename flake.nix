@@ -193,6 +193,9 @@
     nixago-exts.inputs.nixago.follows = "nixago";
     nixago-exts.inputs.nixpkgs.follows = "nixpkgs";
 
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
     # compatibility layer
 
     flake-compat.url = "github:edolstra/flake-compat";

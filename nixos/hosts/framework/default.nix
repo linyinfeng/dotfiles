@@ -48,10 +48,6 @@ in {
 
   config = lib.mkMerge [
     {
-      i18n.defaultLocale = "en_US.UTF-8";
-      console.keyMap = "us";
-      time.timeZone = "Asia/Shanghai";
-
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
         consoleMode = "auto";

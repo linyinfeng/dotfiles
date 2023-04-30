@@ -1,5 +1,10 @@
 # customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/12th-gen-intel/default.nix
-{config, pkgs, lib, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   boot.kernelParams = [
     # For Power consumption
     # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
@@ -51,7 +56,7 @@
   environment.global-persistence.user.directories = [
     ".local/share/wluma"
   ];
-  systemd.services = lib.mkIf (config.services.xserver.displayManager.gdm.enable)  {
+  systemd.services = lib.mkIf (config.services.xserver.displayManager.gdm.enable) {
     gdm-prepare = {
       script = ''
         mkdir -p .config
@@ -63,8 +68,8 @@
         StateDirectory = "gdm";
         WorkingDirectory = "/var/lib/gdm";
       };
-      before = [ "display-manager.service" ];
-      wantedBy = [ "display-manager.service" ];
+      before = ["display-manager.service"];
+      wantedBy = ["display-manager.service"];
     };
   };
 }

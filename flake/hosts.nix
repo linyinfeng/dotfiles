@@ -23,6 +23,7 @@
         services.oom-killer
         security.polkit
         global-persistence
+        system.common
         system.sysrq
         users.root
       ]);
@@ -170,6 +171,7 @@
       inputs.home-manager.nixosModules.home-manager
       inputs.sops-nix.nixosModules.sops
       inputs.impermanence.nixosModules.impermanence
+      inputs.disko.nixosModules.disko
       inputs.flake-utils-plus.nixosModules.autoGenFromInputs
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.linyinfeng.nixosModules.vlmcsd
@@ -310,6 +312,11 @@ in {
     (mkHost {
       name = "hil0";
       system = "x86_64-linux";
+    })
+
+    (mkHost {
+      name = "fsn0";
+      system = "aarch64-linux";
     })
   ];
 }
