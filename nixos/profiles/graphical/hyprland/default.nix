@@ -7,6 +7,12 @@
 lib.mkMerge [
   {
     programs.hyprland.enable = true;
+    environment.sessionVariables = {
+      # override the setting in hyprland module
+      # priority of mkDefault is 1000
+      # default priority is 100
+      NIXOS_OZONE_WL = lib.mkOverride 990 "";
+    };
 
     systemd.user.services.xdg-desktop-portal-hyprland = {
       unitConfig = {
