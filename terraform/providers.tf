@@ -28,6 +28,9 @@ terraform {
     grafana = {
       source = "grafana/grafana"
     }
+    null = {
+      source = "hashicorp/null"
+    }
     # third-party providers
     sops = {
       source = "carlpett/sops"

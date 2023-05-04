@@ -108,25 +108,6 @@ locals {
   }
 }
 
-locals {
-  host_numbers = [for n in random_integer.host_number : n.result]
-}
-
-resource "null_resource" "host_numbers_are_unique" {
-  lifecycle {
-    precondition {
-      condition     = length(local.host_numbers) == length(distinct(local.host_numbers))
-      error_message = "Host numbers should be unique."
-    }
-  }
-}
-
-resource "random_integer" "host_number" {
-  for_each = local.hosts
-  min      = local.zerotier_main_subnet_min_host_number
-  max      = local.zerotier_main_subnet_max_host_number
-}
-
 module "hosts" {
   source = "./modules/host"
 
@@ -143,7 +124,6 @@ module "hosts" {
   records             = each.value.records
   ddns_records        = each.value.ddns_records
   zerotier_network_id = zerotier_network.main.id
-  zerotier_ip         = cidrhost(local.zerotier_main_subnet_cidr, random_integer.host_number[each.key].result)
 }
 
 output "hosts" {

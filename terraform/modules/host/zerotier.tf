@@ -2,10 +2,6 @@ variable "zerotier_network_id" {
   type = string
 }
 
-variable "zerotier_ip" {
-  type = string
-}
-
 resource "zerotier_identity" "host" {}
 
 resource "zerotier_member" "host" {
@@ -15,7 +11,6 @@ resource "zerotier_member" "host" {
   hidden                  = false
   allow_ethernet_bridging = true
   no_auto_assign_ips      = false
-  ip_assignments          = [var.zerotier_ip]
 }
 
 output "zerotier_id" {

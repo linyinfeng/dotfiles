@@ -39,11 +39,12 @@ resource "cloudflare_record" "ddns_records" {
   lifecycle { ignore_changes = [value] }
 }
 
-resource "cloudflare_record" "zerotier_record" {
+resource "cloudflare_record" "zerotier_records" {
+  for_each = zerotier_member.host.ip_assignments
   name    = "${var.name}.zt"
   ttl     = 1 # default ttl
   proxied = false
   type    = "A"
-  value   = var.zerotier_ip
+  value   = each.value
   zone_id = var.cloudflare_zone_id
 }

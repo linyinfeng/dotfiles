@@ -14,12 +14,16 @@ resource "zerotier_network" "main" {
   name = "main"
 
   assign_ipv4 {
-    zerotier = false
+    zerotier = true
   }
   assign_ipv6 {
     zerotier = false
     sixplane = false
     rfc4193  = false
+  }
+  assignment_pool {
+    start = cidrhost(local.zerotier_main_subnet_cidr, local.zerotier_main_subnet_min_host_number)
+    end = cidrhost(local.zerotier_main_subnet_cidr, local.zerotier_main_subnet_max_host_number)
   }
   route {
     target = local.zerotier_main_subnet_cidr
