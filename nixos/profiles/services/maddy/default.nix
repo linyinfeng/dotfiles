@@ -19,6 +19,15 @@ in {
       primaryDomain = "li7g.com";
       localDomains = ["$(primary_domain)"];
       openFirewall = false;
+      tls = {
+        loader = "file";
+        certificates = [
+          {
+            certPath = "${certDir}/fullchain.pem";
+            keyPath = "${certDir}/key.pem";
+          }
+        ];
+      };
       config = ''
         # Local storage & authentication
 
@@ -29,8 +38,6 @@ in {
             table_name passwords
           }
         }
-
-        tls file ${certDir}/fullchain.pem ${certDir}/key.pem
 
         # SMTP endpoints + message routing
 
