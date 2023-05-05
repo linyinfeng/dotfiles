@@ -41,10 +41,10 @@ resource "cloudflare_record" "ddns_records" {
 
 resource "cloudflare_record" "zerotier_records" {
   for_each = zerotier_member.host.ip_assignments
-  name    = "${var.name}.zt"
-  ttl     = 1 # default ttl
-  proxied = false
-  type    = "A"
-  value   = each.value
-  zone_id = var.cloudflare_zone_id
+  name     = "${var.name}.zt"
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "A"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
 }

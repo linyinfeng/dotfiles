@@ -23,7 +23,7 @@ resource "zerotier_network" "main" {
   }
   assignment_pool {
     start = cidrhost(local.zerotier_main_subnet_cidr, local.zerotier_main_subnet_min_host_number)
-    end = cidrhost(local.zerotier_main_subnet_cidr, local.zerotier_main_subnet_max_host_number)
+    end   = cidrhost(local.zerotier_main_subnet_cidr, local.zerotier_main_subnet_max_host_number)
   }
   route {
     target = local.zerotier_main_subnet_cidr
