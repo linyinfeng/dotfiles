@@ -12,7 +12,8 @@ in
   lib.mkIf config.home.graphical {
     home.packages = with pkgs; [
       lunar-client
-      prismlauncher
+      # TODO broken
+      # prismlauncher
       minecraft
       mc-li7g-com
     ];

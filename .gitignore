@@ -15,4 +15,5 @@ terraform/moon
 *.qcow2
 
 # nixago: ignore-linked-files
+/.sops.yaml
 .sops.yaml
