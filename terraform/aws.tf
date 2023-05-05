@@ -11,7 +11,7 @@ resource "aws_instance" "main" {
   instance_type = "t3.micro"
   ami           = data.aws_ami.nixos.id
 
-  subnet_id              = aws_subnet.main_1.id
+  subnet_id = aws_subnet.main_1.id
 
   key_name = aws_key_pair.pgp.key_name
 

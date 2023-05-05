@@ -1,8 +1,8 @@
 variable "ca_private_key_pem" {
-    type = string
+  type = string
 }
 variable "ca_cert_pem" {
-    type = string
+  type = string
 }
 resource "tls_private_key" "ike" {
   algorithm   = "ECDSA"
@@ -10,7 +10,7 @@ resource "tls_private_key" "ike" {
 }
 resource "tls_cert_request" "ike" {
   private_key_pem = tls_private_key.ike.private_key_pem
-  dns_names = ["${var.name}.li7g.com"]
+  dns_names       = ["${var.name}.li7g.com"]
   subject {
     common_name  = "${var.name}.li7g.com"
     organization = "Yinfeng"
@@ -28,10 +28,10 @@ resource "tls_locally_signed_cert" "ike" {
   ]
 }
 output "ike_private_key_pem" {
-    value = tls_private_key.ike.private_key_pem
-    sensitive = true
+  value     = tls_private_key.ike.private_key_pem
+  sensitive = true
 }
 output "ike_cert_pem" {
-    value = tls_locally_signed_cert.ike.cert_pem
-    sensitive = false
+  value     = tls_locally_signed_cert.ike.cert_pem
+  sensitive = false
 }

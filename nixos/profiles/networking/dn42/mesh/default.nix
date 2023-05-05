@@ -64,11 +64,11 @@ in
     ];
     sops.secrets."ike_cert_pem" = {
       sopsFile = config.sops-file.terraform;
-      restartUnits = [ "strongswan-swanctl.service" ];
+      restartUnits = ["strongswan-swanctl.service"];
     };
     sops.secrets."ike_private_key_pem" = {
       sopsFile = config.sops-file.terraform;
-      restartUnits = [ "strongswan-swanctl.service" ];
+      restartUnits = ["strongswan-swanctl.service"];
     };
     networking.firewall.allowedUDPPorts = with config.ports; [
       ipsec-ike
