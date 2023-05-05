@@ -12,7 +12,6 @@ resource "aws_instance" "main" {
   ami           = data.aws_ami.nixos.id
 
   subnet_id              = aws_subnet.main_1.id
-  vpc_security_group_ids = [aws_security_group.main.id]
 
   key_name = aws_key_pair.pgp.key_name
 
@@ -77,83 +76,6 @@ resource "aws_default_route_table" "main" {
   route {
     ipv6_cidr_block = "::/0"
     gateway_id      = aws_internet_gateway.main.id
-  }
-}
-
-resource "aws_security_group" "main" {
-  vpc_id = aws_vpc.main.id
-
-  ingress {
-    description      = "icmpv4"
-    from_port        = -1 # all icmp type number
-    to_port          = -1 # all icmp code
-    protocol         = "icmp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-
-  }
-
-  ingress {
-    description      = "icmpv6"
-    from_port        = -1 # all icmp type number
-    to_port          = -1 # all icmp code
-    protocol         = "icmpv6"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    description      = "ssh"
-    from_port        = var.ssh_port
-    to_port          = var.ssh_port
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    description      = "http"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    description      = "https"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    description      = "zerotier"
-    from_port        = var.zerotier_port
-    to_port          = var.zerotier_port
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  ingress {
-    description      = "tailscale"
-    from_port        = 41641
-    to_port          = 41641
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  # allow all traffic for egress
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
 

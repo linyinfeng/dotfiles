@@ -7,49 +7,6 @@ resource "hcloud_ssh_key" "pgp" {
   public_key = file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub")
 }
 
-resource "hcloud_firewall" "main" {
-  name = "main"
-
-  rule {
-    direction = "in"
-    protocol  = "icmp"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-
-  rule {
-    direction = "in"
-    protocol  = "tcp"
-    port      = tostring(var.ssh_port)
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-
-  rule {
-    direction = "in"
-    protocol  = "tcp"
-    port      = "80"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-
-  rule {
-    direction = "in"
-    protocol  = "tcp"
-    port      = "443"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-}
-
 data "hcloud_locations" "all" {
 }
 
@@ -63,7 +20,6 @@ resource "hcloud_server" "hil0" {
   image              = "debian-11"
   delete_protection  = true
   rebuild_protection = true
-  firewall_ids       = [hcloud_firewall.main.id]
   # ssh_keys           = [hcloud_ssh_key.pgp.id]
   public_net {
     ipv4 = hcloud_primary_ip.hil0_ipv4.id
@@ -123,7 +79,6 @@ resource "hcloud_server" "fsn0" {
   image              = "debian-11"
   delete_protection  = true
   rebuild_protection = true
-  firewall_ids       = [hcloud_firewall.main.id]
   ssh_keys           = [hcloud_ssh_key.pgp.id]
   public_net {
     ipv4 = hcloud_primary_ip.fsn0_ipv4.id

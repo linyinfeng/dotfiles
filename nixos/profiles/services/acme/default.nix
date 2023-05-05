@@ -5,8 +5,8 @@
 }: {
   security.acme = {
     acceptTerms = true;
-    defaults.email = "lin.yinfeng@outlook.com";
-    certs."main" = {
+    defaults = {
+      email = "lin.yinfeng@outlook.com";
       dnsProvider = "cloudflare";
       credentialsFile = config.sops.templates.acme-credentials.path;
     };

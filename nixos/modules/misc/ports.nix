@@ -26,7 +26,9 @@
       https = 443;
       https-alternative = 8443;
       smtp-tls = 465;
+      ipsec-ike = 500;
       smtp-starttls = 587;
+      ssh = 2222;
       pastebin = 3000;
       vaultwarden-http = 3010;
       vaultwarden-websocket = 3011;
@@ -62,9 +64,12 @@
       syncthing-discovery-yinfeng = 21027; # TODO change to 3221
       syncthing-transfer = 3230;
       syncthing-transfer-yinfeng = 22000; # TODO change to 3231
+      ipsec-nat-traversal = 4500;
       jellyfin = 8096;
       zerotier = 9993;
-      ssh = 22222;
+      wireguard-dn42-min = config.lib.self.data.wireguard_dn42_min; # 20000
+      wireguard-dn42-self = config.lib.self.data.wireguard_dn42_self; # 20128
+      wireguard-dn42-max = config.lib.self.data.wireguard_dn42_max; # 23999
       minecraft = 25565;
       minecraft-rcon = 25566;
       minecraft-map = 25567;

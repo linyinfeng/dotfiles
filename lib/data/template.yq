@@ -1,28 +1,48 @@
 {
+    "wireguard_dn42_min": .wireguard_dn42_min.value,
+    "wireguard_dn42_self": .wireguard_dn42_self.value,
+    "wireguard_dn42_max": .wireguard_dn42_max.value,
+
+    "dn42_v4_cidr": .dn42_v4_cidr.value,
+    "dn42_v6_cidr": .dn42_v6_cidr.value,
+    "ca_cert_pem": .ca_cert_pem.value,
+
     "cache_s3_url": .b2_s3_api_url.value,
     "cache_s3_host": .b2_s3_api_host.value,
     "cache_bucket_name": .b2_cache_bucket_name.value,
+
     "mastodon_media_url": .b2_s3_api_url.value,
     "mastodon_media_host": .b2_s3_api_host.value,
     "mastodon_media_region": .b2_s3_region.value,
     "mastodon_media_bucket_name": .b2_mastodon_media_bucket_name.value,
+
     "synapse_media_url": .b2_s3_api_url.value,
     "synapse_media_host": .b2_s3_api_host.value,
     "synapse_media_region": .b2_s3_region.value,
     "synapse_media_bucket_name": .b2_synapse_media_bucket_name.value,
+
     "hydra_builder_public_key": .hydra_builder_public_key.value,
+
     "loki_host": .loki_host.value,
     "loki_username": .loki_username.value,
+
     "influxdb_url": .influxdb_url.value,
+
     "hosts": .hosts.value | map_values(
         with_entries(
             select(
                 .key == "wireguard_public_key" or
                 .key == "syncthing_device_id" or
                 .key == "ssh_host_rsa_key_pub" or
-                .key == "ssh_host_ed25519_key_pub"
+                .key == "ssh_host_ed25519_key_pub" or
+                .key == "dn42_host_indices" or
+                .key == "dn42_v4_addresses" or
+                .key == "dn42_v6_addresses" or
+                .key == "endpoints_v4" or
+                .key == "endpoints_v6"
             )
         )
     ),
+
     "service_cname_mappings": .service_cname_mappings.value
 }
