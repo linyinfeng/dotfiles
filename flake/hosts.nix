@@ -34,7 +34,7 @@
       networking.tailscale
       networking.zerotier
       networking.tools
-      networking.dn42.mesh
+      networking.dn42
       security.fail2ban
       security.firewall
     ];

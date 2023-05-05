@@ -94,7 +94,7 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [6]
+      dn42_host_indices = []
       endpoints_v4      = []
       endpoints_v6      = []
     }
@@ -107,7 +107,7 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [21]
+      dn42_host_indices = []
       endpoints_v4      = []
       endpoints_v6      = []
     }
@@ -125,7 +125,7 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [22]
+      dn42_host_indices = []
       endpoints_v4      = []
       endpoints_v6      = []
     }
