@@ -15,8 +15,8 @@ output "dn42_host_indices" {
   value = var.dn42_host_indices
 }
 output "dn42_v4_addresses" {
-  value = [for i in var.dn42_host_indices : "${cidrhost(var.dn42_v4_cidr, i)}/32"]
+  value = [for i in var.dn42_host_indices : "${cidrhost(var.dn42_v4_cidr, i)}/${local.dn42_v4_prefix_length}"]
 }
 output "dn42_v6_addresses" {
-  value = [for i in var.dn42_host_indices : cidrsubnet(var.dn42_v6_cidr, 64 - local.dn42_v6_prefix_length, i)]
+  value = [for i in var.dn42_host_indices : "${cidrhost(var.dn42_v6_cidr, i)}/${local.dn42_v6_prefix_length}"]
 }
