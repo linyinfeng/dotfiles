@@ -45,6 +45,6 @@ in {
   networking.firewall.allowedUDPPorts = [
     config.services.tailscale.port
   ];
-  networking.firewall.checkReversePath = lib.mkForce "loose";
+  networking.firewall.checkReversePath = false;
   networking.networkmanager.unmanaged = [interfaceName];
 }
