@@ -12,6 +12,9 @@
   thisHost = enabledHosts.${hostName};
   otherHosts = lib.filterAttrs (name: _: name != hostName) enabledHosts;
 
+  dns42_ip4 = lib.elemAt thisHost.dn42_v4_addresses 0;
+  dns42_ip6 = lib.elemAt thisHost.dn42_v6_addresses 0;
+
   xfrmIfId = hostData: 4242420000 + lib.head hostData.dn42_host_indices;
   xfrmIfIdString = hostData: "${toString (xfrmIfId hostData)}";
   xfrmIfName = name: hostData: "${cfg.mesh.interfacePrefix}-${name}";
@@ -71,9 +74,20 @@ in {
           matchConfig = {
             Name = cfg.interface.name;
           };
-          networkConfig = {
-            Address = thisHost.dn42_v4_addresses ++ thisHost.dn42_v6_addresses;
-          };
+          address = thisHost.dn42_v4_addresses ++ thisHost.dn42_v6_addresses;
+          routes = [
+            {
+              routeConfig = {
+                Destination = config.lib.self.data.dn42_v4_cidr;
+                Scope = "global";
+              };
+            }
+            {
+              routeConfig = {
+                Destination = config.lib.self.data.dn42_v6_cidr;
+              };
+            }
+          ];
         };
       };
     }
@@ -104,8 +118,11 @@ in {
                 };
                 children.dn42 = {
                   start_action = "trap";
+                  # trap traffic using XFRM interface id
                   if_id_in = xfrmIfIdString hostData;
                   if_id_out = xfrmIfIdString hostData;
+                  local_ts = ["0.0.0.0/0" "::/0"];
+                  remote_ts = ["0.0.0.0/0" "::/0"];
                 };
               };
           in
@@ -142,6 +159,9 @@ in {
             {
               matchConfig = {
                 Name = xfrmIfName peerName hostData;
+              };
+              linkConfig = {
+                Multicast = true;
               };
               networkConfig = {
                 VRF = cfg.interface.name;
@@ -180,29 +200,47 @@ in {
     {
       services.bird2 = {
         enable = true;
-        config = ''
+        config = let
+          routeId = dns42_ip4;
+        in ''
+          router id ${routeId};
+
           protocol device {
           }
 
           ipv4 table mesh4 { }
+
           ipv6 sadr table mesh6 { }
-          protocol kernel {
+
+          protocol static meshstatic4 {
+            ${lib.concatMapStringsSep "\n" (a: "route ${a}/32 unreachable;") thisHost.dn42_v4_addresses}
+            ipv4 {
+              table mesh4;
+              import all;
+            };
+          }
+          protocol static meshstatic6 {
+            ${lib.concatMapStringsSep "\n" (p: "route ${p} from ::/0 unreachable;") thisHost.dn42_v6_prefixes}
+            ipv6 sadr {
+              table mesh6;
+              import all;
+            };
+          }
+          protocol kernel meshkernel4 {
             kernel table ${toString cfg.interface.routingTable};
             ipv4 {
               table mesh4;
               export all;
-              import all;
             };
           }
-          protocol kernel {
+          protocol kernel meshkernel6 {
             kernel table ${toString cfg.interface.routingTable};
             ipv6 sadr {
               table mesh6;
               export all;
-              import all;
             };
           }
-          protocol babel {
+          protocol babel meshbabel {
             vrf "${cfg.interface.name}";
             ipv4 {
               table mesh4;
@@ -220,6 +258,9 @@ in {
           }
         '';
       };
+      networking.firewall.allowedUDPPorts = [
+        config.ports.babel
+      ];
     }
   ]);
 }

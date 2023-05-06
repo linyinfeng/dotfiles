@@ -65,6 +65,7 @@
       syncthing-transfer = 3230;
       syncthing-transfer-yinfeng = 22000; # TODO change to 3231
       ipsec-nat-traversal = 4500;
+      babel = 6696;
       jellyfin = 8096;
       zerotier = 9993;
       wireguard-dn42-min = config.lib.self.data.wireguard_dn42_min; # 20000
