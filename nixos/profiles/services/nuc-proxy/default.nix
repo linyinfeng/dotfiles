@@ -9,10 +9,6 @@
     useACMEHost = "main";
     locations."/" = {
       proxyPass = "https://nuc";
-      extraConfig = ''
-        proxy_set_header Host "nuc.li7g.com";
-        proxy_set_header X-Forwarded-Host "nuc.li7g.com";
-      '';
     };
   };
 }
