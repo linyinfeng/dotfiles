@@ -51,6 +51,7 @@ in {
 
     # dummy interface
     {
+      systemd.network.enable = true;
       systemd.network.netdevs = {
         ${cfg.dummy.name} = {
           netdevConfig = {
