@@ -18,7 +18,7 @@
 in {
   options = {
     networking.dn42 = {
-      enable = {
+      enable = lib.mkOption {
         type = lib.types.bool;
         default = enabled;
       };
@@ -38,7 +38,7 @@ in {
       };
     };
   };
-  config = lib.mkIf enabled (lib.mkMerge [
+  config = lib.mkIf (cfg.enable) (lib.mkMerge [
     # sysctl
     {
       boot.kernel.sysctl = {
