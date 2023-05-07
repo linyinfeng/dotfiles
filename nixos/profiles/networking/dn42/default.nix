@@ -236,7 +236,10 @@ in {
             kernel table ${toString cfg.mesh.routingTable};
             ipv4 {
               table mesh4;
-              export all;
+              export filter {
+                krt_prefsrc = ${lib.elemAt thisHost.dn42_v4_addresses 0};
+                accept;
+              };
               import none;
             };
           }
@@ -244,7 +247,10 @@ in {
             kernel table ${toString cfg.mesh.routingTable};
             ipv6 sadr {
               table mesh6;
-              export all;
+              export filter {
+                krt_prefsrc = ${lib.elemAt thisHost.dn42_v6_addresses 0};
+                accept;
+              };
               import none;
             };
           }
