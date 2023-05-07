@@ -173,9 +173,6 @@ in {
               linkConfig = {
                 Multicast = true;
               };
-              address =
-                lib.lists.map (a: "${a}/32") thisHost.dn42_v4_addresses
-                ++ lib.lists.map (a: "${a}/128") thisHost.dn42_v6_addresses;
             }
         )
         otherHosts;
@@ -220,21 +217,19 @@ in {
           }
 
           ipv4 table mesh4 { }
-
           ipv6 sadr table mesh6 { }
 
-          protocol static staticmesh4 {
-            ${lib.concatMapStringsSep "\n" (a: "route ${a}/32 via \"lo\";") thisHost.dn42_v4_addresses}
+          protocol direct directmesh {
+            interface "${cfg.dummy.name}";
             ipv4 {
               table mesh4;
               import all;
+              export none;
             };
-          }
-          protocol static staticmesh6 {
-            ${lib.concatMapStringsSep "\n" (p: "route ${p} from ::/0 via \"lo\";") thisHost.dn42_v6_prefixes}
             ipv6 sadr {
               table mesh6;
               import all;
+              export none;
             };
           }
           protocol kernel kernelmesh4 {
@@ -242,6 +237,7 @@ in {
             ipv4 {
               table mesh4;
               export all;
+              import none;
             };
           }
           protocol kernel kernelmesh6 {
@@ -249,6 +245,7 @@ in {
             ipv6 sadr {
               table mesh6;
               export all;
+              import none;
             };
           }
           protocol babel babelmesh {
