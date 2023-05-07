@@ -67,6 +67,7 @@
           terraform-update-outputs
           terraform-outputs-extract-data
           terraform-outputs-extract-secrets
+          nix fmt
         '';
       }
       {
