@@ -264,7 +264,9 @@ in {
               export all;
             };
             interface "${cfg.mesh.interfaces.namePrefix}-*" {
-              type wireless;
+              type tunnel;
+              rtt cost 1024;
+              rtt max 1024 ms;
             };
           }
         '';
