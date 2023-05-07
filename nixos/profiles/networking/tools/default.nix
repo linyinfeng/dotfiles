@@ -10,5 +10,7 @@
     inetutils
     iputils
     nftables
+    tcpdump
+    ipcalc
   ];
 }
