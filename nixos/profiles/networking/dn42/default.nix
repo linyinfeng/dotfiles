@@ -49,9 +49,25 @@ in {
       };
     }
 
-    # dummy interface
+    # network management tools
+    # and compatibility issues
     {
       systemd.network.enable = true;
+      networking.networkmanager.unmanaged = [
+        cfg.dummy.name
+      ];
+    }
+    (lib.mkIf config.networking.fw-proxy.tproxy.enable {
+      services.strongswan-swanctl.strongswan.extraConfig = ''
+        charon {
+          # tproxy's routing table routes everything to lo
+          ignore_routing_tables = ${config.networking.fw-proxy.tproxy.routingTable}
+        }
+      '';
+    })
+
+    # dummy interface
+    {
       systemd.network.netdevs = {
         ${cfg.dummy.name} = {
           netdevConfig = {

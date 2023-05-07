@@ -2,7 +2,7 @@
 
 export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 
-route_table="@routeTable@"
+routing_table="@routingTable@"
 fwmark="@fwmark@"
 cgroup="@cgroup@"
 nft_table="@nftTable@"
@@ -16,8 +16,8 @@ nft delete table inet $nft_table
 rmdir "/sys/fs/cgroup/$cgroup"
 
 # delete route tables
-ip rule delete fwmark "$fwmark" table "$route_table"
-ip -4 route delete local default dev lo table "$route_table"
-ip -6 route delete local default dev lo table "$route_table"
+ip rule delete fwmark "$fwmark" table "$routing_table"
+ip -4 route delete local default dev lo table "$routing_table"
+ip -6 route delete local default dev lo table "$routing_table"
 
 true # always success

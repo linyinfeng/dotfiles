@@ -54,7 +54,7 @@
       tproxyPort = cfg.mixinConfig.tproxy-port;
       inherit
         (cfg.tproxy)
-        routeTable
+        routingTable
         fwmark
         cgroup
         nftTable
@@ -72,7 +72,7 @@
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) iproute2 nftables;
-      inherit (cfg.tproxy) routeTable fwmark cgroup nftTable;
+      inherit (cfg.tproxy) routingTable fwmark cgroup nftTable;
     };
     tproxyUse = pkgs.substituteAll {
       src = ./tproxy-use.sh;
@@ -115,9 +115,9 @@ in
           type = with types; listOf str;
           default = [];
         };
-        routeTable = mkOption {
+        routingTable = mkOption {
           type = with types; str;
-          default = "0x356";
+          default = "854";
         };
         fwmark = mkOption {
           type = with types; str;
