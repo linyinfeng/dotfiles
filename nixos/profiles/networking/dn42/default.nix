@@ -252,6 +252,7 @@ in {
             };
           }
           protocol babel babelmesh {
+            randomize router id;
             ipv4 {
               table mesh4;
               import all;
