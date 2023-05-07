@@ -198,8 +198,8 @@ in {
         ipsec-nat-traversal
       ];
       networking.firewall.extraCommands = ''
-        iptables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
-        iptables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
+        ip46tables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
+        ip46tables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
       '';
     }
 

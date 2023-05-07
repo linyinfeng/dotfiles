@@ -285,9 +285,9 @@ in
         };
         networking.firewall.extraCommands = ''
           ${optionalString (config.networking.firewall.checkReversePath != false) ''
-            iptables --table mangle --insert nixos-fw-rpfilter --match mark --mark ${cfg.tproxy.fwmark} --jump RETURN
+            ip46tables --table mangle --insert nixos-fw-rpfilter --match mark --mark ${cfg.tproxy.fwmark} --jump RETURN
           ''}
-          iptables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
+          ip46tables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
         '';
 
         networking.fw-proxy.tproxy.allCgroups = [cfg.tproxy.cgroup];
