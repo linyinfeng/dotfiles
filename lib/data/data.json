@@ -22,10 +22,10 @@
   "influxdb_url": "https://influxdb.li7g.com",
   "hosts": {
     "framework": {
-      "dn42_host_indices": [],
-      "dn42_v4_addresses": [],
-      "dn42_v6_addresses": [],
-      "dn42_v6_prefixes": [],
+      "dn42_host_indices": [21],
+      "dn42_v4_addresses": ["172.23.224.117"],
+      "dn42_v6_addresses": ["fd72:db83:badd:15::1"],
+      "dn42_v6_prefixes": ["fd72:db83:badd:15::/64"],
       "endpoints_v4": [],
       "endpoints_v6": [],
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEVqC3OlslCMAMksx048JExd3YlllT1he7jSnmLolUlr",
@@ -58,10 +58,10 @@
       "wireguard_public_key": "I/4kkEgrQFHcoFsHq2xhH00t2xP08EWBP4t1gkw0GBM="
     },
     "nuc": {
-      "dn42_host_indices": [],
-      "dn42_v4_addresses": [],
-      "dn42_v6_addresses": [],
-      "dn42_v6_prefixes": [],
+      "dn42_host_indices": [6],
+      "dn42_v4_addresses": ["172.23.224.102"],
+      "dn42_v6_addresses": ["fd72:db83:badd:6::1"],
+      "dn42_v6_prefixes": ["fd72:db83:badd:6::/64"],
       "endpoints_v4": [],
       "endpoints_v6": [],
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5zrNBGQWap7CS/q2MpCezdJoMaLO0PaZgn9L+6CkeF",
@@ -106,10 +106,10 @@
       "wireguard_public_key": "7HiMG8PKO9eGz7pXXYfXkgLc6M4sSSY9nKsAdLX+oWw="
     },
     "xps8930": {
-      "dn42_host_indices": [],
-      "dn42_v4_addresses": [],
-      "dn42_v6_addresses": [],
-      "dn42_v6_prefixes": [],
+      "dn42_host_indices": [22],
+      "dn42_v4_addresses": ["172.23.224.118"],
+      "dn42_v6_addresses": ["fd72:db83:badd:16::1"],
+      "dn42_v6_prefixes": ["fd72:db83:badd:16::/64"],
       "endpoints_v4": [],
       "endpoints_v6": [],
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOfML7D2wdTUiD/opksT48IYJGtAF/AEjNeBiKesb4p",
