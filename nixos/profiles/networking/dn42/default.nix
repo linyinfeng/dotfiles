@@ -14,7 +14,7 @@
 
   xfrmIfId = hostData: 4242420000 + lib.head hostData.dn42_host_indices;
   xfrmIfIdString = hostData: "${toString (xfrmIfId hostData)}";
-  xfrmIfName = name: hostData: "${cfg.interfaces.mesh.namePrefix}-${name}";
+  xfrmIfName = name: hostData: "${cfg.mesh.interfaces.namePrefix}-${name}";
 in {
   options = {
     networking.dn42 = {
@@ -22,32 +22,18 @@ in {
         type = lib.types.bool;
         default = enabled;
       };
-      interfaces = {
-        veth = {
-          name = lib.mkOption {
-            type = lib.types.str;
-            default = "dn42";
-          };
-          peerName = lib.mkOption {
-            type = lib.types.str;
-            default = "dn42-local";
-          };
+      dummy.name = lib.mkOption {
+        type = lib.types.str;
+        default = "dn42";
+      };
+      mesh = {
+        interfaces.namePrefix = lib.mkOption {
+          type = lib.types.str;
+          default = "mesh";
         };
-        vrf = {
-          name = lib.mkOption {
-            type = lib.types.str;
-            default = "mesh-vrf";
-          };
-          routingTable = lib.mkOption {
-            type = lib.types.int;
-            default = 200;
-          };
-        };
-        mesh = {
-          namePrefix = lib.mkOption {
-            type = lib.types.str;
-            default = "mesh";
-          };
+        routingTable = lib.mkOption {
+          type = lib.types.int;
+          default = 200;
         };
       };
     };
@@ -61,45 +47,40 @@ in {
         "net.ipv6.conf.all.forwarding" = 1;
         "net.ipv4.conf.all.forwarding" = 1;
       };
-      networking.firewall.checkReversePath = false;
     }
 
-    # interfaces
+    # dummy interface
     {
       systemd.network.netdevs = {
-        dn42-veth = {
+        ${cfg.dummy.name} = {
           netdevConfig = {
-            Name = cfg.interfaces.veth.name;
-            Kind = "veth";
-          };
-          peerConfig = {
-            Name = cfg.interfaces.veth.peerName;
-          };
-        };
-        dn42-vrf = {
-          netdevConfig = {
-            Name = cfg.interfaces.vrf.name;
-            Kind = "vrf";
-          };
-          vrfConfig = {
-            Table = cfg.interfaces.vrf.routingTable;
+            Name = cfg.dummy.name;
+            Kind = "dummy";
           };
         };
       };
       systemd.network.networks = {
-        dn42-veth = {
+        ${cfg.dummy.name} = {
           matchConfig = {
-            Name = cfg.interfaces.veth.name;
+            Name = cfg.dummy.name;
           };
-          address = thisHost.dn42_v4_addresses ++ thisHost.dn42_v6_prefixes;
-        };
-        dn42-veth-peer = {
-          matchConfig = {
-            Name = cfg.interfaces.veth.peerName;
-          };
-          networkConfig = {
-            VRF = cfg.interfaces.vrf.name;
-          };
+          address =
+            lib.lists.map (a: "${a}/32") thisHost.dn42_v4_addresses
+            ++ lib.lists.map (a: "${a}/128") thisHost.dn42_v6_addresses;
+          routingPolicyRules = [
+            {
+              routingPolicyRuleConfig = {
+                To = config.lib.self.data.dn42_v4_cidr;
+                Table = cfg.mesh.routingTable;
+              };
+            }
+            {
+              routingPolicyRuleConfig = {
+                To = config.lib.self.data.dn42_v6_cidr;
+                Table = cfg.mesh.routingTable;
+              };
+            }
+          ];
         };
       };
     }
@@ -150,7 +131,7 @@ in {
         lib.mapAttrs' (
           peerName: hostData:
             lib.nameValuePair
-            "mesh-peer-${peerName}"
+            (xfrmIfName peerName hostData)
             {
               netdevConfig = {
                 Name = xfrmIfName peerName hostData;
@@ -167,7 +148,7 @@ in {
         lib.mapAttrs' (
           peerName: hostData:
             lib.nameValuePair
-            "mesh-peer-${peerName}"
+            (xfrmIfName peerName hostData)
             {
               matchConfig = {
                 Name = xfrmIfName peerName hostData;
@@ -175,9 +156,9 @@ in {
               linkConfig = {
                 Multicast = true;
               };
-              networkConfig = {
-                VRF = cfg.interfaces.vrf.name;
-              };
+              address =
+                lib.lists.map (a: "${a}/32") thisHost.dn42_v4_addresses
+                ++ lib.lists.map (a: "${a}/128") thisHost.dn42_v6_addresses;
             }
         )
         otherHosts;
@@ -225,36 +206,35 @@ in {
 
           ipv6 sadr table mesh6 { }
 
-          protocol static meshstatic4 {
-            ${lib.concatMapStringsSep "\n" (a: "route ${a}/32 unreachable;") thisHost.dn42_v4_addresses}
+          protocol static staticmesh4 {
+            ${lib.concatMapStringsSep "\n" (a: "route ${a}/32 via \"lo\";") thisHost.dn42_v4_addresses}
             ipv4 {
               table mesh4;
               import all;
             };
           }
-          protocol static meshstatic6 {
-            ${lib.concatMapStringsSep "\n" (p: "route ${p} from ::/0 unreachable;") thisHost.dn42_v6_prefixes}
+          protocol static staticmesh6 {
+            ${lib.concatMapStringsSep "\n" (p: "route ${p} from ::/0 via \"lo\";") thisHost.dn42_v6_prefixes}
             ipv6 sadr {
               table mesh6;
               import all;
             };
           }
-          protocol kernel meshkernel4 {
-            kernel table ${toString cfg.interfaces.vrf.routingTable};
+          protocol kernel kernelmesh4 {
+            kernel table ${toString cfg.mesh.routingTable};
             ipv4 {
               table mesh4;
               export all;
             };
           }
-          protocol kernel meshkernel6 {
-            kernel table ${toString cfg.interfaces.vrf.routingTable};
+          protocol kernel kernelmesh6 {
+            kernel table ${toString cfg.mesh.routingTable};
             ipv6 sadr {
               table mesh6;
               export all;
             };
           }
-          protocol babel meshbabel {
-            vrf "${cfg.interfaces.vrf.name}";
+          protocol babel babelmesh {
             ipv4 {
               table mesh4;
               import all;
@@ -265,7 +245,7 @@ in {
               import all;
               export all;
             };
-            interface "${cfg.interfaces.mesh.namePrefix}-*" {
+            interface "${cfg.mesh.interfaces.namePrefix}-*" {
               type wireless;
             };
           }
