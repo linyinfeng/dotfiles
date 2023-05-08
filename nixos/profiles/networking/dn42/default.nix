@@ -3,9 +3,9 @@
   lib,
   ...
 }: let
-  cfg = config.networking.dn42;
   data = config.lib.self.data;
   mkHost = name: hostData: {
+    bgp.enable = hostData.endpoints_v4 ++ hostData.endpoints_v6 != [];
     indices = hostData.dn42_host_indices;
     addressesV4 = hostData.dn42_v4_addresses;
     addressesV6 = hostData.dn42_v6_addresses;
@@ -16,7 +16,6 @@ in {
   networking.dn42 = {
     enable = true;
     bgp = {
-      enable = with cfg.autonomousSystem.mesh.thisHost; endpointsV4 ++ endpointsV6 != [];
       gortr = {
         port = config.ports.gortr;
         metricPort = config.ports.gortr-metric;

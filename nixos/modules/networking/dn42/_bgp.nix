@@ -183,14 +183,18 @@ in
 
       # internel bgp peers
       {
-        services.bird2.config = lib.mkOrder 200 (lib.concatMapStringsSep "\n" (hostCfg: ''
-          protocol bgp bgpmesh${hostCfg.name}4 from dnpeers {
-            neighbor ${hostCfg.preferredAddressV4} as ${toString asCfg.number};
-          }
-          protocol bgp bgpmesh${hostCfg.name}6 from dnpeers {
-            neighbor ${hostCfg.preferredAddressV6} as ${toString asCfg.number};
-          }
-        '') (lib.attrValues asCfg.mesh.peerHosts));
+        services.bird2.config = let
+          bgpEnabledHostCfgs = lib.filter (hostCfg: hostCfg.bgp.enable) (lib.attrValues asCfg.mesh.peerHosts);
+        in
+          lib.mkOrder 200 (lib.concatMapStringsSep "\n" (hostCfg: ''
+              protocol bgp ibgp${hostCfg.name}4 from dnpeers {
+                neighbor ${hostCfg.preferredAddressV4} as ${toString asCfg.number};
+              }
+              protocol bgp ibgp${hostCfg.name}6 from dnpeers {
+                neighbor ${hostCfg.preferredAddressV6} as ${toString asCfg.number};
+              }
+            '')
+            bgpEnabledHostCfgs);
       }
 
       # eternal bgp peers

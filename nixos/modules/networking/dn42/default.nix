@@ -25,6 +25,7 @@
         type = lib.types.str;
         default = name;
       };
+      bgp.enable = lib.mkEnableOption "bgp";
       indices = lib.mkOption {
         type = with lib.types; listOf int;
       };
@@ -136,7 +137,10 @@ in {
         default = false;
       };
       bgp = {
-        enable = lib.mkEnableOption "dn42 bgp";
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = asCfg.mesh.thisHost.bgp.enable;
+        };
         routingTable = {
           id = lib.mkOption {
             type = lib.types.int;
