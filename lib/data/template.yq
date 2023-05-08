@@ -1,8 +1,4 @@
 {
-    "wireguard_dn42_min": .wireguard_dn42_min.value,
-    "wireguard_dn42_self": .wireguard_dn42_self.value,
-    "wireguard_dn42_max": .wireguard_dn42_max.value,
-
     "dn42_v4_cidr": .dn42_v4_cidr.value,
     "dn42_v6_cidr": .dn42_v6_cidr.value,
     "ca_cert_pem": .ca_cert_pem.value,

@@ -5,13 +5,22 @@
 }: let
   cfg = config.networking.dn42;
   asCfg = cfg.autonomousSystem;
+  bgpCfg = cfg.bgp;
+
+  padDn42LowerNumber = n: let
+    s = toString n;
+    length = lib.string.stringLength s;
+  in
+    if length < 4
+    then lib.lists.replicate (4 - length) "0" ++ [s]
+    else s;
+
   hostOptions = {
     name,
     config,
     ...
   }: {
     options = {
-      enable = lib.mkEnableOption "this mesh host";
       name = lib.mkOption {
         type = lib.types.str;
         default = name;
@@ -38,6 +47,84 @@
       };
       endpointsV6 = lib.mkOption {
         type = with lib.types; listOf str;
+      };
+    };
+  };
+  peerOptions = {
+    name,
+    config,
+    ...
+  }: {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = name;
+      };
+      tunnel = {
+        type = lib.mkOption {
+          type = lib.types.enum ["wireguard"];
+        };
+        interface.name = lib.mkOption {
+          type = lib.types.str;
+          default = "dn42peer${config.remoteAutonomousSystem.dn42LowerNumberString}";
+        };
+      };
+      remoteAutonomousSystem = {
+        dn42LowerNumber = lib.mkOption {
+          type = lib.types.int;
+        };
+        dn42LowerNumberString = lib.mkOption {
+          type = lib.types.str;
+          default = padDn42LowerNumber config.remoteAutonomousSystem.dn42LowerNumber;
+          readOnly = true;
+        };
+        number = lib.mkOption {
+          type = lib.types.int;
+          default = asCfg.dn42HigherNumber + config.dn42LowerNumber;
+        };
+      };
+      endpoint = {
+        address = lib.mkOption {
+          type = lib.types.str;
+        };
+        port = lib.mkOption {
+          type = lib.types.port;
+          default = bgpCfg.peering.defaults.localPortStart + asCfg.dn42LowerNumber;
+        };
+      };
+      linkAddresses = {
+        v4 = {
+          remote = lib.mkOption {
+            type = with lib.types; nullOr str;
+          };
+        };
+        v6 = {
+          local = lib.mkOption {
+            type = lib.types.str;
+            default = bgpCfg.peering.defaults.linkAddresses.v6.local;
+          };
+          remote = lib.mkOption {
+            type = lib.type.str;
+          };
+        };
+      };
+      localPort = lib.mkOption {
+        type = lib.types.port;
+        default = bgpCfg.peering.defaults.localPortStart + config.remoteAutonomousSystem.dn42LowerNumber;
+      };
+      wireguard = {
+        remotePublicKey = lib.mkOption {
+          type = with lib.types; nullOr str;
+          default = null;
+        };
+        allowedIps = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = bgpCfg.peering.defaults.wireguard.allowedIps;
+        };
+        localPrivateKeyFile = lib.mkOption {
+          type = lib.types.str;
+          default = bgpCfg.peering.default.wireguard.localPrivateKeyFile;
+        };
       };
     };
   };
@@ -70,6 +157,53 @@ in {
             default = 8080;
           };
         };
+        peering = {
+          defaults = {
+            linkAddresses.v6.local = lib.mkOption {
+              type = lib.types.str;
+              default = "fe80::${asCfg.dn42LowerNumber}";
+            };
+            localPortStart = lib.mkOption {
+              type = lib.types.port;
+            };
+            wireguard = {
+              localPrivateKeyFile = lib.mkOption {
+                type = lib.types.str;
+                default = bgpCfg.peering.default.wireguard.localPrivateKeyFile;
+                description = ''
+                  File containing wireguard private key.
+                  Must be readable by systemd-networkd.
+                '';
+              };
+              allowedIps = lib.mkOption {
+                type = with lib.types; listOf str;
+                # https://dn42.eu/howto/Bird2
+                default = [
+                  "fe80::/10" # link local unicast
+
+                  "172.20.0.0/14" # dn42
+                  "172.31.0.0/16" # ChaosVPN
+                  "10.0.0.0/8" # ChaosVPN, neonetwork, and Freifunk.net
+                  "fd00::/8" # ULA address space as per RFC 4193
+                ];
+              };
+            };
+          };
+          peers = lib.mkOption {
+            type = with lib.types; attrsOf (submodule peerOptions);
+            default = {};
+          };
+          routingTable = {
+            id = lib.mkOption {
+              type = lib.types.int;
+              default = 202;
+            };
+            name = lib.mkOption {
+              type = lib.types.str;
+              default = "peer-dn42";
+            };
+          };
+        };
       };
       bird = {
         routerId = lib.mkOption {
@@ -84,8 +218,21 @@ in {
         };
       };
       autonomousSystem = {
+        dn42HigherNumber = lib.mkOption {
+          type = lib.types.int;
+          default = 4242420000;
+        };
+        dn42LowerNumber = lib.mkOption {
+          type = lib.types.int;
+        };
+        dn42LowerNumberString = lib.mkOption {
+          type = lib.types.str;
+          default = padDn42LowerNumber asCfg.dn42LowerNumber;
+          readOnly = true;
+        };
         number = lib.mkOption {
           type = lib.types.int;
+          default = asCfg.dn42HigherNumber + asCfg.dn42LowerNumber;
         };
         cidrV4 = lib.mkOption {
           type = lib.types.str;
@@ -147,7 +294,7 @@ in {
     # basic bird2 configurations
     services.bird2 = {
       enable = true;
-      config = lib.mkBefore ''
+      config = lib.mkOrder 50 ''
         # common configurations
 
         define OWNAS = ${toString cfg.autonomousSystem.number};

@@ -165,10 +165,10 @@ in
 
     # bird
     {
-      services.bird2.config = ''
+      services.bird2.config = lib.mkOrder 100 ''
         # babel configurations
         ipv4 table mesh4 { }
-        ipv6 sadr table mesh6 { }
+        ipv6 table mesh6 { }
 
         protocol direct directmesh {
           interface "${cfg.interfaces.dummy.name}";
@@ -177,7 +177,7 @@ in
             import all;
             export none;
           };
-          ipv6 sadr {
+          ipv6 {
             table mesh6;
             import all;
             export none;
@@ -196,7 +196,7 @@ in
         }
         protocol kernel kernelmesh6 {
           kernel table ${toString asCfg.mesh.routingTable.id};
-          ipv6 sadr {
+          ipv6 {
             table mesh6;
             export filter {
               krt_prefsrc = OWNIPv6;
@@ -212,7 +212,7 @@ in
             import all;
             export all;
           };
-          ipv6 sadr {
+          ipv6 {
             table mesh6;
             import all;
             export all;
