@@ -49,6 +49,7 @@ in {
         default = false;
       };
       bgp = {
+        enable = lib.mkEnableOption "dn42 bgp";
         routingTable = {
           id = lib.mkOption {
             type = lib.types.int;

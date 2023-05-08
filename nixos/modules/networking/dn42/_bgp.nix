@@ -7,7 +7,7 @@
   cfg = config.networking.dn42;
   bgpCfg = cfg.bgp;
 in
-  lib.mkIf (cfg.enable) (lib.mkMerge [
+  lib.mkIf (cfg.enable && bgpCfg.enable) (lib.mkMerge [
     # common bird configuration
     {
       services.bird2.config = ''

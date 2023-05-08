@@ -15,6 +15,7 @@ in {
   networking.dn42 = {
     enable = true;
     bgp = {
+      enable = true;
       gortr = {
         port = config.ports.gortr;
         metricPort = config.ports.gortr-metric;
