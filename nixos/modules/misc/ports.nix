@@ -23,6 +23,7 @@
     ports = {
       ssh-honeypot = 22;
       http = 80;
+      bgp = 179;
       https = 443;
       https-alternative = 8443;
       smtp-tls = 465;
@@ -64,6 +65,8 @@
       syncthing-discovery-yinfeng = 21027; # TODO change to 3221
       syncthing-transfer = 3230;
       syncthing-transfer-yinfeng = 22000; # TODO change to 3231
+      gortr = 3240;
+      gortr-metric = 3241;
       ipsec-nat-traversal = 4500;
       babel = 6696;
       jellyfin = 8096;
