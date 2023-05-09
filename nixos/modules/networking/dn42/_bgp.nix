@@ -256,7 +256,6 @@ in
                   ++ lib.lists.map (remote: {
                     routeConfig = {
                       Destination = "${remote}/128";
-                      Scope = "link";
                       PreferredSource = "${asCfg.mesh.thisHost.preferredAddressV6}";
                     };
                   })
