@@ -167,6 +167,7 @@ in
     {
       services.bird2.config = lib.mkOrder 100 ''
         # babel configurations
+
         ipv4 table mesh_v4 { }
         ipv6 table mesh_v6 { }
 
