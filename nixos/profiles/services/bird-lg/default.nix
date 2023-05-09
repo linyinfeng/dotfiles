@@ -2,7 +2,10 @@
   config,
   lib,
   ...
-}: {
+}: let
+  # only show servers with endpoints
+  hostFilter = _name: hostCfg: (hostCfg.endpointsV4 ++ hostCfg.endpointsV6) != [];
+in {
   services.bird-lg.frontend = {
     enable = true;
     listenAddress = "127.0.0.1:${toString config.ports.bird-lg-frontend}";
@@ -11,7 +14,10 @@
     proxyPort = config.ports.bird-lg-proxy;
     servers =
       lib.mapAttrsToList (_: hostCfg: hostCfg.name)
-      config.networking.dn42.autonomousSystem.mesh.hosts;
+      (lib.filterAttrs hostFilter config.networking.dn42.autonomousSystem.mesh.hosts);
+    protocolFilter = ["bgp"];
+    titleBrand = "li7g.com";
+    navbar.allServers = "ALL";
   };
   services.nginx.virtualHosts."bird-lg.*" = {
     forceSSL = true;
