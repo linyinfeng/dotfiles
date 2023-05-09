@@ -269,12 +269,12 @@ in
           bgpCfg.peering.peers;
         services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: ''
           ${lib.optionalString (peerCfg.linkAddresses.v4.bgpNeighbor != null) ''
-            protocol bgp bgp_${peerCfg.bird.protocol.baseName}_v4 from dnpeers {
+            protocol bgp ebgp_${peerCfg.bird.protocol.baseName}_v4 from dnpeers {
               neighbor ${peerCfg.linkAddresses.v4.bgpNeighbor} as ${toString peerCfg.remoteAutonomousSystem.number};
             }
           ''}
           ${lib.optionalString (peerCfg.linkAddresses.v6.bgpNeighbor != null) ''
-            protocol bgp bgp_${peerCfg.bird.protocol.baseName}_v6 from dnpeers {
+            protocol bgp ebgp_${peerCfg.bird.protocol.baseName}_v6 from dnpeers {
               neighbor ${peerCfg.linkAddresses.v6.bgpNeighbor}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
             }
           ''}
