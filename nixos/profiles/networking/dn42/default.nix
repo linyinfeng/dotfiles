@@ -57,6 +57,7 @@ in {
         hosts = lib.mapAttrs mkHost data.hosts;
       };
     };
+    dns.enable = true;
   };
 
   # bird-lg proxy

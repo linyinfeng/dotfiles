@@ -144,10 +144,7 @@
 in {
   options = {
     networking.dn42 = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
+      enable = lib.mkEnableOption "dn42";
       bgp = {
         enable = lib.mkOption {
           type = lib.types.bool;
@@ -291,12 +288,31 @@ in {
           };
         };
       };
+      dns = {
+        enable = lib.mkEnableOption "dn42 dns";
+        domains = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = ["dn42"];
+        };
+        nameServers = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = [
+            # a0.recursive-servers.dn42
+            "172.20.0.53"
+            "fd42:d42:d42:54::1"
+            # a3.recursive-servers.dn42
+            "172.23.0.53"
+            "fd42:d42:d42:53::1"
+          ];
+        };
+      };
     };
   };
 
   imports = [
     ./_autonomous-system.nix
     ./_bgp.nix
+    ./_dns.nix
   ];
   config = lib.mkIf (cfg.enable) {
     boot.kernel.sysctl = {
