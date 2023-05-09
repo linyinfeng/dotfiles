@@ -64,6 +64,12 @@
       inherit (final.nur.repos.linyinfeng.sources.waybar-git) version src;
     });
 
+    fwupd = prev.fwupd.overrideAttrs (old: {
+      patches = (old.patches or []) ++ [
+        ../patches/fwupd-lockdown-unknown-as-invalid.patch
+      ];
+    });
+
     # TODO upstream
     tailscale-derp = final.tailscale.overrideAttrs (old: {
       subPackages = old.subPackages ++ ["cmd/derper"];
