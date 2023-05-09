@@ -244,8 +244,8 @@ in
                       Scope = "link";
                     };
                   })
-                  asCfg.mesh.thisHost.addressesV4 ++
-                  lib.map (address: {
+                  asCfg.mesh.thisHost.addressesV4
+                  ++ lib.map (address: {
                     addressConfig = {
                       Address = "${address}/128";
                       Peer = "${peerCfg.linkAddresses.v6.peer}/128";
