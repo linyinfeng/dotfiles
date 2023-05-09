@@ -237,7 +237,7 @@ in
                   Name = peerCfg.tunnel.interface.name;
                 };
                 addresses =
-                  lib.map (address: {
+                  lib.lists.map (address: {
                     addressConfig = {
                       Address = "${address}/32";
                       Peer = "${peerCfg.linkAddresses.v4.peer}/32";
@@ -245,7 +245,7 @@ in
                     };
                   })
                   asCfg.mesh.thisHost.addressesV4
-                  ++ lib.map (address: {
+                  ++ lib.lists.map (address: {
                     addressConfig = {
                       Address = "${address}/128";
                       Peer = "${peerCfg.linkAddresses.v6.peer}/128";
