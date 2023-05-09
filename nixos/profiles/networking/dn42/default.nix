@@ -5,7 +5,7 @@
 }: let
   data = config.lib.self.data;
   mkHost = name: hostData: {
-    bgp.enable = hostData.endpoints != [];
+    bgp.enable = true;
     indices = hostData.dn42_host_indices;
     addressesV4 = hostData.dn42_v4_addresses;
     addressesV6 = hostData.dn42_v6_addresses;
