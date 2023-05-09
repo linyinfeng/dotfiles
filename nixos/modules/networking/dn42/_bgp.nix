@@ -221,6 +221,7 @@ in
                         Endpoint = "${peerCfg.endpoint.address}:${toString peerCfg.endpoint.port}";
                         PublicKey = peerCfg.wireguard.remotePublicKey;
                         AllowedIPs = peerCfg.wireguard.allowedIps;
+                        PersistentKeepalive = peerCfg.wireguard.persistentKeepAlive;
                       };
                     }
                   ];
@@ -229,6 +230,9 @@ in
               )
           )
           bgpCfg.peering.peers;
+        environment.systemPackages = with pkgs; [
+          wireguard-tools
+        ];
         # links
         systemd.network.networks =
           lib.mapAttrs' (

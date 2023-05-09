@@ -138,6 +138,10 @@
           type = lib.types.str;
           default = bgpCfg.peering.defaults.wireguard.localPrivateKeyFile;
         };
+        persistentKeepAlive = lib.mkOption {
+          type = lib.types.int;
+          default = bgpCfg.peering.defaults.wireguard.persistentKeepAlive;
+        };
       };
       trafficControl = {
         enable = lib.mkOption {
@@ -221,6 +225,11 @@ in {
                   "10.0.0.0/8" # ChaosVPN, neonetwork, and Freifunk.net
                   "fd00::/8" # ULA address space as per RFC 4193
                 ];
+              };
+              persistentKeepAlive = lib.mkOption {
+                type = lib.types.int;
+                # set to 0 to disable
+                default = 25;
               };
             };
             trafficControl = {
