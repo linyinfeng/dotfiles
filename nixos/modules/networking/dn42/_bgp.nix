@@ -112,6 +112,7 @@ in
               };
               export filter { if is_valid_network_v4() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
               import table;
+              next hop self;
               igp table mesh_v4;
             };
             ipv6 {
