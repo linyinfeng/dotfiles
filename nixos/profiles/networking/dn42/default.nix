@@ -20,7 +20,8 @@
         tunnel.type = "wireguard";
         wireguard.remotePublicKey = "a+zL2tDWjwxBXd2bho2OjR/BEmRe2tJF9DHFmZIE+Rk=";
         endpoint = {
-          address = "virmach-ny1g.lantian.pub";
+          # virmach-ny1g.lantian.pub
+          address = "216.52.57.200";
           port = 20128;
         };
         linkAddresses = rec {
@@ -29,6 +30,8 @@
           v4.peer = "172.22.76.190";
           v6.peer = "fdbc:f9dc:67ad:8::1";
         };
+        # egress from this server is unmetered
+        trafficControl.enable = false;
       };
     };
   };

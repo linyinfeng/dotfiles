@@ -139,6 +139,24 @@
           default = bgpCfg.peering.defaults.wireguard.localPrivateKeyFile;
         };
       };
+      trafficControl = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          # no default
+        };
+        rate = lib.mkOption {
+          type = lib.types.str;
+          default = bgpCfg.peering.defaults.trafficControl.rate;
+        };
+        burst = lib.mkOption {
+          type = lib.types.str;
+          default = bgpCfg.peering.defaults.trafficControl.burst;
+        };
+        latency = lib.mkOption {
+          type = lib.types.str;
+          default = bgpCfg.peering.defaults.trafficControl.latency;
+        };
+      };
     };
   };
 in {
@@ -203,6 +221,20 @@ in {
                   "10.0.0.0/8" # ChaosVPN, neonetwork, and Freifunk.net
                   "fd00::/8" # ULA address space as per RFC 4193
                 ];
+              };
+            };
+            trafficControl = {
+              rate = lib.mkOption {
+                type = lib.types.str;
+                default = "5M"; # 5 Mbps
+              };
+              burst = lib.mkOption {
+                type = lib.types.str;
+                default = "1M"; # 1 MB
+              };
+              latency = lib.mkOption {
+                type = lib.types.str;
+                default = "100ms";
               };
             };
           };
