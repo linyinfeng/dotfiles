@@ -77,6 +77,7 @@ in {
   sops.secrets."wireguard_private_key" = {
     sopsFile = config.sops-file.terraform;
     group = "systemd-network";
+    mode = "440";
     restartUnits = ["systemd-networkd.service"];
   };
   networking.firewall.allowedUDPPortRanges = [
