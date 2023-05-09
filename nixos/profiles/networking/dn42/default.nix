@@ -15,17 +15,19 @@
   };
   peerTable = {
     rica = {
-      "virmach-ny1g.lantian.pub" = {
+      "lantian-virmach-ny1g" = {
         remoteAutonomousSystem.dn42LowerNumber = 2547;
         tunnel.type = "wireguard";
         wireguard.remotePublicKey = "a+zL2tDWjwxBXd2bho2OjR/BEmRe2tJF9DHFmZIE+Rk=";
         endpoint = {
-          address = "v-ps-hkg.lantian.pub";
+          address = "virmach-ny1g.lantian.pub";
           port = 20128;
         };
         linkAddresses = {
-          v4.remote = "172.22.76.190";
-          v6.remote = "fdbc:f9dc:67ad:8::1";
+          v4.bgpNeighbor = "172.22.76.190";
+          v6.bgpNeighbor = "fe80::2547"; # link-local
+          v4.remotes = ["172.22.76.190"];
+          v6.remotes = ["fdbc:f9dc:67ad:8::1"];
         };
       };
     };

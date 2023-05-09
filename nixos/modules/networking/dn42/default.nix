@@ -9,7 +9,7 @@
 
   padDn42LowerNumber = n: let
     s = toString n;
-    length = lib.string.stringLength s;
+    length = lib.strings.stringLength s;
   in
     if length < 4
     then lib.lists.replicate (4 - length) "0" ++ [s]
@@ -81,7 +81,7 @@
         };
         number = lib.mkOption {
           type = lib.types.int;
-          default = asCfg.dn42HigherNumber + config.dn42LowerNumber;
+          default = asCfg.dn42HigherNumber + config.remoteAutonomousSystem.dn42LowerNumber;
         };
       };
       endpoint = {
@@ -93,23 +93,33 @@
           default = bgpCfg.peering.defaults.localPortStart + asCfg.dn42LowerNumber;
         };
       };
+      bird = {
+        protocol.baseName = lib.mkOption {
+          type = lib.types.str;
+          default = config.remoteAutonomousSystem.dn42LowerNumberString;
+        };
+      };
       linkAddresses = {
         v4 = {
-          enable = lib.mkOption {
-            type = lib.types.bool;
-            default = true;
-          };
-          remote = lib.mkOption {
+          bgpNeighbor = lib.mkOption {
             type = with lib.types; nullOr str;
+          };
+          remotes = lib.mkOption {
+            type = with lib.types; listOf str;
+            default = [];
           };
         };
         v6 = {
-          local = lib.mkOption {
+          bgpNeighbor = lib.mkOption {
+            type = with lib.types; nullOr str;
+          };
+          remotes = lib.mkOption {
+            type = with lib.types; listOf str;
+            default = [];
+          };
+          linkLocal = lib.mkOption {
             type = lib.types.str;
             default = bgpCfg.peering.defaults.linkAddresses.v6.local;
-          };
-          remote = lib.mkOption {
-            type = lib.type.str;
           };
         };
       };
@@ -128,7 +138,7 @@
         };
         localPrivateKeyFile = lib.mkOption {
           type = lib.types.str;
-          default = bgpCfg.peering.default.wireguard.localPrivateKeyFile;
+          default = bgpCfg.peering.defaults.wireguard.localPrivateKeyFile;
         };
       };
     };
@@ -169,7 +179,7 @@ in {
           defaults = {
             linkAddresses.v6.local = lib.mkOption {
               type = lib.types.str;
-              default = "fe80::${asCfg.dn42LowerNumber}";
+              default = "fe80::${toString asCfg.dn42LowerNumber}";
             };
             localPortStart = lib.mkOption {
               type = lib.types.port;

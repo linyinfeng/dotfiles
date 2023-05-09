@@ -214,9 +214,11 @@ in
                   };
                   wireguardPeers = [
                     {
-                      Endpoint = "${peerCfg.endpoint.address}:${peerCfg.endpoint.port}";
-                      PublicKey = peerCfg.wireguard.remotePublicKey;
-                      AllowedIPs = peerCfg.wireguard.allowedIps;
+                      wireguardPeerConfig = {
+                        Endpoint = "${peerCfg.endpoint.address}:${toString peerCfg.endpoint.port}";
+                        PublicKey = peerCfg.wireguard.remotePublicKey;
+                        AllowedIPs = peerCfg.wireguard.allowedIps;
+                      };
                     }
                   ];
                 }
@@ -231,26 +233,34 @@ in
               lib.nameValuePair
               peerCfg.tunnel.interface.name
               {
-                mathConfig = {
+                matchConfig = {
                   Name = peerCfg.tunnel.interface.name;
                 };
                 addresses = [
                   {
                     addressConfig = {
-                      Address = "${peerCfg.linkLocal.v6.local}/64";
+                      Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";
                       Scope = "link";
                     };
                   }
                 ];
-                routes = lib.mkIf peerCfg.linkLocal.v4.enable [
-                  {
+                routes =
+                  lib.lists.map (remote: {
                     routeConfig = {
-                      Destination = "${peerCfg.linkLocal.v4.remote}/32";
+                      Destination = "${remote}/32";
                       Scope = "link";
                       PreferredSource = "${asCfg.mesh.thisHost.preferredAddressV4}";
                     };
-                  }
-                ];
+                  })
+                  peerCfg.linkAddresses.v4.remotes
+                  ++ lib.lists.map (remote: {
+                    routeConfig = {
+                      Destination = "${remote}/128";
+                      Scope = "link";
+                      PreferredSource = "${asCfg.mesh.thisHost.preferredAddressV6}";
+                    };
+                  })
+                  peerCfg.linkAddresses.v6.remotes;
                 networkConfig = {
                   LinkLocalAddressing = "no"; # disable link local autoconfiguration
                 };
@@ -258,14 +268,16 @@ in
           )
           bgpCfg.peering.peers;
         services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: ''
-          ${lib.optionalString peerCfg.linkAddresses.v4.enable ''
-            protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v4 from dnpeers {
-              neighbor ${peerCfg.linkAddresses.v4.remote} as ${toString peerCfg.remoteAutonomousSystem.number};
+          ${lib.optionalString (peerCfg.linkAddresses.v4.bgpNeighbor != null) ''
+            protocol bgp bgp_${peerCfg.bird.protocol.baseName}_v4 from dnpeers {
+              neighbor ${peerCfg.linkAddresses.v4.bgpNeighbor} as ${toString peerCfg.remoteAutonomousSystem.number};
             }
           ''}
-          protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v6 from dnpeers {
-            neighbor ${peerCfg.linkAddresses.v6.remote}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
-          }
+          ${lib.optionalString (peerCfg.linkAddresses.v6.bgpNeighbor != null) ''
+            protocol bgp bgp_${peerCfg.bird.protocol.baseName}_v6 from dnpeers {
+              neighbor ${peerCfg.linkAddresses.v6.bgpNeighbor}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
+            }
+          ''}
         '') (lib.attrValues bgpCfg.peering.peers));
       }
     ]
