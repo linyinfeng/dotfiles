@@ -148,13 +148,15 @@ in
               {
                 routingPolicyRuleConfig = {
                   Family = "both";
-                  Table = bgpCfg.routingTable.id;
+                  Table = bgpCfg.peering.routingTable.id;
+                  Priority = bgpCfg.peering.routingTable.priority;
                 };
               }
               {
                 routingPolicyRuleConfig = {
                   Family = "both";
-                  Table = bgpCfg.peering.routingTable.id;
+                  Table = bgpCfg.routingTable.id;
+                  Priority = bgpCfg.routingTable.priority;
                 };
               }
             ];

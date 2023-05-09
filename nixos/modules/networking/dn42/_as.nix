@@ -38,12 +38,14 @@ in
               routingPolicyRuleConfig = {
                 To = asCfg.cidrV4;
                 Table = asCfg.mesh.routingTable.id;
+                Priority = asCfg.mesh.routingTable.priority;
               };
             }
             {
               routingPolicyRuleConfig = {
                 To = asCfg.cidrV6;
                 Table = asCfg.mesh.routingTable.id;
+                Priority = asCfg.mesh.routingTable.priority;
               };
             }
           ];

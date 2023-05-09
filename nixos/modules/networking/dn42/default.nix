@@ -159,6 +159,10 @@ in {
             type = lib.types.str;
             default = "bgp-dn42";
           };
+          priority = lib.mkOption {
+            type = lib.types.int;
+            default = cfg.routingTables.basePriority + 30;
+          };
         };
         gortr = {
           port = lib.mkOption {
@@ -215,6 +219,10 @@ in {
               type = lib.types.str;
               default = "peer-dn42";
             };
+            priority = lib.mkOption {
+              type = lib.types.int;
+              default = cfg.routingTables.basePriority + 20;
+            };
           };
         };
       };
@@ -228,6 +236,19 @@ in {
         dummy.name = lib.mkOption {
           type = lib.types.str;
           default = "dn42";
+        };
+      };
+      routingTables = {
+        basePriority = lib.mkOption {
+          type = lib.types.int;
+          default = 24200; # higher than main
+          description = ''
+            Default priorities of routing tables:
+
+            * mesh <- base + 10
+            * peer <- base + 20
+            * bgp  <- base + 30
+          '';
         };
       };
       autonomousSystem = {
@@ -270,6 +291,10 @@ in {
             name = lib.mkOption {
               type = lib.types.str;
               default = "mesh-dn42";
+            };
+            priority = lib.mkOption {
+              type = lib.types.int;
+              default = cfg.routingTables.basePriority + 10;
             };
           };
           hosts = lib.mkOption {
