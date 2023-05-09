@@ -65,13 +65,9 @@ in {
   services.bird-lg.proxy = {
     enable = true;
     listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
-    allowedIPs = let
-      birdLgHost = data.service_cname_mappings."bird-lg".on;
-      inherit (config.networking.dn42.autonomousSystem.mesh.hosts.${birdLgHost}) addressesV4 addressesV6;
-    in
-      addressesV4 ++ addressesV6;
   };
-  networking.firewall.allowedTCPPorts = [
+  # tailscale as control plane
+  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
     config.ports.bird-lg-proxy
   ];
 
