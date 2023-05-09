@@ -237,7 +237,7 @@ in
                 addresses = [
                   {
                     addressConfig = {
-                      Address = "${peerCfg.linkLocal.v6.local}/128";
+                      Address = "${peerCfg.linkLocal.v6.local}/64";
                       Scope = "link";
                     };
                   }
