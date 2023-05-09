@@ -184,11 +184,9 @@ in
         services.bird2.config = let
           bgpEnabledHostCfgs = lib.filter (hostCfg: hostCfg.bgp.enable) (lib.attrValues asCfg.mesh.peerHosts);
         in
+          # multiprotocol bgp
           lib.mkOrder 200 (lib.concatMapStringsSep "\n" (hostCfg: ''
-              protocol bgp ibgp_${hostCfg.name}_v4 from dnpeers {
-                neighbor ${hostCfg.preferredAddressV4} as ${toString asCfg.number};
-              }
-              protocol bgp ibgp_${hostCfg.name}_v6 from dnpeers {
+              protocol bgp ibgp_${hostCfg.name} from dnpeers {
                 neighbor ${hostCfg.preferredAddressV6} as ${toString asCfg.number};
               }
             '')
@@ -244,7 +242,7 @@ in
                     };
                   }
                 ];
-                routes = [
+                routes = lib.mkIf peerCfg.linkLocal.v4.enable [
                   {
                     routeConfig = {
                       Destination = "${peerCfg.linkLocal.v4.remote}/32";
@@ -260,9 +258,11 @@ in
           )
           bgpCfg.peering.peers;
         services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: ''
-          protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v4 from dnpeers {
-            neighbor ${peerCfg.linkAddresses.v4.remote} as ${toString peerCfg.remoteAutonomousSystem.number};
-          }
+          ${lib.optionalString peerCfg.linkAddresses.v4.enable ''
+            protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v4 from dnpeers {
+              neighbor ${peerCfg.linkAddresses.v4.remote} as ${toString peerCfg.remoteAutonomousSystem.number};
+            }
+          ''}
           protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v6 from dnpeers {
             neighbor ${peerCfg.linkAddresses.v6.remote}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
           }

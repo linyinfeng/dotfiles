@@ -95,6 +95,10 @@
       };
       linkAddresses = {
         v4 = {
+          enable = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+          };
           remote = lib.mkOption {
             type = with lib.types; nullOr str;
           };
