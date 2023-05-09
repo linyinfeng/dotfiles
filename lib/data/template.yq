@@ -35,6 +35,7 @@
                 .key == "dn42_v4_addresses" or
                 .key == "dn42_v6_prefixes" or
                 .key == "dn42_v6_addresses" or
+                .key == "endpoints" or
                 .key == "endpoints_v4" or
                 .key == "endpoints_v6"
             )

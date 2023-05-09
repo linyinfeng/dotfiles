@@ -48,6 +48,42 @@ resource "cloudflare_record" "zerotier_records" {
   value    = each.value
   zone_id  = var.cloudflare_zone_id
 }
+resource "cloudflare_record" "enpoint_v4_only_records" {
+  name     = "v4.${var.name}.endpoints"
+  for_each = toset(var.endpoints_v4)
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "A"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
+}
+resource "cloudflare_record" "enpoint_v4_records" {
+  name     = "${var.name}.endpoints"
+  for_each = toset(var.endpoints_v4)
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "A"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
+}
+resource "cloudflare_record" "enpoint_v6_only_records" {
+  name     = "v6.${var.name}.endpoints"
+  for_each = toset(var.endpoints_v6)
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "AAAA"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
+}
+resource "cloudflare_record" "enpoint_v6_records" {
+  name     = "${var.name}.endpoints"
+  for_each = toset(var.endpoints_v6)
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "AAAA"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
+}
 
 resource "cloudflare_record" "dn42_v4_records" {
   name     = "${var.name}.dn42"

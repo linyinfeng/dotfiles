@@ -41,12 +41,12 @@ locals {
         a = {
           proxied = true
           type    = "A"
-          value   = data.sops_file.rica.data["network.address"]
+          value   = nonsensitive(data.sops_file.rica.data["network.address"])
         }
       }
       ddns_records      = {}
       dn42_host_indices = [3]
-      endpoints_v4      = [data.sops_file.rica.data["network.address"]]
+      endpoints_v4      = [nonsensitive(data.sops_file.rica.data["network.address"])]
       endpoints_v6      = []
     }
     vultr = {
@@ -72,12 +72,12 @@ locals {
         a = {
           proxied = false
           type    = "A"
-          value   = data.sops_file.terraform.data["ip.tencent"]
+          value   = nonsensitive(data.sops_file.terraform.data["ip.tencent"])
         }
       }
       ddns_records      = {}
       dn42_host_indices = [5]
-      endpoints_v4      = [data.sops_file.terraform.data["ip.tencent"]]
+      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.tencent"])]
       endpoints_v6      = []
     }
     nuc = {

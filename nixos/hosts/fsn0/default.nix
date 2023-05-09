@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   suites,
   profiles,
@@ -16,6 +15,7 @@
       services.notify-failure
       services.postgresql
       services.influxdb
+      services.bird-lg
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"

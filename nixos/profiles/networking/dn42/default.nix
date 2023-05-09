@@ -5,7 +5,7 @@
 }: let
   data = config.lib.self.data;
   mkHost = name: hostData: {
-    bgp.enable = hostData.endpoints_v4 ++ hostData.endpoints_v6 != [];
+    bgp.enable = hostData.endpoints != [];
     indices = hostData.dn42_host_indices;
     addressesV4 = hostData.dn42_v4_addresses;
     addressesV6 = hostData.dn42_v6_addresses;
@@ -37,6 +37,20 @@ in {
       };
     };
   };
+
+  # bird-lg proxy
+  services.bird-lg.proxy = {
+    enable = true;
+    listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
+    allowedIPs = let
+      birdLgHost = data.service_cname_mappings."bird-lg".on;
+      inherit (config.networking.dn42.autonomousSystem.mesh.hosts.${birdLgHost}) addressesV4 addressesV6;
+    in
+      addressesV4 ++ addressesV6;
+  };
+  networking.firewall.allowedTCPPorts = [
+    config.ports.bird-lg-proxy
+  ];
 
   # wireguard
   sops.secrets."wireguard_private_key" = {

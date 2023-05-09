@@ -15,8 +15,8 @@ in
         services.bird2.config = lib.mkOrder 150 ''
           # bgp configurations
 
-          ipv4 table bgp4 { }
-          ipv6 table bgp6 { }
+          ipv4 table bgp_v4 { }
+          ipv6 table bgp_v6 { }
 
           function is_self_net_v4() {
             return net ~ OWNNETSETv4;
@@ -56,10 +56,10 @@ in
             retry 60;
           }
 
-          protocol kernel kernelbgp4 {
+          protocol kernel kernel_bgp_v4 {
             kernel table ${toString bgpCfg.routingTable.id};
             ipv4 {
-                table bgp4;
+                table bgp_v4;
                 import none;
                 export filter {
                     if source = RTS_STATIC then reject;
@@ -68,10 +68,10 @@ in
                 };
             };
           }
-          protocol kernel kernelbgp6 {
+          protocol kernel kernel_bgp_v6 {
             kernel table ${toString bgpCfg.routingTable.id};
             ipv6 {
-                table bgp6;
+                table bgp_v6;
                 import none;
                 export filter {
                     if source = RTS_STATIC then reject;
@@ -80,18 +80,18 @@ in
                 };
             };
           };
-          protocol static staticbgp4 {
+          protocol static static_bgp_v4 {
             route OWNNETv4 reject;
             ipv4 {
-              table bgp4;
+              table bgp_v4;
               import all;
               export none;
             };
           }
-          protocol static staticbgp6 {
+          protocol static static_bgp_v6 {
             route OWNNETv6 reject;
             ipv6 {
-              table bgp6;
+              table bgp_v6;
               import all;
               export none;
             };
@@ -101,7 +101,7 @@ in
             local as OWNAS;
             path metric 1;
             ipv4 {
-              table bgp4;
+              table bgp_v4;
               import filter {
                 if is_valid_network_v4() && !is_self_net_v4() then {
                   if (roa_check(dn42_roa_v4, net, bgp_path.last) != ROA_VALID) then {
@@ -112,11 +112,10 @@ in
               };
               export filter { if is_valid_network_v4() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
               import table;
-              igp table mesh4;
-              # igp table mesh6;
+              igp table mesh_v4;
             };
             ipv6 {
-              table bgp6;
+              table bgp_v6;
               import filter {
                 if is_valid_network_v6() && !is_self_net_v6() then {
                   if (roa_check(dn42_roa_v6, net, bgp_path.last) != ROA_VALID) then {
@@ -127,8 +126,7 @@ in
               };
               export filter { if is_valid_network_v6() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
               import table;
-              # igp table mesh4;
-              igp table mesh6;
+              igp table mesh_v6;
             };
           }
         '';
@@ -187,10 +185,10 @@ in
           bgpEnabledHostCfgs = lib.filter (hostCfg: hostCfg.bgp.enable) (lib.attrValues asCfg.mesh.peerHosts);
         in
           lib.mkOrder 200 (lib.concatMapStringsSep "\n" (hostCfg: ''
-              protocol bgp ibgp${hostCfg.name}4 from dnpeers {
+              protocol bgp ibgp_${hostCfg.name}_v4 from dnpeers {
                 neighbor ${hostCfg.preferredAddressV4} as ${toString asCfg.number};
               }
-              protocol bgp ibgp${hostCfg.name}6 from dnpeers {
+              protocol bgp ibgp_${hostCfg.name}_v6 from dnpeers {
                 neighbor ${hostCfg.preferredAddressV6} as ${toString asCfg.number};
               }
             '')
@@ -262,10 +260,10 @@ in
           )
           bgpCfg.peering.peers;
         services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: ''
-          protocol bgp bgp${config.remoteAutonomousSystem.dn42LowerNumberString}v4 from dnpeers {
+          protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v4 from dnpeers {
             neighbor ${peerCfg.linkAddresses.v4.remote} as ${toString peerCfg.remoteAutonomousSystem.number};
           }
-          protocol bgp bgp${config.remoteAutonomousSystem.dn42LowerNumberString}v6 from dnpeers {
+          protocol bgp bgp_${config.remoteAutonomousSystem.dn42LowerNumberString}_v6 from dnpeers {
             neighbor ${peerCfg.linkAddresses.v6.remote}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
           }
         '') (lib.attrValues bgpCfg.peering.peers));

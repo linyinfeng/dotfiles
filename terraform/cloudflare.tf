@@ -99,6 +99,7 @@ locals {
     smtp            = { on = "hil0", proxy = false }
     mastodon        = { on = "hil0", proxy = true }
     influxdb        = { on = "fsn0", proxy = true }
+    bird-lg         = { on = "fsn0", proxy = true }
   }
 }
 output "service_cname_mappings" {

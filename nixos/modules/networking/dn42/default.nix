@@ -310,7 +310,7 @@ in {
         define OWNNETSETv6 = [${cfg.autonomousSystem.cidrV6}+];
 
         router id ${cfg.bird.routerId};
-        protocol device { }
+        protocol device device_main { }
       '';
     };
 

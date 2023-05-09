@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{config, ...}: let
   interfaceName = "tailscale0";
 in {
   services.tailscale = {

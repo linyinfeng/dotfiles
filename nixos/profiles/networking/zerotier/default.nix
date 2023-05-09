@@ -1,12 +1,6 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
+{config, ...}: let
   stateDir = "/var/lib/zerotier-one";
   interfaceName = "zt0";
-  hostName = config.networking.hostName;
   port = config.ports.zerotier;
   units = [
     "zerotierone-presetup.service"
@@ -17,6 +11,7 @@ in {
     enable = true;
     inherit port;
   };
+  passthru.zerotier = {inherit interfaceName;};
   systemd.services.zerotierone-presetup = {
     script = ''
       echo "create directory"

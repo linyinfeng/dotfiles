@@ -167,26 +167,26 @@ in
     {
       services.bird2.config = lib.mkOrder 100 ''
         # babel configurations
-        ipv4 table mesh4 { }
-        ipv6 table mesh6 { }
+        ipv4 table mesh_v4 { }
+        ipv6 table mesh_v6 { }
 
-        protocol direct directmesh {
+        protocol direct direct_mesh {
           interface "${cfg.interfaces.dummy.name}";
           ipv4 {
-            table mesh4;
+            table mesh_v4;
             import all;
             export none;
           };
           ipv6 {
-            table mesh6;
+            table mesh_v6;
             import all;
             export none;
           };
         }
-        protocol kernel kernelmesh4 {
+        protocol kernel kernel_mesh_v4 {
           kernel table ${toString asCfg.mesh.routingTable.id};
           ipv4 {
-            table mesh4;
+            table mesh_v4;
             export filter {
               krt_prefsrc = OWNIPv4;
               accept;
@@ -194,10 +194,10 @@ in
             import none;
           };
         }
-        protocol kernel kernelmesh6 {
+        protocol kernel kernel_mesh_v6 {
           kernel table ${toString asCfg.mesh.routingTable.id};
           ipv6 {
-            table mesh6;
+            table mesh_v6;
             export filter {
               krt_prefsrc = OWNIPv6;
               accept;
@@ -205,15 +205,15 @@ in
             import none;
           };
         }
-        protocol babel babelmesh {
+        protocol babel babel_mesh {
           randomize router id;
           ipv4 {
-            table mesh4;
+            table mesh_v4;
             import all;
             export all;
           };
           ipv6 {
-            table mesh6;
+            table mesh_v6;
             import all;
             export all;
           };
