@@ -12,6 +12,7 @@ in {
     netSpecificMode = "dn42";
     domain = "ts.li7g.com";
     proxyPort = config.ports.bird-lg-proxy;
+    whois = "whois.dn42";
     servers =
       lib.mapAttrsToList (_: hostCfg: hostCfg.name)
       (lib.filterAttrs hostFilter config.networking.dn42.autonomousSystem.mesh.hosts);
