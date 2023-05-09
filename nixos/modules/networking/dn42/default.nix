@@ -306,13 +306,20 @@ in {
           ];
         };
       };
+      certificateAuthority = {
+        trust = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+      };
     };
   };
 
   imports = [
-    ./_autonomous-system.nix
+    ./_as.nix
     ./_bgp.nix
     ./_dns.nix
+    ./_ca.nix
   ];
   config = lib.mkIf (cfg.enable) {
     boot.kernel.sysctl = {

@@ -58,6 +58,7 @@ in {
       };
     };
     dns.enable = true;
+    certificateAuthority.trust = true;
   };
 
   # bird-lg proxy
