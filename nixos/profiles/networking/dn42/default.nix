@@ -23,11 +23,11 @@
           address = "virmach-ny1g.lantian.pub";
           port = 20128;
         };
-        linkAddresses = {
-          v4.bgpNeighbor = "172.22.76.190";
+        linkAddresses = rec {
+          v4.bgpNeighbor = v4.peer;
           v6.bgpNeighbor = "fe80::2547"; # link-local
-          v4.remotes = ["172.22.76.190"];
-          v6.remotes = ["fdbc:f9dc:67ad:8::1"];
+          v4.peer = "172.22.76.190";
+          v6.peer = "fdbc:f9dc:67ad:8::1";
         };
       };
     };

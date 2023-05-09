@@ -104,18 +104,16 @@
           bgpNeighbor = lib.mkOption {
             type = with lib.types; nullOr str;
           };
-          remotes = lib.mkOption {
-            type = with lib.types; listOf str;
-            default = [];
+          peer = lib.mkOption {
+            type = with lib.types; str;
           };
         };
         v6 = {
           bgpNeighbor = lib.mkOption {
             type = with lib.types; nullOr str;
           };
-          remotes = lib.mkOption {
-            type = with lib.types; listOf str;
-            default = [];
+          peer = lib.mkOption {
+            type = with lib.types; str;
           };
           linkLocal = lib.mkOption {
             type = lib.types.str;

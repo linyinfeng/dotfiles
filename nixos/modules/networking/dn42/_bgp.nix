@@ -236,30 +236,31 @@ in
                 matchConfig = {
                   Name = peerCfg.tunnel.interface.name;
                 };
-                addresses = [
-                  {
+                addresses =
+                  lib.map (address: {
                     addressConfig = {
-                      Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";
+                      Address = "${address}/32";
+                      Peer = "${peerCfg.linkAddresses.v4.peer}/32";
                       Scope = "link";
                     };
-                  }
-                ];
-                routes =
-                  lib.lists.map (remote: {
-                    routeConfig = {
-                      Destination = "${remote}/32";
+                  })
+                  asCfg.mesh.thisHost.addressesV4 ++
+                  lib.map (address: {
+                    addressConfig = {
+                      Address = "${address}/128";
+                      Peer = "${peerCfg.linkAddresses.v6.peer}/128";
                       Scope = "link";
-                      PreferredSource = "${asCfg.mesh.thisHost.preferredAddressV4}";
                     };
                   })
-                  peerCfg.linkAddresses.v4.remotes
-                  ++ lib.lists.map (remote: {
-                    routeConfig = {
-                      Destination = "${remote}/128";
-                      PreferredSource = "${asCfg.mesh.thisHost.preferredAddressV6}";
-                    };
-                  })
-                  peerCfg.linkAddresses.v6.remotes;
+                  asCfg.mesh.thisHost.addressesV6
+                  ++ [
+                    {
+                      addressConfig = {
+                        Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";
+                        Scope = "link";
+                      };
+                    }
+                  ];
                 networkConfig = {
                   LinkLocalAddressing = "no"; # disable link local autoconfiguration
                 };
