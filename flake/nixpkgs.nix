@@ -65,9 +65,11 @@
     });
 
     fwupd = prev.fwupd.overrideAttrs (old: {
-      patches = (old.patches or []) ++ [
-        ../patches/fwupd-lockdown-unknown-as-invalid.patch
-      ];
+      patches =
+        (old.patches or [])
+        ++ [
+          ../patches/fwupd-lockdown-unknown-as-invalid.patch
+        ];
     });
 
     # TODO upstream
