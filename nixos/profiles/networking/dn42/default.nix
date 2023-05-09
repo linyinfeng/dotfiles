@@ -3,6 +3,7 @@
   lib,
   ...
 }: let
+  hostName = config.networking.hostName;
   data = config.lib.self.data;
   mkHost = name: hostData: {
     bgp.enable = true;
@@ -11,6 +12,23 @@
     addressesV6 = hostData.dn42_v6_addresses;
     endpointsV4 = hostData.endpoints_v4;
     endpointsV6 = hostData.endpoints_v6;
+  };
+  peerTable = {
+    rica = {
+      "virmach-ny1g.lantian.pub" = {
+        remoteAutonomousSystem.dn42LowerNumber = 2547;
+        tunnel.type = "wireguard";
+        wireguard.remotePublicKey = "a+zL2tDWjwxBXd2bho2OjR/BEmRe2tJF9DHFmZIE+Rk=";
+        endpoint = {
+          address = "v-ps-hkg.lantian.pub";
+          port = 20128;
+        };
+        linkAddresses = {
+          v4.remote = "172.22.76.190";
+          v6.remote = "fdbc:f9dc:67ad:8::1";
+        };
+      };
+    };
   };
 in {
   networking.dn42 = {
@@ -25,6 +43,7 @@ in {
           localPortStart = config.ports.dn42-peer-min;
           wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
         };
+        peers = peerTable.${hostName} or {};
       };
     };
     autonomousSystem = {
