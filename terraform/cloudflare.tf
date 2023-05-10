@@ -140,6 +140,17 @@ resource "cloudflare_record" "general_tailscale_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+resource "cloudflare_record" "general_dn42_cname" {
+  for_each = local.service_cname_mappings
+
+  name    = "${each.key}.dn42"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  value   = "${each.value.on}.dn42.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # localhost record
 
 resource "cloudflare_record" "localhost_a" {
