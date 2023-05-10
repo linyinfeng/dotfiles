@@ -28,6 +28,7 @@
     extraDomainNames = [
       "*.zt.li7g.com"
       "*.ts.li7g.com"
+      "*.dn42.li7g.com"
     ];
   };
 }
