@@ -100,6 +100,7 @@ locals {
     mastodon        = { on = "hil0", proxy = true }
     influxdb        = { on = "fsn0", proxy = true }
     bird-lg         = { on = "fsn0", proxy = true }
+    dn42            = { on = "fsn0", proxy = true }
   }
 }
 output "service_cname_mappings" {

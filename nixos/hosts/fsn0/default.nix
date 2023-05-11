@@ -15,6 +15,7 @@
       services.notify-failure
       services.postgresql
       services.influxdb
+      services.dn42-site
       services.bird-lg
     ])
     ++ [

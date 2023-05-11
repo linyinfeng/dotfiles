@@ -87,7 +87,7 @@ resource "cloudflare_record" "enpoint_v6_records" {
 
 resource "cloudflare_record" "dn42_v4_records" {
   name     = "${var.name}.dn42"
-  for_each = toset(local.dn42_v4_addresses)
+  for_each = toset(local.dn42_addresses_v4)
   ttl      = 1 # default ttl
   proxied  = false
   type     = "A"
@@ -97,7 +97,7 @@ resource "cloudflare_record" "dn42_v4_records" {
 
 resource "cloudflare_record" "dn42_v6_records" {
   name     = "${var.name}.dn42"
-  for_each = toset(local.dn42_v6_addresses)
+  for_each = toset(local.dn42_addresses_v6)
   ttl      = 1 # default ttl
   proxied  = false
   type     = "AAAA"

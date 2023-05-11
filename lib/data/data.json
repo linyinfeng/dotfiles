@@ -19,9 +19,9 @@
   "influxdb_url": "https://influxdb.li7g.com",
   "hosts": {
     "framework": {
+      "dn42_addresses_v4": ["172.23.224.117"],
+      "dn42_addresses_v6": ["fd72:db83:badd:15::1"],
       "dn42_host_indices": [21],
-      "dn42_v4_addresses": ["172.23.224.117"],
-      "dn42_v6_addresses": ["fd72:db83:badd:15::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:15::/64"],
       "endpoints": [],
       "endpoints_v4": [],
@@ -32,9 +32,9 @@
       "wireguard_public_key": "aRmihxibpfOJc3zwaPkZHtz7plxO9rSAfEMEfFMuDSk="
     },
     "fsn0": {
+      "dn42_addresses_v4": ["172.23.224.98"],
+      "dn42_addresses_v6": ["fd72:db83:badd:2::1"],
       "dn42_host_indices": [2],
-      "dn42_v4_addresses": ["172.23.224.98"],
-      "dn42_v6_addresses": ["fd72:db83:badd:2::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:2::/64"],
       "endpoints": ["128.140.81.159", "2a01:4f8:c012:4c96::1"],
       "endpoints_v4": ["128.140.81.159"],
@@ -45,9 +45,9 @@
       "wireguard_public_key": "UoSHVEUb3boRQqFwUb5u7IwbxXfx/ObpRZw/usIRhVY="
     },
     "hil0": {
+      "dn42_addresses_v4": ["172.23.224.97"],
+      "dn42_addresses_v6": ["fd72:db83:badd:1::1"],
       "dn42_host_indices": [1],
-      "dn42_v4_addresses": ["172.23.224.97"],
-      "dn42_v6_addresses": ["fd72:db83:badd:1::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:1::/64"],
       "endpoints": ["5.78.46.171", "2a01:4ff:1f0:f16c::1"],
       "endpoints_v4": ["5.78.46.171"],
@@ -58,9 +58,9 @@
       "wireguard_public_key": "I/4kkEgrQFHcoFsHq2xhH00t2xP08EWBP4t1gkw0GBM="
     },
     "nuc": {
+      "dn42_addresses_v4": ["172.23.224.102"],
+      "dn42_addresses_v6": ["fd72:db83:badd:6::1"],
       "dn42_host_indices": [6],
-      "dn42_v4_addresses": ["172.23.224.102"],
-      "dn42_v6_addresses": ["fd72:db83:badd:6::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:6::/64"],
       "endpoints": [],
       "endpoints_v4": [],
@@ -71,9 +71,9 @@
       "wireguard_public_key": "VNXv5/7nDMDJi6AnrYKt69/IP0G8GQJwUiTR6ellSxs="
     },
     "rica": {
+      "dn42_addresses_v4": ["172.23.224.99"],
+      "dn42_addresses_v6": ["fd72:db83:badd:3::1"],
       "dn42_host_indices": [3],
-      "dn42_v4_addresses": ["172.23.224.99"],
-      "dn42_v6_addresses": ["fd72:db83:badd:3::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:3::/64"],
       "endpoints": ["207.90.192.101"],
       "endpoints_v4": ["207.90.192.101"],
@@ -84,9 +84,9 @@
       "wireguard_public_key": "G3/9l3sOzgcoBhxdqn8WH5aBAulsNgmCzN2b9N5gwXw="
     },
     "tencent": {
+      "dn42_addresses_v4": ["172.23.224.101"],
+      "dn42_addresses_v6": ["fd72:db83:badd:5::1"],
       "dn42_host_indices": [5],
-      "dn42_v4_addresses": ["172.23.224.101"],
-      "dn42_v6_addresses": ["fd72:db83:badd:5::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:5::/64"],
       "endpoints": ["124.221.234.140"],
       "endpoints_v4": ["124.221.234.140"],
@@ -97,9 +97,9 @@
       "wireguard_public_key": "v8w0d0Y1BbOfKEWIHG9FWBJMtEjkWP90FRMZO1fXY28="
     },
     "vultr": {
+      "dn42_addresses_v4": ["172.23.224.100"],
+      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
       "dn42_host_indices": [4],
-      "dn42_v4_addresses": ["172.23.224.100"],
-      "dn42_v6_addresses": ["fd72:db83:badd:4::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
       "endpoints": [
         "144.202.40.189",
@@ -113,9 +113,9 @@
       "wireguard_public_key": "7HiMG8PKO9eGz7pXXYfXkgLc6M4sSSY9nKsAdLX+oWw="
     },
     "xps8930": {
+      "dn42_addresses_v4": ["172.23.224.118"],
+      "dn42_addresses_v6": ["fd72:db83:badd:16::1"],
       "dn42_host_indices": [22],
-      "dn42_v4_addresses": ["172.23.224.118"],
-      "dn42_v6_addresses": ["fd72:db83:badd:16::1"],
       "dn42_v6_prefixes": ["fd72:db83:badd:16::/64"],
       "endpoints": [],
       "endpoints_v4": [],
@@ -137,6 +137,10 @@
     },
     "box": {
       "on": "rica",
+      "proxy": true
+    },
+    "dn42": {
+      "on": "fsn0",
       "proxy": true
     },
     "dst": {

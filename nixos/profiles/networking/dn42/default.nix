@@ -8,26 +8,17 @@
   mkHost = name: hostData: {
     bgp.enable = true;
     indices = hostData.dn42_host_indices;
-    addressesV4 = hostData.dn42_v4_addresses;
-    addressesV6 = hostData.dn42_v6_addresses;
+    addressesV4 = hostData.dn42_addresses_v4;
+    addressesV6 = hostData.dn42_addresses_v6;
     endpointsV4 = hostData.endpoints_v4;
     endpointsV6 = hostData.endpoints_v6;
   };
   peerTable = {
-    # peering guide to AS4242420128
-    # for endpoints and address information, please refer to the data file (lib/data/data.json)
-    # for every host "HOST" in my ASN:
-    # avaiable tunnel type: currently wireguard only
-    #   wireguard:
-    #     ipv4 endpoint of HOST: data.hosts.${HOST}.endpoints_v4
-    #     ipv6 endpoint of HOST: data.hosts.${HOST}.endpoints_v6
-    #       (hosts without any endpoints is not availiable for peering)
-    #     port: last 5 digits of your dn42 ASN
-    #     public key of HOST: data.hosts.${HOST}
-    # tunnel network information
-    #   ipv6 link local: fe80::128
-    #   ipv6 dn42: data.hosts.${HOST}.dn42_v6_addresses
-    #   ipv4 dn42: data.hosts.${HOST}.dn42_v4_addresses
+    # for peering information, refer to https://dn42.li7g.com
+    # feel free to create a pull request to peer with me
+
+    # trafficControl.enable = false
+    # egress traffic from this server is unmetered
     rica = {
       "virmach-ny1g.lantian.pub" = {
         remoteAutonomousSystem.dn42LowerNumber = 2547;
@@ -43,10 +34,12 @@
           v4.peer = "172.22.76.190";
           v6.peer = "fdbc:f9dc:67ad:8::1";
         };
-        # egress from this server is unmetered
         trafficControl.enable = false;
       };
     };
+
+    # trafficControl.enable = false
+    # fsn0 has egress traffic of 20TB/month, should be enough
     fsn0 = {
       "de2.g-load.eu" = {
         remoteAutonomousSystem.dn42LowerNumber = 3914;
@@ -62,7 +55,6 @@
           v4.peer = "172.20.53.97";
           v6.peer = "fdfc:e23f:fb45:3234::1";
         };
-        # 20TB/month should be enough
         trafficControl.enable = false;
       };
     };

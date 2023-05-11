@@ -51,6 +51,7 @@
       };
     };
   };
+  supportedTunnelTypes = ["wireguard"];
   peerOptions = {
     name,
     config,
@@ -63,7 +64,7 @@
       };
       tunnel = {
         type = lib.mkOption {
-          type = lib.types.enum ["wireguard"];
+          type = lib.types.enum supportedTunnelTypes;
         };
         interface.name = lib.mkOption {
           type = lib.types.str;
@@ -435,5 +436,8 @@ in {
         };
       };
     };
+
+    # other configurations
+    passthru.dn42 = {inherit supportedTunnelTypes;};
   };
 }
