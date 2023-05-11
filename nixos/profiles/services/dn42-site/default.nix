@@ -23,7 +23,7 @@
       network = {
         addresses = {
           v4 = hostCfg.addressesV4;
-          v6 = config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local ++ hostCfg.addressesV6;
+          v6 = [config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local] ++ hostCfg.addressesV6;
         };
       };
       wireguard = {
