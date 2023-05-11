@@ -91,9 +91,9 @@ locals {
     minio-console   = { on = "mtl0", proxy = true }
     social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
-    "shanghai.derp" = { on = "tencent", proxy = false }
-    dst             = { on = "tencent", proxy = false }
-    matrix-qq       = { on = "tencent", proxy = false }
+    "shanghai.derp" = { on = "shg0", proxy = false }
+    dst             = { on = "shg0", proxy = false }
+    matrix-qq       = { on = "shg0", proxy = false }
     matrix          = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }

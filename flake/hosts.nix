@@ -306,7 +306,7 @@ in {
     })
 
     (mkHost {
-      name = "tencent";
+      name = "shg0";
       system = "x86_64-linux";
     })
 

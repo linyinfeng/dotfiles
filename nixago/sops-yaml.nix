@@ -35,7 +35,7 @@
       key = "age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv";
       owned = true;
     };
-    tencent = {
+    shg0 = {
       key = "age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf";
       owned = true;
     };

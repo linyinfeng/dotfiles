@@ -99,7 +99,7 @@
       "syncthing_device_id": "CNRNAH3-5UXUEHP-JQCY4UR-Q2TURGO-53BHIZZ-DGFMHLO-Z6GCZKN-SMYW3AX",
       "wireguard_public_key": "VNXv5/7nDMDJi6AnrYKt69/IP0G8GQJwUiTR6ellSxs="
     },
-    "tencent": {
+    "shg0": {
       "dn42_addresses_v4": ["172.23.224.101"],
       "dn42_addresses_v6": ["fd72:db83:badd:5::1"],
       "dn42_host_indices": [5],
@@ -144,7 +144,7 @@
       "proxy": true
     },
     "dst": {
-      "on": "tencent",
+      "on": "shg0",
       "proxy": false
     },
     "git": {
@@ -176,7 +176,7 @@
       "proxy": true
     },
     "matrix-qq": {
-      "on": "tencent",
+      "on": "shg0",
       "proxy": false
     },
     "minio": {
@@ -208,7 +208,7 @@
       "proxy": true
     },
     "shanghai.derp": {
-      "on": "tencent",
+      "on": "shg0",
       "proxy": false
     },
     "smtp": {

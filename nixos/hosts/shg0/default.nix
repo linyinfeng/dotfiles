@@ -34,7 +34,7 @@ in {
       ./_steam
     ];
 
-  options.hosts.tencent = {
+  options.hosts.shg0 = {
     listens = lib.mkOption {
       type = with lib.types; listOf anything;
       default = [
@@ -115,8 +115,8 @@ in {
     {
       services.nginx = {
         openFirewall = false;
-        virtualHosts."tencent.*" = {
-          listen = config.hosts.tencent.listens;
+        virtualHosts."shg0.*" = {
+          listen = config.hosts.shg0.listens;
         };
       };
       # only port 443

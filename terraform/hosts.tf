@@ -67,17 +67,17 @@ locals {
       endpoints_v4      = [vultr_instance.mia0.main_ip]
       endpoints_v6      = [vultr_instance.mia0.v6_main_ip]
     }
-    tencent = {
+    shg0 = {
       records = {
         a = {
           proxied = false
           type    = "A"
-          value   = nonsensitive(data.sops_file.terraform.data["ip.tencent"])
+          value   = nonsensitive(data.sops_file.terraform.data["ip.shg0"])
         }
       }
       ddns_records      = {}
       dn42_host_indices = [5]
-      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.tencent"])]
+      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.shg0"])]
       endpoints_v6      = []
     }
     nuc = {

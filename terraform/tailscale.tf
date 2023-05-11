@@ -46,7 +46,7 @@ resource "tailscale_acl" "main" {
     #           name : "900a",
     #           regionID : 900,
     #           hostName : "shanghai.derp.li7g.com",
-    #           ipv4 : var.tencent_ip,
+    #           ipv4 : var.shg_ip,
     #           derpPort : 8443,
     #         },
     #       ],

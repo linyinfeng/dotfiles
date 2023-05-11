@@ -15,7 +15,7 @@
       ip = "192.168.2.3/32";
       inherit port;
     };
-    tencent = {
+    shg0 = {
       ip = "192.168.2.4/32";
       inherit port;
     };
