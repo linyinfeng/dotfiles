@@ -14,6 +14,20 @@
     endpointsV6 = hostData.endpoints_v6;
   };
   peerTable = {
+    # peering guide to AS4242420128
+    # for endpoints and address information, please refer to the data file (lib/data/data.json)
+    # for every host "HOST" in my ASN:
+    # avaiable tunnel type: currently wireguard only
+    #   wireguard:
+    #     ipv4 endpoint of HOST: data.hosts.${HOST}.endpoints_v4
+    #     ipv6 endpoint of HOST: data.hosts.${HOST}.endpoints_v6
+    #       (hosts without any endpoints is not availiable for peering)
+    #     port: last 5 digits of your dn42 ASN
+    #     public key of HOST: data.hosts.${HOST}
+    # tunnel network information
+    #   ipv6 link local: fe80::128
+    #   ipv6 dn42: data.hosts.${HOST}.dn42_v6_addresses
+    #   ipv4 dn42: data.hosts.${HOST}.dn42_v4_addresses
     rica = {
       "virmach-ny1g.lantian.pub" = {
         remoteAutonomousSystem.dn42LowerNumber = 2547;
@@ -48,7 +62,7 @@
           v4.peer = "172.20.53.97";
           v6.peer = "fdfc:e23f:fb45:3234::1";
         };
-        # both machine is on Hetzner
+        # 20TB/month should be enough
         trafficControl.enable = false;
       };
     };
