@@ -355,8 +355,8 @@ in
           # MATRIX_WHITELIST = "@yinfeng:li7g.com";
           # MATRIX_ROOM_BLACKLIST = "";
           MATRIX_ROOM_WHITELIST = lib.concatStringsSep " " [
+            "!clkyAURLHpXBYpcfSE:li7g.com" # public - #njulug:li7g.com
             "!ZcyNnUjSsEKYLfgpBu:li7g.com" # private - #chatgpt:li7g.com
-            "!rNHQmObOrazwgQUPvf:li7g.com" # private - #njulug:li7g.com
             "!MPQSzGQmrbZGaDnPaL:li7g.com" # private - #apartment-five:li7g.com
             "!cacbMwUwsLZ6GKac:nichi.co" # public - #zh-cn:nixos.org
           ];
