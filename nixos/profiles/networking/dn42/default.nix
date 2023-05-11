@@ -19,11 +19,11 @@
     "hil0".enable = false; # 20TB/month
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
-    "mia0".enable = true;  # 200GB/month
-    "shg0".enable = true;  # 1TB/month
+    "mia0".enable = true; # 200GB/month
+    "shg0".enable = true; # 1TB/month
 
     "nuc".enable = false; # unmetered
-    "xps8930" = false;   # mobile
+    "xps8930" = false; # mobile
     "framework" = false; # mobile
   };
 in {

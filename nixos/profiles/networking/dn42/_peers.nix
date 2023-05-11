@@ -1,5 +1,8 @@
-# for peering information, please refer to https://dn42.li7g.com
-# feel free to create a pull request to peer with me
+# for peering information, please refer to
+#
+#   https://dn42.li7g.com/info.json
+#
+# feel free to create a pull request for peer with my servers
 {
   mtl0 = {
     "virmach-ny1g.lantian.pub" = {
