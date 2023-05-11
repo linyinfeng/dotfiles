@@ -38,16 +38,6 @@ resource "cloudflare_record" "ddns_records" {
   zone_id  = var.cloudflare_zone_id
   lifecycle { ignore_changes = [value] }
 }
-
-resource "cloudflare_record" "zerotier_records" {
-  for_each = zerotier_member.host.ip_assignments
-  name     = "${var.name}.zt"
-  ttl      = 1 # default ttl
-  proxied  = false
-  type     = "A"
-  value    = each.value
-  zone_id  = var.cloudflare_zone_id
-}
 resource "cloudflare_record" "enpoint_v4_only_records" {
   name     = "v4.${var.name}.endpoints"
   for_each = toset(var.endpoints_v4)

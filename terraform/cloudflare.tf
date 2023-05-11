@@ -73,11 +73,11 @@ resource "cloudflare_record" "li7g" {
 
 locals {
   service_cname_mappings = {
-    nuc-proxy       = { on = "vultr", proxy = true }
-    portal          = { on = "vultr", proxy = true }
-    tar             = { on = "vultr", proxy = true }
-    pgp-public-key  = { on = "vultr", proxy = true }
-    oranc           = { on = "vultr", proxy = true }
+    nuc-proxy       = { on = "mia0", proxy = true }
+    portal          = { on = "mia0", proxy = true }
+    tar             = { on = "mia0", proxy = true }
+    pgp-public-key  = { on = "mia0", proxy = true }
+    oranc           = { on = "mia0", proxy = true }
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
@@ -116,17 +116,6 @@ resource "cloudflare_record" "general_cname" {
   ttl     = 1
   type    = "CNAME"
   value   = "${each.value.on}.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-resource "cloudflare_record" "general_zerotier_cname" {
-  for_each = local.service_cname_mappings
-
-  name    = "${each.key}.zt"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  value   = "${each.value.on}.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -268,7 +257,7 @@ resource "cloudflare_record" "li7g_cache_overlay" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = "vultr.li7g.com"
+  value   = "mia0.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 resource "cloudflare_ruleset" "li7g_rewrite" {

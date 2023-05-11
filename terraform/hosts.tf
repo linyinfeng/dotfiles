@@ -49,23 +49,23 @@ locals {
       endpoints_v4      = [nonsensitive(data.sops_file.rica.data["network.address"])]
       endpoints_v6      = []
     }
-    vultr = {
+    mia0 = {
       records = {
         a = {
           proxied = true
           type    = "A"
-          value   = vultr_instance.main.main_ip
+          value   = vultr_instance.mia0.main_ip
         }
         aaaa = {
           proxied = true
           type    = "AAAA"
-          value   = vultr_instance.main.v6_main_ip
+          value   = vultr_instance.mia0.v6_main_ip
         }
       }
       ddns_records      = {}
       dn42_host_indices = [4]
-      endpoints_v4      = [vultr_instance.main.main_ip]
-      endpoints_v6      = [vultr_instance.main.v6_main_ip]
+      endpoints_v4      = [vultr_instance.mia0.main_ip]
+      endpoints_v6      = [vultr_instance.mia0.v6_main_ip]
     }
     tencent = {
       records = {

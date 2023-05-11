@@ -57,6 +57,22 @@
       "syncthing_device_id": "MR3RK4H-6QH5F4L-PBBR4JD-CSXVZEJ-RJJDZJG-L4B2UNZ-RW3LQQP-ASZDYAY",
       "wireguard_public_key": "I/4kkEgrQFHcoFsHq2xhH00t2xP08EWBP4t1gkw0GBM="
     },
+    "mia0": {
+      "dn42_addresses_v4": ["172.23.224.100"],
+      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
+      "dn42_host_indices": [4],
+      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
+      "endpoints": [
+        "144.202.40.189",
+        "2001:19f0:9002:18bd:5400:01ff:fe65:f989"
+      ],
+      "endpoints_v4": ["144.202.40.189"],
+      "endpoints_v6": ["2001:19f0:9002:18bd:5400:01ff:fe65:f989"],
+      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzf3nY6Ms2dFc+HQ3C4qkvdPx1fmDB5EbyJh4HNaObM",
+      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIBTqyN9LKX1uHp69N6RbAikWz04a7toqNeB2DqbFrZQ2EvGAdlx8CmNx33OoJK57iqkV5/+xANPdQvfCB4rlQBhDoD7WEODGaCuVWzZdz3ER3ZV53kyO9++ZoNdMUmeQ2Nu/OoLtQHZTHCMddu95pxfrV9dCvKwTyI/u4fgIZkna3ryHqOHfuLZ4DVyw7E63q+QJabGppHWEJ60SwKTteN5k85yynFvn1/nLKA8DNEU6PclAG/4mzajqrjm2nsjwhLfHs4N9bj2xGh01wc0XupZbvebTbDzroglFwL1U453ufOYjlkFNN8kWPJfj9zIsok6vJXKC/glRZAvZNf7TuIggYjxwVkcad89V7YYQJoNQ1C/I8ZXvB07Kp/TgaeA52LlDj4Txjcau1IClD8igYrrMXtJszmWVIYXuQHHcH9fGonye51jjp6262YDGfzk0Bh4GjQBRuixn7AL2vy0K4JT9UCqt8gJ9zvWHwHgsCJWaFPvK9T3AVxXlsPMBwneujZ3/Oi/lVwyGkZAA58sODM8/q8XlgBYgkZZDarzGm+JWL9mTO0HROqnZxJnbnk8Pp/SsDh42RGdMVF5pw0tR4Lgt49KQCjTo+ph8ueMzUjvjnyM3CeTALfnenLIYRr4SqvNim4SNc5Pu6MzPma8YxyaBqRTnz8cWEz3Fgs3aUaw==",
+      "syncthing_device_id": "DCN67WU-UECAXOB-5Y4M4GV-T44PP44-OHXUGXU-MWT25BQ-GOBGGR4-BKOLIAJ",
+      "wireguard_public_key": "7HiMG8PKO9eGz7pXXYfXkgLc6M4sSSY9nKsAdLX+oWw="
+    },
     "nuc": {
       "dn42_addresses_v4": ["172.23.224.102"],
       "dn42_addresses_v6": ["fd72:db83:badd:6::1"],
@@ -95,22 +111,6 @@
       "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCeIxwfZ8j3Kg2MGDYB9EYTt2V4OWewVvQtSmo3m8EOh3D3S6OHQOSZPkD1TS+9qjg0h1zauoUPLHfTzJHox+BbDkstfFIBuTLOOkq+tEopkWsoNBBTCB+iwEr8EJeLmHDm0ngyC9fEkuUSmc2p8HeYhP2r+4JPzupJRure6WzO/S2sVLu9QKWqDUnX+aFlYuAqGnvvxBpfkIWKYVzKct07DK+kvperpfJ88RCMkHGfaWirG/HJWuRllKxlZNuAIDUQxQ/VxVa+qbiSUvIMet6IrRgDj/0Pfmqp5J7Xcdly8mLE+SjEVYFZDTZ+eKXsALsNb/H4vpwGbmju5hno6zpiwRiDWVh6DboonXVXBFe42uKziNo8WidO+TwE8lOE1h2AUPiydS89t7euLOPP7ylV6Z8fK2OXNA6eLYIldD2cspPnNRU9a/MLyzK+Y211Q3MTDScsRxWJH5yd2XbWFmJ3n1NpRHVbXT3eyvHNWrGLTSn3BTpdkOhpWmEJHWr6BaxwrNuUyRqrJDkaqrA3onwCfPMSFgIGL+6nts3AWsUC9enwofmCjE3mbDwkwZ0l3tQB6rUevsaIukA0mBDvmaGCmQpCkmNNkpmkQqdhvDDGnAxdJ8SLTtXjnNknO34wID/RKQqrcXufgH9JNdn0PUwuixJ5Czjvaz+Tq1FEA47HBQ==",
       "syncthing_device_id": "OWTQBUP-LNLTSBG-L3LX37G-Q5VWJW5-U5H3WGE-XTVDRUG-2YZPHPZ-SEOXAQU",
       "wireguard_public_key": "v8w0d0Y1BbOfKEWIHG9FWBJMtEjkWP90FRMZO1fXY28="
-    },
-    "vultr": {
-      "dn42_addresses_v4": ["172.23.224.100"],
-      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
-      "dn42_host_indices": [4],
-      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
-      "endpoints": [
-        "144.202.40.189",
-        "2001:19f0:9002:18bd:5400:01ff:fe65:f989"
-      ],
-      "endpoints_v4": ["144.202.40.189"],
-      "endpoints_v6": ["2001:19f0:9002:18bd:5400:01ff:fe65:f989"],
-      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzf3nY6Ms2dFc+HQ3C4qkvdPx1fmDB5EbyJh4HNaObM",
-      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIBTqyN9LKX1uHp69N6RbAikWz04a7toqNeB2DqbFrZQ2EvGAdlx8CmNx33OoJK57iqkV5/+xANPdQvfCB4rlQBhDoD7WEODGaCuVWzZdz3ER3ZV53kyO9++ZoNdMUmeQ2Nu/OoLtQHZTHCMddu95pxfrV9dCvKwTyI/u4fgIZkna3ryHqOHfuLZ4DVyw7E63q+QJabGppHWEJ60SwKTteN5k85yynFvn1/nLKA8DNEU6PclAG/4mzajqrjm2nsjwhLfHs4N9bj2xGh01wc0XupZbvebTbDzroglFwL1U453ufOYjlkFNN8kWPJfj9zIsok6vJXKC/glRZAvZNf7TuIggYjxwVkcad89V7YYQJoNQ1C/I8ZXvB07Kp/TgaeA52LlDj4Txjcau1IClD8igYrrMXtJszmWVIYXuQHHcH9fGonye51jjp6262YDGfzk0Bh4GjQBRuixn7AL2vy0K4JT9UCqt8gJ9zvWHwHgsCJWaFPvK9T3AVxXlsPMBwneujZ3/Oi/lVwyGkZAA58sODM8/q8XlgBYgkZZDarzGm+JWL9mTO0HROqnZxJnbnk8Pp/SsDh42RGdMVF5pw0tR4Lgt49KQCjTo+ph8ueMzUjvjnyM3CeTALfnenLIYRr4SqvNim4SNc5Pu6MzPma8YxyaBqRTnz8cWEz3Fgs3aUaw==",
-      "syncthing_device_id": "DCN67WU-UECAXOB-5Y4M4GV-T44PP44-OHXUGXU-MWT25BQ-GOBGGR4-BKOLIAJ",
-      "wireguard_public_key": "7HiMG8PKO9eGz7pXXYfXkgLc6M4sSSY9nKsAdLX+oWw="
     },
     "xps8930": {
       "dn42_addresses_v4": ["172.23.224.118"],
@@ -188,11 +188,11 @@
       "proxy": true
     },
     "nuc-proxy": {
-      "on": "vultr",
+      "on": "mia0",
       "proxy": true
     },
     "oranc": {
-      "on": "vultr",
+      "on": "mia0",
       "proxy": true
     },
     "pb": {
@@ -200,11 +200,11 @@
       "proxy": true
     },
     "pgp-public-key": {
-      "on": "vultr",
+      "on": "mia0",
       "proxy": true
     },
     "portal": {
-      "on": "vultr",
+      "on": "mia0",
       "proxy": true
     },
     "shanghai.derp": {
@@ -228,7 +228,7 @@
       "proxy": true
     },
     "tar": {
-      "on": "vultr",
+      "on": "mia0",
       "proxy": true
     },
     "transmission": {

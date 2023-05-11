@@ -4,7 +4,7 @@ provider "vultr" {
   retry_limit = 2
 }
 
-resource "vultr_instance" "main" {
+resource "vultr_instance" "mia0" {
   plan   = "vc2-1c-0.5gb" # actually an invalid plan
   region = "mia"
 
