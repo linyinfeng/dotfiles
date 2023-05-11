@@ -1,8 +1,11 @@
 # feel free to create a pull request to peer with my servers
 # for peering information, please refer to
 #
-#   https://dn42.li7g.com/info.json
+#    https://dn42.li7g.com/info.json
 #
+# looking glass
+#
+#    https://bird-lg.li7g.com
 {
   mtl0 = {
     "virmach-ny1g.lantian.pub" = {
