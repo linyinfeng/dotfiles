@@ -23,8 +23,8 @@
     "shg0".enable = true; # 1TB/month
 
     "nuc".enable = false; # unmetered
-    "xps8930" = false; # mobile
-    "framework" = false; # mobile
+    "xps8930".enable = false; # mobile
+    "framework".enable = false; # mobile
   };
 in {
   networking.dn42 = {
