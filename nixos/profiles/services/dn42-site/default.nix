@@ -52,7 +52,7 @@
             v6 = [config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local] ++ hostCfg.addressesV6;
           };
         };
-        # traffic_control = config.passthru.dn42.trafficControlTable.${name}.enable;
+        traffic_control = config.passthru.dn42TrafficControlTable.${name}.enable;
         wireguard = {
           endpoints = {
             v4 = hostCfg.endpointsV4;
