@@ -147,7 +147,7 @@
       trafficControl = {
         enable = lib.mkOption {
           type = lib.types.bool;
-          # no default
+          default = bgpCfg.peering.defaults.trafficControl.enable;
         };
         rate = lib.mkOption {
           type = lib.types.str;
@@ -234,6 +234,7 @@ in {
               };
             };
             trafficControl = {
+              enable = lib.mkEnableOption "traffic control";
               rate = lib.mkOption {
                 type = lib.types.str;
                 default = "5M"; # 5 Mbps
@@ -438,6 +439,6 @@ in {
     };
 
     # other configurations
-    passthru.dn42 = {inherit supportedTunnelTypes;};
+    passthru.dn42SupportedTunnelTypes = supportedTunnelTypes;
   };
 }

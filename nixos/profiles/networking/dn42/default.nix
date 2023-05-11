@@ -14,6 +14,18 @@
     endpointsV6 = hostData.endpoints_v6;
   };
   peerTable = import ./_peers.nix;
+  trafficControlTable = {
+    # Hetzner 20 TB/month
+    "hil0".enable = false; # 20TB/month
+    "fsn0".enable = false; # 20TB/month
+    "mtl0".enable = false; # unmetered
+    "mia0".enable = true;  # 200GB/month
+    "shg0".enable = true;  # 1TB/month
+
+    "nuc".enable = false; # unmetered
+    "xps8930" = false;   # mobile
+    "framework" = false; # mobile
+  };
 in {
   networking.dn42 = {
     enable = true;
@@ -26,6 +38,7 @@ in {
         defaults = {
           localPortStart = config.ports.dn42-peer-min;
           wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
+          trafficControl = trafficControlTable.${hostName};
         };
         peers = peerTable.${hostName} or {};
       };
@@ -66,4 +79,7 @@ in {
       to = config.ports.dn42-peer-max;
     }
   ];
+
+  # for dn42-site
+  passthru.dn42TrafficControlTable = trafficControlTable;
 }
