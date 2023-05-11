@@ -28,11 +28,11 @@ in {
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
   };
   sops.secrets."minio/root/user" = {
-    sopsFile = config.sops-file.get "hosts/rica-terraform.yaml";
+    sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
     restartUnits = ["minio.service"];
   };
   sops.secrets."minio/root/password" = {
-    sopsFile = config.sops-file.get "hosts/rica-terraform.yaml";
+    sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
     restartUnits = ["minio.service"];
   };
   sops.templates."minio-root-credentials".content = ''

@@ -301,7 +301,7 @@ in {
     })
 
     (mkHost {
-      name = "rica";
+      name = "mtl0";
       system = "x86_64-linux";
     })
 

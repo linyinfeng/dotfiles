@@ -82,15 +82,15 @@ locals {
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     hledger         = { on = "nuc", proxy = false }
-    attic           = { on = "rica", proxy = true }
-    vault           = { on = "rica", proxy = true }
-    pb              = { on = "rica", proxy = true }
-    git             = { on = "rica", proxy = true }
-    box             = { on = "rica", proxy = true }
-    minio           = { on = "rica", proxy = false }
-    minio-console   = { on = "rica", proxy = true }
-    social          = { on = "rica", proxy = true }
-    static          = { on = "rica", proxy = true }
+    attic           = { on = "mtl0", proxy = true }
+    vault           = { on = "mtl0", proxy = true }
+    pb              = { on = "mtl0", proxy = true }
+    git             = { on = "mtl0", proxy = true }
+    box             = { on = "mtl0", proxy = true }
+    minio           = { on = "mtl0", proxy = false }
+    minio-console   = { on = "mtl0", proxy = true }
+    social          = { on = "mtl0", proxy = true }
+    static          = { on = "mtl0", proxy = true }
     "shanghai.derp" = { on = "tencent", proxy = false }
     dst             = { on = "tencent", proxy = false }
     matrix-qq       = { on = "tencent", proxy = false }
@@ -127,6 +127,17 @@ resource "cloudflare_record" "general_tailscale_cname" {
   ttl     = 1
   type    = "CNAME"
   value   = "${each.value.on}.ts.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_record" "general_zerotier_cname" {
+  for_each = local.service_cname_mappings
+
+  name    = "${each.key}.zt"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  value   = "${each.value.on}.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 

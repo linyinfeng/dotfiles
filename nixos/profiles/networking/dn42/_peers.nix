@@ -3,7 +3,7 @@
 {
   # trafficControl.enable = false
   # egress traffic from this server is unmetered
-  rica = {
+  mtl0 = {
     "virmach-ny1g.lantian.pub" = {
       remoteAutonomousSystem.dn42LowerNumber = 2547;
       tunnel.type = "wireguard";

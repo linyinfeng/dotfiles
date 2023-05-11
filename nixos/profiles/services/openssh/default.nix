@@ -8,11 +8,11 @@
   knownHosts = lib.listToAttrs (lib.flatten (lib.mapAttrsToList
     (host: hostData: [
       (lib.nameValuePair "${host}-ed25519" {
-        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.zt.li7g.com"];
+        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.dn42.li7g.com"];
         publicKey = hostData.ssh_host_ed25519_key_pub;
       })
       (lib.nameValuePair "${host}-rsa" {
-        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.zt.li7g.com"];
+        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.dn42.li7g.com"];
         publicKey = hostData.ssh_host_rsa_key_pub;
       })
     ])
@@ -52,8 +52,8 @@ in {
         Host ${h}
           HostName ${h}.ts.li7g.com
           Port ${toString config.ports.ssh}
-        Host ${h}.zt
-          HostName ${h}.zt.li7g.com
+        Host ${h}.dn42
+          HostName ${h}.dn42.li7g.com
           Port ${toString config.ports.ssh}
         Host ${h}.ts
           HostName ${h}.ts.li7g.com

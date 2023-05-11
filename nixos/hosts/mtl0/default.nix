@@ -86,7 +86,7 @@ in {
       environment.etc."systemd/network/50-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
-        sopsFile = config.sops-file.get "hosts/rica-terraform.yaml";
+        sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
         restartUnits = ["systemd-networkd.service"];
       };
       sops.secrets."network/subnet" = {

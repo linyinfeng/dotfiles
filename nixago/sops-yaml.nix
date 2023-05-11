@@ -19,7 +19,7 @@
       key = "age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj";
       owned = true;
     };
-    rica = {
+    mtl0 = {
       key = "age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa";
       owned = true;
     };
@@ -66,11 +66,11 @@ in {
         ];
       }
       {
-        path_regex = "^secrets/hosts/rica-terraform\.yaml$";
+        path_regex = "^secrets/hosts/mtl0-terraform\.yaml$";
         key_groups = [
           {
             pgp = [main];
-            age = yubikeyKeys ++ [hosts.rica.key github];
+            age = yubikeyKeys ++ [hosts.mtl0.key github];
           }
         ];
       }

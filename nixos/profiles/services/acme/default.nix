@@ -26,9 +26,9 @@
   security.acme.certs."main" = {
     domain = "*.li7g.com";
     extraDomainNames = [
-      "*.zt.li7g.com"
-      "*.ts.li7g.com"
-      "*.dn42.li7g.com"
+      "*.zt.li7g.com" # zerotier
+      "*.ts.li7g.com" # tailscale
+      "*.dn42.li7g.com" # dn42
       # workaround for https://letsencrypt.org/docs/duplicate-certificate-limit
       "${config.networking.hostName}.endpoints.li7g.com"
     ];

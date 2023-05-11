@@ -41,11 +41,7 @@ in
         extraConfig = {
           WEB_DOMAIN = "mastodon.li7g.com";
           ALTERNATE_DOMAINS = lib.concatStringsSep "," [
-            "mastodon.ts.li7g.com"
-            "mastodon.zt.li7g.com"
             "social.li7g.com"
-            "social.ts.li7g.com"
-            "social.zt.li7g.com"
           ];
           S3_ENABLED = "true";
           S3_BUCKET = config.lib.self.data.mastodon_media_bucket_name;

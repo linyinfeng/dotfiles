@@ -36,17 +36,17 @@ locals {
       endpoints_v4      = [hcloud_server.fsn0.ipv4_address]
       endpoints_v6      = [hcloud_server.fsn0.ipv6_address]
     }
-    rica = {
+    mtl0 = {
       records = {
         a = {
           proxied = true
           type    = "A"
-          value   = nonsensitive(data.sops_file.rica.data["network.address"])
+          value   = nonsensitive(data.sops_file.mtl0.data["network.address"])
         }
       }
       ddns_records      = {}
       dn42_host_indices = [3]
-      endpoints_v4      = [nonsensitive(data.sops_file.rica.data["network.address"])]
+      endpoints_v4      = [nonsensitive(data.sops_file.mtl0.data["network.address"])]
       endpoints_v6      = []
     }
     mia0 = {
