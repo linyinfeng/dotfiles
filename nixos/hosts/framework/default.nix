@@ -74,6 +74,7 @@ in {
           CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
         };
       };
+      services.logind.lidSwitchExternalPower = "ignore";
 
       services.fwupd = {
         enable = true;
