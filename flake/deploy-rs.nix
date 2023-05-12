@@ -27,7 +27,11 @@ in {
       inherit nodes;
     };
   };
-  perSystem = {inputs', system, ...}: {
+  perSystem = {
+    inputs',
+    system,
+    ...
+  }: {
     checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
     devshells.default = {
       commands = [
