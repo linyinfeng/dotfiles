@@ -32,7 +32,8 @@ in {
     system,
     ...
   }: {
-    checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
+    # evaluation of deployChecks is slow
+    # checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
     devshells.default = {
       commands = [
         {
