@@ -28,6 +28,11 @@
     pre-commit-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     pre-commit-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
 
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.flake-compat.follows = "flake-compat";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+    deploy-rs.inputs.utils.follows = "flake-utils";
+
     # nixos modules
 
     home-manager.url = "github:nix-community/home-manager";

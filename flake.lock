@@ -147,6 +147,32 @@
         "type": "github"
       }
     },
+    "deploy-rs": {
+      "inputs": {
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": [
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1683779844,
+        "narHash": "sha256-sIeOU0GsCeQEn5TpqE/jFRN4EGsPsjqVRsPdrzIDABM=",
+        "owner": "serokell",
+        "repo": "deploy-rs",
+        "rev": "c80189917086e43d49eece2bd86f56813500a0eb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "serokell",
+        "repo": "deploy-rs",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -1052,6 +1078,7 @@
         "attic": "attic",
         "blank": "blank",
         "crane": "crane",
+        "deploy-rs": "deploy-rs",
         "devshell": "devshell",
         "disko": "disko",
         "emacs-overlay": "emacs-overlay",
