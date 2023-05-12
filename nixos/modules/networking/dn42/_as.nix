@@ -73,8 +73,8 @@ in
             mkConnection = peerName: hostCfg:
               lib.nameValuePair "mesh-peer-${peerName}" {
                 remote_addrs =
-                  hostCfg.endpointsV4
-                  ++ hostCfg.endpointsV6
+                  hostCfg.endpointsV6
+                  ++ hostCfg.endpointsV4
                   ++ [
                     "%any" # allow connection from anywhere
                   ];
