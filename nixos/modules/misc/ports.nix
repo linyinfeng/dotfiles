@@ -71,6 +71,9 @@
       babel = 6696;
       jellyfin = 8096;
       zerotier = 9993;
+      dn42-mesh-min = 19000;
+      # interval: no ports here
+      dn42-mesh-max = 19999;
       dn42-peer-min = 20000;
       # interval: no ports here
       dn42-peer-max = 23999;

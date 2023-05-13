@@ -37,7 +37,8 @@
                 .key == "dn42_addresses_v6" or
                 .key == "endpoints" or
                 .key == "endpoints_v4" or
-                .key == "endpoints_v6"
+                .key == "endpoints_v6" or
+                .key == "ike_cert_pem"
             )
         )
     ),

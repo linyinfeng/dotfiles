@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.networking.dn42;
@@ -353,6 +354,26 @@ in {
             type = with lib.types; attrsOf (submodule hostOptions);
             default = lib.filterAttrs (key: _: key != asCfg.mesh.me) asCfg.mesh.hosts;
             readOnly = true;
+          };
+          ipsec = {
+            enable = lib.mkEnableOption "IPSec/IKEv2";
+            caCert = lib.mkOption {
+              type = lib.types.str;
+            };
+            caCertFile = lib.mkOption {
+              type = lib.types.path;
+              default = pkgs.writeText "ipsec_ca_cert.pem" asCfg.mesh.ipsec.caCert;
+            };
+            hostCert = lib.mkOption {
+              type = lib.types.str;
+            };
+            hostCertFile = lib.mkOption {
+              type = lib.types.path;
+              default = pkgs.writeText "ipsec_host_cert.pem" asCfg.mesh.ipsec.hostCert;
+            };
+            hostCertKeyFile = lib.mkOption {
+              type = lib.types.path;
+            };
           };
         };
       };

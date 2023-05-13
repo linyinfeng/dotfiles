@@ -50,6 +50,12 @@ in {
       cidrV6 = data.dn42_v6_cidr;
       mesh = {
         hosts = lib.mapAttrs mkHost data.hosts;
+        ipsec = {
+          enable = true;
+          caCert = data.ca_cert_pem;
+          hostCert = data.hosts.${hostName}.ike_cert_pem;
+          hostCertKeyFile = config.sops.secrets."ike_private_key_pem".path;
+        };
       };
     };
     dns.enable = true;
@@ -72,6 +78,10 @@ in {
     group = "systemd-network";
     mode = "440";
     restartUnits = ["systemd-networkd.service"];
+  };
+  sops.secrets."ike_private_key_pem" = {
+    sopsFile = config.sops-file.terraform;
+    restartUnits = ["strongswan-swanctl.service"];
   };
   networking.firewall.allowedUDPPortRanges = [
     {

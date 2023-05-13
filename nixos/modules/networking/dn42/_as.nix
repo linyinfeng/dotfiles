@@ -9,7 +9,7 @@
 
   xfrmIfId = hostCfg: 4242420000 + lib.head hostCfg.indices;
   xfrmIfIdString = hostCfg: "${toString (xfrmIfId hostCfg)}";
-  xfrmIfName = name: hostCfg: "${asCfg.mesh.interfaces.namePrefix}-${name}";
+  xfrmIfName = name: hostCfg: "${asCfg.mesh.interfaces.namePrefix}-i${name}";
 in
   lib.mkIf (cfg.enable) (lib.mkMerge [
     # network management tools and compatibility issues
@@ -62,107 +62,6 @@ in
             ++ lib.lists.map (a: "${a}/128") asCfg.mesh.thisHost.addressesV6;
         };
       };
-    }
-
-    # route-based IPSec/IKEv2 mesh
-    {
-      services.strongswan-swanctl = {
-        enable = true;
-        swanctl = {
-          connections = let
-            mkConnection = peerName: hostCfg:
-              lib.nameValuePair "mesh-peer-${peerName}" {
-                remote_addrs =
-                  hostCfg.endpointsV6
-                  ++ hostCfg.endpointsV4
-                  ++ [
-                    "%any" # allow connection from anywhere
-                  ];
-                # sign round authentication
-                local.main = {
-                  auth = "pubkey";
-                  certs = [config.sops.secrets."ike_cert_pem".path];
-                  id = "${asCfg.mesh.thisHost.name}.li7g.com";
-                };
-                remote.main = {
-                  auth = "pubkey";
-                  id = "${peerName}.li7g.com";
-                };
-                children.dn42 = {
-                  start_action = "trap";
-                  # trap traffic using XFRM interface id
-                  if_id_in = xfrmIfIdString hostCfg;
-                  if_id_out = xfrmIfIdString hostCfg;
-                  local_ts = ["0.0.0.0/0" "::/0"];
-                  remote_ts = ["0.0.0.0/0" "::/0"];
-                };
-              };
-          in
-            lib.mapAttrs' mkConnection asCfg.mesh.peerHosts;
-          authorities.main.cacert = "ca.pem";
-        };
-      };
-      environment.etc."swanctl/ecdsa/key.pem".source = config.sops.secrets."ike_private_key_pem".path;
-      environment.etc."/swanctl/x509ca/ca.pem".text = config.lib.self.data.ca_cert_pem;
-
-      # mesh interfaces
-      systemd.network.netdevs =
-        lib.mapAttrs' (
-          peerName: hostCfg:
-            lib.nameValuePair
-            (xfrmIfName peerName hostCfg)
-            {
-              netdevConfig = {
-                Name = xfrmIfName peerName hostCfg;
-                Kind = "xfrm";
-              };
-              xfrmConfig = {
-                InterfaceId = xfrmIfId hostCfg;
-                Independent = true;
-              };
-            }
-        )
-        asCfg.mesh.peerHosts;
-      systemd.network.networks =
-        lib.mapAttrs' (
-          peerName: hostCfg:
-            lib.nameValuePair
-            (xfrmIfName peerName hostCfg)
-            {
-              matchConfig = {
-                Name = xfrmIfName peerName hostCfg;
-              };
-              linkConfig = {
-                Multicast = true;
-              };
-            }
-        )
-        asCfg.mesh.peerHosts;
-
-      # management tools
-      environment.systemPackages = with pkgs; [
-        strongswan
-      ];
-
-      # secrets
-      sops.secrets."ike_cert_pem" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["strongswan-swanctl.service"];
-      };
-      sops.secrets."ike_private_key_pem" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["strongswan-swanctl.service"];
-      };
-
-      # firewall settings
-      networking.firewall.allowedUDPPorts = with config.ports; [
-        ipsec-ike
-        ipsec-nat-traversal
-      ];
-      networking.firewall.extraCommands = ''
-        ip46tables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
-        ip46tables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
-      '';
     }
 
     # bird
@@ -231,4 +130,95 @@ in
         config.ports.babel
       ];
     }
+
+    # IPSec/IKEv2 mesh
+    (lib.mkIf asCfg.mesh.ipsec.enable {
+      services.strongswan-swanctl = {
+        enable = true;
+        swanctl = {
+          connections = let
+            mkConnection = peerName: hostCfg:
+              lib.nameValuePair "mesh-peer-${peerName}" {
+                remote_addrs =
+                  hostCfg.endpointsV6
+                  ++ hostCfg.endpointsV4
+                  ++ [
+                    "%any" # allow connection from anywhere
+                  ];
+                # sign round authentication
+                local.main = {
+                  auth = "pubkey";
+                  certs = ["${asCfg.mesh.ipsec.hostCertFile}"];
+                  id = "${asCfg.mesh.thisHost.name}.li7g.com";
+                };
+                remote.main = {
+                  auth = "pubkey";
+                  id = "${peerName}.li7g.com";
+                };
+                children.dn42 = {
+                  start_action = "trap";
+                  # trap traffic using XFRM interface id
+                  if_id_in = xfrmIfIdString hostCfg;
+                  if_id_out = xfrmIfIdString hostCfg;
+                  local_ts = ["0.0.0.0/0" "::/0"];
+                  remote_ts = ["0.0.0.0/0" "::/0"];
+                };
+              };
+          in
+            lib.mapAttrs' mkConnection asCfg.mesh.peerHosts;
+          authorities.main.cacert = "ca.pem";
+        };
+      };
+      environment.etc."swanctl/ecdsa/key.pem".source = asCfg.mesh.ipsec.hostCertKeyFile;
+      environment.etc."/swanctl/x509ca/ca.pem".source = asCfg.mesh.ipsec.caCertFile;
+
+      # mesh interfaces
+      systemd.network.netdevs =
+        lib.mapAttrs' (
+          peerName: hostCfg:
+            lib.nameValuePair
+            (xfrmIfName peerName hostCfg)
+            {
+              netdevConfig = {
+                Name = xfrmIfName peerName hostCfg;
+                Kind = "xfrm";
+              };
+              xfrmConfig = {
+                InterfaceId = xfrmIfId hostCfg;
+                Independent = true;
+              };
+            }
+        )
+        asCfg.mesh.peerHosts;
+      systemd.network.networks =
+        lib.mapAttrs' (
+          peerName: hostCfg:
+            lib.nameValuePair
+            (xfrmIfName peerName hostCfg)
+            {
+              matchConfig = {
+                Name = xfrmIfName peerName hostCfg;
+              };
+              linkConfig = {
+                Multicast = true;
+              };
+            }
+        )
+        asCfg.mesh.peerHosts;
+
+      # management tools
+      environment.systemPackages = with pkgs; [
+        strongswan
+      ];
+
+      # firewall settings
+      networking.firewall.allowedUDPPorts = with config.ports; [
+        ipsec-ike
+        ipsec-nat-traversal
+      ];
+      networking.firewall.extraCommands = ''
+        ip46tables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
+        ip46tables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
+      '';
+    })
   ])
