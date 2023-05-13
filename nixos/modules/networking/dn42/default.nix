@@ -165,6 +165,16 @@
       };
     };
   };
+  babelInterfaceOptions = {
+    options = {
+      type = lib.mkOption {
+        type = lib.types.enum ["wired" "wireless" "tunnel"];
+      };
+      extraConfig = lib.mkOption {
+        type = lib.types.lines;
+      };
+    };
+  };
 in {
   options = {
     networking.dn42 = {
@@ -323,9 +333,16 @@ in {
             type = lib.types.str;
             default = config.networking.hostName;
           };
+          bird.babelInterfaceConfig = lib.mkOption {
+            type = lib.types.lines;
+          };
           interfaces.namePrefix = lib.mkOption {
             type = lib.types.str;
             default = "mesh";
+          };
+          extraInterfaces = lib.mkOption {
+            type = with lib.types; attrsOf (submodule babelInterfaceOptions);
+            default = {};
           };
           routingTable = {
             id = lib.mkOption {

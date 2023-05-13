@@ -26,6 +26,8 @@
     "xps8930".enable = false; # mobile
     "framework".enable = false; # mobile
   };
+  cfg = config.networking.dn42;
+  asCfg = cfg.autonomousSystem;
 in {
   networking.dn42 = {
     enable = true;
@@ -56,6 +58,23 @@ in {
           hostCert = data.hosts.${hostName}.ike_cert_pem;
           hostCertKeyFile = config.sops.secrets."ike_private_key_pem".path;
         };
+        bird.babelInterfaceConfig = ''
+          rtt cost 1024;
+          rtt max 1024 ms;
+        '';
+        extraInterfaces =
+          lib.optionalAttrs config.services.zerotierone.enable {
+            "${config.passthru.zerotierInterfaceName}" = {
+              type = "tunnel";
+              extraConfig = asCfg.mesh.bird.babelInterfaceConfig;
+            };
+          }
+          // lib.optionalAttrs config.services.tailscale.enable {
+            "${config.services.tailscale.interfaceName}" = {
+              type = "tunnel";
+              extraConfig = asCfg.mesh.bird.babelInterfaceConfig;
+            };
+          };
       };
     };
     dns.enable = true;

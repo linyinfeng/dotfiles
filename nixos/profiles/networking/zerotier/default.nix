@@ -11,7 +11,7 @@ in {
     enable = true;
     inherit port;
   };
-  passthru.zerotier = {inherit interfaceName;};
+  passthru.zerotierInterfaceName = interfaceName;
   systemd.services.zerotierone-presetup = {
     script = ''
       echo "create directory"

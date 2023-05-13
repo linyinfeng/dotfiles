@@ -121,9 +121,15 @@ in
           };
           interface "${asCfg.mesh.interfaces.namePrefix}-*" {
             type tunnel;
-            rtt cost 1024;
-            rtt max 1024 ms;
+            ${asCfg.mesh.bird.babelInterfaceConfig}
           };
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (pattern: ifCfg: ''
+            interface "${pattern}" {
+              type ${ifCfg.type};
+              ${ifCfg.extraConfig}
+            };
+          '')
+          asCfg.mesh.extraInterfaces)}
         }
       '';
       networking.firewall.allowedUDPPorts = [
