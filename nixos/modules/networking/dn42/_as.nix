@@ -6,6 +6,7 @@
 }: let
   cfg = config.networking.dn42;
   asCfg = cfg.autonomousSystem;
+  thisHostCfg = asCfg.mesh.thisHost;
 
   xfrmIfId = hostCfg: 4242420000 + lib.head hostCfg.indices;
   xfrmIfIdString = hostCfg: "${toString (xfrmIfId hostCfg)}";
@@ -58,8 +59,8 @@ in
       systemd.network.networks = {
         ${cfg.interfaces.dummy.name} = {
           address =
-            lib.lists.map (a: "${a}/32") asCfg.mesh.thisHost.addressesV4
-            ++ lib.lists.map (a: "${a}/128") asCfg.mesh.thisHost.addressesV6;
+            lib.lists.map (a: "${a}/32") thisHostCfg.addressesV4
+            ++ lib.lists.map (a: "${a}/128") thisHostCfg.addressesV6;
         };
       };
     }
@@ -145,9 +146,19 @@ in
           connections = let
             mkConnection = peerName: hostCfg:
               lib.nameValuePair "mesh-peer-${peerName}" {
+                # https://docs.strongswan.org/docs/5.9/swanctl/swanctlConf.html
+                # As an initiator, the first non-range/non-subnet is used to initiate the connection to.
                 remote_addrs =
-                  hostCfg.endpointsV6
-                  ++ hostCfg.endpointsV4
+                  (
+                    if thisHostCfg.endpointsV6 != null
+                    then hostCfg.endpointsV6
+                    else []
+                  )
+                  ++ (
+                    if thisHostCfg.endpointsV4 != null
+                    then hostCfg.endpointsV4
+                    else []
+                  )
                   ++ [
                     "%any" # allow connection from anywhere
                   ];
@@ -155,7 +166,7 @@ in
                 local.main = {
                   auth = "pubkey";
                   certs = ["${asCfg.mesh.ipsec.hostCertFile}"];
-                  id = "${asCfg.mesh.thisHost.name}.li7g.com";
+                  id = "${thisHostCfg.name}.li7g.com";
                 };
                 remote.main = {
                   auth = "pubkey";
