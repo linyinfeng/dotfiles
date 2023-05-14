@@ -16,6 +16,18 @@
     then lib.lists.replicate (4 - length) "0" ++ [s]
     else s;
 
+  dn42RegionType = with lib.types;
+    int
+    // {
+      description = "dn42 community region";
+      check = v: int.check v && 41 < v && v < 70;
+    };
+  dn42CountryType = with lib.types;
+    int
+    // {
+      description = "dn42 community country";
+      check = v: int.check v && 1000 < v && v < 1999;
+    };
   hostOptions = {
     name,
     config,
@@ -26,7 +38,17 @@
         type = lib.types.str;
         default = name;
       };
-      bgp.enable = lib.mkEnableOption "bgp";
+      bgp = {
+        enable = lib.mkEnableOption "bgp";
+        community.dn42 = {
+          region = lib.mkOption {
+            type = lib.types.nullOr dn42RegionType;
+          };
+          country = lib.mkOption {
+            type = lib.types.nullOr dn42CountryType;
+          };
+        };
+      };
       indices = lib.mkOption {
         type = with lib.types; listOf int;
       };
@@ -99,6 +121,40 @@
         protocol.baseName = lib.mkOption {
           type = lib.types.str;
           default = config.remoteAutonomousSystem.dn42LowerNumberString;
+        };
+      };
+      bgp.community.dn42 = {
+        enable = lib.mkEnableOption "dn42 bgp community";
+        latency = lib.mkOption {
+          type = with lib.types;
+            int
+            // {
+              description = "dn42 community latency";
+              check = v: int.check v && 0 < v && v < 10;
+            };
+          default = 1;
+        };
+        bandwidth = lib.mkOption {
+          type = with lib.types;
+            int
+            // {
+              description = "dn42 community bandwidth";
+              check = v: int.check v && 20 < v && v < 30;
+            };
+          default = 24; # 100Mbps <= . < 1000Mbps
+        };
+        crypto = lib.mkOption {
+          type = with lib.types;
+            int
+            // {
+              description = "dn42 community crypto";
+              check = v: int.check v && 30 < v && v < 35;
+            };
+          default =
+            {
+              wireguard = 34;
+            }
+            .${config.tunnel.type};
         };
       };
       linkAddresses = {
@@ -206,6 +262,16 @@ in {
           metricPort = lib.mkOption {
             type = lib.types.port;
             default = 8080;
+          };
+        };
+        community.dn42 = {
+          region = lib.mkOption {
+            type = lib.types.nullOr dn42RegionType;
+            default = asCfg.mesh.thisHost.bgp.community.dn42.region;
+          };
+          country = lib.mkOption {
+            type = lib.types.nullOr dn42CountryType;
+            default = asCfg.mesh.thisHost.bgp.community.dn42.country;
           };
         };
         peering = {

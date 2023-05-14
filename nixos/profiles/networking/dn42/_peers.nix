@@ -22,6 +22,11 @@
         v4.peer = "172.22.76.190";
         v6.peer = "fdbc:f9dc:67ad:8::1";
       };
+      bgp.community.dn42 = {
+        enable = true;
+        latency = 3; # rtt min/avg/max/mdev = 9.357/9.489/9.715/0.116 ms
+        bandwidth = 23; # 10Mbps <= . < 100Mbps
+      };
     };
   };
   fsn0 = {
@@ -38,6 +43,11 @@
         v6.bgpNeighbor = "fe80::ade0"; # link-local
         v4.peer = "172.20.53.97";
         v6.peer = "fdfc:e23f:fb45:3234::1";
+      };
+      bgp.community.dn42 = {
+        enable = true;
+        latency = 2; # rtt min/avg/max/mdev = 3.207/3.743/4.949/0.493 ms
+        bandwidth = 24; # 100Mbps <= . < 1000Mbps
       };
     };
   };

@@ -6,7 +6,10 @@
   hostName = config.networking.hostName;
   data = config.lib.self.data;
   mkHost = name: hostData: {
-    bgp.enable = true;
+    bgp = {
+      enable = true;
+      community.dn42 = regionTable.${name};
+    };
     indices = hostData.dn42_host_indices;
     addressesV4 = hostData.dn42_addresses_v4;
     addressesV6 = hostData.dn42_addresses_v6;
@@ -26,8 +29,42 @@
     "xps8930".enable = false; # mobile
     "framework".enable = false; # mobile
   };
-  cfg = config.networking.dn42;
-  asCfg = cfg.autonomousSystem;
+  regionTable = {
+    "hil0" = {
+      region = 44; # North America-W
+      country = 1840; # United States of America
+    };
+    "fsn0" = {
+      region = 41; # Europe
+      country = 1276; # Germany
+    };
+    "mtl0" = {
+      region = 42; # North America-E
+      country = 1124; # Canada
+    };
+    "mia0" = {
+      region = 42; # North America-E
+      country = 1840; # United States of America
+    };
+    "shg0" = {
+      region = 52; # Asia-E (JP,CN,KR,TW,HK)
+      country = 1156; # China
+    };
+
+    "nuc" = {
+      region = 52; # Asia-E (JP,CN,KR,TW,HK)
+      country = 1156; # China
+    };
+    "xps8930" = {
+      region = 52; # Asia-E (JP,CN,KR,TW,HK)
+      country = 1156; # China
+    };
+    # mobile device
+    "framework" = {
+      region = null;
+      country = null;
+    };
+  };
 in {
   networking.dn42 = {
     enable = true;

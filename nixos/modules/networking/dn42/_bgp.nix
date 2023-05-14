@@ -18,6 +18,17 @@ in
           ipv4 table bgp_v4 { }
           ipv6 table bgp_v6 { }
 
+          roa4 table dn42_roa_v4;
+          roa6 table dn42_roa_v6;
+          protocol rpki rtr_dn42 {
+            roa4 { table dn42_roa_v4; };
+            roa6 { table dn42_roa_v6; };
+            remote "localhost";
+            port ${toString config.ports.gortr};
+            refresh 600;
+            retry 60;
+          }
+
           function is_self_net_v4() {
             return net ~ OWNNETSETv4;
           }
@@ -45,15 +56,125 @@ in
             ];
           }
 
-          roa4 table dn42_roa_v4;
-          roa6 table dn42_roa_v6;
-          protocol rpki rtr_dn42 {
-            roa4 { table dn42_roa_v4; };
-            roa6 { table dn42_roa_v6; };
-            remote "localhost";
-            port ${toString config.ports.gortr};
-            refresh 600;
-            retry 60;
+          # https://dn42.eu/howto/Bird-communities
+          # propagation:
+          #   for latency pick max(received_route.latency, link_latency)
+          #   for encryption and bandwidth pick min between received BGP community and peer link
+
+          function update_latency(int link_latency) {
+            pair set latency_set = [(64511, 1..9)];
+            pair new_latency = add(filter(bgp_community, latency_set), (64511, link_latency)).max;
+            bgp_community = add(delete(bgp_community, latency_set), new_latency);
+            return new_latency;
+          }
+
+          function update_bandwidth(int link_bandwidth) {
+            pair set bandwidth_set = [(64511, 21..29)];
+            pair new_bandwidth = add(filter(bgp_community, bandwidth_set), (64511, link_bandwidth)).min;
+            bgp_community = add(delete(bgp_community, bandwidth_set), new_bandwidth);
+            return new_bandwidth;
+          }
+
+          function update_crypto(int link_crypto) {
+            pair set crypto_set = [(64511, 31..34)];
+            pair new_crypto = add(filter(bgp_community, crypto_set), (64511, link_crypto)).min;
+            bgp_community = add(delete(bgp_community, crypto_set), new_crypto);
+            return new_crypto;
+          }
+
+          function update_communities(int link_latency; int link_bandwidth; int link_crypto)
+          {
+            pair dn42_latency = update_latency(link_latency);
+            pair dn42_bandwidth = update_bandwidth(link_bandwidth);
+            pair dn42_crypto = update_crypto(link_crypto);
+            return true;
+          }
+
+          ${
+            if bgpCfg.community.dn42.region != null
+            then "define DN42_REGION = ${toString bgpCfg.community.dn42.region};"
+            else ""
+          }
+          ${
+            if bgpCfg.community.dn42.country != null
+            then "define DN42_COUNTRY = ${toString bgpCfg.community.dn42.country};"
+            else ""
+          }
+          function add_region_country_communities()
+          {
+            ${
+            if bgpCfg.community.dn42.region != null
+            then "bgp_community.add((64511, DN42_REGION));"
+            else ""
+          }
+            ${
+            if bgpCfg.community.dn42.country != null
+            then "bgp_community.add((64511, DN42_COUNTRY));"
+            else ""
+          }
+            return true;
+          }
+
+          function bgp_import_filter_v4(
+            bool update_community;
+            int link_latency;
+            int link_bandwidth;
+            int link_crypto)
+          {
+            if is_valid_network_v4() && !is_self_net_v4() then {
+              if (roa_check(dn42_roa_v4, net, bgp_path.last) != ROA_VALID) then {
+                print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
+                reject;
+              } else {
+                # roa_check(..) = ROA_VALID
+                if update_community then update_communities(link_latency, link_bandwidth, link_crypto);
+                accept;
+              }
+            } else reject;
+          }
+
+          function bgp_export_filter_v4(
+            bool update_community;
+            int link_latency;
+            int link_bandwidth;
+            int link_crypto
+          ) {
+            if is_valid_network_v4() && source ~ [RTS_STATIC, RTS_BGP] then {
+              if source = RTS_STATIC then add_region_country_communities();
+              if update_community then update_communities(link_latency, link_bandwidth, link_crypto);
+              accept;
+            } else reject;
+          }
+
+          function bgp_import_filter_v6(
+            bool update_community;
+            int link_latency;
+            int link_bandwidth;
+            int link_crypto)
+          {
+            if is_valid_network_v6() && !is_self_net_v6() then {
+              if (roa_check(dn42_roa_v6, net, bgp_path.last) != ROA_VALID) then {
+                print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
+                reject;
+              } else {
+                # roa_check(..) = ROA_VALID
+                if update_community then update_communities(link_latency, link_bandwidth, link_crypto);
+                accept;
+              }
+            } else reject;
+          }
+
+          function bgp_export_filter_v6(
+            bool update_community;
+            int link_latency;
+            int link_bandwidth;
+            int link_crypto
+          ) {
+            if is_valid_network_v6() && source ~ [RTS_STATIC, RTS_BGP] then {
+              if source = RTS_STATIC then add_region_country_communities();
+              if update_community then update_communities(link_latency, link_bandwidth, link_crypto);
+              accept;
+            } else reject;
           }
 
           protocol kernel kernel_bgp_v4 {
@@ -102,15 +223,8 @@ in
             path metric 1;
             ipv4 {
               table bgp_v4;
-              import filter {
-                if is_valid_network_v4() && !is_self_net_v4() then {
-                  if (roa_check(dn42_roa_v4, net, bgp_path.last) != ROA_VALID) then {
-                    print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
-                    reject;
-                  } else accept;
-                } else reject;
-              };
-              export filter { if is_valid_network_v4() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
+              import none;
+              export none;
               import table;
               export table;
               next hop self ebgp;
@@ -118,15 +232,8 @@ in
             };
             ipv6 {
               table bgp_v6;
-              import filter {
-                if is_valid_network_v6() && !is_self_net_v6() then {
-                  if (roa_check(dn42_roa_v6, net, bgp_path.last) != ROA_VALID) then {
-                    print "[dn42] ROA check failed for ", net, " ASN ", bgp_path.last;
-                    reject;
-                  } else accept;
-                } else reject;
-              };
-              export filter { if is_valid_network_v6() && source ~ [RTS_STATIC, RTS_BGP] then accept; else reject; };
+              import none;
+              export none;
               import table;
               export table;
               igp table mesh_v6;
@@ -193,6 +300,14 @@ in
           lib.mkOrder 200 (lib.concatMapStringsSep "\n" (hostCfg: ''
               protocol bgp ibgp_${hostCfg.name} from dnpeers {
                 neighbor ${hostCfg.preferredAddressV6} as ${toString asCfg.number};
+                ipv4 {
+                  import where bgp_import_filter_v4(false, 1, 29, 34);
+                  export where bgp_export_filter_v4(false, 1, 29, 34);
+                };
+                ipv6 {
+                  import where bgp_import_filter_v6(false, 1, 29, 34);
+                  export where bgp_export_filter_v6(false, 1, 29, 34);
+                };
               }
             '')
             bgpEnabledHostCfgs);
@@ -287,15 +402,38 @@ in
               }
           )
           bgpCfg.peering.peers;
-        services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: ''
+        services.bird2.config = lib.mkOrder 250 (lib.concatMapStringsSep "\n" (peerCfg: let
+          communityEnable =
+            if peerCfg.bgp.community.dn42.enable
+            then "true"
+            else "false";
+          inherit (peerCfg.bgp.community.dn42) latency bandwidth crypto;
+          communityArgs = "${communityEnable}, ${toString latency}, ${toString bandwidth}, ${toString crypto}";
+        in ''
           ${lib.optionalString (peerCfg.linkAddresses.v4.bgpNeighbor != null) ''
             protocol bgp ebgp_${peerCfg.bird.protocol.baseName}_v4 from dnpeers {
               neighbor ${peerCfg.linkAddresses.v4.bgpNeighbor} as ${toString peerCfg.remoteAutonomousSystem.number};
+              ipv4 {
+                import where bgp_import_filter_v4(${communityArgs});
+                export where bgp_export_filter_v4(${communityArgs});
+              };
+              ipv6 {
+                import where bgp_import_filter_v6(${communityArgs});
+                export where bgp_export_filter_v6(${communityArgs});
+              };
             }
           ''}
           ${lib.optionalString (peerCfg.linkAddresses.v6.bgpNeighbor != null) ''
             protocol bgp ebgp_${peerCfg.bird.protocol.baseName}_v6 from dnpeers {
               neighbor ${peerCfg.linkAddresses.v6.bgpNeighbor}%${peerCfg.tunnel.interface.name} as ${toString peerCfg.remoteAutonomousSystem.number};
+              ipv4 {
+                import where bgp_import_filter_v4(${communityArgs});
+                export where bgp_export_filter_v4(${communityArgs});
+              };
+              ipv6 {
+                import where bgp_import_filter_v6(${communityArgs});
+                export where bgp_export_filter_v6(${communityArgs});
+              };
             }
           ''}
         '') (lib.attrValues bgpCfg.peering.peers));
