@@ -304,7 +304,8 @@ resource "cloudflare_filter" "li7g_cn_get_traffic" {
       http.request.method eq "GET" and
       ( http.host eq "pb.li7g.com" or
         http.host eq "social.li7g.com" or
-        http.host eq "mastodon.li7g.com" )
+        http.host eq "mastodon.li7g.com" or
+        http.host eq "matrix.li7g.com")
     )
   EOT
 }
