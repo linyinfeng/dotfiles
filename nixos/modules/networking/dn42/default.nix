@@ -16,17 +16,21 @@
     then lib.lists.replicate (4 - length) "0" ++ [s]
     else s;
 
+
+  # https://dn42.eu/howto/Bird-communities
   dn42RegionType = with lib.types;
     int
     // {
       description = "dn42 community region";
-      check = v: int.check v && 41 < v && v < 70;
+      # the range 41-70 is assigned to the region property
+      check = v: int.check v && 41 <= v && v <= 70;
     };
   dn42CountryType = with lib.types;
     int
     // {
       description = "dn42 community country";
-      check = v: int.check v && 1000 < v && v < 1999;
+      # the range 1000-1999 is assigned to the country property
+      check = v: int.check v && 1000 <= v && v <= 1999;
     };
   hostOptions = {
     name,
