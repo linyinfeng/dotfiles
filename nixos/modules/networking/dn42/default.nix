@@ -16,7 +16,6 @@
     then lib.lists.replicate (4 - length) "0" ++ [s]
     else s;
 
-
   # https://dn42.eu/howto/Bird-communities
   dn42RegionType = with lib.types;
     int
