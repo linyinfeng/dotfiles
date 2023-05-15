@@ -45,7 +45,6 @@ in {
         grub = {
           enable = true;
           efiSupport = true;
-          version = 2;
           device = "/dev/sda";
         };
       };

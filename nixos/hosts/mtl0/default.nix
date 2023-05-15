@@ -41,7 +41,6 @@ in {
     {
       boot.loader.grub = {
         enable = true;
-        version = 2;
         device = "/dev/xvda";
       };
       boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "sr_mod" "xen_blkfront"];
