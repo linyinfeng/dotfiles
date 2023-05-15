@@ -19,10 +19,18 @@
   "influxdb_url": "https://influxdb.li7g.com",
   "hosts": {
     "framework": {
-      "dn42_addresses_v4": ["172.23.224.117"],
-      "dn42_addresses_v6": ["fd72:db83:badd:15::1"],
-      "dn42_host_indices": [21],
-      "dn42_v6_prefixes": ["fd72:db83:badd:15::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.117"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:15::1"
+      ],
+      "dn42_host_indices": [
+        21
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:15::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
@@ -33,13 +41,28 @@
       "wireguard_public_key": "aRmihxibpfOJc3zwaPkZHtz7plxO9rSAfEMEfFMuDSk="
     },
     "fsn0": {
-      "dn42_addresses_v4": ["172.23.224.98"],
-      "dn42_addresses_v6": ["fd72:db83:badd:2::1"],
-      "dn42_host_indices": [2],
-      "dn42_v6_prefixes": ["fd72:db83:badd:2::/64"],
-      "endpoints": ["128.140.81.159", "2a01:4f8:c012:4c96::1"],
-      "endpoints_v4": ["128.140.81.159"],
-      "endpoints_v6": ["2a01:4f8:c012:4c96::1"],
+      "dn42_addresses_v4": [
+        "172.23.224.98"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:2::1"
+      ],
+      "dn42_host_indices": [
+        2
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:2::/64"
+      ],
+      "endpoints": [
+        "128.140.81.159",
+        "2a01:4f8:c012:4c96::1"
+      ],
+      "endpoints_v4": [
+        "128.140.81.159"
+      ],
+      "endpoints_v6": [
+        "2a01:4f8:c012:4c96::1"
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB7DCCAXGgAwIBAgIRAOFUx0d5Y7Lbn2jawOVHzXMwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjMwNTA1MDc1\nOTU4WhcNMjMwNzA1MDM1OTU4WjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1mc24wLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE+3YkW0p9uiB8\nO5mSINyMNMz8lgHXwNwFas9vjropG+WFkntN11EBeC9Zdj+8E0R2r1MlEztymwjz\nEaez+F+QihdgWNOcT3S90i8OS2VZLuPkg318xXRRzq0prX5GR3I0o2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDWZzbjAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDaQAwZgIxAIYDHSqQ+yi9/l60GZP4UsDXojIA4Bn6iUV9kjKQby44wi61\n7lzHLOal0UGAjIN/GQIxANbkzAeYp6+OtpnUN93c3wADWRFTz8WczxkyWQcG2gOX\n49dmRC8rwxoW77eTPrxELw==\n-----END CERTIFICATE-----\n",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOQoe03BSIwEaqQwbDvMXhOsSs6Lltr4VxjyMb9/BfbA",
       "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDyRG2nyVsbFbhPwjjbcxLjDo0Eq5UWQltfAeTc/DahnHozsJWDc88k653ggKKqdZ/xbC8m+l9p99Dyx/GozARw8w28xQAhuG3qITEOkdD78/Ofd42RnH4zQIiJSdsbQ5TsfyxJcPsR8LUq7Ko4XsL7u0xEsh8iGVxyVz5Kpu1yKUELQ+u+1nP1WIh66+C/5VlSTALNGIk97FLA4wutif/m8YLrtzi8W5hznLvFgneLOYA5g3g0BdL05kGFUlI04olKxheQ7Fb+b3ivYI0YfI5n7NeU90oelZ1OqmO4hZFcb7Xl5M+x3z9FhhEuybHO4Q1YyR+580T666lCAAE5MwTuVmyq/+BBBlCL0n7MQ6kOUV51mjxY+9IaDTtFmhIIUwtEp6vWGMCkbmKtSm4aVPznRiYwhODYSESY9X7jEPe4/vZfxjevp9tqly2UU1+qVNvzcFNGyYvZyWxImrA9w4Nht7DwrPm/nfze4nDQrijIbfjK9baR5VyGW4vqEHrEdZ85O+rH30mgvasMuhir8nORmq962AWODTDYAeqbF8cm4XrxYlgl3ez/OcSrSAE3JPq0xawq2gTpBhY7Nj3dE/mC3K6AY8eb06pKOpkFPqvq+TG/vK1Fnnj0LXY2szzM3jdPmIixFDj8NnExfBO9YzUx+1j0EztTOgzDoj2oqNTYVw==",
@@ -47,13 +70,28 @@
       "wireguard_public_key": "UoSHVEUb3boRQqFwUb5u7IwbxXfx/ObpRZw/usIRhVY="
     },
     "hil0": {
-      "dn42_addresses_v4": ["172.23.224.97"],
-      "dn42_addresses_v6": ["fd72:db83:badd:1::1"],
-      "dn42_host_indices": [1],
-      "dn42_v6_prefixes": ["fd72:db83:badd:1::/64"],
-      "endpoints": ["5.78.46.171", "2a01:4ff:1f0:f16c::1"],
-      "endpoints_v4": ["5.78.46.171"],
-      "endpoints_v6": ["2a01:4ff:1f0:f16c::1"],
+      "dn42_addresses_v4": [
+        "172.23.224.97"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:1::1"
+      ],
+      "dn42_host_indices": [
+        1
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:1::/64"
+      ],
+      "endpoints": [
+        "5.78.46.171",
+        "2a01:4ff:1f0:f16c::1"
+      ],
+      "endpoints_v4": [
+        "5.78.46.171"
+      ],
+      "endpoints_v6": [
+        "2a01:4ff:1f0:f16c::1"
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6zCCAXGgAwIBAgIRALYtOkV+u4XEHbMyG6QWflYwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjMwNTA1MDc1\nOTU4WhcNMjMwNzA1MDM1OTU4WjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1oaWwwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAECYbCeGlvBFCI\nmQlfJwEDyP4Y+8GpLSlz+PB/4RG5P8GKKJ8Iz+nNIdntMhXuWaWW/WlEnVwhHONj\no/EtD+0W+wDSpntQ+YobHQZQojx93y3qaeiKN0CJqacByMTSw/0fo2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDWhpbDAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDaAAwZQIwaPpZ1UDfQcerCdhovQ1O+RVBFwFWAPcFYU3seErlwiwmJhSg\nw6P9Hh4lH6DuY9UYAjEApfupw18Qsm1FbHvF972cZHCjVwVKQwYc2PXXj9Z61FU2\ntW/avnDTjGDyJvEqcYAv\n-----END CERTIFICATE-----\n",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHL3Ztq1qdBC4DTYTNGNzNKeofSZGJ9tw5uBP64By7y0",
       "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDF/EfmbAl5fcuW1c9cRskzeIjGIcgVld+H+DW3JeiXBuJEgw+gBawot8NImbb+ZKQ7ySzcTr5r5EWIOBnmqmV/9OHPM6iVaartXiCKsJZg8qzwB/vLrHKH4EAmkch07WbjjvUlC32EUMaDm1l+4l4E1IcJvsh4Hh7ETSlX2TFgTAfnkOmA9w/JUaMfuom4kKRLLDP/i42rhZCS4PzwWzEGxMvBNFcsWPif1kCUNhjg7r9sJS1Sf5nfworHAyD5/HPVj+iArpdU3I3YwkgemOduBoy66mCTAUZ3LFaOHvSaDOPb4yCfubNhSi7zQUeL9Qu3iFXRtl207A8PLKWmQT7D4YWlySaitXFkkVQ2N7TryUgqbUOSI/Pl3CL8qOu9i7IDA+zhnyd2te+tCtvMsW+3aW0MF8Z1hQhYu+rHW3NDXsRDResY6/7OTPWBh6aCxnBoC8rlZaa6vNQEs0CfScWxuBt0SlDV9YrIkJS/c4K870Y8V3euidKowClIfZuWsdXpoRwQ7RBGyfc/CrIqLxEiXugvgvvlHtEEB8DOyMF5hUi5bM/aVrRToVzto9hBKJ0BBkv/CtHRQvrOGFnX7nDf1prxdca5JU4adYfg4slaf5cyMn5PmPilwh1kU+FccRgutTsUw46Wyhhjj061HxxcXsN+1ksqBLuWmJygs1/IKQ==",
@@ -61,16 +99,28 @@
       "wireguard_public_key": "I/4kkEgrQFHcoFsHq2xhH00t2xP08EWBP4t1gkw0GBM="
     },
     "mia0": {
-      "dn42_addresses_v4": ["172.23.224.100"],
-      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
-      "dn42_host_indices": [4],
-      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.100"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:4::1"
+      ],
+      "dn42_host_indices": [
+        4
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:4::/64"
+      ],
       "endpoints": [
         "144.202.40.189",
         "2001:19f0:9002:18bd:5400:01ff:fe65:f989"
       ],
-      "endpoints_v4": ["144.202.40.189"],
-      "endpoints_v6": ["2001:19f0:9002:18bd:5400:01ff:fe65:f989"],
+      "endpoints_v4": [
+        "144.202.40.189"
+      ],
+      "endpoints_v6": [
+        "2001:19f0:9002:18bd:5400:01ff:fe65:f989"
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6TCCAXCgAwIBAgIQDiMEDKFOx2KgKc40PkddATAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yMzA1MTExMDE0\nNTRaFw0yMzA3MTEwNjE0NTRaMCoxEDAOBgNVBAoTB1lpbmZlbmcxFjAUBgNVBAMT\nDW1pYTAubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAS224Mcct3fhe8h\n6B4pokZdaypgP2smYvnfWVVi7HN2FCvzawSpCItlb8xtPKceSo7o/1BPzypX+sN5\nELt7LV+jOqPFXIWdHXmeMatAkSRniRfouFjZ8QJjNXUOc4Agr0mjYDBeMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwGAYDVR0RBBEwD4INbWlhMC5saTdnLmNvbTAKBggqhkjO\nPQQDAwNnADBkAjByaJOSjPSpH9sR6S9yetuXcLIIDqnSDnbPHUr9Q2gcoFCBCL9j\nBlzkhSrmQIU3hycCMF7/A0eE9af7ksNCmyq8HAJEN/pFaPkc20Ccz4PE395tzWKM\nPZskYanPrtSoWnqnlA==\n-----END CERTIFICATE-----\n",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzf3nY6Ms2dFc+HQ3C4qkvdPx1fmDB5EbyJh4HNaObM",
       "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDIBTqyN9LKX1uHp69N6RbAikWz04a7toqNeB2DqbFrZQ2EvGAdlx8CmNx33OoJK57iqkV5/+xANPdQvfCB4rlQBhDoD7WEODGaCuVWzZdz3ER3ZV53kyO9++ZoNdMUmeQ2Nu/OoLtQHZTHCMddu95pxfrV9dCvKwTyI/u4fgIZkna3ryHqOHfuLZ4DVyw7E63q+QJabGppHWEJ60SwKTteN5k85yynFvn1/nLKA8DNEU6PclAG/4mzajqrjm2nsjwhLfHs4N9bj2xGh01wc0XupZbvebTbDzroglFwL1U453ufOYjlkFNN8kWPJfj9zIsok6vJXKC/glRZAvZNf7TuIggYjxwVkcad89V7YYQJoNQ1C/I8ZXvB07Kp/TgaeA52LlDj4Txjcau1IClD8igYrrMXtJszmWVIYXuQHHcH9fGonye51jjp6262YDGfzk0Bh4GjQBRuixn7AL2vy0K4JT9UCqt8gJ9zvWHwHgsCJWaFPvK9T3AVxXlsPMBwneujZ3/Oi/lVwyGkZAA58sODM8/q8XlgBYgkZZDarzGm+JWL9mTO0HROqnZxJnbnk8Pp/SsDh42RGdMVF5pw0tR4Lgt49KQCjTo+ph8ueMzUjvjnyM3CeTALfnenLIYRr4SqvNim4SNc5Pu6MzPma8YxyaBqRTnz8cWEz3Fgs3aUaw==",
@@ -78,12 +128,24 @@
       "wireguard_public_key": "7HiMG8PKO9eGz7pXXYfXkgLc6M4sSSY9nKsAdLX+oWw="
     },
     "mtl0": {
-      "dn42_addresses_v4": ["172.23.224.99"],
-      "dn42_addresses_v6": ["fd72:db83:badd:3::1"],
-      "dn42_host_indices": [3],
-      "dn42_v6_prefixes": ["fd72:db83:badd:3::/64"],
-      "endpoints": ["207.90.192.101"],
-      "endpoints_v4": ["207.90.192.101"],
+      "dn42_addresses_v4": [
+        "172.23.224.99"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:3::1"
+      ],
+      "dn42_host_indices": [
+        3
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:3::/64"
+      ],
+      "endpoints": [
+        "207.90.192.101"
+      ],
+      "endpoints_v4": [
+        "207.90.192.101"
+      ],
       "endpoints_v6": [],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6zCCAXGgAwIBAgIRALhsgFVp6GvFEkrCf5DpjqIwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjMwNTExMTIx\nMzEzWhcNMjMwNzExMDgxMzEzWjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1tdGwwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEhKiNbP2Uc7Z5\n3QKfP3THWbH0pd96FZGm612iT8boETzp0sct5GlFQPNf/BADRXzWSo96hTGeYxxx\n7YBIGlkW0SrYkPe7B2EXKGE0RQMAoMjHyxKU2vcJHXjSht5l4jW5o2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDW10bDAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDaAAwZQIxALcfijAbPwXGsWuXa+5wHa8FGZwZmQ899aKb134Q0VmDW+p8\nA3OdffncuyZPWWizlAIwI4iv5wnnTDSg1WNn7SXyTjYAQJ0VY6WThbc5MXg9YC4M\nS6g0z1Dl4vb3K+S/9HFl\n-----END CERTIFICATE-----\n",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEf9zb7Hv2E56Vs/3hyNvgffpq2SAidNRZYaSqZQkrCj",
@@ -92,10 +154,18 @@
       "wireguard_public_key": "G3/9l3sOzgcoBhxdqn8WH5aBAulsNgmCzN2b9N5gwXw="
     },
     "nuc": {
-      "dn42_addresses_v4": ["172.23.224.102"],
-      "dn42_addresses_v6": ["fd72:db83:badd:6::1"],
-      "dn42_host_indices": [6],
-      "dn42_v6_prefixes": ["fd72:db83:badd:6::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.102"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:6::1"
+      ],
+      "dn42_host_indices": [
+        6
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:6::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
@@ -106,12 +176,24 @@
       "wireguard_public_key": "VNXv5/7nDMDJi6AnrYKt69/IP0G8GQJwUiTR6ellSxs="
     },
     "shg0": {
-      "dn42_addresses_v4": ["172.23.224.101"],
-      "dn42_addresses_v6": ["fd72:db83:badd:5::1"],
-      "dn42_host_indices": [5],
-      "dn42_v6_prefixes": ["fd72:db83:badd:5::/64"],
-      "endpoints": ["124.221.234.140"],
-      "endpoints_v4": ["124.221.234.140"],
+      "dn42_addresses_v4": [
+        "172.23.224.101"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:5::1"
+      ],
+      "dn42_host_indices": [
+        5
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:5::/64"
+      ],
+      "endpoints": [
+        "124.221.234.140"
+      ],
+      "endpoints_v4": [
+        "124.221.234.140"
+      ],
       "endpoints_v6": [],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6TCCAXCgAwIBAgIQWDF1DAcNENdRSRqlPJwSbDAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yMzA1MTExMzE0\nMDhaFw0yMzA3MTEwOTE0MDhaMCoxEDAOBgNVBAoTB1lpbmZlbmcxFjAUBgNVBAMT\nDXNoZzAubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAARYXt3xlGhOgwmn\nurweO3PhPZcQ2XVunNe6czoDOhght1oVhyUUtqLeHknH3lsYS26H5Fpp3DssFywQ\nGcl1EnkdH9F2r9e4O1S5rMM4OZ50OTAK28uyZ4Wj7bMamZY+vSajYDBeMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwGAYDVR0RBBEwD4INc2hnMC5saTdnLmNvbTAKBggqhkjO\nPQQDAwNnADBkAjAR/Ll4liQS6d1LGvW7iJQumhY4ul0XULQ2ciA6K4N6pSQXVN9v\n5KW+p5a46lvq150CMH3aA4pHOnlrRoFUlAAWIDjZCip7qsa/MXIMY4DQ9pSli+aI\ntl77+4KS3HBIBft8CA==\n-----END CERTIFICATE-----\n",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPVsW2KjLeFM6xmLf1ounrYZLL+Ki0St+K9Z/lmO6GLV",
@@ -120,10 +202,18 @@
       "wireguard_public_key": "v8w0d0Y1BbOfKEWIHG9FWBJMtEjkWP90FRMZO1fXY28="
     },
     "xps8930": {
-      "dn42_addresses_v4": ["172.23.224.118"],
-      "dn42_addresses_v6": ["fd72:db83:badd:16::1"],
-      "dn42_host_indices": [22],
-      "dn42_v6_prefixes": ["fd72:db83:badd:16::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.118"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:16::1"
+      ],
+      "dn42_host_indices": [
+        22
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:16::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
