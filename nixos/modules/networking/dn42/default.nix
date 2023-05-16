@@ -75,6 +75,10 @@
       endpointsV6 = lib.mkOption {
         type = with lib.types; listOf str;
       };
+      initiate = lib.mkOption {
+        type = lib.types.enum ["ipv4" "ipv6"];
+        default = "ipv6";
+      };
     };
   };
   supportedTunnelTypes = ["wireguard"];

@@ -15,8 +15,13 @@
     addressesV6 = hostData.dn42_addresses_v6;
     endpointsV4 = hostData.endpoints_v4;
     endpointsV6 = hostData.endpoints_v6;
+    initiate =
+      if lib.elem name ipv4OnlyHosts
+      then "ipv4"
+      else "ipv6";
   };
   peerTable = import ./_peers.nix;
+  ipv4OnlyHosts = ["shg0"];
   trafficControlTable = {
     # Hetzner 20 TB/month
     "hil0".enable = false; # 20TB/month
