@@ -37,6 +37,7 @@ in {
       services.acme
       services.flatpak
       services.ssh-honeypot
+      graphical.graphical-powersave-target
       programs.service-mail
       programs.tg-send
       hardware.backlight
