@@ -228,8 +228,6 @@
     extraModules ? [],
   }: {
     ${name} = nixosSystem {
-      inherit system;
-      inherit ((getSystem system).allModuleArgs) pkgs;
       specialArgs = nixosSpecialArgs;
       modules =
         commonNixosModules
@@ -238,6 +236,9 @@
         ++ [
           ({lib, ...}: {
             networking.hostName = lib.mkDefault name;
+
+            _module.args.pkgs = lib.mkForce (getSystem system).allModuleArgs.pkgs;
+            nixpkgs.system = system;
           })
         ];
     };
