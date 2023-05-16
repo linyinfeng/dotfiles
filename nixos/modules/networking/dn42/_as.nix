@@ -150,12 +150,12 @@ in
                 # As an initiator, the first non-range/non-subnet is used to initiate the connection to.
                 remote_addrs =
                   (
-                    if thisHostCfg.endpointsV6 != null
+                    if thisHostCfg.endpointsV6 != []
                     then hostCfg.endpointsV6
                     else []
                   )
                   ++ (
-                    if thisHostCfg.endpointsV4 != null
+                    if thisHostCfg.endpointsV4 != []
                     then hostCfg.endpointsV4
                     else []
                   )
