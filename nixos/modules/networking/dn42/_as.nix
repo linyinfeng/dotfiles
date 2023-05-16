@@ -151,12 +151,9 @@ in
                 remote_addrs =
                   (
                     if thisHostCfg.initiate == "ipv6"
-                    then hostCfg.endpointsV6
-                    else []
-                  )
-                  ++ (
-                    if thisHostCfg.initiate == "ipv4"
-                    then hostCfg.endpointsV4
+                    then hostCfg.endpointsV6 ++ hostCfg.endpointsV4
+                    else if thisHostCfg.initiate == "ipv4"
+                    then hostCfg.endpointsV4 ++ hostCfg.endpointsV6
                     else []
                   )
                   ++ [
