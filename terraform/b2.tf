@@ -95,7 +95,7 @@ resource "b2_bucket_file_version" "nix_cache_info" {
   source       = "${path.module}/resources/nix-cache-info"
 }
 
-# TODO delete bucket
+
 resource "b2_bucket" "synapse_media" {
   bucket_name = "yinfeng-synapse-media"
   bucket_type = "allPrivate"
@@ -189,5 +189,45 @@ output "b2_mastodon_media_key_id" {
 }
 output "b2_mastodon_media_access_key" {
   value     = b2_application_key.mastodon_media.application_key
+  sensitive = true
+}
+
+resource "b2_bucket" "attic_store" {
+  bucket_name = "yinfeng-attic"
+  bucket_type = "allPublic"
+
+  # keep only the last version of the file
+  lifecycle_rules {
+    file_name_prefix              = ""
+    days_from_uploading_to_hiding = null
+    days_from_hiding_to_deleting  = 1
+  }
+}
+resource "b2_application_key" "attic_store" {
+  key_name  = "attic"
+  bucket_id = b2_bucket.attic_store.id
+  capabilities = [
+    "deleteFiles",
+    "listAllBucketNames",
+    "listBuckets",
+    "listFiles",
+    "readBucketEncryption",
+    "readBuckets",
+    "readFiles",
+    "shareFiles",
+    "writeBucketEncryption",
+    "writeFiles"
+  ]
+}
+output "b2_attic_store_bucket_name" {
+  value     = b2_bucket.attic_store.bucket_name
+  sensitive = false
+}
+output "b2_attic_store_key_id" {
+  value     = b2_application_key.attic_store.application_key_id
+  sensitive = false
+}
+output "b2_attic_store_access_key" {
+  value     = b2_application_key.attic_store.application_key
   sensitive = true
 }

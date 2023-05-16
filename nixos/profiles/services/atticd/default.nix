@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  data = config.lib.self.data;
+in {
   services.atticd = {
     enable = true;
     credentialsFile = config.sops.templates."atticd-credentials".path;
@@ -9,16 +11,13 @@
       database.url = "postgresql://atticd?host=/run/postgresql";
       storage = {
         type = "s3";
-        region = "us-east-1"; # minio default region
-        bucket = "atticd";
-        # minio and atticd are on the same machine
-        # us tailscale address for speed up
-        # endpoint = "https://minio.li7g.com";
-        endpoint = "https://minio.ts.li7g.com";
+        region = data.attic_store_region;
+        bucket = data.attic_store_bucket_name;
+        endpoint = data.attic_store_s3_url;
       };
       chunking = {
-        # default chunking settings
-        nar-size-threshold = 65536;
+        # disable chunking
+        nar-size-threshold = 0;
         min-size = 16384;
         avg-size = 65536;
         max-size = 262144;
@@ -35,19 +34,19 @@
 
   sops.templates."atticd-credentials".content = ''
     ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64=${config.sops.placeholder."atticd_token_hs256_secret_base64"}
-    AWS_ACCESS_KEY_ID=${config.sops.placeholder."minio_atticd_key_id"}
-    AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."minio_atticd_access_key"}
+    AWS_ACCESS_KEY_ID=${config.sops.placeholder."b2_attic_store_key_id"}
+    AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."b2_attic_store_access_key"}
   '';
 
   sops.secrets."atticd_token_hs256_secret_base64" = {
     sopsFile = config.sops-file.terraform;
     restartUnits = ["atticd.service"];
   };
-  sops.secrets."minio_atticd_key_id" = {
+  sops.secrets."b2_attic_store_key_id" = {
     sopsFile = config.sops-file.terraform;
     restartUnits = ["atticd.service"];
   };
-  sops.secrets."minio_atticd_access_key" = {
+  sops.secrets."b2_attic_store_access_key" = {
     sopsFile = config.sops-file.terraform;
     restartUnits = ["atticd.service"];
   };
