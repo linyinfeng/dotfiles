@@ -47,15 +47,13 @@
     # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
-    # TODO broken with current nixos-unstable
-    # lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
     lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
-    # TODO wait for https://github.com/ipetkov/crane/issues/262
-    # lanzaboote.inputs.crane.follows = "crane";
+    lanzaboote.inputs.crane.follows = "crane";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
@@ -125,6 +123,11 @@
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
 
+    nvfetcher.url = "github:berberman/nvfetcher";
+    nvfetcher.inputs.nixpkgs.follows = "nixpkgs";
+    nvfetcher.inputs.flake-utils.follows = "flake-utils";
+    nvfetcher.inputs.flake-compat.follows = "flake-compat";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
@@ -134,6 +137,8 @@
     linyinfeng.inputs.nixos-stable.follows = "blank";
     linyinfeng.inputs.devshell.follows = "devshell";
     linyinfeng.inputs.treefmt-nix.follows = "treefmt-nix";
+    linyinfeng.inputs.nvfetcher.follows = "nvfetcher";
+    linyinfeng.inputs.flake-compat.follows = "flake-compat";
 
     nixos-cn.url = "github:nixos-cn/flakes";
     nixos-cn.inputs.nixpkgs.follows = "nixpkgs";
