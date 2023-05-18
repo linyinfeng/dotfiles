@@ -28,6 +28,7 @@ in {
           }
         ];
       };
+      secrets = pkgs.writeText "maddy-env" ""; # nothing, use LoadCredential
       config = ''
         # Local storage & authentication
 
