@@ -1,5 +1,5 @@
-{...}: let
-  rickRolls = [
+{lib, ...}: let
+  explicitRickRolls = [
     "nixos-minimal-23.05pre485269.e6e389917a8-aarch64-linux.prebuilt.zip"
   ];
 in {
@@ -24,6 +24,7 @@ in {
       [
         "*.prebuilt.zip"
       ]
-      ++ rickRolls;
+      ++ lib.lists.map (n: "*.${toString n}.prebuilt.zip") (lib.range 0 9)
+      ++ explicitRickRolls;
   };
 }
