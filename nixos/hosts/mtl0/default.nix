@@ -35,6 +35,7 @@ in {
       services.static-file-hosting
       services.atticd
       services.telegraf-http
+      services.prebuilt-zip
     ]);
 
   config = lib.mkMerge [

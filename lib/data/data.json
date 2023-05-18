@@ -219,6 +219,10 @@
       "on": "mia0",
       "proxy": true
     },
+    "prebuilt-zip": {
+      "on": "mtl0",
+      "proxy": true
+    },
     "shanghai.derp": {
       "on": "shg0",
       "proxy": false

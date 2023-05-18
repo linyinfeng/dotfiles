@@ -42,8 +42,20 @@ resource "cloudflare_zone" "com_li7g" {
   zone       = "li7g.com"
 }
 
+resource "cloudflare_zone" "zip_prebuilt" {
+  account_id = local.cloudflare_main_account_id
+  zone       = "prebuilt.zip"
+}
+
 resource "cloudflare_zone_settings_override" "com_li7g" {
   zone_id = cloudflare_zone.com_li7g.id
+  settings {
+    ssl = "strict"
+  }
+}
+
+resource "cloudflare_zone_settings_override" "zip_prebuilt" {
+  zone_id = cloudflare_zone.zip_prebuilt.id
   settings {
     ssl = "strict"
   }
@@ -71,6 +83,24 @@ resource "cloudflare_record" "li7g" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+resource "cloudflare_record" "zip_prebuilt" {
+  name    = "prebuilt.zip"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = "prebuilt-zip.li7g.com"
+  zone_id = cloudflare_zone.zip_prebuilt.id
+}
+
+resource "cloudflare_record" "zip_prebuilt_wildcard" {
+  name    = "*"
+  proxied = true
+  ttl     = 1
+  type    = "CNAME"
+  value   = "prebuilt-zip.li7g.com"
+  zone_id = cloudflare_zone.zip_prebuilt.id
+}
+
 locals {
   service_cname_mappings = {
     nuc-proxy       = { on = "mia0", proxy = true }
@@ -91,6 +121,7 @@ locals {
     minio-console   = { on = "mtl0", proxy = true }
     social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
+    prebuilt-zip    = { on = "mtl0", proxy = true }
     "shanghai.derp" = { on = "shg0", proxy = false }
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }
