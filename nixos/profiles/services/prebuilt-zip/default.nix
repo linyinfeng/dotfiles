@@ -1,6 +1,7 @@
 {lib, ...}: let
   explicitRickRolls = [
     "nixos-minimal-23.05pre485269.e6e389917a8-aarch64-linux.prebuilt.zip"
+    "unzip-6.0-amd64-linux.prebuilt.zip"
   ];
 in {
   services.nginx.virtualHosts."*.prebuilt.zip" = {
