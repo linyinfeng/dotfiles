@@ -91,10 +91,11 @@ resource "cloudflare_record" "zip_prebuilt" {
   value   = "prebuilt-zip.li7g.com"
   zone_id = cloudflare_zone.zip_prebuilt.id
 }
-
 resource "cloudflare_record" "zip_prebuilt_wildcard" {
-  name    = "*"
-  proxied = true
+  name = "*"
+  # cluodflare's edge ssl certificate
+  # only covers second level of the domain
+  proxied = false
   ttl     = 1
   type    = "CNAME"
   value   = "prebuilt-zip.li7g.com"
@@ -121,7 +122,7 @@ locals {
     minio-console   = { on = "mtl0", proxy = true }
     social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
-    prebuilt-zip    = { on = "mtl0", proxy = true }
+    prebuilt-zip    = { on = "mtl0", proxy = false }
     "shanghai.derp" = { on = "shg0", proxy = false }
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }

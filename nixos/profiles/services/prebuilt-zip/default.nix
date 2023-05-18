@@ -1,6 +1,17 @@
-{...}: {
+{...}: let
+  rickRolls = [
+    "nixos-minimal-23.05pre485269.e6e389917a8-aarch64-linux.prebuilt.zip"
+  ];
+in {
+  # http virtual server
+  services.nginx.virtualHosts."*.prebuilt.zip" = {
+    forceSSL = true;
+    useACMEHost = "prebuilt-zip";
+    locations."/".extraConfig = ''
+      return 302 http://prebuilt.zip/$host$request_uri;
+    '';
+  };
   services.nginx.virtualHosts."prebuilt.zip" = {
-    serverAliases = ["*.prebuilt.zip"];
     forceSSL = true;
     useACMEHost = "prebuilt-zip";
     locations."/".extraConfig = ''
@@ -9,8 +20,10 @@
   };
   security.acme.certs."prebuilt-zip" = {
     domain = "prebuilt.zip";
-    extraDomainNames = [
-      "*.prebuilt.zip"
-    ];
+    extraDomainNames =
+      [
+        "*.prebuilt.zip"
+      ]
+      ++ rickRolls;
   };
 }

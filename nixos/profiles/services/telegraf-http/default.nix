@@ -1,12 +1,16 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
-  tld = "li7g.com";
   servicesCnameMappings = config.lib.self.data.service_cname_mappings;
   unproxiedServiceUrls = {
+    prebuilt-zip = [
+      {
+        url = "https://prebuilt.zip";
+        code = 302;
+      }
+    ];
     hydra = [
       {
         url = "https://hydra.ts.li7g.com";
@@ -49,28 +53,28 @@
     smtp = [];
   };
   overrides = {
-    alertmanager = [
-      {
-        url = "https://alertmanager.li7g.com";
-        code = 401;
-      }
-    ];
     box = [
       {
         url = "https://box.li7g.com/accounts/login/?next=/";
         code = 200;
       }
     ];
-    loki = [
-      {
-        url = "https://loki.li7g.com";
-        code = 401;
-      }
-    ];
     tar = [
       {
         url = "https://tar.li7g.com/healthcheck";
         code = 200;
+      }
+    ];
+    dn42 = [
+      {
+        url = "https://dn42.li7g.com/info.json";
+        code = 200;
+      }
+    ];
+    bird-lg = [
+      {
+        url = "https://bird-lg.li7g.com";
+        code = 302;
       }
     ];
   };
