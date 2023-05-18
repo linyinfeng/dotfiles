@@ -3,9 +3,9 @@
     "nixos-minimal-23.05pre485269.e6e389917a8-aarch64-linux.prebuilt.zip"
   ];
 in {
-  # http virtual server
   services.nginx.virtualHosts."*.prebuilt.zip" = {
-    forceSSL = true;
+    # actually forced because of HSTS
+    addSSL = true;
     useACMEHost = "prebuilt-zip";
     locations."/".extraConfig = ''
       return 302 http://prebuilt.zip/$host$request_uri;
