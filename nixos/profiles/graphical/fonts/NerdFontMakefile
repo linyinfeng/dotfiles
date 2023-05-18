@@ -1,0 +1,29 @@
+FONT_FILES = $(shell ls ./fonts)
+FONTS = $(basename $(FONT_FILES))
+OUT_PATH = ${out}/share/fonts/truetype
+
+.PHONY: all
+
+build: $(foreach font,$(FONTS),patched/$(font)-nf.ttf)
+install: $(foreach font,$(FONTS),$(OUT_PATH)/$(font)-nf.ttf)
+
+patched/%-nf.ttf: fonts/%.ttf patched
+	{ \
+	  tmp=$$(mktemp --directory /tmp/nerf-font-patcher-XXXXXX); \
+	  echo $$tmp; \
+	  nerd-font-patcher $< \
+          --complete \
+          --careful \
+          --outputdir $$tmp; \
+	  cp $$tmp/* $@; \
+	  rm -rf $$tmp; \
+	}
+
+$(OUT_PATH)/%: patched/% $(OUT_PATH)
+	cp $< $@
+
+patched:
+	mkdir -p $@
+
+$(OUT_PATH):
+	mkdir -p $@

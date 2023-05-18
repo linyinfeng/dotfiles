@@ -18,18 +18,14 @@
     nativeBuildInputs = with pkgs; [
       nerd-font-patcher
     ];
+    enableParallelBuilding = true;
     unpackPhase = ''
-      cp -r $src/share/fonts/truetype/. .
-      chmod u+w .
+      mkdir -p fonts
+      cp -r $src/share/fonts/truetype/. ./fonts/
+      chmod u+w -R ./fonts
     '';
-    buildPhase = ''
-      mkdir patched
-      for font in *.ttf; do
-        nerd-font-patcher "$font" \
-          --complete \
-          --careful \
-          --outputdir $out/share/fonts/truetype
-      done
+    postPatch = ''
+      cp ${./NerdFontMakefile} ./Makefile
     '';
   };
 in {
