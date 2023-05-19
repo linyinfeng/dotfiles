@@ -130,7 +130,7 @@ in
         };
         "com/raggesilver/BlackBox" = {
           terminal-padding = mkTuple [(mkUint32 5) (mkUint32 5) (mkUint32 5) (mkUint32 5)];
-          font = "monospace 10";
+          font = "Iosevka Yinfeng Nerd Font 10";
           theme-light = "Tomorrow";
           theme-dark = "Tomorrow Night";
           show-menu-button = false;

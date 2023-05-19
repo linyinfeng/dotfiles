@@ -44,6 +44,7 @@ in {
     wqy_microhei
 
     jetbrains-mono
+    iosevka-yinfeng
     iosevka-yinfeng-nf
     font-awesome
     powerline-fonts

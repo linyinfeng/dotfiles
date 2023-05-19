@@ -53,7 +53,7 @@ lib.mkIf false {
     enable = true;
     settings = {
       font = {
-        normal.family = "Iosevka Yinfeng";
+        normal.family = "Iosevka Yinfeng Nerd Font";
         size = 11.0;
       };
       colors = {
