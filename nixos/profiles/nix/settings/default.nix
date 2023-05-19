@@ -1,6 +1,6 @@
 {...}: {
   nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
+    settings.experimental-features = ["nix-command" "flakes" "ca-derivations"];
     settings.system-features = ["nixos-test" "benchmark" "big-parallel" "kvm"];
 
     # use periodic store optimisation
