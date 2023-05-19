@@ -16,7 +16,7 @@ in {
     forceSSL = true;
     useACMEHost = "prebuilt-zip";
     locations."/".extraConfig = ''
-      return 302 https://www.youtube.com/watch?v=dQw4w9WgXcQ;
+      return 302 https://www.bilibili.com/video/BV1GJ411x7h7;
     '';
   };
   security.acme.certs."prebuilt-zip" = {
