@@ -68,19 +68,21 @@ in
           inherit user group;
           cert = "/run/secrets/syncthing_cert_pem";
           key = "/run/secrets/syncthing_key_pem";
-          devices = others;
-          folders = {
-            "main" = {
-              path = "/var/lib/syncthing/Main";
-              devices = otherNames;
-              ignoreDelete = false;
-              ignorePerms = false;
-            };
-            "music" = {
-              path = "/var/lib/syncthing/Music";
-              devices = otherNames;
-              ignoreDelete = false;
-              ignorePerms = false;
+          settings = {
+            devices = others;
+            folders = {
+              "main" = {
+                path = "/var/lib/syncthing/Main";
+                devices = otherNames;
+                ignoreDelete = false;
+                ignorePerms = false;
+              };
+              "music" = {
+                path = "/var/lib/syncthing/Music";
+                devices = otherNames;
+                ignoreDelete = false;
+                ignorePerms = false;
+              };
             };
           };
         };
