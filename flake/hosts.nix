@@ -320,5 +320,10 @@ in {
       name = "fsn0";
       system = "aarch64-linux";
     })
+
+    (mkHost {
+      name = "hkg0";
+      system = "x86_64-linux";
+    })
   ];
 }

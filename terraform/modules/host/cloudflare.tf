@@ -38,12 +38,13 @@ resource "cloudflare_record" "ddns_records" {
   lifecycle { ignore_changes = [value] }
 }
 resource "cloudflare_record" "zerotier" {
-  name    = "${var.name}.zt"
-  ttl     = 1 # default ttl
-  proxied = false
-  type    = "A"
-  value   = tolist([for a in zerotier_member.host.ip_assignments : a if length(regexall("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", a)) > 0])[0]
-  zone_id = var.cloudflare_zone_id
+  for_each = toset([for a in zerotier_member.host.ip_assignments : a if length(regexall("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", a)) > 0])
+  name     = "${var.name}.zt"
+  ttl      = 1 # default ttl
+  proxied  = false
+  type     = "A"
+  value    = each.value
+  zone_id  = var.cloudflare_zone_id
 }
 resource "cloudflare_record" "enpoint_v4_only_records" {
   name     = "v4.${var.name}.endpoints"

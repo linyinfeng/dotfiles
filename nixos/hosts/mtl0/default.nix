@@ -36,6 +36,7 @@ in {
       services.atticd
       services.telegraf-http
       services.prebuilt-zip
+      networking.as198764
     ]);
 
   config = lib.mkMerge [

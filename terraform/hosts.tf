@@ -80,6 +80,25 @@ locals {
       endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.shg0"])]
       endpoints_v6      = []
     }
+    # waiting for setup
+    hkg0 = {
+      records = {
+        a = {
+          proxied = true
+          type    = "A"
+          value   = nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])
+        }
+        aaaa = {
+          proxied = true
+          type    = "AAAA"
+          value   = nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])
+        }
+      }
+      ddns_records      = {}
+      dn42_host_indices = [6]
+      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])]
+      endpoints_v6      = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])]
+    }
     nuc = {
       records = {}
       ddns_records = {

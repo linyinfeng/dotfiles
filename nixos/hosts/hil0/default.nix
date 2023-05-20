@@ -31,6 +31,7 @@ in {
       services.mastodon
       services.maddy
       services.well-known
+      networking.as198764
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"

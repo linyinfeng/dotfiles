@@ -8,27 +8,32 @@
     hil0 = {
       comment = null;
       provider = "Hetzner";
-      location = "United States, Oregon, Hillsboro";
+      location = ["Hillsboro" "Oregon" "United States"];
     };
     fsn0 = {
       comment = null;
       provider = "Hetzner";
-      location = "Germany, Falkenstein";
+      location = ["Falkenstein" "Germany"];
     };
     mtl0 = {
       comment = null;
       provider = "ServaRICA";
-      location = "Canada, Quebec, Montreal";
+      location = ["Montreal" "Quebec" "Canada"];
     };
     mia0 = {
       comment = "low performance machine (1C512M)";
       provider = "Vultr";
-      location = "United States, Florida, Miami";
+      location = ["Miami" "Florida" "United States"];
     };
     shg0 = {
       comment = "not available for peering";
       provider = "Tencent Cloud";
-      location = "China, Shanghai";
+      location = ["Shanghai" "China"];
+    };
+    hkg0 = {
+      comment = null;
+      provider = "JuHost";
+      location = ["Hong Kong" "China"];
     };
   };
   cfg = config.networking.dn42;

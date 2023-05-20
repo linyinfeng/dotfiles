@@ -29,6 +29,7 @@
     "mtl0".enable = false; # unmetered
     "mia0".enable = true; # 200GB/month
     "shg0".enable = true; # 1TB/month
+    "hkg0".enable = true; # 1TB/month
 
     "nuc".enable = false; # unmetered
     "xps8930".enable = false; # mobile
@@ -54,6 +55,10 @@
     "shg0" = {
       region = 52; # Asia-E (JP,CN,KR,TW,HK)
       country = 1156; # China
+    };
+    "hkg0" = {
+      region = 52; # Asia-E (JP,CN,KR,TW,HK)
+      country = 1344; # Hong Kong
     };
 
     "nuc" = {

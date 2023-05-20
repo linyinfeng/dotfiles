@@ -15,3 +15,8 @@ resource "vultr_instance" "mia0" {
     ]
   }
 }
+
+resource "vultr_ssh_key" "pgp" {
+  name    = "pgp"
+  ssh_key = trim(file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub"), "\n ")
+}

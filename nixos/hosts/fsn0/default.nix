@@ -17,6 +17,7 @@
       services.influxdb
       services.dn42-site
       services.bird-lg
+      networking.as198764
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
@@ -47,7 +48,9 @@
           fsType = "tmpfs";
           mountOptions = ["defaults" "size=2G" "mode=755"];
         };
-        disk.main = {
+        disk.main = let
+          swapSize = "4GiB";
+        in {
           type = "disk";
           device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_31303657";
           content = {
@@ -69,7 +72,7 @@
               {
                 name = "root";
                 start = "1025MiB";
-                end = "-4GiB";
+                end = "-${swapSize}";
                 fs-type = "btrfs";
                 content = {
                   type = "btrfs";
@@ -91,7 +94,7 @@
               }
               {
                 name = "swap";
-                start = "-4GiB";
+                start = "-${swapSize}";
                 end = "100%";
                 fs-type = "linux-swap";
                 content = {
