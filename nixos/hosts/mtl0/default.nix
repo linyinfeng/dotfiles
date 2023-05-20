@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   suites,
   profiles,
@@ -51,10 +50,6 @@ in {
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
-      environment.systemPackages = with pkgs; [
-        tmux
-      ];
-
       services.btrfs.autoScrub = {
         enable = true;
         fileSystems = [
@@ -84,7 +79,7 @@ in {
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;
-      environment.etc."systemd/network/50-enX0.network".source =
+      environment.etc."systemd/network/45-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
         sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
@@ -107,8 +102,41 @@ in {
           Address=${config.sops.placeholder."network/address"}/${config.sops.placeholder."network/subnet"}
           Gateway=${config.sops.placeholder."network/gateway"}
           DNS=8.8.8.8 8.8.4.4
+
+          Tunnel=he-ipv6
         '';
         owner = "systemd-network";
+      };
+
+      # HE Tunnel
+      environment.etc."systemd/network/he-ipv6.netdev".source =
+        config.sops.templates."he-ipv6-netdev".path;
+      sops.templates."he-ipv6-netdev" = {
+        content = ''
+          [NetDev]
+          Name=he-ipv6
+          Kind=sit
+          MTUBytes=1480
+
+          [Tunnel]
+          Remote=216.66.38.58
+          Local=${config.sops.placeholder."network/address"}
+          TTL=255
+        '';
+        owner = "systemd-network";
+      };
+      systemd.network.networks.he-ipv6 = {
+        matchConfig = {
+          Name = "he-ipv6";
+        };
+        address = ["2001:470:1c:4ff::2/64"];
+        routes = [
+          {
+            routeConfig = {
+              Gateway = "::";
+            };
+          }
+        ];
       };
     })
   ];
