@@ -6,7 +6,13 @@
 }:
 lib.mkMerge [
   {
-    programs.hyprland.enable = true;
+    programs.hyprland = {
+      enable = true;
+      xwayland = {
+        enable = true;
+        hidpi = true;
+      };
+    };
     environment.sessionVariables = {
       # override the setting in hyprland module
       # priority of mkDefault is 1000

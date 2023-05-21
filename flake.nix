@@ -115,9 +115,7 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226283
-    # pinned, due to broken wlroots
-    hyprland.url = "github:hyprwm/hyprland/2df0d034bc4a18fafb3524401eeeceaa6b23e753";
+    hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";

@@ -7,7 +7,6 @@
 lib.mkIf config.home.graphical {
   home.packages = with pkgs; [
     amberol
-    bitwarden
     calibre
     gimp
     gnuradio
@@ -48,7 +47,6 @@ lib.mkIf config.home.graphical {
       ".zotero"
       ".goldendict"
 
-      ".config/Bitwarden"
       ".config/calibre"
       ".config/SchildiChat"
       ".config/icalingua"

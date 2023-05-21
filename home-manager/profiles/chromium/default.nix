@@ -10,7 +10,7 @@ lib.mkIf config.home.graphical {
       # TODO disabled
       # ibus not working
       # "--ozone-platform-hint=auto"
-      # "--enable-wayland-ime"
+      # "--enable-wayland-ime" # text-input-v1, only works in hyprland
       # "--gtk-version=4"
     ];
   };

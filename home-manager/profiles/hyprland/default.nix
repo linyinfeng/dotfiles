@@ -16,9 +16,7 @@
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
 
   proxyCfg = osConfig.networking.fw-proxy;
-  variables =
-    config.home.sessionVariables
-    // (lib.optionalAttrs proxyCfg.enable proxyCfg.environment);
+  variables = lib.optionalAttrs proxyCfg.enable proxyCfg.environment;
   mkVariableCfg = name: value: "env = ${name},${value}";
 in
   lib.mkIf config.home.graphical {
@@ -96,6 +94,7 @@ in
             format-icons = {
               default = ["" "" ""];
             };
+            on-click = "volumectl toggle";
             on-scroll-up = "volumectl up";
             on-scroll-down = "volumectl down";
           };
@@ -103,6 +102,7 @@ in
             format = "{volume}% {icon}";
             format-muted = "";
             format-icons = ["" "" ""];
+            on-click = "volumectl toggle";
             on-scroll-up = "volumectl up";
             on-scroll-down = "volumectl down";
           };

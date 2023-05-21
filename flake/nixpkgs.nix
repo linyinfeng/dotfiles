@@ -39,9 +39,6 @@
             soapysdr = final.soapysdr-with-plugins;
           };
         };
-        hyprland = prev.hyprland.override {
-          hidpiXWayland = true;
-        };
         bird = inputs'.linyinfeng.packages.bird-babel-rtt;
       }
       // lib.optionalAttrs (system == "x86_64-linux") {
