@@ -51,7 +51,7 @@ in {
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal_client_id" = {
         sopsFile = config.sops-file.get "terraform/common.yaml";
-        restartUnits = ["v2ray.service"];
+        restartUnits = ["v2ray-portal.service"];
       };
       systemd.packages = [pkgs.v2ray];
       systemd.services.v2ray-portal = {

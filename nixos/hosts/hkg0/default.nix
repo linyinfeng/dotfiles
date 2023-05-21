@@ -3,6 +3,7 @@
   suites,
   profiles,
   lib,
+  pkgs,
   modulesPath,
   ...
 }: {
@@ -35,6 +36,22 @@
         fsType = "ext4";
       };
       swapDevices = [{device = "/dev/vda2";}];
+    }
+
+    # portal
+    {
+      services.nginx.virtualHosts."portal.*" = {
+        forceSSL = true;
+        useACMEHost = "main";
+        locations."/" = {
+          root = pkgs.element-web;
+        };
+      };
+      services.portal = {
+        host = "portal.li7g.com";
+        nginxVirtualHost = "portal.*";
+        server.enable = true;
+      };
     }
 
     {

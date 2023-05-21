@@ -79,22 +79,6 @@ in {
       ];
     }
 
-    # portal
-    {
-      services.nginx.virtualHosts."portal.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          root = pkgs.element-web;
-        };
-      };
-      services.portal = {
-        host = "portal.li7g.com";
-        nginxVirtualHost = "portal.*";
-        server.enable = true;
-      };
-    }
-
     {
       networking = lib.mkIf (!config.system.is-vm) {
         useNetworkd = true;
