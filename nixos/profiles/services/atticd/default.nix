@@ -6,7 +6,7 @@ in {
     credentialsFile = config.sops.templates."atticd-credentials".path;
     settings = {
       listen = "[::]:${toString config.ports.atticd}";
-      api-endpoint = "https://attic.li7g.com";
+      api-endpoint = "https://attic.li7g.com/";
 
       database.url = "postgresql://atticd?host=/run/postgresql";
       storage = {

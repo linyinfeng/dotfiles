@@ -114,6 +114,7 @@ locals {
     jellyfin        = { on = "nuc", proxy = false }
     hledger         = { on = "nuc", proxy = false }
     attic           = { on = "mtl0", proxy = true }
+    attic-upload    = { on = "mtl0", proxy = false }
     vault           = { on = "mtl0", proxy = true }
     pb              = { on = "mtl0", proxy = true }
     git             = { on = "mtl0", proxy = true }
