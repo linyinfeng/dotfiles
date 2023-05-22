@@ -63,10 +63,26 @@ in {
         matchConfig = {
           Name = "ens3";
         };
+        addresses = [
+          {
+            addressConfig = let
+              address = assert lib.length hostData.endpoints_v6 == 1;
+                lib.elemAt hostData.endpoints_v6 0;
+            in {
+              Address = "${address}/64";
+            };
+          }
+        ];
         networkConfig = {
           DHCP = "yes";
-          IPv6PrivacyExtensions = "prefer-public";
         };
+        routes = [
+          {
+            routeConfig = {
+              Gateway = "2404:8c80:85:1011::1";
+            };
+          }
+        ];
       };
     })
   ];
