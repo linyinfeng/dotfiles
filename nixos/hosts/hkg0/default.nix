@@ -59,7 +59,7 @@ in {
 
     (lib.mkIf (!config.system.is-vm) {
       networking.useNetworkd = true;
-      systemd.network.networks."40-ens3.network" = {
+      systemd.network.networks."40-ens3" = {
         matchConfig = {
           Name = "ens3";
         };
