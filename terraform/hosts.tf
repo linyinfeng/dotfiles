@@ -113,7 +113,7 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [6]
+      dn42_host_indices = [7]
       endpoints_v4      = []
       endpoints_v6      = []
     }
@@ -149,6 +149,15 @@ locals {
       endpoints_v6      = []
     }
   }
+}
+
+locals {
+  all_dn42_host_indices = flatten([for name, cfg in local.hosts : cfg.dn42_host_indices])
+}
+
+data "assert_test" "host_indices_collision" {
+  test  = length(local.all_dn42_host_indices) == length(toset(local.all_dn42_host_indices))
+  throw = "host indices collision"
 }
 
 module "hosts" {

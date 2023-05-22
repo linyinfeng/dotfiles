@@ -44,5 +44,8 @@ terraform {
     htpasswd = {
       source = "loafoe/htpasswd"
     }
+    assert = {
+      source = "bwoznicki/assert"
+    }
   }
 }

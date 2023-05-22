@@ -110,10 +110,10 @@
       "wireguard_public_key": "G3/9l3sOzgcoBhxdqn8WH5aBAulsNgmCzN2b9N5gwXw="
     },
     "nuc": {
-      "dn42_addresses_v4": ["172.23.224.102"],
-      "dn42_addresses_v6": ["fd72:db83:badd:6::1"],
-      "dn42_host_indices": [6],
-      "dn42_v6_prefixes": ["fd72:db83:badd:6::/64"],
+      "dn42_addresses_v4": ["172.23.224.103"],
+      "dn42_addresses_v6": ["fd72:db83:badd:7::1"],
+      "dn42_host_indices": [7],
+      "dn42_v6_prefixes": ["fd72:db83:badd:7::/64"],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
