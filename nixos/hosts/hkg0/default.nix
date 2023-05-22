@@ -63,9 +63,9 @@ in {
         matchConfig = {
           Name = "ens3";
         };
-        address = hostData.endpoints_v6;
         networkConfig = {
           DHCP = "yes";
+          IPv6PrivacyExtensions = "prefer-public";
         };
       };
     })
