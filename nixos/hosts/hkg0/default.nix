@@ -6,7 +6,10 @@
   pkgs,
   modulesPath,
   ...
-}: {
+}: let
+  hostName = config.networking.hostName;
+  hostData = config.lib.self.data.hosts.${hostName};
+in {
   imports =
     suites.server
     ++ (with profiles; [
@@ -54,11 +57,17 @@
       };
     }
 
-    {
-      networking = lib.mkIf (!config.system.is-vm) {
-        useNetworkd = true;
-        interfaces.ens3.useDHCP = true;
+    (lib.mkIf (!config.system.is-vm) {
+      networking.useNetworkd = true;
+      systemd.network.networks."40-ens3.network" = {
+        matchConfig = {
+          Name = "ens3";
+        };
+        address = hostData.endpoints_v6;
+        networkConfig = {
+          DHCP = "yes";
+        };
       };
-    }
+    })
   ];
 }
