@@ -51,4 +51,28 @@
       };
     };
   };
+  hkg0 = {
+    "hk.kskb.eu.org" = {
+      remoteAutonomousSystem.dn42LowerNumber = 1817;
+      tunnel.type = "wireguard";
+      wireguard.remotePublicKey = "olXrGZKg3kKPdihHNfZ3zwwt+LPFQv9GMxLyA92fQl0=";
+      endpoint = {
+        address = "hk.kskb.eu.org";
+        port = 20128;
+      };
+      linkAddresses = {
+        v4.bgpNeighbor = null; # MP-BGP
+        v6.bgpNeighbor = "fe80::1817"; # link-local
+        v4.peer = "172.22.77.47";
+        v6.peer = "fd28:cb8f:4c92:7777::7";
+      };
+      bgp.community.dn42 = {
+        enable = true;
+        # ipv4: rtt min/avg/max/mdev = 1.834/1.931/2.184/0.094 ms
+        # ipv6: rtt min/avg/max/mdev = 2.391/2.519/2.661/0.074 ms
+        latency = 1;
+        bandwidth = 22; # 1Mbps <= . < 10Mbps
+      };
+    };
+  };
 }

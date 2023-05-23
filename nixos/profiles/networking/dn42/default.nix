@@ -27,9 +27,21 @@
     "hil0".enable = false; # 20TB/month
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
-    "mia0".enable = true; # 200GB/month
-    "shg0".enable = true; # 1TB/month
-    "hkg0".enable = true; # 1TB/month
+    "mia0" = {
+      # 200GB/month
+      enable = true;
+      rate = "5M";
+    };
+    "shg0" = {
+      # 1TB/month
+      enable = true;
+      rate = "10M";
+    };
+    "hkg0" = {
+      # 1TB/month
+      enable = true;
+      rate = "10M";
+    };
 
     "nuc".enable = false; # unmetered
     "xps8930".enable = false; # mobile
