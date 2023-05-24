@@ -1,6 +1,9 @@
 {
     "dn42_v4_cidr": .dn42_v4_cidr.value,
     "dn42_v6_cidr": .dn42_v6_cidr.value,
+
+    "as198764_v6_cidr": .as198764_v6_cidr.value,
+
     "ca_cert_pem": .ca_cert_pem.value,
 
     "cache_s3_url": .b2_s3_api_url.value,
@@ -37,10 +40,11 @@
                 .key == "syncthing_device_id" or
                 .key == "ssh_host_rsa_key_pub" or
                 .key == "ssh_host_ed25519_key_pub" or
-                .key == "dn42_host_indices" or
+                .key == "host_indices" or
                 .key == "dn42_addresses_v4" or
                 .key == "dn42_v6_prefixes" or
                 .key == "dn42_addresses_v6" or
+                .key == "as198764_addresses_v6" or
                 .key == "endpoints" or
                 .key == "endpoints_v4" or
                 .key == "endpoints_v6" or

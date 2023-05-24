@@ -13,10 +13,10 @@ locals {
           value   = hcloud_server.hil0.ipv6_address
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [1]
-      endpoints_v4      = [hcloud_server.hil0.ipv4_address]
-      endpoints_v6      = [hcloud_server.hil0.ipv6_address]
+      ddns_records = {}
+      host_indices = [1]
+      endpoints_v4 = [hcloud_server.hil0.ipv4_address]
+      endpoints_v6 = [hcloud_server.hil0.ipv6_address]
     }
     fsn0 = {
       records = {
@@ -31,10 +31,10 @@ locals {
           value   = hcloud_server.fsn0.ipv6_address
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [2]
-      endpoints_v4      = [hcloud_server.fsn0.ipv4_address]
-      endpoints_v6      = [hcloud_server.fsn0.ipv6_address]
+      ddns_records = {}
+      host_indices = [2]
+      endpoints_v4 = [hcloud_server.fsn0.ipv4_address]
+      endpoints_v6 = [hcloud_server.fsn0.ipv6_address]
     }
     mtl0 = {
       records = {
@@ -44,10 +44,10 @@ locals {
           value   = nonsensitive(data.sops_file.mtl0.data["network.address"])
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [3]
-      endpoints_v4      = [nonsensitive(data.sops_file.mtl0.data["network.address"])]
-      endpoints_v6      = []
+      ddns_records = {}
+      host_indices = [3]
+      endpoints_v4 = [nonsensitive(data.sops_file.mtl0.data["network.address"])]
+      endpoints_v6 = []
     }
     mia0 = {
       records = {
@@ -62,10 +62,10 @@ locals {
           value   = vultr_instance.mia0.v6_main_ip
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [4]
-      endpoints_v4      = [vultr_instance.mia0.main_ip]
-      endpoints_v6      = [vultr_instance.mia0.v6_main_ip]
+      ddns_records = {}
+      host_indices = [4]
+      endpoints_v4 = [vultr_instance.mia0.main_ip]
+      endpoints_v6 = [vultr_instance.mia0.v6_main_ip]
     }
     shg0 = {
       records = {
@@ -75,10 +75,10 @@ locals {
           value   = nonsensitive(data.sops_file.terraform.data["ip.shg0"])
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [5]
-      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.shg0"])]
-      endpoints_v6      = []
+      ddns_records = {}
+      host_indices = [5]
+      endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.shg0"])]
+      endpoints_v6 = []
     }
     # waiting for setup
     hkg0 = {
@@ -94,10 +94,10 @@ locals {
           value   = nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])
         }
       }
-      ddns_records      = {}
-      dn42_host_indices = [6]
-      endpoints_v4      = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])]
-      endpoints_v6      = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])]
+      ddns_records = {}
+      host_indices = [6]
+      endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])]
+      endpoints_v6 = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])]
     }
     nuc = {
       records = {}
@@ -113,9 +113,9 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [7]
-      endpoints_v4      = []
-      endpoints_v6      = []
+      host_indices = [7]
+      endpoints_v4 = []
+      endpoints_v6 = []
     }
     framework = {
       records = {}
@@ -126,9 +126,9 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [21]
-      endpoints_v4      = []
-      endpoints_v6      = []
+      host_indices = [21]
+      endpoints_v4 = []
+      endpoints_v6 = []
     }
     xps8930 = {
       records = {}
@@ -144,19 +144,19 @@ locals {
           value   = "::1"
         }
       }
-      dn42_host_indices = [22]
-      endpoints_v4      = []
-      endpoints_v6      = []
+      host_indices = [22]
+      endpoints_v4 = []
+      endpoints_v6 = []
     }
   }
 }
 
 locals {
-  all_dn42_host_indices = flatten([for name, cfg in local.hosts : cfg.dn42_host_indices])
+  all_host_indices = flatten([for name, cfg in local.hosts : cfg.host_indices])
 }
 
 data "assert_test" "host_indices_collision" {
-  test  = length(local.all_dn42_host_indices) == length(toset(local.all_dn42_host_indices))
+  test  = length(local.all_host_indices) == length(toset(local.all_host_indices))
   throw = "host indices collision"
 }
 
@@ -176,9 +176,10 @@ module "hosts" {
   records             = each.value.records
   ddns_records        = each.value.ddns_records
   zerotier_network_id = zerotier_network.main.id
-  dn42_host_indices   = each.value.dn42_host_indices
+  host_indices        = each.value.host_indices
   dn42_v4_cidr        = var.dn42_v4_cidr
   dn42_v6_cidr        = var.dn42_v6_cidr
+  as198764_v6_cidr    = var.as198764_v6_cidr
   endpoints_v4        = each.value.endpoints_v4
   endpoints_v6        = each.value.endpoints_v6
   ca_cert_pem         = tls_self_signed_cert.ca.cert_pem

@@ -10,7 +10,7 @@
       enable = true;
       community.dn42 = regionTable.${name};
     };
-    indices = hostData.dn42_host_indices;
+    indices = hostData.host_indices;
     addressesV4 = hostData.dn42_addresses_v4;
     addressesV6 = hostData.dn42_addresses_v6;
     endpointsV4 = hostData.endpoints_v4;
@@ -102,6 +102,14 @@ in {
           trafficControl = trafficControlTable.${hostName};
         };
         peers = peerTable.${hostName} or {};
+        routingTable = {
+          id = config.routingTables.peer-dn42;
+          priority = config.routingPolicyPriorities.peer-dn42;
+        };
+      };
+      routingTable = {
+        id = config.routingTables.bgp-dn42;
+        priority = config.routingPolicyPriorities.bgp-dn42;
       };
     };
     autonomousSystem = {
@@ -111,6 +119,10 @@ in {
       cidrV6 = data.dn42_v6_cidr;
       mesh = {
         hosts = lib.mapAttrs mkHost data.hosts;
+        routingTable = {
+          id = config.routingTables.mesh-dn42;
+          priority = config.routingPolicyPriorities.mesh-dn42;
+        };
         ipsec = {
           enable = true;
           caCert = data.ca_cert_pem;
