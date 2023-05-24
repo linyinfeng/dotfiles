@@ -228,7 +228,9 @@ in
               import table;
               export table;
               next hop self ebgp;
+              extended next hop;
               igp table mesh_v4;
+              igp table mesh_v6;
             };
             ipv6 {
               table bgp_v6;
@@ -236,6 +238,8 @@ in
               export none;
               import table;
               export table;
+              extended next hop;
+              igp table mesh_v4;
               igp table mesh_v6;
             };
           }
