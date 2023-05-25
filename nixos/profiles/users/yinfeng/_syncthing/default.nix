@@ -68,21 +68,22 @@ in
           inherit user group;
           cert = "/run/secrets/syncthing_cert_pem";
           key = "/run/secrets/syncthing_key_pem";
-          settings = {
-            devices = others;
-            folders = {
-              "main" = {
-                path = "/var/lib/syncthing/Main";
-                devices = otherNames;
-                ignoreDelete = false;
-                ignorePerms = false;
-              };
-              "music" = {
-                path = "/var/lib/syncthing/Music";
-                devices = otherNames;
-                ignoreDelete = false;
-                ignorePerms = false;
-              };
+          # new settings reverted
+          # https://github.com/NixOS/nixpkgs/pull/233377
+          # https://github.com/NixOS/nixpkgs/issues/232679
+          devices = others;
+          folders = {
+            "main" = {
+              path = "/var/lib/syncthing/Main";
+              devices = otherNames;
+              ignoreDelete = false;
+              ignorePerms = false;
+            };
+            "music" = {
+              path = "/var/lib/syncthing/Music";
+              devices = otherNames;
+              ignoreDelete = false;
+              ignorePerms = false;
             };
           };
         };
