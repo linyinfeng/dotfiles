@@ -186,9 +186,8 @@
          (haskell-mode . lsp)
          (haskell-literate-mode . lsp)
          (c-mode . lsp)
-         (c++-mode . lsp))
-         ; TODO broken
-         ; (rust-mode . lsp))
+         (c++-mode . lsp)
+         (rust-mode . lsp))
   :custom
   (lsp-rust-server 'rust-analyzer)
   (lsp-rust-analyzer-proc-macro-enable t)
@@ -385,9 +384,8 @@
 (use-package rg
   :ensure t)
 
-; TODO broken
-; (use-package rust-mode
-;   :ensure t)
+(use-package rust-mode
+  :ensure t)
 
 (use-package scribble-mode
   :ensure t)
