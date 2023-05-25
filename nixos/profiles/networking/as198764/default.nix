@@ -5,7 +5,7 @@
 }: let
   inherit (config.lib.self) data;
   cidr = data.as198764_v6_cidr;
-  anycastIp = "2a0c:b641:a11:badd::1:1";
+  anycastIp = data.as198764_anycast_address;
   tunnelPeerIp = "2a0c:b641:a11:badd::ffff";
   # https://quickest-canoe-05c.notion.site/AS198764-f766b0a688f44863b1d5b78992b69e79
   configTable = {
@@ -17,17 +17,17 @@
     # 欧洲
     fsn0 = {
       endpoint = "[2a0c:b640:10::205]:20003";
-      publicKey = "RddjU8oihMKuQwSIDvPQ5MYNyKGJJfmZBJsaAb/b0WA=";
+      publicKey = "xWklmAad9R1xzG1jro/9citY8i3LOhFSyH6i7PzJyQA=";
     };
     # 美东
     mtl0 = {
       endpoint = "198.98.51.31:20003";
-      publicKey = "E7prrcg0x+N2j7C3A0GMA1gAYeASw5G37EXRx+JlUwU=";
+      publicKey = "u6lfZGdpdwcq8qU4PDiQkCYAjbRicWzikeVOAUZdpzg=";
     };
     # 亚太
     hkg0 = {
-      endpoint = "[2401:c080:3800:29ee:5400:4ff:fe68:caed]:20003";
-      publicKey = "98tLXb155tbbrxF/zzmcZZ0zExJM6GSSZEeFoypbvHk=";
+      endpoint = "[2401:c080:3800:29ee:badd::1]:20003";
+      publicKey = "sjr7ON7QPoKiJP5xdJN2sA1g4sYJ+XCZlrvhB9yKEXk=";
     };
   };
   hostName = config.networking.hostName;

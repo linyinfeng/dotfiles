@@ -185,6 +185,17 @@ resource "cloudflare_record" "general_dn42_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+# anycast record
+
+resource "cloudflare_record" "any" {
+  name    = "any"
+  proxied = false
+  ttl     = 1
+  type    = "AAAA"
+  value   = var.as198764_anycast_address
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # localhost record
 
 resource "cloudflare_record" "localhost_a" {
