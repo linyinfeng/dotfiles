@@ -34,7 +34,7 @@
   cfg = configTable.${hostName};
   hostData = data.hosts.${hostName};
 in {
-  systemd.network.netdevs.as198764 = {
+  systemd.network.netdevs."70-as198764" = {
     netdevConfig = {
       Name = "as198764";
       Kind = "wireguard";
@@ -57,7 +57,7 @@ in {
   systemd.network.config.routeTables = {
     as198764 = config.routingTables.as198764;
   };
-  systemd.network.networks.as198764 = {
+  systemd.network.networks."70-as198764" = {
     matchConfig = {
       Name = "as198764";
     };

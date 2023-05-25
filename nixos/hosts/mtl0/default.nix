@@ -109,7 +109,7 @@ in {
       };
 
       # HE Tunnel
-      environment.etc."systemd/network/he-ipv6.netdev".source =
+      environment.etc."systemd/network/50-he-ipv6.netdev".source =
         config.sops.templates."he-ipv6-netdev".path;
       sops.templates."he-ipv6-netdev" = {
         content = ''
@@ -125,7 +125,7 @@ in {
         '';
         owner = "systemd-network";
       };
-      systemd.network.networks.he-ipv6 = {
+      systemd.network.networks."50-he-ipv6" = {
         matchConfig = {
           Name = "he-ipv6";
         };

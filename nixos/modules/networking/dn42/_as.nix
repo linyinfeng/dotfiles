@@ -33,7 +33,7 @@ in
         ${asCfg.mesh.routingTable.name} = asCfg.mesh.routingTable.id;
       };
       systemd.network.networks = {
-        ${cfg.interfaces.dummy.name} = {
+        "70-${cfg.interfaces.dummy.name}" = {
           routingPolicyRules = [
             {
               routingPolicyRuleConfig = {
@@ -50,7 +50,7 @@ in
     # address of the dummy interface
     {
       systemd.network.networks = {
-        ${cfg.interfaces.dummy.name} = {
+        "70-${cfg.interfaces.dummy.name}" = {
           address =
             lib.lists.map (a: "${a}/32") thisHostCfg.addressesV4
             ++ lib.lists.map (a: "${a}/128") thisHostCfg.addressesV6;
@@ -184,7 +184,7 @@ in
         lib.mapAttrs' (
           peerName: hostCfg:
             lib.nameValuePair
-            (xfrmIfName peerName hostCfg)
+            "70-${xfrmIfName peerName hostCfg}"
             {
               netdevConfig = {
                 Name = xfrmIfName peerName hostCfg;
@@ -201,7 +201,7 @@ in
         lib.mapAttrs' (
           peerName: hostCfg:
             lib.nameValuePair
-            (xfrmIfName peerName hostCfg)
+            "70-${xfrmIfName peerName hostCfg}"
             {
               matchConfig = {
                 Name = xfrmIfName peerName hostCfg;

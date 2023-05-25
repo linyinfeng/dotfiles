@@ -256,7 +256,7 @@ in
           ${bgpCfg.peering.routingTable.name} = bgpCfg.peering.routingTable.id;
         };
         systemd.network.networks = {
-          ${cfg.interfaces.dummy.name} = {
+          "70-${cfg.interfaces.dummy.name}" = {
             routingPolicyRules = [
               {
                 routingPolicyRuleConfig = {
@@ -324,7 +324,7 @@ in
           lib.mapAttrs' (
             peerName: peerCfg:
               lib.nameValuePair
-              peerCfg.tunnel.interface.name
+              "70-${peerCfg.tunnel.interface.name}"
               (
                 if (peerCfg.tunnel.type == "wireguard")
                 then {
@@ -359,7 +359,7 @@ in
           lib.mapAttrs' (
             peerName: peerCfg:
               lib.nameValuePair
-              peerCfg.tunnel.interface.name
+              "70-${peerCfg.tunnel.interface.name}"
               {
                 matchConfig = {
                   Name = peerCfg.tunnel.interface.name;

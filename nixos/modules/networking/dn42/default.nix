@@ -534,7 +534,7 @@ in {
 
     # dummy interface
     systemd.network.netdevs = {
-      ${cfg.interfaces.dummy.name} = {
+      "70-${cfg.interfaces.dummy.name}" = {
         netdevConfig = {
           Name = cfg.interfaces.dummy.name;
           Kind = "dummy";
@@ -542,7 +542,7 @@ in {
       };
     };
     systemd.network.networks = {
-      ${cfg.interfaces.dummy.name} = {
+      "70-${cfg.interfaces.dummy.name}" = {
         matchConfig = {
           Name = cfg.interfaces.dummy.name;
         };
