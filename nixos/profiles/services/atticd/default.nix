@@ -63,6 +63,7 @@ in {
 
   services.nginx = {
     virtualHosts."attic.*" = {
+      serverAliases = ["attic-upload.*"];
       forceSSL = true;
       useACMEHost = "main";
       locations."/".proxyPass = "http://localhost:${toString config.ports.atticd}";
