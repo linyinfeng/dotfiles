@@ -193,6 +193,8 @@
   (lsp-rust-analyzer-proc-macro-enable t)
   (lsp-rust-analyzer-rustc-source "discover")
   (lsp-rust-analyzer-experimental-proc-attr-macros t)
+  (gc-cons-threshold (* 100 (* 1024 1024))) ; 100 MiB
+  (read-process-output-max (* 1024 1024)) ;; 1MiB
   :config
   (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 
