@@ -16,6 +16,7 @@
     ghostscript
     i7z
     imagemagick
+    libtree
     minio-client
     nur.repos.linyinfeng.mstickereditor
     p7zip
