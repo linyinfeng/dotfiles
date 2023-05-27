@@ -10,6 +10,9 @@
     dash-to-dock
     clipboard-history
     kimpanel
+    upower-battery
+    alphabetical-app-grid
+    coverflow-alt-tab
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in
