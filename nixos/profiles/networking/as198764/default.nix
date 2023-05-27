@@ -26,8 +26,8 @@
     };
     # 亚太
     hkg0 = {
-      endpoint = "[2401:c080:3800:29ee:badd::1]:20003";
-      publicKey = "sjr7ON7QPoKiJP5xdJN2sA1g4sYJ+XCZlrvhB9yKEXk=";
+      endpoint = "[2001:df2:5380:460:abcd:eeee:ffff:2]:20003";
+      publicKey = "tBBKIAXevD5JLcx4mQIzsm22KvztWEWX1al1xDuqEE4=";
     };
   };
   hostName = config.networking.hostName;
