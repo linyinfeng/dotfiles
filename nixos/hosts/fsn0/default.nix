@@ -17,6 +17,7 @@
       services.influxdb
       services.dn42-site
       services.bird-lg
+      services.keycloak
       networking.as198764
     ])
     ++ [

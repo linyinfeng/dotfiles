@@ -34,7 +34,7 @@ resource "aws_eip" "main" {
   count = 0 # disabled
 
   instance = aws_instance.main[count.index].id
-  vpc      = true
+  domain   = "vpc"
 }
 
 data "aws_ami" "nixos" {

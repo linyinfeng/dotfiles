@@ -208,6 +208,10 @@
       "on": "nuc",
       "proxy": false
     },
+    "keycloak": {
+      "on": "fsn0",
+      "proxy": true
+    },
     "mastodon": {
       "on": "hil0",
       "proxy": true

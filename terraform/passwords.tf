@@ -229,3 +229,11 @@ output "hledger_hashed_password" {
   value     = htpasswd_password.hledger.sha512
   sensitive = true
 }
+resource "random_password" "keycloak_db" {
+  length  = 32
+  special = false
+}
+output "keycloak_db_password" {
+  value     = random_password.keycloak_db.result
+  sensitive = true
+}
