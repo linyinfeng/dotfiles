@@ -1,0 +1,5 @@
+{...}: {
+  perSystem = {pkgs, ...}: {
+    legacyPackages = pkgs;
+  };
+}
