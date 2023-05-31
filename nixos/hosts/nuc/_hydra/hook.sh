@@ -61,6 +61,10 @@ EOF
     systemctl start "dotfiles-channel-update@$(systemd-escape "$update_file")" --no-block
 
   else
-    echo "job unmatched"
+    echo "job is not a nixos toplevel"
+
+    echo "copy out: $out"
+    out=$(jq -r '.outputs[0].path' "$HYDRA_JSON")
+    systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service" --no-block
   fi
 fi
