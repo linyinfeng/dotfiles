@@ -54,6 +54,7 @@
       development.shells
       development.documentation
       programs.adb
+      programs.qrcp
       services.gnupg
     ];
     multimediaDev =

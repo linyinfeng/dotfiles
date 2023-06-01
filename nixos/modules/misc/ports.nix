@@ -68,6 +68,7 @@
       bird-lg-proxy = 3250;
       bird-lg-frontend = 3251;
       keycloak = 3260;
+      qrcp = 3270;
       ipsec-nat-traversal = 4500;
       babel = 6696;
       jellyfin = 8096;
