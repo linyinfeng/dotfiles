@@ -33,6 +33,7 @@
         domain = "li7g.com";
       };
       appservice = {
+        id = "qq";
         address = "https://matrix-qq.ts.li7g.com";
         database = {
           uri = "postgres:///matrix-qq?host=/run/postgresql";

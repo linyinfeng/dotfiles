@@ -149,6 +149,7 @@ in
             domain = "li7g.com";
           };
           appservice = {
+            id = "telegram";
             address = "http://127.0.0.1:${toString config.ports.mautrix-telegram-appservice}";
             database = "postgres:///mautrix-telegram?host=/run/postgresql";
             hostname = "127.0.0.1";
@@ -211,7 +212,7 @@ in
       sops.templates."mautrix-telegram-registration" = {
         owner = "matrix-synapse";
         content = builtins.toJSON {
-          id = "mautrix-telegram";
+          id = "telegram";
           url = "http://localhost:${toString config.ports.mautrix-telegram-appservice}";
           as_token = config.sops.placeholder."mautrix_telegram_appservice_as_token";
           hs_token = config.sops.placeholder."mautrix_telegram_appservice_hs_token";
