@@ -69,7 +69,7 @@ resource "shell_sensitive_script" "init_moon" {
     create = <<EOT
       set -e
 
-      PUBLIC_KEY_FILE=$(mktemp /tmp/zerotier-init-moon-public-key.XXXXXXXX)
+      PUBLIC_KEY_FILE=$(mktemp -t zerotier-init-moon-public-key.XXXXXXXXXX)
       echo "$ZEROTIER_MAIN_HOST_PUBLIC_KEY" > "$PUBLIC_KEY_FILE"
       function cleanup {
         rm "$PUBLIC_KEY_FILE"
@@ -111,7 +111,7 @@ resource "shell_sensitive_script" "generate_moon" {
     create = <<EOT
       set -e
 
-      TMP_DIR=$(mktemp --directory /tmp/zerotier-generate-moon.XXXXXXXX)
+      TMP_DIR=$(mktemp -t --directory zerotier-generate-moon.XXXXXXXXXX)
       function cleanup {
         rm -r "$TMP_DIR"
       }

@@ -123,6 +123,11 @@
           ${encryptTo} "$@"
         '';
       }
+
+      {
+        package = pkgs.cf-terraforming;
+        category = "infrastructure";
+      }
     ];
   };
 }

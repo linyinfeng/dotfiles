@@ -9,7 +9,7 @@ install: $(foreach font,$(FONTS),$(OUT_PATH)/$(font)-nf.ttf)
 
 patched/%-nf.ttf: fonts/%.ttf patched
 	{ \
-	  tmp=$$(mktemp --directory /tmp/nerf-font-patcher-XXXXXX); \
+	  tmp=$$(mktemp -t --directory nerf-font-patcher.XXXXXXXXXX); \
 	  echo $$tmp; \
 	  nerd-font-patcher $< \
           --complete \

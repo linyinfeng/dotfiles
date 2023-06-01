@@ -3,7 +3,7 @@ resource "shell_sensitive_script" "generate_syncthing_config" {
     create = <<EOT
       set -e
 
-      TMP_DIR=$(mktemp --directory /tmp/generate-syncthing-config.XXXXXXXX)
+      TMP_DIR=$(mktemp -t --directory generate-syncthing-config.XXXXXXXXXX)
       function cleanup {
         rm -r "$TMP_DIR"
       }

@@ -13,7 +13,7 @@ formatter=($4)
 message "encryping '$plain_file' to '$target_file' (type: '$type', formatter: '$formatter')..."
 
 if [ -e "$target_file" ]; then
-  tmp_dir=$(mktemp --directory /tmp/encrypt.XXXXXX)
+  tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
   target_plain="$tmp_dir/target_plain"
   target_plain_formatted="$tmp_dir/target_plain_formatted"
   plain_formatted="$tmp_dir/plain_formatted"

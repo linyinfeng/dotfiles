@@ -11,7 +11,7 @@ pushd $PRJ_ROOT/secrets
 
 mkdir -p terraform/hosts
 
-tmp_dir=$(mktemp --directory /tmp/encrypt.XXXXXX)
+tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
 mkdir "$tmp_dir/hosts"
 function cleanup {
   rm -r "$tmp_dir"

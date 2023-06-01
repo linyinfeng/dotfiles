@@ -7,7 +7,7 @@ export PATH=$@yq-go@/bin:$PATH
 
 pushd "$PRJ_ROOT/secrets"
 
-tmp_dir=$(mktemp --directory /tmp/encrypt.XXXXXX)
+tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
 function cleanup {
   rm -r "$tmp_dir"
 }

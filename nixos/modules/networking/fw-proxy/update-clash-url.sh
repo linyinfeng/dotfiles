@@ -26,7 +26,7 @@ function cleanup {
 trap cleanup EXIT
 
 echo 'Downloading raw config.yaml...'
-tmpfile=$(mktemp /tmp/update-clash-config.XXXXXX)
+tmpfile=$(mktemp -t --directory update-clash-config.XXXXXXXXXX)
 $curl "$url" \
   --fail-with-body \
   --show-error \
