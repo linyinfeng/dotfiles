@@ -1,6 +1,6 @@
 {config, ...}: {
   nix.extraOptions = ''
-    include ${config.sops.templates."nix-extra-config".path}
+    !include ${config.sops.templates."nix-extra-config".path}
   '';
   nix.checkConfig = false;
   sops.templates."nix-extra-config" = {
