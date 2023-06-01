@@ -362,25 +362,25 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
 
 # CN Block
 
-resource "cloudflare_filter" "li7g_cn_get_traffic" {
+resource "cloudflare_ruleset" "li7g_block_cn_traffic" {
+  name        = "block-cn-traffic"
+  description = "Block CN GET traffic for some hosts"
+  kind        = "zone"
   zone_id     = cloudflare_zone.com_li7g.id
-  description = "GET Traffic to some site from CN"
-  expression  = <<EOT
-    (
-      ip.geoip.country eq "CN" and
-      http.request.method eq "GET" and
-      ( http.host eq "pb.li7g.com" or
-        http.host eq "social.li7g.com" or
-        http.host eq "mastodon.li7g.com" or
-        http.host eq "matrix.li7g.com")
-    )
-  EOT
-}
-resource "cloudflare_firewall_rule" "li7g_block_cn_traffic" {
-  zone_id     = cloudflare_zone.com_li7g.id
-  description = "Block Traffic to some site from CN"
-  filter_id   = cloudflare_filter.li7g_cn_get_traffic.id
-  action      = "block"
+  phase       = "http_request_firewall_custom"
+
+  rules {
+    enabled     = true
+    action      = "block"
+    expression  = <<EOT
+      (
+        http.host eq "pb.li7g.com" or
+        http.host eq "cache.li7g.com" or
+        http.host eq "oranc.li7g.com"
+      )
+    EOT
+    description = "Block Traffic to some site from CN"
+  }
 }
 
 # http request cache settings
