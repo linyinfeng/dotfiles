@@ -499,6 +499,7 @@ in {
     ./_bgp.nix
     ./_dns.nix
     ./_ca.nix
+    ./_master.nix
   ];
   config = lib.mkIf (cfg.enable) {
     boot.kernel.sysctl = {
