@@ -374,9 +374,12 @@ resource "cloudflare_ruleset" "li7g_block_cn_traffic" {
     action      = "block"
     expression  = <<EOT
       (
-        http.host eq "pb.li7g.com" or
-        http.host eq "cache.li7g.com" or
-        http.host eq "oranc.li7g.com"
+        ip.geoip.country eq "CN" and
+        http.request.method eq "GET" and
+        ( http.host eq "pb.li7g.com" or
+          http.host eq "social.li7g.com" or
+          http.host eq "mastodon.li7g.com" or
+          http.host eq "matrix.li7g.com")
       )
     EOT
     description = "Block Traffic to some site from CN"
