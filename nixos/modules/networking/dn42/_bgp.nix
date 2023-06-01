@@ -277,6 +277,37 @@ in
         };
       }
 
+      # dn42 bgp collector
+      (lib.mkIf bgpCfg.collector.dn42.enable {
+        # https://dn42.eu/services/Route-Collector
+        services.bird2.config = lib.mkOrder 200 ''
+          # dn42 bgp route collector
+          protocol bgp bgp_dn42_route_collector
+          {
+            local as OWNAS;
+            neighbor fd42:4242:2601:ac12::1 as 4242422602;
+
+            multihop;
+            ipv4 {
+              add paths tx;
+              import none;
+              export filter {
+                if ( is_valid_network_v4() && source ~ [ RTS_STATIC, RTS_BGP ] )
+                then accept; else reject;
+              };
+            };
+            ipv6 {
+              add paths tx;
+              import none;
+              export filter {
+                if ( is_valid_network_v6() && source ~ [ RTS_STATIC, RTS_BGP ] )
+                then accept; else reject;
+              };
+            };
+          }
+        '';
+      })
+
       # local gortr server
       {
         systemd.services.gortr-dn42 = {

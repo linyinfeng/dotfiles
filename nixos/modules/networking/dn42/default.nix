@@ -281,6 +281,7 @@ in {
             default = asCfg.mesh.thisHost.bgp.community.dn42.country;
           };
         };
+        collector.dn42.enable = lib.mkEnableOption "dn42 BGP collector";
         peering = {
           defaults = {
             linkAddresses.v6.local = lib.mkOption {

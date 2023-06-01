@@ -3,6 +3,7 @@
   lib,
   ...
 }: let
+  cfg = config.networking.dn42;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
   mkHost = name: hostData: {
@@ -95,6 +96,7 @@ in {
         port = config.ports.gortr;
         metricPort = config.ports.gortr-metric;
       };
+      collector.dn42.enable = cfg.bgp.peering.peers != {};
       peering = {
         defaults = {
           localPortStart = config.ports.dn42-peer-min;
