@@ -16,7 +16,7 @@ in {
     servers =
       lib.mapAttrsToList (_: hostCfg: hostCfg.name)
       (lib.filterAttrs hostFilter config.networking.dn42.autonomousSystem.mesh.hosts);
-    protocolFilter = ["bgp"];
+    protocolFilter = [];
     titleBrand = "li7g.com";
     navbar.allServers = "ALL";
   };
