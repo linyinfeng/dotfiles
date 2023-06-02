@@ -1,3 +1,7 @@
-{pkgs, ...}: {
-  nix.package = pkgs.nixVersions.selected;
+{
+  pkgs,
+  lib,
+  ...
+}: {
+  nix.package = lib.mkDefault pkgs.nixVersions.selected;
 }

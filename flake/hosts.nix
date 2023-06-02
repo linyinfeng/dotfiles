@@ -12,7 +12,7 @@
   nixosModules = self.lib.buildModuleList ../nixos/modules;
   nixosProfiles = self.lib.rakeLeaves ../nixos/profiles;
   nixosSuites = buildSuites nixosProfiles (profiles: suites: {
-    nixSettings = with profiles.nix; [gc settings cachix];
+    nixSettings = with profiles.nix; [gc settings cachix version];
     base =
       suites.nixSettings
       ++ (with profiles; [
