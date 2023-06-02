@@ -70,6 +70,7 @@
       keycloak = 3260;
       qrcp = 3270;
       ipsec-nat-traversal = 4500;
+      iperf = 5201;
       babel = 6696;
       jellyfin = 8096;
       zerotier = 9993;
