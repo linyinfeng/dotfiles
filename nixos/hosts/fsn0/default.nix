@@ -18,6 +18,7 @@
       services.dn42-site
       services.bird-lg
       services.keycloak
+      nix.hydra-builder-server
       networking.as198764
     ])
     ++ [
