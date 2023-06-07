@@ -14,6 +14,10 @@
           category = "development";
         }
         {
+          package = pkgs.nerdfix;
+          category = "development";
+        }
+        {
           package = inputs'.nixos-generators.packages.nixos-generate;
           category = "deploy";
         }
