@@ -80,19 +80,19 @@ in
           };
           "network" = {
             format = "{ifname}";
-            format-wifi = "{essid} ";
-            format-ethernet = "{ifname} ";
+            format-wifi = "{essid} 󰖩";
+            format-ethernet = "{ifname} 󰈀";
             format-disconnected = ""; # An empty format will hide the module.
             tooltip-format = "{ifname} via {gwaddr}";
-            tooltip-format-wifi = "{essid} ({signalStrength}%) ";
-            tooltip-format-ethernet = "{ipaddr}/{cidr} ";
+            tooltip-format-wifi = "{essid} ({signalStrength}%) 󰖩";
+            tooltip-format-ethernet = "{ipaddr}/{cidr} 󰈀";
           };
           "pulseaudio" = {
             format = "{volume}% {icon}";
-            format-bluetooth = "{volume}% {icon}";
-            format-muted = "";
+            format-bluetooth = "{volume}% 󰂯{icon}";
+            format-muted = "󰖁";
             format-icons = {
-              default = ["" "" ""];
+              default = ["󰕿" "󰖀" "󰕾"];
             };
             on-click = "volumectl toggle";
             on-scroll-up = "volumectl up";
@@ -100,15 +100,23 @@ in
           };
           "wireplumber" = {
             format = "{volume}% {icon}";
-            format-muted = "";
-            format-icons = ["" "" ""];
+            format-muted = "󰖁";
+            format-icons = ["󰕿" "󰖀" "󰕾"];
             on-click = "volumectl toggle";
             on-scroll-up = "volumectl up";
             on-scroll-down = "volumectl down";
           };
           "backlight" = {
             format = "{percent}% {icon}";
-            format-icons = ["" ""];
+            format-icons = [
+              "󰃚"
+              "󰃛"
+              "󰃜"
+              "󰃝"
+              "󰃞"
+              "󰃟"
+              "󰃠"
+            ];
             on-scroll-up = "lightctl up";
             on-scroll-down = "lightctl down";
           };
@@ -119,10 +127,22 @@ in
               critical = 15;
             };
             format = "{capacity}% {icon}";
-            format-icons = ["" "" "" "" ""];
+            format-icons = [
+              "󰂎"
+              "󰁺"
+              "󰁻"
+              "󰁼"
+              "󰁽"
+              "󰁾"
+              "󰁿"
+              "󰂀"
+              "󰂁"
+              "󰂂"
+              "󰁹"
+            ];
           };
           "clock" = {
-            format = "{:%Y-%m-%d %H:%M} ";
+            format = "{:%Y-%m-%d %H:%M} 󰥔";
           };
           "tray" = {
             spacing = 5;
