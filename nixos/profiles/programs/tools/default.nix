@@ -15,7 +15,6 @@
     gptfdisk
     jq
     lm_sensors
-    manix
     moreutils
     ncdu
     parted
