@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    bandwhich
     bc
     btop
     compsize
