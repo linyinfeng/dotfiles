@@ -208,6 +208,7 @@ in
               };
               linkConfig = {
                 Multicast = true;
+                MTUBytes = toString asCfg.mesh.interfaces.mtu;
               };
             }
         )

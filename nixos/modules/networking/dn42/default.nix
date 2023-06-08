@@ -410,9 +410,15 @@ in {
           bird.babelInterfaceConfig = lib.mkOption {
             type = lib.types.lines;
           };
-          interfaces.namePrefix = lib.mkOption {
-            type = lib.types.str;
-            default = "mesh";
+          interfaces = {
+            namePrefix = lib.mkOption {
+              type = lib.types.str;
+              default = "mesh";
+            };
+            mtu = lib.mkOption {
+              type = lib.types.int;
+              default = 1280;
+            };
           };
           extraInterfaces = lib.mkOption {
             type = with lib.types; attrsOf (submodule babelInterfaceOptions);
