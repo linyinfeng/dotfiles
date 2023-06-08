@@ -42,7 +42,8 @@ in {
       ++ groupNameIfPresent "service-mail"
       ++ groupNameIfPresent "plugdev"
       ++ groupNameIfPresent "acme"
-      ++ groupNameIfPresent "windows";
+      ++ groupNameIfPresent "windows"
+      ++ groupNameIfPresent "wireshark";
 
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
