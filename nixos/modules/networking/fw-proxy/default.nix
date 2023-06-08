@@ -227,6 +227,16 @@ in
 
     config = mkIf (cfg.enable) (mkMerge [
       {
+        assertions = [
+          {
+            assertion = cfg.tproxy.enable -> config.networking.firewall.checkReversePath == false;
+            message = ''
+              Reverse path filter drops tproxy traffic.
+            '';
+          }
+        ];
+      }
+      {
         systemd.services.clash = {
           description = "A rule based proxy in GO";
           script = ''
@@ -283,12 +293,18 @@ in
           requires = ["clash.service"];
           wantedBy = ["multi-user.target"];
         };
-        networking.firewall.extraCommands = ''
-          ${optionalString (config.networking.firewall.checkReversePath != false) ''
-            ip46tables --table mangle --insert nixos-fw-rpfilter --match mark --mark ${cfg.tproxy.fwmark} --jump RETURN
-          ''}
-          ip46tables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
-        '';
+        networking.firewall =
+          if config.networking.nftables.enable
+          then {
+            extraInputRules = ''
+              meta mark ${cfg.tproxy.fwmark} counter accept
+            '';
+          }
+          else {
+            extraCommands = ''
+              ip46tables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
+            '';
+          };
 
         networking.fw-proxy.tproxy.allCgroups = [cfg.tproxy.cgroup];
         passthru.fw-proxy-tproxy-scripts = scripts;

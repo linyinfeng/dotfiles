@@ -219,13 +219,28 @@ in
       ];
 
       # firewall settings
-      networking.firewall.allowedUDPPorts = with config.ports; [
-        ipsec-ike
-        ipsec-nat-traversal
+      networking.firewall = lib.mkMerge [
+        {
+          allowedUDPPorts = with config.ports; [
+            ipsec-ike
+            ipsec-nat-traversal
+          ];
+        }
+        (
+          if config.networking.nftables.enable
+          then {
+            extraInputRules = ''
+              meta l4proto esp counter accept
+              meta l4proto ah  counter accept
+            '';
+          }
+          else {
+            extraCommands = ''
+              ip46tables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
+              ip46tables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
+            '';
+          }
+        )
       ];
-      networking.firewall.extraCommands = ''
-        ip46tables --append nixos-fw --protocol 50 --jump nixos-fw-accept # IPSec ESP
-        ip46tables --append nixos-fw --protocol 51 --jump nixos-fw-accept # IPSec AH
-      '';
     })
   ])

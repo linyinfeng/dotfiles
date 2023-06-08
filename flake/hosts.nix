@@ -29,6 +29,7 @@
       ]);
 
     network = with profiles; [
+      networking.firewall
       networking.avahi
       networking.resolved
       networking.tailscale
