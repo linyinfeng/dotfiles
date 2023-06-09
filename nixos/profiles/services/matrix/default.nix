@@ -379,15 +379,15 @@ in
       '';
       sops.secrets."chatgpt-bot/openai-api-key" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["podman-matrix-chatgpt-bot.service"];
+        restartUnits = ["matrix-chatgpt-bot.service"];
       };
       sops.secrets."chatgpt-bot/matrix-password" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["podman-matrix-chatgpt-bot.service"];
+        restartUnits = ["matrix-chatgpt-bot.service"];
       };
       sops.secrets."chatgpt-bot/matrix-access-token" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["podman-matrix-chatgpt-bot.service"];
+        restartUnits = ["matrix-chatgpt-bot.service"];
       };
     }
 
