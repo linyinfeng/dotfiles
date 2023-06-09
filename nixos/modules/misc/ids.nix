@@ -9,7 +9,7 @@
 
     # service users
     # nix-access-tokens = 400; # not using
-    # nixbuild = 401; # not using
+    nixbuild = 401;
     # tg-send = 402;
     # service-mail = 403;
     hydra-builder = 404;

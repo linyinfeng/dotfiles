@@ -31,7 +31,7 @@ in {
     };
   };
   sops.secrets."nixbuild/id-ed25519" = {
-    neededForUsers = true; # needed for /ect
+    neededForUsers = true; # needed for /etc
     sopsFile = config.sops-file.get "common.yaml";
   };
   programs.ssh.extraConfig = ''
@@ -41,12 +41,16 @@ in {
       ${proxyCommand}
   '';
   environment.etc."nix-build-machines/nixbuild/key" = {
-    mode = "400";
+    mode = "440";
+    user = config.users.users.nixbuild.name;
+    group = config.users.groups.nixbuild.name;
     source = config.sops.secrets."nixbuild/id-ed25519".path;
   };
-  systemd.tmpfiles.rules = [
-    "a+ /etc/nix-build-machines/nixbuild/key - - - - group:nixbuild:r"
-  ];
+  users.users.nixbuild = {
+    uid = config.ids.uids.nixbuild;
+    isSystemUser = true;
+    group = config.users.groups.nixbuild.name;
+  };
   users.groups.nixbuild = {
     gid = config.ids.gids.nixbuild;
   };
