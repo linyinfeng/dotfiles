@@ -12,25 +12,21 @@ dump_file=$(mktemp "/tmp/hydra-events/$time-XXXXXX.json")
 cp "$HYDRA_JSON" "$dump_file"
 
 event=$(jq --sort-keys "{project, jobset, buildStatus, event}" "$HYDRA_JSON")
-echo "event = $event"
+echo "event = $(cat $HYDRA_JSON)"
 
-expected=$(
-  jq --sort-keys . <<EOF
-{
-  "project": "dotfiles",
-  "jobset": "main",
-  "buildStatus": 0,
-  "event": "buildFinished"
-}
-EOF
-)
-echo "expected = $expected"
+hit=$(jq '
+  .project == "dotfiles" and
+  (.jobset == "main" or .jobset == "staging") and
+  .buildStatus == 0 and
+  .event == "buildFinished"
+' "$HYDRA_JSON")
+echo "hit = $hit"
 
-if [ "$event" = "$expected" ]; then
+if [ "$hit" = "true" ]; then
   job=$(jq -r ".job" "$HYDRA_JSON")
   echo "job = $job"
 
-  if [[ $job =~ ^(.*)\.nixos/(.*)$ ]]; then
+  if [[ "$job" =~ ^(.*)\.nixos/(.*)$ -a "$(jq --raw-output '.jobset' $HYDRA_JSON)" = "main" ]]; then
     system="${BASH_REMATCH[1]}"
     host="${BASH_REMATCH[2]}"
 
@@ -61,7 +57,7 @@ EOF
     systemctl start "dotfiles-channel-update@$(systemd-escape "$update_file")" --no-block
 
   else
-    echo "job is not a nixos toplevel"
+    echo "job is not a nixos toplevel, or jobset is not main"
 
     echo "copy out: $out"
     out=$(jq -r '.outputs[0].path' "$HYDRA_JSON")
