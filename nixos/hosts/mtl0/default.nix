@@ -36,6 +36,7 @@ in {
       services.telegraf-http
       services.prebuilt-zip
       networking.as198764
+      ./raddit-grab.nix
     ]);
 
   config = lib.mkMerge [
