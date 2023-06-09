@@ -84,8 +84,9 @@
     attic.inputs.crane.follows = "crane";
     attic.inputs.flake-compat.follows = "flake-compat";
     attic.inputs.flake-utils.follows = "flake-utils";
-    attic.inputs.nixpkgs.follows = "nixpkgs";
-    attic.inputs.nixpkgs-stable.follows = "nixpkgs";
+    # TODO broken https://github.com/zhaofengli/attic/issues/56
+    # attic.inputs.nixpkgs.follows = "nixpkgs";
+    # attic.inputs.nixpkgs-stable.follows = "nixpkgs";
 
     oranc.url = "github:linyinfeng/oranc";
     oranc.inputs.crane.follows = "crane";

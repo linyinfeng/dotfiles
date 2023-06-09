@@ -8,7 +8,6 @@
     inputs.sops-nix.overlays.default
     inputs.nixos-cn.overlay
     inputs.linyinfeng.overlays.singleRepoNur
-    inputs.attic.overlays.default
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
     inputs.emacs-overlay.overlay
@@ -25,6 +24,7 @@
             master = inputs'.nix.packages.nix;
             selected = final'.unstable;
           });
+        inherit (inputs'.attic.packages) attic atticd attic-server;
         nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
         pastebin = inputs'.pastebin.packages.default;
         mc-config-nuc = inputs'.mc-config-nuc.packages;
