@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
@@ -10,9 +11,6 @@ time=$(date --iso-8601=seconds)
 mkdir -p "/tmp/hydra-events"
 dump_file=$(mktemp "/tmp/hydra-events/$time-XXXXXX.json")
 cp "$HYDRA_JSON" "$dump_file"
-
-event=$(jq --sort-keys "{project, jobset, buildStatus, event}" "$HYDRA_JSON")
-echo "event = $(cat $HYDRA_JSON)"
 
 hit=$(jq '
   .project == "dotfiles" and
@@ -26,8 +24,8 @@ if [ "$hit" = "true" ]; then
   job=$(jq -r ".job" "$HYDRA_JSON")
   echo "job = $job"
 
-  if [[ $job =~ ^(.*)\.nixos/(.*)$ && "$(jq --raw-output '.jobset' $HYDRA_JSON)" == "main" ]]; then
-    system="${BASH_REMATCH[1]}"
+  if [[ $job =~ ^(.*)\.nixos/(.*)$ && "$(jq --raw-output '.jobset' "$HYDRA_JSON")" == "main" ]]; then
+    _system="${BASH_REMATCH[1]}"
     host="${BASH_REMATCH[2]}"
 
     build_id=$(jq '.build' "$HYDRA_JSON")

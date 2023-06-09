@@ -9,14 +9,17 @@ fi
 
 echo "start initialization"
 
+# shellcheck disable=SC2154
 CONFIG_NAME="${config_name}"
 
 echo "install host private key"
+# shellcheck disable=SC2154
 cat >/etc/ssh/ssh_host_ed25519_key <<EOF
 ${host_ed25519_key}
 EOF
 chmod 600 /etc/ssh/ssh_host_ed25519_key
 echo "install host public key"
+# shellcheck disable=SC2154
 cat >/etc/ssh/ssh_host_ed25519_key.pub <<EOF
 ${host_ed25519_key_pub}
 EOF
@@ -27,8 +30,9 @@ nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 nix-channel --update
 
 echo "get tools needed"
-export PATH=$(nix-build '<nixpkgs>' -A nixVersions.unstable)/bin:$PATH
-export PATH=$(nix-build '<nixpkgs>' -A util-linux)/bin:$PATH
+PATH="$(nix-build '<nixpkgs>' -A nixVersions.unstable)/bin:$PATH"
+PATH="$(nix-build '<nixpkgs>' -A util-linux)/bin:$PATH"
+export PATH
 
 echo "setup swap file"
 fallocate -l 4G /swapfile

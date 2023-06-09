@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 
@@ -104,10 +105,10 @@ table inet $nft_table {
 EOF
 
 for level in $(seq 1 $max_level); do
-  nft add set inet "$nft_table" cgroups-level"$level" { typeof socket cgroupv2 level $level \; }
+  nft add set inet "$nft_table" cgroups-level"$level" "{" typeof socket cgroupv2 level "$level" \; "}"
   nft add rule inet "$nft_table" output \
     meta l4proto '{tcp, udp}' \
-    socket cgroupv2 level $level @cgroups-level"$level" \
+    socket cgroupv2 level "$level" @cgroups-level"$level" \
     meta mark set $fwmark
 done
 
@@ -116,5 +117,5 @@ for cgroup in "${all_cgroups[@]}"; do
 done
 
 for if in "${proxied_interfaces[@]}"; do
-  "@tproxyInterface@" add "$cgroup"
+  "@tproxyInterface@" add "$if"
 done

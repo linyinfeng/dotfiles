@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
@@ -13,16 +14,12 @@ persist="@persist@"
 NC='\033[0m'
 function output {
   GREEN='\033[0;32m'
-  printf "$GREEN-- "
-  printf "$@"
-  printf "$NC\n"
+  printf "%s-- %s%s\n" "$GREEN" "$@" "$NC"
 }
 
 function failure {
   RED='\033[0;31m'
-  printf "$RED-- "
-  printf "$@"
-  printf "$NC\n"
+  printf "%s-- %s%s\n" "$RED" "$@" "$NC"
 }
 
 for file in "$@"; do
@@ -32,6 +29,7 @@ for file in "$@"; do
     exit 1
   fi
 
+  # shellcheck disable=SC2016
   filesystem=$($df --portability "$source" | $awk 'NR==2{print$6}')
   if [ ! "$filesystem" = "/" ]; then
     output "file is not on filesystem '/': '$source'"
@@ -45,8 +43,8 @@ for file in "$@"; do
   else
     rsync_source="$source"
   fi
-  output "mkdir -p $($dirname "$target")"
-  $mkdir -p $($dirname "$target")
+  output "mkdir -p $("$dirname" "$target")"
+  $mkdir -p "$("$dirname" "$target")"
   output "migrate '%s' to '%s'" "$source" "$target"
   $rsync --archive --recursive --progress --delete --compress \
     "$rsync_source" "$target"

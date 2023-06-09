@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 nft_table="@nftTable@"
 max_level="@maxCgroupLevel@"

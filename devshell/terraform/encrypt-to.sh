@@ -1,16 +1,18 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
+# shellcheck disable=SC1091
 source "@common@"
 export PATH="@sops@/bin:$PATH"
 
 plain_file="$1"
 target_file="$2"
 type="$3"
-formatter=($4)
+IFS=" " read -r -a formatter <<<"$4"
 
-message "encryping '$plain_file' to '$target_file' (type: '$type', formatter: '$formatter')..."
+message "encryping '$plain_file' to '$target_file' (type: '$type', formatter: '${formatter[*]}')..."
 
 if [ -e "$target_file" ]; then
   tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)

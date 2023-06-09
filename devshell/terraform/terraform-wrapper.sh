@@ -1,7 +1,9 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
+# shellcheck disable=SC1091
 source "@common@"
 export PATH="@sops@/bin:$PATH"
 export PATH="@terraform@/bin:$PATH"
@@ -24,7 +26,7 @@ function cleanup {
 
   set -e
 
-  cd $PRJ_ROOT
+  cd "$PRJ_ROOT"
   if [ -n "$(cat "$plain")" ]; then
     @encryptTo@ "$plain" "$encrypted" json "yq --prettyPrint"
   fi
@@ -36,7 +38,7 @@ function cleanup {
 }
 trap cleanup EXIT
 
-cd $PRJ_ROOT/terraform
+cd "$PRJ_ROOT/terraform"
 
 set +e
 terraform "$@"

@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 influx="@influxdb2@/bin/influx"
 curl="@curl@/bin/curl"

@@ -1,9 +1,11 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
+# shellcheck disable=SC1091
 source "@common@"
-export PATH=$@yq-go@/bin:$PATH
+export PATH="@yq-go@/bin:$PATH"
 
 pushd "$PRJ_ROOT/secrets"
 

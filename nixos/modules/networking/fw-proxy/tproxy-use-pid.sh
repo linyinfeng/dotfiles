@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
@@ -17,4 +18,4 @@ if [ ! -d "$cgroup_path" ]; then
   exit 1
 fi
 
-echo $1 >"$cgroup_path/cgroup.procs"
+echo "$1" >"$cgroup_path/cgroup.procs"

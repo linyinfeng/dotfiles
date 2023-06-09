@@ -5,6 +5,7 @@
       programs = {
         alejandra.enable = true;
         shfmt.enable = true;
+        shellcheck.enable = true;
         terraform.enable = true;
         prettier.enable = true;
       };

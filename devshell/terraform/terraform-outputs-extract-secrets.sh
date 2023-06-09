@@ -1,13 +1,15 @@
 #!@shell@
+# shellcheck shell=bash
 
 set -e
 
+# shellcheck disable=SC1091
 source "@common@"
 export PATH="@yq-go@/bin:$PATH"
 export PATH="@sops@/bin:$PATH"
 export PATH="@fd@/bin:$PATH"
 
-pushd $PRJ_ROOT/secrets
+pushd "$PRJ_ROOT/secrets"
 
 mkdir -p terraform/hosts
 
@@ -60,7 +62,7 @@ function extract {
 extract common
 extract infrastructure
 
-host_names=($(fd '^.*\.yq$' templates/hosts --exec echo '{/.}'))
+mapfile -t host_names < <(fd '^.*\.yq$' templates/hosts --exec echo '{/.}')
 for host_name in "${host_names[@]}"; do
   extract "$host_name" is_host
 done

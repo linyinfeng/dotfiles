@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 curl="@curl@/bin/curl"
 yq="@yqGo@/bin/yq"

@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 fd="@fd@/bin/fd"
 persist="@persist@"

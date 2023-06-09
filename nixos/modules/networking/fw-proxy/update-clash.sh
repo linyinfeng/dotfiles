@@ -1,15 +1,16 @@
 #!@shell@
+# shellcheck shell=bash
 
 update="@updateClashUrl@"
 
 case "$1" in
 
 "main")
-  $update $(cat "@mainUrl@")
+  $update "$(cat "@mainUrl@")"
   ;;
 
 "alternative")
-  $update $(cat "@alternativeUrl@")
+  $update "$(cat "@alternativeUrl@")"
   ;;
 
 "https://*" | "http://*")

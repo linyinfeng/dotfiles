@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 function message {
   green='\033[0;32m'

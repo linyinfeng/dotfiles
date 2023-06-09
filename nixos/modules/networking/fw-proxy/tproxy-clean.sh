@@ -1,4 +1,5 @@
 #!@shell@
+# shellcheck shell=bash
 
 export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 
