@@ -1,7 +1,12 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: let
+  optionalPkg = config.lib.self.optionalPkg pkgs;
+in {
   programs = {
     tmux.enable = true;
-    htop.enable = true;
     bat = {
       enable = true;
       config = {
@@ -11,24 +16,24 @@
     jq.enable = true;
   };
 
-  home.packages = with pkgs; [
-    ffmpeg
-    ghostscript
-    i7z
-    imagemagick
-    libtree
-    minio-client
-    nur.repos.linyinfeng.mstickereditor
-    p7zip
-    powerstat
-    powertop
-    speedread
-    trash-cli
-    unar
-    unrar
-    unzip
-    wl-clipboard
-  ];
+  home.packages = with pkgs;
+    [
+      ffmpeg
+      ghostscript
+      imagemagick
+      libtree
+      minio-client
+      nur.repos.linyinfeng.mstickereditor
+      p7zip
+      powerstat
+      powertop
+      trash-cli
+      unar
+      unrar
+      unzip
+      wl-clipboard
+    ]
+    ++ optionalPkg ["i7z"];
 
   home.global-persistence.directories = [
     ".mc" # minio-client

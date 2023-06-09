@@ -13,6 +13,7 @@
     file
     git
     gptfdisk
+    htop
     jq
     lm_sensors
     moreutils

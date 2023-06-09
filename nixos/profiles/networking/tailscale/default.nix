@@ -6,14 +6,6 @@ in {
     port = config.ports.tailscale;
     inherit interfaceName;
   };
-  # # don't auto start tailscaled if
-  # # - system is a workstation (easy reachable machines)
-  # # - zerotier is on
-  # systemd.services.tailscaled.wantedBy =
-  #   lib.mkIf
-  #     (lib.elem "workstation" config.system.types &&
-  #       config.services.zerotierone.enable)
-  #     (lib.mkForce [ ]);
   systemd.services.tailscale-setup = {
     script = ''
       sleep 10

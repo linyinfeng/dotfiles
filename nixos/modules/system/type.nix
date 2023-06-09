@@ -4,6 +4,7 @@
       listOf (enum [
         "server"
         "workstation"
+        "phone"
       ]);
     default = [];
     description = ''

@@ -115,6 +115,16 @@
       ++ (with profiles; [
         networking.network-manager
       ]);
+
+    phone =
+      (with suites; base ++ network ++ multimediaDev)
+      ++ (with profiles; [
+        system.types.phone
+        services.kde-connect
+        services.printing
+        services.bluetooth
+        networking.network-manager
+      ]);
   });
 
   hmModules = self.lib.buildModuleList ../home-manager/modules;
@@ -124,8 +134,6 @@
     multimedia = with profiles; [
       gnome
       hyprland
-      sway
-      desktop-applications
       chromium
       firefox
       rime
@@ -134,6 +142,7 @@
       mime
       obs-studio
       minecraft
+      desktop-applications
     ];
     development = with profiles; [
       development
@@ -144,17 +153,15 @@
       tools.network
       tools.other
       tex
-      postmarketos
       awscli
       terraform
       shells
-      kitty
     ];
     virtualization = [];
     multimediaDev =
       suites.multimedia
       ++ suites.development
-      ++ (with profiles; [xdg-dirs vscode]);
+      ++ (with profiles; [xdg-dirs vscode kitty]);
     synchronize = with profiles; [onedrive digital-paper];
     security = with profiles; [gpg];
     other = with profiles; [hledger];
@@ -227,6 +234,7 @@
     name,
     configurationName ? name,
     system,
+    forceFlakeNixpkgs ? true,
     extraModules ? [],
   }: {
     ${name} = nixosSystem {
@@ -238,10 +246,19 @@
         ++ [
           ({lib, ...}: {
             networking.hostName = lib.mkDefault name;
-
-            _module.args.pkgs = lib.mkForce (getSystem system).allModuleArgs.pkgs;
-            nixpkgs.system = system;
+            nixpkgs = {inherit system;};
           })
+          (
+            if forceFlakeNixpkgs
+            then {
+              _module.args.pkgs = lib.mkForce (getSystem system).allModuleArgs.pkgs;
+            }
+            else {
+              nixpkgs = {
+                inherit (config.nixpkgs) config overlays;
+              };
+            }
+          )
         ];
     };
   };

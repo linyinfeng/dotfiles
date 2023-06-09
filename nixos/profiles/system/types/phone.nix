@@ -1,0 +1,3 @@
+{...}: {
+  system.types = ["phone"];
+}
