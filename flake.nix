@@ -210,6 +210,11 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
+    # other
+
+    mobile-nixos.url = "github:nixos/mobile-nixos";
+    mobile-nixos.flake = false;
+
     # patches
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
     nixpkgs-wluma.url = "github:nixos/nixpkgs/pull/226427/head";

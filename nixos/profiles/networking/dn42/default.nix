@@ -47,6 +47,7 @@
     "nuc".enable = false; # unmetered
     "xps8930".enable = false; # mobile
     "framework".enable = false; # mobile
+    "enchilada".enable = false; # mobile
   };
   regionTable = {
     "hil0" = {
@@ -82,8 +83,12 @@
       region = 52; # Asia-E (JP,CN,KR,TW,HK)
       country = 1156; # China
     };
-    # mobile device
+    # mobile devices
     "framework" = {
+      region = null;
+      country = null;
+    };
+    "enchilada" = {
       region = null;
       country = null;
     };

@@ -15,6 +15,10 @@
       key = "age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0";
       owned = true;
     };
+    enchilada = {
+      key = "age1ql3sdyyyfkskhwsggputhvvde89hwff3htps0fyg3329scxqp48slervx6";
+      owned = true;
+    };
     nuc = {
       key = "age1pf99e6kfd52kugec6t27t9nkere8vn3guk5t04v7ldde4cnlwpwsm0n4gj";
       owned = true;
