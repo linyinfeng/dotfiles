@@ -26,7 +26,7 @@ if [ "$hit" = "true" ]; then
   job=$(jq -r ".job" "$HYDRA_JSON")
   echo "job = $job"
 
-  if [[ "$job" =~ ^(.*)\.nixos/(.*)$ -a "$(jq --raw-output '.jobset' $HYDRA_JSON)" = "main" ]]; then
+  if [[ $job =~ ^(.*)\.nixos/(.*)$ && "$(jq --raw-output '.jobset' $HYDRA_JSON)" == "main" ]]; then
     system="${BASH_REMATCH[1]}"
     host="${BASH_REMATCH[2]}"
 
