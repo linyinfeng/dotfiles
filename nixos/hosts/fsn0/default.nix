@@ -33,7 +33,7 @@
       };
       boot.initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "usbhid" "sr_mod"];
 
-      boot.tmp.useTmpfs = true;
+      boot.tmp.cleanOnBoot = true;
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
@@ -89,6 +89,10 @@
                     };
                     "@nix" = {
                       mountpoint = "/nix";
+                      mountOptions = ["compress=zstd"];
+                    };
+                    "@tmp" = {
+                      mountpoint = "/tmp";
                       mountOptions = ["compress=zstd"];
                     };
                   };
