@@ -316,6 +316,17 @@ in {
     })
 
     (mkHost {
+      name = "enchilada";
+      system = "aarch64-linux";
+      forceFlakeNixpkgs = false;
+      extraModules =
+        import "${inputs.mobile-nixos}/modules/module-list.nix"
+        ++ [
+          "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+        ];
+    })
+
+    (mkHost {
       name = "mia0";
       system = "x86_64-linux";
     })

@@ -19,6 +19,10 @@
       ip = "192.168.2.4/32";
       inherit port;
     };
+    enchilada = {
+      ip = "192.168.2.101/32";
+      inherit port;
+    };
   };
   home = {
     allowedIPs = [

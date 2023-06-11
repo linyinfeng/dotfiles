@@ -669,6 +669,22 @@
         "type": "github"
       }
     },
+    "mobile-nixos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1683422260,
+        "narHash": "sha256-79zaClbubRkBNlJ04OSADILuLQHH48N5fu296hEWYlw=",
+        "owner": "nixos",
+        "repo": "mobile-nixos",
+        "rev": "ba4638836e94a8f16d1d1f9e8c0530b86078029c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "mobile-nixos",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
@@ -1131,6 +1147,7 @@
         "mc-config-nuc": "mc-config-nuc",
         "minecraft-json": "minecraft-json",
         "minecraft-nix": "minecraft-nix",
+        "mobile-nixos": "mobile-nixos",
         "nix-gc-s3": "nix-gc-s3",
         "nix-index-database": "nix-index-database",
         "nixago": "nixago",
