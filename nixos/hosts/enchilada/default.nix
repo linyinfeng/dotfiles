@@ -19,7 +19,7 @@
 
   config = {
     mobile = {
-      beautification.spalsh = true;
+      beautification.splash = true;
       adbd.enable = true;
       boot.stage-1 = {
         networking.enable = true;
