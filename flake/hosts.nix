@@ -6,7 +6,6 @@
   getSystem,
   ...
 }: let
-  inherit (inputs.nixpkgs.lib) nixosSystem;
   buildSuites = profiles: f: lib.mapAttrs (_: lib.flatten) (lib.fix (f profiles));
 
   nixosModules = self.lib.buildModuleList ../nixos/modules;
@@ -183,7 +182,6 @@
       inputs.impermanence.nixosModules.impermanence
       inputs.disko.nixosModules.disko
       inputs.flake-utils-plus.nixosModules.autoGenFromInputs
-      inputs.lanzaboote.nixosModules.lanzaboote
       inputs.linyinfeng.nixosModules.vlmcsd
       inputs.linyinfeng.nixosModules.tprofile
       inputs.linyinfeng.nixosModules.tg-send
@@ -233,11 +231,12 @@
   mkHost = {
     name,
     configurationName ? name,
+    nixpkgs ? inputs.nixpkgs,
     system,
     forceFlakeNixpkgs ? true,
     extraModules ? [],
   }: {
-    ${name} = nixosSystem {
+    ${name} = nixpkgs.lib.nixosSystem {
       specialArgs = nixosSpecialArgs;
       modules =
         commonNixosModules
@@ -264,17 +263,16 @@
   };
 
   mkHostAllSystems = {
-    name,
-    extraModules ? [],
-  }:
+    name
+  } @ args:
     lib.mkMerge (
       lib.lists.map
       (system:
-        mkHost {
+        mkHost (args // {
           name = "${name}-${system}";
           configurationName = name;
-          inherit system extraModules;
-        })
+          inherit system;
+        }))
       config.systems
     );
 in {
@@ -287,6 +285,7 @@ in {
       name = "framework";
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
+        inputs.lanzaboote.nixosModules.lanzaboote
         common-pc
         common-cpu-intel
         common-pc-ssd

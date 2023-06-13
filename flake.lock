@@ -666,15 +666,16 @@
     "mobile-nixos": {
       "flake": false,
       "locked": {
-        "lastModified": 1683422260,
-        "narHash": "sha256-79zaClbubRkBNlJ04OSADILuLQHH48N5fu296hEWYlw=",
+        "lastModified": 1682877493,
+        "narHash": "sha256-w4baQlS84X8Lf0E5RN0nGkx03luDuV1X0+jWMAXm6fs=",
         "owner": "nixos",
         "repo": "mobile-nixos",
-        "rev": "ba4638836e94a8f16d1d1f9e8c0530b86078029c",
+        "rev": "522657ad792080f007617a6215f87bd851d31f2b",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
+        "ref": "pull/609/head",
         "repo": "mobile-nixos",
         "type": "github"
       }

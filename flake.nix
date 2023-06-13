@@ -48,12 +48,10 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-    lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
     lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
-    lanzaboote.inputs.crane.follows = "crane";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
@@ -212,7 +210,8 @@
 
     # other
 
-    mobile-nixos.url = "github:nixos/mobile-nixos";
+    # TODO wait for https://github.com/NixOS/mobile-nixos/pull/627
+    mobile-nixos.url = "github:nixos/mobile-nixos/pull/609/head";
     mobile-nixos.flake = false;
 
     # patches
