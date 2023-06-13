@@ -211,7 +211,8 @@
     # other
 
     # TODO wait for https://github.com/NixOS/mobile-nixos/pull/627
-    mobile-nixos.url = "github:nixos/mobile-nixos/pull/609/head";
+    # mobile-nixos.url = "github:nixos/mobile-nixos";
+    mobile-nixos.url = "github:linyinfeng/mobile-nixos/sdm845-5.19.16";
     mobile-nixos.flake = false;
 
     # patches

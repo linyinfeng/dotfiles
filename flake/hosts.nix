@@ -262,17 +262,16 @@
     };
   };
 
-  mkHostAllSystems = {
-    name
-  } @ args:
+  mkHostAllSystems = {name} @ args:
     lib.mkMerge (
       lib.lists.map
       (system:
-        mkHost (args // {
-          name = "${name}-${system}";
-          configurationName = name;
-          inherit system;
-        }))
+        mkHost (args
+          // {
+            name = "${name}-${system}";
+            configurationName = name;
+            inherit system;
+          }))
       config.systems
     );
 in {
