@@ -96,6 +96,8 @@ in {
     };
   };
 
+  home-manager.users.yinfeng = {suites, ...}: {imports = suites.full;};
+
   boot.tmp.useTmpfs = true;
   services.fstrim.enable = true;
   environment.global-persistence.enable = true;

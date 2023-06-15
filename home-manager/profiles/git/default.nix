@@ -5,10 +5,7 @@
 }: {
   programs.git = {
     enable = true;
-    package =
-      if config.home.graphical
-      then pkgs.gitFull
-      else pkgs.git;
+    package = pkgs.gitFull;
     lfs.enable = true;
 
     extraConfig = {

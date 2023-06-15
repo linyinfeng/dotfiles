@@ -2,8 +2,7 @@
   config,
   lib,
   ...
-}:
-lib.mkIf config.home.graphical {
+}: {
   programs.chromium = {
     enable = true;
     commandLineArgs = [

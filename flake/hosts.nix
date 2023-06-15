@@ -116,9 +116,13 @@
       ]);
 
     phone =
-      (with suites; base ++ network ++ multimediaDev)
+      (with suites; base ++ network ++ development)
       ++ (with profiles; [
         system.types.phone
+        graphical.gnome
+        graphical.fonts
+        graphical.i18n
+        services.pipewire
         services.kde-connect
         services.printing
         services.bluetooth
@@ -137,7 +141,6 @@
       firefox
       rime
       fcitx5
-      fonts
       mime
       obs-studio
       minecraft
@@ -165,6 +168,14 @@
     security = with profiles; [gpg];
     other = with profiles; [hledger];
 
+    nonGraphical = with suites;
+      base
+      ++ development
+      ++ virtualization
+      ++ synchronize
+      ++ security
+      ++ other;
+
     full = with suites;
       base
       ++ multimediaDev
@@ -172,12 +183,23 @@
       ++ synchronize
       ++ security
       ++ other;
+
+    phone =
+      (with suites; base)
+      ++ (with profiles; [
+        gnome
+        firefox
+        rime
+        fcitx5
+        development
+        direnv
+        shells
+      ]);
   });
 
   commonNixosModules =
     nixosModules
     ++ [
-      inputs.home-manager.nixosModules.home-manager
       inputs.sops-nix.nixosModules.sops
       inputs.impermanence.nixosModules.impermanence
       inputs.disko.nixosModules.disko
@@ -232,6 +254,7 @@
     name,
     configurationName ? name,
     nixpkgs ? inputs.nixpkgs,
+    home-manager ? inputs.home-manager,
     system,
     forceFlakeNixpkgs ? true,
     extraModules ? [],
@@ -240,6 +263,7 @@
       specialArgs = nixosSpecialArgs;
       modules =
         commonNixosModules
+        ++ [home-manager.nixosModules.home-manager]
         ++ extraModules
         ++ lib.optional (configurationName != null) ../nixos/hosts/${configurationName}
         ++ [
@@ -315,6 +339,8 @@ in {
 
     (mkHost {
       name = "enchilada";
+      nixpkgs = inputs.nixpkgs-for-mobile-nixos;
+      home-manager = inputs.home-manager-for-mobile-nixos;
       system = "aarch64-linux";
       forceFlakeNixpkgs = false;
       extraModules =

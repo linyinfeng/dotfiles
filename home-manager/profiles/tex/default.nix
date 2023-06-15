@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-lib.mkIf config.home.graphical {
+}: {
   home.packages = with pkgs; [
     texworks
     texstudio

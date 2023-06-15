@@ -171,30 +171,29 @@
   ];
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
-in
-  lib.mkIf config.home.graphical {
-    xdg.mimeApps = {
-      enable = true;
-      defaultApplications =
-        buildMap [webBrowser] webFormats
-        // buildMap [imageViewer] imageFormats
-        // buildMap [archiveViewer] archiveFormats
-        // buildMap [audioPlayer] audioFormats
-        // buildMap [videoPlayer] videoFormats
-        // {
-          "application/pdf" = ["org.gnome.Evince.desktop"];
-          "x-scheme-handler/mailto" = ["org.gnome.Geary.desktop"];
-        };
-    };
+in {
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications =
+      buildMap [webBrowser] webFormats
+      // buildMap [imageViewer] imageFormats
+      // buildMap [archiveViewer] archiveFormats
+      // buildMap [audioPlayer] audioFormats
+      // buildMap [videoPlayer] videoFormats
+      // {
+        "application/pdf" = ["org.gnome.Evince.desktop"];
+        "x-scheme-handler/mailto" = ["org.gnome.Geary.desktop"];
+      };
+  };
 
-    home.activation.diffMimeAppsList = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
-      mimeapps="${config.xdg.configHome}/mimeapps.list"
-      if [ -e "$mimeapps" ]; then
-        echo "Differences of current mimeapps.list"
-        # show diff and ignore result
-        diff "$mimeapps" "${config.xdg.configFile."mimeapps.list".source}" || true
-        echo "Delete current mimeapps.list"
-        rm "$mimeapps"
-      fi
-    '';
-  }
+  home.activation.diffMimeAppsList = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+    mimeapps="${config.xdg.configHome}/mimeapps.list"
+    if [ -e "$mimeapps" ]; then
+      echo "Differences of current mimeapps.list"
+      # show diff and ignore result
+      diff "$mimeapps" "${config.xdg.configFile."mimeapps.list".source}" || true
+      echo "Delete current mimeapps.list"
+      rm "$mimeapps"
+    fi
+  '';
+}

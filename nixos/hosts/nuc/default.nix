@@ -84,6 +84,8 @@ in {
         ];
       };
 
+      home-manager.users.yinfeng = {suites, ...}: {imports = suites.nonGraphical;};
+
       boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "ahci" "nvme" "usbhid" "uas" "sd_mod"];
       boot.kernelModules = ["kvm-intel"];
       boot.initrd.luks.forceLuksSupportInInitrd = true;

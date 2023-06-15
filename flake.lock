@@ -341,6 +341,27 @@
         "type": "github"
       }
     },
+    "home-manager-for-mobile-nixos": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-for-mobile-nixos"
+        ]
+      },
+      "locked": {
+        "lastModified": 1684788503,
+        "narHash": "sha256-ewr/8U0/iCs8K+MP5Fw9Q1IQ1Pt57ZgC2k/dg1c+CMk=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "d9995d94f194955d1f1af0e1ad5866a904196c20",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "d9995d94f194955d1f1af0e1ad5866a904196c20",
+        "type": "github"
+      }
+    },
     "hydra": {
       "inputs": {
         "nix": "nix",
@@ -670,16 +691,16 @@
     "mobile-nixos": {
       "flake": false,
       "locked": {
-        "lastModified": 1686673757,
-        "narHash": "sha256-R1/GC1YmUNp42RYqBIARFa4pHsnf4vRUJVrA3UJtUZ0=",
+        "lastModified": 1686804014,
+        "narHash": "sha256-08LqVkQq4oWCKG097oFh1/XJLB2brcahBy6fBoiPKbc=",
         "owner": "linyinfeng",
         "repo": "mobile-nixos",
-        "rev": "e06a31949ee3f966fe87c771ab982adb12bc489d",
+        "rev": "9619b07e29f092e6d11bd4f5c874f39b55554601",
         "type": "github"
       },
       "original": {
         "owner": "linyinfeng",
-        "ref": "sdm845-5.19.16",
+        "ref": "enchilada",
         "repo": "mobile-nixos",
         "type": "github"
       }
@@ -877,6 +898,22 @@
         "owner": "NixOS",
         "ref": "nixos-22.11-small",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-for-mobile-nixos": {
+      "locked": {
+        "lastModified": 1683286087,
+        "narHash": "sha256-xseOd7W7xwF5GOF2RW8qhjmVGrKoBz+caBlreaNzoeI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3e313808bd2e0a0669430787fb22e43b2f4bf8bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3e313808bd2e0a0669430787fb22e43b2f4bf8bf",
         "type": "github"
       }
     },
@@ -1103,6 +1140,7 @@
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
         "home-manager": "home-manager",
+        "home-manager-for-mobile-nixos": "home-manager-for-mobile-nixos",
         "hydra": "hydra",
         "hyprland": "hyprland",
         "hyprwm-contrib": "hyprwm-contrib",
@@ -1123,6 +1161,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-for-mobile-nixos": "nixpkgs-for-mobile-nixos",
         "nixpkgs-wluma": "nixpkgs-wluma",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
