@@ -109,7 +109,13 @@ in {
         };
       };
 
-      home-manager.users.yinfeng = {suites, ...}: {imports = suites.full;};
+      home-manager.users.yinfeng = {suites, ...}: {
+        imports = suites.full;
+        programs.firefox.profiles.main.settings = {
+          "media.ffmpeg.vaapi.enabled" = true;
+          "media.navigator.mediadatadecoder_vpx_enabled" = true;
+        };
+      };
 
       boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;

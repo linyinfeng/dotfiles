@@ -47,10 +47,21 @@
     };
     networking.fw-proxy.tproxy.enable = false; # broken on enchilada
     hardware.sensor.iio.enable = true;
+    # pulseaudio as main sound server
+    hardware.pulseaudio.enable = true;
+    services.pipewire = {
+      audio.enable = false;
+      pulse.enable = false;
+      alsa.enable = false;
+      jack.enable = false;
+    };
     # services.fprintd.enable = true; # not working
     programs.calls.enable = true;
     home-manager.users.yinfeng = {suites, ...}: {
       imports = suites.phone;
+      dconf.settings."org/gnome/desktop/a11y/applications" = {
+        screen-keyboard-enabled = true;
+      };
     };
     networking.campus-network = {
       enable = true;
