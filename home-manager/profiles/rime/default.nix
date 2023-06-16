@@ -7,7 +7,12 @@
 }: let
   yq = "${pkgs.yq-go}/bin/yq";
   home = "${config.home.homeDirectory}";
-  rimeConfig = ".local/share/fcitx5/rime";
+  rimeConfig =
+    if osConfig.i18n.inputMethod.enabled == "fcitx5"
+    then ".local/share/fcitx5/rime"
+    else if osConfig.i18n.inputMethod.enabled == "ibus"
+    then ".config/ibus/rime"
+    else throw "unable to determine rime config directory";
   installationCustom = ''
     sync_dir: "${home}/Syncthing/Main/rime"
     installation_id: "${osConfig.networking.hostName}"

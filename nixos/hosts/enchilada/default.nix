@@ -10,7 +10,6 @@
       [
         nix.access-tokens
         nix.nixbuild
-        networking.wireguard-home
         networking.behind-fw
         networking.fw-proxy
         services.flatpak

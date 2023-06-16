@@ -12,7 +12,7 @@
     # kimpanel # fcitx5 disabled
     upower-battery
     alphabetical-app-grid
-    ibus-tweaker
+    customize-ibus
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in
@@ -56,11 +56,6 @@ in
           show-battery-percentage = true;
           locate-pointer = true;
         };
-        # use fcitx5
-        # "org/gnome/desktop/wm/keybindings" = {
-        #   switch-input-source = mkArray type.string [];
-        #   switch-input-source-backward = mkArray type.string [];
-        # };
         "org/gnome/desktop/input-sources" = {
           sources = mkArray (type.tupleOf [type.string type.string]) [
             (mkTuple [(mkString "xkb") (mkString "us")])
@@ -68,9 +63,10 @@ in
             (mkTuple [(mkString "ibus") (mkString "mozc-jp")])
           ];
         };
-        "org/gnome/shell/extensions/ibus-tweaker" = {
+        "org/gnome/shell/extensions/customize-ibus" = {
           use-custom-font = true;
           custom-font = "sans-serif 10";
+          input-indicator-only-on-toggle = true;
         };
         "org/gnome/desktop/wm/preferences" = {
           action-middle-click-titlebar = "lower";
