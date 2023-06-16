@@ -19,7 +19,6 @@ config.services.xserver.desktopManager.gnome.enable
 
   environment.systemPackages = with pkgs; [
     kooha
-    pulseaudio
     gnome.gnome-boxes
     gnome.devhelp
     gnome.dconf-editor
