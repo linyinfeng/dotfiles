@@ -342,8 +342,6 @@ in {
 
     (mkHost {
       name = "enchilada";
-      nixpkgs = inputs.nixpkgs-for-mobile-nixos;
-      home-manager = inputs.home-manager-for-mobile-nixos;
       system = "aarch64-linux";
       forceFlakeNixpkgs = false;
       extraModules =

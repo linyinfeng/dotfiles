@@ -213,10 +213,6 @@
     # mobile-nixos.url = "github:nixos/mobile-nixos";
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/enchilada";
     mobile-nixos.flake = false;
-    # https://github.com/NixOS/mobile-nixos/blob/master/pkgs.nix
-    nixpkgs-for-mobile-nixos.url = "github:nixos/nixpkgs/3e313808bd2e0a0669430787fb22e43b2f4bf8bf";
-    home-manager-for-mobile-nixos.url = "github:nix-community/home-manager/d9995d94f194955d1f1af0e1ad5866a904196c20";
-    home-manager-for-mobile-nixos.inputs.nixpkgs.follows = "nixpkgs-for-mobile-nixos";
 
     # patches
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427

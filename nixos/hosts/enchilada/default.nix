@@ -48,8 +48,6 @@
     programs.calls.enable = true;
     home-manager.users.yinfeng = {suites, ...}: {
       imports = suites.phone;
-      # nerf font patcher in pinned nixpkgs generates different font family names
-      dconf.settings."com/raggesilver/BlackBox".font = lib.mkForce "Iosevka Nerd Font 10";
     };
     networking.campus-network = {
       enable = true;
