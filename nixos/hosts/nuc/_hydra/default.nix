@@ -90,7 +90,7 @@ in {
         "https://git.sr.ht/" # for home-manager nmd source
       ];
       # limit cpu quota of nix builds
-      systemd.services.nix-daemon.serviceConfig.CPUQuota = "400%";
+      systemd.services.nix-daemon.serviceConfig.CPUQuota = "700%";
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
         restartUnits = ["hydra.service"];
