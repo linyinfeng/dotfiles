@@ -57,10 +57,10 @@ in
           locate-pointer = true;
         };
         # use fcitx5
-        "org/gnome/desktop/wm/keybindings" = {
-          switch-input-source = mkArray type.string [];
-          switch-input-source-backward = mkArray type.string [];
-        };
+        # "org/gnome/desktop/wm/keybindings" = {
+        #   switch-input-source = mkArray type.string [];
+        #   switch-input-source-backward = mkArray type.string [];
+        # };
         "org/gnome/desktop/input-sources" = {
           sources = mkArray (type.tupleOf [type.string type.string]) [
             (mkTuple [(mkString "xkb") (mkString "us")])

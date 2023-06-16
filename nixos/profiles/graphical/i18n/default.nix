@@ -22,6 +22,7 @@
     ];
   };
   environment.global-persistence.user.directories = [
+    ".config/ibus"
     ".config/fcitx5"
     ".config/mozc"
   ];
