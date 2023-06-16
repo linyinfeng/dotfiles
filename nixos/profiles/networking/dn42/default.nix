@@ -6,6 +6,7 @@
   cfg = config.networking.dn42;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
+  filterHost = _name: hostData: (lib.length hostData.host_indices != 0);
   mkHost = name: hostData: {
     bgp = {
       enable = true;
@@ -95,7 +96,7 @@
   };
 in {
   networking.dn42 = {
-    enable = true;
+    enable = cfg.autonomousSystem.mesh.hosts ? ${hostName};
     bgp = {
       gortr = {
         port = config.ports.gortr;
@@ -125,7 +126,7 @@ in {
       cidrV4 = data.dn42_v4_cidr;
       cidrV6 = data.dn42_v6_cidr;
       mesh = {
-        hosts = lib.mapAttrs mkHost data.hosts;
+        hosts = lib.mapAttrs mkHost (lib.filterAttrs filterHost data.hosts);
         routingTable = {
           id = config.routingTables.mesh-dn42;
           priority = config.routingPolicyPriorities.mesh-dn42;
