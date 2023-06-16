@@ -6,16 +6,20 @@
 }: {
   imports =
     suites.phone
-    ++ (with profiles; [
-      nix.access-tokens
-      nix.nixbuild
-      networking.wireguard-home
-      networking.behind-fw
-      networking.fw-proxy
-      services.flatpak
-      virtualization.waydroid
-      users.yinfeng
-    ]);
+    ++ (with profiles;
+      [
+        nix.access-tokens
+        nix.nixbuild
+        networking.wireguard-home
+        networking.behind-fw
+        networking.fw-proxy
+        services.flatpak
+        virtualization.waydroid
+        users.yinfeng
+      ]
+      ++ [
+        # ./_gnome-mobile # crash
+      ]);
 
   config = {
     mobile.beautification.splash = true;
