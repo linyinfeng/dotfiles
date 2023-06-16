@@ -8,11 +8,11 @@
     gsconnect
     appindicator
     dash-to-dock
-    clipboard-history
-    kimpanel
+    # clipboard-history
+    # kimpanel # fcitx5 disabled
     upower-battery
     alphabetical-app-grid
-    coverflow-alt-tab
+    ibus-tweaker
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in
@@ -61,17 +61,17 @@ in
           switch-input-source = mkArray type.string [];
           switch-input-source-backward = mkArray type.string [];
         };
-        # "org/gnome/desktop/input-sources" = {
-        #   sources = mkArray (type.tupleOf [type.string type.string]) [
-        #     (mkTuple [(mkString "xkb") (mkString "us")])
-        #     (mkTuple [(mkString "ibus") (mkString "rime")])
-        #     (mkTuple [(mkString "ibus") (mkString "mozc-jp")])
-        #   ];
-        # };
-        # "org/gnome/shell/extensions/ibus-tweaker" = {
-        #   use-custom-font = true;
-        #   custom-font = "sans-serif 10";
-        # };
+        "org/gnome/desktop/input-sources" = {
+          sources = mkArray (type.tupleOf [type.string type.string]) [
+            (mkTuple [(mkString "xkb") (mkString "us")])
+            (mkTuple [(mkString "ibus") (mkString "rime")])
+            (mkTuple [(mkString "ibus") (mkString "mozc-jp")])
+          ];
+        };
+        "org/gnome/shell/extensions/ibus-tweaker" = {
+          use-custom-font = true;
+          custom-font = "sans-serif 10";
+        };
         "org/gnome/desktop/wm/preferences" = {
           action-middle-click-titlebar = "lower";
         };
@@ -133,7 +133,7 @@ in
         };
         "com/raggesilver/BlackBox" = {
           terminal-padding = mkTuple [(mkUint32 5) (mkUint32 5) (mkUint32 5) (mkUint32 5)];
-          font = "Iosevka Yinfeng Nerd Font 10";
+          font = "IosevkaYinfeng Nerd Font 10";
           theme-light = "Tomorrow";
           theme-dark = "Tomorrow Night";
           show-menu-button = false;

@@ -9,7 +9,7 @@ in {
   networking.fw-proxy = {
     enable = true;
     tproxy = {
-      enable = true;
+      enable = lib.mkDefault true;
       cgroup = "tproxy.slice";
     };
     mixinConfig = {

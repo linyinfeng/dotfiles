@@ -2,7 +2,7 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "Iosevka Yinfeng Nerd Font";
+      name = "IosevkaYinfeng Nerd Font";
       size = 11;
     };
     extraConfig = ''

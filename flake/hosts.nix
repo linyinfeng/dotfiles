@@ -21,6 +21,7 @@
         services.dbus
         services.oom-killer
         security.polkit
+        security.rtkit
         global-persistence
         system.common
         system.sysrq
@@ -116,12 +117,14 @@
       ]);
 
     phone =
-      (with suites; base ++ network ++ development)
+      (with suites; base ++ network)
       ++ (with profiles; [
         system.types.phone
         graphical.gnome
         graphical.fonts
         graphical.i18n
+        development.shells
+        services.gnupg
         services.pipewire
         services.kde-connect
         services.printing
