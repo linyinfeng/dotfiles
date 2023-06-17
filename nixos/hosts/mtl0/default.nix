@@ -35,6 +35,7 @@ in {
       services.atticd
       services.telegraf-http
       services.prebuilt-zip
+      services.hledger-web
       networking.as198764
       ./reddit-grab.nix
     ]);

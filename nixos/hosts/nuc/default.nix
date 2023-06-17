@@ -43,7 +43,6 @@ in {
       services.notify-failure
       services.smartd
       services.postgresql
-      services.hledger-web
       programs.service-mail
       programs.tg-send
       users.yinfeng

@@ -112,7 +112,7 @@ locals {
     hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
-    hledger         = { on = "nuc", proxy = false }
+    hledger         = { on = "mtl0", proxy = true }
     attic           = { on = "mtl0", proxy = true }
     attic-upload    = { on = "mtl0", proxy = false }
     vault           = { on = "mtl0", proxy = true }

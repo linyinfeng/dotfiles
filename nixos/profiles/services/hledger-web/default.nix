@@ -28,7 +28,8 @@ in {
       cd "${repoName}"
       while true; do
         set +e
-        git pull --ff-only
+        git fetch origin
+        git reset --hard origin/main
         set -e
         sleep 60
       done

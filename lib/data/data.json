@@ -208,8 +208,8 @@
       "proxy": true
     },
     "hledger": {
-      "on": "nuc",
-      "proxy": false
+      "on": "mtl0",
+      "proxy": true
     },
     "hydra": {
       "on": "nuc",
