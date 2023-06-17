@@ -10,7 +10,7 @@
     jack.enable = lib.mkDefault true;
     alsa.enable = lib.mkDefault true;
   };
-  hardware.pulseaudio.enable = lib.mkDefault false;
+  hardware.pulseaudio.enable = false;
 
   environment.systemPackages = with pkgs; [
     # helvum # TODO borken

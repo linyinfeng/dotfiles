@@ -48,7 +48,7 @@
     networking.fw-proxy.tproxy.enable = false; # broken on enchilada
     hardware.sensor.iio.enable = true;
     # pulseaudio as main sound server
-    hardware.pulseaudio.enable = true;
+    hardware.pulseaudio.enable = lib.mkForce true;
     services.pipewire = {
       audio.enable = false;
       pulse.enable = false;
