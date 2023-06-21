@@ -301,6 +301,15 @@
           }))
       config.systems
     );
+
+  getHostToplevel = name: cfg: let
+    inherit (cfg.pkgs.stdenv.hostPlatform) system;
+  in {
+    "${system}"."nixos/${name}" = cfg.config.system.build.toplevel;
+  };
+  hostToplevels =
+    lib.fold lib.recursiveUpdate {}
+    (lib.mapAttrsToList getHostToplevel self.nixosConfigurations);
 in {
   passthru = {
     inherit nixosProfiles nixosModules nixosSuites hmProfiles hmModules hmSuites;
@@ -381,4 +390,8 @@ in {
       system = "x86_64-linux";
     })
   ];
+
+  flake.checks = lib.recursiveUpdate hostToplevels {
+    "aarch64-linux"."nixos/enchilada/android-bootimg" = self.nixosConfigurations.enchilada.config.mobile.outputs.android.android-bootimg;
+  };
 }
