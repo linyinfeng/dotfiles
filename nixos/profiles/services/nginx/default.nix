@@ -26,7 +26,9 @@ in {
           serverAliases = ["localhost.*"];
         };
       };
-      networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [80 443];
+
+      networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [cfg.defaultHTTPListenPort cfg.defaultSSLListenPort];
+      networking.firewall.allowedUDPPorts = lib.mkIf cfg.openFirewall [cfg.defaultSSLListenPort];
     }
 
     (lib.mkIf config.security.acme.acceptTerms {

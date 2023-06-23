@@ -95,7 +95,6 @@ in {
 
   services.nginx.virtualHosts."mc.*" = {
     forceSSL = true;
-    listen = config.hosts.nuc.listens;
     useACMEHost = "main";
     locations."/".proxyPass = "http://127.0.0.1:${toString mapPort}";
   };

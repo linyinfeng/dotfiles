@@ -49,7 +49,6 @@ in {
       users.nianyi
     ])
     ++ [
-      ./_options.nix
       ./_hydra
       ./_minecraft
     ];
@@ -149,8 +148,9 @@ in {
     # nginx
     {
       services.nginx = {
+        defaultHTTPListenPort = 8080;
+        defaultSSLListenPort = 8443;
         virtualHosts."nuc.*" = {
-          listen = config.hosts.nuc.listens;
           serverAliases = [
             "nuc-proxy.*"
           ];
@@ -159,10 +159,6 @@ in {
           };
         };
       };
-      # extra nginx port
-      networking.firewall.allowedTCPPorts = [
-        8443
-      ];
     }
 
     # store serving
@@ -203,7 +199,6 @@ in {
       services.nginx.virtualHosts."transmission.*" = {
         forceSSL = true;
         useACMEHost = "main";
-        listen = config.hosts.nuc.listens;
         locations."/transmission".proxyPass = "http://localhost:${toString config.services.transmission.settings.rpc-port}";
         locations."/files/" = {
           alias = "/var/lib/transmission/Downloads/";
@@ -244,7 +239,6 @@ in {
       services.nginx.virtualHosts."jellyfin.*" = {
         forceSSL = true;
         useACMEHost = "main";
-        listen = config.hosts.nuc.listens;
         locations."= /" = {
           extraConfig = ''
             return 302 /web/;
@@ -271,7 +265,6 @@ in {
     # hledger-web
     {
       services.hledger-web.baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
-      services.nginx.virtualHosts."hledger.*".listen = config.hosts.nuc.listens;
     }
   ];
 }

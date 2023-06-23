@@ -34,34 +34,6 @@ in {
       ./_steam
     ];
 
-  options.hosts.shg0 = {
-    listens = lib.mkOption {
-      type = with lib.types; listOf anything;
-      default = [
-        {
-          addr = "[::]";
-          port = config.ports.https;
-          ssl = true;
-        }
-        {
-          addr = "[::]";
-          port = config.ports.https-alternative;
-          ssl = true;
-        }
-        {
-          addr = "0.0.0.0";
-          port = config.ports.https;
-          ssl = true;
-        }
-        {
-          addr = "0.0.0.0";
-          port = config.ports.https-alternative;
-          ssl = true;
-        }
-      ];
-    };
-  };
-
   config = lib.mkMerge [
     {
       boot.loader.grub = {
@@ -112,14 +84,7 @@ in {
 
     # nginx
     {
-      services.nginx = {
-        openFirewall = false;
-        virtualHosts."shg0.*" = {
-          listen = config.hosts.shg0.listens;
-        };
-      };
-      # only port 443
-      networking.firewall.allowedTCPPorts = [443];
+      services.nginx.defaultHTTPListenPort = 8080;
     }
 
     # tailscale derp server
