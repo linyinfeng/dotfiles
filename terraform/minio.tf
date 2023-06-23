@@ -103,7 +103,7 @@ resource "minio_iam_user_policy_attachment" "loki" {
   user_name   = minio_iam_user.loki.name
 }
 
-# Pastebin
+# Atticd
 
 resource "minio_s3_bucket" "atticd" {
   bucket = "atticd"
@@ -142,6 +142,47 @@ resource "minio_iam_policy" "atticd" {
 resource "minio_iam_user_policy_attachment" "atticd" {
   policy_name = minio_iam_policy.atticd.name
   user_name   = minio_iam_user.atticd.name
+}
+
+# Cache test
+
+resource "minio_s3_bucket" "cache_test" {
+  bucket = "cache-test"
+  acl    = "private"
+}
+
+resource "minio_iam_user" "cache_test" {
+  name = "cache-test"
+}
+
+output "minio_cache_test_key_id" {
+  value     = minio_iam_user.cache_test.id
+  sensitive = false
+}
+output "minio_cache_test_access_key" {
+  value     = minio_iam_user.cache_test.secret
+  sensitive = true
+}
+
+data "minio_iam_policy_document" "cache_test" {
+  statement {
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::cache-test/*",
+    ]
+  }
+}
+
+resource "minio_iam_policy" "cache_test" {
+  name   = "cache-test"
+  policy = data.minio_iam_policy_document.cache_test.json
+}
+
+resource "minio_iam_user_policy_attachment" "cache_test" {
+  policy_name = minio_iam_policy.cache_test.name
+  user_name   = minio_iam_user.cache_test.name
 }
 
 # Metrics
