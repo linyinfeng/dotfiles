@@ -26,7 +26,6 @@ in {
       virt-manager
       vlc
       xournalpp
-      zoom-us
       zotero
     ]
     ++ optionalPkg ["nur" "repos" "linyinfeng" "wemeet"];
