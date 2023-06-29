@@ -9,6 +9,7 @@
     nixpkgs-lint
     nixpkgs-review
     nix-update
+    nix-melt
     nixfmt
     cabal2nix
     patchelf
