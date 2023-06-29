@@ -148,8 +148,48 @@ in {
     # nginx
     {
       services.nginx = {
-        defaultHTTPListenPort = 8080;
-        defaultSSLListenPort = 8443;
+        defaultListen = [
+          {
+            addr = "0.0.0.0";
+            port = config.ports.http;
+            ssl = false;
+          }
+          {
+            addr = "0.0.0.0";
+            port = config.ports.https;
+            ssl = true;
+          }
+          {
+            addr = "0.0.0.0";
+            port = config.ports.http-alternative;
+            ssl = false;
+          }
+          {
+            addr = "0.0.0.0";
+            port = config.ports.https-alternative;
+            ssl = true;
+          }
+          {
+            addr = "[::]";
+            port = config.ports.http;
+            ssl = false;
+          }
+          {
+            addr = "[::]";
+            port = config.ports.https;
+            ssl = true;
+          }
+          {
+            addr = "[::]";
+            port = config.ports.http-alternative;
+            ssl = false;
+          }
+          {
+            addr = "[::]";
+            port = config.ports.https-alternative;
+            ssl = true;
+          }
+        ];
         virtualHosts."nuc.*" = {
           serverAliases = [
             "nuc-proxy.*"
@@ -159,6 +199,13 @@ in {
           };
         };
       };
+      networking.firewall.allowedTCPPorts = with config.ports; [
+        http-alternative
+        https-alternative
+      ];
+      networking.firewall.allowedUDPPorts = with config.ports; [
+        https-alternative
+      ];
     }
 
     # store serving
@@ -260,11 +307,6 @@ in {
           '';
         };
       };
-    }
-
-    # hledger-web
-    {
-      services.hledger-web.baseUrl = "https://hledger.li7g.com:${toString config.ports.https-alternative}";
     }
   ];
 }

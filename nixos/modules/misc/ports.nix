@@ -25,7 +25,6 @@
       http = 80;
       bgp = 179;
       https = 443;
-      https-alternative = 8443;
       smtp-tls = 465;
       ipsec-ike = 500;
       smtp-starttls = 587;
@@ -72,7 +71,9 @@
       ipsec-nat-traversal = 4500;
       iperf = 5201;
       babel = 6696;
+      http-alternative = 8080;
       jellyfin = 8096;
+      https-alternative = 8443;
       zerotier = 9993;
       dn42-mesh-min = 19000;
       # interval: no ports here

@@ -43,7 +43,7 @@
     ];
     hledger = [
       {
-        url = "https://hledger.ts.li7g.com";
+        url = "https://hledger.li7g.com";
         code = 401;
       }
     ];
