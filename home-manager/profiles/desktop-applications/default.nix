@@ -11,7 +11,7 @@ in {
       amberol
       calibre
       gimp
-      gnuradio
+      # gnuradio # TODO broken
       gparted
       inkscape
       libreoffice-fresh
