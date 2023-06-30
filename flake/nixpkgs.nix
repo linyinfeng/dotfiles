@@ -76,7 +76,7 @@
     });
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
-    inherit (inputs'.nixpkgs-wluma.legacyPackages) wluma;
+    inherit (inputs'.latest.legacyPackages) wluma;
   };
 in {
   nixpkgs = {
