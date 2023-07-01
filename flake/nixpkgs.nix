@@ -57,7 +57,9 @@
     inherit ((getSystem system).allModuleArgs) inputs';
   in {
     # use waybar-git
-    waybar = prev.waybar.overrideAttrs (old: {
+    waybar = (prev.waybar.override {
+      fmt = final.fmt_9; # TODO failed to build with fmt
+    }).overrideAttrs (old: {
       inherit (final.nur.repos.linyinfeng.sources.waybar-git) version src;
     });
 
