@@ -206,6 +206,13 @@
 
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
+
+    # other
+
+    # TODO wait for https://github.com/NixOS/mobile-nixos/pull/627
+    # mobile-nixos.url = "github:nixos/mobile-nixos";
+    mobile-nixos.url = "github:linyinfeng/mobile-nixos/enchilada";
+    mobile-nixos.flake = false;
   };
 
   outputs = inputs @ {flake-parts, ...}:

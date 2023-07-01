@@ -679,6 +679,23 @@
         "type": "github"
       }
     },
+    "mobile-nixos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1686886002,
+        "narHash": "sha256-mLd2T2PIVmopTIVrAnjBruOAJ3SEanvHJH5IakBCuN8=",
+        "owner": "linyinfeng",
+        "repo": "mobile-nixos",
+        "rev": "18cafe78e28f7fc91d6ef3bf3f0f054d235dc22a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "ref": "enchilada",
+        "repo": "mobile-nixos",
+        "type": "github"
+      }
+    },
     "nix": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -1097,6 +1114,7 @@
         "mc-config-nuc": "mc-config-nuc",
         "minecraft-json": "minecraft-json",
         "minecraft-nix": "minecraft-nix",
+        "mobile-nixos": "mobile-nixos",
         "nix-gc-s3": "nix-gc-s3",
         "nix-index-database": "nix-index-database",
         "nixago": "nixago",
