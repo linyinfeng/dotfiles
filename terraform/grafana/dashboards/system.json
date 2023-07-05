@@ -89,7 +89,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "repeat": "host",
       "repeatDirection": "h",
       "targets": [
@@ -175,7 +175,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -235,7 +235,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -264,6 +264,8 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 0,
@@ -383,7 +385,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -440,7 +442,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -583,7 +585,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -828,7 +830,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "9.5.0-cloud.5.a016665c",
+      "pluginVersion": "10.0.2-cloud.1.94a6f396",
       "targets": [
         {
           "datasource": {
@@ -1245,6 +1247,6 @@
   "timezone": "",
   "title": "Systems",
   "uid": "dashboard-system",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
