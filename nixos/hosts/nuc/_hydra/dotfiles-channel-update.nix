@@ -53,7 +53,6 @@
     scriptArgs = "%I";
     path = with pkgs; [
       git
-      cachix
       jq
       config.nix.package
       util-linux
@@ -69,7 +68,6 @@
       Restart = "on-failure";
       LoadCredential = [
         "github-token:${config.sops.secrets."nano/github-token".path}"
-        "cachix-signing-key:${config.sops.secrets."cachix/linyinfeng".path}"
       ];
     };
     environment =
@@ -78,10 +76,6 @@
   };
   sops.secrets."nano/github-token" = {
     sopsFile = config.sops-file.get "common.yaml";
-    restartUnits = ["dotfiles-channel-update@.service"];
-  };
-  sops.secrets."cachix/linyinfeng" = {
-    sopsFile = config.sops-file.host;
     restartUnits = ["dotfiles-channel-update@.service"];
   };
 
