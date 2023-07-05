@@ -109,7 +109,6 @@ locals {
     tar             = { on = "mia0", proxy = true }
     pgp-public-key  = { on = "mia0", proxy = true }
     oranc           = { on = "mia0", proxy = true }
-    hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     hledger         = { on = "mtl0", proxy = true }
@@ -127,6 +126,7 @@ locals {
     "shanghai.derp" = { on = "shg0", proxy = false }
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }
+    hydra           = { on = "hil0", proxy = true }
     matrix          = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }

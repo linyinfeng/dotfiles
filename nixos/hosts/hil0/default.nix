@@ -31,6 +31,10 @@ in {
       services.mastodon
       services.maddy
       services.well-known
+      services.hydra
+      nix.hydra-builder-server
+      nix.hydra-builder-client
+      nix.access-tokens
       networking.as198764
     ])
     ++ [
@@ -117,5 +121,14 @@ in {
         restartUnits = ["systemd-networkd.service"];
       };
     })
+
+    # hydra extra configurations
+    {
+      services.hydra.buildMachinesFiles = [
+        "/etc/nix-build-machines/hydra-builder/machines"
+      ];
+      # limit cpu quota of nix builds
+      systemd.services.nix-daemon.serviceConfig.CPUQuota = "300%";
+    }
   ];
 }

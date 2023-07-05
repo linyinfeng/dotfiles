@@ -212,8 +212,8 @@
       "proxy": true
     },
     "hydra": {
-      "on": "nuc",
-      "proxy": false
+      "on": "hil0",
+      "proxy": true
     },
     "influxdb": {
       "on": "fsn0",
