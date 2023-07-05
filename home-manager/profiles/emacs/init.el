@@ -79,6 +79,10 @@
   :ensure t
   :bind (("M-o" . ace-window)))
 
+(use-package agda2-mode
+  :ensure t
+  :hook ((agda2-mode . deactivate-input-method)))
+
 (use-package avy
   :ensure t
   :config
@@ -289,8 +293,8 @@
           [ "#+options: tex:t"
             "#+startup: latexpreview" ]))
      (cl-flet ((build-header (l)
-                          (apply 'concat (mapcar (lambda (s) (concat s "\n"))
-                                                 (vconcat common-header-before l common-header-after)))))
+                 (apply 'concat (mapcar (lambda (s) (concat s "\n"))
+                                        (vconcat common-header-before l common-header-after)))))
        `(("d" "default" plain "%?"
           :target (file+head ,file-format ,(build-header [ ]))
           :unnarrowed t)
@@ -447,11 +451,5 @@
 
 (use-package ztree
   :ensure t)
-
-(defun load-agda-mode ()
-  "Open init.el file"
-  (interactive)
-  (load-file (let ((coding-system-for-read 'utf-8))
-               (shell-command-to-string "agda-mode locate"))))
 
 (message "Finish loading init.el")
