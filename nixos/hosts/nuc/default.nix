@@ -49,7 +49,6 @@ in {
       users.nianyi
     ])
     ++ [
-      ./_hydra
       ./_minecraft
     ];
 

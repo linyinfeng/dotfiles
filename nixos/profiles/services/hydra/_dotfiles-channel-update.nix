@@ -37,11 +37,8 @@
           popd
         fi
         cd dotfiles
-        git checkout "$target_branch" || git checkout -b "$target_branch"
-        git pull origin "$target_branch" || true
-        git fetch
-        git merge --ff-only "$commit"
-        git push --set-upstream origin "$target_branch"
+        git fetch origin --verbose
+        git push origin "$commit:$target_branch" --verbose
 
         ${config.programs.tg-send.wrapped} <<EOF
       dotfiles/$target_branch

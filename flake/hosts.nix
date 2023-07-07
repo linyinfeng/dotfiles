@@ -224,8 +224,7 @@
           sharedModules = commonHmModules;
           extraSpecialArgs = hmSpecialArgs;
         };
-        system.constant = true;
-        # system.configurationRevision = self.rev or null;
+        system.configurationRevision = self.rev or null;
       }
     ];
 
