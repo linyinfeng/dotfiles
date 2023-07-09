@@ -13,6 +13,7 @@
     upower-battery
     alphabetical-app-grid
     customize-ibus
+    caffeine
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
 in
