@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{config, ...}: let
   defaultVoicePort = config.ports.teamspeak-voice;
   fileTransferPort = config.ports.teamspeak-file-transfer;
   queryPort = config.ports.teamspeak-query;

@@ -36,7 +36,6 @@ in {
       services.jellyfin
       services.samba
       services.vlmcsd
-      services.teamspeak
       services.godns
       services.nginx
       services.acme

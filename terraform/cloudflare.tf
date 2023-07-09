@@ -126,6 +126,7 @@ locals {
     "shanghai.derp" = { on = "shg0", proxy = false }
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }
+    teamspeak       = { on = "shg0", proxy = false }
     hydra           = { on = "hil0", proxy = true }
     matrix          = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
