@@ -57,6 +57,7 @@
     dst = [];
     matrix-qq = [];
     smtp = [];
+    teamspeak = [];
   };
   overrides = {
     box = [
