@@ -226,6 +226,16 @@
         };
         system.configurationRevision = self.rev or null;
       }
+
+      # fixes
+      ({modulesPath, ...}: {
+        disabledModules = [
+          "${modulesPath}/config/iproute2.nix"
+        ];
+        imports = [
+          "${inputs.nixpkgs-iproute2-ifd}/nixos/modules/config/iproute2.nix"
+        ];
+      })
     ];
 
   commonHmModules =

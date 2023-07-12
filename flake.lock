@@ -896,6 +896,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-iproute2-ifd": {
+      "locked": {
+        "lastModified": 1688896139,
+        "narHash": "sha256-r0ZRo35GA3l9ITZNaUyOMtDHp/G+TddC8e3XJCYon+U=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "490e7cdc5efe9d29717d1ddadad3d593e0403c91",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/242453/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-regression": {
       "locked": {
         "lastModified": 1643052045,
@@ -1123,6 +1139,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-iproute2-ifd": "nixpkgs-iproute2-ifd",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",

@@ -213,6 +213,9 @@
     # mobile-nixos.url = "github:nixos/mobile-nixos";
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/enchilada";
     mobile-nixos.flake = false;
+
+    # fixes
+    nixpkgs-iproute2-ifd.url = "github:nixos/nixpkgs/pull/242453/head";
   };
 
   outputs = inputs @ {flake-parts, ...}:
