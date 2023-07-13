@@ -276,7 +276,10 @@ in
         services.nginx.enable = true;
         services.nginx.virtualHosts.${cfg.externalController.virtualHost} = {
           locations = {
-            "${cfg.externalController.location}".proxyPass = "http://${cfg.mixinConfig.external-controller}/";
+            "${cfg.externalController.location}" = {
+              proxyPass = "http://${cfg.mixinConfig.external-controller}/";
+              proxyWebsockets = true;
+            };
           };
         };
       })
