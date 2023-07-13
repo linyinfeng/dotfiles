@@ -228,6 +228,7 @@
       }
 
       # fixes
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=242453
       ({modulesPath, ...}: {
         disabledModules = [
           "${modulesPath}/config/iproute2.nix"
