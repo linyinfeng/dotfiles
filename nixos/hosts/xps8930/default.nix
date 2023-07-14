@@ -125,7 +125,7 @@ in {
     options = ["defaults" "size=16G" "mode=755"];
   };
   fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-  fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
+  fileSystems."/persist" = btrfsSubvolData "@persist" {neededForBoot = true;};
   fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
   fileSystems."/swap" = btrfsSubvolMain "@swap" {};
   fileSystems."/boot" = {
