@@ -1,5 +1,6 @@
 # customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/12th-gen-intel/default.nix
 {
+  self,
   config,
   pkgs,
   lib,
@@ -72,4 +73,16 @@
       wantedBy = ["display-manager.service"];
     };
   };
+
+  # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
+  boot.kernelPatches = [
+    {
+      name = "framework-12th-tpm-tis-workaround";
+      # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
+      patch = "${self}/patches/framework-12th-tpm-tis-workaround.patch";
+    }
+  ];
+  # because kernel needs to be recompiled
+  # enable lockdown by the way
+  boot.kernelLockdown = true;
 }
