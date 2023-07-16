@@ -79,7 +79,7 @@
     {
       name = "framework-12th-tpm-tis-workaround";
       # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
-      patch = "${self}/patches/framework-12th-tpm-tis-workaround.patch";
+      patch = ../../../patches/framework-12th-tpm-tis-workaround.patch;
     }
   ];
   # because kernel needs to be recompiled
