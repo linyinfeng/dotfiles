@@ -33,6 +33,8 @@
       peer-dn42 = 202;
 
       as198764 = 210;
+
+      fw-proxy = 854;
     };
 
     routingPolicyPriorities = {
@@ -41,6 +43,8 @@
       bgp-dn42 = 24230;
 
       as198764 = 25000;
+
+      fw-proxy = 26000;
     };
   };
 }

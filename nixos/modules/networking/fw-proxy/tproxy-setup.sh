@@ -6,6 +6,7 @@ export PATH="@iproute2@/bin:@nftables@/bin:$PATH"
 tproxy_port="@tproxyPort@"
 routing_table="@routingTable@"
 fwmark="@fwmark@"
+rule_priority="@rulePriority@"
 nft_table="@nftTable@"
 bypass_cgroup="@bypassCgroup@"
 bypass_cgroup_level="@bypassCgroupLevel@"
@@ -17,9 +18,10 @@ proxied_interfaces=(@proxiedInterfaces@)
 set -ex
 
 # setup route tables
-ip rule add fwmark "$fwmark" table "$routing_table"
 ip -4 route add local default dev lo table "$routing_table"
 ip -6 route add local default dev lo table "$routing_table"
+ip -4 rule add fwmark "$fwmark" table "$routing_table" priority "$rule_priority"
+ip -6 rule add fwmark "$fwmark" table "$routing_table" priority "$rule_priority"
 
 # setup cgroup
 mkdir "/sys/fs/cgroup/$cgroup"

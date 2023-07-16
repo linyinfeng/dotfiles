@@ -54,8 +54,9 @@
       tproxyPort = cfg.mixinConfig.tproxy-port;
       inherit
         (cfg.tproxy)
-        routingTable
         fwmark
+        routingTable
+        rulePriority
         cgroup
         nftTable
         extraFilterRules
@@ -72,7 +73,7 @@
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) iproute2 nftables;
-      inherit (cfg.tproxy) routingTable fwmark cgroup nftTable;
+      inherit (cfg.tproxy) fwmark cgroup nftTable routingTable;
     };
     tproxyUse = pkgs.substituteAll {
       src = ./tproxy-use.sh;
@@ -116,12 +117,16 @@ in
           default = [];
         };
         routingTable = mkOption {
-          type = with types; str;
-          default = "854";
+          type = with types; int;
+          default = 854;
         };
         fwmark = mkOption {
           type = with types; str;
           default = "0x356";
+        };
+        rulePriority = mkOption {
+          type = with types; int;
+          default = 26000;
         };
         nftTable = mkOption {
           type = with types; str;
@@ -311,6 +316,10 @@ in
 
         networking.fw-proxy.tproxy.allCgroups = [cfg.tproxy.cgroup];
         passthru.fw-proxy-tproxy-scripts = scripts;
+
+        systemd.network.config.routeTables = {
+          fw-tproxy = cfg.tproxy.routingTable;
+        };
       })
 
       (mkIf cfg.auto-update.enable {

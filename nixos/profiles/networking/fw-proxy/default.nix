@@ -11,6 +11,8 @@ in {
     tproxy = {
       enable = lib.mkDefault true;
       cgroup = "tproxy.slice";
+      routingTable = config.routingTables.fw-proxy;
+      rulePriority = config.routingPolicyPriorities.fw-proxy;
     };
     mixinConfig = {
       port = config.ports.proxy-http;

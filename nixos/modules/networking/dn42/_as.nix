@@ -22,7 +22,7 @@ in
       services.strongswan-swanctl.strongswan.extraConfig = lib.mkIf config.networking.fw-proxy.tproxy.enable ''
         charon {
           # tproxy's routing table routes everything to lo
-          ignore_routing_tables = ${config.networking.fw-proxy.tproxy.routingTable}
+          ignore_routing_tables = ${toString config.networking.fw-proxy.tproxy.routingTable}
         }
       '';
     }
