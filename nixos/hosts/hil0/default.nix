@@ -55,7 +55,7 @@ in {
       };
       boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "sd_mod" "sr_mod"];
 
-      boot.tmp.useTmpfs = true;
+      boot.tmp.cleanOnBoot = true;
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
@@ -80,6 +80,7 @@ in {
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
       fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
       fileSystems."/swap" = btrfsSubvolMain "@swap" {};
+      fileSystems."/tmp" = btrfsSubvolMain "@tmp" {};
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/5C56-7693";
         fsType = "vfat";
