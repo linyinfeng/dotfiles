@@ -37,7 +37,6 @@ in {
       services.prebuilt-zip
       services.hledger-web
       networking.as198764
-      ./reddit-grab.nix
     ]);
 
   config = lib.mkMerge [
