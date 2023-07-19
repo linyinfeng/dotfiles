@@ -33,6 +33,7 @@ in {
       services.nginx
       services.acme
       services.ssh-honeypot
+      services.flatpak
       programs.service-mail
       programs.tg-send
       users.yinfeng
