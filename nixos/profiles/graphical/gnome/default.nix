@@ -29,7 +29,9 @@ config.services.xserver.desktopManager.gnome.enable
     gnome.polari
   ];
 
-  services.gnome.gnome-browser-connector.enable = true;
+  # disabled
+  # install extensions declaratively with home-manager dconf options
+  services.gnome.gnome-browser-connector.enable = false;
 
   networking.firewall.allowedTCPPorts = [
     3389 # RDP

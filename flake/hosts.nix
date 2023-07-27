@@ -216,7 +216,9 @@
       inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot
-      inputs.hyprland.nixosModules.default
+      # TODO wait for https://github.com/hyprwm/Hyprland/pull/2819
+      # inputs.hyprland.nixosModules.default
+      (import "${inputs.hyprland-deprecated-font-option}/nix/module.nix" (inputs.hyprland.inputs // {self = inputs.hyprland;}))
 
       {
         lib.self = self.lib;
@@ -280,16 +282,24 @@
         ++ [
           ({lib, ...}: {
             networking.hostName = lib.mkDefault name;
-            nixpkgs = {inherit system;};
           })
           (
             if forceFlakeNixpkgs
             then {
-              _module.args.pkgs = lib.mkForce (getSystem system).allModuleArgs.pkgs;
+              imports = [nixpkgs.nixosModules.readOnlyPkgs];
+              nixpkgs = let
+                inherit ((getSystem system).allModuleArgs) pkgs;
+              in {
+                inherit pkgs;
+                # TODO
+                config = lib.mkForce pkgs.config;
+                overlays = lib.mkForce pkgs.overlays;
+              };
             }
             else {
               nixpkgs = {
                 inherit (config.nixpkgs) config overlays;
+                hostPlatform = system;
               };
             }
           )
@@ -365,6 +375,10 @@ in {
         import "${inputs.mobile-nixos}/modules/module-list.nix"
         ++ [
           "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+          ({pkgs, ...}: {
+            # TODO mobile-nixos tests `config.nixpkgs.localSystem`
+            nixpkgs.system = "aarch64-linux";
+          })
         ];
     })
 

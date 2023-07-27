@@ -43,8 +43,6 @@
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
 
     hydra.url = "github:nixos/hydra";
-    # hydra.inputs.nix.follows = "nix";
-    # hydra.inputs.nixpkgs.follows = "nixpkgs";
 
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
@@ -66,6 +64,7 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.inputs.flake-utils.follows = "flake-utils";
+    emacs-overlay.inputs.nixpkgs-stable.follows = "blank";
 
     # programs
 
@@ -145,6 +144,7 @@
     blank.url = "github:divnix/blank";
 
     flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
 
     flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
     flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
@@ -215,6 +215,9 @@
     mobile-nixos.flake = false;
 
     # fixes
+    # TODO wait for https://github.com/hyprwm/Hyprland/pull/2819
+    hyprland-deprecated-font-option.url = "github:hyprwm/hyprland/pull/2819/head";
+    hyprland-deprecated-font-option.flake = false;
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=242453
     nixpkgs-iproute2-ifd.url = "github:nixos/nixpkgs/pull/242453/head";
   };
