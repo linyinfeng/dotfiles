@@ -213,12 +213,14 @@
       inputs.linyinfeng.nixosModules.commit-notifier
       inputs.linyinfeng.nixosModules.dot-tar
       inputs.linyinfeng.nixosModules.matrix-media-repo
-      inputs.attic.nixosModules.atticd
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot
-      # TODO wait for https://github.com/hyprwm/Hyprland/pull/2819
-      # inputs.hyprland.nixosModules.default
-      (import "${inputs.hyprland-deprecated-font-option}/nix/module.nix" (inputs.hyprland.inputs // {self = inputs.hyprland;}))
+      inputs.hyprland.nixosModules.default
+      {
+        # `attic.nixosModules.atticd` uses `nixpkgs.overlays`
+        imports = ["${inputs.attic}/nixos/atticd.nix"];
+        services.atticd.useFlakeCompatOverlay = false;
+      }
 
       {
         lib.self = self.lib;
@@ -291,9 +293,9 @@
                 inherit ((getSystem system).allModuleArgs) pkgs;
               in {
                 inherit pkgs;
-                # TODO
+                # TODO remove these workaround
                 config = lib.mkForce pkgs.config;
-                overlays = lib.mkForce pkgs.overlays;
+                # overlays = lib.mkForce pkgs.overlays;
               };
             }
             else {

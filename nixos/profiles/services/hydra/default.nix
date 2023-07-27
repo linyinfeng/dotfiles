@@ -30,7 +30,6 @@ in {
 
       services.hydra = {
         enable = true;
-        package = pkgs.hydra-master;
         listenHost = "127.0.0.1";
         port = config.ports.hydra;
         hydraURL = "https://hydra.li7g.com";

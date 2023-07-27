@@ -1,7 +1,6 @@
 {
   inputs,
   getSystem,
-  lib,
   ...
 }: let
   packages = [
@@ -13,37 +12,33 @@
     inputs.emacs-overlay.overlay
     inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default
+    inputs.attic.overlays.default
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';
-    in
-      {
-        nixVersions =
-          prev.nixVersions.extend
-          (final': prev': {
-            master = inputs'.nix.packages.nix;
-            selected = final'.unstable;
-          });
-        inherit (inputs'.attic.packages) attic atticd attic-server;
-        nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
-        pastebin = inputs'.pastebin.packages.default;
-        mc-config-nuc = inputs'.mc-config-nuc.packages;
-        nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
+    in {
+      nixVersions =
+        prev.nixVersions.extend
+        (final': prev': {
+          master = inputs'.nix.packages.nix;
+          selected = final'.unstable;
+        });
+      nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
+      pastebin = inputs'.pastebin.packages.default;
+      mc-config-nuc = inputs'.mc-config-nuc.packages;
+      nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
 
-        # adjustment
-        comma = prev.comma.override {
-          nix-index-unwrapped = final.nix-index-with-db;
+      # adjustment
+      comma = prev.comma.override {
+        nix-index-unwrapped = final.nix-index-with-db;
+      };
+      gnuradio = prev.gnuradio.override {
+        unwrapped = prev.gnuradio.unwrapped.override {
+          soapysdr = final.soapysdr-with-plugins;
         };
-        gnuradio = prev.gnuradio.override {
-          unwrapped = prev.gnuradio.unwrapped.override {
-            soapysdr = final.soapysdr-with-plugins;
-          };
-        };
-        bird = inputs'.linyinfeng.packages.bird-babel-rtt;
-      }
-      // lib.optionalAttrs (system == "x86_64-linux") {
-        hydra-master = inputs'.hydra.packages.default;
-      })
+      };
+      bird = inputs'.linyinfeng.packages.bird-babel-rtt;
+    })
   ];
   earlyFixes = final: prev: let
     inherit (prev.stdenv.hostPlatform) system;
