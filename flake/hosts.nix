@@ -293,9 +293,9 @@
                 inherit ((getSystem system).allModuleArgs) pkgs;
               in {
                 inherit pkgs;
-                # TODO remove these workaround
+                # TODO workaround for the gnome module
+                # the gnome module sets the config `vim.gui = "gtk3";`
                 config = lib.mkForce pkgs.config;
-                # overlays = lib.mkForce pkgs.overlays;
               };
             }
             else {
