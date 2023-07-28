@@ -31,6 +31,8 @@
     };
   };
   mkHostDn42Cfg = name: hostData: {
+    addressesV4 = hostData.dn42_addresses_v4;
+    addressesV6 = hostData.dn42_addresses_v6;
     preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
     preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
   };

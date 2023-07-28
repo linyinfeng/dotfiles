@@ -4,7 +4,8 @@
   ...
 }: let
   # only show servers with endpoints
-  hostFilter = _name: hostCfg: (hostCfg.endpointsV4 ++ hostCfg.endpointsV6) != [];
+  inherit (config.lib.self) data;
+  hostFilter = name: (data.hosts.${name}.endpoints_v4 ++ data.hosts.${name}.endpoints_v6) != [];
 in {
   services.bird-lg.frontend = {
     enable = true;
@@ -13,9 +14,7 @@ in {
     domain = "ts.li7g.com";
     proxyPort = config.ports.bird-lg-proxy;
     whois = "whois.dn42";
-    servers =
-      lib.mapAttrsToList (_: hostCfg: hostCfg.name)
-      (lib.filterAttrs hostFilter config.networking.dn42.autonomousSystem.mesh.hosts);
+    servers = lib.filter hostFilter (lib.attrNames config.networking.dn42.autonomousSystem.hosts);
     protocolFilter = [];
     titleBrand = "li7g.com";
     navbar.allServers = "ALL";

@@ -40,6 +40,12 @@
         type = lib.types.str;
         default = name;
       };
+      addressesV4 = lib.mkOption {
+        type = with lib.types; listOf str;
+      };
+      addressesV6 = lib.mkOption {
+        type = with lib.types; listOf str;
+      };
       preferredAddressV4 = lib.mkOption {
         type = lib.types.str;
       };

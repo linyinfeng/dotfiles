@@ -40,7 +40,10 @@
   asCfg = cfg.autonomousSystem;
   json = pkgs.formats.json {};
   data = config.lib.self.data;
-  filterHost = name: hostCfg: (hostCfg.endpointsV4 ++ hostCfg.endpointsV6) != [];
+  filterHost = name: _hostCfg:
+    (data.hosts.${name}.endpoints_v4
+      ++ data.hosts.${name}.endpoints_v6)
+    != [];
   mkHostInfo = name: hostCfg:
     lib.recursiveUpdate {
       dn42 = {
@@ -60,8 +63,8 @@
         traffic_control = config.passthru.dn42TrafficControlTable.${name}.enable;
         wireguard = {
           endpoints = {
-            v4 = hostCfg.endpointsV4;
-            v6 = hostCfg.endpointsV6;
+            v4 = data.hosts.${name}.endpoints_v4;
+            v6 = data.hosts.${name}.endpoints_v6;
           };
           public_key = data.hosts.${name}.wireguard_public_key;
           port = "Last 5 digits of your ASN";
@@ -77,7 +80,7 @@
         v6 = asCfg.cidrV6;
       };
     };
-    hosts = lib.mapAttrs mkHostInfo (lib.filterAttrs filterHost asCfg.mesh.hosts);
+    hosts = lib.mapAttrs mkHostInfo (lib.filterAttrs filterHost asCfg.hosts);
   };
   siteRoot = pkgs.runCommandNoCC "dn42-site-root" {} ''
     mkdir -p $out
