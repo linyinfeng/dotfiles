@@ -56,6 +56,7 @@ in {
   };
   systemd.network.config.routeTables = {
     as198764 = config.routingTables.as198764;
+    as198764-catch = config.routingTables.as198764-catch;
   };
   systemd.network.networks."70-as198764" = {
     matchConfig = {
@@ -88,6 +89,13 @@ in {
           Table = config.routingTables.as198764;
         };
       }
+      {
+        routeConfig = {
+          Destination = cidr;
+          Type = "unreachable";
+          Table = config.routingTables.as198764-catch;
+        };
+      }
     ];
     routingPolicyRules = [
       {
@@ -95,6 +103,12 @@ in {
           Priority = config.routingPolicyPriorities.as198764;
           From = cidr;
           Table = config.routingTables.as198764;
+        };
+      }
+      {
+        routingPolicyRuleConfig = {
+          Priority = config.routingPolicyPriorities.as198764-catch;
+          Table = config.routingTables.as198764-catch;
         };
       }
     ];
