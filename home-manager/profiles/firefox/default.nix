@@ -10,6 +10,7 @@
         id = 0;
         isDefault = true;
         settings = {
+          "network.proxy.type" = 0; # use proxy plugins to select proxies
           # "media.ffmpeg.vaapi.enabled" = true;
           # "media.ffvpx.enabled" = false;
           # "media.rdd-vpx.enabled" = false;
