@@ -68,6 +68,8 @@
       bird-lg-frontend = 3251;
       keycloak = 3260;
       qrcp = 3270;
+      portal-socks = 3280;
+      portal-internal = 3281;
       ipsec-nat-traversal = 4500;
       iperf = 5201;
       babel = 6696;

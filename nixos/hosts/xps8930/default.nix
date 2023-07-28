@@ -34,6 +34,7 @@ in {
       services.acme
       services.ssh-honeypot
       services.flatpak
+      services.portal-client
       programs.service-mail
       programs.tg-send
       users.yinfeng
@@ -69,10 +70,6 @@ in {
   networking.campus-network = {
     enable = true;
     auto-login.enable = true;
-  };
-  services.portal = {
-    host = "portal.li7g.com";
-    client.enable = true;
   };
   services.godns = {
     ipv4.settings = {

@@ -17,6 +17,7 @@ in {
       services.nginx
       services.acme
       services.notify-failure
+      services.portal-server
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
@@ -38,22 +39,6 @@ in {
         fsType = "ext4";
       };
       swapDevices = [{device = "/dev/vda2";}];
-    }
-
-    # portal
-    {
-      services.nginx.virtualHosts."portal.*" = {
-        forceSSL = true;
-        useACMEHost = "main";
-        locations."/" = {
-          root = pkgs.element-web;
-        };
-      };
-      services.portal = {
-        host = "portal.li7g.com";
-        nginxVirtualHost = "portal.*";
-        server.enable = true;
-      };
     }
 
     (lib.mkIf (!config.system.is-vm) {
