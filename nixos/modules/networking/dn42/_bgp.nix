@@ -202,7 +202,7 @@ in
             };
           };
           protocol static static_bgp_v4 {
-            route OWNNETv4 reject;
+            route OWNNETv4 unreachable;
             ipv4 {
               table bgp_v4;
               import all;
@@ -210,7 +210,7 @@ in
             };
           }
           protocol static static_bgp_v6 {
-            route OWNNETv6 reject;
+            route OWNNETv6 unreachable;
             ipv6 {
               table bgp_v6;
               import all;

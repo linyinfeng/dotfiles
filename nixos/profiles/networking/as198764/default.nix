@@ -107,7 +107,7 @@ in {
   };
   services.bird2.config = lib.mkIf (config.networking.dn42.enable) (lib.mkOrder 120 ''
     protocol static static_as198764 {
-      ${lib.concatMapStringsSep "  \n" (a: "route ${a}/128 reject;") hostData.as198764_addresses_v6}
+      ${lib.concatMapStringsSep "  \n" (a: "route ${a}/128 unreachable;") hostData.as198764_addresses_v6}
       ipv6 {
         table mesh_v6;
         import all;
