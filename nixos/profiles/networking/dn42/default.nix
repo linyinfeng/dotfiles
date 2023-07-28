@@ -14,7 +14,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
-            assign = true;
+            assign = false;
           })
           hostData.dn42_addresses_v4;
         preferredAddress = lib.elemAt hostData.dn42_addresses_v4 0;
@@ -23,7 +23,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
-            assign = true;
+            assign = false;
           })
           hostData.dn42_addresses_v6;
         preferredAddress = lib.elemAt hostData.dn42_addresses_v6 0;

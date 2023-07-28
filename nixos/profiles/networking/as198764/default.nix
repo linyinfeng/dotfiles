@@ -64,7 +64,7 @@ in {
               addresses =
                 lib.lists.map (address: {
                   inherit address;
-                  assign = true;
+                  assign = false;
                 })
                 hostData.as198764_addresses_v6
                 ++ lib.optional cfg.exit {
@@ -73,7 +73,7 @@ in {
                 }
                 ++ lib.optional cfg.anycast {
                   address = anycastIp;
-                  assign = true;
+                  assign = false;
                 };
               preferredAddress = lib.elemAt hostData.as198764_addresses_v6 0;
             };
@@ -116,6 +116,19 @@ in {
         ];
       };
     }
+
+    (lib.mkIf cfg.anycast {
+      systemd.network.networks."70-as198764" = {
+        addresses = [
+          {
+            addressConfig = {
+              Address = "${anycastIp}/128";
+              Scope = "global";
+            };
+          }
+        ];
+      };
+    })
 
     (lib.mkIf cfg.exit {
       systemd.network.netdevs."70-as198764" = {
@@ -175,6 +188,16 @@ in {
           Name = "as198764";
           Kind = "dummy";
         };
+      };
+      systemd.network.networks."70-as198764" = {
+        addresses =
+          lib.lists.map (a: {
+            addressConfig = {
+              Address = "${a}/128";
+              Scope = "global";
+            };
+          })
+          hostData.as198764_addresses_v6;
       };
     })
   ]);
