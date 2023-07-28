@@ -17,7 +17,6 @@ in {
       services.nginx
       services.acme
       services.notify-failure
-      networking.as198764
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")

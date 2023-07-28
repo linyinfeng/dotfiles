@@ -19,7 +19,6 @@
       services.bird-lg
       services.keycloak
       nix.hydra-builder-server
-      networking.as198764
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"

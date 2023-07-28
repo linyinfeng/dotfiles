@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.networking.dn42;
@@ -41,43 +40,11 @@
         type = lib.types.str;
         default = name;
       };
-      bgp = {
-        enable = lib.mkEnableOption "bgp";
-        community.dn42 = {
-          region = lib.mkOption {
-            type = lib.types.nullOr dn42RegionType;
-          };
-          country = lib.mkOption {
-            type = lib.types.nullOr dn42CountryType;
-          };
-        };
-      };
-      indices = lib.mkOption {
-        type = with lib.types; listOf int;
-      };
-      addressesV4 = lib.mkOption {
-        type = with lib.types; listOf str;
-      };
-      addressesV6 = lib.mkOption {
-        type = with lib.types; listOf str;
-      };
       preferredAddressV4 = lib.mkOption {
         type = lib.types.str;
-        default = lib.elemAt config.addressesV4 0;
       };
       preferredAddressV6 = lib.mkOption {
         type = lib.types.str;
-        default = lib.elemAt config.addressesV6 0;
-      };
-      endpointsV4 = lib.mkOption {
-        type = with lib.types; listOf str;
-      };
-      endpointsV6 = lib.mkOption {
-        type = with lib.types; listOf str;
-      };
-      initiate = lib.mkOption {
-        type = lib.types.enum ["ipv4" "ipv6"];
-        default = "ipv6";
       };
     };
   };
@@ -228,57 +195,37 @@
       };
     };
   };
-  babelInterfaceOptions = {
-    options = {
-      type = lib.mkOption {
-        type = lib.types.enum ["wired" "wireless" "tunnel"];
-      };
-      extraConfig = lib.mkOption {
-        type = lib.types.lines;
-      };
-    };
-  };
 in {
   options = {
     networking.dn42 = {
       enable = lib.mkEnableOption "dn42";
       bgp = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
-          default = asCfg.mesh.thisHost.bgp.enable;
-        };
         routingTable = {
           id = lib.mkOption {
             type = lib.types.int;
-            default = 201;
           };
           name = lib.mkOption {
             type = lib.types.str;
-            default = "bgp-dn42";
+            default = "dn42-bgp";
           };
           priority = lib.mkOption {
             type = lib.types.int;
-            default = cfg.routingTables.basePriority + 30;
           };
         };
         gortr = {
           port = lib.mkOption {
             type = lib.types.port;
-            default = 8282;
           };
           metricPort = lib.mkOption {
             type = lib.types.port;
-            default = 8080;
           };
         };
         community.dn42 = {
           region = lib.mkOption {
             type = lib.types.nullOr dn42RegionType;
-            default = asCfg.mesh.thisHost.bgp.community.dn42.region;
           };
           country = lib.mkOption {
             type = lib.types.nullOr dn42CountryType;
-            default = asCfg.mesh.thisHost.bgp.community.dn42.country;
           };
         };
         collector.dn42.enable = lib.mkEnableOption "dn42 BGP collector";
@@ -341,15 +288,13 @@ in {
           routingTable = {
             id = lib.mkOption {
               type = lib.types.int;
-              default = 202;
             };
             name = lib.mkOption {
               type = lib.types.str;
-              default = "peer-dn42";
+              default = "dn42-peer";
             };
             priority = lib.mkOption {
               type = lib.types.int;
-              default = cfg.routingTables.basePriority + 20;
             };
           };
         };
@@ -357,26 +302,13 @@ in {
       bird = {
         routerId = lib.mkOption {
           type = lib.types.str;
-          default = cfg.autonomousSystem.mesh.thisHost.preferredAddressV4;
+          default = cfg.autonomousSystem.thisHost.preferredAddressV4;
         };
       };
       interfaces = {
         dummy.name = lib.mkOption {
           type = lib.types.str;
           default = "dn42";
-        };
-      };
-      routingTables = {
-        basePriority = lib.mkOption {
-          type = lib.types.int;
-          default = 24200; # higher than main
-          description = ''
-            Default priorities of routing tables:
-
-            * mesh <- base + 10
-            * peer <- base + 20
-            * bgp  <- base + 30
-          '';
         };
       };
       autonomousSystem = {
@@ -402,76 +334,23 @@ in {
         cidrV6 = lib.mkOption {
           type = lib.types.str;
         };
-        mesh = {
-          me = lib.mkOption {
-            type = lib.types.str;
-            default = config.networking.hostName;
-          };
-          bird.babelInterfaceConfig = lib.mkOption {
-            type = lib.types.lines;
-          };
-          interfaces = {
-            namePrefix = lib.mkOption {
-              type = lib.types.str;
-              default = "mesh";
-            };
-            mtu = lib.mkOption {
-              type = lib.types.int;
-              default = 1280;
-            };
-          };
-          extraInterfaces = lib.mkOption {
-            type = with lib.types; attrsOf (submodule babelInterfaceOptions);
-            default = {};
-          };
-          routingTable = {
-            id = lib.mkOption {
-              type = lib.types.int;
-              default = 200;
-            };
-            name = lib.mkOption {
-              type = lib.types.str;
-              default = "mesh-dn42";
-            };
-            priority = lib.mkOption {
-              type = lib.types.int;
-              default = cfg.routingTables.basePriority + 10;
-            };
-          };
-          hosts = lib.mkOption {
-            type = with lib.types; attrsOf (submodule hostOptions);
-            default = {};
-          };
-          thisHost = lib.mkOption {
-            type = lib.types.submodule hostOptions;
-            default = asCfg.mesh.hosts.${asCfg.mesh.me};
-            readOnly = true;
-          };
-          peerHosts = lib.mkOption {
-            type = with lib.types; attrsOf (submodule hostOptions);
-            default = lib.filterAttrs (key: _: key != asCfg.mesh.me) asCfg.mesh.hosts;
-            readOnly = true;
-          };
-          ipsec = {
-            enable = lib.mkEnableOption "IPSec/IKEv2";
-            caCert = lib.mkOption {
-              type = lib.types.str;
-            };
-            caCertFile = lib.mkOption {
-              type = lib.types.path;
-              default = pkgs.writeText "ipsec_ca_cert.pem" asCfg.mesh.ipsec.caCert;
-            };
-            hostCert = lib.mkOption {
-              type = lib.types.str;
-            };
-            hostCertFile = lib.mkOption {
-              type = lib.types.path;
-              default = pkgs.writeText "ipsec_host_cert.pem" asCfg.mesh.ipsec.hostCert;
-            };
-            hostCertKeyFile = lib.mkOption {
-              type = lib.types.path;
-            };
-          };
+        me = lib.mkOption {
+          type = lib.types.str;
+          default = config.networking.hostName;
+        };
+        hosts = lib.mkOption {
+          type = with lib.types; attrsOf (submodule hostOptions);
+          default = {};
+        };
+        thisHost = lib.mkOption {
+          type = lib.types.submodule hostOptions;
+          default = asCfg.hosts.${asCfg.me};
+          readOnly = true;
+        };
+        peerHosts = lib.mkOption {
+          type = with lib.types; attrsOf (submodule hostOptions);
+          default = lib.filterAttrs (key: _: key != asCfg.me) asCfg.hosts;
+          readOnly = true;
         };
       };
       dns = {
@@ -502,41 +381,26 @@ in {
   };
 
   imports = [
-    ./_as.nix
     ./_bgp.nix
     ./_dns.nix
     ./_ca.nix
-    ./_master.nix
   ];
   config = lib.mkIf (cfg.enable) {
-    boot.kernel.sysctl = {
-      "net.ipv6.conf.default.forwarding" = 1;
-      "net.ipv4.conf.default.forwarding" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
-      "net.ipv4.conf.all.forwarding" = 1;
-      # disable rp_filter
-      "net.ipv4.conf.all.rp_filter" = 0;
-      "net.ipv4.conf.default.rp_filter" = 0;
-      "net.ipv4.conf.*.rp_filter" = 0;
-    };
-    networking.firewall.checkReversePath = false;
-
     # basic bird2 configurations
     services.bird2 = {
       enable = true;
       config = lib.mkOrder 50 ''
-        # common configurations
+        # dn42 common configurations
 
-        define OWNAS = ${toString cfg.autonomousSystem.number};
-        define OWNIPv4 = ${cfg.autonomousSystem.mesh.thisHost.preferredAddressV4};
-        define OWNIPv6 = ${cfg.autonomousSystem.mesh.thisHost.preferredAddressV6};
-        define OWNNETv4 = ${cfg.autonomousSystem.cidrV4};
-        define OWNNETv6 = ${cfg.autonomousSystem.cidrV6};
-        define OWNNETSETv4 = [${cfg.autonomousSystem.cidrV4}+];
-        define OWNNETSETv6 = [${cfg.autonomousSystem.cidrV6}+];
+        define DN42OWNAS = ${toString cfg.autonomousSystem.number};
+        define DN42OWNIPv4 = ${cfg.autonomousSystem.thisHost.preferredAddressV4};
+        define DN42OWNIPv6 = ${cfg.autonomousSystem.thisHost.preferredAddressV6};
+        define DN42OWNNETv4 = ${cfg.autonomousSystem.cidrV4};
+        define DN42OWNNETv6 = ${cfg.autonomousSystem.cidrV6};
+        define DN42OWNNETSETv4 = [${cfg.autonomousSystem.cidrV4}+];
+        define DN42OWNNETSETv6 = [${cfg.autonomousSystem.cidrV6}+];
 
         router id ${cfg.bird.routerId};
-        protocol device device_main { }
       '';
     };
 

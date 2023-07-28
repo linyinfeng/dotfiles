@@ -3,27 +3,38 @@
   lib,
   ...
 }: let
-  cfg = config.networking.dn42;
+  dn42Cfg = config.networking.dn42;
+  meshCfg = config.networking.mesh;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
-  filterHost = _name: hostData: (lib.length hostData.host_indices != 0);
-  mkHost = name: hostData: {
-    bgp = {
-      enable = true;
-      community.dn42 = regionTable.${name};
+  filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
+  mkHostMeshCfg = name: hostData: {
+    cidrs = {
+      dn42V4 = {
+        addresses =
+          lib.lists.map (address: {
+            inherit address;
+            assign = true;
+          })
+          hostData.dn42_addresses_v4;
+        preferredAddress = lib.elemAt hostData.dn42_addresses_v4 0;
+      };
+      dn42V6 = {
+        addresses =
+          lib.lists.map (address: {
+            inherit address;
+            assign = true;
+          })
+          hostData.dn42_addresses_v6;
+        preferredAddress = lib.elemAt hostData.dn42_addresses_v6 0;
+      };
     };
-    indices = hostData.host_indices;
-    addressesV4 = hostData.dn42_addresses_v4;
-    addressesV6 = hostData.dn42_addresses_v6;
-    endpointsV4 = hostData.endpoints_v4;
-    endpointsV6 = hostData.endpoints_v6;
-    initiate =
-      if lib.elem name ipv4OnlyHosts
-      then "ipv4"
-      else "ipv6";
+  };
+  mkHostDn42Cfg = name: hostData: {
+    preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
+    preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
   };
   peerTable = import ./_peers.nix;
-  ipv4OnlyHosts = ["shg0"];
   trafficControlTable = {
     # Hetzner 20 TB/month
     "hil0".enable = false; # 20TB/month
@@ -94,94 +105,83 @@
       country = null;
     };
   };
-in {
-  networking.dn42 = {
-    enable = cfg.autonomousSystem.mesh.hosts ? ${hostName};
-    bgp = {
-      gortr = {
-        port = config.ports.gortr;
-        metricPort = config.ports.gortr-metric;
-      };
-      collector.dn42.enable = cfg.bgp.peering.peers != {};
-      peering = {
-        defaults = {
-          localPortStart = config.ports.dn42-peer-min;
-          wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
-          trafficControl = trafficControlTable.${hostName};
+in
+  lib.mkIf (meshCfg.enable) {
+    networking.mesh = {
+      cidrs = {
+        dn42V4 = {
+          family = "ipv4";
+          prefix = data.dn42_v4_cidr;
         };
-        peers = peerTable.${hostName} or {};
-        routingTable = {
-          id = config.routingTables.peer-dn42;
-          priority = config.routingPolicyPriorities.peer-dn42;
+        dn42V6 = {
+          family = "ipv6";
+          prefix = data.dn42_v6_cidr;
         };
       };
-      routingTable = {
-        id = config.routingTables.bgp-dn42;
-        priority = config.routingPolicyPriorities.bgp-dn42;
-      };
+      hosts = lib.mapAttrs mkHostMeshCfg filteredHost;
     };
-    autonomousSystem = {
-      dn42LowerNumber = 0128;
-      # number = 4242420128;
-      cidrV4 = data.dn42_v4_cidr;
-      cidrV6 = data.dn42_v6_cidr;
-      mesh = {
-        hosts = lib.mapAttrs mkHost (lib.filterAttrs filterHost data.hosts);
+    networking.dn42 = {
+      enable = true;
+      bgp = {
+        gortr = {
+          port = config.ports.gortr;
+          metricPort = config.ports.gortr-metric;
+        };
+        collector.dn42.enable = dn42Cfg.bgp.peering.peers != {};
+        peering = {
+          defaults = {
+            localPortStart = config.ports.dn42-peer-min;
+            wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
+            trafficControl = trafficControlTable.${hostName};
+          };
+          peers = peerTable.${hostName} or {};
+          routingTable = {
+            id = config.routingTables.dn42-peer;
+            priority = config.routingPolicyPriorities.dn42-peer;
+          };
+        };
         routingTable = {
-          id = config.routingTables.mesh-dn42;
-          priority = config.routingPolicyPriorities.mesh-dn42;
+          id = config.routingTables.dn42-bgp;
+          priority = config.routingPolicyPriorities.dn42-bgp;
         };
-        ipsec = {
-          enable = true;
-          caCert = data.ca_cert_pem;
-          hostCert = data.hosts.${hostName}.ike_cert_pem;
-          hostCertKeyFile = config.sops.secrets."ike_private_key_pem".path;
+        community.dn42 = {
+          inherit (regionTable.${hostName}) region country;
         };
-        bird.babelInterfaceConfig = ''
-          rtt cost 1024;
-          rtt max 1024 ms;
-        '';
-        # extraInterfaces =
-        #   lib.optionalAttrs config.services.zerotierone.enable {
-        #     "${config.passthru.zerotierInterfaceName}" = {
-        #       type = "tunnel";
-        #       extraConfig = asCfg.mesh.bird.babelInterfaceConfig;
-        #     };
-        #   };
       };
+      autonomousSystem = {
+        dn42LowerNumber = 0128; # number = 4242420128;
+        cidrV4 = data.dn42_v4_cidr;
+        cidrV6 = data.dn42_v6_cidr;
+        hosts = lib.mapAttrs mkHostDn42Cfg filteredHost;
+      };
+      dns.enable = true;
+      certificateAuthority.trust = true;
     };
-    dns.enable = true;
-    certificateAuthority.trust = true;
-  };
 
-  # bird-lg proxy
-  services.bird-lg.proxy = {
-    enable = true;
-    listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
-  };
-  # tailscale as control plane
-  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
-    config.ports.bird-lg-proxy
-  ];
+    # bird-lg proxy
+    services.bird-lg.proxy = {
+      enable = true;
+      listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
+    };
+    # tailscale as control plane
+    networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
+      config.ports.bird-lg-proxy
+    ];
 
-  # wireguard
-  sops.secrets."wireguard_private_key" = {
-    sopsFile = config.sops-file.terraform;
-    group = "systemd-network";
-    mode = "440";
-    restartUnits = ["systemd-networkd.service"];
-  };
-  sops.secrets."ike_private_key_pem" = {
-    sopsFile = config.sops-file.terraform;
-    restartUnits = ["strongswan-swanctl.service"];
-  };
-  networking.firewall.allowedUDPPortRanges = [
-    {
-      from = config.ports.dn42-peer-min;
-      to = config.ports.dn42-peer-max;
-    }
-  ];
+    # wireguard
+    sops.secrets."wireguard_private_key" = {
+      sopsFile = config.sops-file.terraform;
+      group = "systemd-network";
+      mode = "440";
+      restartUnits = ["systemd-networkd.service"];
+    };
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = config.ports.dn42-peer-min;
+        to = config.ports.dn42-peer-max;
+      }
+    ];
 
-  # for dn42-site
-  passthru.dn42TrafficControlTable = trafficControlTable;
-}
+    # for dn42-site
+    passthru.dn42TrafficControlTable = trafficControlTable;
+  }

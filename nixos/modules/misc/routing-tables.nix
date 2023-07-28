@@ -28,9 +28,10 @@
     ];
 
     routingTables = {
-      mesh-dn42 = 200;
-      bgp-dn42 = 201;
-      peer-dn42 = 202;
+      mesh = 200;
+
+      dn42-peer = 201;
+      dn42-bgp = 202;
 
       as198764 = 210;
       as198764-catch = 211;
@@ -39,12 +40,14 @@
     };
 
     routingPolicyPriorities = {
-      mesh-dn42 = 24210;
-      peer-dn42 = 24220;
-      bgp-dn42 = 24230;
+      mesh = 24000;
 
-      as198764 = 25000;
-      as198764-catch = 25010;
+      dn42-peer = 24500;
+      dn42-bgp = 24510;
+
+      as198764-peer = 25000;
+      as198764 = 25010;
+      as198764-catch = 25020;
 
       fw-proxy = 26000;
     };

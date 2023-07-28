@@ -3,12 +3,15 @@
   lib,
   ...
 }: let
+  cfg = config.networking.as198764;
+  meshCfg = config.networking.mesh;
   inherit (config.lib.self) data;
+  filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
   cidr = data.as198764_v6_cidr;
   anycastIp = data.as198764_anycast_address;
   tunnelPeerIp = "2a0c:b641:a11:badd::ffff";
   # https://quickest-canoe-05c.notion.site/AS198764-f766b0a688f44863b1d5b78992b69e79
-  configTable = {
+  exitNodeCfgTable = {
     # 美西
     hil0 = {
       endpoint = "[2602:fe69:455:524:badd::1]:20003";
@@ -31,102 +34,148 @@
     };
   };
   hostName = config.networking.hostName;
-  cfg = configTable.${hostName};
+  exitNodeCfg = exitNodeCfgTable.${hostName};
   hostData = data.hosts.${hostName};
 in {
-  systemd.network.netdevs."70-as198764" = {
-    netdevConfig = {
-      Name = "as198764";
-      Kind = "wireguard";
+  options.networking.as198764 = {
+    exit = lib.mkOption {
+      type = lib.types.bool;
+      readOnly = true;
+      default = exitNodeCfgTable ? ${hostName};
     };
-    wireguardConfig = {
-      PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
-      ListenPort = config.ports.wireguard-as198764;
+    anycast = lib.mkOption {
+      type = lib.types.bool;
+      readOnly = true;
+      default = cfg.exit;
     };
-    wireguardPeers = [
-      {
-        wireguardPeerConfig = {
-          Endpoint = "${cfg.endpoint}";
-          PublicKey = cfg.publicKey;
-          AllowedIPs = ["::/0" "0.0.0.0/0"];
-          PersistentKeepalive = 30;
-        };
-      }
-    ];
   };
-  systemd.network.config.routeTables = {
-    as198764 = config.routingTables.as198764;
-    as198764-catch = config.routingTables.as198764-catch;
-  };
-  systemd.network.networks."70-as198764" = {
-    matchConfig = {
-      Name = "as198764";
-    };
-    networkConfig = {
-      LinkLocalAddressing = "no";
-    };
-    addresses =
-      lib.lists.map (a: {
-        addressConfig = {
-          Address = "${a}/128";
-          Peer = "${tunnelPeerIp}/128";
-          Scope = "global";
-        };
-      })
-      hostData.as198764_addresses_v6
-      ++ [
-        {
-          addressConfig = {
-            Address = "${anycastIp}/128";
-            Scope = "global";
+  config = lib.mkIf (meshCfg.enable) (lib.mkMerge [
+    {
+      networking.mesh = {
+        cidrs = {
+          as198764V6 = {
+            family = "ipv6";
+            prefix = cidr;
           };
-        }
-      ];
-    routes = [
-      {
-        routeConfig = {
-          Gateway = tunnelPeerIp;
-          Table = config.routingTables.as198764;
         };
-      }
-      {
-        routeConfig = {
-          Destination = cidr;
-          Type = "unreachable";
-          Table = config.routingTables.as198764-catch;
-        };
-      }
-    ];
-    routingPolicyRules = [
-      {
-        routingPolicyRuleConfig = {
-          Priority = config.routingPolicyPriorities.as198764;
-          From = cidr;
-          Table = config.routingTables.as198764;
-        };
-      }
-      {
-        routingPolicyRuleConfig = {
-          Priority = config.routingPolicyPriorities.as198764-catch;
-          Table = config.routingTables.as198764-catch;
-        };
-      }
-    ];
-  };
-  sops.secrets."wireguard_private_key" = {
-    sopsFile = config.sops-file.terraform;
-    group = "systemd-network";
-    mode = "440";
-    restartUnits = ["systemd-networkd.service"];
-  };
-  services.bird2.config = lib.mkIf (config.networking.dn42.enable) (lib.mkOrder 120 ''
-    protocol static static_as198764 {
-      ${lib.concatMapStringsSep "  \n" (a: "route ${a}/128 unreachable;") hostData.as198764_addresses_v6}
-      ipv6 {
-        table mesh_v6;
-        import all;
-        export none;
+        hosts =
+          lib.mapAttrs (_name: hostData: {
+            cidrs.as198764V6 = {
+              addresses =
+                lib.lists.map (address: {
+                  inherit address;
+                  assign = true;
+                })
+                hostData.as198764_addresses_v6
+                ++ lib.optional cfg.exit {
+                  address = tunnelPeerIp;
+                  assign = false;
+                }
+                ++ lib.optional cfg.anycast {
+                  address = anycastIp;
+                  assign = true;
+                };
+              preferredAddress = lib.elemAt hostData.as198764_addresses_v6 0;
+            };
+          })
+          filteredHost;
       };
     }
-  '');
+    # common configurations
+    {
+      systemd.network.config.routeTables = {
+        as198764 = config.routingTables.as198764;
+      };
+      systemd.network.networks."70-as198764" = {
+        matchConfig = {
+          Name = "as198764";
+        };
+        routes = [
+          {
+            routeConfig = {
+              Gateway = tunnelPeerIp;
+              Table = config.routingTables.as198764;
+            };
+          }
+        ];
+        routingPolicyRules = [
+          {
+            routingPolicyRuleConfig = {
+              Priority = config.routingPolicyPriorities.as198764;
+              From = cidr;
+              Table = config.routingTables.as198764;
+            };
+          }
+          {
+            routingPolicyRuleConfig = {
+              To = cidr;
+              Type = "unreachable";
+              Priority = config.routingPolicyPriorities.as198764-catch;
+            };
+          }
+        ];
+      };
+    }
+
+    (lib.mkIf cfg.exit {
+      systemd.network.netdevs."70-as198764" = {
+        netdevConfig = {
+          Name = "as198764";
+          Kind = "wireguard";
+        };
+        wireguardConfig = {
+          PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
+          ListenPort = config.ports.wireguard-as198764;
+        };
+        wireguardPeers = [
+          {
+            wireguardPeerConfig = {
+              Endpoint = "${exitNodeCfg.endpoint}";
+              PublicKey = exitNodeCfg.publicKey;
+              AllowedIPs = ["::/0" "0.0.0.0/0"];
+              PersistentKeepalive = 30;
+            };
+          }
+        ];
+      };
+      systemd.network.networks."70-as198764" = {
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+        addresses =
+          lib.lists.map (a: {
+            addressConfig = {
+              Address = "${a}/128";
+              Peer = "${tunnelPeerIp}/128";
+              Scope = "global";
+            };
+          })
+          hostData.as198764_addresses_v6;
+        routingPolicyRules = [
+          {
+            routingPolicyRuleConfig = {
+              To = tunnelPeerIp;
+              Table = "main";
+              Priority = config.routingPolicyPriorities.as198764-peer;
+            };
+          }
+        ];
+      };
+      sops.secrets."wireguard_private_key" = {
+        sopsFile = config.sops-file.terraform;
+        group = "systemd-network";
+        mode = "440";
+        restartUnits = ["systemd-networkd.service"];
+      };
+    })
+
+    (lib.mkIf (!cfg.exit) {
+      systemd.network.netdevs."70-as198764" = {
+        netdevConfig = {
+          Name = "as198764";
+          Kind = "dummy";
+        };
+      };
+    })
+  ]);
 }

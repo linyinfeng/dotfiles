@@ -35,7 +35,6 @@ in {
       nix.hydra-builder-server
       nix.hydra-builder-client
       nix.access-tokens
-      networking.as198764
     ])
     ++ [
       "${modulesPath}/profiles/qemu-guest.nix"
