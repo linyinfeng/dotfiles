@@ -18,14 +18,13 @@
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/8b982fe4-1521-4a4d-aafc-af22c3961093";
   btrfsSubvolMobile = btrfsSubvol "/dev/mapper/crypt-mobile";
-
-  cfg = config.hosts.nuc;
 in {
   imports =
     suites.server
     ++ suites.development
     ++ suites.virtualization
     ++ (with profiles; [
+      boot.systemd-initrd
       nix.access-tokens
       nix.nixbuild
       security.tpm
@@ -84,12 +83,12 @@ in {
 
       boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "ahci" "nvme" "usbhid" "uas" "sd_mod"];
       boot.kernelModules = ["kvm-intel"];
-      boot.initrd.luks.forceLuksSupportInInitrd = true;
-      boot.initrd.kernelModules = ["tpm" "tpm_tis" "tpm_crb"];
-      boot.initrd.preLVMCommands = ''
-        waitDevice /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c
-        ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c -n crypt-mobile
-      '';
+      boot.initrd.luks.devices = {
+        crypt-mobile = {
+          device = "/dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c";
+          allowDiscards = true;
+        };
+      };
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";

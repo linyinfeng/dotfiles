@@ -22,6 +22,7 @@ in {
   imports =
     suites.workstation
     ++ (with profiles; [
+      boot.systemd-initrd
       nix.access-tokens
       nix.nixbuild
       security.tpm
@@ -109,14 +110,16 @@ in {
   };
 
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" "sr_mod"];
-  boot.initrd.luks.forceLuksSupportInInitrd = true;
-  boot.initrd.kernelModules = ["tpm" "tpm_tis" "tpm_crb"];
-  boot.initrd.preLVMCommands = ''
-    waitDevice /dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e
-    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e -n crypt-root
-    waitDevice /dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea
-    ${pkgs.clevis}/bin/clevis luks unlock -d /dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea -n crypt-data
-  '';
+  boot.initrd.luks.devices = {
+    crypt-root = {
+      device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
+      allowDiscards = true;
+    };
+    crypt-data = {
+      device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea";
+      allowDiscards = true;
+    };
+  };
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";

@@ -22,6 +22,7 @@ in {
     suites.mobileWorkstation
     ++ suites.games
     ++ (with profiles; [
+      boot.systemd-initrd
       boot.secure-boot
       nix.access-tokens
       nix.nixbuild
@@ -55,7 +56,6 @@ in {
         consoleMode = "auto";
       };
 
-      boot.initrd.systemd.enable = true;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelModules = ["kvm-intel"];
 
