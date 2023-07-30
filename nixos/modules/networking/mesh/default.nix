@@ -21,7 +21,7 @@
   mkStaticRoutes = cidrs:
     lib.flatten (lib.mapAttrsToList (name: cidrCfg:
       lib.lists.map
-      (a: "route ${a.address}/${hostPrefixLengthString cidrCfg.family} unreachable;")
+      (a: "route ${a.address}/${hostPrefixLengthString cidrCfg.family} ${a.routeConfig};")
       cfg.thisHost.cidrs.${name}.addresses)
     cidrs);
 
@@ -97,6 +97,9 @@
   addressOptions = {
     options = {
       address = lib.mkOption {
+        type = lib.types.str;
+      };
+      routeConfig = lib.mkOption {
         type = lib.types.str;
       };
       assign = lib.mkOption {

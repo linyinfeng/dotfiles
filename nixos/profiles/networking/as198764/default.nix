@@ -65,15 +65,18 @@ in {
               addresses =
                 lib.lists.map (address: {
                   inherit address;
+                  routeConfig = ''via "as198764"'';
                   assign = false;
                 })
                 hostData.as198764_addresses_v6
                 ++ lib.optional cfg.exit {
                   address = tunnelPeerIp;
+                  routeConfig = ''via "as198764"'';
                   assign = false;
                 }
                 ++ lib.optional cfg.anycast {
                   address = anycastIp;
+                  routeConfig = ''via "as198764"'';
                   assign = false;
                 };
               inherit preferredAddress;

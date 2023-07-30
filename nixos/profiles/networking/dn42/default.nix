@@ -6,6 +6,7 @@
   dn42Cfg = config.networking.dn42;
   meshCfg = config.networking.mesh;
   hostName = config.networking.hostName;
+  dn42If = dn42Cfg.interfaces.dummy.name;
   data = config.lib.self.data;
   filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
   mkHostMeshCfg = name: hostData: {
@@ -14,6 +15,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
+            routeConfig = ''via "dn42If"'';
             assign = false;
           })
           hostData.dn42_addresses_v4;
@@ -23,6 +25,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
+            routeConfig = ''via "dn42If"'';
             assign = false;
           })
           hostData.dn42_addresses_v6;
