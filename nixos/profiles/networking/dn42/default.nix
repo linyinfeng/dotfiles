@@ -15,7 +15,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
-            routeConfig = ''via "dn42If"'';
+            routeConfig = ''via "${dn42If}"'';
             assign = false;
           })
           hostData.dn42_addresses_v4;
@@ -25,7 +25,7 @@
         addresses =
           lib.lists.map (address: {
             inherit address;
-            routeConfig = ''via "dn42If"'';
+            routeConfig = ''via "${dn42If}"'';
             assign = false;
           })
           hostData.dn42_addresses_v6;

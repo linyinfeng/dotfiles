@@ -194,6 +194,9 @@ in {
         mode = "440";
         restartUnits = ["systemd-networkd.service"];
       };
+      networking.firewall.allowedUDPPorts = [
+        config.ports.wireguard-as198764
+      ];
     })
 
     (lib.mkIf (!cfg.exit) {
