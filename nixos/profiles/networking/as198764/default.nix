@@ -36,6 +36,7 @@
   hostName = config.networking.hostName;
   exitNodeCfg = exitNodeCfgTable.${hostName};
   hostData = data.hosts.${hostName};
+  preferredAddress = lib.elemAt hostData.as198764_addresses_v6 0;
 in {
   options.networking.as198764 = {
     exit = lib.mkOption {
@@ -75,7 +76,7 @@ in {
                   address = anycastIp;
                   assign = false;
                 };
-              preferredAddress = lib.elemAt hostData.as198764_addresses_v6 0;
+              inherit preferredAddress;
             };
           })
           filteredHost;
@@ -90,31 +91,41 @@ in {
         matchConfig = {
           Name = "as198764";
         };
-        routes = [
-          {
-            routeConfig = {
-              Gateway = tunnelPeerIp;
-              Table = config.routingTables.as198764;
-            };
-          }
-        ];
         routingPolicyRules = [
           {
             routingPolicyRuleConfig = {
               Priority = config.routingPolicyPriorities.as198764;
-              From = cidr;
+              Family = "ipv6";
               Table = config.routingTables.as198764;
-            };
-          }
-          {
-            routingPolicyRuleConfig = {
-              To = cidr;
-              Type = "unreachable";
-              Priority = config.routingPolicyPriorities.as198764-catch;
             };
           }
         ];
       };
+
+      services.bird2.config = lib.mkOrder 500 ''
+        ipv6 sadr table as198764_v6;
+        protocol static static_as198764_v6 {
+          route ::/0 from ${cidr} recursive ${tunnelPeerIp};
+          route ${cidr} from ::/0 unreachable;
+          igp table mesh_v6;
+          ipv6 sadr {
+            table as198764_v6;
+            import all;
+            export none;
+          };
+        }
+        protocol kernel kernel_as198764_v6 {
+          kernel table ${toString config.routingTables.as198764};
+          ipv6 sadr {
+            table as198764_v6;
+            import none;
+            export filter {
+              if net = ::/0 then krt_prefsrc = ${preferredAddress};
+              accept;
+            };
+          };
+        };
+      '';
     }
 
     (lib.mkIf cfg.anycast {
