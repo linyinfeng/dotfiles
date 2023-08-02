@@ -116,7 +116,6 @@
 
     # networking
     (lib.mkIf (!config.system.is-vm) {
-      networking.useNetworkd = true;
       environment.etc."systemd/network/45-enp1s0.network".source =
         config.sops.templates."enp1s0".path;
       sops.templates."enp1s0" = {

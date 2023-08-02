@@ -78,7 +78,6 @@ in {
     }
 
     (lib.mkIf (!config.system.is-vm) {
-      networking.useNetworkd = true;
       environment.etc."systemd/network/45-enX0.network".source =
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {

@@ -26,7 +26,6 @@
     # TODO broken
     # mobile.boot.stage-1.usb.features = ["rndis"];
     # manual rndis setup
-    networking.useNetworkd = true;
     systemd.services.setup-rndis = {
       script = ''
         cd /sys/kernel/config/usb_gadget/g1

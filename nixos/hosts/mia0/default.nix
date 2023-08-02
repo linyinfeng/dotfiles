@@ -81,7 +81,6 @@ in {
 
     {
       networking = lib.mkIf (!config.system.is-vm) {
-        useNetworkd = true;
         interfaces.ens3.useDHCP = true;
       };
     }

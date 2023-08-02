@@ -29,6 +29,8 @@
       ]);
 
     network = with profiles; [
+      networking.networkd
+      networking.iproute2
       networking.firewall
       networking.avahi
       networking.resolved
