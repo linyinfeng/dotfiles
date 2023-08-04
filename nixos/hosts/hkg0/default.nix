@@ -38,7 +38,13 @@ in {
         device = "/dev/vda1";
         fsType = "ext4";
       };
-      swapDevices = [{device = "/dev/vda2";}];
+      swapDevices = [
+        {device = "/dev/vda2";}
+        {
+          device = "/swapfile";
+          size = 2048; # 2 GiB
+        }
+      ];
     }
 
     (lib.mkIf (!config.system.is-vm) {
