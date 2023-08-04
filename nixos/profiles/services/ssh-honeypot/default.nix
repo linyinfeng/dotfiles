@@ -36,6 +36,7 @@ in {
         mv share/cowrie/fs.pickle.bak share/cowrie/fs.pickle
       fi
 
+      rm -f cowrie-venv/bin/python*
       python3 -m venv cowrie-venv
       source cowrie-venv/bin/activate
       pip install --no-cache-dir --upgrade pip wheel setuptools
