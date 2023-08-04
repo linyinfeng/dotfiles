@@ -1,10 +1,14 @@
 {...}: {
   systemd.targets.graphical-powersave = {
-    bindsTo = ["graphical.target"];
+    requires = ["graphical.target"];
+    after = ["graphical.target"];
     conflicts = [
+      "bird2.service"
       "cowrie.service"
       "telegraf.service"
       "promtail.service"
+      "tailscaled.service"
+      "zerotierone.service"
       "container@syncthing-yinfeng.service"
     ];
     unitConfig = {
