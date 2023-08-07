@@ -65,15 +65,14 @@
       subPackages = old.subPackages ++ ["cmd/derper"];
     });
 
-    # TODO upstream
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=247694
     qq = prev.qq.overrideAttrs (old: {
-      postInstall = (old.postInstall or "") + ''
-        rm $out/opt/QQ/resources/app/libssh2.so.1
-      '';
+      postInstall =
+        (old.postInstall or "")
+        + ''
+          rm $out/opt/QQ/resources/app/libssh2.so.1
+        '';
     });
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
-    inherit (inputs'.latest.legacyPackages) wluma;
   };
 in {
   nixpkgs = {
