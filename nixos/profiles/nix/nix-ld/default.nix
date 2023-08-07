@@ -1,4 +1,6 @@
-{...}: {
-  # TODO broken due to IFD
-  # programs.nix-ld.enable = true;
+{options, ...}: {
+  programs.nix-ld = {
+    enable = true;
+    libraries = options.programs.nix-ld.libraries.default ++ [];
+  };
 }
