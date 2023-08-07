@@ -51,11 +51,6 @@
     inherit (prev.stdenv.hostPlatform) system;
     inherit ((getSystem system).allModuleArgs) inputs';
   in {
-    # use waybar-git
-    # waybar-hyprland = prev.waybar-hyprland.overrideAttrs (old: {
-    #   inherit (final.nur.repos.linyinfeng.sources.waybar-git) version src;
-    # });
-
     # TODO broken
     # fwupd = prev.fwupd.overrideAttrs (old: {
     #   patches =
@@ -68,6 +63,13 @@
     # TODO upstream
     tailscale-derp = final.tailscale.overrideAttrs (old: {
       subPackages = old.subPackages ++ ["cmd/derper"];
+    });
+
+    # TODO upstream
+    qq = prev.qq.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        rm $out/opt/QQ/resources/app/libssh2.so.1
+      '';
     });
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=226427
