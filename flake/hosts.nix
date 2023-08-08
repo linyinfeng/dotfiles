@@ -124,9 +124,7 @@
       (with suites; base ++ network)
       ++ (with profiles; [
         system.types.phone
-        graphical.gnome
         graphical.fonts
-        graphical.i18n
         development.shells
         services.gnupg
         services.pipewire
@@ -194,9 +192,7 @@
     phone =
       (with suites; base)
       ++ (with profiles; [
-        gnome
         firefox
-        rime
         fcitx5
         development
         direnv

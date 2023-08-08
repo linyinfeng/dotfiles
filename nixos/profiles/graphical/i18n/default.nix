@@ -1,6 +1,6 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   i18n.inputMethod = {
-    enabled = "ibus";
+    enabled = lib.mkDefault "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       (rime.override {
         rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
@@ -10,7 +10,6 @@
       })
       mozc
     ];
-    # not using
     fcitx5.addons = with pkgs; [
       (fcitx5-rime.override {
         rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
