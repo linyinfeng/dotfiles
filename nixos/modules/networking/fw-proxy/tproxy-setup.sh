@@ -97,7 +97,8 @@ table inet $nft_table {
   }
 
   chain filter {
-    fib daddr type local accept
+    # TODO enchilada's kernel does not support fib
+    # fib daddr type local accept
     ip  daddr @reserved-ip  accept
     ip6 daddr @reserved-ip6 accept
 

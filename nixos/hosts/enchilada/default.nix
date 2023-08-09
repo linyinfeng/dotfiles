@@ -84,6 +84,7 @@
         address = ["172.16.42.1/24"];
         linkConfig = {
           ActivationPolicy = "bound";
+          RequiredForOnline = false;
         };
       };
     }
@@ -118,8 +119,6 @@
         enable = true;
         auto-login.enable = true;
       };
-      # broken on enchilada
-      networking.fw-proxy.tproxy.enable = false;
       # speed up build
       documentation.man.enable = false;
       # disable periodic store optimisation
