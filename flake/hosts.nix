@@ -141,6 +141,7 @@
     base = with profiles; [git];
     multimedia = with profiles; [
       gnome
+      dconf-proxy
       hyprland
       chromium
       firefox
@@ -192,6 +193,7 @@
     phone =
       (with suites; base)
       ++ (with profiles; [
+        dconf-proxy
         firefox
         fcitx5
         development

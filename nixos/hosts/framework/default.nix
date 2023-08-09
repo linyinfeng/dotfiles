@@ -182,5 +182,20 @@ in {
         '';
       }
     )
+
+    # enchilada usb network
+    {
+      systemd.network.networks."80-mobile-nixos-usb" = {
+        matchConfig = {
+          Property = [
+            "ID_USB_VENDOR=Mobile_NixOS"
+          ];
+        };
+        address = ["172.16.42.2/24"];
+        linkConfig = {
+          ActivationPolicy = "bound";
+        };
+      };
+    }
   ];
 }

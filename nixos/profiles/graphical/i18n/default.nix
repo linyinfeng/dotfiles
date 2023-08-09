@@ -1,4 +1,8 @@
-{pkgs, lib, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   i18n.inputMethod = {
     enabled = lib.mkDefault "ibus";
     ibus.engines = with pkgs.ibus-engines; [

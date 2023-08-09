@@ -43,6 +43,7 @@
         };
         displayManager.defaultSession = "plasma-mobile";
       };
+      programs.dconf.enable = true;
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
       hardware.pulseaudio.enable = lib.mkForce true;
@@ -53,6 +54,10 @@
         jack.enable = false;
       };
       # services.fprintd.enable = true; # not working
+      environment.systemPackages = with pkgs; [
+        discover
+        plasma-systemmonitor
+      ];
     }
 
     # usb network
@@ -77,8 +82,12 @@
           Name = "usb*";
         };
         address = ["172.16.42.1/24"];
+        linkConfig = {
+          ActivationPolicy = "bound";
+        };
       };
     }
+
     # user
     {
       home-manager.users.yinfeng = {suites, ...}: {
@@ -91,6 +100,18 @@
         sopsFile = config.sops-file.get "common.yaml";
       };
     }
+
+    # memory
+    {
+      zramSwap.enable = true;
+      swapDevices = [
+        {
+          device = "/swapfile";
+          size = 8192; # 8 GiB
+        }
+      ];
+    }
+
     # other
     {
       networking.campus-network = {
@@ -101,6 +122,11 @@
       networking.fw-proxy.tproxy.enable = false;
       # speed up build
       documentation.man.enable = false;
+      # disable periodic store optimisation
+      nix = {
+        settings.auto-optimise-store = true;
+        optimise.automatic = false;
+      };
     }
   ];
 }

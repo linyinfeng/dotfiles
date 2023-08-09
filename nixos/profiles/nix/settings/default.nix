@@ -1,11 +1,11 @@
-{...}: {
+{lib, ...}: {
   nix = {
     settings.experimental-features = ["nix-command" "flakes" "ca-derivations" "repl-flake"];
     settings.system-features = ["nixos-test" "benchmark" "big-parallel" "kvm"];
 
     # use periodic store optimisation
     # settings.auto-optimise-store = true;
-    optimise.automatic = true;
+    optimise.automatic = lib.mkDefault true;
 
     settings.sandbox = true;
 
