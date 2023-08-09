@@ -237,16 +237,6 @@ in
 
     config = mkIf (cfg.enable) (mkMerge [
       {
-        assertions = [
-          {
-            assertion = cfg.tproxy.enable -> config.networking.firewall.checkReversePath == false;
-            message = ''
-              Reverse path filter drops tproxy traffic.
-            '';
-          }
-        ];
-      }
-      {
         systemd.services.clash = {
           description = "A rule based proxy in GO";
           script = ''
@@ -295,6 +285,7 @@ in
       })
 
       (mkIf (cfg.tproxy.enable) {
+        netwokring.routerBasics.enable = true;
         systemd.services.fw-tproxy = {
           serviceConfig = {
             Type = "oneshot";

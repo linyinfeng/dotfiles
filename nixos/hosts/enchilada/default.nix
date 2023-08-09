@@ -79,7 +79,6 @@
         path = with pkgs; [
           iproute2
         ];
-        before = ["systemd-networkd.service"];
         wantedBy = ["multi-user.target"];
       };
     }
@@ -110,13 +109,11 @@
 
     # waydroid
     {
-      systemd.services.waydroid-tproxy = {
-        bindsTo = ["waydroid-container.service"];
-        after = ["waydroid-container.service" "fw-tproxy.service"];
-        serviceConfig = {
-          ExecStart = "${config.networking.fw-proxy.scripts}/bin/fw-tproxy-if add waydroid0";
-          ExecStop = "${config.networking.fw-proxy.scripts}/bin/fw-tproxy-if del waydroid0";
-        };
+      services.udev = {
+        extraRules = ''
+          ACTION=="add", SUBSYSTEM=="net", KERNEL=="waydroid0", \
+            RUN+="${config.networking.fw-proxy.scripts}/bin/fw-tproxy-if add waydroid0"
+        '';
         path = with pkgs; [
           nftables
         ];

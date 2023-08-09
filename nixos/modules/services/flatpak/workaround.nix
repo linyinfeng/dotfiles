@@ -21,7 +21,7 @@ in {
     icon.enable = lib.mkEnableOption "flatpak icon workaround";
   };
   config = lib.mkMerge [
-    (lib.mkIf (cfg.font.enable || lib.icon.enable) {
+    (lib.mkIf (cfg.font.enable || cfg.icon.enable) {
       system.fsPackages = [pkgs.bindfs];
     })
     (lib.mkIf cfg.font.enable {
