@@ -43,7 +43,7 @@
         };
         displayManager.defaultSession = "plasma-mobile";
       };
-      # programs.dconf.enable = true;
+      programs.dconf.enable = true;
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
       hardware.pulseaudio.enable = lib.mkForce true;
