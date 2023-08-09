@@ -127,6 +127,11 @@
         settings.auto-optimise-store = true;
         optimise.automatic = false;
       };
+      # flatpak workarounds
+      services.flatpak.workaround = {
+        font.enable = true;
+        icon.enable = true;
+      };
     }
   ];
 }
