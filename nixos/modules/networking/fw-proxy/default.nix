@@ -107,6 +107,11 @@ in
         type = with types; bool;
         default = false;
       };
+      scripts = mkOption {
+        type = with types; package;
+        default = scripts;
+        readOnly = true;
+      };
       tproxy = {
         enable = mkOption {
           type = with types; bool;
