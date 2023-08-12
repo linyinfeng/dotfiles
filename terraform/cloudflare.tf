@@ -129,6 +129,7 @@ locals {
     teamspeak       = { on = "shg0", proxy = false }
     hydra           = { on = "hil0", proxy = true }
     matrix          = { on = "hil0", proxy = true }
+    matrix-syncv3   = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }
     mastodon        = { on = "hil0", proxy = true }

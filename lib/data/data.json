@@ -239,6 +239,10 @@
       "on": "shg0",
       "proxy": false
     },
+    "matrix-syncv3": {
+      "on": "hil0",
+      "proxy": true
+    },
     "minio": {
       "on": "mtl0",
       "proxy": false

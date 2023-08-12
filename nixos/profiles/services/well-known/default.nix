@@ -3,14 +3,15 @@
     forceSSL = true;
     useACMEHost = "main";
     # matrix
-    locations."/.well-known/matrix/server".extraConfig = ''
+    locations."/.well-known/matrix/".alias = "${./_root/matrix}/";
+    locations."=/.well-known/matrix/server".extraConfig = ''
       default_type application/json;
-      return 200 '{ "m.server": "matrix.li7g.com:443" }';
+      rewrite ^(.*)$ $1.json last;
     '';
-    locations."/.well-known/matrix/client".extraConfig = ''
+    locations."=/.well-known/matrix/client".extraConfig = ''
       add_header Access-Control-Allow-Origin '*';
       default_type application/json;
-      return 200 '{ "m.homeserver": { "base_url": "https://matrix.li7g.com" } }';
+      rewrite ^(.*)$ $1.json last;
     '';
     # mastodon
     locations."/.well-known/host-meta".extraConfig = ''

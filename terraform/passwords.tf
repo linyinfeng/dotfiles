@@ -237,3 +237,21 @@ output "keycloak_db_password" {
   value     = random_password.keycloak_db.result
   sensitive = true
 }
+resource "shell_sensitive_script" "syncv3_secret" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+      secret=$(openssl rand -hex 32)
+      jq --null-input \
+        --arg secret "$secret" \
+        '{"secret": $secret}'
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+}
+output "syncv3_secret" {
+  value     = shell_sensitive_script.syncv3_secret.output.secret
+  sensitive = true
+}
