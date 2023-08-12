@@ -211,6 +211,7 @@
     # mobile-nixos.url = "github:nixos/mobile-nixos";
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/enchilada-staging";
     mobile-nixos.flake = false;
+    nixpkgs-gnome-mobile.url = "github:chuangzhu/nixpkgs-gnome-mobile";
 
     # fixes
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=242453
