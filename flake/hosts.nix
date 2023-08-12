@@ -125,7 +125,7 @@
       ++ (with profiles; [
         system.types.phone
         graphical.fonts
-        graphical.gnome
+        graphical.i18n
         development.shells
         services.gnupg
         services.pipewire
@@ -194,8 +194,8 @@
     phone =
       (with suites; base)
       ++ (with profiles; [
-        gnome
         dconf-proxy
+        gnome-mobile
         firefox
         fcitx5
         development
