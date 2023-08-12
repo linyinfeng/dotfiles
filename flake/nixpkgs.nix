@@ -64,15 +64,6 @@
     tailscale-derp = final.tailscale.overrideAttrs (old: {
       subPackages = old.subPackages ++ ["cmd/derper"];
     });
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=247694
-    qq = prev.qq.overrideAttrs (old: {
-      postInstall =
-        (old.postInstall or "")
-        + ''
-          rm $out/opt/QQ/resources/app/libssh2.so.1
-        '';
-    });
   };
 in {
   nixpkgs = {
