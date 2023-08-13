@@ -25,6 +25,7 @@
   config = lib.mkMerge [
     # desktop
     {
+      services.xserver.displayManager.gdm.autoSuspend = false;
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
       hardware.pulseaudio.enable = lib.mkForce true;
@@ -35,6 +36,15 @@
         jack.enable = false;
       };
       # services.fprintd.enable = true; # not working
+    }
+
+    # applications
+    {
+      environment.systemPackages = with pkgs; [
+        telegram-desktop
+        element-desktop
+        qq
+      ];
     }
 
     # usb network

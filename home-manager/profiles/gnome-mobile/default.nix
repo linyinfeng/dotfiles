@@ -8,6 +8,7 @@
     gsconnect
     customize-ibus
     caffeine
+    alphabetical-app-grid
   ];
   inherit (lib.hm.gvariant) mkArray mkTuple mkString type;
 in
@@ -16,6 +17,10 @@ in
     home.packages = extensionPkgs;
 
     dconf.settings = {
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-type = "nothing";
+        sleep-inactive-battery-type = "nothing";
+      };
       "org/gnome/shell" = {
         disable-user-extensions = false;
         enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
