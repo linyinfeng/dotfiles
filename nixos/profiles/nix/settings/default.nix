@@ -25,4 +25,5 @@
       "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
     ];
   };
+  nix.channel.enable = false;
 }
