@@ -55,6 +55,7 @@ in
         clock-show-weekday = true;
         show-battery-percentage = true;
         locate-pointer = true;
+        monospace-font-name = "Monospace 10";
       };
       "org/gnome/desktop/input-sources" = {
         sources = mkArray (type.tupleOf [type.string type.string]) [
