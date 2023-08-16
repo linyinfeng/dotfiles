@@ -10,11 +10,12 @@
     nixpkgs-review
     nix-update
     nix-melt
+    nix-du
+    nix-tree
     nixfmt
     cabal2nix
     patchelf
   ];
-  services.lorri.enable = true;
 
   programs.fish.interactiveShellInit = ''
     function nom --description "generic nix-output-manager wrapper"
@@ -25,6 +26,5 @@
   home.global-persistence.directories = [
     ".config/cachix"
     ".cache/nix"
-    ".cache/lorri"
   ];
 }
