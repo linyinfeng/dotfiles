@@ -8,10 +8,7 @@ lib.mkMerge [
   {
     programs.hyprland = {
       enable = true;
-      xwayland = {
-        enable = true;
-        hidpi = true;
-      };
+      xwayland.enable = true;
     };
     environment.sessionVariables = {
       # override the setting in hyprland module
