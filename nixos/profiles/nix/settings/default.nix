@@ -25,5 +25,7 @@
       "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
     ];
   };
-  nix.channel.enable = false;
+  # TODO this option sets 'nix-path =' in nix.conf
+  # which is not intended
+  # nix.channel.enable = false;
 }
