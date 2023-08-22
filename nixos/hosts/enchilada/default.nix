@@ -25,7 +25,23 @@
   config = lib.mkMerge [
     # desktop
     {
-      services.xserver.displayManager.gdm.autoSuspend = false;
+      services.xserver = {
+        enable = true;
+        displayManager.lightdm = {
+          enable = true;
+          # # Workaround for autologin only working at first launch.
+          # # A logout or session crashing will show the login screen otherwise.
+          # extraSeatDefaults = ''
+          #   session-cleanup-script=${pkgs.procps}/bin/pkill -P1 -fx ${pkgs.lightdm}/sbin/lightdm
+          # '';
+        };
+        desktopManager.plasma5.mobile.enable = true;
+        displayManager.autoLogin = {
+          enable = true;
+          user = "yinfeng";
+        };
+        displayManager.defaultSession = "plasma-mobile";
+      };
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
       hardware.pulseaudio.enable = lib.mkForce true;
@@ -36,6 +52,9 @@
         jack.enable = false;
       };
       # services.fprintd.enable = true; # not working
+      environment.systemPackages = with pkgs; [
+        discover
+      ];
     }
 
     # applications

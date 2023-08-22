@@ -850,21 +850,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-gnome-mobile": {
-      "locked": {
-        "lastModified": 1686320642,
-        "narHash": "sha256-eoGF7SsjhIhg5ny/qmdmQHxF5DMDKVc1C5PLvXOwBb8=",
-        "owner": "chuangzhu",
-        "repo": "nixpkgs-gnome-mobile",
-        "rev": "9dbb724612f33c7fb8971ca73c5b3ebadde9ae38",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chuangzhu",
-        "repo": "nixpkgs-gnome-mobile",
-        "type": "github"
-      }
-    },
     "nixpkgs-iproute2-ifd": {
       "locked": {
         "lastModified": 1692634271,
@@ -1060,7 +1045,6 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-gnome-mobile": "nixpkgs-gnome-mobile",
         "nixpkgs-iproute2-ifd": "nixpkgs-iproute2-ifd",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",

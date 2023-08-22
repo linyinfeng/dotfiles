@@ -195,7 +195,6 @@
       (with suites; base)
       ++ (with profiles; [
         dconf-proxy
-        gnome-mobile
         firefox
         fcitx5
         development
@@ -380,7 +379,6 @@ in {
       extraModules =
         import "${inputs.mobile-nixos}/modules/module-list.nix"
         ++ [
-          inputs.nixpkgs-gnome-mobile.nixosModules.gnome-mobile
           "${inputs.mobile-nixos}/devices/oneplus-enchilada"
           ({pkgs, ...}: {
             # TODO mobile-nixos tests `config.nixpkgs.localSystem`
