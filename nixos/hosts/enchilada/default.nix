@@ -42,6 +42,7 @@
         };
         displayManager.defaultSession = "plasma-mobile";
       };
+      i18n.inputMethod.enabled = "fcitx5";
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
       hardware.pulseaudio.enable = lib.mkForce true;
