@@ -68,8 +68,11 @@
 
     nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
     nix-gc-s3.inputs.nixpkgs.follows = "nixpkgs";
-    nix-gc-s3.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    nix-gc-s3.inputs.flake-parts.follows = "flake-parts";
+    nix-gc-s3.inputs.flake-utils.follows = "flake-utils";
     nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
+    nix-gc-s3.inputs.treefmt-nix.follows = "treefmt-nix";
+    nix-gc-s3.inputs.devshell.follows = "devshell";
 
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
@@ -166,6 +169,10 @@
     poetry2nix.url = "github:nix-community/poetry2nix";
     poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
     poetry2nix.inputs.flake-utils.follows = "flake-utils";
+    poetry2nix.inputs.nix-github-actions.follows = "nix-github-actions";
+
+    nix-github-actions.url = "github:nix-community/nix-github-actions";
+    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
 
     systems.url = "github:nix-systems/default";
 

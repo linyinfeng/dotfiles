@@ -2,10 +2,8 @@
   config,
   lib,
   pkgs,
-  profiles,
   ...
 }: let
-  cfg = config.hosts.nuc;
   hydra-hook = pkgs.substituteAll {
     src = ./hook.sh;
     isExecutable = true;
