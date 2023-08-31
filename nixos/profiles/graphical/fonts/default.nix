@@ -47,8 +47,8 @@ in {
     iosevka-yinfeng
     iosevka-yinfeng-nf
     font-awesome
-    powerline-fonts
     sarasa-gothic
+    # powerline-fonts # conflict with hack
   ];
 
   fonts.fontconfig.defaultFonts = {
