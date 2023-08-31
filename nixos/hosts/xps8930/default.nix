@@ -48,6 +48,9 @@ in {
       consoleMode = "max";
     };
   };
+  # https://github.com/NixOS/nixpkgs/issues/210070
+  # kernel chooses wrong hidpi font for this machine
+  boot.kernelParams = ["fbcon=font:VGA8x16"];
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
 
