@@ -175,6 +175,9 @@ in {
         requiredBy = ["libvirtd.service"];
         before = ["libvirtd.service"];
       };
+      environment.systemPackages = with pkgs; [
+        looking-glass-client
+      ];
     }
 
     # windows fonts
