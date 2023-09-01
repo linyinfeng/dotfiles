@@ -74,14 +74,40 @@
     };
   };
 
-  # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
-  boot.kernelPatches = [
-    {
-      name = "framework-12th-tpm-tis-workaround";
-      # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
-      patch = ../../../patches/framework-12th-tpm-tis-workaround.patch;
-    }
-  ];
+  boot = {
+    # https://github.com/intel/mainline-tracking/tags
+    kernelPackages = let
+      linux_intel_fn = {
+        fetchFromGitHub,
+        buildLinux,
+        ...
+      } @ args:
+        buildLinux (args
+          // rec {
+            version = "6.4";
+            modDirVersion = lib.versions.pad 3 version;
+            extraMeta.branch = lib.versions.majorMinor version;
+
+            src = fetchFromGitHub {
+              owner = "intel";
+              repo = "mainline-tracking";
+              rev = "mainline-tracking-v6.4-linux-230816T023734Z";
+              sha256 = "sha256-8gHrgO+nrItJe2ulO/7C4ZQvjjwr+9NJxCOQOln5a0Y=";
+            };
+          }
+          // (args.argsOverride or {}));
+      linux_intel = pkgs.callPackage linux_intel_fn {};
+    in
+      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
+    kernelPatches = [
+      # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
+      {
+        name = "framework-12th-tpm-tis-workaround";
+        # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
+        patch = ../../../patches/framework-12th-tpm-tis-workaround.patch;
+      }
+    ];
+  };
   # because kernel needs to be recompiled
   # enable lockdown by the way
   boot.kernelLockdown = true;

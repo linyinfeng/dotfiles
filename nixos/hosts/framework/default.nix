@@ -56,7 +56,6 @@ in {
         consoleMode = "auto";
       };
 
-      boot.kernelPackages = pkgs.linuxPackages_latest;
       boot.kernelModules = ["kvm-intel"];
 
       hardware.enableRedistributableFirmware = true;
