@@ -15,6 +15,10 @@ in {
       manage = false;
     };
     port = config.ports.hledger-web;
+    extraOptions = [
+      "--infer-equity"
+      "--verbose-tags"
+    ];
     journalFiles = [
       "hledger-journal/main.journal"
     ];
