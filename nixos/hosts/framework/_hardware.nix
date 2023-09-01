@@ -87,13 +87,13 @@
             version = "6.4";
             modDirVersion = lib.versions.pad 3 version;
             extraMeta.branch = lib.versions.majorMinor version;
-
             src = fetchFromGitHub {
               owner = "intel";
               repo = "mainline-tracking";
               rev = "mainline-tracking-v6.4-linux-230816T023734Z";
               sha256 = "sha256-8gHrgO+nrItJe2ulO/7C4ZQvjjwr+9NJxCOQOln5a0Y=";
             };
+            kernelPatches = [];
           }
           // (args.argsOverride or {}));
       linux_intel = pkgs.callPackage linux_intel_fn {};
