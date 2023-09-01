@@ -158,6 +158,25 @@ in {
       ];
     }
 
+    # sr-iov of intel gpu
+    {
+      boot.kernelParams = ["intel_iommu=on" "i915.enable_guc=3" "i915.max_vfs=7"];
+      systemd.services.setup-sriov = let
+        num = 1;
+      in {
+        script = ''
+          set -e
+
+          echo ${toString num} > /sys/devices/pci0000:00/0000:00:02.0/sriov_numvfs
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+        };
+        requiredBy = ["libvirtd.service"];
+        before = ["libvirtd.service"];
+      };
+    }
+
     # windows fonts
     (
       let
