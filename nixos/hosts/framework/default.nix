@@ -178,6 +178,15 @@ in {
       environment.systemPackages = with pkgs; [
         looking-glass-client
       ];
+      # https://looking-glass.io/docs/B6/module/#vm-host
+      boot = {
+        extraModulePackages = with config.boot.kernelPackages; [
+          kvmfr
+        ];
+        extraModprobeConfig = ''
+          options kvmfr static_size_mb=64
+        '';
+      };
     }
 
     # windows fonts
