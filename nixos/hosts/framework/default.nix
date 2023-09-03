@@ -166,14 +166,27 @@ in {
       in {
         script = ''
           set -e
-
-          echo ${toString num} > /sys/devices/pci0000:00/0000:00:02.0/sriov_numvfs
+          echo ${toString num} | tee /sys/devices/pci0000:00/0000:00:02.0/sriov_numvfs
         '';
         serviceConfig = {
           Type = "oneshot";
         };
         requiredBy = ["libvirtd.service"];
         before = ["libvirtd.service"];
+      };
+      systemd.services.detach-sriov-devices = {
+        script = ''
+          set -e
+          virsh nodedev-detach pci_0000_00_02_1
+        '';
+        path = with pkgs; [
+          libvirt
+        ];
+        serviceConfig = {
+          Type = "oneshot";
+        };
+        requiredBy = ["libvirtd.service"];
+        after = ["libvirtd.service"];
       };
       environment.systemPackages = with pkgs; [
         looking-glass-client
@@ -183,10 +196,24 @@ in {
         extraModulePackages = with config.boot.kernelPackages; [
           kvmfr
         ];
+        kernelModules = [
+          "kvmfr"
+        ];
         extraModprobeConfig = ''
           options kvmfr static_size_mb=64
         '';
       };
+      services.udev.extraRules = ''
+        ACTION=="add", SUBSYSTEM=="kvmfr", GROUP="libvirtd", MODE="0660"
+      '';
+      virtualisation.libvirtd.qemu.verbatimConfig = ''
+        cgroup_device_acl = [
+          "/dev/null", "/dev/full", "/dev/zero",
+          "/dev/random", "/dev/urandom",
+          "/dev/ptmx", "/dev/kvm",
+          "/dev/kvmfr0"
+        ]
+      '';
     }
 
     # windows fonts

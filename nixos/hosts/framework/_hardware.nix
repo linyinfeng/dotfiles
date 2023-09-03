@@ -84,14 +84,14 @@
       } @ args:
         buildLinux (args
           // rec {
-            version = "6.5";
+            version = "6.4";
             modDirVersion = lib.versions.pad 3 version;
             extraMeta.branch = lib.versions.majorMinor version;
             src = fetchFromGitHub {
               owner = "intel";
               repo = "mainline-tracking";
-              rev = "mainline-tracking-v6.5-linux-230830T045229Z";
-              sha256 = "sha256-ggFGAEYi7R7dw589U9yEqAYDk0CGVNDUm0v42+F1MxA=";
+              rev = "mainline-tracking-v6.4-linux-230816T023734Z";
+              sha256 = "sha256-8gHrgO+nrItJe2ulO/7C4ZQvjjwr+9NJxCOQOln5a0Y=";
             };
             kernelPatches = [
               # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
