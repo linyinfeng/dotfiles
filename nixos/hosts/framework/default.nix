@@ -187,6 +187,7 @@ in {
         };
         requiredBy = ["libvirtd.service"];
         after = ["libvirtd.service"];
+        before = ["libvirt-guests.service"];
       };
       environment.systemPackages = with pkgs; [
         looking-glass-client
