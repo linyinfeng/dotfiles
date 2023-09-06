@@ -12,8 +12,6 @@ config.services.xserver.desktopManager.gnome.enable
     displayManager.gdm.enable = true;
   };
 
-  boot.plymouth.enable = true;
-
   # prevent gdm auto suspend before login
   services.xserver.displayManager.gdm.autoSuspend = false;
 
