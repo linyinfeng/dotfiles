@@ -7,6 +7,15 @@
     enable = true;
     package = pkgs.gitFull;
     lfs.enable = true;
+    delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        light = true;
+        line-numbers = true;
+        hyperlinks = true;
+      };
+    };
 
     extraConfig = {
       init.defaultBranch = "main";
@@ -14,6 +23,8 @@
       pull.ff = "only";
       credential.helper = "libsecret";
       commit.gpgSign = true;
+      merge.conflictstyle = "diff3";
+      diff.colorMoved = "default";
 
       # fish git status
       bash.showInformativeStatus = true;
