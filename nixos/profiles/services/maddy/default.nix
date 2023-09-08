@@ -149,6 +149,7 @@ in {
       "alertmanager@li7g.com"
       "matrix@li7g.com"
       "mastodon@li7g.com"
+      "keycloak@li7g.com"
     ];
     sops.secrets."mail_password" = {
       sopsFile = config.sops-file.get "terraform/common.yaml";
