@@ -33,6 +33,16 @@
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
     deploy-rs.inputs.utils.follows = "flake-utils";
 
+    flat-flake.url = "github:linyinfeng/flat-flake";
+    flat-flake.inputs.crane.follows = "crane";
+    flat-flake.inputs.flake-compat.follows = "flake-compat";
+    flat-flake.inputs.flake-parts.follows = "flake-parts";
+    flat-flake.inputs.flake-utils.follows = "flake-utils";
+    flat-flake.inputs.nixpkgs.follows = "nixpkgs";
+    flat-flake.inputs.rust-overlay.follows = "rust-overlay";
+    flat-flake.inputs.systems.follows = "systems";
+    flat-flake.inputs.treefmt-nix.follows = "treefmt-nix";
+
     # nixos modules
 
     home-manager.url = "github:nix-community/home-manager";
@@ -44,6 +54,8 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.inputs.crane.follows = "crane";
+    lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
     lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
@@ -115,6 +127,7 @@
 
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.inputs.systems.follows = "systems";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
@@ -233,6 +246,11 @@
     }: let
       selfLib = import ./lib {inherit inputs lib;};
     in {
+      flatFlake.allowed = [
+        ["hyprland" "hyprland-protocols"]
+        ["hyprland" "wlroots"]
+        ["hyprland" "xdph"]
+      ];
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -240,6 +258,7 @@
       flake.lib = selfLib;
       imports =
         [
+          inputs.flat-flake.flakeModules.flatFlake
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.devshell.flakeModule
           inputs.treefmt-nix.flakeModule
