@@ -3,12 +3,6 @@
   lib,
   ...
 }: let
-  webBrowser = "firefox.desktop";
-  imageViewer = "org.gnome.eog.desktop";
-  archiveViewer = "org.gnome.FileRoller.desktop";
-  audioPlayer = "io.bassi.Amberol.desktop";
-  videoPlayer = "vlc.desktop";
-
   webFormats = [
     "x-scheme-handler/http"
     "x-scheme-handler/https"
@@ -169,17 +163,46 @@
     "x-fli"
     "x-flv"
   ];
+  wordFormats = map (f: "application/${f}") [
+    "msword"
+    "vnd.openxmlformats-officedocument.wordprocessingml.document"
+    "vnd.openxmlformats-officedocument.wordprocessingml.template"
+    "vnd.ms-word.document.macroEnabled.12"
+    "vnd.ms-word.template.macroEnabled.12"
+  ];
+  excelFormats = map (f: "application/${f}") [
+    "vnd.ms-excel"
+    "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    "vnd.openxmlformats-officedocument.spreadsheetml.template"
+    "vnd.ms-excel.sheet.macroEnabled.12"
+    "vnd.ms-excel.template.macroEnabled.12"
+    "vnd.ms-excel.addin.macroEnabled.12"
+    "vnd.ms-excel.sheet.binary.macroEnabled.12"
+  ];
+  pptFormats = map (f: "application/${f}") [
+    "vnd.ms-powerpoint"
+    "vnd.openxmlformats-officedocument.presentationml.presentation"
+    "vnd.openxmlformats-officedocument.presentationml.template"
+    "vnd.openxmlformats-officedocument.presentationml.slideshow"
+    "vnd.ms-powerpoint.addin.macroEnabled.12"
+    "vnd.ms-powerpoint.presentation.macroEnabled.12"
+    "vnd.ms-powerpoint.template.macroEnabled.12"
+    "vnd.ms-powerpoint.slideshow.macroEnabled.12"
+  ];
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
 in {
   xdg.mimeApps = {
     enable = true;
     defaultApplications =
-      buildMap [webBrowser] webFormats
-      // buildMap [imageViewer] imageFormats
-      // buildMap [archiveViewer] archiveFormats
-      // buildMap [audioPlayer] audioFormats
-      // buildMap [videoPlayer] videoFormats
+      buildMap ["firefox.desktop"] webFormats
+      // buildMap ["org.gnome.eog.desktop"] imageFormats
+      // buildMap ["org.gnome.FileRoller.desktop"] archiveFormats
+      // buildMap ["io.bassi.Amberol.desktop"] audioFormats
+      // buildMap ["vlc.desktop"] videoFormats
+      // buildMap ["writer.desktop"] wordFormats
+      // buildMap ["calc.desktop"] excelFormats
+      // buildMap ["impress.desktop"] pptFormats
       // {
         "application/pdf" = ["org.gnome.Evince.desktop"];
         "x-scheme-handler/mailto" = ["org.gnome.Geary.desktop"];
