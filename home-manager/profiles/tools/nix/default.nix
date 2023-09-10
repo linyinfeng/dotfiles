@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
     cachix
+    flat-flake
     nil
     nix-output-monitor
     nix-prefetch-scripts

@@ -13,6 +13,7 @@
     inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default
     inputs.attic.overlays.default
+    inputs.flat-flake.overlays.default
     (final: prev: let
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';
