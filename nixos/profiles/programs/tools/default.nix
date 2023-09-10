@@ -8,7 +8,7 @@
     dosfstools
     dstat
     efibootmgr
-    exa
+    eza
     fd
     file
     git
