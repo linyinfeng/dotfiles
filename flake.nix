@@ -246,11 +246,13 @@
     }: let
       selfLib = import ./lib {inherit inputs lib;};
     in {
-      flatFlake.allowed = [
-        ["hyprland" "hyprland-protocols"]
-        ["hyprland" "wlroots"]
-        ["hyprland" "xdph"]
-      ];
+      flatFlake.config = {
+        allowed = [
+          ["hyprland" "hyprland-protocols"]
+          ["hyprland" "wlroots"]
+          ["hyprland" "xdph"]
+        ];
+      };
       systems = [
         "x86_64-linux"
         "aarch64-linux"
