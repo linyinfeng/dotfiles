@@ -80,6 +80,7 @@
       linux_intel_fn = {
         fetchFromGitHub,
         buildLinux,
+        lib,
         ...
       } @ args:
         buildLinux (args
@@ -95,13 +96,15 @@
             };
           }
           // (args.argsOverride or {}));
-      linux_intel = pkgs.callPackage linux_intel_fn {};
+      linux_intel = pkgs.callPackage linux_intel_fn {
+        kernelPatches = pkgs.linuxPackages_6_4.kernel.kernelPatches;
+      };
     in
       pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
     kernelPatches = [
       # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
       {
-        name = "framework-12th-tpm-tis-workaround";
+        name =   "framework-12th-tpm-tis-workaround";
         # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
         patch = ../../../patches/framework-12th-tpm-tis-workaround.patch;
       }
