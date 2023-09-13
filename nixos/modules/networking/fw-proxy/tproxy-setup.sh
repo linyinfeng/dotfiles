@@ -107,6 +107,11 @@ table inet $nft_table {
 }
 EOF
 
+while ! nft list table inet fw-tproxy; do
+  echo "wait table inet fw-tproxy appear..."
+  sleep 1
+done
+
 for level in $(seq 1 $max_level); do
   nft add set inet "$nft_table" cgroups-level"$level" "{" typeof socket cgroupv2 level "$level" \; "}"
   nft add rule inet "$nft_table" output \
