@@ -82,6 +82,7 @@
           fi
 
           ip address add 172.16.42.1/24 dev usb0
+          ip link set up dev usb0
         '';
         path = with pkgs; [
           iproute2
