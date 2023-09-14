@@ -52,10 +52,17 @@
         alsa.enable = false;
         jack.enable = false;
       };
+      programs.dconf.enable = true;
       # services.fprintd.enable = true; # not working
       environment.systemPackages = with pkgs; [
         discover
       ];
+    }
+
+    # tweaks
+    {
+      # not working
+      systemd.services.msm-modem-uim-selection.enable = lib.mkForce false;
     }
 
     # applications
@@ -79,9 +86,9 @@
             mkdir functions/rndis.usb0
             ln -s functions/rndis.usb0 configs/c.1/rndis
             (cd /sys/class/udc; echo *) > UDC
-          fi
 
-          ip address add 172.16.42.1/24 dev usb0
+            ip address add 172.16.42.1/24 dev usb0
+          fi
           ip link set up dev usb0
         '';
         path = with pkgs; [
