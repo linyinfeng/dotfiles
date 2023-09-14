@@ -15,6 +15,8 @@
         networking.behind-fw
         networking.fw-proxy
         services.flatpak
+        services.nginx
+        services.acme
         virtualization.waydroid
         users.yinfeng
       ]
