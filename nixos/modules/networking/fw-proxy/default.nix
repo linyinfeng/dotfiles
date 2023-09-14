@@ -294,7 +294,7 @@ in
             ExecStopPost = "${scripts}/bin/fw-tproxy-clean";
           };
           after = ["nftables.service" "clash.service"];
-          requires = ["clash.service"];
+          bindsTo = ["clash.service"];
           wantedBy = ["multi-user.target"];
         };
         networking.firewall =
