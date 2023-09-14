@@ -86,15 +86,20 @@
             mkdir functions/rndis.usb0
             ln -s functions/rndis.usb0 configs/c.1/rndis
             (cd /sys/class/udc; echo *) > UDC
-
-            ip address add 172.16.42.1/24 dev usb0
           fi
-          ip link set up dev usb0
         '';
         path = with pkgs; [
           iproute2
         ];
         wantedBy = ["multi-user.target"];
+      };
+      systemd.network.networks."50-usb0" = {
+        matchConfig = {
+          Name = "usb0";
+        };
+        address = [
+          "172.16.42.1/24"
+        ];
       };
     }
 
