@@ -293,7 +293,7 @@ in
             ExecStart = "${scripts}/bin/fw-tproxy-setup";
             ExecStopPost = "${scripts}/bin/fw-tproxy-clean";
           };
-          after = ["clash.service"];
+          after = ["nftables.service" "clash.service"];
           requires = ["clash.service"];
           wantedBy = ["multi-user.target"];
         };
