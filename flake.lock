@@ -689,16 +689,15 @@
     "mobile-nixos": {
       "flake": false,
       "locked": {
-        "lastModified": 1690526652,
-        "narHash": "sha256-vGaI88GWpC6QnlGxvaQ9SyRndFFBZqkl43Q7hiHJsto=",
-        "owner": "linyinfeng",
+        "lastModified": 1695086559,
+        "narHash": "sha256-0bWtUcqZiQNNJV5qOi6txT1c1wHHhGQHCxfPCfUnTJU=",
+        "owner": "nixos",
         "repo": "mobile-nixos",
-        "rev": "bb3ff12f16d4d7f0360d51d8ad2c9f136a8619f7",
+        "rev": "fa12ebaa98ce18e30cbdaf58a71b9ec56984e38f",
         "type": "github"
       },
       "original": {
-        "owner": "linyinfeng",
-        "ref": "enchilada-staging",
+        "owner": "nixos",
         "repo": "mobile-nixos",
         "type": "github"
       }

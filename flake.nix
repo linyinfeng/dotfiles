@@ -227,9 +227,7 @@
 
     # other
 
-    # TODO wait for https://github.com/NixOS/mobile-nixos/pull/627
-    # mobile-nixos.url = "github:nixos/mobile-nixos";
-    mobile-nixos.url = "github:linyinfeng/mobile-nixos/enchilada-staging";
+    mobile-nixos.url = "github:nixos/mobile-nixos";
     mobile-nixos.flake = false;
 
     # fixes
