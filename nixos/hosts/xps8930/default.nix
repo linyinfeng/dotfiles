@@ -37,6 +37,7 @@ in {
       services.portal-client
       programs.service-mail
       programs.tg-send
+      nix.hydra-builder-server
       users.yinfeng
     ]);
 
