@@ -70,11 +70,6 @@ in {
   nixpkgs = {
     config = {
       allowUnfree = true;
-      # TODO remove
-      # workaround for mastodon
-      permittedInsecurePackages = [
-        "openssl-1.1.1t"
-      ];
     };
     overlays = [earlyFixes] ++ packages ++ [lateFixes];
   };
