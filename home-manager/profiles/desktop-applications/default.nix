@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }: let
@@ -11,7 +10,7 @@ in {
       amberol
       calibre
       gimp
-      # gnuradio # TODO broken
+      gnuradio
       gparted
       inkscape
       libreoffice-fresh
