@@ -60,6 +60,7 @@
       development.documentation
       programs.adb
       programs.qrcp
+      programs.ccache
       services.gnupg
     ];
     multimediaDev =
