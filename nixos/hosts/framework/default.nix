@@ -255,5 +255,11 @@ in {
         };
       };
     }
+
+    # limit cpu quota for nix-daemon for laptop
+    {
+      # 16 cores in total
+      systemd.services.nix-daemon.serviceConfig.CPUQuota = "800%";
+    }
   ];
 }
