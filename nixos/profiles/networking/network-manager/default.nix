@@ -7,8 +7,7 @@ lib.mkMerge [
   {
     networking.networkmanager = {
       enable = true;
-      # TODO broken
-      enableStrongSwan = false;
+      enableStrongSwan = true;
       logLevel = "INFO";
       firewallBackend = "nftables";
       connectionConfig = {
