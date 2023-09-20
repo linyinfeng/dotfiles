@@ -14,8 +14,7 @@
   hardware.gpgSmartcards.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # TODO broken
-    # yubikey-manager
+    yubikey-manager
     pcsctools
   ];
 
