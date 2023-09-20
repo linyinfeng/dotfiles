@@ -2,7 +2,7 @@
   homeDirectory = "/root";
 in {
   users.users.root = {
-    passwordFile = config.sops.secrets."user-password/root".path;
+    hashedPasswordFile = config.sops.secrets."user-password/root".path;
     openssh.authorizedKeys.keyFiles = [
       _ssh/pgp.pub
       _ssh/juice.pub

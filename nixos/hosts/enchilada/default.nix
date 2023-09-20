@@ -111,7 +111,7 @@
         imports = suites.phone;
       };
       services.openssh.settings.PasswordAuthentication = false;
-      users.users.yinfeng.passwordFile = lib.mkForce config.sops.secrets."user-pin/yinfeng".path;
+      users.users.yinfeng.hashedPasswordFile = lib.mkForce config.sops.secrets."user-pin/yinfeng".path;
       sops.secrets."user-pin/yinfeng" = {
         neededForUsers = true;
         sopsFile = config.sops-file.get "common.yaml";

@@ -19,7 +19,7 @@ in {
 
   users.users.${name} = {
     inherit uid;
-    passwordFile = config.sops.secrets."user-password/${name}".path;
+    hashedPasswordFile = config.sops.secrets."user-password/${name}".path;
     isNormalUser = true;
     shell = pkgs.fish;
     home = homeDirectory;
