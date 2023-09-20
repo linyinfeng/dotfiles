@@ -421,17 +421,11 @@ in
                 networkConfig = {
                   LinkLocalAddressing = "no"; # disable link local autoconfiguration
                 };
-                # TODO wait for https://github.com/NixOS/nixpkgs/pull/230890
-                # tokenBucketFilterConfig = lib.mkIf peerCfg.trafficControl.enable {
-                #   Rate = peerCfg.trafficControl.rate;
-                #   BurstBytes = peerCfg.trafficControl.burst;
-                # };
-                extraConfig = ''
-                  [TokenBucketFilter]
-                  Rate=${peerCfg.trafficControl.rate}
-                  BurstBytes=${peerCfg.trafficControl.burst}
-                  LatencySec=${peerCfg.trafficControl.latency}
-                '';
+                tokenBucketFilterConfig = lib.mkIf peerCfg.trafficControl.enable {
+                  Rate = peerCfg.trafficControl.rate;
+                  BurstBytes = peerCfg.trafficControl.burst;
+                  LatencySec = peerCfg.trafficControl.latency;
+                };
               }
           )
           bgpCfg.peering.peers;
