@@ -142,18 +142,4 @@ in {
       device = "/swap/swapfile";
     }
   ];
-
-  # TODO wait for https://github.com/NixOS/nixpkgs/issues/250166
-  # and https://github.com/NixOS/nixpkgs/pull/250405
-  # and https://github.com/torvalds/linux/commit/8f7f35e5aa6f2182eabcfa3abef4d898a48e9aa8
-  boot.kernelPatches = [
-    rec {
-      name = "enable-hwrng-only-for-pluton-on-amd-cpus";
-      patch = pkgs.fetchpatch {
-        name = name + ".patch";
-        url = "https://github.com/torvalds/linux/commit/8f7f35e5aa6f2182eabcfa3abef4d898a48e9aa8.patch";
-        sha256 = "sha256-j+wtITmYwqm1Oa6BUGO1t2sg/glAZPLvdZLV6PwdKAQ=";
-      };
-    }
-  ];
 }
