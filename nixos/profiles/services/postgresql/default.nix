@@ -11,6 +11,12 @@
     backupAll = true;
     compression = "zstd";
   };
+  environment.global-persistence.directories = [
+    config.services.postgresqlBackup.location
+  ];
+  systemd.tmpfiles.rules = [
+    "z ${config.services.postgresqlBackup.location} 700 postgres root - -"
+  ];
   services.restic.backups.b2 = {
     paths = [
       config.services.postgresqlBackup.location
