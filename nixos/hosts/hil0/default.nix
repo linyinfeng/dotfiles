@@ -23,6 +23,7 @@ in {
     suites.server
     ++ (with profiles; [
       programs.tg-send
+      programs.ccache
       services.nginx
       services.acme
       services.notify-failure
@@ -128,8 +129,9 @@ in {
       services.hydra.buildMachinesFiles = [
         "/etc/nix-build-machines/hydra-builder/machines"
       ];
-      # limit cpu quota of nix builds
-      systemd.services.nix-daemon.serviceConfig.CPUQuota = "300%";
+      # limit cpu usage of nix eval and builds
+      systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
+      systemd.services.hydra-evaluator.serviceConfig.CPUWeight = "idle";
     }
   ];
 }

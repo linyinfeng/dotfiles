@@ -57,6 +57,8 @@ in {
 
   services.xserver.desktopManager.gnome.enable = true;
 
+  systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
+
   virtualisation.kvmgt = {
     enable = true;
     device = "0000:00:02.0";
