@@ -96,6 +96,7 @@
         services.auto-upgrade
         services.kde-connect
         services.printing
+        services.snapper
         security.hardware-keys
         hardware.rtl-sdr
         nix.nix-ld
