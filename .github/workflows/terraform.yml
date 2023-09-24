@@ -59,7 +59,7 @@ jobs:
     - name: Import GPG key
       if: steps.plan.outputs.diff == 'true'
       run: |
-        gpg import nixos/profiles/users/yinfeng/_pgp/pub.asc
+        gpg --import nixos/profiles/users/yinfeng/_pgp/pub.asc
     - name: Encrypt plan
       if: steps.plan.outputs.diff == 'true'
       run: |
