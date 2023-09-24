@@ -43,7 +43,7 @@ in
         enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
         disabled-extensions = [];
         favorite-apps = lib.mkBefore [
-          "com.raggesilver.BlackBox.desktop"
+          "org.gnome.Console.desktop"
           "org.gnome.Nautilus.desktop"
           "firefox.desktop"
           "gnome-system-monitor.desktop"
