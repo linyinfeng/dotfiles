@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   subvolumes = lib.lists.map (v: v.SUBVOLUME) (lib.attrValues config.services.snapper.configs);
   createForSubvolume = subvol: let
     target = "${subvol}/.snapshots";
@@ -8,8 +12,7 @@ let
       btrfs subvolume create "${target}"
     fi
   '';
-in
-{
+in {
   services.snapper.configs = {
     persist = {
       SUBVOLUME = "/persist";
