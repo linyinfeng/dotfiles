@@ -9,15 +9,10 @@ lib.mkMerge [
       enable = true;
       enableStrongSwan = true;
       logLevel = "INFO";
-      firewallBackend = "nftables";
       connectionConfig = {
         "connection.mdns" = 2;
       };
     };
-
-    environment.etc."ipsec.secrets".text = ''
-      include ipsec.d/ipsec.nm-l2tp.secrets
-    '';
 
     environment.global-persistence.directories = [
       "/etc/NetworkManager/system-connections"
