@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   getSystem,
   ...
@@ -39,6 +40,9 @@
         };
       };
       bird = inputs'.linyinfeng.packages.bird-babel-rtt;
+      tailscale-derp = final.tailscale.overrideAttrs (old: {
+        subPackages = old.subPackages ++ ["cmd/derper"];
+      });
     })
   ];
   earlyFixes = final: prev: let
@@ -51,7 +55,14 @@
   lateFixes = final: prev: let
     inherit (prev.stdenv.hostPlatform) system;
     inherit ((getSystem system).allModuleArgs) inputs';
+    latest = import inputs.latest {
+      inherit system;
+      inherit (config.nixpkgs) config;
+    };
   in {
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=257562
+    inherit (latest) qq;
+
     # TODO broken
     # fwupd = prev.fwupd.overrideAttrs (old: {
     #   patches =
@@ -60,11 +71,6 @@
     #       ../patches/fwupd-lockdown-unknown-as-invalid.patch
     #     ];
     # });
-
-    # TODO upstream
-    tailscale-derp = final.tailscale.overrideAttrs (old: {
-      subPackages = old.subPackages ++ ["cmd/derper"];
-    });
   };
 in {
   nixpkgs = {
