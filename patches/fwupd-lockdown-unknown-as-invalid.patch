@@ -1,13 +1,12 @@
 diff --git a/plugins/linux-lockdown/fu-linux-lockdown-plugin.c b/plugins/linux-lockdown/fu-linux-lockdown-plugin.c
-index 5081915cb..e43d176e7 100644
+index 6c8d3ee94..ea8b85597 100644
 --- a/plugins/linux-lockdown/fu-linux-lockdown-plugin.c
 +++ b/plugins/linux-lockdown/fu-linux-lockdown-plugin.c
-@@ -118,7 +118,7 @@ fu_linux_lockdown_plugin_add_security_attrs(FuPlugin *plugin, FuSecurityAttrs *a
- 	fu_security_attrs_append(attrs, attr);
- 
- 	if (self->lockdown == FU_PLUGIN_LINUX_LOCKDOWN_UNKNOWN) {
+@@ -155,7 +155,7 @@ fu_linux_lockdown_plugin_add_security_attrs(FuPlugin *plugin, FuSecurityAttrs *a
+ 		g_info("failed to ensure attribute fix flags: %s", error_local->message);
+
+ 	if (self->lockdown == FU_LINUX_LOCKDOWN_UNKNOWN) {
 -		fwupd_security_attr_add_flag(attr, FWUPD_SECURITY_ATTR_FLAG_MISSING_DATA);
 +		fwupd_security_attr_set_result(attr, FWUPD_SECURITY_ATTR_RESULT_NOT_VALID);
  		return;
  	}
- 
