@@ -137,17 +137,15 @@ in {
       }
     )
 
-    {
-      networking = lib.mkIf (!config.system.is-vm) {
-        systemd.network.networks."40-ens" = {
-          matchConfig = {
-            Name = "ens*";
-          };
-          networkConfig = {
-            DHCP = "yes";
-          };
+    (lib.mkIf (!config.system.is-vm) {
+      systemd.network.networks."40-ens" = {
+        matchConfig = {
+          Name = "ens*";
+        };
+        networkConfig = {
+          DHCP = "yes";
         };
       };
-    }
+    })
   ];
 }
