@@ -10,6 +10,7 @@
     '';
     serviceConfig = {
       DynamicUser = true;
+      Restart = "on-failure";
       StateDirectory = "matrix-chatgpt-bot";
       EnvironmentFile = [
         config.sops.templates."matrix-chatgpt-extra-env".path
