@@ -251,6 +251,9 @@ in {
           matchConfig = {
             Name = cfg.interfaces.dummy.name;
           };
+          networkConfig = {
+            IPv6AcceptRA = false;
+          };
         };
       };
     }
@@ -449,6 +452,9 @@ in {
               linkConfig = {
                 Multicast = true;
                 MTUBytes = toString cfg.interfaces.mtu;
+              };
+              networkConfig = {
+                IPv6AcceptRA = false;
               };
             }
         )
