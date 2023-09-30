@@ -1,9 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.services.rathole;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.rathole;
+in {
   options.services.rathole = {
     enable = lib.mkEnableOption "rathole";
     package = lib.mkOption {
@@ -24,14 +26,14 @@ in
   config = lib.mkIf cfg.enable {
     systemd.services.rathole = {
       serviceConfig = {
-        ExecStart = ''${pkgs.rathole}/bin/rathole "$CREDENTIALS_DIRECTORY/rathole.toml"'';
+        ExecStart = ''${pkgs.rathole}/bin/rathole "''${CREDENTIALS_DIRECTORY}/rathole.toml"'';
         DynamicUser = true;
         Restart = "on-failure";
         LoadCredential = [
           "rathole.toml:${cfg.configFile}"
         ];
       };
-      wantedBy = ["multi-user.service"];
+      wantedBy = ["multi-user.target"];
     };
   };
 }

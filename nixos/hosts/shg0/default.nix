@@ -144,22 +144,27 @@ in {
       };
       sops.templates."rathole-toml".content = ''
         [server]
-        bind_addr = ":${toString config.ports.rathole}"
+        bind_addr = "[::]:${toString config.ports.rathole}"
 
         [server.services.minecraft]
         token = "${config.sops.placeholder."rathole_minecraft_token"}"
-        bind_addr = ":${toString config.ports.minecraft}"
+        bind_addr = "[::]:${toString config.ports.minecraft}"
       '';
       sops.secrets."rathole_minecraft_token" = {
         sopsFile = config.sops-file.terraform;
-        restartUnits = [ "rathole.service" ];
+        restartUnits = ["rathole.service"];
       };
+      networking.firewall.allowedUDPPorts = with config.ports; [
+        rathole
+        minecraft
+      ];
     }
 
     (lib.mkIf (!config.system.is-vm) {
       systemd.network.networks."40-ens" = {
         matchConfig = {
-          Name = "ens*";
+          # ethtool -i
+          Driver = ["virtio_net"];
         };
         networkConfig = {
           DHCP = "yes";
