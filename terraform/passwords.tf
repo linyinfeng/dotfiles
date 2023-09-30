@@ -255,3 +255,11 @@ output "syncv3_secret" {
   value     = shell_sensitive_script.syncv3_secret.output.secret
   sensitive = true
 }
+resource "random_password" "rathole_minecraft_token" {
+  length  = 32
+  special = false
+}
+output "rathole_minecraft_token" {
+  value     = random_password.rathole_minecraft_token.result
+  sensitive = true
+}
