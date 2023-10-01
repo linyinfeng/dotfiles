@@ -23,7 +23,7 @@
         prev.nixVersions.extend
         (final': prev': {
           master = inputs'.nix.packages.nix;
-          selected = final'.unstable;
+          selected = final'.stable;
         });
       nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
       pastebin = inputs'.pastebin.packages.default;
