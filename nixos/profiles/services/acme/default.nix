@@ -8,6 +8,7 @@
     defaults = {
       email = "lin.yinfeng@outlook.com";
       dnsProvider = "cloudflare";
+      dnsResolver = "1.1.1.1:53";
       credentialsFile = config.sops.templates.acme-credentials.path;
     };
   };
