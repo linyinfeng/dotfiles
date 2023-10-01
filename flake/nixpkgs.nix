@@ -52,6 +52,7 @@
       };
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
+          stdenv = final.ccacheStdenv;
           soapysdr = final.soapysdr-with-plugins;
         };
       };
@@ -80,13 +81,17 @@
     inherit (latest) qq;
 
     # TODO broken
-    fwupd = prev.fwupd.overrideAttrs (old: {
-      patches =
-        (old.patches or [])
-        ++ [
-          ../patches/fwupd-lockdown-unknown-as-invalid.patch
-        ];
-    });
+    fwupd =
+      (prev.fwupd.override {
+        stdenv = final.ccacheStdenv;
+      })
+      .overrideAttrs (old: {
+        patches =
+          (old.patches or [])
+          ++ [
+            ../patches/fwupd-lockdown-unknown-as-invalid.patch
+          ];
+      });
   };
 in {
   nixpkgs = {
