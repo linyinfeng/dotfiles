@@ -30,6 +30,22 @@
       mc-config-nuc = inputs'.mc-config-nuc.packages;
       nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
 
+      # ccache
+      ccacheCacheDir = "/var/cache/ccache";
+      ccacheWrapper = prev.ccacheWrapper.override {
+        extraConfig = ''
+          export CCACHE_COMPRESS=1
+          export CCACHE_DIR="${final.ccacheCacheDir}"
+          export CCACHE_UMASK=007
+          if [ ! -d "$CCACHE_DIR" ]; then
+            echo "ccacheWrapper: '$CCACHE_DIR' does not exist"
+          fi
+          if [ ! -w "$CCACHE_DIR" ]; then
+            echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)"
+          fi
+        '';
+      };
+
       # adjustment
       comma = prev.comma.override {
         nix-index-unwrapped = final.nix-index-with-db;
