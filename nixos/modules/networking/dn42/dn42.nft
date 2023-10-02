@@ -1,0 +1,27 @@
+set dn42-ip4 {
+  type ipv4_addr
+  auto-merge
+  flags interval
+    elements = {
+      172.20.0.0/14, # dn42
+      172.31.0.0/16, # ChaosVPN
+      10.100.0.0/14, # ChaosVPN
+      10.127.0.0/16, # NeoNetwork
+      10.0.0.0/8     # Freifunk.net
+    }
+}
+
+set dn42-ip6 {
+  type ipv6_addr
+  auto-merge
+  flags interval
+  elements = {
+    fd00::/8
+  }
+}
+
+chain filter {
+  type filter hook forward priority filter; policy accept;
+  ip  saddr @dn42-ip4 ip  daddr != @dn42-ip4 counter reject;
+  ip6 saddr @dn42-ip6 ip6 daddr != @dn42-ip6 counter reject;
+}

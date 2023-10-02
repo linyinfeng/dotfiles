@@ -383,6 +383,12 @@ in {
           default = false;
         };
       };
+      firewall = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+        };
+      };
     };
   };
 
@@ -390,6 +396,7 @@ in {
     ./_bgp.nix
     ./_dns.nix
     ./_ca.nix
+    ./_firewall.nix
   ];
   config = lib.mkIf (cfg.enable) {
     # basic bird2 configurations
