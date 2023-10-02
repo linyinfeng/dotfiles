@@ -128,13 +128,13 @@
 (use-package delight
   :ensure t)
 
+(use-package eldoc
+  :ensure t)
+
 (use-package envrc
   :ensure t
   :config
   (envrc-global-mode))
-
-(use-package eldoc
-  :ensure t)
 
 (use-package expand-region
   :ensure t
@@ -220,14 +220,8 @@
 (use-package markdown-mode
   :ensure t)
 
-(use-package nyan-mode
-  :ensure t
-  :custom
-  (nyan-animate-nyancat t)
-  (nyan-bar-length 16)
-  (nyan-wavy-trail t)
-  :config
-  (nyan-mode))
+(use-package nftables-mode
+  :ensure t)
 
 (use-package neotree
   :ensure t
@@ -239,6 +233,15 @@
 
 (use-package nix-mode
   :ensure t)
+
+(use-package nyan-mode
+  :ensure t
+  :custom
+  (nyan-animate-nyancat t)
+  (nyan-bar-length 16)
+  (nyan-wavy-trail t)
+  :config
+  (nyan-mode))
 
 (use-package ob-rust
   :ensure t)
