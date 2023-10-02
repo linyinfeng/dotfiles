@@ -113,9 +113,12 @@ in {
         inbounds = [
           {
             protocol = "trojan";
-            settings.users = [
-              config.sops.placeholder."portal_client_id"
-            ];
+            settings = {
+              users = [
+                config.sops.placeholder."portal_client_id"
+              ];
+              packetEncoding = "Packet"; # full cone
+            };
             port = cfg.server.internalPort;
             streamSettings = {
               transport = "grpc";
