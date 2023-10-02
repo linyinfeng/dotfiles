@@ -8,13 +8,17 @@
     defaults = {
       email = "lin.yinfeng@outlook.com";
       dnsProvider = "cloudflare";
-      dnsResolver = "1.1.1.1:53";
       credentialsFile = config.sops.templates.acme-credentials.path;
     };
   };
-  systemd.services.acme-main.environment =
-    lib.mkIf (config.networking.fw-proxy.enable)
-    config.networking.fw-proxy.environment;
+  systemd.services.acme-main = lib.mkIf (config.networking.fw-proxy.enable && config.networking.fw-proxy.tproxy.enable) {
+    # tproxy is needed because
+    # lego checks all authoritative DNS server
+    serviceConfig = {
+      # TODO wait for https://github.com/systemd/systemd/pull/29039
+      Slice = "${config.networking.fw-proxy.tproxy.slice}.slice";
+    };
+  };
   sops.secrets."cloudflare_token" = {
     sopsFile = config.sops-file.get "terraform/common.yaml";
     restartUnits = []; # no need to restart units

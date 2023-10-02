@@ -2,7 +2,6 @@
 # shellcheck shell=bash
 
 nft_table="@nftTable@"
-max_level="@maxCgroupLevel@"
 
 set -e
 
@@ -23,17 +22,12 @@ case "$action" in
 
 list)
   if [ $# != 1 ]; then usage; fi
-  for level in $(seq 1 $max_level); do
-    nft list set inet "$nft_table" cgroups-level"$level"
-  done
+  nft list set inet "$nft_table" cgroups
   ;;
 
 add | delete)
   if [ $# != 2 ]; then usage; fi
-  IFS='/' read -ra path_arr <<<"$path"
-  level="${#path_arr[@]}"
-  nft "$action" element inet "$nft_table" cgroups-level"$level" \
-    "{ \"$path\" }"
+  nft "$action" element inet "$nft_table" cgroups "{ \"$path\" }"
   ;;
 
 *)

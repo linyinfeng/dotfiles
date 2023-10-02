@@ -53,6 +53,7 @@
       proxy-socks = 3141;
       proxy-mixed = 3142;
       proxy-tproxy = 3143;
+      proxy-dns = 3149;
       clash-controller = 3150;
       transmission-rpc = 3160;
       elasticsearch = 3170;

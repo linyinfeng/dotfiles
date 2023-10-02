@@ -1,8 +1,6 @@
 #!@shell@
 # shellcheck shell=bash
 
-tproxy_use_pid="@tproxyUsePid@"
+cgroup_path="@cgroupPath@"
 
-set -e
-sudo "$tproxy_use_pid" $$ >/dev/null 2>&1
-exec "$@"
+exec systemd-run --pipe --slice="$cgroup_path" "$@"

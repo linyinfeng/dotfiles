@@ -39,13 +39,12 @@ in {
       rtt cost 1024;
       rtt max 1024 ms;
     '';
-    extraInterfaces =
-      lib.optionalAttrs config.services.zerotierone.enable {
-        "${config.passthru.zerotierInterfaceName}" = {
-          type = "tunnel";
-          extraConfig = cfg.bird.babelInterfaceConfig;
-        };
+    extraInterfaces = lib.optionalAttrs config.services.zerotierone.enable {
+      "${config.passthru.zerotierInterfaceName}" = {
+        type = "tunnel";
+        extraConfig = cfg.bird.babelInterfaceConfig;
       };
+    };
   };
   sops.secrets."ike_private_key_pem" = {
     sopsFile = config.sops-file.terraform;

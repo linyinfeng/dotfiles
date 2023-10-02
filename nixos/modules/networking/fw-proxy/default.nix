@@ -13,10 +13,7 @@
       install -Dm644 $disableProxy    $out/bin/disable-proxy
       install -Dm755 $updateClashUrl  $out/bin/update-clash-url
       install -Dm755 $updateClash     $out/bin/update-clash
-      install -Dm755 $tproxySetup     $out/bin/fw-tproxy-setup
-      install -Dm755 $tproxyClean     $out/bin/fw-tproxy-clean
       install -Dm755 $tproxyUse       $out/bin/fw-tproxy-use
-      install -Dm755 $tproxyUsePid    $out/bin/fw-tproxy-use-pid
       install -Dm755 $tproxyCgroup    $out/bin/fw-tproxy-cgroup
       install -Dm755 $tproxyInterface $out/bin/fw-tproxy-if
     '';
@@ -46,52 +43,17 @@
       mainUrl = config.sops.secrets."clash/main".path;
       alternativeUrl = config.sops.secrets."clash/alternative".path;
     };
-    tproxySetup = pkgs.substituteAll {
-      src = ./tproxy-setup.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) iproute2 nftables;
-      tproxyPort = cfg.mixinConfig.tproxy-port;
-      inherit
-        (cfg.tproxy)
-        fwmark
-        routingTable
-        rulePriority
-        cgroup
-        nftTable
-        extraFilterRules
-        maxCgroupLevel
-        bypassCgroup
-        bypassCgroupLevel
-        ;
-      allCgroups = lib.concatStringsSep " " cfg.tproxy.allCgroups;
-      proxiedInterfaces = lib.concatStringsSep " " cfg.tproxy.proxiedInterfaces;
-      inherit tproxyCgroup tproxyInterface;
-    };
-    tproxyClean = pkgs.substituteAll {
-      src = ./tproxy-clean.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) iproute2 nftables;
-      inherit (cfg.tproxy) fwmark cgroup nftTable routingTable;
-    };
     tproxyUse = pkgs.substituteAll {
       src = ./tproxy-use.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit tproxyUsePid;
-    };
-    tproxyUsePid = pkgs.substituteAll {
-      src = ./tproxy-use-pid.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      cgroupPath = "/sys/fs/cgroup/${cfg.tproxy.cgroup}";
+      cgroupPath = cfg.tproxy.slice;
     };
     tproxyCgroup = pkgs.substituteAll {
       src = ./tproxy-cgroup.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit (cfg.tproxy) nftTable maxCgroupLevel;
+      inherit (cfg.tproxy) nftTable;
     };
     tproxyInterface = pkgs.substituteAll {
       src = ./tproxy-interface.sh;
@@ -100,6 +62,8 @@
       inherit (cfg.tproxy) nftTable;
     };
   };
+
+  tproxyPort = cfg.mixinConfig.tproxy-port;
 in
   with lib; {
     options.networking.fw-proxy = {
@@ -117,17 +81,13 @@ in
           type = with types; bool;
           default = false;
         };
-        proxiedInterfaces = mkOption {
-          type = with types; listOf str;
-          default = [];
-        };
         routingTable = mkOption {
           type = with types; int;
           default = 854;
         };
         fwmark = mkOption {
-          type = with types; str;
-          default = "0x356";
+          type = with types; int;
+          default = 854;
         };
         rulePriority = mkOption {
           type = with types; int;
@@ -138,25 +98,17 @@ in
           # tproxy is a keyword in nft
           default = "fw-tproxy";
         };
-        bypassCgroupLevel = mkOption {
-          type = with types; int;
-          default = 2;
-        };
-        bypassCgroup = mkOption {
+        slice = mkOption {
           type = with types; str;
-          default = "system.slice/clash.service";
+          default = "tproxy";
+        };
+        bypassSlice = mkOption {
+          type = with types; str;
+          default = "bypasstproxy";
         };
         maxCgroupLevel = mkOption {
           type = with types; int;
           default = 6;
-        };
-        cgroup = mkOption {
-          type = with types; str;
-          default = "tproxy.slice";
-        };
-        allCgroups = mkOption {
-          type = with types; listOf str;
-          default = [];
         };
         extraFilterRules = mkOption {
           type = with types; lines;
@@ -250,6 +202,8 @@ in
               "CAP_NET_BIND_SERVICE"
               "CAP_NET_ADMIN"
             ];
+            # TODO wait for https://github.com/systemd/systemd/pull/29039
+            Slice = lib.mkIf (cfg.tproxy.enable) "${cfg.tproxy.bypassSlice}.slice";
           };
           wantedBy = ["multi-user.target"];
         };
@@ -286,36 +240,149 @@ in
 
       (mkIf (cfg.tproxy.enable) {
         netwokring.routerBasics.enable = true;
-        systemd.services.fw-tproxy = {
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            ExecStart = "${scripts}/bin/fw-tproxy-setup";
-            ExecStopPost = "${scripts}/bin/fw-tproxy-clean";
-          };
-          after = ["nftables.service" "clash.service"];
-          bindsTo = ["clash.service"];
-          wantedBy = ["multi-user.target"];
-        };
-        networking.firewall =
-          if config.networking.nftables.enable
-          then {
-            extraInputRules = ''
-              meta mark ${cfg.tproxy.fwmark} counter accept
-            '';
-          }
-          else {
-            extraCommands = ''
-              ip46tables --append nixos-fw --match mark --mark ${cfg.tproxy.fwmark} --jump nixos-fw-accept
-            '';
-          };
-
-        networking.fw-proxy.tproxy.allCgroups = [cfg.tproxy.cgroup];
-        passthru.fw-proxy-tproxy-scripts = scripts;
-
         systemd.network.config.routeTables = {
           fw-tproxy = cfg.tproxy.routingTable;
         };
+        systemd.network.networks."80-fw-tproxy" = {
+          matchConfig = {
+            Name = "lo";
+          };
+          routes = [
+            {
+              routeConfig = {
+                Destination = "0.0.0.0/0";
+                Type = "local";
+                Table = cfg.tproxy.routingTable;
+              };
+            }
+            {
+              routeConfig = {
+                Destination = "::/0";
+                Type = "local";
+                Table = cfg.tproxy.routingTable;
+              };
+            }
+          ];
+          routingPolicyRules = [
+            {
+              routingPolicyRuleConfig = {
+                Family = "both";
+                FirewallMark = cfg.tproxy.fwmark;
+                Priority = config.routingPolicyPriorities.fw-proxy;
+                Table = cfg.tproxy.routingTable;
+              };
+            }
+          ];
+        };
+        networking.nftables.tables."${cfg.tproxy.nftTable}" = {
+          family = "inet";
+          content = ''
+            set reserved-ip {
+              typeof ip daddr
+              flags interval
+              elements = {
+                10.0.0.0/8,        # private
+                100.64.0.0/10,     # private
+                127.0.0.0/8,       # loopback
+                169.254.0.0/16,    # link-local
+                172.16.0.0/12,     # private
+                192.0.0.0/24,      # private
+                192.168.0.0/16,    # private
+                198.18.0.0/15,     # private
+                224.0.0.0/4,       # multicast
+                255.255.255.255/32 # limited broadcast
+              }
+            }
+
+            set reserved-ip6 {
+              typeof ip6 daddr
+              flags interval
+              elements = {
+                ::1/128,  # loopback
+                fc00::/7, # private
+                fe80::/10 # link-local
+              }
+            }
+
+            set proxied-interfaces {
+              typeof iif
+              counter
+            }
+
+            set cgroups {
+              type cgroupsv2
+              counter
+              elements = { "${cfg.tproxy.slice}.slice" }
+            }
+
+            set cgroups-bypass {
+              type cgroupsv2
+              counter
+              elements = { "${cfg.tproxy.bypassSlice}.slice" }
+            }
+
+            chain prerouting {
+              type filter hook prerouting priority mangle; policy accept;
+
+              mark ${toString cfg.tproxy.fwmark} \
+                meta l4proto {tcp, udp} \
+                tproxy to :${toString tproxyPort} \
+                counter \
+                accept \
+                comment "tproxy and accept marked packets (marked by the output chain)"
+
+              jump filter
+
+              meta l4proto {tcp, udp} \
+                iif @proxied-interfaces \
+                tproxy to :${toString tproxyPort} \
+                mark set ${toString cfg.tproxy.fwmark} \
+                counter
+            }
+
+            chain output {
+              type route hook output priority mangle; policy accept;
+
+              comment "marked packets will be routed to lo"
+
+              socket cgroupv2 level 1 @cgroups-bypass counter return comment "bypass packets of proxy service"
+
+              jump filter
+
+              ${lib.concatMapStringsSep "\n" (level: "meta l4proto { tcp, udp } socket cgroupv2 level ${toString level} @cgroups meta mark set ${toString cfg.tproxy.fwmark}")
+              (lib.range 1 cfg.tproxy.maxCgroupLevel)}
+            }
+
+            chain filter {
+              # TODO enchilada's kernel does not support fib
+              # fib daddr type local accept
+              ip  daddr @reserved-ip  accept
+              ip6 daddr @reserved-ip6 accept
+
+              ${cfg.tproxy.extraFilterRules}
+            }
+          '';
+        };
+        networking.nftables.preCheckRuleset = ''
+          sed 's/^.*socket cgroupv2.*$//g' -i ruleset.conf
+          sed 's/elements = { ".*\.slice" }//g' -i ruleset.conf
+        '';
+        networking.firewall.extraInputRules = ''
+          meta mark ${toString cfg.tproxy.fwmark} counter accept
+        '';
+
+        systemd.slices = {
+          ${cfg.tproxy.slice} = {
+            requiredBy = ["nftables.service"];
+            before = ["nftables.service"];
+          };
+          ${cfg.tproxy.bypassSlice} = {
+            requiredBy = ["nftables.service"];
+            before = ["nftables.service"];
+          };
+        };
+
+        passthru.fw-proxy-tproxy-scripts = scripts;
       })
 
       (mkIf cfg.auto-update.enable {

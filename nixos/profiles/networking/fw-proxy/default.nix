@@ -4,17 +4,43 @@
   ...
 }: let
   cfg = config.networking.fw-proxy;
+  mixinCfg = cfg.mixinConfig;
   inherit (config.networking) hostName;
 in {
   networking.fw-proxy = {
     enable = true;
     tproxy = {
       enable = lib.mkDefault true;
-      cgroup = "tproxy.slice";
+      slice = "tproxy";
+      bypassSlice = "bypasstproxy";
       routingTable = config.routingTables.fw-proxy;
       rulePriority = config.routingPolicyPriorities.fw-proxy;
     };
     mixinConfig = {
+      ipv6 = true;
+      dns = {
+        enable = true;
+        listen = "[::]:${toString config.ports.proxy-dns}";
+        ipv6 = true;
+        default-nameserver = [
+          "223.5.5.5"
+          "223.6.6.6"
+          "[2400:3200::1]:53"
+          "[2400:3200:baba::1]:53"
+        ];
+        nameserver = [
+          "https://101.6.6.6:8443/dns-query"
+          "https://dns.alidns.com/dns-query"
+        ];
+        fallback = [
+          "https://1.1.1.1/dns-query"
+          "https://dns.google/dns-query"
+        ];
+        failback-filter = {
+          geoio = true;
+          geoip-code = "CN";
+        };
+      };
       port = config.ports.proxy-http;
       socks-port = config.ports.proxy-socks;
       mixed-port = config.ports.proxy-mixed;
