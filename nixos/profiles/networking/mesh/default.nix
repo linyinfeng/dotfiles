@@ -3,6 +3,7 @@
   lib,
   ...
 }: let
+  cfg = config.networking.mesh;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
   filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
@@ -38,13 +39,13 @@ in {
       rtt cost 1024;
       rtt max 1024 ms;
     '';
-    # extraInterfaces =
-    #   lib.optionalAttrs config.services.zerotierone.enable {
-    #     "${config.passthru.zerotierInterfaceName}" = {
-    #       type = "tunnel";
-    #       extraConfig = asCfg.mesh.bird.babelInterfaceConfig;
-    #     };
-    #   };
+    extraInterfaces =
+      lib.optionalAttrs config.services.zerotierone.enable {
+        "${config.passthru.zerotierInterfaceName}" = {
+          type = "tunnel";
+          extraConfig = cfg.bird.babelInterfaceConfig;
+        };
+      };
   };
   sops.secrets."ike_private_key_pem" = {
     sopsFile = config.sops-file.terraform;
