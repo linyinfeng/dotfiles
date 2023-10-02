@@ -53,6 +53,16 @@
 ;; quoted char radix
 (setq read-quoted-char-radix 16)
 
+;; confirm before frame close
+(defun ask-before-closing ()
+  "Close only if y was pressed."
+  (interactive)
+  (if (y-or-n-p (format "Are you sure you want to close this frame? "))
+      (save-buffers-kill-terminal)
+    (message "Canceled frame close")))
+(when (daemonp)
+  (global-set-key (kbd "C-x C-c") 'ask-before-closing))
+
 ;; open init.el command
 (defun nixos-rebuild-switch ()
   "NixOS rebuild"
@@ -118,10 +128,10 @@
 (use-package delight
   :ensure t)
 
-(use-package direnv
+(use-package envrc
   :ensure t
   :config
-  (direnv-mode))
+  (envrc-global-mode))
 
 (use-package eldoc
   :ensure t)
