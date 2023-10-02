@@ -6,6 +6,7 @@ in {
     port = config.ports.tailscale;
     inherit interfaceName;
   };
+  passthru.tailscaleInterfaceName = interfaceName;
   systemd.services.tailscale-setup = {
     script = ''
       sleep 10
