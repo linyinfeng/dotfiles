@@ -28,7 +28,9 @@ in {
       services.minio
       services.vaultwarden
       services.gitweb
-      services.seafile
+      # TODO wait for https://github.com/NixOS/nixpkgs/issues/258719
+      # the service is not actively using, so just disable it
+      # services.seafile
       services.commit-notifier
       services.pastebin
       services.static-file-hosting
