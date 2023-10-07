@@ -38,7 +38,10 @@
         fi
         cd dotfiles
         git fetch origin --verbose
-        git push origin "$commit:$target_branch" --verbose
+        git checkout "$target_branch"
+        git reset --hard "origin/$target_branch"
+        git merge --ff-only "$commit"
+        git push origin "$target_branch" --verbose
 
         ${config.programs.tg-send.wrapped} <<EOF
       dotfiles/$target_branch
