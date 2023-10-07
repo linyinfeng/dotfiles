@@ -32,10 +32,12 @@
 
       # ccache
       ccacheCacheDir = "/var/cache/ccache";
+      ccacheLogDir = "/var/log/ccache";
       ccacheWrapper = prev.ccacheWrapper.override {
         extraConfig = ''
           export CCACHE_COMPRESS=1
           export CCACHE_DIR="${final.ccacheCacheDir}"
+          export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
           export CCACHE_UMASK=007
           if [ ! -d "$CCACHE_DIR" ]; then
             echo "ccacheWrapper: '$CCACHE_DIR' does not exist"
