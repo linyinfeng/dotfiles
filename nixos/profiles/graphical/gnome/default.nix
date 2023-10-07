@@ -17,14 +17,11 @@ config.services.xserver.desktopManager.gnome.enable
 
   environment.systemPackages = with pkgs; [
     kooha
-    gnome.gnome-boxes
-    gnome.devhelp
     gnome.dconf-editor
     gnome.gnome-sound-recorder
     gnome.gnome-power-manager
     gnome.gnome-tweaks
     gnome.gnome-remote-desktop
-    gnome.polari
   ];
 
   # disabled
