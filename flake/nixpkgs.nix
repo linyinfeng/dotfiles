@@ -40,10 +40,20 @@
           export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
           export CCACHE_UMASK=007
           if [ ! -d "$CCACHE_DIR" ]; then
-            echo "ccacheWrapper: '$CCACHE_DIR' does not exist"
+            echo "ccacheWrapper: '$CCACHE_DIR' does not exist" >&2
+            exit 1
           fi
           if [ ! -w "$CCACHE_DIR" ]; then
-            echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)"
+            echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
+            exit 1
+          fi
+          if [ ! -f "$CCACHE_LOGFILE" ]; then
+            echo "ccacheWrapper: '$CCACHE_LOGFILE' does not exist" >&2
+            exit 1
+          fi
+          if [ ! -w "$CCACHE_LOGFILE" ]; then
+            echo "ccacheWrapper: '$CCACHE_LOGFILE' is not accessible for user $(whoami)" >&2
+            exit 1
           fi
         '';
       };
