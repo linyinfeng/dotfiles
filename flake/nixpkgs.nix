@@ -89,9 +89,6 @@
       inherit (config.nixpkgs) config;
     };
   in {
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=257562
-    inherit (latest) qq;
-
     # TODO broken
     fwupd =
       (prev.fwupd.override {
