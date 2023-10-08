@@ -33,6 +33,10 @@
 ;; no tool bar
 (tool-bar-mode -1)
 
+;; line and column numbers
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(setq column-number-mode t)
+
 ;; default font
 (set-face-attribute 'default nil
                     :family "monospace"
@@ -152,7 +156,7 @@
 
 (use-package flycheck-hledger
   :ensure t
-  :after(flycheck hledger-mode))
+  :after (flycheck hledger-mode))
 
 (use-package flycheck-projectile
   :ensure t)
