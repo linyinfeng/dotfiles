@@ -908,17 +908,17 @@
     },
     "nixpkgs-iproute2-ifd": {
       "locked": {
-        "lastModified": 1692634271,
-        "narHash": "sha256-ph5kV7s625OsQO9LTrVO8tJwHozEwNPJXVdnPnic+gM=",
+        "lastModified": 1696706667,
+        "narHash": "sha256-WtGweQ49ygxc8Cxm8RNQiIpMi/+iXmb/1oshv94JZ6o=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0b0480988770d0c7874c10e203e5743178a8dff2",
+        "rev": "b320ce210c5cae451db666e365bdbee5dc992e3d",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
+        "ref": "pull/242453/head",
         "repo": "nixpkgs",
-        "rev": "0b0480988770d0c7874c10e203e5743178a8dff2",
         "type": "github"
       }
     },
