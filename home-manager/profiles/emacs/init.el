@@ -47,12 +47,16 @@
 ;; no tabs
 (setq-default indent-tabs-mode nil)
 
+;; tab width
+(setq-default tab-width 4)
+(add-hook 'TeX-mode-hook (lambda () (setq tab-width 2)))
+
 ;; windmove
 (windmove-default-keybindings)
 
 ;; split thresholds
 (setq split-height-threshold 120
-      split-width-threshold 120)
+      split-width-threshold  120)
 
 ;; quoted char radix
 (setq read-quoted-char-radix 16)
