@@ -2,24 +2,22 @@
 
 (message "Start loading init.el")
 
-(defvar host-dir (concat user-emacs-directory "host/"))
-(if (file-exists-p host-dir)
-    (progn
-      (message "Start loading host init")
-      (add-to-list 'load-path host-dir)
-      (require 'init-host)
-      (message "Finish loading host init"))
-  (message "Host file not found"))
+;; directories
+(defvar persist-dir (concat user-emacs-directory "persist/"))
+(make-directory persist-dir :parents)
+(defvar var-dir (concat user-emacs-directory "var/"))
+(make-directory var-dir :parents)
+(defvar sync-dir "@syncDir@/")
 
 ;; customize file
-(defvar var-dir (concat user-emacs-directory "var/"))
-(defvar sync-dir "@syncDir@/")
-(make-directory var-dir :parents)
 (setq custom-file (concat var-dir "custom.el"))
 
+;; persistence
+(setq bookmark-default-file (concat persist-dir "bookmarks"))
+
 ;; no temporary files
-(defvar backup-dir (concat var-dir "backup"))
-(defvar auto-save-dir (concat var-dir "auto-save/"))
+(defvar backup-dir (concat persist-dir "backup"))
+(defvar auto-save-dir (concat persist-dir "auto-save/"))
 (make-directory backup-dir :parents)
 (make-directory auto-save-dir :parents)
 (setq backup-directory-alist
@@ -351,12 +349,15 @@
 (use-package popup
   :ensure t)
 
+(defvar projectile-persist-dir (concat persist-dir "projectile/"))
 (use-package projectile
   :ensure t
   :delight
   :custom
+  (projectile-known-projects-file (concat projectile-persist-dir "known-projects.eld"))
   (projectile-switch-project-action 'neotree-projectile-action)
   :config
+  (make-directory projectile-persist-dir :parents)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
@@ -450,8 +451,9 @@
   :ensure t
   :delight
   :custom
-  (undo-tree-history-directory-alist `(("." . ,(concat var-dir "undo-tree"))))
+  (undo-tree-history-directory-alist `(("." . ,(concat persist-dir "undo-tree"))))
   :config
+  (make-directory (concat persist-dir "undo-tree") :parents)
   (global-undo-tree-mode))
 
 (use-package vterm

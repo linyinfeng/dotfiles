@@ -86,14 +86,16 @@ in {
   xdg.mimeApps.associations.added = {
     "text/plain" = "emacsclient.desktop";
   };
+  dconf.settings."org/gnome/shell".favorite-apps = [
+    "emacs.desktop"
+  ];
 
   home.file.".emacs.d/init.el".source = emacsConfig;
   home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
 
-  # do not persist .emacs.d
-  # home.global-persistence.directories = [
-  #   ".emacs.d"
-  # ];
+  home.global-persistence.directories = [
+    ".emacs.d/persist"
+  ];
 
   programs.fish.interactiveShellInit = ''
     if test "$INSIDE_EMACS" = 'vterm'
