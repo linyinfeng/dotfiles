@@ -32,11 +32,17 @@ in {
   dconf.settings = {
     "org/gnome/shell" = {
       favorite-apps = [
-        "zotero-${pkgs.zotero.version}.desktop"
+        "zotero.desktop"
       ];
     };
     "org/virt-manager/virt-manager/connections" = {
-      uris = ["qemu+ssh://root@nuc.ts.li7g.com/system"];
+      autoconnect = [
+        "qemu:///system"
+      ];
+      uris = [
+        "qemu:///system"
+        "qemu+ssh://root@nuc.ts.li7g.com/system"
+      ];
     };
   };
 
