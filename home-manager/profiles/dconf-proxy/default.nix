@@ -8,7 +8,7 @@
     port = osConfig.networking.fw-proxy.mixinConfig.mixed-port;
   };
 in {
-  dconf.settings = lib.mkIf (osConfig.networking.fw-proxy.enable) {
+  dconf.settings = lib.mkIf (osConfig.networking.fw-proxy.enable && osConfig.programs.dconf.enable) {
     "system/proxy" = {
       mode = "manual";
       use-same-proxy = true;

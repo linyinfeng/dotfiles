@@ -86,9 +86,11 @@ in {
   xdg.mimeApps.associations.added = {
     "text/plain" = "emacsclient.desktop";
   };
-  dconf.settings."org/gnome/shell".favorite-apps = [
-    "emacsclient.desktop"
-  ];
+  dconf.settings = lib.mkIf osConfig.programs.dconf.enable {
+    "org/gnome/shell".favorite-apps = [
+      "emacsclient.desktop"
+    ];
+  };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
   home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
