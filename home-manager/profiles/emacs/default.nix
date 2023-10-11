@@ -87,7 +87,7 @@ in {
     "text/plain" = "emacsclient.desktop";
   };
   dconf.settings."org/gnome/shell".favorite-apps = [
-    "emacs.desktop"
+    "emacsclient.desktop"
   ];
 
   home.file.".emacs.d/init.el".source = emacsConfig;
