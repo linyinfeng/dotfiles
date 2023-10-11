@@ -69,9 +69,15 @@
         };
       };
       bird = inputs'.linyinfeng.packages.bird-babel-rtt;
-      tailscale-derp = final.tailscale.overrideAttrs (old: {
+      tailscale = prev.tailscale.overrideAttrs (old: {
         subPackages = old.subPackages ++ ["cmd/derper"];
+        patches =
+          (old.patches or [])
+          ++ [
+            ../patches/tailscale-excluded-interface-prefixes.patch
+          ];
       });
+      tailscale-derp = final.tailscale;
     })
   ];
   earlyFixes = final: prev: let

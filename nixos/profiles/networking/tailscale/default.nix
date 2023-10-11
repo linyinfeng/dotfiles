@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   interfaceName = "tailscale0";
 in {
   services.tailscale = {
@@ -25,6 +29,18 @@ in {
     path = [config.services.tailscale.package];
     after = ["tailscaled.service"];
     requiredBy = ["tailscaled.service"];
+  };
+  systemd.services.tailscaled.environment = {
+    # use custom patch: tailscale-excluded-interface-prefixes.patch
+    # exclusion of "zt" is already hardcoded by tailscale
+    # so "zt" is included just for clearness
+    TS_EXCLUDED_INTERFACE_PREFIXES = lib.concatStringsSep " " [
+      "zt"
+      # mesh interfaces
+      "mesh"
+      "dn42"
+      "as198764"
+    ];
   };
   sops.secrets."tailscale_tailnet_key" = {
     sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
