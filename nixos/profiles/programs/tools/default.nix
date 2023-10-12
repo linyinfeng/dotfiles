@@ -1,8 +1,7 @@
-{pkgs, ...}:
-let
- delink = pkgs.writeShellApplication {
+{pkgs, ...}: let
+  delink = pkgs.writeShellApplication {
     name = "delink";
-    runtimeInputs = with pkgs; [ coreutils ];
+    runtimeInputs = with pkgs; [coreutils];
     text = ''
       file="$1"
 
@@ -49,5 +48,5 @@ in {
 
     delink
   ];
-  passthru = { inherit delink; };
+  passthru = {inherit delink;};
 }
