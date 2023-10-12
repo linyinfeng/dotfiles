@@ -36,26 +36,33 @@
       ccacheWrapper = prev.ccacheWrapper.override {
         extraConfig = ''
           export CCACHE_COMPRESS=1
-          export CCACHE_DIR="${final.ccacheCacheDir}"
-          export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
           export CCACHE_UMASK=007
-          if [ ! -d "$CCACHE_DIR" ]; then
-            echo "ccacheWrapper: '$CCACHE_DIR' does not exist" >&2
-            exit 1
+          if [ -d "${final.ccacheCacheDir}" ]; then
+            export CCACHE_DIR="${final.ccacheCacheDir}"
+          else
+            export CCACHE_DIR="/tmp/ccache"
+            mkdir -p "$CCACHE_DIR"
+            echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
+          fi
+          if [ -d "${final.ccacheLogDir}" ]; then
+            export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
           fi
           if [ ! -w "$CCACHE_DIR" ]; then
             echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
             exit 1
           fi
-          if [ ! -f "$CCACHE_LOGFILE" ]; then
-            echo "ccacheWrapper: '$CCACHE_LOGFILE' does not exist" >&2
-            exit 1
-          fi
-          if [ ! -w "$CCACHE_LOGFILE" ]; then
-            echo "ccacheWrapper: '$CCACHE_LOGFILE' is not accessible for user $(whoami)" >&2
-            exit 1
-          fi
         '';
+      };
+      ccacheTest = final.ccacheStdenv.mkDerivation {
+        name = "test-ccache";
+        src = builtins.toFile "hello-world.c" ''
+          #include <stdio.h>
+          int main() { printf("hello, world\n"); }
+        '';
+        dontUnpack = true;
+        env.NIX_DEBUG = 1;
+        buildPhase = "cc $src -o hello";
+        installPhase = "install -D hello $out/bin/hello";
       };
 
       # adjustment
