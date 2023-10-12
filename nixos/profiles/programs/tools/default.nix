@@ -1,4 +1,23 @@
-{pkgs, ...}: {
+{pkgs, ...}:
+let
+ delink = pkgs.writeShellApplication {
+    name = "delink";
+    runtimeInputs = with pkgs; [ coreutils ];
+    text = ''
+      file="$1"
+
+      if [ ! -h "$file" ]; then
+        echo "'$file' is not a symbolic link" >&2
+        exit 1
+      fi
+
+      target=$(readlink "$file")
+      rm -v "$file"
+      cp -v "$target" "$file"
+      chmod -v u+w "$file"
+    '';
+  };
+in {
   environment.systemPackages = with pkgs; [
     bc
     btop
@@ -27,5 +46,8 @@
     usbutils
     util-linux
     yq-go
+
+    delink
   ];
+  passthru = { inherit delink; };
 }
