@@ -77,6 +77,9 @@
   boot = {
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages = let
+      version = "6.5";
+      major = lib.versions.major version;
+      minor = lib.versions.minor version;
       linux_intel_fn = {
         fetchFromGitHub,
         buildLinux,
@@ -85,24 +88,22 @@
         ...
       } @ args:
         buildLinux (args
-          // rec {
+          // {
             # build with ccacheStdenv
             stdenv = ccacheStdenv;
-            version = "6.4";
+            inherit version;
             modDirVersion = lib.versions.pad 3 version;
             extraMeta.branch = lib.versions.majorMinor version;
             src = fetchFromGitHub {
               owner = "intel";
               repo = "mainline-tracking";
-              # TODO currently sriov does not work properly on mainline-tracking-v6.5
-              # rev = "mainline-tracking-v6.5-linux-230920T101825Z";
-              rev = "mainline-tracking-v6.4-linux-230920T082632Z";
-              sha256 = "sha256-oW3od+kzimu0PpYoJTZ6bN5GnMWMD3TRyzHigSrUbJE=";
+              rev = "mainline-tracking-v${version}-linux-231010T095704Z";
+              sha256 = "sha256-3UNM1UmxQ5SrKXwpsg+EpM2fA5/widdrPme3In1t44Q=";
             };
           }
           // (args.argsOverride or {}));
       linux_intel = pkgs.callPackage linux_intel_fn {
-        kernelPatches = lib.filter (p: !(lib.elem p.name ["dell_xps_regression"])) pkgs.linuxPackages_6_4.kernel.kernelPatches;
+        kernelPatches = lib.filter (p: !(lib.elem p.name [])) pkgs."linuxPackages_${major}_${minor}".kernel.kernelPatches;
       };
     in
       pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
