@@ -68,7 +68,6 @@
           soapysdr = final.soapysdr-with-plugins;
         };
       };
-      bird = inputs'.linyinfeng.packages.bird-babel-rtt;
       tailscale = prev.tailscale.overrideAttrs (old: {
         subPackages = old.subPackages ++ ["cmd/derper"];
         patches =
