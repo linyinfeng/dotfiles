@@ -52,7 +52,6 @@ in {
           # "wlr/taskbar"
         ];
         modules-center = [
-          "wlr/window"
         ];
         modules-right = [
           "tray"
@@ -68,8 +67,8 @@ in {
           # TODO causing problem
           # https://github.com/Alexays/Waybar/issues/1968
           # on-click = "activate";
-          # on-scroll-up = "hyprctl dispatch workspace e+1";
-          # on-scroll-down = "hyprctl dispatch workspace e-1";
+          on-scroll-up = "hyprctl dispatch workspace e+1";
+          on-scroll-down = "hyprctl dispatch workspace e-1";
         };
         "wlr/taskbar" = {
           all-outputs = false;
