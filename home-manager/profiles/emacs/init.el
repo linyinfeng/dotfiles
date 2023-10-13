@@ -353,6 +353,8 @@
 (use-package projectile
   :ensure t
   :delight
+  :bind
+  (("C-`" . projectile-run-vterm-other-window))
   :custom
   (projectile-known-projects-file (concat projectile-persist-dir "known-projects.eld"))
   (projectile-switch-project-action 'neotree-projectile-action)
