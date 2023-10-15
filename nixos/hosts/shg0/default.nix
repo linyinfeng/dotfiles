@@ -154,8 +154,10 @@ in {
         sopsFile = config.sops-file.terraform;
         restartUnits = ["rathole.service"];
       };
+      networking.firewall.allowedTCPPorts = with config.ports; [
+        rathole # default transport is tcp
+      ];
       networking.firewall.allowedUDPPorts = with config.ports; [
-        rathole
         minecraft
       ];
     }
