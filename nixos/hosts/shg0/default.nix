@@ -156,8 +156,6 @@ in {
       };
       networking.firewall.allowedTCPPorts = with config.ports; [
         rathole # default transport is tcp
-      ];
-      networking.firewall.allowedUDPPorts = with config.ports; [
         minecraft
       ];
     }
