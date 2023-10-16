@@ -438,7 +438,7 @@
   :ensure auctex
   :custom
   ;; use default value
-  ;; (TeX-view-program-selection '((output-pdf "PDF Tools")))
+  (TeX-view-program-selection '((output-pdf "PDF Tools")))
   (TeX-source-correlate-start-server t)
   (TeX-source-correlate-mode t)
   :config
