@@ -41,7 +41,7 @@ in {
       ];
       uris = [
         "qemu:///system"
-        "qemu+ssh://root@nuc.ts.li7g.com/system"
+        "qemu+ssh://root@nuc/system"
       ];
     };
   };
