@@ -172,9 +172,6 @@
 
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
-    crane.inputs.rust-overlay.follows = "rust-overlay";
-    crane.inputs.flake-utils.follows = "flake-utils";
-    crane.inputs.flake-compat.follows = "flake-compat";
 
     gitignore-nix.url = "github:hercules-ci/gitignore.nix";
     gitignore-nix.inputs.nixpkgs.follows = "nixpkgs";
