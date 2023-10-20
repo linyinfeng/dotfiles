@@ -25,4 +25,7 @@ in {
   environment.systemPackages = [
     winVirtioIso
   ];
+  environment.pathsToLink = [
+    "/share/win-virtio"
+  ];
 }
