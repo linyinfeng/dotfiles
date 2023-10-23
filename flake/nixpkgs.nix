@@ -83,6 +83,13 @@
             ../patches/tailscale-excluded-interface-prefixes.patch
           ];
       });
+      waydroid = prev.waydroid.overrideAttrs (old: {
+        patches =
+          (old.patches or [])
+          ++ [
+            ../patches/waydroid-mount-nix-and-run-binfmt.patch
+          ];
+      });
       tailscale-derp = final.tailscale;
     })
   ];
