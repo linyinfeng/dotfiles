@@ -363,33 +363,6 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
-(use-package pyim
-  :ensure t
-  :delight pyim-isearch-mode
-  :custom
-  (default-input-method "pyim")
-  (pyim-page-tooltip 'posframe)
-  (pyim-default-scheme 'quanpin)
-  (pyim-page-length 5)
-  (pyim-english-input-switch-functions
-   '(pyim-probe-dynamic-english
-     pyim-probe-isearch-mode
-     pyim-probe-program-mode
-     pyim-probe-org-structure-template))
-  (pyim-punctuation-half-width-functions
-   '(pyim-probe-punctuation-line-beginning
-     pyim-probe-punctuation-after-punctuation))
-  (pyim-dicts
-   `((:name "Greatdict" :file ,(concat var-dir "pyim/greatdict.pyim.gz"))))
-  :config
-  (use-package posframe
-    :ensure t)
-  (pyim-isearch-mode 1)
-  (define-key pyim-mode-map "." 'pyim-page-next-page)
-  (define-key pyim-mode-map "," 'pyim-page-previous-page)
-  :bind
-  (("C-|" . pyim-convert-string-at-point)))
-
 (use-package proof-general
   :ensure t
   :custom
@@ -415,6 +388,15 @@
 
 (use-package scribble-mode
   :ensure t)
+
+(use-package sis
+  :ensure t
+  :config
+  (sis-ism-lazyman-config nil "rime" 'native)
+  (sis-global-respect-mode)
+  (sis-global-context-mode)
+  (sis-global-inline-mode)
+  (sis-global-cursor-color-mode))
 
 (use-package sudo-edit
   :ensure t)
