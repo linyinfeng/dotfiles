@@ -349,6 +349,9 @@
 (use-package popup
   :ensure t)
 
+(use-package posframe
+  :ensure t)
+
 (defvar projectile-persist-dir (concat persist-dir "projectile/"))
 (use-package projectile
   :ensure t
@@ -378,7 +381,8 @@
 (use-package rime
   :ensure t
   :custom
-  (rime-share-data-dir "@rimeShareDataDir@"))
+  (rime-share-data-dir "@rimeShareDataDir@")
+  (rime-show-candidate 'posframe))
 
 (use-package rg
   :ensure t)
