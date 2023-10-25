@@ -83,6 +83,7 @@
             ../patches/tailscale-excluded-interface-prefixes.patch
           ];
       });
+      tailscale-derp = final.tailscale;
       waydroid = prev.waydroid.overrideAttrs (old: {
         patches =
           (old.patches or [])
@@ -90,7 +91,23 @@
             ../patches/waydroid-mount-nix-and-run-binfmt.patch
           ];
       });
-      tailscale-derp = final.tailscale;
+      gnome =
+        if (final.lib.versions.major prev.gnome.mutter.version == "44")
+        then
+          prev.gnome.overrideScope (gnomeFinal: gnomePrev: {
+            mutter =
+              (gnomePrev.mutter.override {
+                stdenv = final.ccacheStdenv;
+              })
+              .overrideAttrs (old: {
+                patches =
+                  (old.patches or [])
+                  ++ [
+                    ../patches/mutter-triple-buffering-v4-44.patch
+                  ];
+              });
+          })
+        else prev.gnome;
     })
   ];
   earlyFixes = final: prev: let
