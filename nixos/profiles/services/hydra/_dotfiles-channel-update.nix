@@ -43,11 +43,13 @@
         git merge --ff-only "$commit"
         git push origin "$target_branch" --verbose
 
+        set +e
         ${config.programs.tg-send.wrapped} <<EOF
       dotfiles/$target_branch
 
       $(git show HEAD --no-patch)
       EOF
+        set -e
       ) 200>/var/lib/dotfiles-channel-update/lock
     '';
     scriptArgs = "%I";
