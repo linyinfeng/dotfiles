@@ -231,7 +231,7 @@
 
     # fixes
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=242453
-    nixpkgs-iproute2-ifd.url = "github:nixos/nixpkgs/pull/242453/head";
+    nixpkgs-iproute2-ifd.url = "github:linyinfeng/nixpkgs/rttables";
   };
 
   outputs = inputs @ {flake-parts, ...}:

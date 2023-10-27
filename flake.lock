@@ -899,16 +899,16 @@
     },
     "nixpkgs-iproute2-ifd": {
       "locked": {
-        "lastModified": 1696706667,
-        "narHash": "sha256-WtGweQ49ygxc8Cxm8RNQiIpMi/+iXmb/1oshv94JZ6o=",
-        "owner": "nixos",
+        "lastModified": 1698398917,
+        "narHash": "sha256-AZmUP3SKcBCY52TuDdsJ7DiCdXYnh9ADPJx70dNEY/4=",
+        "owner": "linyinfeng",
         "repo": "nixpkgs",
-        "rev": "b320ce210c5cae451db666e365bdbee5dc992e3d",
+        "rev": "4db731fc7e1da0648c06bcbdbba7131007e8ec0c",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "pull/242453/head",
+        "owner": "linyinfeng",
+        "ref": "rttables",
         "repo": "nixpkgs",
         "type": "github"
       }
