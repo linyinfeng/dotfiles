@@ -9,6 +9,7 @@ in {
     [
       amberol
       calibre
+      element-desktop
       gimp
       gnuradio
       gparted
@@ -18,7 +19,6 @@ in {
       picard
       praat
       qq
-      schildichat-desktop
       tdesktop
       teamspeak_client
       transmission-remote-gtk
@@ -53,7 +53,8 @@ in {
       ".goldendict"
 
       ".config/calibre"
-      ".config/SchildiChat"
+      ".config/Element"
+      # ".config/SchildiChat"
       ".config/icalingua"
       ".config/QQ"
       ".config/unity3d" # unity3d game saves
