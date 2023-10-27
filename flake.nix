@@ -180,6 +180,8 @@
     poetry2nix.inputs.nixpkgs.follows = "nixpkgs";
     poetry2nix.inputs.flake-utils.follows = "flake-utils";
     poetry2nix.inputs.nix-github-actions.follows = "nix-github-actions";
+    poetry2nix.inputs.systems.follows = "systems";
+    poetry2nix.inputs.treefmt-nix.follows = "treefmt-nix";
 
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
