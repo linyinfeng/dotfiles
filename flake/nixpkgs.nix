@@ -2,6 +2,7 @@
   config,
   inputs,
   getSystem,
+  lib,
   ...
 }: let
   packages = [
@@ -92,7 +93,7 @@
           ];
       });
       gnome =
-        if (final.lib.versions.major prev.gnome.mutter.version == "44")
+        if (lib.versions.major prev.gnome.mutter.version == "44")
         then
           prev.gnome.overrideScope (gnomeFinal: gnomePrev: {
             mutter =
@@ -142,6 +143,8 @@ in {
   nixpkgs = {
     config = {
       allowUnfree = true;
+      # TODO wait for zotero 7
+      allowInsecurePredicate = p: (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6";
     };
     overlays = [earlyFixes] ++ packages ++ [lateFixes];
   };
