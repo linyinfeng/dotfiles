@@ -97,8 +97,8 @@
             src = fetchFromGitHub {
               owner = "intel";
               repo = "mainline-tracking";
-              rev = "mainline-tracking-v${version}-linux-231010T095704Z";
-              sha256 = "sha256-3UNM1UmxQ5SrKXwpsg+EpM2fA5/widdrPme3In1t44Q=";
+              rev = "mainline-tracking-v${version}-linux-231025T044630Z";
+              sha256 = "sha256-V0eeiXUp8yT3yPCtkmZAKGBj5sPmm7bqSf4eBgs0PeI=";
             };
           }
           // (args.argsOverride or {}));
