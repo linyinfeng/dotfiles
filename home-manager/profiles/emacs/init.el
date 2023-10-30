@@ -63,9 +63,11 @@
 (defun ask-before-closing ()
   "Close only if y was pressed."
   (interactive)
-  (if (y-or-n-p (format "Are you sure you want to close this frame? "))
-      (save-buffers-kill-terminal)
-    (message "Canceled frame close")))
+  (if (display-graphic-p)
+      (if (y-or-n-p (format "Are you sure you want to close this frame? "))
+          (save-buffers-kill-terminal)
+        (message "Canceled frame close"))
+    (save-buffers-kill-terminal)))
 (when (daemonp)
   (global-set-key (kbd "C-x C-c") 'ask-before-closing))
 
@@ -308,8 +310,8 @@
           [ "#+options: tex:t"
             "#+startup: latexpreview" ]))
      (cl-flet ((build-header (l)
-                          (apply 'concat (mapcar (lambda (s) (concat s "\n"))
-                                                 (vconcat common-header-before l common-header-after)))))
+                 (apply 'concat (mapcar (lambda (s) (concat s "\n"))
+                                        (vconcat common-header-before l common-header-after)))))
        `(("d" "default" plain "%?"
           :target (file+head ,file-format ,(build-header [ ]))
           :unnarrowed t)
