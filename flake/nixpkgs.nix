@@ -138,6 +138,9 @@
             ../patches/fwupd-lockdown-unknown-as-invalid.patch
           ];
       });
+
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=262647
+    v2ray = latest.v2ray;
   };
 in {
   nixpkgs = {
