@@ -85,6 +85,8 @@
     nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
     nix-gc-s3.inputs.treefmt-nix.follows = "treefmt-nix";
     nix-gc-s3.inputs.devshell.follows = "devshell";
+    nix-gc-s3.inputs.blank.follows = "blank";
+    nix-gc-s3.inputs.systems.follows = "systems";
 
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
