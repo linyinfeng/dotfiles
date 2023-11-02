@@ -2,8 +2,7 @@
   config,
   lib,
   ...
-}:
-let
+}: let
   dnsServers = [
     # Cloudflare public DNS
     "1.1.1.1"
@@ -22,25 +21,25 @@ let
     "101.102.103.104"
   ];
 in
-lib.mkMerge [
-  {
-    services.resolved = {
-      enable = true;
-      dnssec = "allow-downgrade";
-      llmnr = "true";
-      fallbackDns = [];
-      extraConfig = ''
-        DNS=${lib.concatStringsSep " " dnsServers}
-        DNSOverTLS=yes
+  lib.mkMerge [
+    {
+      services.resolved = {
+        enable = true;
+        dnssec = "allow-downgrade";
+        llmnr = "true";
+        fallbackDns = [];
+        extraConfig = ''
+          DNS=${lib.concatStringsSep " " dnsServers}
+          DNSOverTLS=yes
+        '';
+      };
+      networking.firewall.allowedUDPPorts = [
+        5353
+      ];
+    }
+    (lib.mkIf config.services.avahi.enable {
+      services.resolved.extraConfig = ''
+        MulticastDNS=resolve
       '';
-    };
-    networking.firewall.allowedUDPPorts = [
-      5353
-    ];
-  }
-  (lib.mkIf config.services.avahi.enable {
-    services.resolved.extraConfig = ''
-      MulticastDNS=resolve
-    '';
-  })
-]
+    })
+  ]
