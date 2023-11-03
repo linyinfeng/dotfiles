@@ -85,6 +85,48 @@
         "type": "github"
       }
     },
+    "clash": {
+      "inputs": {
+        "devshell": [
+          "devshell"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixos-stable": [
+          "blank"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nvfetcher": [
+          "nvfetcher"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1698949380,
+        "narHash": "sha256-V9a1C4UxNAm/YYGIB4QlbuI2PyDhA9vLj8cemtpSsGQ=",
+        "owner": "linyinfeng",
+        "repo": "nur-packages",
+        "rev": "d3d67020dfc1bf62064283c8d41abffafabfc80a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "nur-packages",
+        "rev": "d3d67020dfc1bf62064283c8d41abffafabfc80a",
+        "type": "github"
+      }
+    },
     "crane": {
       "inputs": {
         "nixpkgs": [
@@ -1075,6 +1117,7 @@
         "ace-bot": "ace-bot",
         "attic": "attic",
         "blank": "blank",
+        "clash": "clash",
         "crane": "crane",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",

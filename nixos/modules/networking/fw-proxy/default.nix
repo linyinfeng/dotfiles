@@ -192,7 +192,7 @@ in
         systemd.services.clash = {
           description = "A rule based proxy in GO";
           script = ''
-            "${pkgs.nur.repos.linyinfeng.clash-premium}/bin/clash-premium" -d "$STATE_DIRECTORY"
+            "${pkgs.clash-premium}/bin/clash-premium" -d "$STATE_DIRECTORY"
           '';
           serviceConfig = {
             Type = "exec";
