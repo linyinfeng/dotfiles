@@ -28,10 +28,11 @@ in
         dnssec = "allow-downgrade";
         llmnr = "true";
         fallbackDns = [];
-        extraConfig = ''
-          DNS=${lib.concatStringsSep " " dnsServers}
-          DNSOverTLS=yes
-        '';
+        # TODO not stable
+        # extraConfig = ''
+        #   DNS=${lib.concatStringsSep " " dnsServers}
+        #   DNSOverTLS=yes
+        # '';
       };
       networking.firewall.allowedUDPPorts = [
         5353
