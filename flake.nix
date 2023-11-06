@@ -234,16 +234,6 @@
     # fixes
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=242453
     nixpkgs-iproute2-ifd.url = "github:linyinfeng/nixpkgs/rttables";
-    # TODO remove clash
-    clash.url = "github:linyinfeng/nur-packages/d3d67020dfc1bf62064283c8d41abffafabfc80a";
-    clash.inputs.flake-parts.follows = "flake-parts";
-    clash.inputs.flake-utils.follows = "flake-utils";
-    clash.inputs.nixpkgs.follows = "nixpkgs";
-    clash.inputs.nixos-stable.follows = "blank";
-    clash.inputs.devshell.follows = "devshell";
-    clash.inputs.treefmt-nix.follows = "treefmt-nix";
-    clash.inputs.nvfetcher.follows = "nvfetcher";
-    clash.inputs.flake-compat.follows = "flake-compat";
   };
 
   outputs = inputs @ {flake-parts, ...}:

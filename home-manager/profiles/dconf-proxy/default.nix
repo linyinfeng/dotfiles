@@ -5,7 +5,7 @@
 }: let
   proxy = {
     host = "localhost";
-    port = osConfig.networking.fw-proxy.mixinConfig.mixed-port;
+    port = osConfig.networking.fw-proxy.ports.mixed;
   };
 in {
   dconf.settings = lib.mkIf (osConfig.networking.fw-proxy.enable && osConfig.programs.dconf.enable) {

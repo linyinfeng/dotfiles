@@ -41,7 +41,7 @@
     telegaProxyServer = "localhost";
     telegaProxyPort =
       if fw-proxy.enable
-      then fw-proxy.mixinConfig.mixed-port
+      then fw-proxy.ports.mixed
       else "nil";
     ledgerFile = config.home.sessionVariables."LEDGER_FILE";
   };

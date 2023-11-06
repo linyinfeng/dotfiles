@@ -66,7 +66,7 @@ in {
     };
     environment.JAVA_TOOL_OPTIONS =
       lib.mkIf config.networking.fw-proxy.enable
-      "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.mixinConfig.mixed-port}";
+      "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.ports.mixed}";
     wantedBy = ["multi-user.target"];
   };
   networking.firewall.allowedTCPPorts = [port rconPort];

@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  proxyPort = toString config.networking.fw-proxy.mixinConfig.mixed-port;
+  proxyPort = toString config.networking.fw-proxy.ports.mixed;
   proxyCommand =
     if config.networking.fw-proxy.enable
     then "ProxyCommand ${pkgs.netcat}/bin/nc -X 5 -x localhost:${proxyPort} %h %p"

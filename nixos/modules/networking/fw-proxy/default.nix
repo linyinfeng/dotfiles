@@ -6,42 +6,47 @@
 }: let
   cfg = config.networking.fw-proxy;
 
+  mixedPort = cfg.ports.mixed;
+  tproxyPort = cfg.ports.tproxy;
+
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "fw-proxy-scripts";
     buildCommand = ''
-      install -Dm644 $enableProxy     $out/bin/enable-proxy
-      install -Dm644 $disableProxy    $out/bin/disable-proxy
-      install -Dm755 $updateClashUrl  $out/bin/update-clash-url
-      install -Dm755 $updateClash     $out/bin/update-clash
-      install -Dm755 $tproxyUse       $out/bin/fw-tproxy-use
-      install -Dm755 $tproxyCgroup    $out/bin/fw-tproxy-cgroup
-      install -Dm755 $tproxyInterface $out/bin/fw-tproxy-if
+      install -Dm644 $enableProxy      $out/bin/enable-proxy
+      install -Dm644 $disableProxy     $out/bin/disable-proxy
+      install -Dm755 $updateSingBoxUrl $out/bin/update-sing-box-url
+      install -Dm755 $updateSingBox    $out/bin/update-sing-box
+      install -Dm755 $tproxyUse        $out/bin/fw-tproxy-use
+      install -Dm755 $tproxyCgroup     $out/bin/fw-tproxy-cgroup
+      install -Dm755 $tproxyInterface  $out/bin/fw-tproxy-if
     '';
     enableProxy = pkgs.substituteAll {
       src = ./enable-proxy;
-      mixedPort = cfg.mixinConfig.mixed-port;
+      inherit mixedPort;
     };
     disableProxy = pkgs.substituteAll {
       src = ./disable-proxy;
     };
-    updateClashUrl = pkgs.substituteAll {
-      src = ./update-clash-url.sh;
+    updateSingBoxUrl = pkgs.substituteAll {
+      src = ./update-sing-box-url.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
       inherit (pkgs) coreutils curl systemd;
-      yqGo = pkgs.yq-go;
+      jq = pkgs.jq;
+      moreutils = pkgs.moreutils;
+      preprocessing = cfg.configPreprocessing;
       mixinConfig = builtins.toJSON cfg.mixinConfig;
-      directory = "/var/lib/clash";
+      directory = "/etc/sing-box";
       externalControllerSecretFile = cfg.externalController.secretFile;
       webui = pkgs.nur.repos.linyinfeng.yacd;
     };
-    updateClash = pkgs.substituteAll {
-      src = ./update-clash.sh;
+    updateSingBox = pkgs.substituteAll {
+      src = ./update-sing-box.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit updateClashUrl;
-      mainUrl = config.sops.secrets."clash/main".path;
-      alternativeUrl = config.sops.secrets."clash/alternative".path;
+      inherit updateSingBoxUrl;
+      mainUrl = config.sops.secrets."sing-box/main".path;
+      alternativeUrl = config.sops.secrets."sing-box/alternative".path;
     };
     tproxyUse = pkgs.substituteAll {
       src = ./tproxy-use.sh;
@@ -62,8 +67,6 @@
       inherit (cfg.tproxy) nftTable;
     };
   };
-
-  tproxyPort = cfg.mixinConfig.tproxy-port;
 in
   with lib; {
     options.networking.fw-proxy = {
@@ -115,8 +118,25 @@ in
           default = "";
         };
       };
+      configPreprocessing = mkOption {
+        type = with types; lines;
+        default = ''
+          $jq 'del(.log) | del(.inbounds)' "$raw_config" | $sponge "$raw_config"
+        '';
+      };
       mixinConfig = mkOption {
         type = with types; attrs;
+      };
+      ports = {
+        mixed = mkOption {
+          type = with types; port;
+        };
+        tproxy = mkOption {
+          type = with types; port;
+        };
+        controller = mkOption {
+          type = with types; port;
+        };
       };
       externalController = {
         expose = mkOption {
@@ -140,7 +160,7 @@ in
           Proxy environment.
         '';
         default = let
-          proxyUrl = "http://localhost:${toString cfg.mixinConfig.mixed-port}";
+          proxyUrl = "http://localhost:${toString mixedPort}";
         in {
           HTTP_PROXY = proxyUrl;
           HTTPS_PROXY = proxyUrl;
@@ -154,7 +174,7 @@ in
           Proxy environment for containers.
         '';
         default = let
-          proxyUrl = "http://host.containers.internal:${toString cfg.mixinConfig.mixed-port}";
+          proxyUrl = "http://host.containers.internal:${toString mixedPort}";
         in {
           HTTP_PROXY = proxyUrl;
           HTTPS_PROXY = proxyUrl;
@@ -177,7 +197,7 @@ in
           (lib.attrNames cfg.environment);
       };
       auto-update = {
-        enable = mkEnableOption "clash auto-update";
+        enable = mkEnableOption "fw-proxy subscription auto-update";
         service = mkOption {
           type = with types; str;
           description = ''
@@ -189,32 +209,63 @@ in
 
     config = mkIf (cfg.enable) (mkMerge [
       {
-        systemd.services.clash = {
-          description = "A rule based proxy in GO";
-          script = ''
-            "${pkgs.clash-premium}/bin/clash-premium" -d "$STATE_DIRECTORY"
-          '';
+        networking.fw-proxy.mixinConfig = let
+          commonOptions = {
+            listen = "::";
+            tcp_fast_open = true;
+            udp_fragment = true;
+            sniff = true;
+          };
+        in {
+          inbounds = [
+            (commonOptions
+              // {
+                type = "mixed";
+                tag = "mixed-in";
+                listen_port = cfg.ports.mixed;
+              })
+            (commonOptions
+              // {
+                type = "tproxy";
+                tag = "tproxy-in";
+                listen_port = cfg.ports.tproxy;
+              })
+          ];
+          experimental.clash_api.external_controller = "127.0.0.1:${toString cfg.ports.controller}";
+        };
+        environment.global-persistence.directories = [
+          "/etc/sing-box"
+        ];
+      }
+
+      {
+        systemd.packages = with pkgs; [sing-box];
+        systemd.services.sing-box = {
           serviceConfig = {
-            Type = "exec";
             DynamicUser = true;
-            StateDirectory = "clash";
-            AmbientCapabilities = [
-              "CAP_NET_BIND_SERVICE"
-              "CAP_NET_ADMIN"
+
+            ExecStartPre = [
+              "+${pkgs.coreutils}/bin/chown sing-box:sing-box $CONFIGURATION_DIRECTORY"
+              "+${pkgs.coreutils}/bin/chmod 0700              $CONFIGURATION_DIRECTORY"
             ];
+            ConfigurationDirectory = "sing-box";
+            ConfigurationDirectoryMode = "700";
+
+            StateDirectory = "sing-box";
+
             # TODO wait for https://github.com/systemd/systemd/pull/29039
             Slice = lib.mkIf (cfg.tproxy.enable) "${cfg.tproxy.bypassSlice}.slice";
           };
           wantedBy = ["multi-user.target"];
         };
 
-        sops.secrets."clash/main" = {
+        sops.secrets."sing-box/main" = {
           sopsFile = config.sops-file.get "common.yaml";
-          restartUnits = ["clash-auto-update.service"];
+          restartUnits = ["sing-box-auto-update.service"];
         };
-        sops.secrets."clash/alternative" = {
+        sops.secrets."sing-box/alternative" = {
           sopsFile = config.sops-file.get "common.yaml";
-          restartUnits = ["clash-auto-update.service"];
+          restartUnits = ["sing-box-auto-update.service"];
         };
 
         environment.systemPackages = [
@@ -231,7 +282,7 @@ in
         services.nginx.virtualHosts.${cfg.externalController.virtualHost} = {
           locations = {
             "${cfg.externalController.location}" = {
-              proxyPass = "http://${cfg.mixinConfig.external-controller}/";
+              proxyPass = "http://${cfg.mixinConfig.experimental.clash_api.external_controller}/";
               proxyWebsockets = true;
             };
           };
@@ -386,18 +437,18 @@ in
       })
 
       (mkIf cfg.auto-update.enable {
-        systemd.services.clash-auto-update = {
+        systemd.services.sing-box-auto-update = {
           script = ''
-            "${scripts}/bin/update-clash" "${cfg.auto-update.service}"
+            "${scripts}/bin/update-sing-box" "${cfg.auto-update.service}"
           '';
           serviceConfig = {
             Type = "oneshot";
             Restart = "on-failure";
             RestartSec = 30;
           };
-          after = ["network-online.target" "clash.service"];
+          after = ["network-online.target" "sing-box.service"];
         };
-        systemd.timers.clash-auto-update = {
+        systemd.timers.sing-box-auto-update = {
           timerConfig = {
             OnCalendar = "03:30";
           };
@@ -409,18 +460,14 @@ in
         (let
           podmanInterface = config.virtualisation.podman.defaultNetwork.settings.network_interface;
         in {
-          networking.firewall.interfaces.${podmanInterface}.allowedTCPPorts = [
-            cfg.mixinConfig.mixed-port
-          ];
+          networking.firewall.interfaces.${podmanInterface}.allowedTCPPorts = lib.lists.map (i: i.listen_port) cfg.mixinConfig.inbounds;
         }))
 
       (mkIf (config.virtualisation.libvirtd.enable)
         (let
           libvirtdInterfaces = config.virtualisation.libvirtd.allowedBridges;
           mkIfCfg = name: {
-            ${name}.allowedTCPPorts = [
-              cfg.mixinConfig.mixed-port
-            ];
+            ${name}.allowedTCPPorts = lib.lists.map (i: i.listen_port) cfg.mixinConfig.inbounds;
           };
           ifCfgs = lib.mkMerge (lib.lists.map mkIfCfg libvirtdInterfaces);
         in {

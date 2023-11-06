@@ -1,7 +1,7 @@
 #!@shell@
 # shellcheck shell=bash
 
-update="@updateClashUrl@"
+update="@updateSingBoxUrl@"
 
 case "$1" in
 
