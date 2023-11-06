@@ -138,6 +138,7 @@ in {
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/74C9-BFBC";
     fsType = "vfat";
+    options = ["dmask=077" "fmask=177"];
   };
   fileSystems."/media/data" = btrfsSubvolData "@data" {};
   swapDevices = [

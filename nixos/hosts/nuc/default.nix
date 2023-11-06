@@ -106,6 +106,7 @@ in {
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/C9A4-3DE6";
         fsType = "vfat";
+        options = ["dmask=077" "fmask=177"];
       };
       swapDevices = [
         {
