@@ -215,11 +215,11 @@
       inputs.linyinfeng.nixosModules.vlmcsd
       inputs.linyinfeng.nixosModules.tprofile
       inputs.linyinfeng.nixosModules.tg-send
-      inputs.linyinfeng.nixosModules.commit-notifier
       inputs.linyinfeng.nixosModules.dot-tar
       inputs.linyinfeng.nixosModules.matrix-media-repo
       inputs.oranc.nixosModules.oranc
       inputs.ace-bot.nixosModules.ace-bot
+      inputs.commit-notifier.nixosModules.commit-notifier
       inputs.hyprland.nixosModules.default
       {
         # `attic.nixosModules.atticd` uses `nixpkgs.overlays`

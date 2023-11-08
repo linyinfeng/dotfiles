@@ -117,6 +117,15 @@
     ace-bot.inputs.nixpkgs.follows = "nixpkgs";
     ace-bot.inputs.treefmt-nix.follows = "treefmt-nix";
 
+    commit-notifier.url = "github:linyinfeng/commit-notifier";
+    commit-notifier.inputs.crane.follows = "crane";
+    commit-notifier.inputs.flake-parts.follows = "flake-parts";
+    commit-notifier.inputs.flake-utils.follows = "flake-utils";
+    commit-notifier.inputs.systems.follows = "systems";
+    commit-notifier.inputs.rust-overlay.follows = "rust-overlay";
+    commit-notifier.inputs.nixpkgs.follows = "nixpkgs";
+    commit-notifier.inputs.treefmt-nix.follows = "treefmt-nix";
+
     mc-config-nuc.url = "github:linyinfeng/mc-config-nuc";
     mc-config-nuc.inputs.nixpkgs.follows = "nixpkgs";
     mc-config-nuc.inputs.flake-parts.follows = "flake-parts";

@@ -85,6 +85,44 @@
         "type": "github"
       }
     },
+    "commit-notifier": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ],
+        "systems": [
+          "systems"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1699421820,
+        "narHash": "sha256-I4sa5yqIC1+oswCpFvugTCeYJF5yg0B+Gq3wN62IPT0=",
+        "owner": "linyinfeng",
+        "repo": "commit-notifier",
+        "rev": "4f06598e803a63eedbdfad64b37297686fd15b36",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "commit-notifier",
+        "type": "github"
+      }
+    },
     "crane": {
       "inputs": {
         "nixpkgs": [
@@ -1075,6 +1113,7 @@
         "ace-bot": "ace-bot",
         "attic": "attic",
         "blank": "blank",
+        "commit-notifier": "commit-notifier",
         "crane": "crane",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
