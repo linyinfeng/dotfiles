@@ -134,5 +134,10 @@ in {
       systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
       systemd.services.hydra-evaluator.serviceConfig.CPUWeight = "idle";
     }
+
+    # mastodon extra configurations
+    {
+      services.mastodon.streamingProcesses = 3; # number of cpu cores - 1
+    }
   ];
 }
