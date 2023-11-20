@@ -26,6 +26,7 @@ in {
     ++ (with profiles; [
       boot.systemd-initrd
       nix.access-tokens
+      nix.hydra-builder-server
       nix.nixbuild
       security.tpm
       networking.network-manager
@@ -43,6 +44,7 @@ in {
       services.postgresql
       programs.service-mail
       programs.tg-send
+      programs.ccache
       users.yinfeng
       users.nianyi
     ])
@@ -204,38 +206,6 @@ in {
       networking.firewall.allowedUDPPorts = with config.ports; [
         https-alternative
       ];
-    }
-
-    # store serving
-    {
-      services.nginx = {
-        virtualHosts."nuc.*" = {
-          locations."/store/" = {
-            proxyPass = "http://127.0.0.1:${toString config.ports.nix-serve}/";
-            extraConfig = ''
-              proxy_max_temp_file_size 0;
-            '';
-          };
-        };
-      };
-      services.nix-serve = {
-        enable = true;
-        bindAddress = "0.0.0.0";
-        port = config.ports.nix-serve;
-        secretKeyFile = config.sops.secrets."cache-li7g-com/key".path;
-      };
-      sops.secrets."cache-li7g-com/key" = {
-        sopsFile = config.sops-file.host;
-        restartUnits = ["nix-serve.service"];
-      };
-
-      systemd.services.nix-serve = {
-        serviceConfig = {
-          Group = lib.mkForce "hydra";
-          RuntimeDirectory = "nix-serve";
-        };
-        environment.HOME = "$RUNTIME_DIRECTORY";
-      };
     }
 
     # transmission

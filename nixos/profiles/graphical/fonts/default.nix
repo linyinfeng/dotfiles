@@ -1,5 +1,10 @@
-{pkgs, ...}: let
-  iosevka-yinfeng = pkgs.iosevka.override {
+{
+  config,
+  pkgs,
+  ...
+}: let
+  inherit (config.lib.self) requireBigParallel;
+  iosevka-yinfeng = requireBigParallel (pkgs.iosevka.override {
     privateBuildPlan = {
       family = "Iosevka Yinfeng";
       spacing = "fontconfig-mono";
@@ -11,7 +16,7 @@
       };
     };
     set = "yinfeng";
-  };
+  });
   iosevka-yinfeng-nf = pkgs.stdenv.mkDerivation {
     name = "iosevka-yinfeng-nf";
     src = iosevka-yinfeng;
@@ -19,6 +24,7 @@
       nerd-font-patcher
     ];
     enableParallelBuilding = true;
+    requiredSystemFeatures = ["big-parallel"];
     unpackPhase = ''
       mkdir -p fonts
       cp -r $src/share/fonts/truetype/. ./fonts/

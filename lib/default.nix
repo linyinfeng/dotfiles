@@ -9,4 +9,6 @@ lib.makeExtensible (self: {
   flattenTree = import ./flatten-tree.nix {inherit lib;};
   rakeLeaves = import ./rake-leaves.nix {inherit inputs lib;};
   optionalPkg = import ./optional-pkg.nix {inherit lib;};
+  requireSystemFeatures = import ./require-system-features.nix {inherit lib;};
+  requireBigParallel = self.requiredSystemFeatures ["big-parallel"];
 })

@@ -23,7 +23,6 @@ in {
     suites.server
     ++ (with profiles; [
       programs.tg-send
-      programs.ccache
       services.nginx
       services.acme
       services.notify-failure

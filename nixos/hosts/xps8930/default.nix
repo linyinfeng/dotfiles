@@ -24,6 +24,7 @@ in {
       boot.systemd-initrd
       nix.access-tokens
       nix.nixbuild
+      nix.hydra-builder-server
       security.tpm
       networking.wireguard-home
       networking.behind-fw
@@ -37,7 +38,7 @@ in {
       services.portal-client
       programs.service-mail
       programs.tg-send
-      nix.hydra-builder-server
+      programs.ccache
       users.yinfeng
     ]);
 
