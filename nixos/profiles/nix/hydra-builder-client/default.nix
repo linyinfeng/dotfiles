@@ -9,9 +9,9 @@ in {
     '';
   };
   environment.etc.${machineFile}.text = ''
-    # hydra-builder@nuc  x86_64-linux,i686-linux               /etc/${keyFile} 8 1 kvm,nixos-test,benchmark,big-parallel
-    hydra-builder@hil0 x86_64-linux,i686-linux               /etc/${keyFile} 8 1 benchmark,big-parallel
-    hydra-builder@fsn0 aarch64-linux                         /etc/${keyFile} 8 1 benchmark,big-parallel
+    hydra-builder@nuc  x86_64-linux,i686-linux               /etc/${keyFile} 8 1 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@hil0 x86_64-linux,i686-linux               /etc/${keyFile} 2 1 benchmark,big-parallel
+    hydra-builder@fsn0 aarch64-linux                         /etc/${keyFile} 2 1 benchmark,big-parallel
   '';
   sops.secrets."hydra_builder_private_key" = {
     neededForUsers = true; # needed for /etc
