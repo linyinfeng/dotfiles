@@ -29,7 +29,7 @@ in {
       services.postgresql
       services.matrix
       services.matrix-sliding-sync
-      # services.matrix-chatgpt-bot
+      services.matrix-chatgpt-bot
       services.mastodon
       services.maddy
       services.well-known
