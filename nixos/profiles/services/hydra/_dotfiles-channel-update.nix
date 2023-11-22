@@ -38,9 +38,17 @@
         fi
         cd dotfiles
         git fetch origin --verbose
-        git checkout "$target_branch"
-        git reset --hard "origin/$target_branch"
-        git merge --ff-only "$commit"
+        if git show-ref --quiet refs/heads/"$target_branch"; then
+          git checkout "$target_branch"
+        else
+          git checkout -b "$target_branch"
+        fi
+        if git show-ref --quiet refs/remotes/origin/"$target_branch"; then
+          git reset --hard "origin/$target_branch"
+          git merge --ff-only "$commit"
+        else
+          git reset --hard "$commit"
+        fi
         git push origin "$target_branch" --verbose
 
         set +e
