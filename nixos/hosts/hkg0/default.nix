@@ -52,15 +52,8 @@ in {
         matchConfig = {
           Name = "ens3";
         };
+        DHCP = "ipv4";
         addresses = [
-          {
-            addressConfig = let
-              address = assert lib.length hostData.endpoints_v4 == 1;
-                lib.elemAt hostData.endpoints_v4 0;
-            in {
-              Address = "${address}/25"; # netmask 255.255.255.128
-            };
-          }
           {
             addressConfig = let
               address = assert lib.length hostData.endpoints_v6 == 1;
@@ -80,11 +73,6 @@ in {
           {
             routeConfig = {
               Gateway = "2404:8c80:85:1011::1";
-            };
-          }
-          {
-            routeConfig = {
-              Gateway = "149.104.16.126";
             };
           }
         ];
