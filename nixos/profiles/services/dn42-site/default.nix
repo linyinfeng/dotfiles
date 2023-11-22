@@ -20,10 +20,10 @@
       provider = "ServaRICA";
       location = ["Montreal" "Quebec" "Canada"];
     };
-    mia0 = {
-      comment = "low performance machine (1C512M)";
-      provider = "Vultr";
-      location = ["Miami" "Florida" "United States"];
+    lax0 = {
+      comment = null;
+      provider = "RackNerd";
+      location = ["Los Angeles" "United States"];
     };
     shg0 = {
       comment = "not available for peering";

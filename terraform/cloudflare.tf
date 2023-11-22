@@ -105,10 +105,11 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
 locals {
   service_cname_mappings = {
     portal          = { on = "hkg0", proxy = true }
-    nuc-proxy       = { on = "mia0", proxy = true }
-    tar             = { on = "mia0", proxy = true }
-    pgp-public-key  = { on = "mia0", proxy = true }
-    oranc           = { on = "mia0", proxy = true }
+    nuc-proxy       = { on = "lax0", proxy = true }
+    tar             = { on = "lax0", proxy = true }
+    pgp-public-key  = { on = "lax0", proxy = true }
+    oranc           = { on = "lax0", proxy = true }
+    cache-overlay   = { on = "lax0", proxy = true }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     hledger         = { on = "mtl0", proxy = true }
@@ -316,14 +317,6 @@ resource "cloudflare_record" "li7g_attic_store" {
   ttl     = 1
   type    = "CNAME"
   value   = module.b2_download_url.host
-  zone_id = cloudflare_zone.com_li7g.id
-}
-resource "cloudflare_record" "li7g_cache_overlay" {
-  name    = "cache-overlay"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = "mia0.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 resource "cloudflare_ruleset" "li7g_rewrite" {

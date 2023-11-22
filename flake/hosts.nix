@@ -390,11 +390,6 @@ in {
     })
 
     (mkHost {
-      name = "mia0";
-      system = "x86_64-linux";
-    })
-
-    (mkHost {
       name = "lax0";
       system = "x86_64-linux";
     })

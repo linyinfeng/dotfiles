@@ -45,11 +45,6 @@
     "hil0".enable = false; # 20TB/month
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
-    "mia0" = {
-      # 200GB/month
-      enable = true;
-      rate = "5M";
-    };
     "lax0" = {
       enable = true;
       rate = "10M";
@@ -86,10 +81,6 @@
     "mtl0" = {
       region = 42; # North America-E
       country = 1124; # Canada
-    };
-    "mia0" = {
-      region = 42; # North America-E
-      country = 1840; # United States of America
     };
     "shg0" = {
       region = 52; # Asia-E (JP,CN,KR,TW,HK)

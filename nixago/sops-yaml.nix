@@ -35,10 +35,6 @@
       key = "age1q8rds85ppw8uas9jk4dl4ynfvwm9qp92m0mry9aqse7zjvh5fpms5c98at";
       owned = true;
     };
-    mia0 = {
-      key = "age1knaw8w3lmmnwgncn65fegan62jkkpzg4hgqmpvaagqk8x26x5qlqs42efv";
-      owned = true;
-    };
     lax0 = {
       key = "age1xfgelz64gnpx28pfga9ntwe8869ra0ksde6vmkxczlfzfqrqr9us4mntmx";
       owned = true;
