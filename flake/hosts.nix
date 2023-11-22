@@ -395,6 +395,11 @@ in {
     })
 
     (mkHost {
+      name = "lax0";
+      system = "x86_64-linux";
+    })
+
+    (mkHost {
       name = "mtl0";
       system = "x86_64-linux";
     })

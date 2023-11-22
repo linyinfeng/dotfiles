@@ -56,53 +56,6 @@ resource "minio_ilm_policy" "pastebin_expire_1d" {
   }
 }
 
-# Loki
-
-resource "minio_s3_bucket" "loki" {
-  bucket = "loki"
-  acl    = "private"
-}
-
-resource "minio_s3_bucket" "loki-ruler" {
-  bucket = "loki-ruler"
-  acl    = "private"
-}
-
-resource "minio_iam_user" "loki" {
-  name = "loki"
-}
-
-output "minio_loki_key_id" {
-  value     = minio_iam_user.loki.id
-  sensitive = false
-}
-output "minio_loki_access_key" {
-  value     = minio_iam_user.loki.secret
-  sensitive = true
-}
-
-data "minio_iam_policy_document" "loki" {
-  statement {
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      "arn:aws:s3:::loki/*",
-      "arn:aws:s3:::loki-ruler/*",
-    ]
-  }
-}
-
-resource "minio_iam_policy" "loki" {
-  name   = "loki"
-  policy = data.minio_iam_policy_document.loki.json
-}
-
-resource "minio_iam_user_policy_attachment" "loki" {
-  policy_name = minio_iam_policy.loki.name
-  user_name   = minio_iam_user.loki.name
-}
-
 # Atticd
 
 resource "minio_s3_bucket" "atticd" {

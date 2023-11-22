@@ -3,7 +3,6 @@
   suites,
   profiles,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: let

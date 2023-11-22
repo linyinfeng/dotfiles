@@ -12,8 +12,11 @@ pushd "$PRJ_ROOT/lib/data"
 
 message "creating 'data.json'..."
 
+# TODO workaround https://github.com/mikefarah/yq/issues/1880
 sops exec-file "$PRJ_ROOT/secrets/terraform-outputs.yaml" \
-  "yq eval --from-file template.yq {} --output-format json" \
-  >"data.json"
+  "yq eval --from-file template.yq {} --output-format yaml" \
+  >"data.yaml"
+yq data.yaml --output-format json >data.json
+rm data.yaml
 
 popd

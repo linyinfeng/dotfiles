@@ -50,6 +50,10 @@
       enable = true;
       rate = "5M";
     };
+    "lax0" = {
+      enable = true;
+      rate = "10M";
+    };
     "shg0" = {
       # 1TB/month
       enable = true;
@@ -68,6 +72,10 @@
   };
   regionTable = {
     "hil0" = {
+      region = 44; # North America-W
+      country = 1840; # United States of America
+    };
+    "lax0" = {
       region = 44; # North America-W
       country = 1840; # United States of America
     };

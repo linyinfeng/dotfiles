@@ -49,6 +49,7 @@ locals {
       endpoints_v4 = [nonsensitive(data.sops_file.mtl0.data["network.address"])]
       endpoints_v6 = []
     }
+    # TODO relpace
     mia0 = {
       records = {
         a = {
@@ -66,6 +67,24 @@ locals {
       host_indices = [4]
       endpoints_v4 = [vultr_instance.mia0.main_ip]
       endpoints_v6 = [vultr_instance.mia0.v6_main_ip]
+    }
+    lax0 = {
+      records = {
+        a = {
+          proxied = true
+          type    = "A"
+          value   = nonsensitive(data.sops_file.terraform.data["ip.lax0.v4"])
+        }
+        aaaa = {
+          proxied = true
+          type    = "AAAA"
+          value   = nonsensitive(data.sops_file.terraform.data["ip.lax0.v6"])
+        }
+      }
+      ddns_records = {}
+      host_indices = [8]
+      endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.lax0.v4"])]
+      endpoints_v6 = [nonsensitive(data.sops_file.terraform.data["ip.lax0.v6"])]
     }
     shg0 = {
       records = {
