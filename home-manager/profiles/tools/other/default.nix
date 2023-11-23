@@ -32,6 +32,7 @@ in {
       unrar
       unzip
       wl-clipboard
+      xdg-ninja
     ]
     ++ optionalPkg ["i7z"];
 
