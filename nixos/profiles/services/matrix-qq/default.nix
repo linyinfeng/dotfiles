@@ -75,9 +75,7 @@
     ensureUsers = [
       {
         name = "matrix-qq";
-        ensurePermissions = {
-          "DATABASE \"matrix-qq\"" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
     ];
   };

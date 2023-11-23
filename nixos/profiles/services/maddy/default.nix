@@ -125,9 +125,7 @@ in {
     services.postgresql.ensureUsers = [
       {
         name = "maddy";
-        ensurePermissions = {
-          "DATABASE maddy" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
     ];
     users.users.maddy.extraGroups = [

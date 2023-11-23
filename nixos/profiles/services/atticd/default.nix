@@ -55,9 +55,7 @@ in {
   services.postgresql.ensureUsers = [
     {
       name = "atticd";
-      ensurePermissions = {
-        "DATABASE atticd" = "ALL PRIVILEGES";
-      };
+      ensureDBOwnership = true;
     }
   ];
 

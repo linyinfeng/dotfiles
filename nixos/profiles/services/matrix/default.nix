@@ -129,9 +129,7 @@ in
         ensureUsers = [
           {
             name = "matrix-synapse";
-            ensurePermissions = {
-              "DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES";
-            };
+            ensureDBOwnership = true;
           }
         ];
       };
@@ -262,9 +260,7 @@ in
         ensureUsers = [
           {
             name = "mautrix-telegram";
-            ensurePermissions = {
-              "DATABASE \"mautrix-telegram\"" = "ALL PRIVILEGES";
-            };
+            ensureDBOwnership = true;
           }
         ];
       };

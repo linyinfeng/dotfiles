@@ -77,9 +77,7 @@ in
       services.postgresql.ensureUsers = [
         {
           name = "mastodon";
-          ensurePermissions = {
-            "DATABASE mastodon" = "ALL PRIVILEGES";
-          };
+          ensureDBOwnership = true;
         }
       ];
       sops.secrets."mail_password" = {
