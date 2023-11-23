@@ -37,6 +37,7 @@ in {
         device = "/dev/vda1";
         fsType = "ext4";
       };
+      services.zswap.enable = true;
       swapDevices = [
         {device = "/dev/vda2";}
         {

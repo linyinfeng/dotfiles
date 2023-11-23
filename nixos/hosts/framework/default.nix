@@ -151,6 +151,7 @@ in {
         fsType = "vfat";
         options = ["dmask=077" "fmask=177"];
       };
+      services.zswap.enable = true;
       swapDevices = [
         {
           device = "/dev/disk/by-uuid/f9eb9a3a-2185-4f7e-83f0-76d88fa98557";

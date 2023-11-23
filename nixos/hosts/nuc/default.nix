@@ -110,6 +110,7 @@ in {
         fsType = "vfat";
         options = ["dmask=077" "fmask=177"];
       };
+      services.zswap.enable = true;
       swapDevices = [
         {
           device = "/swap/swapfile";

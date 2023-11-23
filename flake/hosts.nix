@@ -15,6 +15,7 @@
     base =
       suites.nixSettings
       ++ (with profiles; [
+        boot.kernel
         programs.tools
         programs.nix-index
         services.openssh

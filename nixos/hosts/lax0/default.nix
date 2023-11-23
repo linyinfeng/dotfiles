@@ -104,6 +104,7 @@ in {
       };
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
+      services.zswap.enable = true;
       swapDevices = [
         {
           device = "/swap/swapfile";

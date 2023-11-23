@@ -49,7 +49,6 @@ in {
       consoleMode = "max";
     };
   };
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   # https://github.com/NixOS/nixpkgs/issues/210070
   # kernel chooses wrong hidpi font for this machine
   boot.kernelParams = ["fbcon=font:VGA8x16"];
@@ -142,6 +141,7 @@ in {
     options = ["dmask=077" "fmask=177"];
   };
   fileSystems."/media/data" = btrfsSubvolData "@data" {};
+  services.zswap.enable = true;
   swapDevices = [
     {
       device = "/swap/swapfile";
