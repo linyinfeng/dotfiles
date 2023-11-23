@@ -16,15 +16,17 @@
         config.sops.templates."matrix-chatgpt-extra-env".path
       ];
     };
-    environment = {
+    environment = let
+      model = "gpt-4-1106-preview";
+    in {
       DATA_PATH = "/var/lib/matrix-chatgpt-bot";
 
       CHATGPT_CONTEXT = "thread";
       # https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo
-      CHATGPT_API_MODEL = "gpt-4-1106-preview";
+      CHATGPT_API_MODEL = model;
       CHATGPT_PROMPT_PREFIX = ''
         You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
-        Knowledge cutoff: 2023-04
+        Code name of your model is "${model}". Knowledge cutoff: 2023-04
       '';
       # https://github.com/matrixgpt/matrix-chatgpt-bot?tab=readme-ov-file#how-to-set-the-temperature
       CHATGPT_TEMPERATURE = "0.8";
