@@ -20,12 +20,17 @@
       DATA_PATH = "/var/lib/matrix-chatgpt-bot";
 
       CHATGPT_CONTEXT = "thread";
-      CHATGPT_API_MODEL = "gpt-3.5-turbo";
-      # Update knowledge cutoff date accroding to https://platform.openai.com/docs/models
+      # https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo
+      CHATGPT_API_MODEL = "gpt-4-1106-preview";
       CHATGPT_PROMPT_PREFIX = ''
         You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
-        Knowledge cutoff: 2021-09
+        Knowledge cutoff: 2023-04
       '';
+      # https://github.com/matrixgpt/matrix-chatgpt-bot?tab=readme-ov-file#how-to-set-the-temperature
+      CHATGPT_TEMPERATURE = "0.8";
+      # save money, gpt-4-turble: $0.01 per 1k input tokens, $0.03 per 1k output tokens
+      CHATGPT_MAX_CONTEXT_TOKENS = "4097";
+      CHATGPT_MAX_PROMPT_TOKENS = "3097";
 
       KEYV_BACKEND = "file";
       KEYV_URL = "";
