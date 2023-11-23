@@ -1,23 +1,11 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: let
   minioPort = config.ports.minio;
   minioConsolePort = config.ports.minio-console;
   minioAddress = "http://localhost:${toString minioPort}";
-  minioRequiredProxyHeaders = pkgs.writeText "minio-required-proxy-headers.conf" ''
-    proxy_set_header Host $host;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-    proxy_set_header X-Forwarded-Host $host;
-  '';
-  proxyPassToMinio = ''
-    include ${minioRequiredProxyHeaders};
-    proxy_pass ${minioAddress};
-  '';
 in {
   services.minio = {
     enable = true;
@@ -45,14 +33,6 @@ in {
     locations."/".proxyPass = minioAddress;
     extraConfig = ''
       client_max_body_size 4G;
-    '';
-  };
-  services.nginx.virtualHosts."cache.*" = {
-    forceSSL = true;
-    useACMEHost = "main";
-    locations."/".extraConfig = ''
-      rewrite /(.*) /cache/$1 break;
-      ${proxyPassToMinio}
     '';
   };
   services.nginx.virtualHosts."minio-console.*" = {

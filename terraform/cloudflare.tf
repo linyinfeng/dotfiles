@@ -110,19 +110,17 @@ locals {
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
     cache-overlay   = { on = "lax0", proxy = true }
-    transmission    = { on = "nuc", proxy = false }
-    jellyfin        = { on = "nuc", proxy = false }
     hledger         = { on = "mtl0", proxy = true }
     attic           = { on = "mtl0", proxy = true }
-    attic-upload    = { on = "mtl0", proxy = false }
     vault           = { on = "mtl0", proxy = true }
     pb              = { on = "mtl0", proxy = true }
     git             = { on = "mtl0", proxy = true }
     box             = { on = "mtl0", proxy = true }
-    minio           = { on = "mtl0", proxy = false }
     minio-console   = { on = "mtl0", proxy = true }
     social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
+    attic-upload    = { on = "mtl0", proxy = false }
+    minio           = { on = "mtl0", proxy = false }
     prebuilt-zip    = { on = "mtl0", proxy = false }
     "shanghai.derp" = { on = "shg0", proxy = false }
     dst             = { on = "shg0", proxy = false }
@@ -132,12 +130,15 @@ locals {
     matrix          = { on = "hil0", proxy = true }
     matrix-syncv3   = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
-    smtp            = { on = "hil0", proxy = false }
     mastodon        = { on = "hil0", proxy = true }
+    smtp            = { on = "hil0", proxy = false }
     influxdb        = { on = "fsn0", proxy = true }
     bird-lg         = { on = "fsn0", proxy = true }
     dn42            = { on = "fsn0", proxy = true }
     keycloak        = { on = "fsn0", proxy = true }
+    transmission    = { on = "nuc", proxy = false }
+    jellyfin        = { on = "nuc", proxy = false }
+    nextcloud       = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {

@@ -35,6 +35,7 @@ in {
       services.transmission
       services.jellyfin
       services.samba
+      # services.nextcloud
       services.vlmcsd
       services.godns
       services.nginx

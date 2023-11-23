@@ -263,3 +263,11 @@ output "rathole_minecraft_token" {
   value     = random_password.rathole_minecraft_token.result
   sensitive = true
 }
+resource "random_password" "nextcloud_admin_password" {
+  length  = 32
+  special = false
+}
+output "nextcloud_admin_password" {
+  value     = random_password.nextcloud_admin_password.result
+  sensitive = true
+}
