@@ -57,8 +57,8 @@ in {
     useACMEHost = "main";
     serverName = "nextcloud.*";
   };
-  services.restic.backups.b2.paths = [ cfg.home ];
-  services.restic.backups.minio.paths = [ cfg.home ];
+  services.restic.backups.b2.paths = [cfg.home];
+  services.restic.backups.minio.paths = [cfg.home];
 
   systemd.services.nextcloud-notify_push = let
     nextcloudUrl = "https://nextcloud.li7g.com:${toString config.ports.https-alternative}";
@@ -66,7 +66,7 @@ in {
     # add missing port
     postStart = lib.mkForce "${cfg.occ}/bin/nextcloud-occ notify_push:setup ${nextcloudUrl}/push";
     environment = {
-      NEXTCLOUD_URL= lib.mkForce nextcloudUrl;
+      NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
     };
   };
 
