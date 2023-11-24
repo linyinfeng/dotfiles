@@ -127,15 +127,15 @@ in
         show-warning = false;
       };
       "org/gnome/desktop/background" = {
-        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp";
-        picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.webp";
+        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
+        picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.png";
         primary-color = "#26a269";
         secondary-color = "#000000";
         color-shading-type = "solid";
         picture-options = "zoom";
       };
       "org/gnome/desktop/screensaver" = {
-        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.webp";
+        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
         primary-color = "#26a269";
         secondary-color = "#000000";
         color-shading-type = "solid";
