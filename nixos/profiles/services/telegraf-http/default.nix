@@ -58,6 +58,7 @@
     matrix-qq = [];
     smtp = [];
     teamspeak = [];
+    nextcloud = [];
   };
   overrides = {
     box = [
