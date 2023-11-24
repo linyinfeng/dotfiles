@@ -94,7 +94,7 @@
           ];
       });
       gnome =
-        if (lib.versions.major prev.gnome.mutter.version == "44")
+        if (lib.versions.major prev.gnome.mutter.version == "45")
         then
           prev.gnome.overrideScope (gnomeFinal: gnomePrev: {
             mutter =
@@ -105,7 +105,9 @@
                 patches =
                   (old.patches or [])
                   ++ [
-                    ../patches/mutter-triple-buffering-v4-44.patch
+                    # https://aur.archlinux.org/packages/mutter-dynamic-buffering
+                    # https://aur.archlinux.org/cgit/aur.git/plain/mr1441.patch?h=mutter-dynamic-buffering
+                    ../patches/mutter-triple-buffering.patch
                   ];
               });
           })
