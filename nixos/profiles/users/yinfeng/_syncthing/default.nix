@@ -21,8 +21,8 @@
       })
     simpleDeviceNames);
   devices = lib.recursiveUpdate simpleDevices {
-    k40 = {
-      id = "IR2Q4MI-T53Q562-SMM2SW2-JXXCMCI-L2HOQUR-KLCRTUE-JCNFMPH-4RIBYQP";
+    shiba = {
+      id = "IQHYQR7-XD4GDX7-U6VGMGJ-GRQTGLF-NGZCNNL-Z5RPMJV-UMAJQVH-6T77HQU";
     };
   };
   hostName = config.networking.hostName;
