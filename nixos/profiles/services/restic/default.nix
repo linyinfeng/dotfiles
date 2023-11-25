@@ -55,6 +55,10 @@ in {
   config = {
     services.restic.backups.b2 = mkServiceCfg cfgB2;
     services.restic.backups.minio = mkServiceCfg cfgMinio;
+    services.notify-failure.services = [
+      "restic-backups-b2"
+      "restic-backups-minio"
+    ];
 
     sops.templates."restic-b2-env".content = ''
       B2_ACCOUNT_ID="${config.sops.placeholder."b2_backup_key_id"}"

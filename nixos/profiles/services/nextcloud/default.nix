@@ -87,7 +87,6 @@ in {
     serverName = "nextcloud.*";
   };
   services.restic.backups.b2.paths = [cfg.home];
-  services.restic.backups.minio.paths = [cfg.home];
 
   systemd.services.nextcloud-cron.path = with pkgs; [
     perl
