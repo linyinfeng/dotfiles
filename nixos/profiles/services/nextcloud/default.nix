@@ -4,8 +4,9 @@
   lib,
   ...
 }: let
-  cfg = config.services.nextcloud;
   version = 27;
+
+  cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
   inherit (package.packages) apps;
 
@@ -52,6 +53,32 @@ in {
       mail_smtpauth = true;
       mail_smtpname = "nextcloud@li7g.com";
       proxy = lib.mkIf config.networking.fw-proxy.enable "localhost:${toString config.networking.fw-proxy.ports.mixed}";
+      # https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#enabledpreviewproviders
+      enabledPreviewProviders = [
+        # double slash to escape
+
+        # default endabled providers
+        "OC\\Preview\\BMP"
+        "OC\\Preview\\GIF"
+        "OC\\Preview\\JPEG"
+        "OC\\Preview\\Krita"
+        "OC\\Preview\\MarkDown"
+        "OC\\Preview\\MP3"
+        "OC\\Preview\\OpenDocument"
+        "OC\\Preview\\PNG"
+        "OC\\Preview\\TXT"
+        "OC\\Preview\\XBitmap"
+
+        # additional providers
+        "OC\\Preview\\Image"
+        "OC\\Preview\\HEIC"
+        "OC\\Preview\\TIFF"
+        "OC\\Preview\\Movie"
+      ];
+
+      # memories
+      "memories.vod.disable" = false; # enable video transcoding
+      "memories.vod.vaapi" = true;
     };
     secretFile = config.sops.templates."nextcloud-secret-config".path;
     extraApps = {
@@ -100,20 +127,29 @@ in {
       NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
     };
   };
-  systemd.services.nextcloud-preview-generate = {
+  systemd.services.nextcloud-cron-extra = {
+    script = ''
+      nextcloud-occ preview:pre-generate
+    '';
     serviceConfig = {
-      ExecStart = "${lib.getExe cfg.occ} preview:generate-all -vvv";
       ExecCondition = "${lib.getExe cfg.occ} status --exit-code";
       Type = "oneshot";
       User = "nextcloud";
       Group = "nextcloud";
     };
+    path = [
+      cfg.occ
+    ];
   };
-  systemd.timers.nextcloud-preview-generate = {
+  systemd.timers.nextcloud-cron-extra = {
     timerConfig = {
       OnCalendar = "*:0/5";
     };
     wantedBy = ["timers.target"];
+  };
+  systemd.services.phpfpm-nextcloud.serviceConfig = {
+    # allow access to VA-API device
+    PrivateDevices = lib.mkForce false;
   };
 
   sops.secrets."nextcloud_admin_password" = {
