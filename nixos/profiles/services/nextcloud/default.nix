@@ -26,6 +26,43 @@
         "$@"
     '';
   };
+
+  processInstantUploadUnwrapped = pkgs.writeShellApplication {
+    name = "nextcloud-process-instant-upload-unwrapped";
+    runtimeInputs = [
+      cfg.occ
+      exifRename
+      pkgs.perl
+    ];
+    text = ''
+      username="$1"
+
+      user_files_dir="${cfg.datadir}/data/$username/files"
+      pushd "$user_files_dir/Camera"
+      exif-rename -v "InstantUpload"
+      popd
+
+      nextcloud-occ files:scan "$username"
+      nextcloud-occ memories:index --user="$username"
+      nextcloud-occ preview:generate-all --path="$username/files"
+    '';
+  };
+
+  processInstantUpload = pkgs.writeShellApplication {
+    name = "nextcloud-process-instant-upload";
+    runtimeInputs = [
+      processInstantUploadUnwrapped
+      "/run/wrappers" # for sudo
+    ];
+    text = ''
+      run="exec"
+      if [[ "$USER" != nextcloud ]]; then
+        run="exec sudo --user=nextcloud --preserve-env"
+      fi
+      $run nextcloud-process-instant-upload-unwrapped "$@"
+    '';
+
+  };
 in {
   services.nextcloud = {
     enable = true;
@@ -105,6 +142,7 @@ in {
   };
   environment.systemPackages = with pkgs; [
     exifRename
+    processInstantUpload
     ffmpeg
     exiftool
   ];
@@ -127,6 +165,11 @@ in {
       NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
     };
   };
+  systemd.services.phpfpm-nextcloud.serviceConfig = {
+    # allow access to VA-API device
+    PrivateDevices = lib.mkForce false;
+  };
+
   systemd.services.nextcloud-cron-extra = {
     script = ''
       nextcloud-occ preview:pre-generate
@@ -147,9 +190,26 @@ in {
     };
     wantedBy = ["timers.target"];
   };
-  systemd.services.phpfpm-nextcloud.serviceConfig = {
-    # allow access to VA-API device
-    PrivateDevices = lib.mkForce false;
+
+  systemd.services.nextcloud-cron-daily = {
+    script = ''
+      nextcloud-process-instant-upload yinfeng
+    '';
+    serviceConfig = {
+      ExecCondition = "${lib.getExe cfg.occ} status --exit-code";
+      Type = "oneshot";
+      User = "nextcloud";
+      Group = "nextcloud";
+    };
+    path = [
+      processInstantUpload
+    ];
+  };
+  systemd.timers.nextcloud-cron-daily = {
+    timerConfig = {
+      OnCalendar = "02:00";
+    };
+    wantedBy = ["timers.target"];
   };
 
   sops.secrets."nextcloud_admin_password" = {
