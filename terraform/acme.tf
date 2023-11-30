@@ -12,7 +12,7 @@ resource "acme_registration" "main" {
   email_address   = "lin.yinfeng@outlook.com"
 }
 
-resource "acme_certificate" "li7g" {
+resource "acme_certificate" "li7g_com" {
   account_key_pem = acme_registration.main.account_key_pem
   common_name     = "li7g.com"
   subject_alternative_names = [
