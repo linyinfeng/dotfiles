@@ -142,6 +142,7 @@ jobs:
         nix develop ./dotfiles --command terraform-update-outputs
     - name: Terraform extract secret and data
       run: |
+        set -e
         nix develop ./dotfiles --command terraform-outputs-extract-secrets
         nix develop ./dotfiles --command terraform-outputs-extract-data
     - name: Format
@@ -150,6 +151,7 @@ jobs:
         nix fmt
     - name: Commit and push
       run: |
+        set -e
         root=$(pwd)
         for repo in "dotfiles" "infrastructure-secrets"; do
           echo "commit and push '$repo'..."
