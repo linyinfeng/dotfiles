@@ -266,5 +266,10 @@ in {
         CPUWeight = "idle";
       };
     }
+
+    # stateVersion
+    {
+      system.stateVersion = "23.05";
+    }
   ];
 }

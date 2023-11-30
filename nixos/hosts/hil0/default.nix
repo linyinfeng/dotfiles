@@ -139,5 +139,10 @@ in {
     {
       services.mastodon.streamingProcesses = 3; # number of cpu cores - 1
     }
+
+    # stateVersion
+    {
+      system.stateVersion = "23.05";
+    }
   ];
 }

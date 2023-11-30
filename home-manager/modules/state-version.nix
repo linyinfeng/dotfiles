@@ -1,7 +1,3 @@
-{
-  config,
-  lib,
-  ...
-}: {
-  home.stateVersion = config.lib.self.flakeStateVersion;
+{osConfig, ...}: {
+  home.stateVersion = osConfig.system.stateVersion;
 }

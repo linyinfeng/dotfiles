@@ -151,5 +151,10 @@
       # limit cpu usage of nix builds
       systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
     }
+
+    # stateVersion
+    {
+      system.stateVersion = "23.05";
+    }
   ];
 }

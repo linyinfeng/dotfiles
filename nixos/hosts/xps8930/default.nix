@@ -147,4 +147,6 @@ in {
       device = "/swap/swapfile";
     }
   ];
+
+  system.stateVersion = "23.05";
 }

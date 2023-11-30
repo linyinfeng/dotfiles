@@ -161,5 +161,10 @@
         icon.enable = true;
       };
     }
+
+    # stateVersion
+    {
+      system.stateVersion = "23.05";
+    }
   ];
 }

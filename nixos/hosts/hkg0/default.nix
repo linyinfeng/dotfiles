@@ -78,5 +78,10 @@ in {
         ];
       };
     })
+
+    # stateVersion
+    {
+      system.stateVersion = "23.05";
+    }
   ];
 }

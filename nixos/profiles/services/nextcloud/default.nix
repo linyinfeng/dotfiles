@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  version = 27;
+  version = 27; # pinned
 
   cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
@@ -61,7 +61,6 @@
       fi
       $run nextcloud-process-instant-upload-unwrapped "$@"
     '';
-
   };
 in {
   services.nextcloud = {
