@@ -150,9 +150,11 @@ jobs:
         nix fmt
     - name: Commit and push
       run: |
+        root=$(pwd)
         for repo in "dotfiles" "infrastructure-secrets"; do
           echo "commit and push '$repo'..."
 
+          cd "$root/$repo"
           if [ -z "$(git status --porcelain)" ]; then
             echo "repository is clean, skip commit and push"
           else
