@@ -5,7 +5,11 @@
   ...
 }: let
   inherit (config.lib.self) data;
-  certOptions = {config, name, ...}: {
+  certOptions = {
+    config,
+    name,
+    ...
+  }: {
     options = {
       name = lib.mkOption {
         type = lib.types.str;

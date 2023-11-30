@@ -97,10 +97,10 @@ in
         natural-scroll = true;
         tap-to-click = true;
       };
-      "org/gnome/desktop/remote-desktop/rdp" = lib.mkIf (osConfig.security.acme.certs ? "main") {
+      "org/gnome/desktop/remote-desktop/rdp" = {
         enable = true;
-        tls-cert = "${osConfig.security.acme.certs."main".directory}/cert.pem";
-        tls-key = "${osConfig.security.acme.certs."main".directory}/key.pem";
+        tls-cert = "${osConfig.security.acme.tfCerts."li7g_com".fullChain}";
+        tls-key = "${osConfig.security.acme.tfCerts."li7g_com".key}";
         view-only = false;
       };
       "org/gnome/desktop/calendar" = {

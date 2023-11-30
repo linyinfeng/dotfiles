@@ -3,9 +3,7 @@
   pkgs,
   lib,
   ...
-}: let
-  certDir = config.security.acme.certs."main".directory;
-in {
+}: {
   options = {
     services.maddy-init.accounts = lib.mkOption {
       type = with lib.types; listOf str;
@@ -21,10 +19,10 @@ in {
       openFirewall = false;
       tls = {
         loader = "file";
-        certificates = [
+        certificates = with config.security.acme.tfCerts."li7g_com"; [
           {
-            certPath = "${certDir}/fullchain.pem";
-            keyPath = "${certDir}/key.pem";
+            certPath = fullChain;
+            keyPath = key;
           }
         ];
       };
@@ -129,7 +127,7 @@ in {
       }
     ];
     users.users.maddy.extraGroups = [
-      config.users.groups.acme.name
+      config.users.groups.acmetf.name
     ];
     # allow su to maddy to use maddyctl
     users.users.maddy.shell = pkgs.bash;

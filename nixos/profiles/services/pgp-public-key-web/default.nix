@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   root = pkgs.runCommand "pgp-public-key-root" {preferLocalBuild = true;} ''
     mkdir -p $out
     cp "${./index.html}" $out/index.html

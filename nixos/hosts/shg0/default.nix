@@ -75,68 +75,10 @@ in {
       ];
     }
 
-    # acme
-    {
-      security.acme.certs."main" = {
-        extraDomainNames = [
-          "shanghai.derp.li7g.com"
-        ];
-      };
-    }
-
     # nginx
     {
       services.nginx.defaultHTTPListenPort = 8080;
     }
-
-    # tailscale derp server
-    (
-      let
-        derperPort = config.ports.https-alternative;
-      in {
-        systemd.services.derper = {
-          script = ''
-            ${pkgs.tailscale-derp}/bin/derper \
-              -a ":${toString derperPort}" \
-              -http-port "-1" \
-              --hostname="shanghai.derp.li7g.com" \
-              -certdir "$CREDENTIALS_DIRECTORY" \
-              -certmode manual \
-              -verify-clients
-          '';
-          serviceConfig = {
-            LoadCredential = [
-              "shanghai.derp.li7g.com.crt:${config.security.acme.certs."main".directory}/full.pem"
-              "shanghai.derp.li7g.com.key:${config.security.acme.certs."main".directory}/key.pem"
-            ];
-          };
-          after = ["network-online.target"];
-          wantedBy = ["multi-user.service"];
-        };
-        systemd.services.derper-watchdog = {
-          script = ''
-            while true; do
-              if ! curl --silent --show-error --output /dev/null \
-                https://shanghai.derp.li7g.com:${toString derperPort}
-              then
-                echo "restart derper server"
-                systemctl restart derper
-              fi
-              sleep 10
-            done
-          '';
-          path = with pkgs; [curl];
-          after = ["derper.service"];
-          requiredBy = ["derper.service"];
-        };
-        networking.firewall.allowedTCPPorts = [
-          derperPort
-        ];
-        networking.firewall.allowedUDPPorts = [
-          3478 # STUN port
-        ];
-      }
-    )
 
     {
       services.rathole = {
