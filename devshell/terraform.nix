@@ -57,8 +57,7 @@
         terraform
       ];
       text = ''
-        cd "$TERRAFORM_DIR"
-        terraform init "$@"
+        terraform -chdir="$(realpath "$TERRAFORM_DIR")" init "$@"
       '';
     };
 
@@ -91,7 +90,6 @@
 
           set -e
 
-          cd "$PRJ_ROOT"
           if [ -n "$(cat "$plain")" ]; then
             encrypt-to "$plain" "$encrypted" json "yq --prettyPrint"
           fi
@@ -103,10 +101,8 @@
         }
         trap cleanup EXIT
 
-        cd "$TERRAFORM_DIR"
-
         set +e
-        terraform "$@"
+        terraform -chdir="$(realpath "$TERRAFORM_DIR")" "$@"
       '';
     };
 
