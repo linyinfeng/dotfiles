@@ -222,23 +222,23 @@
       env = [
         {
           name = "TERRAFORM_DIR";
-          eval = "\${TERRAFORM_DIR:=$PRJ_ROOT/terraform}";
+          eval = "\${TERRAFORM_DIR:-$PRJ_ROOT/terraform}";
         }
         {
           name = "SECRETS_DIR";
-          eval = "\${SECRETS_DIR:=$(realpath \"$PRJ_ROOT/../infrastructure-secrets\")}";
+          eval = "\${SECRETS_DIR:-$(realpath \"$PRJ_ROOT/../infrastructure-secrets\")}";
         }
         {
           name = "TF_VAR_terraform_input_path";
-          eval = "\${TF_VAR_terraform_input_path:=$SECRETS_DIR/terraform-inputs.yaml}";
+          eval = "\${TF_VAR_terraform_input_path:-$SECRETS_DIR/terraform-inputs.yaml}";
         }
         {
           name = "DATA_EXTRACT_DIR";
-          eval = "\${DATA_EXTRACT_DIR:=$PRJ_ROOT/lib/data}";
+          eval = "\${DATA_EXTRACT_DIR:-$PRJ_ROOT/lib/data}";
         }
         {
           name = "SECRETS_EXTRACT_DIR";
-          eval = "\${SECRETS_EXTRACT_DIR:=$PRJ_ROOT/secrets}";
+          eval = "\${SECRETS_EXTRACT_DIR:-$PRJ_ROOT/secrets}";
         }
       ];
       commands = [
