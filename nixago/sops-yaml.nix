@@ -82,7 +82,7 @@ in {
         ];
       }
       {
-        path_regex = "terraform.(tfstate|plan)(.encrypted)?$";
+        path_regex = "terraform.(tfstate|plan)$";
         key_groups = [
           {
             pgp = [main];
