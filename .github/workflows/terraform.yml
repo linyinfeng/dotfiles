@@ -28,9 +28,11 @@ jobs:
       uses: actions/checkout@main
       with:
         path: dotfiles
-    - name: Checkout
+    - name: Checkout infrastructure-secrets
       uses: actions/checkout@main
       with:
+        repository: infrastructure-secrets
+        ref: main
         path: infrastructure-secrets
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
     - name: Install nix
@@ -96,9 +98,11 @@ jobs:
       with:
         path: dotfiles
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
-    - name: Checkout
+    - name: Checkout infrastructure-secrets
       uses: actions/checkout@main
       with:
+        repository: infrastructure-secrets
+        ref: main
         path: infrastructure-secrets
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
     - name: Install nix
