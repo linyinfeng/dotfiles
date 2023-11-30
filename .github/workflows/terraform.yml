@@ -31,7 +31,7 @@ jobs:
     - name: Checkout infrastructure-secrets
       uses: actions/checkout@main
       with:
-        repository: infrastructure-secrets
+        repository: linyinfeng/infrastructure-secrets
         ref: main
         path: infrastructure-secrets
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
@@ -101,7 +101,7 @@ jobs:
     - name: Checkout infrastructure-secrets
       uses: actions/checkout@main
       with:
-        repository: infrastructure-secrets
+        repository: linyinfeng/infrastructure-secrets
         ref: main
         path: infrastructure-secrets
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
