@@ -132,6 +132,8 @@ jobs:
         path: terraform.plan.encrypted
     - name: Decrypt plan
       run: |
+        pwd
+        ls -al
         nix develop ./dotfiles --command sops --decrypt terraform.plan.encrypted > terraform.plan
     - name: Terraform apply
       run: |
