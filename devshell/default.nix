@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./terraform
+    ./terraform.nix
   ];
   perSystem = {
     inputs',
@@ -10,18 +10,6 @@
     devshells.default = {
       commands = [
         {
-          package = pkgs.nil;
-          category = "development";
-        }
-        {
-          package = pkgs.nerdfix;
-          category = "development";
-        }
-        {
-          package = inputs'.nixos-generators.packages.nixos-generate;
-          category = "deploy";
-        }
-        {
           package = pkgs.sops;
           category = "secrets";
         }
@@ -30,8 +18,6 @@
           name = "sops-update-keys";
           help = "update keys for all sops file";
           command = ''
-            set -e
-
             ${pkgs.fd}/bin/fd '.*\.yaml' $PRJ_ROOT/secrets --exec sops updatekeys --yes
           '';
         }

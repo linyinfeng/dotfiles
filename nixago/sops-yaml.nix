@@ -50,10 +50,9 @@
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);
   allHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) hosts;
-  vmTest = "age17cg7mctcy03vt7wckfezc0xv2ntanhqx48uma9x2cltxatg2dstqx45xhu";
 
   mkHostCreationRule = host: key: {
-    path_regex = "^secrets/(terraform/)?hosts/${host}(\.plain)?\.yaml$";
+    path_regex = "secrets/(terraform/)?hosts/${host}(\.plain)?\.yaml$";
     key_groups = [
       {
         pgp = [main];
@@ -65,7 +64,7 @@ in {
   creation_rules =
     [
       {
-        path_regex = "^secrets/terraform-inputs\.yaml$";
+        path_regex = "terraform-inputs\.yaml$";
         key_groups = [
           {
             pgp = [main];
@@ -74,7 +73,25 @@ in {
         ];
       }
       {
-        path_regex = "^secrets/hosts/mtl0-terraform\.yaml$";
+        path_regex = "terraform-outputs\.yaml$";
+        key_groups = [
+          {
+            pgp = [main];
+            age = yubikeyKeys ++ [github];
+          }
+        ];
+      }
+      {
+        path_regex = "terraform.(tfstate|plan)(.encrypted)?$";
+        key_groups = [
+          {
+            pgp = [main];
+            age = yubikeyKeys ++ [github];
+          }
+        ];
+      }
+      {
+        path_regex = "secrets/hosts/mtl0-terraform\.yaml$";
         key_groups = [
           {
             pgp = [main];
@@ -83,25 +100,7 @@ in {
         ];
       }
       {
-        path_regex = "^secrets/terraform-outputs\.yaml$";
-        key_groups = [
-          {
-            pgp = [main];
-            age = yubikeyKeys ++ [github];
-          }
-        ];
-      }
-      {
-        path_regex = "terraform.(tfstate|plan)$";
-        key_groups = [
-          {
-            pgp = [main];
-            age = yubikeyKeys ++ [github];
-          }
-        ];
-      }
-      {
-        path_regex = "^secrets/(terraform/)?common\.yaml$";
+        path_regex = "secrets/(terraform/)?common\.yaml$";
         key_groups = [
           {
             pgp = [main];
@@ -110,7 +109,7 @@ in {
         ];
       }
       {
-        path_regex = "^secrets/(terraform/)?infrastructure\.yaml$";
+        path_regex = "secrets/(terraform/)?infrastructure\.yaml$";
         key_groups = [
           {
             pgp = [main];
@@ -124,15 +123,6 @@ in {
           {
             pgp = [main];
             age = yubikeyKeys ++ [github];
-          }
-        ];
-      }
-      {
-        path_regex = "^modules/sops/vm-test/test-secrets/.*\.yaml$";
-        key_groups = [
-          {
-            pgp = [main];
-            age = yubikeyKeys ++ [github vmTest];
           }
         ];
       }

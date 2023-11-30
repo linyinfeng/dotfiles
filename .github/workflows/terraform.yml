@@ -12,6 +12,11 @@ concurrency: push-to-main
 
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+  TERRAFORM_DIR: dotfiles/terraform
+  SECRETS_DIR: infrastructure-secrets
+  TF_VAR_terraform_input_path: ${{ github.workspace }}/infrastructure-secrets/terraform-inputs.yaml
+  DATA_EXTRACT_DIR: dotfiles/lib/data
+  SECRETS_EXTRACT_DIR: dotfiles/secrets
 
 jobs:
   plan:
@@ -21,6 +26,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+      with:
+        path: dotfiles
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        path: infrastructure-secrets
+        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
     - name: Install nix
       uses: cachix/install-nix-action@master
       with:
@@ -35,16 +47,16 @@ jobs:
     - name: Cache terraform
       uses: actions/cache@main
       with:
-        path: terraform/.terraform/providers
+        path: dotfiles/terraform/.terraform/providers
         key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
     - name: Terraform init
       run: |
-        nix develop --command terraform-init
+        nix develop ./dotfiles --command terraform-init
     - name: Terraform plan
       id: plan
       run: |
         set +e
-        nix develop --command terraform-wrapper plan -out="$PWD/terraform/terraform.plan" -detailed-exitcode
+        nix develop ./dotfiles --command terraform-wrapper plan -out="$PWD/terraform.plan" -detailed-exitcode
         exit_code=$?
         set -e
         if [ "$exit_code" -eq 0 ]; then
@@ -59,17 +71,17 @@ jobs:
     - name: Import GPG key
       if: steps.plan.outputs.diff == 'true'
       run: |
-        gpg --import nixos/profiles/users/yinfeng/_pgp/pub.asc
+        gpg --import dotfiles/nixos/profiles/users/yinfeng/_pgp/pub.asc
     - name: Encrypt plan
       if: steps.plan.outputs.diff == 'true'
       run: |
-        nix develop --command bash -c "sops --encrypt terraform/terraform.plan > secrets/terraform.plan"
+        nix develop ./dotfiles --command bash -c "sops --encrypt terraform.plan > terraform.plan.encrypted"
     - name: Upload plan
       if: steps.plan.outputs.diff == 'true'
       uses: actions/upload-artifact@main
       with:
         name: plan
-        path: secrets/terraform.plan
+        path: terraform.plan.encrypted
 
   apply:
     runs-on: ubuntu-latest
@@ -82,6 +94,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
       with:
+        path: dotfiles
+        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        path: infrastructure-secrets
         token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
     - name: Install nix
       uses: cachix/install-nix-action@master
@@ -98,40 +116,45 @@ jobs:
     - name: Cache terraform
       uses: actions/cache@main
       with:
-        path: terraform/.terraform/providers
+        path: dotfiles/terraform/.terraform/providers
         key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
     - name: Terraform init
       run: |
-        nix develop --command terraform-init
+        nix develop ./dotfiles --command terraform-init
     - name: Download plan
       uses: actions/download-artifact@main
       with:
         name: plan
-        path: secrets # secrets/terraform.plan
+        path: terraform.plan.encrypted
     - name: Decrypt plan
       run: |
-        nix develop --command sops --decrypt secrets/terraform.plan > terraform/terraform.plan
+        nix develop ./dotfiles --command sops --decrypt terraform.plan.encrypted > terraform.plan
     - name: Terraform apply
       run: |
-        nix develop --command terraform-wrapper apply "$PWD/terraform/terraform.plan"
+        nix develop ./dotfiles --command terraform-wrapper apply $(realpath terraform.plan)
     - name: Terraform update outputs
       run: |
-        nix develop --command terraform-update-outputs
+        nix develop ./dotfiles --command terraform-update-outputs
     - name: Terraform extract secret and data
       run: |
-        nix develop --command terraform-outputs-extract-secrets
-        nix develop --command terraform-outputs-extract-data
+        nix develop ./dotfiles --command terraform-outputs-extract-secrets
+        nix develop ./dotfiles --command terraform-outputs-extract-data
     - name: Format
       run: |
+        cd dotfiles
         nix fmt
     - name: Commit and push
       run: |
-        if [ -z "$(git status --porcelain)" ]; then
-          echo "repository is clean, skip commit and push"
-        else
-          git config --global user.email "nano@linyinfeng.com"
-          git config --global user.name "Nano"
-          git add --all
-          git commit --message "Terraform apply"
-          git push
-        fi
+        for repo in "dotfiles" "infrastructure-secrets"; do
+          echo "commit and push '$repo'..."
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "repository is clean, skip commit and push"
+          else
+            git config --global user.email "nano@linyinfeng.com"
+            git config --global user.name "Nano"
+            git add --all
+            git commit --message "Terraform apply"
+            git push
+          fi
+        done

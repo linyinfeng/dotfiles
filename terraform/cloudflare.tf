@@ -7,8 +7,8 @@ provider "cloudflare" {
 
 data "cloudflare_api_token_permission_groups" "all" {}
 
-resource "cloudflare_api_token" "ddns" {
-  name = "ddns-acme"
+resource "cloudflare_api_token" "dns" {
+  name = "dns"
 
   policy {
     permission_groups = [
@@ -23,7 +23,7 @@ resource "cloudflare_api_token" "ddns" {
 }
 
 output "cloudflare_token" {
-  value     = cloudflare_api_token.ddns.value
+  value     = cloudflare_api_token.dns.value
   sensitive = true
 }
 

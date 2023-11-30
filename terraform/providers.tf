@@ -49,5 +49,8 @@ terraform {
     assert = {
       source = "bwoznicki/assert"
     }
+    acme = {
+      source = "vancluever/acme"
+    }
   }
 }

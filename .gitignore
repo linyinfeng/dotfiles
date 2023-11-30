@@ -5,9 +5,7 @@ result*
 .data
 .sass-cache
 .pre-commit-config.yaml
-terraform/terraform.tfstate
-terraform.tfstate.*.backup
-terraform.tfstate.backup
+terraform.tfstate*
 terraform.plan
 terraform/moon
 .terraform.tfstate.lock.info

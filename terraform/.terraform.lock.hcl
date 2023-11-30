@@ -370,6 +370,26 @@ provider "registry.terraform.io/tencentcloudstack/tencentcloud" {
   ]
 }
 
+provider "registry.terraform.io/vancluever/acme" {
+  version = "2.18.0"
+  hashes = [
+    "h1:w4mnffYI6qDiEvnYumdclRtWI2b9r77vfmJlf0i5OP8=",
+    "zh:1aeb7837154ff93bf4b1c56fe5fc26208e58d700aa0952d516e16ed9a0fb3fc9",
+    "zh:3abd74ceea55fb20feddd66935414124a87343576e33dcdf497ceef76861b7eb",
+    "zh:3bc0031e59a4e11b4343e0dadfc5dc4b98e403f6149cef34ec176b36562b5abd",
+    "zh:61e4297055d6ff3c3773c4542edcf56af0962981bcbfdef5a4ee44fc99cb7d3e",
+    "zh:77af76c98e706a87ebfdf038d226f78989af684bbf491be9fb062f83d9cd7f0a",
+    "zh:7bd99b8bc58fe192978ec4d46cbf1e25eeca564676b784d0d0c5a8b8c2adf336",
+    "zh:93dcb0cf7e36e5d71349fdac892913c091964cecc2a100b95ed334bef43be85c",
+    "zh:9af68d026c2cdb045dcec894c611d09377abb16fb8ddfaffd561f4b6b1c55bdd",
+    "zh:a13200144bd2a5f55c474c02a36784d1094d9f20591a756b8a1df746ec04ec69",
+    "zh:ad9d3887d5aa1dc261c51381b5f34f565894ffccd3f61643e6cebb16b774e5e1",
+    "zh:aed6b2c3576683abe694902e8aef0832db840e78a311c60c38e34cb823529e33",
+    "zh:b142ae0e874d5ee84b80ad46b5d5508ce817254e5d1b18d02e6775392bba668b",
+    "zh:cbdc3d1c0c569a2bb34d653102a44fbdac97da5af1cff21b6c974ee62300b625",
+  ]
+}
+
 provider "registry.terraform.io/vultr/vultr" {
   version = "2.17.1"
   hashes = [
