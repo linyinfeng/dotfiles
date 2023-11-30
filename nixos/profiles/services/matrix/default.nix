@@ -341,7 +341,7 @@ in
     {
       services.nginx.virtualHosts."matrix.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
         locations."/_matrix" = {
           proxyPass = "http://127.0.0.1:${toString config.ports.matrix}";
         };
@@ -362,7 +362,7 @@ in
     {
       services.nginx.virtualHosts."synapse-admin.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
         locations."/".root = pkgs.synapse-admin;
       };
     }

@@ -34,7 +34,7 @@ in {
     (lib.mkIf config.security.acme.acceptTerms {
       services.nginx.virtualHosts."${hostName}.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
       };
     })
   ];

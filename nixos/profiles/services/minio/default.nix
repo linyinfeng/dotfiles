@@ -29,7 +29,7 @@ in {
   '';
   services.nginx.virtualHosts."minio.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".proxyPass = minioAddress;
     extraConfig = ''
       client_max_body_size 4G;
@@ -37,7 +37,7 @@ in {
   };
   services.nginx.virtualHosts."minio-console.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/" = {
       proxyPass = "http://localhost:${toString minioConsolePort}";
       extraConfig = ''

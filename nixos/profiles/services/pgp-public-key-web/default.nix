@@ -7,7 +7,7 @@
 in {
   services.nginx.virtualHosts."pgp-public-key.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".root = root;
   };
 }

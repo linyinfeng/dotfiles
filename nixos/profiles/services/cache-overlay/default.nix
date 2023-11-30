@@ -10,7 +10,7 @@
 in {
   services.nginx.virtualHosts."cache-overlay.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".extraConfig = ''
       set $to_cache_nixos_org 0;
       if ($request_method ~ ^GET|HEAD$) {

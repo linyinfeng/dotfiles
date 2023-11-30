@@ -59,7 +59,7 @@ in {
   ];
   services.nginx.virtualHosts."influxdb.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.ports.influxdb}/";
     };

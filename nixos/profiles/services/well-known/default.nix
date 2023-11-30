@@ -1,7 +1,7 @@
 {...}: {
   services.nginx.virtualHosts."li7g.com" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     # matrix
     locations."/.well-known/matrix/".alias = "${./_root/matrix}/";
     locations."=/.well-known/matrix/server".extraConfig = ''

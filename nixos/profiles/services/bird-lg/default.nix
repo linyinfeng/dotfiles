@@ -21,7 +21,7 @@ in {
   };
   services.nginx.virtualHosts."bird-lg.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".proxyPass = "http://${config.services.bird-lg.frontend.listenAddress}";
   };
 }

@@ -5,7 +5,7 @@
 }: {
   services.nginx.virtualHosts."portal.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/" = {
       root = pkgs.element-web;
     };

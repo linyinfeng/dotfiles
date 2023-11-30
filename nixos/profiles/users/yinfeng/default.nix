@@ -42,6 +42,7 @@ in {
       ++ groupNameIfPresent "service-mail"
       ++ groupNameIfPresent "plugdev"
       ++ groupNameIfPresent "acme"
+      ++ groupNameIfPresent "acmetf"
       ++ groupNameIfPresent "windows"
       ++ groupNameIfPresent "wireshark";
 

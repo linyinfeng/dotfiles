@@ -89,7 +89,7 @@
 in {
   services.nginx.virtualHosts."dn42.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     extraConfig = ''
       types { application/json json; }
     '';

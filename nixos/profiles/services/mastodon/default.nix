@@ -98,7 +98,7 @@ in
     {
       services.nginx.virtualHosts."mastodon.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
         serverAliases = ["social.*"];
         root = "${config.services.mastodon.package}/public/";
         locations."/system/".alias = "/var/lib/mastodon/public-system/";

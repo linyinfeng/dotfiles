@@ -24,7 +24,7 @@
 
   services.nginx.virtualHosts."box.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".proxyPass = "http://unix:/run/seahub/gunicorn.sock";
     locations."/seafhttp/" = {
       proxyPass = "http://127.0.0.1:${toString config.ports.seafile-file-server}/";

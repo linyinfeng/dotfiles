@@ -5,7 +5,7 @@
   };
   services.nginx.virtualHosts."oranc.*" = {
     forceSSL = true;
-    useACMEHost = "main";
+    inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/" = {
       proxyPass = "http://${config.services.oranc.listen}";
     };

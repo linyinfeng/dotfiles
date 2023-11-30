@@ -215,7 +215,7 @@ in {
     {
       services.nginx.virtualHosts."transmission.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
         locations."/transmission".proxyPass = "http://localhost:${toString config.services.transmission.settings.rpc-port}";
         locations."/files/" = {
           alias = "/var/lib/transmission/Downloads/";
@@ -255,7 +255,7 @@ in {
 
       services.nginx.virtualHosts."jellyfin.*" = {
         forceSSL = true;
-        useACMEHost = "main";
+        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
         locations."= /" = {
           extraConfig = ''
             return 302 /web/;
