@@ -218,56 +218,80 @@
       '';
     };
   in {
-    devshells.default.commands = [
-      {
-        category = "infrastructure";
-        name = "terraform-pipe";
-        help = "initialize, apply, and update all terraform related output files";
-        command = ''
-          set -e
+    devshells.default = {
+      env = [
+        {
+          name = "TERRAFORM_DIR";
+          eval = "$PRJ_ROOT/terraform";
+        }
+        {
+          name = "SECRETS_DIR";
+          eval = "$(realpath \"$PRJ_ROOT/../infrastructure-secrets\")";
+        }
+        {
+          name = "TF_VAR_terraform_input_path";
+          eval = "$SECRETS_DIR/terraform-inputs.yaml";
+        }
+        {
+          name = "DATA_EXTRACT_DIR";
+          eval = "$PRJ_ROOT/lib/data";
+        }
+        {
+          name = "SECRETS_EXTRACT_DIR";
+          eval = "$PRJ_ROOT/secrets";
+        }
+      ];
+      commands = [
+        {
+          category = "infrastructure";
+          name = "terraform-pipe";
+          help = "initialize, apply, and update all terraform related output files";
+          command = ''
+            set -e
 
-          terraform-init
-          terraform-wrapper apply
-          terraform-update-outputs
-          terraform-outputs-extract-data
-          terraform-outputs-extract-secrets
-          nix fmt
-        '';
-      }
-      {
-        category = "infrastructure";
-        package = terraformWrapper;
-      }
+            terraform-init
+            terraform-wrapper apply
+            terraform-update-outputs
+            terraform-outputs-extract-data
+            terraform-outputs-extract-secrets
+            nix fmt
+          '';
+        }
+        {
+          category = "infrastructure";
+          package = terraformWrapper;
+        }
 
-      {
-        category = "infrastructure";
-        package = terraformUpdateOutputs;
-      }
+        {
+          category = "infrastructure";
+          package = terraformUpdateOutputs;
+        }
 
-      {
-        category = "infrastructure";
-        package = terraformOutputsExtractSecrets;
-      }
+        {
+          category = "infrastructure";
+          package = terraformOutputsExtractSecrets;
+        }
 
-      {
-        category = "infrastructure";
-        package = terraformOutputsExtractData;
-      }
+        {
+          category = "infrastructure";
+          package = terraformOutputsExtractData;
+        }
 
-      {
-        category = "infrastructure";
-        package = terraformInit;
-      }
+        {
+          category = "infrastructure";
+          package = terraformInit;
+        }
 
-      {
-        category = "infrastructure";
-        package = encryptTo;
-      }
+        {
+          category = "infrastructure";
+          package = encryptTo;
+        }
 
-      {
-        package = pkgs.cf-terraforming;
-        category = "infrastructure";
-      }
-    ];
+        {
+          package = pkgs.cf-terraforming;
+          category = "infrastructure";
+        }
+      ];
+    };
   };
 }

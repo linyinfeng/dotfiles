@@ -34,6 +34,14 @@
 
     "influxdb_url": .influxdb_url.value,
 
+    "acme": {
+        "li7g_com": {
+            "certificate_pem": .acme_li7g_com_certificate_pem.value,
+            "issuer_pem": .acme_li7g_com_issuer_pem.value,
+            "full_chain_pem": .acme_li7g_com_full_chain_pem.value
+        }
+    },
+
     "hosts": .hosts.value | map_values(
         with_entries(
             select(
