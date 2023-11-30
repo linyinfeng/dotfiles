@@ -32,18 +32,18 @@ resource "acme_certificate" "li7g_com" {
 }
 
 output "acme_li7g_com_private_key_pem" {
-  value     = acme_certificate.li7g.private_key_pem
+  value     = acme_certificate.li7g_com.private_key_pem
   sensitive = true
 }
 
 output "acme_li7g_com_certificate_pem" {
-  value = acme_certificate.li7g.certificate_pem
+  value = acme_certificate.li7g_com.certificate_pem
 }
 
 output "acme_li7g_com_issuer_pem" {
-  value = acme_certificate.li7g.issuer_pem
+  value = acme_certificate.li7g_com.issuer_pem
 }
 
 output "acme_li7g_com_full_chain_pem" {
-  value = "${acme_certificate.li7g.certificate_pem}${acme_certificate.li7g.issuer_pem}"
+  value = "${acme_certificate.li7g_com.certificate_pem}${acme_certificate.li7g_com.issuer_pem}"
 }
