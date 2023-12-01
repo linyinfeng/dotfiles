@@ -35,10 +35,9 @@ in {
         useSubstitutes = true;
         extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
         extraConfig = ''
-          # use secret-key-files option in nix.conf instead
-          # store-uri = file:///nix/store?secret-key=${config.sops.secrets."cache-li7g-com/key".path}
-
           Include "${config.sops.templates."hydra-extra-config".path}"
+
+          max_concurrent_evals = 1
 
           <githubstatus>
             jobs = .*
