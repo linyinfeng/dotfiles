@@ -4,6 +4,7 @@
   inputs,
   ...
 }: let
+  excludedNodes = ["enchilada"];
   mkNode = name: cfg: let
     inherit (cfg.pkgs.stdenv.hostPlatform) system;
     deployLib = inputs.deploy-rs.lib.${system};
@@ -18,7 +19,7 @@
       path = deployLib.activate.nixos cfg;
     };
   };
-  nodes = lib.mapAttrs mkNode self.nixosConfigurations;
+  nodes = lib.mapAttrs mkNode (lib.filterAttrs (name: _: !lib.elem name excludedNodes) self.nixosConfigurations);
 in {
   flake = {
     deploy = {
