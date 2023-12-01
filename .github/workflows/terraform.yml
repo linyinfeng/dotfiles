@@ -138,18 +138,22 @@ jobs:
       run: |
         nix develop ./dotfiles --command terraform-wrapper apply $(realpath terraform.plan)
     - name: Terraform update outputs
+      if: always()
       run: |
         nix develop ./dotfiles --command terraform-update-outputs
     - name: Terraform extract secret and data
+      if: always()
       run: |
         set -e
         nix develop ./dotfiles --command terraform-outputs-extract-secrets
         nix develop ./dotfiles --command terraform-outputs-extract-data
     - name: Format
+      if: always()
       run: |
         cd dotfiles
         nix fmt
     - name: Commit and push
+      if: always()
       run: |
         set -e
         root=$(pwd)
