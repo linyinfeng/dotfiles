@@ -43,9 +43,6 @@ in
     home.file.".local/share/themes".source = "${gtkThemes}/share/themes";
 
     dconf.settings = {
-      "org/gnome/mutter" = {
-        experimental-features = ["scale-monitor-framebuffer"];
-      };
       # Do not sleep when ac power connected
       "org/gnome/settings-daemon/plugins/power" = {
         sleep-inactive-ac-type = "nothing";
