@@ -18,9 +18,6 @@ in
       services.matrix-synapse = {
         enable = true;
         withJemalloc = true;
-        plugins = [
-          pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
-        ];
         settings = {
           server_name = "li7g.com";
           public_baseurl = "https://matrix.li7g.com";
@@ -86,26 +83,8 @@ in
             force_tls = true;
             smtp_pass = config.sops.placeholder."mail_password";
           };
-          media_storage_providers = [
-            # as backup of all local media
-            {
-              module = "s3_storage_provider.S3StorageProviderBackend";
-              store_local = true;
-              store_remote = false;
-              store_synchronous = true;
-              config = {
-                bucket = config.lib.self.data.synapse_media_bucket_name;
-                endpoint_url = config.lib.self.data.synapse_media_url;
-                access_key_id = config.sops.placeholder."b2_synapse_media_key_id";
-                secret_access_key = config.sops.placeholder."b2_synapse_media_access_key";
-              };
-            }
-          ];
         };
       };
-      environment.systemPackages = [
-        pkgs.nur.repos.linyinfeng.synapse-s3-storage-provider
-      ];
 
       systemd.services.matrix-synapse = {
         # copy singing key to signing key path
@@ -327,14 +306,6 @@ in
         sopsFile = config.sops-file.terraform;
         restartUnits = ["matrix-synapse.service"];
       };
-      sops.secrets."b2_synapse_media_key_id" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-synapse.service"];
-      };
-      sops.secrets."b2_synapse_media_access_key" = {
-        sopsFile = config.sops-file.terraform;
-        restartUnits = ["matrix-synapse.service"];
-      };
     }
 
     # reverse proxy
@@ -370,7 +341,7 @@ in
     # backup
     {
       services.restic.backups.b2.paths = [
-        "/var/lib/matrix-synapse/homeserver.signing.key"
+        "/var/lib/matrix-synapse"
       ];
     }
   ]
