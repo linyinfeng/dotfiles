@@ -14,6 +14,7 @@ resource "acme_registration" "main" {
 
 resource "acme_certificate" "li7g_com" {
   account_key_pem = acme_registration.main.account_key_pem
+  key_type = "P384"
   common_name     = "li7g.com"
   subject_alternative_names = [
     "*.li7g.com",
