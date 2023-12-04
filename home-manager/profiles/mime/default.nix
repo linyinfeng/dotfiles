@@ -204,6 +204,7 @@ in {
       // buildMap ["calc.desktop"] excelFormats
       // buildMap ["impress.desktop"] pptFormats
       // {
+        "text/plain" = "org.gnome.TextEditor.desktop";
         "application/pdf" = ["org.gnome.Evince.desktop"];
         "x-scheme-handler/mailto" = ["org.gnome.Geary.desktop"];
       };

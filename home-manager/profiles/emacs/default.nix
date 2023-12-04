@@ -82,9 +82,6 @@ in {
   home.sessionVariables = {
     EDITOR = "emacsclient";
   };
-  xdg.mimeApps.associations.added = {
-    "text/plain" = "emacsclient.desktop";
-  };
   dconf.settings = lib.mkIf osConfig.programs.dconf.enable {
     "org/gnome/shell".favorite-apps = [
       "emacsclient.desktop"
