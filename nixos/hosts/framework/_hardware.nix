@@ -1,26 +1,27 @@
-# customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/12th-gen-intel/default.nix
+# customized from https://github.com/NixOS/nixos-hardware/blob/master/framework/13-inch/12th-gen-intel/default.nix
 {
-  self,
   config,
   pkgs,
   lib,
   ...
 }: {
-  boot.kernelParams = [
-    # For Power consumption
-    # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
-    # "mem_sleep_default=deep"
-    # For Power consumption
-    # https://community.frame.work/t/linux-battery-life-tuning/6665/156
-    # "nvme.noacpi=1"
-    # Workaround iGPU hangs
-    # https://discourse.nixos.org/t/intel-12th-gen-igpu-freezes/21768/4
-    # "i915.enable_psr=1"
-  ];
+  # boot.kernelParams = [
+  #   # For Power consumption
+  #   # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
+  #   "mem_sleep_default=deep"
+  #   # Workaround iGPU hangs
+  #   # https://discourse.nixos.org/t/intel-12th-gen-igpu-freezes/21768/4
+  #   "i915.enable_psr=1"
+  # ];
 
-  # This enables the brightness keys to work
-  # https://community.frame.work/t/12th-gen-not-sending-xf86monbrightnessup-down/20605/11
-  # boot.blacklistedKernelModules = [ "hid-sensor-hub" ];
+  # boot.blacklistedKernelModules = [
+  #   # This enables the brightness and airplane mode keys to work
+  #   # https://community.frame.work/t/12th-gen-not-sending-xf86monbrightnessup-down/20605/11
+  #   "hid-sensor-hub"
+  #   # This fixes controller crashes during sleep
+  #   # https://community.frame.work/t/tracking-fn-key-stops-working-on-popos-after-a-while/21208/32
+  #   "cros_ec_lpcs"
+  # ];
 
   # Fix TRRS headphones missing a mic
   # https://community.frame.work/t/headset-microphone-on-linux/12387/3
@@ -34,13 +35,10 @@
   #   SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0xa0e0", ATTR{power/control}="on"
   # '';
 
-  # Mis-detected by nixos-generate-config
-  # https://github.com/NixOS/nixpkgs/issues/171093
-  # https://wiki.archlinux.org/title/Framework_Laptop#Changing_the_brightness_of_the_monitor_does_not_work
-  # hardware.acpilight.enable = lib.mkDefault true;
-
-  # Needed for desktop environments to detect/manage display brightness
+  # deeded for desktop environments to detect/manage display brightness
   hardware.sensor.iio.enable = true;
+
+  # deeded for window manager to manage display brightness
   environment.systemPackages = with pkgs; [
     wluma
   ];
@@ -57,6 +55,7 @@
   environment.global-persistence.user.directories = [
     ".local/share/wluma"
   ];
+
   systemd.services = lib.mkIf (config.services.xserver.displayManager.gdm.enable) {
     gdm-prepare = {
       script = ''
@@ -78,6 +77,8 @@
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages = let
       version = "6.5";
+      versionIntel = "231123T023225Z";
+      hash = "sha256-VQwaW2mBisKZC4yDEiL/yjIUbH3xO+hxhDvDBapA4UM=";
       major = lib.versions.major version;
       minor = lib.versions.minor version;
       linux_intel_fn = {
@@ -97,8 +98,8 @@
             src = fetchFromGitHub {
               owner = "intel";
               repo = "mainline-tracking";
-              rev = "mainline-tracking-v${version}-linux-231025T044630Z";
-              sha256 = "sha256-V0eeiXUp8yT3yPCtkmZAKGBj5sPmm7bqSf4eBgs0PeI=";
+              rev = "mainline-tracking-v${version}-linux-${versionIntel}";
+              inherit hash;
             };
           }
           // (args.argsOverride or {}));
@@ -108,12 +109,7 @@
     in
       pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
     kernelPatches = [
-      # TODO wait for https://bugzilla.kernel.org/show_bug.cgi?id=217631
-      {
-        name = "framework-12th-tpm-tis-workaround";
-        # https://lore.kernel.org/all/20230710211635.4735-1-mail@eworm.de/
-        patch = ../../../patches/framework-12th-tpm-tis-workaround.patch;
-      }
+      # currently nothing
     ];
   };
   # out-of-tree module "kvmfr" required
