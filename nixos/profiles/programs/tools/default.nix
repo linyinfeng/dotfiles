@@ -1,7 +1,6 @@
 {pkgs, ...}: let
   delink = pkgs.writeShellApplication {
     name = "delink";
-    runtimeInputs = with pkgs; [coreutils];
     text = ''
       file="$1"
 
@@ -14,6 +13,15 @@
       rm -v "$file"
       cp -v "$target" "$file"
       chmod -v u+w "$file"
+    '';
+  };
+
+  tmpTest = pkgs.writeShellApplication {
+    name = "tmp-test";
+    text = ''
+      mkdir -p /tmp/test
+      cd /tmp/test
+      exec "$SHELL"
     '';
   };
 in {
@@ -47,6 +55,7 @@ in {
     yq-go
 
     delink
+    tmpTest
   ];
   passthru = {inherit delink;};
 }
