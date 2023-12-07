@@ -31,14 +31,16 @@
       src = ./update-sing-box-url.sh;
       isExecutable = true;
       inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) coreutils curl systemd;
-      jq = pkgs.jq;
+      inherit (pkgs) coreutils curl systemd jq;
+      yq = pkgs.yq-go;
       moreutils = pkgs.moreutils;
+      preprocessingDownloaded = cfg.downloadedConfigPreprocessing;
       preprocessing = cfg.configPreprocessing;
       mixinConfig = builtins.toJSON cfg.mixinConfig;
       directory = "/etc/sing-box";
       externalControllerSecretFile = cfg.externalController.secretFile;
       webui = pkgs.nur.repos.linyinfeng.yacd;
+      clash2SingBox = "${pkgs.clash2sing-box}/bin/ctos-${pkgs.stdenv.hostPlatform.system}";
     };
     updateSingBox = pkgs.substituteAll {
       src = ./update-sing-box.sh;
@@ -120,9 +122,11 @@ in
       };
       configPreprocessing = mkOption {
         type = with types; lines;
-        default = ''
-          $jq 'del(.log) | del(.inbounds)' "$raw_config" | $sponge "$raw_config"
-        '';
+        default = "";
+      };
+      downloadedConfigPreprocessing = mkOption {
+        type = with types; lines;
+        default = "";
       };
       mixinConfig = mkOption {
         type = with types; attrs;

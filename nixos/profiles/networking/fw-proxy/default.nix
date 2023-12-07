@@ -20,6 +20,15 @@ in {
       routingTable = config.routingTables.fw-proxy;
       rulePriority = config.routingPolicyPriorities.fw-proxy;
     };
+    downloadedConfigPreprocessing = ''
+      # if [ $($jq --raw-output '.profile_name' "$profile_info_file") = "alternative" ]; then
+      #   $yq --inplace 'del(.proxies[] | select(.name != "*IEPL*"))' "$downloaded_config"
+      # fi
+    '';
+    configPreprocessing = ''
+      $jq 'del(.log) | del(.inbounds)' "$raw_config" |\
+        $sponge "$raw_config"
+    '';
     mixinConfig = {
       log = {
         level = "info";

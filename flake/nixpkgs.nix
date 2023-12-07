@@ -31,6 +31,7 @@
       pastebin = inputs'.pastebin.packages.default;
       mc-config-nuc = inputs'.mc-config-nuc.packages;
       nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
+      clash2sing-box = inputs'.clash2sing-box.packages.default;
 
       # ccache
       ccacheCacheDir = "/var/cache/ccache";

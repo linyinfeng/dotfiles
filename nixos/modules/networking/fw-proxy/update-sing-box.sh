@@ -3,17 +3,20 @@
 
 update="@updateSingBoxUrl@"
 
-case "$1" in
+profile="$1"
+shift
+
+case "$profile" in
 
 "main")
-  $update "$(cat "@mainUrl@")"
+  $update "$(cat "@mainUrl@")" --profile-name "main" "$@"
   ;;
 
 "alternative")
-  $update "$(cat "@alternativeUrl@")"
+  $update "$(cat "@alternativeUrl@")" --profile-name "alternative" "$@"
   ;;
 
-"https://*" | "http://*")
-  $update "$1"
+*)
+  $update "$profile" "$@"
   ;;
 esac
