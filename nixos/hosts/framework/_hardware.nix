@@ -113,7 +113,7 @@
     ];
   };
   # out-of-tree module "kvmfr" required
-  # # because kernel needs to be recompiled
-  # # enable lockdown by the way
-  # boot.kernelLockdown = false;
+  # because kernel needs to be recompiled
+  # enable lockdown by the way
+  boot.kernelLockdown = true;
 }

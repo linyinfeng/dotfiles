@@ -14,6 +14,21 @@
         publicKeyFile = "/sbkeys/generated/db.crt";
         privateKeyFile = "/sbkeys/generated/db.key";
       };
+      boot.kernelPatches = [
+        {
+          name = "keyring";
+          patch = null;
+          extraConfig = ''
+            INTEGRITY_MACHINE_KEYRING y
+            INTEGRITY_PLATFORM_KEYRING y
+            INTEGRITY_ASYMMETRIC_KEYS y
+            INTEGRITY_SIGNATURE y
+            SECONDARY_TRUSTED_KEYRING y
+            SYSTEM_BLACKLIST_KEYRING y
+            LOAD_UEFI_KEYS y
+          '';
+        }
+      ];
     }
     (lib.mkIf config.boot.kernelLockdown {
       boot.kernelParams = [
@@ -30,12 +45,12 @@
           '';
         }
       ];
-      assertions = [
-        {
-          assertion = lib.length config.boot.extraModulePackages == 0;
-          message = "out-of-tree and unsigned kernel module not supported";
-        }
-      ];
+      # assertions = [
+      #   {
+      #     assertion = lib.length config.boot.extraModulePackages == 0;
+      #     message = "out-of-tree and unsigned kernel module not supported";
+      #   }
+      # ];
     })
   ];
 }
