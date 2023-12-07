@@ -1,9 +1,0 @@
-PROXY_HOST="localhost"
-PROXY_PORT="@mixedPort@"
-
-export HTTP_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-export http_proxy="$HTTP_PROXY"
-export HTTPS_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-export https_proxy="$HTTPS_PROXY"
-export NO_PROXY="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
-export no_proxy="$NO_PROXY"

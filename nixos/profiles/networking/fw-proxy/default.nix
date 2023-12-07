@@ -26,14 +26,18 @@ in {
       # fi
     '';
     configPreprocessing = ''
-      $jq 'del(.log) | del(.inbounds)' "$raw_config" |\
-        $sponge "$raw_config"
+      jq 'del(.log) | del(.inbounds)' "$raw_config" |\
+        sponge "$raw_config"
     '';
     mixinConfig = {
       log = {
         level = "info";
         timestamp = false; # added by journald
       };
+    };
+    profiles = {
+      main.urlFile = config.sops.secrets."sing-box/main".path;
+      alternative.urlFile = config.sops.secrets."sing-box/alternative".path;
     };
     externalController = {
       expose = true;
@@ -45,6 +49,14 @@ in {
 
   sops.secrets."fw_proxy_external_controller_secret" = {
     sopsFile = config.sops-file.get "terraform/common.yaml";
+    restartUnits = ["sing-box-auto-update.service"];
+  };
+  sops.secrets."sing-box/main" = {
+    sopsFile = config.sops-file.get "common.yaml";
+    restartUnits = ["sing-box-auto-update.service"];
+  };
+  sops.secrets."sing-box/alternative" = {
+    sopsFile = config.sops-file.get "common.yaml";
     restartUnits = ["sing-box-auto-update.service"];
   };
 

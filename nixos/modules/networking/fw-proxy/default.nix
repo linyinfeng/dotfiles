@@ -9,64 +9,281 @@
   mixedPort = cfg.ports.mixed;
   tproxyPort = cfg.ports.tproxy;
 
-  scripts = pkgs.stdenvNoCC.mkDerivation rec {
-    name = "fw-proxy-scripts";
-    buildCommand = ''
-      install -Dm644 $enableProxy      $out/bin/enable-proxy
-      install -Dm644 $disableProxy     $out/bin/disable-proxy
-      install -Dm755 $updateSingBoxUrl $out/bin/update-sing-box-url
-      install -Dm755 $updateSingBox    $out/bin/update-sing-box
-      install -Dm755 $tproxyUse        $out/bin/fw-tproxy-use
-      install -Dm755 $tproxyCgroup     $out/bin/fw-tproxy-cgroup
-      install -Dm755 $tproxyInterface  $out/bin/fw-tproxy-if
+  enableProxy = pkgs.writeShellApplication {
+    name = "enable-proxy";
+    text = ''
+      PROXY_HOST="localhost"
+      PROXY_PORT="${toString cfg.ports.mixed}"
+
+      export HTTP_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
+      export http_proxy="$HTTP_PROXY"
+      export HTTPS_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
+      export https_proxy="$HTTPS_PROXY"
+      export NO_PROXY="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
+      export no_proxy="$NO_PROXY"
     '';
-    enableProxy = pkgs.substituteAll {
-      src = ./enable-proxy;
-      inherit mixedPort;
-    };
-    disableProxy = pkgs.substituteAll {
-      src = ./disable-proxy;
-    };
-    updateSingBoxUrl = pkgs.substituteAll {
-      src = ./update-sing-box-url.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) coreutils curl systemd jq;
-      yq = pkgs.yq-go;
-      moreutils = pkgs.moreutils;
-      preprocessingDownloaded = cfg.downloadedConfigPreprocessing;
-      preprocessing = cfg.configPreprocessing;
-      mixinConfig = builtins.toJSON cfg.mixinConfig;
-      directory = "/etc/sing-box";
-      externalControllerSecretFile = cfg.externalController.secretFile;
-      webui = pkgs.nur.repos.linyinfeng.yacd;
-      clash2SingBox = "${pkgs.clash2sing-box}/bin/ctos-${pkgs.stdenv.hostPlatform.system}";
-    };
-    updateSingBox = pkgs.substituteAll {
-      src = ./update-sing-box.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit updateSingBoxUrl;
-      mainUrl = config.sops.secrets."sing-box/main".path;
-      alternativeUrl = config.sops.secrets."sing-box/alternative".path;
-    };
-    tproxyUse = pkgs.substituteAll {
-      src = ./tproxy-use.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      cgroupPath = cfg.tproxy.slice;
-    };
-    tproxyCgroup = pkgs.substituteAll {
-      src = ./tproxy-cgroup.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (cfg.tproxy) nftTable;
-    };
-    tproxyInterface = pkgs.substituteAll {
-      src = ./tproxy-interface.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (cfg.tproxy) nftTable;
+  };
+  disableProxy = pkgs.writeShellApplication {
+    name = "disable-proxy";
+    text = ''
+      export HTTP_PROXY=""
+      export http_proxy=""
+      export HTTPS_PROXY=""
+      export https_proxy=""
+      export ALL_PROXY=""
+      export all_proxy=""
+      export NO_PROXY=""
+      export no_proxy=""
+    '';
+  };
+  updateSingBoxUrl = pkgs.writeShellApplication {
+    name = "update-sing-box-url";
+    runtimeInputs = with pkgs; [
+      curl
+      jq
+      yq
+      moreutils
+      systemd
+      clash2sing-box
+    ];
+    text = ''
+      dir="/etc/sing-box"
+
+      url=""
+      downloaded_config_type="sing-box"
+      keep_temporary_directory="NO"
+      profile_name=""
+
+      positional_args=()
+      while [[ $# -gt 0 ]]; do
+        case $1 in
+        --clash)
+          downloaded_config_type="clash"
+          shift
+          ;;
+        --keep-temporary-directory)
+          keep_temporary_directory="YES"
+          shift
+          ;;
+        --profile-name)
+          profile_name="$2"
+          shift
+          shift
+          ;;
+        -* )
+          echo "unknown option $1" >&2
+          exit 1
+          ;;
+        *)
+          positional_args+=("$1")
+          shift
+          ;;
+        esac
+      done
+      if [ "''${#positional_args[@]}" = "1" ]; then
+        url="''${positional_args[0]}"
+      else
+        echo "invalid arguments ''${positional_args[*]}" >&2
+        exit 1
+      fi
+
+      mkdir -p $dir
+
+      echo 'Making temporary directory...'
+      tmp_dir=$(mktemp -t --directory update-sing-box-config.XXXXXXXXXX)
+      echo "Temporary directory is: $tmp_dir"
+      if [ -f "$dir/config.json" ]; then
+        echo 'Backup old config.json...'
+        cp "$dir/config.json" "$dir/config.json.old"
+      fi
+      function cleanup {
+        if [ "$keep_temporary_directory" != "YES" ]; then
+          echo 'Remove temporary directory...'
+          rm -rf "$tmp_dir"
+        fi
+        if [ -f "$dir/config.json.old" ]; then
+          echo 'Restore old config.json...'
+          cp "$dir/config.json.old" "$dir/config.json"
+          rm "$dir/config.json.old"
+        fi
+      }
+      trap cleanup EXIT
+
+      echo 'Downloading original configuration...'
+      downloaded_config="$tmp_dir/downloaded-config"
+      curl "$url" \
+        --fail-with-body \
+        --show-error \
+        --output "$downloaded_config"
+      profile_info_file="$tmp_dir/profile-info"
+      jq --null-input \
+        --arg u "$url" \
+        --arg p "$profile_name" \
+        '{"url": $u, "profile_name": $p}' \
+        >"$profile_info_file"
+
+      echo 'Preprocessing original configuration...'
+      ${cfg.downloadedConfigPreprocessing}
+
+      echo 'Converting downloaded configuration file to raw config.json...'
+      raw_config="$tmp_dir/raw-config.json"
+      if [ "$downloaded_config_type" = "sing-box" ]; then
+        cp "$downloaded_config" "$raw_config"
+        elif [ "$downloaded_config_type" = "clash" ]; then
+        ctos-${pkgs.stdenv.hostPlatform.system} --source="$downloaded_config" gen >"$raw_config"
+      else
+        echo "unknown config type: ''${downloaded_config_type}" >&2
+        exit 1
+      fi
+
+      echo 'Preprocessing raw config.json...'
+      ${cfg.configPreprocessing}
+
+      echo 'Build config.json...'
+      jq --slurp '.[0] * .[1]' "$raw_config" - <<EOF >"$dir/config.json"
+      ${builtins.toJSON cfg.mixinConfig}
+      EOF
+
+      external_controller_secrets=$(cat "${cfg.externalController.secretFile}")
+      jq "
+        .experimental.clash_api.secret = \"''${external_controller_secrets}\" |
+        .experimental.clash_api.external_ui = \"${pkgs.nur.repos.linyinfeng.yacd}\"
+        " "$dir/config.json" | sponge "$dir/config.json"
+
+      echo 'Restarting sing-box...'
+      systemctl restart sing-box
+      systemctl status sing-box --no-pager
+      if [ -f "$dir/config.json.old" ]; then
+        echo 'Remove old config.json...'
+        rm "$dir/config.json.old"
+      fi
+    '';
+  };
+  updateSingBox = pkgs.writeShellApplication {
+    name = "update-sing-box";
+    runtimeInputs = [
+      updateSingBoxUrl
+    ];
+    text = ''
+      profile="$1"
+      shift
+      case "$profile" in
+      ${lib.concatMapStringsSep "\n" (p: ''
+        "${p.name}")
+          update-sing-box-url "$(cat "${p.urlFile}")" --profile-name "$profile" "$@"
+          ;;
+      '') (lib.attrValues cfg.profiles)}
+      *)
+        update-sing-box-url "$profile" "$@"
+        ;;
+      esac
+    '';
+  };
+  tproxyUse = pkgs.writeShellApplication {
+    name = "fw-tproxy-use";
+    runtimeInputs = with pkgs; [
+      systemd
+    ];
+    text = ''
+      cgroup_path="${cfg.tproxy.slice}"
+      exec systemd-run --pipe --slice="$cgroup_path" "$@"
+    '';
+  };
+  tproxyCgroup = pkgs.writeShellApplication {
+    name = "fw-tproxy-cgroup";
+    runtimeInputs = with pkgs; [
+      nftables
+    ];
+    text = ''
+      nft_table="${cfg.tproxy.nftTable}"
+
+      function usage {
+        cat <<EOF
+      Usage:
+        $0 list
+        $0 add    PATH
+        $0 delete PATH
+      EOF
+        exit 0
+      }
+
+      if [ $# -lt 1 ]; then usage; fi
+      action="$1"
+      case "$action" in
+      list)
+        if [ $# != 1 ]; then usage; fi
+        nft list set inet "$nft_table" cgroups
+        ;;
+      add | delete)
+        path="$2"
+        if [ $# != 2 ]; then usage; fi
+        nft "$action" element inet "$nft_table" cgroups "{ \"$path\" }"
+        ;;
+      *)
+        usage
+        ;;
+      esac
+    '';
+  };
+  tproxyInterface = pkgs.writeShellApplication {
+    name = "fw-tproxy-if";
+    runtimeInputs = with pkgs; [
+      nftables
+    ];
+    text = ''
+      nft_table="${cfg.tproxy.nftTable}"
+
+      function usage {
+        cat <<EOF
+      Usage:
+        $0 list
+        $0 add    INTERFACE
+        $0 delete INTERFACE
+      EOF
+        exit 0
+      }
+
+      if [ $# -lt 1 ]; then usage; fi
+      action="$1"
+      case "$action" in
+      list)
+        if [ $# != 1 ]; then usage; fi
+        nft list set inet "$nft_table" proxied-interfaces
+        ;;
+      add | delete)
+        if [ $# != 2 ]; then usage; fi
+        interface="$2"
+        nft "$action" element inet "$nft_table" proxied-interfaces "{ $interface }"
+        ;;
+      *)
+        usage
+        ;;
+      esac
+    '';
+  };
+
+  scripts = pkgs.symlinkJoin {
+    name = "fw-proxy-scripts";
+    paths = [
+      enableProxy
+      disableProxy
+      updateSingBoxUrl
+      updateSingBox
+      tproxyUse
+      tproxyCgroup
+      tproxyInterface
+    ];
+  };
+
+  profileOptions = {name, ...}: {
+    options = {
+      name = lib.mkOption {
+        type = with lib.types; str;
+        default = name;
+      };
+      urlFile = lib.mkOption {
+        type = with lib.types; path;
+      };
     };
   };
 in
@@ -141,6 +358,10 @@ in
         controller = mkOption {
           type = with types; port;
         };
+      };
+      profiles = mkOption {
+        type = with types; attrsOf (submodule profileOptions);
+        default = {};
       };
       externalController = {
         expose = mkOption {
@@ -261,15 +482,6 @@ in
             Slice = lib.mkIf (cfg.tproxy.enable) "${cfg.tproxy.bypassSlice}.slice";
           };
           wantedBy = ["multi-user.target"];
-        };
-
-        sops.secrets."sing-box/main" = {
-          sopsFile = config.sops-file.get "common.yaml";
-          restartUnits = ["sing-box-auto-update.service"];
-        };
-        sops.secrets."sing-box/alternative" = {
-          sopsFile = config.sops-file.get "common.yaml";
-          restartUnits = ["sing-box-auto-update.service"];
         };
 
         environment.systemPackages = [
