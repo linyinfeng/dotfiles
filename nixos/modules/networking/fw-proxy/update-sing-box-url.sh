@@ -80,10 +80,10 @@ $curl "$url" \
   --output "$downloaded_config"
 profile_info_file="$tmp_dir/profile-info"
 $jq --null-input \
-    --arg url "$url" \
-    --arg profile_name "$profile_name" \
-    '{"url": $url, "profile_name": $profile_name}' \
-    >"$profile_info_file"
+  --arg url "$url" \
+  --arg profile_name "$profile_name" \
+  '{"url": $url, "profile_name": $profile_name}' \
+  >"$profile_info_file"
 
 echo 'Preprocessing original configuration...'
 @preprocessingDownloaded@
