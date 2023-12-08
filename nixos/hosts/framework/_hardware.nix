@@ -112,8 +112,8 @@
       # currently nothing
     ];
   };
-  # out-of-tree module "kvmfr" required
   # because kernel needs to be recompiled
-  # enable lockdown by the way
+  # enable module signing and lockdown by the way
+  boot.kernelModuleSigning.enable = true;
   boot.kernelLockdown = true;
 }

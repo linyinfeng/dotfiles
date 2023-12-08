@@ -16,4 +16,23 @@
     gid = config.ids.gids.hydra-builder;
   };
   nix.settings.trusted-users = ["@hydra-builder"];
+
+  nix.settings.extra-sandbox-paths = [
+    config.sops.templates."linux-module-signing-key.pem".path
+    config.sops.secrets."secure_boot_db_private_key".path
+  ];
+  sops.templates."linux-module-signing-key.pem" = {
+    content = ''
+      ${config.lib.self.data.secure_boot.database.certificate_pem}
+      ${config.sops.placeholder."secure_boot_db_private_key"}
+    '';
+    group = "nixbld";
+    mode = "440";
+  };
+  sops.secrets."secure_boot_db_private_key" = {
+    sopsFile = config.sops-file.terraform;
+    group = "nixbld";
+    mode = "440";
+    restartUnits = []; # no need to restart any unit
+  };
 }

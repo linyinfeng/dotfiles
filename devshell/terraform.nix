@@ -73,6 +73,7 @@
         openssl
         ruby
         yq-go
+        efitools
         encryptTo
       ];
       text = ''

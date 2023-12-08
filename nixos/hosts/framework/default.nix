@@ -27,6 +27,7 @@ in {
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-client
+      nix.hydra-builder-server
       security.tpm
       networking.wireguard-home
       networking.behind-fw
@@ -43,6 +44,7 @@ in {
       programs.service-mail
       programs.tg-send
       hardware.backlight
+      hardware.sr-iov
       users.yinfeng
     ])
     ++ [
@@ -145,7 +147,6 @@ in {
       fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
       fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-      fileSystems."/sbkeys" = btrfsSubvolMain "@sbkeys" {};
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/5C56-7693";
         fsType = "vfat";
@@ -158,65 +159,6 @@ in {
           discardPolicy = "once";
         }
       ];
-    }
-
-    # sr-iov of intel gpu
-    {
-      boot.kernelParams = ["intel_iommu=on" "i915.enable_guc=3" "i915.max_vfs=7"];
-      systemd.services.setup-sriov = let
-        num = 1;
-      in {
-        script = ''
-          set -e
-          echo ${toString num} | tee /sys/devices/pci0000:00/0000:00:02.0/sriov_numvfs
-        '';
-        serviceConfig = {
-          Type = "oneshot";
-        };
-        requiredBy = ["libvirtd.service"];
-        before = ["libvirtd.service"];
-      };
-      systemd.services.detach-sriov-devices = {
-        script = ''
-          set -e
-          virsh nodedev-detach pci_0000_00_02_1
-        '';
-        path = with pkgs; [
-          libvirt
-        ];
-        serviceConfig = {
-          Type = "oneshot";
-        };
-        requiredBy = ["libvirtd.service"];
-        after = ["libvirtd.service"];
-        before = ["libvirt-guests.service"];
-      };
-      environment.systemPackages = with pkgs; [
-        looking-glass-client
-      ];
-      # https://looking-glass.io/docs/B6/module/#vm-host
-      boot = {
-        extraModulePackages = with config.boot.kernelPackages; [
-          kvmfr
-        ];
-        kernelModules = [
-          "kvmfr"
-        ];
-        extraModprobeConfig = ''
-          options kvmfr static_size_mb=64
-        '';
-      };
-      services.udev.extraRules = ''
-        ACTION=="add", SUBSYSTEM=="kvmfr", GROUP="libvirtd", MODE="0660"
-      '';
-      virtualisation.libvirtd.qemu.verbatimConfig = ''
-        cgroup_device_acl = [
-          "/dev/null", "/dev/full", "/dev/zero",
-          "/dev/random", "/dev/urandom",
-          "/dev/ptmx", "/dev/kvm",
-          "/dev/kvmfr0"
-        ]
-      '';
     }
 
     # windows fonts

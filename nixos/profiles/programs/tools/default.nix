@@ -41,9 +41,11 @@ in {
     gptfdisk
     htop
     jq
+    keyutils
     lm_sensors
     moreutils
     ncdu
+    openssl
     parted
     pciutils
     procs

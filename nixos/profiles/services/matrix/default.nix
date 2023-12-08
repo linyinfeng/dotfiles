@@ -87,7 +87,7 @@ in
       };
 
       systemd.services.matrix-synapse = {
-        # copy singing key to signing key path
+        # copy signing key to signing key path
         serviceConfig.ExecStartPre = lib.mkBefore [
           ("+"
             + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''

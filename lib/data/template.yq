@@ -5,8 +5,6 @@
     "as198764_v6_cidr": .as198764_v6_cidr.value,
     "as198764_anycast_address": .as198764_anycast_address.value,
 
-    "ca_cert_pem": .ca_cert_pem.value,
-
     "cache_s3_url": .b2_s3_api_url.value,
     "cache_s3_host": .b2_s3_api_host.value,
     "mastodon_media_region": .b2_s3_region.value,
@@ -34,6 +32,26 @@
             "certificate_pem": .acme_li7g_com_certificate_pem.value,
             "issuer_pem": .acme_li7g_com_issuer_pem.value,
             "full_chain_pem": .acme_li7g_com_full_chain_pem.value
+        }
+    },
+
+    "ca_cert_pem": .ca_cert_pem.value,
+    "secure_boot": {
+        "signature_owner_guid": .secure_boot_signature_owner_guid.value,
+        "platform_key": {
+            "certificate_pem": .secure_boot_pk_cert_pem.value,
+            "efi_signature_list_base64": .secure_boot_pk_esl_base64.value,
+            "signed_efi_signature_list_base64": .secure_boot_pk_signed_esl_base64.value
+        },
+        "key_exchange_key": {
+            "certificate_pem": .secure_boot_kek_cert_pem.value,
+            "efi_signature_list_base64": .secure_boot_kek_esl_base64.value,
+            "signed_efi_signature_list_base64": .secure_boot_kek_signed_esl_base64.value
+        },
+        "database": {
+            "certificate_pem": .secure_boot_db_cert_pem.value,
+            "efi_signature_list_base64": .secure_boot_db_esl_base64.value,
+            "signed_efi_signature_list_base64": .secure_boot_db_signed_esl_base64.value
         }
     },
 
