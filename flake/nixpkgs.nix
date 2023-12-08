@@ -130,18 +130,7 @@
       inherit (config.nixpkgs) config;
     };
   in {
-    # TODO broken
-    fwupd =
-      (prev.fwupd.override {
-        stdenv = final.ccacheStdenv;
-      })
-      .overrideAttrs (old: {
-        patches =
-          (old.patches or [])
-          ++ [
-            ../patches/fwupd-lockdown-unknown-as-invalid.patch
-          ];
-      });
+    # currently nothing
   };
 in {
   nixpkgs = {
