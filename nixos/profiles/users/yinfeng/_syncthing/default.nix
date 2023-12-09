@@ -24,10 +24,13 @@
     shiba = {
       id = "IQHYQR7-XD4GDX7-U6VGMGJ-GRQTGLF-NGZCNNL-Z5RPMJV-UMAJQVH-6T77HQU";
     };
+    sailfish = {
+      id = "WJCWZOM-A3DSD2V-NHKMH4K-KMTQZAP-WAQLJH5-WWBR7QL-WYX53FR-DGC7TQL";
+    };
   };
   hostName = config.networking.hostName;
   others = lib.filterAttrs (h: _: h != hostName) devices;
-  otherNames = lib.attrNames others;
+  defaultOtherNames = lib.remove "sailfish" (lib.attrNames others);
 
   user = "yinfeng";
   group = config.users.users.yinfeng.group;
@@ -73,13 +76,19 @@ in
             folders = {
               "main" = {
                 path = "/var/lib/syncthing/Main";
-                devices = otherNames;
+                devices = defaultOtherNames;
                 ignoreDelete = false;
                 ignorePerms = false;
               };
               "music" = {
                 path = "/var/lib/syncthing/Music";
-                devices = otherNames;
+                devices = defaultOtherNames;
+                ignoreDelete = false;
+                ignorePerms = false;
+              };
+              "camera" = {
+                path = "/var/lib/syncthing/Camera";
+                devices = ["sailfish"] ++ defaultOtherNames;
                 ignoreDelete = false;
                 ignorePerms = false;
               };
