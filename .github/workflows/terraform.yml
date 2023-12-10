@@ -57,9 +57,12 @@ jobs:
     - name: Terraform plan
       id: plan
       run: |
+        mkdir logs
         set +e
-        nix develop ./dotfiles --command terraform-wrapper plan -out="$PWD/terraform.plan" -detailed-exitcode
-        exit_code=$?
+        nix develop ./dotfiles --command terraform-wrapper plan -out="$PWD/terraform.plan" -detailed-exitcode \
+           > >(tee logs/terraform-plan.stdout.log) \
+          2> >(tee logs/terraform-plan.stderr.log >&2)
+        exit_code="${PIPESTATUS[0]}"
         set -e
         if [ "$exit_code" -eq 0 ]; then
           # success, empty diff
@@ -85,6 +88,25 @@ jobs:
       with:
         name: plan
         path: encrypted_plan
+    - name: Upload logs
+      uses: actions/upload-artifact@main
+      with:
+        name: logs-plan
+        path: logs
+    - name: Notify
+      if: steps.plan.outputs.diff == 'true'
+      run: |
+        set -e
+        topic_secret=$(sops exec-file dotfiles/secrets/terraform/infrastructure.yaml 'yq ".ntfy_sh_topic_secret" "{}"')
+        stdout_log_url=$(curl -F "c=@logs/terraform-plan.stdout.log" https://pb.li7b.com)
+        stderr_log_url=$(curl -F "c=@logs/terraform-plan.stderr.log" https://pb.li7b.com)
+        curl \
+          --header "Title: Terraform" \
+          --header "Tags: terraform" \
+          --data "Terraform planned, log: $stdout_log_url" \
+          -H "Attach: $stderr_log_url" \
+          -H "X-Filename: stderr.log" \
+          "https://ntfy.sh/main-$topic_secret"
 
   apply:
     runs-on: ubuntu-latest
@@ -131,12 +153,19 @@ jobs:
       with:
         name: plan
         path: encrypted_plan
+    - name: Download logs
+      uses: actions/download-artifact@main
+      with:
+        name: logs-plan
+        path: logs
     - name: Decrypt plan
       run: |
         nix develop ./dotfiles --command sops --decrypt encrypted_plan/terraform.plan > terraform.plan
     - name: Terraform apply
       run: |
-        nix develop ./dotfiles --command terraform-wrapper apply $(realpath terraform.plan)
+        nix develop ./dotfiles --command terraform-wrapper apply $(realpath terraform.plan) \
+           > >(tee logs/terraform-apply.stdout.log) \
+          2> >(tee logs/terraform-apply.stderr.log >&2)
     - name: Terraform update outputs
       if: always()
       run: |
@@ -171,3 +200,23 @@ jobs:
             git push
           fi
         done
+    - name: Upload logs
+      if: always()
+      uses: actions/upload-artifact@main
+      with:
+        name: logs-apply
+        path: logs
+    - name: Notify
+      if: always()
+      run: |
+        set -e
+        topic_secret=$(sops exec-file dotfiles/secrets/terraform/infrastructure.yaml 'yq ".ntfy_sh_topic_secret" "{}"')
+        stdout_log_url=$(curl -F "c=@logs/terraform-apply.stdout.log" https://pb.li7b.com)
+        stderr_log_url=$(curl -F "c=@logs/terraform-apply.stderr.log" https://pb.li7b.com)
+        curl \
+          --header "Title: Terraform" \
+          --header "Tags: terraform" \
+          --data "Terraform applied, log: $stdout_log_url" \
+          -H "Attach: $stderr_log_url" \
+          -H "X-Filename: stderr.log" \
+          "https://ntfy.sh/main-$topic_secret"
