@@ -103,9 +103,9 @@ jobs:
         curl \
           --header "Title: Terraform" \
           --header "Tags: terraform" \
-          --data "Terraform planned, log: $stdout_log_url" \
-          -H "Attach: $stderr_log_url" \
-          -H "X-Filename: stderr.log" \
+          --data "Terraform planned
+        stdout: $stdout_log_url
+        stderr: $stderr_log_url" \
           "https://ntfy.sh/main-$(cat ntfy-topic-secret)"
 
   apply:
@@ -216,7 +216,7 @@ jobs:
         curl \
           --header "Title: Terraform" \
           --header "Tags: terraform" \
-          --data "Terraform applied, log: $stdout_log_url" \
-          -H "Attach: $stderr_log_url" \
-          -H "X-Filename: stderr.log" \
+          --data "Terraform applied
+        stdout: $stdout_log_url
+        stderr: $stderr_log_url" \
           "https://ntfy.sh/main-$(cat ntfy-topic-secret)"
