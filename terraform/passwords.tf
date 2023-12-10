@@ -271,3 +271,12 @@ output "nextcloud_admin_password" {
   value     = random_password.nextcloud_admin_password.result
   sensitive = true
 }
+resource "random_password" "ntfy_sh_topic_secret" {
+  length  = 32
+  lower   = true
+  special = false
+}
+output "ntfy_sh_topic_secret" {
+  value     = random_password.ntfy_sh_topic_secret.result
+  sensitive = true
+}
