@@ -273,7 +273,7 @@ output "nextcloud_admin_password" {
 }
 resource "random_password" "ntfy_sh_topic_secret" {
   length  = 32
-  lower   = true
+  upper   = false
   special = false
 }
 output "ntfy_sh_topic_secret" {
