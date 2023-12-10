@@ -74,6 +74,7 @@
       portal-socks = 3280;
       portal-internal = 3281;
       rathole = 3290;
+      ntfy = 3300;
 
       ipsec-nat-traversal = 4500;
       iperf = 5201;

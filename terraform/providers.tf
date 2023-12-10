@@ -28,6 +28,12 @@ terraform {
     grafana = {
       source = "grafana/grafana"
     }
+    google = {
+      source = "hashicorp/google"
+    }
+    google-beta = {
+      source = "hashicorp/google-beta"
+    }
     null = {
       source = "hashicorp/null"
     }

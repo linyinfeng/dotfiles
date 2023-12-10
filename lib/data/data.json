@@ -277,6 +277,10 @@
       "on": "nuc",
       "proxy": false
     },
+    "ntfy": {
+      "on": "hkg0",
+      "proxy": true
+    },
     "nuc-proxy": {
       "on": "lax0",
       "proxy": true
