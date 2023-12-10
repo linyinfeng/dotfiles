@@ -60,8 +60,8 @@ jobs:
         mkdir logs
         set +e
         nix develop ./dotfiles --command terraform-wrapper plan -out="$PWD/terraform.plan" -detailed-exitcode \
-           > >(tee logs/terraform-plan.stdout.log) \
-          2> >(tee logs/terraform-plan.stderr.log >&2)
+           > >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-plan.stdout.log) \
+          2> >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-plan.stderr.log >&2)
         exit_code="${PIPESTATUS[0]}"
         set -e
         if [ "$exit_code" -eq 0 ]; then
@@ -164,8 +164,8 @@ jobs:
     - name: Terraform apply
       run: |
         nix develop ./dotfiles --command terraform-wrapper apply $(realpath terraform.plan) \
-           > >(tee logs/terraform-apply.stdout.log) \
-          2> >(tee logs/terraform-apply.stderr.log >&2)
+           > >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-apply.stdout.log) \
+          2> >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-apply.stderr.log >&2)
     - name: Terraform update outputs
       if: always()
       run: |
