@@ -68,18 +68,26 @@ in {
       nix.settings.secret-key-files = [
         "${config.sops.secrets."cache-li7g-com/key".path}"
       ];
+      # TODO restricted eval might be deprecated
+      # https://github.com/NixOS/nix/issues/7098
       nix.settings.allowed-uris = let
-        inputUrls = lib.mapAttrsToList (_: i: i.url) (lib.filterAttrs (_: i: i ? url) (import "${self}/flake.nix").inputs);
-        matches = lib.lists.map (builtins.match "([^/]+).*") inputUrls;
-        validMatches = lib.filter (m: lib.length m == 1) matches;
-        inputUrlPrefixes = lib.unique (lib.lists.map (m: lib.elemAt m 0) validMatches);
+        selfLock = builtins.fromJSON (builtins.readFile "${self}/flake.lock");
+        inputOrigins = lib.mapAttrsToList (_: i: i.original) (lib.filterAttrs (_: i: i ? original) selfLock.nodes);
+        prefixes = lib.lists.map (o:
+          if o.type == "github" || o.type == "gitlab"
+          then "${o.type}:${o.owner}/"
+          # else if o.type == "..."
+          # then "..."
+          else throw "unknown origin type ${toString o.type}")
+        inputOrigins;
       in
-        [
-          "https://github.com/" # for nix-index-database
-          "https://gitlab.com/" # for home-manager nmd source
-          "https://git.sr.ht/" # for home-manager nmd source
-        ]
-        ++ inputUrlPrefixes;
+        lib.unique ([
+            "https://github.com/"
+            "https://gitlab.com/"
+            "https://git.sr.ht/"
+            "git+https://github.com/"
+          ]
+          ++ prefixes);
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
         restartUnits = ["hydra.service"];
