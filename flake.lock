@@ -591,11 +591,11 @@
     },
     "latest": {
       "locked": {
-        "lastModified": 1702311365,
-        "narHash": "sha256-RWWD8gGwqBV6DykbUry41CPtwZOu35obZFhTGpsgLnM=",
+        "lastModified": 1702395374,
+        "narHash": "sha256-HJuwZQ/a3VzvAWjPmBpQf/OMaRLpUsHeoBRbPKbxEpo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "581adae822129af2daf9801598cc92d355d9241a",
+        "rev": "647024f1e3c2f80fd70c32a2320ac5b2d7ff2ef3",
         "type": "github"
       },
       "original": {
@@ -1011,22 +1011,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-iproute2-ifd": {
-      "locked": {
-        "lastModified": 1701670806,
-        "narHash": "sha256-i94vV+sJQ3E2jzPJCkvq064vLkkX0yTVlJTL52+wF+Q=",
-        "owner": "linyinfeng",
-        "repo": "nixpkgs",
-        "rev": "a4f5f5739bc23d37666cb6e42afd0086c4a3c430",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "ref": "rttables",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nvfetcher": {
       "inputs": {
         "flake-compat": [
@@ -1220,7 +1204,9 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-iproute2-ifd": "nixpkgs-iproute2-ifd",
+        "nixpkgs-iproute2-ifd": [
+          "latest"
+        ],
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",
