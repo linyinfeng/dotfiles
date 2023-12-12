@@ -1,4 +1,5 @@
 {
+  self,
   config,
   lib,
   pkgs,
@@ -67,11 +68,18 @@ in {
       nix.settings.secret-key-files = [
         "${config.sops.secrets."cache-li7g-com/key".path}"
       ];
-      nix.settings.allowed-uris = [
-        "https://github.com/" # for nix-index-database
-        "https://gitlab.com/" # for home-manager nmd source
-        "https://git.sr.ht/" # for home-manager nmd source
-      ];
+      nix.settings.allowed-uris = let
+        inputUrls = lib.mapAttrsToList (_: i: i.url) (lib.filterAttrs (_: i: i ? url) (import "${self}/flake.nix").inputs);
+        matches = lib.lists.map (builtins.match "([^/]+).*") inputUrls;
+        validMatches = lib.filter (m: lib.length m == 1) matches;
+        inputUrlPrefixes = lib.unique (lib.lists.map (m: lib.elemAt m 0) validMatches);
+      in
+        [
+          "https://github.com/" # for nix-index-database
+          "https://gitlab.com/" # for home-manager nmd source
+          "https://git.sr.ht/" # for home-manager nmd source
+        ]
+        ++ inputUrlPrefixes;
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
         restartUnits = ["hydra.service"];
