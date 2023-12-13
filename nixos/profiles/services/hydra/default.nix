@@ -70,6 +70,8 @@ in {
       ];
       # TODO restricted eval might be deprecated
       # https://github.com/NixOS/nix/issues/7098
+      # TODO wait for https://github.com/NixOS/nix/pull/9547
+      # replace the solution with "github:"
       nix.settings.allowed-uris = let
         selfLock = builtins.fromJSON (builtins.readFile "${self}/flake.lock");
         inputOrigins = lib.mapAttrsToList (_: i: i.original) (lib.filterAttrs (_: i: i ? original) selfLock.nodes);
