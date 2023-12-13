@@ -1,6 +1,5 @@
 {
   config,
-  options,
   lib,
   pkgs,
   ...
@@ -115,6 +114,7 @@ in
 
     config = mkIf (cfg.enable && cfg.root != null) {
       environment.persistence.${cfg.root} = {
+        hideMounts = true;
         inherit (cfg) directories files;
         users = usersCfg;
       };
