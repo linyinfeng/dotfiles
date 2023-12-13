@@ -21,6 +21,7 @@
         services.openssh
         services.dbus
         services.oom-killer
+        services.bpftune
         security.polkit
         security.rtkit
         global-persistence
