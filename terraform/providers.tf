@@ -43,8 +43,6 @@ terraform {
     }
     minio = {
       source = "aminueza/minio"
-      # TODO wait for https://github.com/terraform-provider-minio/terraform-provider-minio/issues/531
-      version = "1.18.0"
     }
     shell = {
       source = "linyinfeng/shell"
