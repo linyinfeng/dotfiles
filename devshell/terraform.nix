@@ -141,12 +141,9 @@
 
         message "creating 'data.json'..."
 
-        # TODO workaround https://github.com/mikefarah/yq/issues/1880
         sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
-          "yq eval --from-file \"$DATA_EXTRACT_DIR/template.yq\" {} --output-format yaml" \
-          >"$DATA_EXTRACT_DIR/data.yaml"
-        yq "$DATA_EXTRACT_DIR/data.yaml" --output-format json >"$DATA_EXTRACT_DIR/data.json"
-        rm "$DATA_EXTRACT_DIR/data.yaml"
+          "yq eval --from-file \"$DATA_EXTRACT_DIR/template.yq\" {} --output-format json" \
+          >"$DATA_EXTRACT_DIR/data.json"
       '';
     };
 
