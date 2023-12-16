@@ -21,7 +21,6 @@
 in {
   wayland.windowManager.hyprland = {
     enable = true;
-    recommendedEnvironment = false;
     extraConfig = ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList mkVariableCfg variables)}
 
