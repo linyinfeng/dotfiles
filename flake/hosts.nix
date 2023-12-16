@@ -21,7 +21,6 @@
         services.openssh
         services.dbus
         services.oom-killer
-        services.bpftune
         security.polkit
         security.rtkit
         global-persistence
@@ -116,6 +115,7 @@
       ++ (with profiles; [
         system.types.server
         services.auto-upgrade
+        services.bpftune
         networking.bbr
       ]);
     homeServer =
