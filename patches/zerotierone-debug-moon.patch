@@ -1,0 +1,28 @@
+diff --git a/node/Topology.cpp b/node/Topology.cpp
+index c2e5bb4b..cd83d562 100644
+--- a/node/Topology.cpp
++++ b/node/Topology.cpp
+@@ -315,7 +315,9 @@ void Topology::addMoon(void *tPtr,const uint64_t id,const Address &seed)
+ 				addWorld(tPtr,w,true);
+ 				return;
+ 			}
+-		} catch ( ... ) {}
++        } catch (int e) {
++          fprintf(stderr, "failed to add moon, exception number: %d\n", e);
++        } catch ( ... ) {}
+ 	}
+ 
+ 	if (seed) {
+diff --git a/node/World.hpp b/node/World.hpp
+index a13d59a2..a4fedf80 100644
+--- a/node/World.hpp
++++ b/node/World.hpp
+@@ -31,7 +31,7 @@
+  * of one root or its withdrawal due to compromise without taking the whole net
+  * down.
+  */
+-#define ZT_WORLD_MAX_ROOTS 4
++#define ZT_WORLD_MAX_ROOTS 16
+ 
+ /**
+  * Maximum number of stable endpoints per root (sanity limit, okay to increase)

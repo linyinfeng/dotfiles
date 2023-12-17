@@ -247,6 +247,14 @@
           command = ''
             set -e
 
+            git -C "$SECRETS_DIR" pull
+            function cleanup {
+              git -C "$SECRETS_DIR" add --all
+              git -C "$SECRETS_DIR" commit --message "Terraform apply"
+              git -C "$SECRETS_DIR" push
+            }
+            trap cleanup EXIT
+
             terraform-init
             terraform-wrapper apply
             terraform-update-outputs

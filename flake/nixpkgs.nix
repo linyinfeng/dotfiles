@@ -78,6 +78,12 @@
           soapysdr = final.soapysdr-with-plugins;
         };
       };
+      zerotierone = prev.zerotierone.overrideAttrs (old: {
+        patches = (old.patches or []) ++ [
+          ../patches/zerotierone-debug-moon.patch
+        ];
+        buildFlags = (old.buildFlags or []) ++ ["ZT_DEBUG=1"];
+      });
       tailscale = prev.tailscale.overrideAttrs (old: {
         subPackages = old.subPackages ++ ["cmd/derper"];
         patches =

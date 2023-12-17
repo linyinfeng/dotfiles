@@ -57,7 +57,7 @@ variable "zerotier_port" {
   default = 9993
 }
 locals {
-  zerotier_moon_id = "000000${module.hosts[var.zerotier_moon_main_host].zerotier_id}"
+  zerotier_moon_id = module.hosts[var.zerotier_moon_main_host].zerotier_id
   zerotier_moon_hosts = [
     for host in keys(local.hosts) : host
     if length(local.hosts[host].records) > 0
