@@ -280,3 +280,36 @@ output "ntfy_sh_topic_secret" {
   value     = random_password.ntfy_sh_topic_secret.result
   sensitive = true
 }
+resource "tls_private_key" "iperf" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+output "iperf_private_key" {
+  value     = tls_private_key.iperf.private_key_pem
+  sensitive = true
+}
+data "tls_public_key" "iperf" {
+  private_key_pem = tls_private_key.iperf.private_key_pem
+}
+output "iperf_public_key" {
+  value     = data.tls_public_key.iperf.public_key_pem
+  sensitive = false
+}
+resource "random_pet" "iperf_username" {
+}
+output "iperf_username" {
+  value     = random_pet.iperf_username.id
+  sensitive = true
+}
+resource "random_password" "iperf" {
+  length  = 32
+  special = false
+}
+output "iperf_password" {
+  value     = random_password.iperf.result
+  sensitive = true
+}
+output "iperf_hashed_password" {
+  value     = "${random_pet.iperf_username.id},${sha256("{${random_pet.iperf_username.id}}${random_password.iperf.result}")}"
+  sensitive = true
+}

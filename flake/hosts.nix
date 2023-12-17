@@ -98,6 +98,7 @@
         services.kde-connect
         services.printing
         services.snapper
+        services.iperf3
         security.hardware-keys
         hardware.rtl-sdr
         nix.nix-ld
@@ -116,6 +117,7 @@
         system.types.server
         services.auto-upgrade
         services.bpftune
+        services.iperf3
         networking.bbr
       ]);
     homeServer =
