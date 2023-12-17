@@ -11,6 +11,7 @@
     spawn iperf3 \
       --rsa-public-key-path "${config.sops.secrets."iperf_public_key".path}" \
       --username [exec cat "${config.sops.secrets."iperf_username".path}"] \
+      --port ${toString config.ports.iperf} \
       {*}$argv
     match_max 100000
     expect -exact "Password: "
@@ -30,6 +31,7 @@
 in {
   services.iperf3 = {
     enable = true;
+    port = config.ports.iperf;
     rsaPrivateKey = "/%d/private-key";
     authorizedUsersFile = "/%d/hashed-password";
   };
@@ -48,6 +50,14 @@ in {
   sops.secrets."iperf_hashed_password" = {
     sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
     restartUnits = ["iperf3.service"];
+  };
+  networking.firewall = {
+    allowedTCPPorts = [
+      config.ports.iperf
+    ];
+    allowedUDPPorts = [
+      config.ports.iperf
+    ];
   };
 
   environment.systemPackages = [

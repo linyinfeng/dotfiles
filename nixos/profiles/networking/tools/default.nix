@@ -15,18 +15,9 @@
     ethtool
     inetutils
     ipcalc
-    iperf
     iputils
     nftables
     nmap
     tcpdump
   ];
-  networking.firewall = {
-    allowedTCPPorts = [
-      config.ports.iperf
-    ];
-    allowedUDPPorts = [
-      config.ports.iperf
-    ];
-  };
 }
