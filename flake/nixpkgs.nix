@@ -79,9 +79,11 @@
         };
       };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
-        patches = (old.patches or []) ++ [
-          ../patches/zerotierone-debug-moon.patch
-        ];
+        patches =
+          (old.patches or [])
+          ++ [
+            ../patches/zerotierone-debug-moon.patch
+          ];
         buildFlags = (old.buildFlags or []) ++ ["ZT_DEBUG=1"];
       });
       tailscale = prev.tailscale.overrideAttrs (old: {
