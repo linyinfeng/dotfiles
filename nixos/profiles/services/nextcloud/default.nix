@@ -125,6 +125,7 @@ in {
         memories
         previewgenerator
         maps
+        news
         ;
     };
     notify_push = {
