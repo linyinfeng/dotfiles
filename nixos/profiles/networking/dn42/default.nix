@@ -46,6 +46,7 @@
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
     "lax0" = {
+      # 2.4TB/month
       enable = true;
       rate = "10M";
     };
