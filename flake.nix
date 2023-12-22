@@ -253,8 +253,7 @@
     mobile-nixos.flake = false;
 
     # fixes
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=263762
-    nixpkgs-iproute2-ifd.follows = "latest";
+
   };
 
   outputs = inputs @ {flake-parts, ...}:

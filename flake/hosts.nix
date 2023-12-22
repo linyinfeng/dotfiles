@@ -239,17 +239,6 @@
         };
         system.configurationRevision = self.rev or null;
       }
-
-      # fixes
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=263762
-      ({modulesPath, ...}: {
-        disabledModules = [
-          "${modulesPath}/config/iproute2.nix"
-        ];
-        imports = [
-          "${inputs.nixpkgs-iproute2-ifd}/nixos/modules/config/iproute2.nix"
-        ];
-      })
     ];
 
   commonHmModules =
