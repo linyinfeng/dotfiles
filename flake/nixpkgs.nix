@@ -139,6 +139,8 @@
     };
   in {
     # currently nothing
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=275980
+    inherit (inputs'.nixpkgs-backblaze-b2.legacyPackages) backblaze-b2;
   };
 in {
   nixpkgs = {
