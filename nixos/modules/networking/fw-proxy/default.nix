@@ -621,8 +621,7 @@ in
             }
 
             chain filter {
-              # TODO enchilada's kernel does not support fib
-              # fib daddr type local accept
+              fib daddr type local accept
               ip  daddr @reserved-ip  accept
               ip6 daddr @reserved-ip6 accept
 

@@ -22,6 +22,7 @@
       ]
       ++ [
         # ./_gnome-mobile # crash
+        ./kernel.nix
       ]);
 
   config = lib.mkMerge [

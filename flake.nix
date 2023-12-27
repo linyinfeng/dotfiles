@@ -249,7 +249,7 @@
 
     # other
 
-    mobile-nixos.url = "github:nixos/mobile-nixos";
+    mobile-nixos.url = "github:nixos/mobile-nixos/development";
     mobile-nixos.flake = false;
 
     # fixes
