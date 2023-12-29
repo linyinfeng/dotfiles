@@ -1,4 +1,8 @@
-{config, lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   nix = {
     settings.experimental-features = ["nix-command" "flakes" "ca-derivations" "repl-flake"];
     settings.system-features = ["nixos-test" "benchmark" "big-parallel" "kvm"];
@@ -27,6 +31,7 @@
   };
 
   nix.channel.enable = false;
+  # TODO wait for https://github.com/NixOS/nix/issues/9574
   # `nix.channel.enable = false` will set 'nix-path =' in system nix.conf
-  # nix.settings.nix-path = config.nix.nixPath;
+  nix.settings.nix-path = config.nix.nixPath;
 }
