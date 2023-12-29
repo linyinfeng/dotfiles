@@ -1,4 +1,4 @@
-{lib, ...}: {
+{config, lib, ...}: {
   nix = {
     settings.experimental-features = ["nix-command" "flakes" "ca-derivations" "repl-flake"];
     settings.system-features = ["nixos-test" "benchmark" "big-parallel" "kvm"];
@@ -25,7 +25,8 @@
       "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
     ];
   };
-  # TODO this option sets 'nix-path =' in nix.conf
-  # which is not intended
-  # nix.channel.enable = false;
+
+  nix.channel.enable = false;
+  # `nix.channel.enable = false` will set 'nix-path =' in system nix.conf
+  # nix.settings.nix-path = config.nix.nixPath;
 }
