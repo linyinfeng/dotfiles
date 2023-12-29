@@ -78,3 +78,169 @@ resource "grafana_dashboard" "system" {
   config_json = file("${path.module}/grafana/dashboards/system.json")
   folder      = grafana_folder.infrastructure.uid
 }
+
+resource "grafana_rule_group" "infrastructure" {
+  name             = "Infrastructure Rules"
+  folder_uid       = grafana_folder.infrastructure.uid
+  interval_seconds = 60
+  rule {
+    name           = "Systemd units failure"
+    for            = "1m"
+    condition      = "Threshold"
+    no_data_state  = "OK"
+    exec_err_state = "Error"
+    annotations = {
+    }
+    labels = {
+    }
+    is_paused = false
+    data {
+      ref_id     = "Query"
+      query_type = ""
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      datasource_uid = grafana_data_source.influxdb.uid
+      model = jsonencode({
+        datasource = {
+          type = "influxdb"
+          uid  = grafana_data_source.influxdb.uid
+        }
+        hide  = false
+        query = <<-EOT
+from(bucket: "system")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r._measurement == "systemd_units" and
+                       r._field == "active_code" and
+                       r._value == 3)
+EOT
+        refId = "Query"
+      })
+    }
+    data {
+      ref_id         = "Count"
+      query_type     = ""
+      datasource_uid = "__expr__"
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [
+                0,
+                0,
+              ]
+              type = "gt"
+            }
+            operator = {
+              type = "and"
+            }
+            query = {
+              params = []
+            }
+            reducer = {
+              params = []
+              type   = "avg"
+            }
+            type = "query"
+          },
+        ]
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Query"
+        hide       = false
+        reducer    = "count"
+        refId      = "Count"
+        settings = {
+          mode = ""
+        }
+        type = "reduce"
+      })
+    }
+    data {
+      ref_id         = "Threshold"
+      query_type     = ""
+      datasource_uid = "__expr__"
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [
+                0,
+                0,
+              ]
+              type = "gt"
+            }
+            operator = {
+              type = "and"
+            }
+            query = {
+              params = []
+            }
+            reducer = {
+              params = []
+              type   = "avg"
+            }
+            type = "query"
+          },
+        ]
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Count"
+        hide       = false
+        refId      = "Threshold"
+        type       = "threshold"
+      })
+    }
+  }
+}
+
+resource "grafana_contact_point" "email" {
+  name = "Email"
+
+  email {
+    addresses    = ["lin.yinfeng@outlook.com"]
+    subject      = "{{ template \"default.title\" . }}"
+    message      = "{{ template \"default.message\" . }}"
+    single_email = true
+  }
+}
+
+resource "grafana_contact_point" "telegram_push" {
+  name = "Telegram Push"
+
+  telegram {
+    token   = data.sops_file.common.data["telegram-bot.push"]
+    chat_id = 148111617
+    message = <<-EOT
+{{ template "default.title" . }}
+
+{{ template "default.message" . }}
+EOT
+  }
+}
+
+# singleton resource
+resource "grafana_notification_policy" "policy" {
+  group_by = ["grafana_folder", "alertname"]
+  # default contact point
+  contact_point = grafana_contact_point.telegram_push.name
+
+  group_interval  = "5m"
+  group_wait      = "30s"
+  repeat_interval = "4h"
+}
