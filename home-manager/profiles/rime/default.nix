@@ -30,8 +30,4 @@ in {
     source = ./_user-data;
     recursive = true;
   };
-
-  home.global-persistence.directories = [
-    rimeConfig
-  ];
 }
