@@ -108,9 +108,4 @@ in {
   sops.secrets."cache-li7g-com/key" = {
     sopsFile = config.sops-file.host;
   };
-
-  services.notify-failure.services = [
-    "copy-cache-li7g-com"
-    "gc-cache-li7g-com"
-  ];
 }

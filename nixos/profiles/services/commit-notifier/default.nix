@@ -15,8 +15,4 @@
     sopsFile = config.sops-file.get "common.yaml";
     restartUnits = ["commit-notifier.service"];
   };
-
-  services.notify-failure.services = [
-    "commit-notifier"
-  ];
 }

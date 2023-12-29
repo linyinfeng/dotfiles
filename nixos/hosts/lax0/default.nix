@@ -15,7 +15,6 @@ in {
       programs.tg-send
       services.nginx
       services.acme
-      services.notify-failure
       services.ace-bot
       services.cache-overlay
       services.pgp-public-key-web

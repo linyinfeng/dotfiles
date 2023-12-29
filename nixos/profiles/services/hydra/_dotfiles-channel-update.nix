@@ -89,8 +89,6 @@
     restartUnits = ["dotfiles-channel-update@.service"];
   };
 
-  services.notify-failure.services = ["dotfiles-channel-update@"];
-
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (action.id == "org.freedesktop.systemd1.manage-units" &&

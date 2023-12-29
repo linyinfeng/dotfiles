@@ -40,7 +40,6 @@ in {
       services.godns
       services.nginx
       services.acme
-      services.notify-failure
       services.smartd
       services.postgresql
       programs.service-mail

@@ -16,7 +16,6 @@ in {
       services.nginx
       services.acme
       services.ntfy
-      services.notify-failure
       services.portal-server
     ])
     ++ [

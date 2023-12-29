@@ -64,4 +64,8 @@ in {
       proxyPass = "http://127.0.0.1:${toString config.ports.influxdb}/";
     };
   };
+
+  services.notify-failure.services = [
+    "influxdb2"
+  ];
 }

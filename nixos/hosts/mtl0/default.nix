@@ -23,7 +23,6 @@ in {
       programs.tg-send
       services.nginx
       services.acme
-      services.notify-failure
       services.postgresql
       services.minio
       services.vaultwarden

@@ -42,8 +42,4 @@
     sopsFile = config.sops-file.terraform;
     restartUnits = ["pastebin.service"];
   };
-
-  services.notify-failure.services = [
-    "pastebin"
-  ];
 }
