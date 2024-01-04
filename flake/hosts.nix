@@ -43,6 +43,7 @@
       networking.as198764
       security.fail2ban
       security.firewall
+      services.vnstatd
     ];
     backup = with profiles; [
       services.restic
