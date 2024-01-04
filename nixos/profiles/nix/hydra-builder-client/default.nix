@@ -1,6 +1,6 @@
 {config, ...}: let
-  keyFile = "nix-build-machines/hydra-builder/key";
-  machineFile = "nix-build-machines/hydra-builder/machines";
+  dir = "nix-build-machines/hydra-builder";
+  keyFile = "${dir}/key";
 in {
   nix = {
     distributedBuilds = true;
@@ -9,11 +9,22 @@ in {
     '';
   };
   # https://nixos.org/manual/nix/stable/advanced-topics/distributed-builds
-  environment.etc.${machineFile}.text = ''
+  environment.etc."${dir}/machines".text = ''
     # only build on nuc if big-parallel
     hydra-builder@nuc  x86_64-linux,i686-linux               /etc/${keyFile} 8 1 kvm,nixos-test,benchmark,big-parallel big-parallel
     hydra-builder@hil0 x86_64-linux,i686-linux               /etc/${keyFile} 2 1
     hydra-builder@fsn0 aarch64-linux                         /etc/${keyFile} 2 1 benchmark,big-parallel
+  '';
+  environment.etc."${dir}/machines-workstation".text = ''
+    hydra-builder@nuc       x86_64-linux,i686-linux /etc/${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@xps8930   x86_64-linux,i686-linux /etc/${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@framework x86_64-linux,i686-linux /etc/${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@hil0      x86_64-linux,i686-linux /etc/${keyFile} 2 50
+
+    hydra-builder@fsn0      aarch64-linux /etc/${keyFile} 2 100 benchmark,big-parallel
+    hydra-builder@nuc       aarch64-linux /etc/${keyFile} 8 50  kvm,nixos-test
+    hydra-builder@xps8930   aarch64-linux /etc/${keyFile} 8 50  kvm,nixos-test
+    hydra-builder@framework aarch64-linux /etc/${keyFile} 8 50  kvm,nixos-test
   '';
   sops.secrets."hydra_builder_private_key" = {
     neededForUsers = true; # needed for /etc
