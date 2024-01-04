@@ -26,7 +26,6 @@ in {
       boot.secure-boot
       nix.access-tokens
       nix.nixbuild
-      nix.hydra-builder-client
       nix.hydra-builder-server
       security.tpm
       networking.wireguard-home

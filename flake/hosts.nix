@@ -103,6 +103,7 @@
         security.hardware-keys
         hardware.rtl-sdr
         nix.nix-ld
+        nix.hydra-builder-client
       ]);
     mobileWorkstation = suites.workstation;
 
