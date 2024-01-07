@@ -2,8 +2,11 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "IosevkaYinfeng Nerd Font";
-      size = 11;
+      name = "monospace";
+      size = 10;
+    };
+    settings = {
+      cursor_shape = "block";
     };
     extraConfig = ''
       include ${./theme.conf}

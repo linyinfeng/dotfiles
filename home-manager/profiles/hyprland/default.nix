@@ -45,12 +45,13 @@ in {
         layer = "top";
         position = "top";
         modules-left = [
-          "wlr/workspaces"
+          "hyprland/workspaces"
           # TODO causing problem
           # https://github.com/Alexays/Waybar/issues/1968
-          # "wlr/taskbar"
+          "wlr/taskbar"
         ];
         modules-center = [
+          "clock"
         ];
         modules-right = [
           "tray"
@@ -59,7 +60,6 @@ in {
           "backlight"
           "pulseaudio"
           # "wireplumber" # broken on multiple outputs
-          "clock"
         ];
         "wlr/workspaces" = {
           format = "{name}";
