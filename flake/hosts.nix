@@ -74,7 +74,7 @@
       virtualization.wine
       virtualization.podman
     ];
-    games = with profiles.graphical.game; [steam lutris];
+    games = with profiles.graphical.game; [steam];
     monitoring = with profiles; [
       services.telegraf
       services.telegraf-system
