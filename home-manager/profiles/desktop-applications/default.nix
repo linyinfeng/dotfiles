@@ -10,6 +10,7 @@ in {
       amberol
       calibre
       element-desktop
+      fractal
       gimp
       gnuradio
       gparted
@@ -65,6 +66,7 @@ in {
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
+      ".local/share/fractal"
 
       "Zotero"
     ];
