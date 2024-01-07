@@ -1,6 +1,4 @@
-{ config, ... }:
-
-{
+{config, ...}: {
   services.vnstat.enable = true;
   systemd.services.vnstat.restartTriggers = [
     config.environment.etc."vnstat.conf".text
