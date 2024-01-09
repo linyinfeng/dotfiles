@@ -16,7 +16,7 @@
 
     devshell.url = "github:numtide/devshell";
     devshell.inputs.nixpkgs.follows = "nixpkgs";
-    devshell.inputs.systems.follows = "systems";
+    devshell.inputs.flake-utils.follows = "flake-utils";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -139,6 +139,18 @@
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.inputs.systems.follows = "systems";
+    hyprland.inputs.xdph.follows = "xdph";
+    hyprland.inputs.hyprland-protocols.follows = "hyprland-protocols";
+    hyprland-protocols.url = "github:hyprwm/hyprland-protocols";
+    hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland-protocols.inputs.systems.follows = "systems";
+    xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
+    xdph.inputs.hyprland-protocols.follows = "hyprland-protocols";
+    xdph.inputs.nixpkgs.follows = "nixpkgs";
+    xdph.inputs.systems.follows = "systems";
+    xdph.inputs.hyprlang.follows = "hyprlang";
+    hyprlang.url = "github:hyprwm/hyprlang";
+    hyprlang.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
@@ -268,9 +280,7 @@
     in {
       flatFlake.config = {
         allowed = [
-          ["hyprland" "hyprland-protocols"]
           ["hyprland" "wlroots"]
-          ["hyprland" "xdph"]
           ["fenix" "rust-analyzer-src"]
         ];
       };
