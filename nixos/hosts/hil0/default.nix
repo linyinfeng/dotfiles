@@ -115,11 +115,11 @@ in {
         owner = "systemd-network";
       };
       sops.secrets."hil0_ipv6_address" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["systemd-networkd.service"];
       };
       sops.secrets."hil0_ipv6_prefix_length" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["systemd-networkd.service"];
       };
     })

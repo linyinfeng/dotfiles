@@ -44,10 +44,10 @@ in
             "social.li7g.com"
           ];
           S3_ENABLED = "true";
-          S3_BUCKET = config.lib.self.data.mastodon_media_bucket_name;
-          S3_REGION = config.lib.self.data.mastodon_media_region;
-          S3_ENDPOINT = config.lib.self.data.mastodon_media_url;
-          S3_ALIAS_HOST = "b2.li7g.com/file/${config.lib.self.data.mastodon_media_bucket_name}";
+          S3_BUCKET = config.lib.self.data.b2_mastodon_media_bucket_name;
+          S3_REGION = config.lib.self.data.b2_s3_region;
+          S3_ENDPOINT = config.lib.self.data.b2_s3_api_url;
+          S3_ALIAS_HOST = "b2.li7g.com/file/${config.lib.self.data.b2_mastodon_media_bucket_name}";
         };
       };
       users.users.${config.services.mastodon.user}.shell = pkgs.bash;
@@ -81,15 +81,15 @@ in
         }
       ];
       sops.secrets."mail_password" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         restartUnits = ["mastodon-init-dirs.service"];
       };
       sops.secrets."b2_mastodon_media_key_id" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = serviceUnits;
       };
       sops.secrets."b2_mastodon_media_access_key" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = serviceUnits;
       };
     }

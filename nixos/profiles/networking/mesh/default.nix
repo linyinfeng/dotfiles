@@ -57,7 +57,10 @@ in {
       };
   };
   sops.secrets."ike_private_key_pem" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput = {
+      enable = true;
+      perHost = true;
+    };
     restartUnits = ["strongswan-swanctl.service"];
   };
 }

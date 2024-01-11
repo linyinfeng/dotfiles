@@ -31,7 +31,7 @@ in {
     };
   };
   sops.secrets."influxdb_token" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["telegraf.service"];
   };
   sops.templates."telegraf-environment".content = ''

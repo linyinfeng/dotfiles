@@ -23,14 +23,14 @@
   ];
   sops.templates."linux-module-signing-key.pem" = {
     content = ''
-      ${config.lib.self.data.secure_boot.database.certificate_pem}
+      ${config.lib.self.data.secure_boot_db_cert_pem}
       ${config.sops.placeholder."secure_boot_db_private_key"}
     '';
     group = "nixbld";
     mode = "440";
   };
   sops.secrets."secure_boot_db_private_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     group = "nixbld";
     mode = "440";
     restartUnits = []; # no need to restart any unit

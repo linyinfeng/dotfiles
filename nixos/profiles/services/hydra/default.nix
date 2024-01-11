@@ -116,7 +116,7 @@ in {
         EMAIL_SENDER_TRANSPORT_ssl=starttls
       '';
       sops.secrets."mail_password" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         restartUnits = ["hydra-notify.service"];
       };
     }

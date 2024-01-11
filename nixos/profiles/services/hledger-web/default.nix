@@ -77,11 +77,11 @@ in {
     restartUnits = ["hledger-web-fetch.service"];
   };
   sops.secrets."hledger_username" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["nginx.service"];
   };
   sops.secrets."hledger_hashed_password" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["nginx.service"];
   };
   services.restic.backups.b2.paths = [

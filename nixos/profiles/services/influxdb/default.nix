@@ -47,11 +47,11 @@ in {
   };
   # TODO restartUnits: can't change password and token currently
   sops.secrets."influxdb_password" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["influxdb2-setup.service"];
   };
   sops.secrets."influxdb_token" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["influxdb2-setup.service"];
   };
   environment.systemPackages = with pkgs; [

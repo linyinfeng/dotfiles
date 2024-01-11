@@ -43,7 +43,7 @@ in {
     ];
   };
   sops.secrets."tailscale_tailnet_key" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["tailscale-setup.service"];
   };
   # no need to open ports

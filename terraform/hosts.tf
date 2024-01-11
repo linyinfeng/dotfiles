@@ -197,3 +197,14 @@ output "hosts" {
   value     = module.hosts
   sensitive = true
 }
+
+output "hosts_non_sensitive" {
+  value = {
+    for host, outputs in module.hosts :
+    host => {
+      for name, output in outputs :
+      name => output if !can(nonsensitive(output))
+    }
+  }
+  sensitive = false
+}

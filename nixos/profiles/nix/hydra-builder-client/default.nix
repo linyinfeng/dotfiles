@@ -28,7 +28,8 @@ in {
   '';
   sops.secrets."hydra_builder_private_key" = {
     neededForUsers = true; # needed for /etc
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
+    restartUnits = []; # nothing
   };
   environment.etc.${keyFile} = {
     mode = "440";

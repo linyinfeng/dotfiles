@@ -65,23 +65,38 @@ in {
       AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."minio_backup_access_key"}"
     '';
     sops.secrets."restic_password" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["restic-backups-b2.service" "restic-backups-minio.service"];
     };
     sops.secrets."b2_backup_key_id" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["restic-backups-b2.service"];
     };
     sops.secrets."b2_backup_access_key" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["restic-backups-b2.service"];
     };
     sops.secrets."minio_backup_key_id" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["restic-backups-minio.service"];
     };
     sops.secrets."minio_backup_access_key" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["restic-backups-minio.service"];
     };
 

@@ -8,7 +8,7 @@
     boot.secureBoot = {
       publicKeyFile = lib.mkOption {
         type = lib.types.path;
-        default = pkgs.writeText "module-signing.crt" config.lib.self.data.secure_boot.database.certificate_pem;
+        default = pkgs.writeText "module-signing.crt" config.lib.self.data.secure_boot_db_cert_pem;
       };
       privateKeyFile = lib.mkOption {
         type = lib.types.path;

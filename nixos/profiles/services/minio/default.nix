@@ -62,7 +62,7 @@ in {
     "minio_bearer_token:${config.sops.secrets."minio_metrics_bearer_token".path}"
   ];
   sops.secrets."minio_metrics_bearer_token" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["telegraf.service"];
   };
 }

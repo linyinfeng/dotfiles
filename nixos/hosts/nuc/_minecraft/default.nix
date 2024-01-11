@@ -73,11 +73,11 @@ in {
   networking.firewall.allowedUDPPorts = [port rconPort];
 
   sops.secrets."rcon_password" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["minecraft.service"];
   };
   sops.secrets."influxdb_token" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["minecraft.service"];
   };
   sops.templates."driver-influxdb".content = builtins.toJSON {

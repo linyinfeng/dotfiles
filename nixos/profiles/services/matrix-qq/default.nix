@@ -60,11 +60,11 @@
   };
 
   sops.secrets."matrix_qq_appservice_as_token" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
   };
   sops.secrets."matrix_qq_appservice_hs_token" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
   };
 

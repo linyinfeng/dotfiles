@@ -74,6 +74,7 @@
         ruby
         yq-go
         efitools
+        bind
         encryptTo
       ];
       text = ''
@@ -139,11 +140,11 @@
       text = ''
         ${common}
 
-        message "creating 'data.json'..."
-
+        format="json"
+        message "creating 'data.$format'..."
         sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
-          "yq eval --from-file \"$DATA_EXTRACT_DIR/template.yq\" {} --output-format json" \
-          >"$DATA_EXTRACT_DIR/data.json"
+          "yq eval --from-file \"$DATA_EXTRACT_DIR/template.yq\" {} --output-format $format" \
+          >"$DATA_EXTRACT_DIR/data.$format"
       '';
     };
 
@@ -158,60 +159,32 @@
       text = ''
         ${common}
 
-        mkdir -p terraform/hosts
+        mkdir -p "$SECRETS_EXTRACT_DIR/terraform/hosts"
 
         tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
-        mkdir "$tmp_dir/hosts"
         function cleanup {
           rm -r "$tmp_dir"
         }
         trap cleanup EXIT
 
-        function extract {
-          name="$1"
-          is_host="$2"
+        mapfile -t hosts < <(nix eval .#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
+        for name in "''${hosts[@]}"; do
+          message "start extracting secrets for $name..."
 
-          if [ "$is_host" != "is_host" ]; then
-            template_file="$SECRETS_EXTRACT_DIR/templates/$name.yq"
+          template_file="$tmp_dir/$name.yq"
+          plain_file="$tmp_dir/$name.plain.yaml"
+          target_file="$SECRETS_EXTRACT_DIR/terraform/hosts/$name.yaml"
 
-            plain_file="$tmp_dir/$name.plain.yaml"
+          message "creating '$(basename "$template_file")'..."
+          nix eval .#nixosConfigurations."$name".config.sops.terraformTemplate --raw >"$template_file"
 
-            target_file="$SECRETS_EXTRACT_DIR/terraform/$name.yaml"
-          else
-            export hostname="$name"
-            template_file="$SECRETS_EXTRACT_DIR/templates/hosts/$name.yq"
-            host_template_file="$SECRETS_EXTRACT_DIR/templates/host.yq"
-
-            plain_file="$tmp_dir/hosts/$name.plain.yaml"
-            host_plain_file="$tmp_dir/$name.host.plain.yaml"
-
-            target_file="$SECRETS_EXTRACT_DIR/terraform/hosts/$name.yaml"
-          fi
-
-          message "creating '$plain_file'..."
+          message "creating '$(basename "$plain_file")'..."
           sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
             "yq eval --from-file '$template_file' {}" \
             >"$plain_file"
 
-          if [ "$is_host" = "is_host" ]; then
-            message "creating '$host_plain_file'..."
-            sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
-              "yq eval --from-file '$host_template_file' {}" \
-              >"$host_plain_file"
-
-            message "merging '$host_plain_file' into '$plain_file'..."
-            yq --inplace ". *= load(\"$host_plain_file\")" "$plain_file"
-          fi
-
+          message "creating '$(basename "$target_file")'..."
           encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
-        }
-
-        extract common not_host
-        extract infrastructure not_host
-
-        mapfile -t host_names < <(fd '^.*\.yq$' "$SECRETS_EXTRACT_DIR/templates/hosts" --exec echo '{/.}')
-        for host_name in "''${host_names[@]}"; do
-          extract "$host_name" is_host
         done
       '';
     };
@@ -256,7 +229,7 @@
             trap cleanup EXIT
 
             terraform-init
-            terraform-wrapper apply
+            terraform-wrapper apply "$@"
             terraform-update-outputs
             terraform-outputs-extract-data
             terraform-outputs-extract-secrets

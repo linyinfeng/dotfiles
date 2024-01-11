@@ -4,8 +4,8 @@
   lib,
   ...
 }: let
-  cacheS3Url = config.lib.self.data.cache_s3_url;
-  cacheBucketName = config.lib.self.data.cache_bucket_name;
+  cacheS3Url = config.lib.self.data.b2_s3_api_url;
+  cacheBucketName = config.lib.self.data.b2_cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
 in {
   systemd.services."copy-cache-li7g-com@" = {
@@ -39,8 +39,8 @@ in {
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
       CPUQuota = "200%"; # limit cpu usage for parallel-compression
@@ -88,8 +88,8 @@ in {
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
       ];
     };
     environment =
@@ -99,11 +99,11 @@ in {
     after = ["hydra-update-gc-roots.service"];
   };
 
-  sops.secrets."cache_key_id" = {
-    sopsFile = config.sops-file.terraform;
+  sops.secrets."b2_cache_key_id" = {
+    terraformOutput.enable = true;
   };
-  sops.secrets."cache_access_key" = {
-    sopsFile = config.sops-file.terraform;
+  sops.secrets."b2_cache_access_key" = {
+    terraformOutput.enable = true;
   };
   sops.secrets."cache-li7g-com/key" = {
     sopsFile = config.sops-file.host;

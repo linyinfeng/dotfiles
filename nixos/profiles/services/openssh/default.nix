@@ -63,11 +63,17 @@ in {
   };
 
   sops.secrets."ssh_host_rsa_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput = {
+      enable = true;
+      perHost = true;
+    };
     restartUnits = ["sshd.service"];
   };
   sops.secrets."ssh_host_ed25519_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput = {
+      enable = true;
+      perHost = true;
+    };
     restartUnits = ["sshd.service"];
   };
 

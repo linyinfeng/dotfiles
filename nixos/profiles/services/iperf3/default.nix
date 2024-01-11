@@ -44,11 +44,11 @@ in {
     };
   };
   sops.secrets."iperf_private_key" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["iperf3.service"];
   };
   sops.secrets."iperf_hashed_password" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["iperf3.service"];
   };
   networking.firewall = {
@@ -64,19 +64,19 @@ in {
     iperfAuthed
   ];
   sops.secrets."iperf_public_key" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = [];
     group = "wheel";
     mode = "440";
   };
   sops.secrets."iperf_username" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = [];
     group = "wheel";
     mode = "440";
   };
   sops.secrets."iperf_password" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = [];
     group = "wheel";
     mode = "440";

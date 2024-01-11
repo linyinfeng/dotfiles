@@ -50,7 +50,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal_client_id" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         restartUnits = ["v2ray-portal.service"];
       };
       systemd.packages = [pkgs.v2ray];

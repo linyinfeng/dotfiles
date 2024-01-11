@@ -234,15 +234,15 @@ in {
         owner = config.users.users.nginx.name;
       };
       sops.secrets."transmission_username" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["nginx.service"];
       };
       sops.secrets."transmission_hashed_password" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["nginx.service"];
       };
       sops.secrets."transmission_password" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["transmission.service"];
       };
     }

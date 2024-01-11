@@ -113,7 +113,7 @@
       '';
     };
     sops.secrets."dkim_private_pem" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput.enable = true;
       restartUnits = ["maddy.service"];
     };
     systemd.services.maddy.serviceConfig.LoadCredential = [
@@ -149,7 +149,7 @@
       "nextcloud@li7g.com"
     ];
     sops.secrets."mail_password" = {
-      sopsFile = config.sops-file.get "terraform/common.yaml";
+      terraformOutput.enable = true;
       restartUnits = ["maddy-init.service"];
     };
     systemd.services.maddy-init = {

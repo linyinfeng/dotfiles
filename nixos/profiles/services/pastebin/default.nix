@@ -35,11 +35,11 @@
     wantedBy = ["multi-user.target"];
   };
   sops.secrets."minio_pastebin_key_id" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["pastebin.service"];
   };
   sops.secrets."minio_pastebin_access_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["pastebin.service"];
   };
 }

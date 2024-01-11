@@ -94,7 +94,7 @@ in {
         bind_addr = "[::]:${toString config.ports.minecraft}"
       '';
       sops.secrets."rathole_minecraft_token" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["rathole.service"];
       };
       networking.firewall.allowedTCPPorts = with config.ports; [

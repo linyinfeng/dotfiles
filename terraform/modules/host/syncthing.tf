@@ -30,7 +30,9 @@ resource "shell_sensitive_script" "generate_syncthing_config" {
 }
 
 output "syncthing_device_id" {
-  value = shell_sensitive_script.generate_syncthing_config.output.device_id
+  # TODO might be unsafe
+  value     = nonsensitive(shell_sensitive_script.generate_syncthing_config.output.device_id)
+  sensitive = false
 }
 output "syncthing_cert_pem" {
   value     = shell_sensitive_script.generate_syncthing_config.output.cert_pem

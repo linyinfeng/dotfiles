@@ -32,8 +32,8 @@ in {
 
       echo "setting up moon..."
       mkdir -p "${stateDir}/moons.d"
-      FILENAME=$(cat ${config.sops.secrets."zerotier_moon/filename".path})
-      cat ${config.sops.secrets."zerotier_moon/content_base64".path} |\
+      FILENAME=$(cat ${config.sops.secrets."zerotier_moon_filename".path})
+      cat ${config.sops.secrets."zerotier_moon_content_base64".path} |\
         base64 --decode \
         > "${stateDir}/moons.d/$FILENAME"
     '';
@@ -48,23 +48,35 @@ in {
     "zerotierone-presetup.service"
   ];
   sops.secrets."zerotier_network_id" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+    terraformOutput.enable = true;
     restartUnits = units;
   };
-  sops.secrets."zerotier_moon/filename" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+  sops.secrets."zerotier_moon_filename" = {
+    terraformOutput = {
+      enable = true;
+      yqPath = ".zerotier_moon.value.filename";
+    };
     restartUnits = units;
   };
-  sops.secrets."zerotier_moon/content_base64" = {
-    sopsFile = config.sops-file.get "terraform/infrastructure.yaml";
+  sops.secrets."zerotier_moon_content_base64" = {
+    terraformOutput = {
+      enable = true;
+      yqPath = ".zerotier_moon.value.content_base64";
+    };
     restartUnits = units;
   };
   sops.secrets."zerotier_public_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput = {
+      enable = true;
+      perHost = true;
+    };
     restartUnits = units;
   };
   sops.secrets."zerotier_private_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput = {
+      enable = true;
+      perHost = true;
+    };
     restartUnits = units;
   };
 

@@ -41,9 +41,9 @@ in {
   config = {
     environment.systemPackages = [config.programs.service-mail.package];
     sops.secrets."mail_password" = {
+      terraformOutput.enable = true;
       mode = "440";
       group = config.users.groups.service-mail.name;
-      sopsFile = config.sops-file.get "terraform/common.yaml";
     };
     users.groups.service-mail.gid = config.ids.gids.service-mail;
   };

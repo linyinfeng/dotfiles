@@ -219,11 +219,11 @@ in
         };
       };
       sops.secrets."mautrix_telegram_appservice_as_token" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service" "mautrix-telegram.service"];
       };
       sops.secrets."mautrix_telegram_appservice_hs_token" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service" "mautrix-telegram.service"];
       };
       sops.secrets."telegram-bot/matrix-bridge" = {
@@ -282,11 +282,11 @@ in
       };
 
       sops.secrets."matrix_qq_appservice_as_token" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
       };
       sops.secrets."matrix_qq_appservice_hs_token" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
       };
     }
@@ -299,11 +299,11 @@ in
         restartUnits = ["matrix-synapse.service"];
       };
       sops.secrets."mail_password" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service"];
       };
       sops.secrets."matrix_registration_shared_secret" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput.enable = true;
         restartUnits = ["matrix-synapse.service"];
       };
     }

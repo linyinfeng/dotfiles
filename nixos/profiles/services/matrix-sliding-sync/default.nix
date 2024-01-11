@@ -11,7 +11,7 @@
     SYNCV3_SECRET=${config.sops.placeholder."syncv3_secret"}
   '';
   sops.secrets."syncv3_secret" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["matrix-sliding-sync.service"];
   };
 

@@ -189,7 +189,10 @@ in {
         ];
       };
       sops.secrets."wireguard_private_key" = {
-        sopsFile = config.sops-file.terraform;
+        terraformOutput = {
+          enable = true;
+          perHost = true;
+        };
         group = "systemd-network";
         mode = "440";
         restartUnits = ["systemd-networkd.service"];

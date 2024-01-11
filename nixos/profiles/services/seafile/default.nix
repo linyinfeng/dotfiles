@@ -41,7 +41,7 @@
     ADMIN_PASSWORD=${config.sops.placeholder."seahub_password"}
   '';
   sops.secrets."seahub_password" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["seahub.service"];
   };
 }

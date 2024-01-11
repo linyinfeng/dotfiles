@@ -99,11 +99,17 @@ in
       };
     };
     sops.secrets."syncthing_cert_pem" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["container@syncthing-yinfeng.service"];
     };
     sops.secrets."syncthing_key_pem" = {
-      sopsFile = config.sops-file.terraform;
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
       restartUnits = ["container@syncthing-yinfeng.service"];
     };
     home-manager.users.yinfeng.home.global-persistence.directories = [

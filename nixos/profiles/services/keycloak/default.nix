@@ -19,7 +19,7 @@
     locations."/".proxyPass = "http://127.0.0.1:${toString config.ports.keycloak}";
   };
   sops.secrets."keycloak_db_password" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["keycloak.service"];
   };
 }

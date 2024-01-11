@@ -48,7 +48,7 @@ in {
   };
 
   sops.secrets."fw_proxy_external_controller_secret" = {
-    sopsFile = config.sops-file.get "terraform/common.yaml";
+    terraformOutput.enable = true;
     restartUnits = ["sing-box-auto-update.service"];
   };
   sops.secrets."sing-box/main" = {

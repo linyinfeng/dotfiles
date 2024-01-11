@@ -53,7 +53,7 @@ in {
         };
       };
       sops.secrets."cloudflare_token" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         restartUnits = []; # no need to restart units
       };
       sops.templates.acme-credentials.content = ''
@@ -86,20 +86,20 @@ in {
       security.acme.tfCerts."li7g_com" = {
         certificate = pkgs.writeTextFile {
           name = "certificate.pem";
-          text = data.acme.li7g_com.certificate_pem;
+          text = data.acme_li7g_com_certificate_pem;
         };
         issuer = pkgs.writeTextFile {
           name = "issuer.pem";
-          text = data.acme.li7g_com.issuer_pem;
+          text = data.acme_li7g_com_issuer_pem;
         };
         fullChain = pkgs.writeTextFile {
           name = "full-chain.pem";
-          text = data.acme.li7g_com.full_chain_pem;
+          text = data.acme_li7g_com_full_chain_pem;
         };
         key = config.sops.secrets."acme_li7g_com_private_key_pem".path;
       };
       sops.secrets."acme_li7g_com_private_key_pem" = {
-        sopsFile = config.sops-file.get "terraform/common.yaml";
+        terraformOutput.enable = true;
         owner = "acmetf";
         group = "acmetf";
         mode = "440";

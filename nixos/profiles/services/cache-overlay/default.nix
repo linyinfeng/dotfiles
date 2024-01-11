@@ -3,8 +3,8 @@
   pkgs,
   ...
 }: let
-  cacheS3Host = config.lib.self.data.cache_s3_host;
-  cacheBucketName = config.lib.self.data.cache_bucket_name;
+  cacheS3Host = config.lib.self.data.b2_s3_api_host;
+  cacheBucketName = config.lib.self.data.b2_cache_bucket_name;
   sigv4ProxyPort = config.ports.sigv4-proxy;
   sigv4ProxyAddress = "http://localhost:${toString sigv4ProxyPort}";
 in {
@@ -72,19 +72,19 @@ in {
     serviceConfig = {
       DynamicUser = true;
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
       ];
     };
     wantedBy = ["multi-user.target"];
   };
 
-  sops.secrets."cache_key_id" = {
-    sopsFile = config.sops-file.terraform;
+  sops.secrets."b2_cache_key_id" = {
+    terraformOutput.enable = true;
     restartUnits = ["cache-sigv4-proxy.service"];
   };
-  sops.secrets."cache_access_key" = {
-    sopsFile = config.sops-file.terraform;
+  sops.secrets."b2_cache_access_key" = {
+    terraformOutput.enable = true;
     restartUnits = ["cache-sigv4-proxy.service"];
   };
 }

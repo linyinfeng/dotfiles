@@ -11,9 +11,9 @@ in {
       database.url = "postgresql://atticd?host=/run/postgresql";
       storage = {
         type = "s3";
-        region = data.attic_store_region;
-        bucket = data.attic_store_bucket_name;
-        endpoint = data.attic_store_s3_url;
+        region = data.b2_s3_region;
+        bucket = data.b2_attic_store_bucket_name;
+        endpoint = data.b2_s3_api_url;
       };
       chunking = {
         # disable chunking
@@ -39,15 +39,15 @@ in {
   '';
 
   sops.secrets."atticd_token_hs256_secret_base64" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["atticd.service"];
   };
   sops.secrets."b2_attic_store_key_id" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["atticd.service"];
   };
   sops.secrets."b2_attic_store_access_key" = {
-    sopsFile = config.sops-file.terraform;
+    terraformOutput.enable = true;
     restartUnits = ["atticd.service"];
   };
 
