@@ -73,14 +73,13 @@ in {
     config = {
       dbtype = "pgsql";
       adminpassFile = config.sops.secrets."nextcloud_admin_password".path;
-
-      extraTrustedDomains = [
+    };
+    extraOptions = {
+      trusted_domains = [
         "nextcloud.ts.li7g.com"
         "nextcloud.dn42.li7g.com"
       ];
-      defaultPhoneRegion = "CN";
-    };
-    extraOptions = {
+      default_phone_region = "CN";
       mail_smtpmode = "smtp";
       mail_smtphost = "smtp.ts.li7g.com";
       mail_smtpport = config.ports.smtp-starttls;

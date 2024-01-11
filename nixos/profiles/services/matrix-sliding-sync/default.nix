@@ -1,5 +1,5 @@
 {config, ...}: {
-  services.matrix-synapse.sliding-sync = {
+  services.matrix-sliding-sync = {
     enable = true;
     environmentFile = config.sops.templates."sliding-sync-env".path;
     settings = {
