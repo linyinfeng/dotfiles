@@ -26,7 +26,7 @@ in {
       # fi
     '';
     configPreprocessing = ''
-      jq 'del(.log) | del(.inbounds)' "$raw_config" |\
+      jq 'del(.log) | del(.inbounds) | del(.experimental.clash_api)' "$raw_config" |\
         sponge "$raw_config"
     '';
     mixinConfig = {
