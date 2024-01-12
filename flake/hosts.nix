@@ -227,11 +227,6 @@
       inputs.ace-bot.nixosModules.ace-bot
       inputs.commit-notifier.nixosModules.commit-notifier
       inputs.hyprland.nixosModules.default
-      {
-        # `attic.nixosModules.atticd` uses `nixpkgs.overlays`
-        imports = ["${inputs.attic}/nixos/atticd.nix"];
-        services.atticd.useFlakeCompatOverlay = false;
-      }
 
       {
         lib.self = self.lib;

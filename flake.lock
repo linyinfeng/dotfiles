@@ -38,38 +38,6 @@
         "type": "github"
       }
     },
-    "attic": {
-      "inputs": {
-        "crane": [
-          "crane"
-        ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nixpkgs-stable": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1704159259,
-        "narHash": "sha256-OOEFibN9JQBepVeqxSNSBr6JUmdoZiH263ogms2jk0k=",
-        "owner": "zhaofengli",
-        "repo": "attic",
-        "rev": "e6bedf1869f382cfc51b69848d6e09d51585ead6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "zhaofengli",
-        "repo": "attic",
-        "type": "github"
-      }
-    },
     "blank": {
       "locked": {
         "lastModified": 1625557891,
@@ -1204,7 +1172,6 @@
     "root": {
       "inputs": {
         "ace-bot": "ace-bot",
-        "attic": "attic",
         "blank": "blank",
         "clash2sing-box": "clash2sing-box",
         "commit-notifier": "commit-notifier",

@@ -92,13 +92,6 @@
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
     pastebin.inputs.flake-utils-plus.follows = "flake-utils-plus";
 
-    attic.url = "github:zhaofengli/attic";
-    attic.inputs.crane.follows = "crane";
-    attic.inputs.flake-compat.follows = "flake-compat";
-    attic.inputs.flake-utils.follows = "flake-utils";
-    attic.inputs.nixpkgs.follows = "nixpkgs";
-    attic.inputs.nixpkgs-stable.follows = "nixpkgs";
-
     oranc.url = "github:linyinfeng/oranc";
     oranc.inputs.crane.follows = "crane";
     oranc.inputs.flake-compat.follows = "flake-compat";

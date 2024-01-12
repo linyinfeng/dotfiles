@@ -34,7 +34,6 @@ in {
       services.commit-notifier
       services.pastebin
       services.static-file-hosting
-      services.atticd
       services.telegraf-http
       services.prebuilt-zip
       services.hledger-web

@@ -112,7 +112,6 @@ locals {
     oranc           = { on = "lax0", proxy = true }
     cache-overlay   = { on = "lax0", proxy = true }
     hledger         = { on = "mtl0", proxy = true }
-    attic           = { on = "mtl0", proxy = true }
     vault           = { on = "mtl0", proxy = true }
     pb              = { on = "mtl0", proxy = true }
     git             = { on = "mtl0", proxy = true }
@@ -120,7 +119,6 @@ locals {
     minio-console   = { on = "mtl0", proxy = true }
     social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
-    attic-upload    = { on = "mtl0", proxy = false }
     minio           = { on = "mtl0", proxy = false }
     prebuilt-zip    = { on = "mtl0", proxy = false }
     "shanghai.derp" = { on = "shg0", proxy = false }
@@ -313,14 +311,6 @@ resource "cloudflare_record" "li7g_cache" {
   value   = module.b2_download_url.host
   zone_id = cloudflare_zone.com_li7g.id
 }
-resource "cloudflare_record" "li7g_attic_store" {
-  name    = "attic-store"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  value   = module.b2_download_url.host
-  zone_id = cloudflare_zone.com_li7g.id
-}
 resource "cloudflare_ruleset" "li7g_rewrite" {
   name        = "url-rewrite"
   description = "URL Rewrite"
@@ -337,20 +327,6 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
       uri {
         path {
           expression = "concat(\"/file/${b2_bucket.cache.bucket_name}\", http.request.uri.path)"
-        }
-      }
-    }
-  }
-
-  rules {
-    enabled     = true
-    description = "Rewrite attic-store path"
-    expression  = "(http.host eq \"attic-store.li7g.com\")"
-    action      = "rewrite"
-    action_parameters {
-      uri {
-        path {
-          expression = "concat(\"/file/${b2_bucket.attic_store.bucket_name}\", http.request.uri.path)"
         }
       }
     }

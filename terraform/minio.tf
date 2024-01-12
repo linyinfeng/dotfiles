@@ -56,47 +56,6 @@ resource "minio_ilm_policy" "pastebin_expire_1d" {
   }
 }
 
-# Atticd
-
-resource "minio_s3_bucket" "atticd" {
-  bucket = "atticd"
-  acl    = "private"
-}
-
-resource "minio_iam_user" "atticd" {
-  name = "atticd"
-}
-
-output "minio_atticd_key_id" {
-  value     = minio_iam_user.atticd.id
-  sensitive = false
-}
-output "minio_atticd_access_key" {
-  value     = minio_iam_user.atticd.secret
-  sensitive = true
-}
-
-data "minio_iam_policy_document" "atticd" {
-  statement {
-    actions = [
-      "s3:*",
-    ]
-    resources = [
-      "arn:aws:s3:::atticd/*",
-    ]
-  }
-}
-
-resource "minio_iam_policy" "atticd" {
-  name   = "atticd"
-  policy = data.minio_iam_policy_document.atticd.json
-}
-
-resource "minio_iam_user_policy_attachment" "atticd" {
-  policy_name = minio_iam_policy.atticd.name
-  user_name   = minio_iam_user.atticd.name
-}
-
 # Cache test
 
 resource "minio_s3_bucket" "cache_test" {

@@ -5,12 +5,6 @@
 }: let
   servicesCnameMappings = config.lib.self.data.service_cname_mappings;
   unproxiedServiceUrls = {
-    attic-upload = [
-      {
-        url = "https://attic-upload.li7g.com";
-        code = 200;
-      }
-    ];
     prebuilt-zip = [
       {
         url = "https://prebuilt.zip";

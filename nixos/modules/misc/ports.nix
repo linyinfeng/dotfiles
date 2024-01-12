@@ -58,7 +58,7 @@
       transmission-rpc = 3160;
       elasticsearch = 3170;
       elasticsearch-node-to-node = 3171;
-      atticd = 3180;
+      # 3180 is not allocated
       oranc = 3190;
       hledger-web = 3200;
       syncthing = 3210;
