@@ -29,7 +29,7 @@
   sops.templates."matrix-qq-config" = {
     content = builtins.toJSON {
       homeserver = {
-        address = "https://matrix.li7g.com";
+        address = "https://matrix.ts.li7g.com";
         domain = "li7g.com";
       };
       appservice = {

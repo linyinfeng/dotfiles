@@ -11,12 +11,6 @@
         code = 302;
       }
     ];
-    hydra = [
-      {
-        url = "https://hydra.ts.li7g.com";
-        code = 200;
-      }
-    ];
     transmission = [
       # do not test transmission daemon:
       # too many unsuccessful login attempts. please restart transmission-daemon.
@@ -35,31 +29,37 @@
         code = 200;
       }
     ];
-    hledger = [
-      {
-        url = "https://hledger.li7g.com";
-        code = 401;
-      }
-    ];
     minio = [
       {
         url = "https://minio.li7g.com";
         code = 403;
       }
     ];
-    "shanghai.derp" = [];
+    matrix-qq = [
+      {
+        url = "https://matrix-qq.ts.li7g.com";
+        code = 404;
+      }
+    ];
+    nextcloud = [
+      {
+        url = "https://nextcloud.ts.li7g.com:8443/login";
+        code = 200;
+      }
+    ];
     dst = [];
-    matrix-qq = [];
     smtp = [];
     teamspeak = [];
-    nextcloud = [];
+    "shanghai.derp" = [];
   };
   overrides = {
     box = [
-      {
-        url = "https://box.li7g.com/accounts/login/?next=/";
-        code = 200;
-      }
+      # TODO wait for https://github.com/NixOS/nixpkgs/issues/258719
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=249523
+      # {
+      #   url = "https://box.li7g.com/accounts/login/?next=/";
+      #   code = 200;
+      # }
     ];
     tar = [
       {
@@ -79,6 +79,24 @@
         code = 302;
       }
     ];
+    matrix-syncv3 = [
+      {
+        url = "https://matrix-syncv3.li7g.com/_matrix/client/unstable/org.matrix.msc3575/sync";
+        code = 405;
+      }
+    ];
+    hledger = [
+      {
+        url = "https://hledger.li7g.com";
+        code = 401;
+      }
+    ];
+    cache-overlay = [
+      {
+        url = "https://cache-overlay.li7g.com/zhl06z4lrfrkw5rp0hnjjfrgsclzvxpm.narinfo";
+        code = 200;
+      }
+    ];
   };
   mkServiceCfg = name: cnameMapping:
     if cnameMapping.proxy
@@ -93,6 +111,31 @@
   urlCfgs = lib.flatten (lib.mapAttrsToList (_name: cfg: cfg) serviceCfgs);
   allCodes = lib.unique (lib.lists.map (c: c.code) urlCfgs);
 in {
+  assertions = [
+    (let
+      unproxiedCnameMappings = lib.attrNames (lib.filterAttrs (_: m: !m.proxy) servicesCnameMappings);
+      unproxiedCfgs = lib.attrNames unproxiedServiceUrls;
+      inherit (lib.lists) subtractLists;
+      uncoveredCfgs = subtractLists unproxiedCnameMappings unproxiedCfgs;
+      uncoveredCnameMappings = subtractLists unproxiedCfgs unproxiedCnameMappings;
+    in {
+      assertion = uncoveredCfgs == [] && uncoveredCnameMappings == [];
+      message = ''
+        unproxied services configurations does not match with services unproxied CNAME mappings
+        uncovered configurations: ${toString uncoveredCfgs}
+        uncovered CNAME mappings: ${toString uncoveredCnameMappings}
+      '';
+    })
+    (let
+      invalidOverrides =
+        lib.lists.subtractLists
+        (lib.attrNames (lib.filterAttrs (_: m: m.proxy) servicesCnameMappings))
+        (lib.attrNames overrides);
+    in {
+      assertion = invalidOverrides == [];
+      message = "invalid overrides: ${toString invalidOverrides}";
+    })
+  ];
   services.telegraf.extraConfig = {
     inputs = {
       http_response =

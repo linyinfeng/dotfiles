@@ -65,13 +65,14 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
+        "w": 3,
         "x": 0,
         "y": 1
       },
@@ -87,9 +88,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "repeat": "host",
       "repeatDirection": "h",
       "targets": [
@@ -115,7 +118,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 7
       },
       "id": 4,
       "panels": [],
@@ -152,7 +155,8 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "s",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -160,7 +164,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 5
+        "y": 8
       },
       "id": 6,
       "options": {
@@ -173,9 +177,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -212,7 +218,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -220,7 +227,7 @@
         "h": 4,
         "w": 2,
         "x": 4,
-        "y": 5
+        "y": 8
       },
       "id": 29,
       "options": {
@@ -233,9 +240,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -260,6 +269,7 @@
             "mode": "thresholds"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -275,6 +285,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -282,7 +293,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -305,7 +316,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -313,7 +325,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 5
+        "y": 8
       },
       "id": 2,
       "options": {
@@ -335,7 +347,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"cpu\")\n  |> filter(fn: (r) => r._field == \"usage_idle\")\n  |> filter(fn: (r) => r.cpu == \"cpu-total\")\n  |> toFloat()\n  |> map(fn: (r) => ({ r with _field: \"usage_total\", _value: 100.0 - r._value }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"cpu\")\n  |> filter(fn: (r) => r._field == \"usage_idle\")\n  |> filter(fn: (r) => r.cpu == \"cpu-total\")\n  |> toFloat()\n  |> map(fn: (r) => ({ r with _field: \"usage_total\", _value: 100.0 - r._value }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -362,7 +374,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -370,7 +383,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 5
+        "y": 8
       },
       "id": 8,
       "options": {
@@ -383,9 +396,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -419,7 +434,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -427,7 +443,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 5
+        "y": 8
       },
       "id": 9,
       "options": {
@@ -440,9 +456,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -467,6 +485,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -480,6 +499,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -487,7 +507,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -505,7 +525,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -513,7 +534,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 5
+        "y": 8
       },
       "id": 18,
       "options": {
@@ -535,7 +556,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"processes\")\n  |> filter(fn: (r) => r._field == \"running\" or r._field == \"blocked\" or r._field == \"idle\" or r._field == \"unknown\")\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: true)\n  |> yield(name: \"max\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"processes\")\n  |> filter(fn: (r) => r._field == \"running\" or r._field == \"blocked\" or r._field == \"idle\" or r._field == \"unknown\")\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: false)\n  |> yield(name: \"max\")",
           "refId": "A"
         }
       ],
@@ -562,7 +583,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -570,7 +592,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 7
+        "y": 10
       },
       "id": 10,
       "options": {
@@ -583,9 +605,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -611,6 +635,7 @@
             "seriesBy": "last"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -624,6 +649,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -631,7 +657,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -654,7 +680,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -662,7 +689,7 @@
         "h": 4,
         "w": 8,
         "x": 0,
-        "y": 9
+        "y": 12
       },
       "id": 12,
       "options": {
@@ -684,7 +711,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -703,6 +730,7 @@
             "seriesBy": "last"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -716,6 +744,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -723,7 +752,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -746,7 +775,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -754,7 +784,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 9
+        "y": 12
       },
       "id": 19,
       "options": {
@@ -776,7 +806,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"swap\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"swap\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -809,7 +839,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -817,10 +848,12 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 9
+        "y": 12
       },
       "id": 14,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": ["lastNotNull"],
@@ -828,9 +861,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "10.0.2-cloud.1.94a6f396",
+      "pluginVersion": "10.3.0-64796",
       "targets": [
         {
           "datasource": {
@@ -855,6 +889,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -868,6 +903,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineStyle": {
               "fill": "solid"
@@ -878,7 +914,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -897,7 +933,8 @@
               }
             ]
           },
-          "unit": "Bps"
+          "unit": "Bps",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -905,7 +942,7 @@
         "h": 4,
         "w": 8,
         "x": 16,
-        "y": 9
+        "y": 12
       },
       "id": 25,
       "options": {
@@ -927,7 +964,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"net\")\n  |> filter(fn: (r) => r._field == \"bytes_recv\" or r._field == \"bytes_sent\")\n  |> filter(fn: (r) => r.interface != \"all\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: true)\n  |> derivative(unit: 1s, nonNegative: true)\n  |> map(fn: (r) => ({ r with _value: if r._field == \"bytes_recv\" then r._value else - r._value, _field: if r._field == \"bytes_recv\" then \"receive\" else \"send\" }))",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"net\")\n  |> filter(fn: (r) => r._field == \"bytes_recv\" or r._field == \"bytes_sent\")\n  |> filter(fn: (r) => r.interface != \"all\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> derivative(unit: 1s, nonNegative: true)\n  |> map(fn: (r) => ({ r with _value: if r._field == \"bytes_recv\" then r._value else - r._value, _field: if r._field == \"bytes_recv\" then \"receive\" else \"send\" }))",
           "refId": "A"
         }
       ],
@@ -945,6 +982,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -958,6 +996,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -965,7 +1004,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -987,7 +1026,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unitScale": true
         },
         "overrides": []
       },
@@ -995,7 +1035,7 @@
         "h": 5,
         "w": 8,
         "x": 0,
-        "y": 13
+        "y": 16
       },
       "id": 23,
       "options": {
@@ -1017,7 +1057,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"sensors\")\n  |> filter(fn: (r) => r._field == \"temp_input\")\n  |> map(fn: (r) => ({ _field: r.chip, _value: r._value, _time: r._time }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"sensors\")\n  |> filter(fn: (r) => r._field == \"temp_input\")\n  |> map(fn: (r) => ({ _field: r.chip, _value: r._value, _time: r._time }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -1035,6 +1075,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1048,6 +1089,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1055,7 +1097,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1078,7 +1120,8 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1086,7 +1129,7 @@
         "h": 5,
         "w": 8,
         "x": 8,
-        "y": 13
+        "y": 16
       },
       "id": 31,
       "options": {
@@ -1107,7 +1150,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"cpu_usage\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"cpu_usage\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -1126,6 +1169,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1139,6 +1183,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1146,7 +1191,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": 20000,
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -1169,7 +1214,8 @@
               }
             ]
           },
-          "unit": "bytes"
+          "unit": "bytes",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -1177,7 +1223,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 13
+        "y": 16
       },
       "id": 33,
       "options": {
@@ -1198,7 +1244,7 @@
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"memory_rss\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"memory_rss\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -1209,8 +1255,7 @@
   ],
   "refresh": "1m",
   "revision": 1,
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -1247,6 +1292,6 @@
   "timezone": "",
   "title": "Systems",
   "uid": "dashboard-system",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }

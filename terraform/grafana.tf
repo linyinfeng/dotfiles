@@ -127,28 +127,6 @@ EOT
         to   = 0
       }
       model = jsonencode({
-        conditions = [
-          {
-            evaluator = {
-              params = [
-                0,
-                0,
-              ]
-              type = "gt"
-            }
-            operator = {
-              type = "and"
-            }
-            query = {
-              params = []
-            }
-            reducer = {
-              params = []
-              type   = "avg"
-            }
-            type = "query"
-          },
-        ]
         datasource = {
           name = "Expression"
           type = "__expr__"
@@ -158,10 +136,7 @@ EOT
         hide       = false
         reducer    = "count"
         refId      = "Count"
-        settings = {
-          mode = ""
-        }
-        type = "reduce"
+        type       = "reduce"
       })
     }
     data {
@@ -178,21 +153,97 @@ EOT
             evaluator = {
               params = [
                 0,
+              ]
+              type = "gt"
+            }
+          },
+        ]
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Count"
+        hide       = false
+        refId      = "Threshold"
+        type       = "threshold"
+      })
+    }
+  }
+
+  rule {
+    name           = "HTTP Service Down"
+    for            = "5m"
+    condition      = "Threshold"
+    no_data_state  = "NoData"
+    exec_err_state = "Error"
+    annotations = {
+    }
+    labels = {
+    }
+    is_paused = false
+    data {
+      ref_id     = "Query"
+      query_type = ""
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      datasource_uid = grafana_data_source.influxdb.uid
+      model = jsonencode({
+        datasource = {
+          type = "influxdb"
+          uid  = grafana_data_source.influxdb.uid
+        }
+        hide  = false
+        query = <<-EOT
+from(bucket: "http")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "http_response" and
+                       r["_field"] == "result_code" and
+                       r._value != 0)
+EOT
+        refId = "Query"
+      })
+    }
+    data {
+      ref_id         = "Count"
+      query_type     = ""
+      datasource_uid = "__expr__"
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      model = jsonencode({
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Query"
+        hide       = false
+        reducer    = "count"
+        refId      = "Count"
+        type       = "reduce"
+      })
+    }
+    data {
+      ref_id         = "Threshold"
+      query_type     = ""
+      datasource_uid = "__expr__"
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [
                 0,
               ]
               type = "gt"
             }
-            operator = {
-              type = "and"
-            }
-            query = {
-              params = []
-            }
-            reducer = {
-              params = []
-              type   = "avg"
-            }
-            type = "query"
           },
         ]
         datasource = {
