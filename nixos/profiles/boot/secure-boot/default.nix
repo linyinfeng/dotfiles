@@ -3,12 +3,14 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  inherit (config.lib.self) data;
+in {
   options = {
     boot.secureBoot = {
       publicKeyFile = lib.mkOption {
         type = lib.types.path;
-        default = pkgs.writeText "module-signing.crt" config.lib.self.data.secure_boot_db_cert_pem;
+        default = pkgs.writeText "module-signing.crt" data.secure_boot_db_cert_pem;
       };
       privateKeyFile = lib.mkOption {
         type = lib.types.path;
@@ -85,6 +87,20 @@
           '';
         }
       ];
+    }
+    # sbctl
+    {
+      environment.systemPackages = with pkgs; [sbctl];
+      environment.etc."secureboot/GUID".text = data.secure_boot_signature_owner_guid;
+      environment.etc."secureboot/keys/PK/PK.key".source = config.sops.secrets."secure_boot_pk_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/PK/PK.pem".text = data.secure_boot_pk_cert_pem;
+      environment.etc."secureboot/keys/KEK/KEK.key".source = config.sops.secrets."secure_boot_kek_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/KEK/KEK.pem".text = data.secure_boot_kek_cert_pem;
+      environment.etc."secureboot/keys/db/db.key".source = config.sops.secrets."secure_boot_db_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/db/db.pem".text = data.secure_boot_db_cert_pem;
+      sops.secrets."secure_boot_pk_private_key_pkcs8".terraformOutput.enable = true;
+      sops.secrets."secure_boot_kek_private_key_pkcs8".terraformOutput.enable = true;
+      sops.secrets."secure_boot_db_private_key_pkcs8".terraformOutput.enable = true;
     }
     (lib.mkIf config.boot.kernelModuleSigning.enable {
       boot.kernelPatches = [

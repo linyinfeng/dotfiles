@@ -35,6 +35,10 @@ output "secure_boot_pk_private_key" {
   value     = tls_private_key.secure_boot_platform_key.private_key_pem
   sensitive = true
 }
+output "secure_boot_pk_private_key_pkcs8" {
+  value     = tls_private_key.secure_boot_platform_key.private_key_pem_pkcs8
+  sensitive = true
+}
 module "secure_boot_pk_signature_list" {
   source               = "./modules/secure-boot-signature-list"
   signature_owner_guid = random_uuid.secure_boot_signature_owner_guid.result
@@ -83,6 +87,10 @@ output "secure_boot_kek_private_key" {
   value     = tls_private_key.secure_boot_key_exchange_key.private_key_pem
   sensitive = true
 }
+output "secure_boot_kek_private_key_pkcs8" {
+  value     = tls_private_key.secure_boot_key_exchange_key.private_key_pem_pkcs8
+  sensitive = true
+}
 module "secure_boot_kek_signature_list" {
   source               = "./modules/secure-boot-signature-list"
   signature_owner_guid = random_uuid.secure_boot_signature_owner_guid.result
@@ -127,6 +135,10 @@ output "secure_boot_db_cert_pem" {
 }
 output "secure_boot_db_private_key" {
   value     = tls_private_key.secure_boot_database_key.private_key_pem
+  sensitive = true
+}
+output "secure_boot_db_private_key_pkcs8" {
+  value     = tls_private_key.secure_boot_database_key.private_key_pem_pkcs8
   sensitive = true
 }
 module "secure_boot_db_signature_list" {
