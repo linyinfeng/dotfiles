@@ -97,6 +97,12 @@
         code = 200;
       }
     ];
+    matrix = [
+      {
+        url = "https://matrix.li7g.com/_matrix/client/versions";
+        code = 200;
+      }
+    ];
   };
   mkServiceCfg = name: cnameMapping:
     if cnameMapping.proxy
