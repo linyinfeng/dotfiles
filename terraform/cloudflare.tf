@@ -117,7 +117,6 @@ locals {
     git             = { on = "mtl0", proxy = true }
     box             = { on = "mtl0", proxy = true }
     minio-console   = { on = "mtl0", proxy = true }
-    social          = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
     minio           = { on = "mtl0", proxy = false }
     prebuilt-zip    = { on = "mtl0", proxy = false }
@@ -129,6 +128,7 @@ locals {
     matrix          = { on = "hil0", proxy = true }
     matrix-syncv3   = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
+    social          = { on = "hil0", proxy = true }
     mastodon        = { on = "hil0", proxy = true }
     smtp            = { on = "hil0", proxy = false }
     influxdb        = { on = "fsn0", proxy = true }
