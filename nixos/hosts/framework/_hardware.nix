@@ -77,8 +77,8 @@
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages = let
       version = "6.5";
-      versionIntel = "231123T023225Z";
-      hash = "sha256-VQwaW2mBisKZC4yDEiL/yjIUbH3xO+hxhDvDBapA4UM=";
+      versionIntel = "240104T134258Z";
+      hash = "sha256-zlI22ZIfaUlP5wd92Rax4GrVcB+LnzrCecaBgpPAC0U=";
       major = lib.versions.major version;
       minor = lib.versions.minor version;
       linux_intel_fn = {
