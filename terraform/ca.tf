@@ -12,6 +12,7 @@ resource "tls_self_signed_cert" "ca" {
   validity_period_hours = 8760 # 1 year
   early_renewal_hours   = 4320 # 6 months
   allowed_uses = [
+    "cert_signing",
     "crl_signing"
   ]
 }

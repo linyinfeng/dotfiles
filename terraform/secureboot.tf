@@ -67,7 +67,6 @@ resource "tls_locally_signed_cert" "secure_boot_key_exchange_key" {
   ca_private_key_pem = tls_private_key.ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
-  is_ca_certificate     = true
   validity_period_hours = 87600 # 10 years
   early_renewal_hours   = 43800 # 5  year
   allowed_uses = [
@@ -116,13 +115,10 @@ resource "tls_locally_signed_cert" "secure_boot_database_key" {
   ca_private_key_pem = tls_private_key.ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
-  is_ca_certificate     = true
   validity_period_hours = 87600 # 10 years
   early_renewal_hours   = 43800 # 5  year
   allowed_uses = [
-    "digital_signature",
-    "cert_signing",
-    "crl_signing"
+    "digital_signature"
   ]
 }
 output "secure_boot_db_cert_pem" {
