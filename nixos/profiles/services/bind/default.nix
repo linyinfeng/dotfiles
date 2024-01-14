@@ -36,6 +36,8 @@ in {
       listen-on-v6 port ${toString dotPort} tls local { any; };
       listen-on-v6 port ${toString config.ports.bind-http} tls none http local { any; };
 
+      dnssec-validation auto;
+
       # TODO DOT forwarders not supported in bind stable yet
       # forwarders port 853 tls cloudflare {
       #   1.1.1.1;
@@ -88,6 +90,9 @@ in {
   users.users.named.extraGroups = [config.users.groups.acmetf.name];
   networking.firewall.allowedTCPPorts = [
     dotPort
+  ];
+  networking.firewall.allowedUDPPorts = [
+    config.ports.dns
   ];
   environment.systemPackages = [
     # for rndc cli
