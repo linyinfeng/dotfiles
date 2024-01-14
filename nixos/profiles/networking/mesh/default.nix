@@ -8,10 +8,11 @@
   data = config.lib.self.data;
   filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
   mkHost = name: hostData: {
-    connection = {
-      endpointsV4 = hostData.endpoints_v4;
-      endpointsV6 = hostData.endpoints_v6;
-    };
+    # resolved by /etc/hosts
+    connection.endpoint =
+      if (lib.length (hostData.endpoints_v4 ++ hostData.endpoints_v6) != 0)
+      then "${name}.endpoints.li7g.com"
+      else null;
     ipsec.xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
   };
   ipv4OnlyHosts = ["shg0"];

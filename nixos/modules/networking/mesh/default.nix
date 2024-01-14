@@ -54,13 +54,8 @@
       ipsec.xfrmInterfaceId = lib.mkOption {
         type = lib.types.int;
       };
-      connection = {
-        endpointsV4 = lib.mkOption {
-          type = with lib.types; listOf str;
-        };
-        endpointsV6 = lib.mkOption {
-          type = with lib.types; listOf str;
-        };
+      connection.endpoint = lib.mkOption {
+        type = with lib.types; nullOr str;
       };
     };
   };
@@ -387,16 +382,10 @@ in {
           connections = let
             mkConnection = peerName: hostCfg:
               lib.nameValuePair "mesh-peer-${peerName}" {
-                # https://docs.strongswan.org/docs/5.9/swanctl/swanctlConf.html
-                # As an initiator, the first non-range/non-subnet is used to initiate the connection to.
                 remote_addrs =
-                  (
-                    if cfg.thisHost.ipsec.initiate == "ipv6"
-                    then hostCfg.connection.endpointsV6 ++ hostCfg.connection.endpointsV4
-                    else if cfg.thisHost.ipsec.initiate == "ipv4"
-                    then hostCfg.connection.endpointsV4 ++ hostCfg.connection.endpointsV6
-                    else []
-                  )
+                  # https://docs.strongswan.org/docs/5.9/swanctl/swanctlConf.html
+                  # As an initiator, the first non-range/non-subnet is used to initiate the connection to.
+                  lib.optional (hostCfg.connection.endpoint != null) hostCfg.connection.endpoint
                   ++ [
                     "%any" # allow connection from anywhere
                   ];

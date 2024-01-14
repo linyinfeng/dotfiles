@@ -41,6 +41,7 @@
       networking.mesh
       networking.dn42
       networking.as198764
+      networking.endpoints
       security.fail2ban
       security.firewall
       services.vnstatd

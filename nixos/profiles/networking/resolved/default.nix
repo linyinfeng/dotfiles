@@ -4,21 +4,7 @@
   ...
 }: let
   dnsServers = [
-    # Cloudflare public DNS
-    "1.1.1.1"
-    "1.0.0.1"
-    "2606:4700:4700::1111"
-    "2606:4700:4700::1001"
-    # Google public DNS
-    "8.8.8.8"
-    "8.8.4.4"
-    "2001:4860:4860::8888"
-    "2001:4860:4860::8844"
-    # TUNA DNS666
-    "2001:da8::666"
-    # TWNIC
-    "101.101.101.101"
-    "101.102.103.104"
+    "[${config.lib.self.data.dn42_anycast_dns_v6}]:${toString config.ports.dns-over-tls}#dns.li7g.com"
   ];
 in
   lib.mkMerge [
@@ -28,11 +14,10 @@ in
         dnssec = "allow-downgrade";
         llmnr = "true";
         fallbackDns = [];
-        # TODO not stable
-        # extraConfig = ''
-        #   DNS=${lib.concatStringsSep " " dnsServers}
-        #   DNSOverTLS=yes
-        # '';
+        extraConfig = ''
+          DNS=${lib.concatStringsSep " " dnsServers}
+          DNSOverTLS=yes
+        '';
       };
       networking.firewall.allowedUDPPorts = [
         5353
