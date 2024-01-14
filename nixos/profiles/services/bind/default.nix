@@ -74,6 +74,9 @@ in {
   services.nginx.virtualHosts."dns.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+    locations."/hostname".extraConfig = ''
+      return 200 "${config.networking.hostName}";
+    '';
     locations.${dohEndpoint}.extraConfig = ''
       grpc_pass grpc://[::1]:${toString config.ports.bind-http};
     '';
