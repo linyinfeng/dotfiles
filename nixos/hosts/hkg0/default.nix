@@ -10,7 +10,7 @@
   hostData = config.lib.self.data.hosts.${hostName};
 in {
   imports =
-    suites.server
+    suites.overseaServer
     ++ (with profiles; [
       programs.tg-send
       services.nginx
