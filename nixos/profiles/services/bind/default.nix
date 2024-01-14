@@ -74,7 +74,7 @@ in {
       };
     '';
   };
-  systemd.services.bind-address =  let
+  systemd.services.bind-address = let
     addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Cfg.interfaces.dummy.name}"'';
   in {
     script = "ip address add ${addressLine}";
