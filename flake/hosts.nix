@@ -122,6 +122,11 @@
         services.iperf3
         networking.bbr
       ]);
+    overseaServer =
+      suites.server
+      ++ (with profiles; [
+        services.bind
+      ]);
     homeServer =
       suites.server
       ++ (with profiles; [

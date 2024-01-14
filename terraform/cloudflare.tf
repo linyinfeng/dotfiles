@@ -191,6 +191,15 @@ resource "cloudflare_record" "general_dn42_cname" {
 
 # anycast record
 
+resource "cloudflare_record" "dns" {
+  name    = "dns"
+  proxied = false
+  ttl     = 1
+  type    = "AAAA"
+  value   = local.dn42_anycast_dns_v6
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 resource "cloudflare_record" "any" {
   name    = "any"
   proxied = false

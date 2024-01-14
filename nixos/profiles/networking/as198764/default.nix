@@ -53,36 +53,30 @@ in {
   config = lib.mkIf (meshCfg.enable) (lib.mkMerge [
     {
       networking.mesh = {
-        cidrs = {
-          as198764V6 = {
-            family = "ipv6";
-            prefix = cidr;
-          };
+        cidrs.as198764V6 = {
+          family = "ipv6";
+          prefix = cidr;
         };
-        hosts =
-          lib.mapAttrs (_name: hostData: {
-            cidrs.as198764V6 = {
-              addresses =
-                lib.lists.map (address: {
-                  inherit address;
-                  routeConfig = ''via "as198764"'';
-                  assign = false;
-                })
-                hostData.as198764_addresses_v6
-                ++ lib.optional cfg.exit {
-                  address = tunnelPeerIp;
-                  routeConfig = ''via "as198764"'';
-                  assign = false;
-                }
-                ++ lib.optional cfg.anycast {
-                  address = anycastIp;
-                  routeConfig = ''via "as198764"'';
-                  assign = false;
-                };
-              inherit preferredAddress;
+        thisHost.cidrs.as198764V6 = {
+          addresses =
+            lib.lists.map (address: {
+              inherit address;
+              routeConfig = ''via "as198764"'';
+              assign = false;
+            })
+            hostData.as198764_addresses_v6
+            ++ lib.optional cfg.exit {
+              address = tunnelPeerIp;
+              routeConfig = ''via "as198764"'';
+              assign = false;
+            }
+            ++ lib.optional cfg.anycast {
+              address = anycastIp;
+              routeConfig = ''via "as198764"'';
+              assign = false;
             };
-          })
-          filteredHost;
+          inherit preferredAddress;
+        };
       };
     }
     # common configurations

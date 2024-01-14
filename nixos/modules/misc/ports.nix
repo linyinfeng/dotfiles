@@ -28,6 +28,7 @@
       smtp-tls = 465;
       ipsec-ike = 500;
       smtp-starttls = 587;
+      dns-over-tls = 853;
       ssh = 2222;
 
       pastebin = 3000;
@@ -58,7 +59,7 @@
       transmission-rpc = 3160;
       elasticsearch = 3170;
       elasticsearch-node-to-node = 3171;
-      # 3180 is not allocated
+      bind-http = 3180;
       oranc = 3190;
       hledger-web = 3200;
       syncthing = 3210;

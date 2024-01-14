@@ -5,37 +5,13 @@
 }: let
   dn42Cfg = config.networking.dn42;
   meshCfg = config.networking.mesh;
+  asThisHostCfg = dn42Cfg.autonomousSystem.thisHost;
   hostName = config.networking.hostName;
   dn42If = dn42Cfg.interfaces.dummy.name;
-  data = config.lib.self.data;
+  inherit (config.lib.self) data;
+  thisHostData = data.hosts.${hostName};
   filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
-  mkHostMeshCfg = name: hostData: {
-    cidrs = {
-      dn42V4 = {
-        addresses =
-          lib.lists.map (address: {
-            inherit address;
-            routeConfig = ''via "${dn42If}"'';
-            assign = false;
-          })
-          hostData.dn42_addresses_v4;
-        preferredAddress = lib.elemAt hostData.dn42_addresses_v4 0;
-      };
-      dn42V6 = {
-        addresses =
-          lib.lists.map (address: {
-            inherit address;
-            routeConfig = ''via "${dn42If}"'';
-            assign = false;
-          })
-          hostData.dn42_addresses_v6;
-        preferredAddress = lib.elemAt hostData.dn42_addresses_v6 0;
-      };
-    };
-  };
   mkHostDn42Cfg = name: hostData: {
-    addressesV4 = hostData.dn42_addresses_v4;
-    addressesV6 = hostData.dn42_addresses_v6;
     preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
     preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
   };
@@ -123,7 +99,28 @@ in
           prefix = data.dn42_v6_cidr;
         };
       };
-      hosts = lib.mapAttrs mkHostMeshCfg filteredHost;
+      thisHost.cidrs = {
+        dn42V4 = {
+          addresses =
+            lib.lists.map (address: {
+              inherit address;
+              routeConfig = ''via "${dn42If}"'';
+              assign = false;
+            })
+            asThisHostCfg.addressesV4;
+          preferredAddress = asThisHostCfg.preferredAddressV4;
+        };
+        dn42V6 = {
+          addresses =
+            lib.lists.map (address: {
+              inherit address;
+              routeConfig = ''via "${dn42If}"'';
+              assign = false;
+            })
+            asThisHostCfg.addressesV6;
+          preferredAddress = asThisHostCfg.preferredAddressV6;
+        };
+      };
     };
     networking.dn42 = {
       enable = true;
@@ -158,6 +155,12 @@ in
         cidrV4 = data.dn42_v4_cidr;
         cidrV6 = data.dn42_v6_cidr;
         hosts = lib.mapAttrs mkHostDn42Cfg filteredHost;
+        thisHost = {
+          addressesV4 = thisHostData.dn42_addresses_v4;
+          addressesV6 = thisHostData.dn42_addresses_v6;
+          preferredAddressV4 = lib.elemAt thisHostData.dn42_addresses_v4 0;
+          preferredAddressV6 = lib.elemAt thisHostData.dn42_addresses_v6 0;
+        };
       };
       dns.enable = true;
       certificateAuthority.trust = true;

@@ -30,7 +30,7 @@
       # the range 1000-1999 is assigned to the country property
       check = v: int.check v && 1000 <= v && v <= 1999;
     };
-  hostOptions = {
+  peerHostOptions = {
     name,
     config,
     ...
@@ -39,6 +39,20 @@
       name = lib.mkOption {
         type = lib.types.str;
         default = name;
+      };
+      preferredAddressV4 = lib.mkOption {
+        type = lib.types.str;
+      };
+      preferredAddressV6 = lib.mkOption {
+        type = lib.types.str;
+      };
+    };
+  };
+  thisHostOptions = {...}: {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = asCfg.me;
       };
       addressesV4 = lib.mkOption {
         type = with lib.types; listOf str;
@@ -345,18 +359,16 @@ in {
           default = config.networking.hostName;
         };
         hosts = lib.mkOption {
-          type = with lib.types; attrsOf (submodule hostOptions);
+          type = with lib.types; attrsOf (submodule peerHostOptions);
           default = {};
         };
-        thisHost = lib.mkOption {
-          type = lib.types.submodule hostOptions;
-          default = asCfg.hosts.${asCfg.me};
-          readOnly = true;
-        };
         peerHosts = lib.mkOption {
-          type = with lib.types; attrsOf (submodule hostOptions);
+          type = with lib.types; attrsOf (submodule peerHostOptions);
           default = lib.filterAttrs (key: _: key != asCfg.me) asCfg.hosts;
           readOnly = true;
+        };
+        thisHost = lib.mkOption {
+          type = lib.types.submodule thisHostOptions;
         };
       };
       dns = {

@@ -13,6 +13,8 @@
   "b2_s3_api_url": "https://s3.us-west-004.backblazeb2.com",
   "b2_s3_region": "us-west-004",
   "ca_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIBxjCCAU2gAwIBAgIQD2MEK+4/yBNzl//pSCcjAjAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNDAxMTMwNzE5\nMjJaFw0yNTAxMTIwNzE5MjJaMCUxEDAOBgNVBAoTB1lpbmZlbmcxETAPBgNVBAMT\nCGxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEbl8aU47YWnhen1VD3fcq\nn7D6KlsgxWkpJPVnuGJxHAG/tj/1Ip9QDMgUNpei8supGSKZM8hcXSvhcx529A6z\nRo2HnWdHRRmPS2MnEusOFWABVaS1ruBEdTBI5MvciCo+o0IwQDAOBgNVHQ8BAf8E\nBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUF7pFDP6qoO7y80SCJNbw\nPAzKohwwCgYIKoZIzj0EAwMDZwAwZAIwGeBJe8iDhIA4i5/FT+sgo+JbV66FPVV4\nHCiHNDDBHGhpexAmP3jK9JSLOZz00PXKAjA58NlsR4za2ooLHGTWryZEH/yJVVLh\n9LvJvGLOi5jfYIlrcCsMZgGWwOkQ1v9jaF0=\n-----END CERTIFICATE-----\n",
+  "dn42_anycast_dns_v6": "fd72:db83:badd:ffff::8888",
+  "dn42_anycast_v6_cidr": "fd72:db83:badd:ffff::/64",
   "dn42_v4_cidr": "172.23.224.96/27",
   "dn42_v6_cidr": "fd72:db83:badd::/48",
   "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",

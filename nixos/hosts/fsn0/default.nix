@@ -7,7 +7,7 @@
   ...
 }: {
   imports =
-    suites.server
+    suites.overseaServer
     ++ (with profiles; [
       programs.tg-send
       programs.ccache

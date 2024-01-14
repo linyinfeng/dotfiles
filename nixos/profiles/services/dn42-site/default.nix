@@ -48,16 +48,16 @@
     lib.recursiveUpdate {
       dn42 = {
         addresses = {
-          v4 = hostCfg.addressesV4;
-          v6 = hostCfg.addressesV6;
+          v4 = hostCfg.preferredAddressV4;
+          v6 = hostCfg.preferredAddressV6;
         };
       };
       tunnel = {
         supported_types = config.passthru.dn42SupportedTunnelTypes;
         network = {
           addresses = {
-            v4 = hostCfg.addressesV4;
-            v6 = [config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local] ++ hostCfg.addressesV6;
+            v4 = [hostCfg.preferredAddressV4];
+            v6 = [config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local] ++ [hostCfg.preferredAddressV6];
           };
         };
         traffic_control = config.passthru.dn42TrafficControlTable.${name}.enable;

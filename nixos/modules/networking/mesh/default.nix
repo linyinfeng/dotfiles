@@ -41,7 +41,7 @@
     };
   };
 
-  hostOptions = {
+  peerHostOptions = {
     name,
     config,
     ...
@@ -51,14 +51,8 @@
         type = lib.types.str;
         default = name;
       };
-      ipsec = {
-        initiate = lib.mkOption {
-          type = lib.types.enum ["ipv4" "ipv6"];
-          default = "ipv6";
-        };
-        xfrmInterfaceId = lib.mkOption {
-          type = lib.types.int;
-        };
+      ipsec.xfrmInterfaceId = lib.mkOption {
+        type = lib.types.int;
       };
       connection = {
         endpointsV4 = lib.mkOption {
@@ -67,6 +61,19 @@
         endpointsV6 = lib.mkOption {
           type = with lib.types; listOf str;
         };
+      };
+    };
+  };
+
+  thisHostOptions = {config, ...}: {
+    options = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = cfg.me;
+      };
+      ipsec.initiate = lib.mkOption {
+        type = lib.types.enum ["ipv4" "ipv6"];
+        default = "ipv6";
       };
       cidrs = lib.mkOption {
         type = with lib.types; attrsOf (submodule hostCidrOptions);
@@ -171,18 +178,16 @@ in {
         };
       };
       hosts = lib.mkOption {
-        type = with lib.types; attrsOf (submodule hostOptions);
+        type = with lib.types; attrsOf (submodule peerHostOptions);
         default = {};
       };
-      thisHost = lib.mkOption {
-        type = lib.types.submodule hostOptions;
-        default = cfg.hosts.${cfg.me};
-        readOnly = true;
-      };
       peerHosts = lib.mkOption {
-        type = with lib.types; attrsOf (submodule hostOptions);
+        type = with lib.types; attrsOf (submodule peerHostOptions);
         default = lib.filterAttrs (name: _: name != cfg.me) cfg.hosts;
         readOnly = true;
+      };
+      thisHost = lib.mkOption {
+        type = lib.types.submodule thisHostOptions;
       };
       extraInterfaces = lib.mkOption {
         type = with lib.types; attrsOf (submodule babelInterfaceOptions);

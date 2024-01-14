@@ -12,19 +12,17 @@
       endpointsV4 = hostData.endpoints_v4;
       endpointsV6 = hostData.endpoints_v6;
     };
-    ipsec = {
-      xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
-      initiate =
-        if lib.elem name ipv4OnlyHosts
-        then "ipv4"
-        else "ipv6";
-    };
+    ipsec.xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
   };
   ipv4OnlyHosts = ["shg0"];
 in {
   networking.mesh = {
     enable = filteredHost ? ${hostName};
     hosts = lib.mapAttrs mkHost filteredHost;
+    thisHost.ipsec.initiate =
+      if lib.elem hostName ipv4OnlyHosts
+      then "ipv4"
+      else "ipv6";
     routingTable = {
       id = config.routingTables.mesh;
       priority = config.routingPolicyPriorities.mesh;

@@ -18,7 +18,7 @@
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 in {
   imports =
-    suites.server
+    suites.overseaServer
     ++ (with profiles; [
       programs.tg-send
       services.nginx
