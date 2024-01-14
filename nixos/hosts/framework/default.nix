@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   suites,
   profiles,
   lib,
@@ -31,6 +30,7 @@ in {
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
+      networking.v4-first
       virtualization.waydroid
       services.godns
       services.smartd
