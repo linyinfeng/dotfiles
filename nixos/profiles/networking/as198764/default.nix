@@ -57,26 +57,8 @@ in {
           family = "ipv6";
           prefix = cidr;
         };
-        thisHost.cidrs.as198764V6 = {
-          addresses =
-            lib.lists.map (address: {
-              inherit address;
-              routeConfig = ''via "as198764"'';
-              assign = false;
-            })
-            hostData.as198764_addresses_v6
-            ++ lib.optional cfg.exit {
-              address = tunnelPeerIp;
-              routeConfig = ''via "as198764"'';
-              assign = false;
-            }
-            ++ lib.optional cfg.anycast {
-              address = anycastIp;
-              routeConfig = ''via "as198764"'';
-              assign = false;
-            };
-          inherit preferredAddress;
-        };
+        thisHost.cidrs.as198764V6 = {inherit preferredAddress;};
+        interfaces.extraPatterns = ["as198764"];
       };
     }
     # common configurations

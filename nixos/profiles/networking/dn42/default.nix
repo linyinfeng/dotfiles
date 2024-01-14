@@ -89,6 +89,7 @@
 in
   lib.mkIf (meshCfg.enable) {
     networking.mesh = {
+      interfaces.extraPatterns = [dn42If];
       cidrs = {
         dn42V4 = {
           family = "ipv4";
@@ -100,26 +101,8 @@ in
         };
       };
       thisHost.cidrs = {
-        dn42V4 = {
-          addresses =
-            lib.lists.map (address: {
-              inherit address;
-              routeConfig = ''via "${dn42If}"'';
-              assign = false;
-            })
-            asThisHostCfg.addressesV4;
-          preferredAddress = asThisHostCfg.preferredAddressV4;
-        };
-        dn42V6 = {
-          addresses =
-            lib.lists.map (address: {
-              inherit address;
-              routeConfig = ''via "${dn42If}"'';
-              assign = false;
-            })
-            asThisHostCfg.addressesV6;
-          preferredAddress = asThisHostCfg.preferredAddressV6;
-        };
+        dn42V4.preferredAddress = asThisHostCfg.preferredAddressV4;
+        dn42V6.preferredAddress = asThisHostCfg.preferredAddressV6;
       };
     };
     networking.dn42 = {

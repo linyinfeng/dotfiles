@@ -18,13 +18,6 @@
     else throw "unreachable";
   hostPrefixLengthString = family: toString (hostPrefixLength family);
 
-  mkStaticRoutes = cidrs:
-    lib.flatten (lib.mapAttrsToList (name: cidrCfg:
-      lib.lists.map
-      (a: "route ${a.address}/${hostPrefixLengthString cidrCfg.family} ${a.routeConfig};")
-      cfg.thisHost.cidrs.${name}.addresses)
-    cidrs);
-
   cidrOptions = {name, ...}: {
     options = {
       name = lib.mkOption {
@@ -89,6 +82,7 @@
       };
       addresses = lib.mkOption {
         type = with lib.types; listOf (submodule addressOptions);
+        default = [];
       };
       preferredAddress = lib.mkOption {
         type = lib.types.str;
@@ -100,12 +94,6 @@
     options = {
       address = lib.mkOption {
         type = lib.types.str;
-      };
-      routeConfig = lib.mkOption {
-        type = lib.types.str;
-      };
-      assign = lib.mkOption {
-        type = lib.types.bool;
       };
     };
   };
@@ -140,6 +128,10 @@ in {
         mtu = lib.mkOption {
           type = lib.types.int;
           default = 1280;
+        };
+        extraPatterns = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = [];
         };
       };
       cidrs = lib.mkOption {
@@ -286,7 +278,7 @@ in {
             inherit (cfg.cidrs.${hostCidrCfg.cidr}) family;
           in
             lib.lists.map (a: "${a.address}/${hostPrefixLengthString family}")
-            (lib.filter (a: a.assign) hostCidrCfg.addresses))
+            hostCidrCfg.addresses)
           cfg.thisHost.cidrs);
         };
       };
@@ -300,21 +292,29 @@ in {
         ipv4 table mesh_v4 { }
         ipv6 table mesh_v6 { }
 
-        protocol static static_mesh_v4 {
-          ${lib.concatStringsSep "\n  " (mkStaticRoutes cfg.cidrsV4)}
+        function mesh_is_valid_network_v4() {
+          return net ~ [
+            ${lib.concatMapStringsSep ",\n    " (c: "${c.prefix}+") (lib.attrValues cfg.cidrsV4)}
+          ];
+        }
+        function mesh_is_valid_network_v6() {
+          return net ~ [
+            ${lib.concatMapStringsSep ",\n    " (c: "${c.prefix}+") (lib.attrValues cfg.cidrsV6)}
+          ];
+        }
+        protocol direct direct_mesh {
           ipv4 {
             table mesh_v4;
-            import all;
+            import filter { if mesh_is_valid_network_v4() then accept; else reject; };
             export none;
           };
-        }
-        protocol static static_mesh_v6 {
-          ${lib.concatStringsSep "\n  " (mkStaticRoutes cfg.cidrsV6)}
           ipv6 {
             table mesh_v6;
-            import all;
+            import filter { if mesh_is_valid_network_v6() then accept; else reject; };
             export none;
           };
+          check link yes;
+          interface ${lib.concatMapStringsSep ", " (p: "\"${p}\"") ([cfg.interfaces.dummy.name] ++ cfg.interfaces.extraPatterns)};
         }
         filter filter_mesh_kernel_v4 {
           if source = RTS_STATIC then reject;

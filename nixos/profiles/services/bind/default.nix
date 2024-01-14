@@ -12,6 +12,7 @@
     ca-file "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
     dhparam-file "${config.sops.secrets."dhparam_pem".path}";
   '';
+  dn42Cfg = config.networking.dn42;
 in {
   services.bind = {
     enable = true;
@@ -73,6 +74,20 @@ in {
       };
     '';
   };
+  systemd.services.bind-address =  let
+    addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Cfg.interfaces.dummy.name}"'';
+  in {
+    script = "ip address add ${addressLine}";
+    preStop = "ip address delete ${addressLine}";
+    path = with pkgs; [iproute2];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    bindsTo = ["bind.service"];
+    after = ["bind.service"];
+    wantedBy = ["bind.service"];
+  };
   services.nginx.virtualHosts."dns.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -83,9 +98,6 @@ in {
       grpc_pass grpc://[::1]:${toString config.ports.bind-http};
     '';
   };
-  networking.dn42.autonomousSystem.thisHost.addressesV6 = [
-    data.dn42_anycast_dns_v6
-  ];
   environment.etc."bind/rndc.key".source = config.sops.secrets."bind_rndc_config".path;
   users.users.named.extraGroups = [config.users.groups.acmetf.name];
   networking.firewall.allowedTCPPorts = [
