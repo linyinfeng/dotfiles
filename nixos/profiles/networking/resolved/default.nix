@@ -16,7 +16,9 @@ in
         fallbackDns = [];
         extraConfig = ''
           DNS=${lib.concatStringsSep " " dnsServers}
-          DNSOverTLS=yes
+          # link specific servers may not support dns over tls
+          DNSOverTLS=opportunistic
+          Domains=~.
         '';
       };
       networking.firewall.allowedUDPPorts = [
