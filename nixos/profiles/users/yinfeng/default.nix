@@ -55,7 +55,8 @@ in {
   };
 
   environment.global-persistence.user.users = [name];
-  home-manager.users.${name} = {suites, ...}: {
+  home-manager.users.${name} = {suites, profiles, ...}: {
+    imports = [ profiles.atuin ];
     home.global-persistence = {
       enable = true;
       home = homeDirectory;
@@ -76,4 +77,11 @@ in {
   };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
+
+  # extra secrets
+  sops.secrets."atuin_password_${name}" = {
+    terraformOutput.enable = true;
+    owner = name;
+    group = config.users.users.${name}.group;
+  };
 }

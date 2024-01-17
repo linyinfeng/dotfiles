@@ -77,6 +77,7 @@
       portal-internal = 3281;
       rathole = 3290;
       ntfy = 3300;
+      atuin = 3310;
 
       ipsec-nat-traversal = 4500;
       iperf = 5201;

@@ -17,6 +17,7 @@ in {
       services.acme
       services.ntfy
       services.portal-server
+      services.atuin
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")

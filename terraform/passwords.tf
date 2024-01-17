@@ -305,3 +305,11 @@ output "iperf_hashed_password" {
   value     = "${random_pet.iperf_username.id},${sha256("{${random_pet.iperf_username.id}}${random_password.iperf.result}")}"
   sensitive = true
 }
+resource "random_password" "atuin_yinfeng" {
+  length  = 64
+  special = false
+}
+output "atuin_password_yinfeng" {
+  value     = random_password.atuin_yinfeng.result
+  sensitive = true
+}
