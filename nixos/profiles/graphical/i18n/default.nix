@@ -12,7 +12,8 @@
             rime-ice
           ];
       })
-      mozc
+      # TODO wait for https://github.com/NixOS/nixpkgs/issues/281553
+      # mozc
     ];
     fcitx5.addons = with pkgs; [
       (fcitx5-rime.override {
