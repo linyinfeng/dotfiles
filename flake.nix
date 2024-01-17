@@ -258,8 +258,6 @@
     mobile-nixos.flake = false;
 
     # fixes
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=275980
-    nixpkgs-backblaze-b2.url = "github:linyinfeng/nixpkgs/b2-cli-fix";
   };
 
   outputs = inputs @ {flake-parts, ...}:

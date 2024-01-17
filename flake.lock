@@ -1002,22 +1002,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-backblaze-b2": {
-      "locked": {
-        "lastModified": 1703472619,
-        "narHash": "sha256-G4DViquMGKgzuNmmsjaXknwcOVwQOVo8Rk+oACRinLY=",
-        "owner": "linyinfeng",
-        "repo": "nixpkgs",
-        "rev": "5ab79e192eeea36641574464e37b0f6b9eac5d14",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "ref": "b2-cli-fix",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nvfetcher": {
       "inputs": {
         "flake-compat": [
@@ -1212,7 +1196,6 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-backblaze-b2": "nixpkgs-backblaze-b2",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",
