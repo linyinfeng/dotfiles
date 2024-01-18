@@ -15,6 +15,7 @@
 in {
   imports = [
     ./_syncthing
+    ./_atuin
   ];
 
   users.users.${name} = {
@@ -60,7 +61,6 @@ in {
     profiles,
     ...
   }: {
-    imports = [profiles.atuin];
     home.global-persistence = {
       enable = true;
       home = homeDirectory;
@@ -81,11 +81,4 @@ in {
   };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
-
-  # extra secrets
-  sops.secrets."atuin_password_${name}" = {
-    terraformOutput.enable = true;
-    owner = name;
-    group = config.users.users.${name}.group;
-  };
 }
