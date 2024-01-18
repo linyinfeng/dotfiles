@@ -1,8 +1,6 @@
-{config, ...}:
-let
+{config, ...}: let
   cfg = config.services.atuin;
-in
-{
+in {
   services.atuin = {
     enable = true;
     host = "127.0.0.1";

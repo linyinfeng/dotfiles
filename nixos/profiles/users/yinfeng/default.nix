@@ -55,8 +55,12 @@ in {
   };
 
   environment.global-persistence.user.users = [name];
-  home-manager.users.${name} = {suites, profiles, ...}: {
-    imports = [ profiles.atuin ];
+  home-manager.users.${name} = {
+    suites,
+    profiles,
+    ...
+  }: {
+    imports = [profiles.atuin];
     home.global-persistence = {
       enable = true;
       home = homeDirectory;
