@@ -139,7 +139,7 @@
   in {
     # currently nothing
     # TODO wait for https://github.com/nixos/nixpkgs/pull/281111
-    inherit (latest) element-desktop ffmpeg;
+    inherit (latest) element-desktop ffmpeg hydra_unstable;
   };
 in {
   nixpkgs = {
