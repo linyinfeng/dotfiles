@@ -317,7 +317,8 @@ in
               -verify=false \
               -checktime=false \
               -bind :${toString bgpCfg.gortr.port} \
-              -metrics.addr :${toString bgpCfg.gortr.metricPort}
+              -metrics.addr :${toString bgpCfg.gortr.metricPort} \
+              -rtr.retry 10
           '';
           serviceConfig = {
             DynamicUser = true;
