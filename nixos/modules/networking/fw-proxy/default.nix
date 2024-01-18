@@ -12,28 +12,13 @@
   enableProxy = pkgs.writeShellApplication {
     name = "enable-proxy";
     text = ''
-      PROXY_HOST="localhost"
-      PROXY_PORT="${toString cfg.ports.mixed}"
-
-      export HTTP_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-      export http_proxy="$HTTP_PROXY"
-      export HTTPS_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-      export https_proxy="$HTTPS_PROXY"
-      export NO_PROXY="localhost,127.0.0.0/8,::1,10.0.0.0/8,192.168.0.0/16,172.16.0.0/12"
-      export no_proxy="$NO_PROXY"
+      ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (lib.attrsToList cfg.environment)}
     '';
   };
   disableProxy = pkgs.writeShellApplication {
     name = "disable-proxy";
     text = ''
-      export HTTP_PROXY=""
-      export http_proxy=""
-      export HTTPS_PROXY=""
-      export https_proxy=""
-      export ALL_PROXY=""
-      export all_proxy=""
-      export NO_PROXY=""
-      export no_proxy=""
+      ${lib.concatMapStringsSep "\n" (name: ''export ${name}=""'') (lib.attrNames cfg.environment)}
     '';
   };
   updateSingBoxUrl = pkgs.writeShellApplication {
@@ -379,6 +364,21 @@ in
           type = with types; path;
         };
       };
+      noProxyPattern = mkOption {
+        type = with types; listOf str;
+        default = [
+          "localhost"
+          "127.0.0.0/8"
+          "::1"
+          "10.0.0.0/8"
+          "192.168.0.0/16"
+          "172.16.0.0/12"
+        ];
+      };
+      noProxy = mkOption {
+        type = types.str;
+        default = lib.concatStringsSep "," cfg.noProxyPattern;
+      };
       environment = mkOption {
         type = with types; attrsOf str;
         description = ''
@@ -391,6 +391,8 @@ in
           HTTPS_PROXY = proxyUrl;
           http_proxy = proxyUrl;
           https_proxy = proxyUrl;
+          NO_PROXY = cfg.noProxy;
+          no_proxy = cfg.noProxy;
         };
       };
       environmentContainter = mkOption {
@@ -405,6 +407,8 @@ in
           HTTPS_PROXY = proxyUrl;
           http_proxy = proxyUrl;
           https_proxy = proxyUrl;
+          NO_PROXY = cfg.noProxy;
+          no_proxy = cfg.noProxy;
         };
       };
       stringEnvironment = mkOption {

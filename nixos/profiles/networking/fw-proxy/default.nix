@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   ...
 }: let
@@ -13,6 +14,11 @@ in {
       tproxy = config.ports.proxy-tproxy;
       controller = config.ports.sing-box-controller;
     };
+    noProxyPattern = options.networking.fw-proxy.noProxyPattern.default ++ [
+      "*.ts.li7g.com"
+      "*.zt.li7g.com"
+      "*.dn42.li7g.com"
+    ];
     tproxy = {
       enable = lib.mkDefault true;
       slice = "tproxy";
