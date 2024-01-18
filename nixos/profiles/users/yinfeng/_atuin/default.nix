@@ -12,6 +12,8 @@
         "--disable-up-arrow"
       ];
       settings = {
+        update_check = false;
+        enter_accept = true;
         auto_sync = true;
         sync_frequency = "5m";
         sync_address = "https://atuin.ts.li7g.com";
