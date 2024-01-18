@@ -44,6 +44,9 @@
       };
       Install.WantedBy = ["default.target"];
     };
+    home.global-persistence.directories = [
+      ".local/share/atuin"
+    ];
   };
   sops.secrets."atuin_password_yinfeng" = {
     terraformOutput.enable = true;
