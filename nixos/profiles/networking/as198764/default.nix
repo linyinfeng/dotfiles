@@ -99,7 +99,7 @@ in {
             table as198764_v6;
             import none;
             export filter {
-              if net = ::/0 then krt_prefsrc = ${preferredAddress};
+              if net = ::/0 from ${cidr} then krt_prefsrc = ${preferredAddress};
               accept;
             };
           };
