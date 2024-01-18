@@ -97,7 +97,7 @@ jobs:
       if: steps.plan.outputs.diff == 'true'
       run: |
         set -e
-        nix develop ./dotfiles --command sops exec-file dotfiles/secrets/terraform/infrastructure.yaml 'yq ".ntfy_sh_topic_secret" "{}" > ntfy-topic-secret'
+        nix develop ./dotfiles --command sops exec-file infrastructure-secrets/terraform-outputs.yaml 'yq ".ntfy_sh_topic_secret" "{}" > ntfy-topic-secret'
         stdout_log_url=$(curl -F "c=@logs/terraform-plan.stdout.log" https://pb.li7g.com)
         stderr_log_url=$(curl -F "c=@logs/terraform-plan.stderr.log" https://pb.li7g.com)
         curl \
@@ -210,7 +210,7 @@ jobs:
       if: always()
       run: |
         set -e
-        nix develop ./dotfiles --command sops exec-file dotfiles/secrets/terraform/infrastructure.yaml 'yq ".ntfy_sh_topic_secret" "{}" > ntfy-topic-secret'
+        nix develop ./dotfiles --command sops exec-file infrastructure-secrets/terraform-outputs.yaml 'yq ".ntfy_sh_topic_secret" "{}" > ntfy-topic-secret'
         stdout_log_url=$(curl -F "c=@logs/terraform-apply.stdout.log" https://pb.li7g.com)
         stderr_log_url=$(curl -F "c=@logs/terraform-apply.stderr.log" https://pb.li7g.com)
         curl \
