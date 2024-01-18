@@ -305,12 +305,28 @@ in {
         protocol direct direct_mesh {
           ipv4 {
             table mesh_v4;
-            import filter { if mesh_is_valid_network_v4() then accept; else reject; };
+            import filter {
+              if mesh_is_valid_network_v4() then {
+                print "[dn42/direct_mesh] import ", net;
+                accept;
+              } else {
+                print "[dn42/direct_mesh] reject ", net;
+                reject;
+              }
+            };
             export none;
           };
           ipv6 {
             table mesh_v6;
-            import filter { if mesh_is_valid_network_v6() then accept; else reject; };
+            import filter {
+              if mesh_is_valid_network_v6() then {
+                print "[dn42/direct_mesh] import ", net;
+                accept;
+              } else {
+                print "[dn42/direct_mesh] reject ", net;
+                reject;
+              }
+            };
             export none;
           };
           check link yes;
