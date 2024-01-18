@@ -138,6 +138,8 @@
     };
   in {
     # currently nothing
+    # TODO wait for https://github.com/nixos/nixpkgs/pull/281111
+    inherit (latest) element-desktop;
   };
 in {
   nixpkgs = {
