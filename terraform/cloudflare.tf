@@ -111,7 +111,6 @@ locals {
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
-    cache-overlay   = { on = "lax0", proxy = true }
     hledger         = { on = "mtl0", proxy = true }
     vault           = { on = "mtl0", proxy = true }
     pb              = { on = "mtl0", proxy = true }
@@ -126,6 +125,7 @@ locals {
     matrix-qq       = { on = "shg0", proxy = false }
     teamspeak       = { on = "shg0", proxy = false }
     hydra           = { on = "hil0", proxy = true }
+    cache-overlay   = { on = "hil0", proxy = true }
     matrix          = { on = "hil0", proxy = true }
     matrix-syncv3   = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }

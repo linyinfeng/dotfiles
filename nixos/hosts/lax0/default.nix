@@ -16,7 +16,6 @@ in {
       services.nginx
       services.acme
       services.ace-bot
-      services.cache-overlay
       services.pgp-public-key-web
       services.nuc-proxy
       services.oranc

@@ -62,7 +62,7 @@ in {
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
       ${pkgs.nur.repos.linyinfeng.aws-s3-reverse-proxy}/bin/aws-s3-reverse-proxy \
         --verbose \
-        --allowed-endpoint="cache-overlay.li7g.com" \
+        --allowed-endpoint="cache-overlay.ts.li7g.com" \
         --aws-credentials="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY" \
         --listen-addr=":${toString sigv4ProxyPort}" \
         --allowed-source-subnet=127.0.0.1/8 \
