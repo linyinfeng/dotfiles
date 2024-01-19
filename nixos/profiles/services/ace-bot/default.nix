@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   services.ace-bot = {
     enable = true;
     managerChatId = "148111617";
