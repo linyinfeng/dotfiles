@@ -3,5 +3,5 @@
   lib,
   ...
 }: {
-  nix.package = lib.mkDefault pkgs.nixVersions.selected;
+  nix.package = lib.mkDefault pkgs.nixVersions.stable;
 }

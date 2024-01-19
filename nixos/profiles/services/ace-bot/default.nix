@@ -1,7 +1,5 @@
 {
   config,
-  inputs,
-  pkgs,
   ...
 }: {
   services.ace-bot = {
@@ -17,8 +15,8 @@
       MemorySwapMax = "512M";
       LimitNPROC = "100";
     };
-    path = with pkgs; [
-      nixVersions.selected
+    path = [
+      config.nix.package
       "/var/lib/ace-bot/.nix-profile"
     ];
   };

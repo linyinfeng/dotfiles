@@ -20,12 +20,6 @@
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';
     in {
-      nixVersions =
-        prev.nixVersions.extend
-        (final': prev': {
-          master = inputs'.nix.packages.nix;
-          selected = final'.stable;
-        });
       nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
       pastebin = inputs'.pastebin.packages.default;
       mc-config-nuc = inputs'.mc-config-nuc.packages;
@@ -138,8 +132,6 @@
     };
   in {
     # currently nothing
-    # TODO wait for https://github.com/nixos/nixpkgs/pull/281111
-    inherit (latest) element-desktop jellyfin hydra_unstable;
   };
 in {
   nixpkgs = {
