@@ -37,9 +37,6 @@ in {
 
       proxy_intercept_errors on;
       proxy_set_header Host $pass_with_host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $pass_with_host;
       proxy_set_header Authorization $pass_with_auth;
     '';
@@ -60,10 +57,11 @@ in {
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      export AWS_CREDENTIALS="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY"
+
       ${pkgs.nur.repos.linyinfeng.aws-s3-reverse-proxy}/bin/aws-s3-reverse-proxy \
         --verbose \
         --allowed-endpoint="cache-overlay.ts.li7g.com" \
-        --aws-credentials="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY" \
         --listen-addr=":${toString sigv4ProxyPort}" \
         --allowed-source-subnet=127.0.0.1/8 \
         --allowed-source-subnet=::1/128 \
