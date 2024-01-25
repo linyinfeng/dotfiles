@@ -132,6 +132,13 @@
     };
   in {
     # currently nothing
+    inherit
+      (import inputs.nixpkgs-terraform {
+        inherit system;
+        inherit (config.nixpkgs) config;
+      })
+      terraform
+      ;
   };
 in {
   nixpkgs = {
