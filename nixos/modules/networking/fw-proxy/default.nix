@@ -666,6 +666,7 @@ in
             RestartSec = 30;
           };
           after = ["network-online.target" "sing-box.service"];
+          requires = ["network-online.target"];
         };
         systemd.timers.sing-box-auto-update = {
           timerConfig = {

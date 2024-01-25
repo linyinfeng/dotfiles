@@ -20,7 +20,7 @@
       ];
     };
     after = ["network-online.target" "matrix-synapse.service" "postgresql.service"];
-    wants = ["network-online.target" "matrix-synapse.service" "postgresql.service"];
+    requires = ["network-online.target" "postgresql.service"];
     wantedBy = ["multi-user.target"];
     restartTriggers = [
       config.sops.templates."matrix-qq-config".file

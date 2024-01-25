@@ -76,8 +76,8 @@ in {
       serviceConfig = {
         ExecStart = "${scripts}/bin/campus-net-auto-login";
       };
-      wants = ["network-online.target"];
       after = ["network-online.target"];
+      requires = ["network-online.target"];
       wantedBy = ["multi-user.target"];
     };
   };

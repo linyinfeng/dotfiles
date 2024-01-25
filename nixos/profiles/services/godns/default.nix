@@ -64,6 +64,7 @@ in {
             ${godns} -c ${config.sops.templates."${godnsCfg.fullName}.json".path}
           '';
           after = ["network-online.target"];
+          requires = ["network-online.target"];
           wantedBy = ["multi-user.target"];
         })
       cfg;

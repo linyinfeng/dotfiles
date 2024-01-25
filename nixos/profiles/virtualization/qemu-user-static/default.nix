@@ -21,6 +21,7 @@ lib.mkMerge [
         RemainAfterExit = true;
       };
       after = ["network-online.target"];
+      requires = ["network-online.target"];
       wantedBy = ["multi-user.service"];
     };
   }

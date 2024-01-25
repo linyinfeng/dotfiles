@@ -81,6 +81,7 @@ in {
       // lib.optionalAttrs (config.networking.fw-proxy.enable)
       config.networking.fw-proxy.environment;
     after = ["network-online.target"];
+    requires = ["network-online.target"];
     wantedBy = ["multi-user.target"];
   };
   sops.templates."cowrie-extra-env".content = ''
