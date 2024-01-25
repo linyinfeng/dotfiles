@@ -186,7 +186,6 @@ module "hosts" {
   host_indices        = each.value.host_indices
   dn42_v4_cidr        = var.dn42_v4_cidr
   dn42_v6_cidr        = var.dn42_v6_cidr
-  as198764_v6_cidr    = var.as198764_v6_cidr
   endpoints_v4        = each.value.endpoints_v4
   endpoints_v6        = each.value.endpoints_v6
   ca_cert_pem         = tls_self_signed_cert.ca.cert_pem

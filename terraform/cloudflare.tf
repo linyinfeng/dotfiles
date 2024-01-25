@@ -201,15 +201,6 @@ resource "cloudflare_record" "dns" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "any" {
-  name    = "any"
-  proxied = false
-  ttl     = 1
-  type    = "AAAA"
-  value   = var.as198764_anycast_address
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 # localhost record
 
 resource "cloudflare_record" "localhost_a" {

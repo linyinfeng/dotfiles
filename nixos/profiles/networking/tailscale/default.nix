@@ -39,7 +39,6 @@ in {
       # mesh interfaces
       "mesh"
       "dn42"
-      "as198764"
     ];
   };
   sops.secrets."tailscale_tailnet_key" = {

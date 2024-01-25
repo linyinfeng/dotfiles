@@ -92,7 +92,6 @@ in {
     # mesh interfaces
     "mesh"
     "dn42"
-    "as198764"
   ];
 
   networking.networkmanager.unmanaged = [interfaceName];
