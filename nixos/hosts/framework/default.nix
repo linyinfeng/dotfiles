@@ -19,7 +19,6 @@
 in {
   imports =
     suites.mobileWorkstation
-    ++ suites.games
     ++ (with profiles; [
       boot.systemd-initrd
       boot.secure-boot
@@ -59,10 +58,6 @@ in {
       boot.kernelModules = ["kvm-intel"];
 
       hardware.enableRedistributableFirmware = true;
-      programs.steam.hidpi = {
-        enable = true;
-        scale = "2";
-      };
 
       services.xserver.desktopManager.gnome.enable = true;
       services.power-profiles-daemon.enable = false;

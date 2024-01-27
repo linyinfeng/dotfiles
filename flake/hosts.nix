@@ -71,7 +71,6 @@
       ++ (with profiles; [development.ides]);
     virtualization = with profiles; [
       virtualization.libvirt
-      virtualization.wine
       virtualization.podman
     ];
     games = with profiles.graphical.game; [steam];
