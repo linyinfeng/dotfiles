@@ -50,6 +50,7 @@ in {
     ])
     ++ [
       ./_minecraft
+      ./_steam
     ];
 
   config = lib.mkMerge [
@@ -129,11 +130,15 @@ in {
           domains = [
             {
               domain_name = "li7g.com";
-              sub_domains = ["nuc" "mc"];
+              sub_domains = ["nuc"];
             }
           ];
           ip_type = "IPv4";
-          ip_urls = ["https://ifconfig.me"];
+          ip_urls = [
+            "https://api.ipify.org"
+            "https://myip.biturl.top"
+            "https://api-ipv4.ip.sb/ip"
+          ];
         };
         ipv6.settings = {
           domains = [

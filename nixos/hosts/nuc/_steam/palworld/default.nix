@@ -1,0 +1,117 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.palworld;
+  gameHome = config.users.users.steam.home;
+  rootDir' = "Games/palworld";
+  rootDir = "${gameHome}/${rootDir'}";
+  configFilePath = "${rootDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini";
+  defaultConfigFilePath = "${rootDir}/DefaultPalWorldSettings.ini";
+  appId = "2394010";
+in {
+  imports = [
+    ./backup.nix
+  ];
+  options = {
+    services.palworld = {
+      saveDirectory = lib.mkOption {
+        type = lib.types.str;
+        default = "${rootDir}/Pal/Saved";
+        readOnly = true;
+      };
+      settings = lib.mkOption {
+        type = with lib.types; attrsOf str;
+        default = {};
+      };
+      secretSettings = lib.mkOption {
+        type = with lib.types; attrsOf str;
+        default = {};
+      };
+    };
+  };
+  config = {
+    services.palworld.settings = {
+      ServerName = ''"palworld.li7g.com"'';
+      ServerDescription = ''"Palworld Server of li7g.com"'';
+      PublicPort = toString config.ports.palworld;
+      RCONEnabled = "True";
+      RCONPort = toString config.ports.palworld-rcon;
+      bIsMultiplay = "True";
+    };
+    services.palworld.secretSettings = {
+      AdminPassword = ''echo \""$(cat "$CREDENTIALS_DIRECTORY/admin-password")"\" '';
+      ServerPassword = ''echo \""$(cat "$CREDENTIALS_DIRECTORY/server-password")"\" '';
+    };
+
+    home-manager.users.steam.home.global-persistence.directories = [
+      rootDir'
+    ];
+    systemd.services.palworld = {
+      preStart = ''
+        # install game
+        steamcmd \
+          +force_install_dir "${rootDir}" \
+          +login anonymous \
+          +app_update "${appId}" validate \
+          +quit
+
+        # link sdk
+        mkdir -p ${gameHome}/.steam/sdk64
+        ln --symbolic --force --verbose ${rootDir}/linux64/steamclient.so ${gameHome}/.steam/sdk64/.
+
+        # modify settings
+        mkdir --parents --verbose $(dirname "${configFilePath}")
+        cp --verbose "${defaultConfigFilePath}" "${configFilePath}"
+
+        ${
+          lib.concatMapStringsSep "\n" (s: ''
+            sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}=${s.value}\1/' "${configFilePath}"
+          '') (lib.attrsToList cfg.settings)
+        }
+        ${
+          lib.concatMapStringsSep "\n" (s: ''
+            ( value=$(${s.value})
+              sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}='"$value"'\1/' "${configFilePath}" )
+          '') (lib.attrsToList cfg.secretSettings)
+        }
+      '';
+      script = ''
+        steam-run ./PalServer.sh -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS
+      '';
+      # preStop = ''
+      # '';
+      path = with pkgs; [steamcmd steam-run];
+      serviceConfig = {
+        User = "steam";
+        Group = "steam";
+        CPUQuota = "400%"; # at most 4 core (8 cores in total)
+        WorkingDirectory = "-${rootDir}";
+        MemoryMax = "16G";
+        Restart = "always";
+        RuntimeMaxSec = "4h";
+        LoadCredential = [
+          "admin-password:${config.sops.secrets."palworld_admin_password".path}"
+          "server-password:${config.sops.secrets."palworld_server_password".path}"
+        ];
+      };
+      wantedBy = ["multi-user.target"];
+    };
+    networking.firewall.allowedTCPPorts = [
+      config.ports.palworld-rcon
+    ];
+    networking.firewall.allowedUDPPorts = [
+      config.ports.palworld
+    ];
+    sops.secrets."palworld_admin_password" = {
+      terraformOutput.enable = true;
+      restartUnits = ["palworld.service"];
+    };
+    sops.secrets."palworld_server_password" = {
+      terraformOutput.enable = true;
+      restartUnits = ["palworld.service"];
+    };
+  };
+}

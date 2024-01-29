@@ -84,6 +84,8 @@
       babel = 6696;
       http-alternative = 8080;
       jellyfin = 8096;
+      palworld = 8211;
+      palworld-rcon = 8212;
       https-alternative = 8443;
       zerotier = 9993;
       dn42-mesh-min = 19000;

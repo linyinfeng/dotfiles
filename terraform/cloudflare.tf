@@ -139,6 +139,8 @@ locals {
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     nextcloud       = { on = "nuc", proxy = false }
+    palworld        = { on = "nuc", proxy = false }
+    mc              = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {
