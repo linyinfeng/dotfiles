@@ -11,6 +11,15 @@
   configFilePath = "${rootDir}/Pal/Saved/Config/LinuxServer/PalWorldSettings.ini";
   defaultConfigFilePath = "${rootDir}/DefaultPalWorldSettings.ini";
   appId = "2394010";
+  palworldRcon = pkgs.writeShellApplication {
+    name = "palworld-rcon";
+    runtimeInputs = with pkgs; [nur.repos.linyinfeng.rcon-cli];
+    text = ''
+      gorcon --address "localhost:${toString config.ports.palworld-rcon}" \
+             --password "$(cat "${config.sops.secrets."palworld_admin_password".path}")" \
+             "$@"
+    '';
+  };
 in {
   imports = [
     ./backup.nix
@@ -79,19 +88,32 @@ in {
         }
       '';
       script = ''
-        steam-run ./PalServer.sh -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS
+        function shutdown() {
+          echo "sending save command..."
+          palworld-rcon save
+          echo "sending shutdown command..."
+          palworld-rcon "shutdown 1"
+          echo "waiting for exit..."
+          wait "$killpid"
+          echo "exiting..."
+          exit 0
+        }
+        trap 'shutdown' SIGTERM
+        steam-run ./PalServer.sh -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS &
+        killpid="$!"
+        wait "$killpid"
       '';
-      # preStop = ''
-      # '';
-      path = with pkgs; [steamcmd steam-run];
+      path = with pkgs; [steamcmd steam-run palworldRcon];
       serviceConfig = {
         User = "steam";
         Group = "steam";
         CPUQuota = "400%"; # at most 4 core (8 cores in total)
         WorkingDirectory = "-${rootDir}";
+        Restart = "on-failure";
         MemoryMax = "16G";
-        Restart = "always";
         RuntimeMaxSec = "4h";
+        KillMode = "mixed";
+        TimeoutStopSec = "5m";
         LoadCredential = [
           "admin-password:${config.sops.secrets."palworld_admin_password".path}"
           "server-password:${config.sops.secrets."palworld_server_password".path}"
@@ -99,6 +121,7 @@ in {
       };
       wantedBy = ["multi-user.target"];
     };
+    environment.systemPackages = [palworldRcon];
     networking.firewall.allowedTCPPorts = [
       config.ports.palworld-rcon
     ];
@@ -108,10 +131,12 @@ in {
     sops.secrets."palworld_admin_password" = {
       terraformOutput.enable = true;
       restartUnits = ["palworld.service"];
+      owner = "steam";
     };
     sops.secrets."palworld_server_password" = {
       terraformOutput.enable = true;
       restartUnits = ["palworld.service"];
+      owner = "steam";
     };
   };
 }
