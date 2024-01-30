@@ -60,6 +60,9 @@ in
         ];
         welcome-dialog-last-shown-version = "43.1";
       };
+      "org/gnome/mutter" = {
+        edge-tiling = true;
+      };
       "org/gnome/desktop/interface" = {
         gtk-theme = "adw-gtk3";
         clock-show-weekday = true;
