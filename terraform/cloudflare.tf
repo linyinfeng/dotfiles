@@ -225,15 +225,16 @@ resource "cloudflare_record" "localhost_aaaa" {
 
 # ad-hoc ddns record
 
-resource "cloudflare_record" "mc" {
-  name    = "mc"
-  proxied = false
-  ttl     = 1
-  type    = "A"
-  value   = "127.0.0.1"
-  zone_id = cloudflare_zone.com_li7g.id
-  lifecycle { ignore_changes = [value] }
-}
+# currently nothing
+# resource "cloudflare_record" "mc" {
+#   name    = "mc"
+#   proxied = false
+#   ttl     = 1
+#   type    = "A"
+#   value   = "127.0.0.1"
+#   zone_id = cloudflare_zone.com_li7g.id
+#   lifecycle { ignore_changes = [value] }
+# }
 
 # smtp records for sending
 
