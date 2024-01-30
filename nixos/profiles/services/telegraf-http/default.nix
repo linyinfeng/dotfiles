@@ -47,6 +47,13 @@
         code = 200;
       }
     ];
+    mc = [
+      {
+        url = "https://mc.ts.li7g.com";
+        code = 200;
+      }
+    ];
+    palworld = [];
     dst = [];
     smtp = [];
     teamspeak = [];
