@@ -314,7 +314,7 @@ output "atuin_password_yinfeng" {
   sensitive = true
 }
 resource "random_password" "palworld_admin" {
-  length  = 32
+  length  = 16
   special = false
 }
 output "palworld_admin_password" {
@@ -322,7 +322,7 @@ output "palworld_admin_password" {
   sensitive = true
 }
 resource "random_password" "palworld_server" {
-  length  = 32
+  length  = 16
   special = false
 }
 output "palworld_server_password" {
