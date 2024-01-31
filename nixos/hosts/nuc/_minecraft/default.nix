@@ -70,7 +70,7 @@ in {
     wantedBy = ["multi-user.target"];
   };
   networking.firewall.allowedTCPPorts = [port rconPort];
-  networking.firewall.allowedUDPPorts = [port rconPort];
+  networking.firewall.allowedUDPPorts = [port];
 
   sops.secrets."rcon_password" = {
     terraformOutput.enable = true;

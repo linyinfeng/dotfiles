@@ -78,14 +78,16 @@
       rathole = 3290;
       ntfy = 3300;
       atuin = 3310;
+      palworld = 3320;
+      palworld-rcon = 3321;
+      palworld-query = 3322;
+      vlmcsd = 3330;
+      jellyfin = 3340;
+      iperf = 3350;
 
       ipsec-nat-traversal = 4500;
-      iperf = 5201;
       babel = 6696;
       http-alternative = 8080;
-      jellyfin = 8096;
-      palworld = 8211;
-      palworld-rcon = 8212;
       https-alternative = 8443;
       zerotier = 9993;
       dn42-mesh-min = 19000;
@@ -102,8 +104,6 @@
       teamspeak-query = 10011;
       syncthing-discovery-yinfeng = 21027; # TODO change to 3221
       syncthing-transfer-yinfeng = 22000; # TODO change to 3231
-      plex = 32400;
-      vlmcsd = 40044;
       tailscale = 41641;
       wireguard = 51820;
     };

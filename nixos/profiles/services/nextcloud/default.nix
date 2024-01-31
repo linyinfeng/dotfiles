@@ -74,7 +74,7 @@ in {
       dbtype = "pgsql";
       adminpassFile = config.sops.secrets."nextcloud_admin_password".path;
     };
-    extraOptions = {
+    settings = {
       trusted_domains = [
         "nextcloud.ts.li7g.com"
         "nextcloud.dn42.li7g.com"

@@ -35,9 +35,9 @@ in {
         type = with lib.types; attrsOf str;
         default = {};
       };
-      secretSettings = lib.mkOption {
-        type = with lib.types; attrsOf str;
-        default = {};
+      extraOptions = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = [];
       };
     };
   };
@@ -50,10 +50,13 @@ in {
       RCONPort = toString config.ports.palworld-rcon;
       bIsMultiplay = "True";
     };
-    services.palworld.secretSettings = {
-      AdminPassword = ''echo \""$(cat "$CREDENTIALS_DIRECTORY/admin-password")"\" '';
-      ServerPassword = ''echo \""$(cat "$CREDENTIALS_DIRECTORY/server-password")"\" '';
-    };
+    services.palworld.extraOptions = [
+      "-servername=palworld.li7g.com"
+      "EpicApp=PalServer"
+      "-useperfthreads"
+      "-NoAsyncLoadingThread"
+      "-UseMultithreadForDS"
+    ];
 
     home-manager.users.steam.home.global-persistence.directories = [
       rootDir'
@@ -80,12 +83,6 @@ in {
             sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}=${s.value}\1/' "${configFilePath}"
           '') (lib.attrsToList cfg.settings)
         }
-        ${
-          lib.concatMapStringsSep "\n" (s: ''
-            ( value=$(${s.value})
-              sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}='"$value"'\1/' "${configFilePath}" )
-          '') (lib.attrsToList cfg.secretSettings)
-        }
       '';
       script = ''
         function shutdown() {
@@ -99,7 +96,11 @@ in {
           exit 0
         }
         trap 'shutdown' SIGTERM
-        steam-run ./PalServer.sh -useperfthreads -NoAsyncLoadingThread -UseMultithreadForDS &
+        steam-run ./PalServer.sh \
+          -serverpassword="$(cat "$CREDENTIALS_DIRECTORY/server-password")" \
+          -adminpassword="$(cat "$CREDENTIALS_DIRECTORY/admin-password")" \
+          ${lib.escapeShellArgs cfg.extraOptions} \
+          &
         killpid="$!"
         wait "$killpid"
       '';
@@ -127,6 +128,7 @@ in {
     ];
     networking.firewall.allowedUDPPorts = [
       config.ports.palworld
+      config.ports.palworld-query
     ];
     sops.secrets."palworld_admin_password" = {
       terraformOutput.enable = true;
