@@ -167,7 +167,8 @@
         }
         trap cleanup EXIT
 
-        mapfile -t hosts < <(nix eval .#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
+        flake="$(realpath "$DOTFILES_DIR")"
+        mapfile -t hosts < <(nix eval "$flake"#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
         for name in "''${hosts[@]}"; do
           message "start extracting secrets for $name..."
 
@@ -176,7 +177,7 @@
           target_file="$SECRETS_EXTRACT_DIR/terraform/hosts/$name.yaml"
 
           message "creating '$(basename "$template_file")'..."
-          nix eval "$DOTFILES_DIR"#nixosConfigurations."$name".config.sops.terraformTemplate --raw >"$template_file"
+          nix eval "$flake"#nixosConfigurations."$name".config.sops.terraformTemplate --raw >"$template_file"
 
           message "creating '$(basename "$plain_file")'..."
           sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
