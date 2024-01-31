@@ -193,11 +193,11 @@
       env = [
         {
           name = "DOTFILES_DIR";
-          eval = "\${DOTFILES_DIR:-$PRJ_ROOT}";
+          eval = "\${DOTFILES_DIR:-$(realpath \"$PRJ_ROOT\")}";
         }
         {
           name = "TERRAFORM_DIR";
-          eval = "\${TERRAFORM_DIR:-$DOTFILES_DIR/terraform}";
+          eval = "\${TERRAFORM_DIR:-$(realpath \"$DOTFILES_DIR/terraform\")}";
         }
         {
           name = "SECRETS_DIR";
@@ -205,15 +205,15 @@
         }
         {
           name = "TF_VAR_terraform_input_path";
-          eval = "\${TF_VAR_terraform_input_path:-$SECRETS_DIR/terraform-inputs.yaml}";
+          eval = "\${TF_VAR_terraform_input_path:-$(realpath \"$SECRETS_DIR/terraform-inputs.yaml\")}";
         }
         {
           name = "DATA_EXTRACT_DIR";
-          eval = "\${DATA_EXTRACT_DIR:-$DOTFILES_DIR/lib/data}";
+          eval = "\${DATA_EXTRACT_DIR:-$(realpath \"$DOTFILES_DIR/lib/data\")}";
         }
         {
           name = "SECRETS_EXTRACT_DIR";
-          eval = "\${SECRETS_EXTRACT_DIR:-$DOTFILES_DIR/secrets}";
+          eval = "\${SECRETS_EXTRACT_DIR:-$(realpath \"$DOTFILES_DIR/secrets\")}";
         }
       ];
       commands = [
