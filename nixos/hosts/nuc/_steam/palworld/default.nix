@@ -70,10 +70,6 @@ in {
           +app_update "${appId}" validate \
           +quit
 
-        # link sdk
-        mkdir -p ${gameHome}/.steam/sdk64
-        ln --symbolic --force --verbose ${rootDir}/linux64/steamclient.so ${gameHome}/.steam/sdk64/.
-
         # modify settings
         mkdir --parents --verbose $(dirname "${configFilePath}")
         cp --verbose "${defaultConfigFilePath}" "${configFilePath}"
@@ -96,6 +92,9 @@ in {
           exit 0
         }
         trap 'shutdown' SIGTERM
+
+        # fix loading of steamclient.so
+        export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:${rootDir}/linux64"
         steam-run ./PalServer.sh \
           -serverpassword="$(cat "$CREDENTIALS_DIRECTORY/server-password")" \
           -adminpassword="$(cat "$CREDENTIALS_DIRECTORY/admin-password")" \
@@ -105,6 +104,9 @@ in {
         wait "$killpid"
       '';
       path = with pkgs; [steamcmd steam-run palworldRcon];
+      environment =
+        lib.mkIf (config.networking.fw-proxy.enable)
+        config.networking.fw-proxy.environment;
       serviceConfig = {
         User = "steam";
         Group = "steam";
