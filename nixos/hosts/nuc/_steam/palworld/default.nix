@@ -104,9 +104,6 @@ in {
         wait "$killpid"
       '';
       path = with pkgs; [steamcmd steam-run palworldRcon];
-      environment =
-        lib.mkIf (config.networking.fw-proxy.enable)
-        config.networking.fw-proxy.environment;
       serviceConfig = {
         User = "steam";
         Group = "steam";
