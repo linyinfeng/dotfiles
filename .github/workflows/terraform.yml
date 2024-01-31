@@ -12,11 +12,8 @@ concurrency: push-to-main
 
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
-  TERRAFORM_DIR: dotfiles/terraform
+  DOTFILES_DIR: dotfiles
   SECRETS_DIR: infrastructure-secrets
-  TF_VAR_terraform_input_path: ${{ github.workspace }}/infrastructure-secrets/terraform-inputs.yaml
-  DATA_EXTRACT_DIR: dotfiles/lib/data
-  SECRETS_EXTRACT_DIR: dotfiles/secrets
 
 jobs:
   plan:

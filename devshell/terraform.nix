@@ -176,7 +176,7 @@
           target_file="$SECRETS_EXTRACT_DIR/terraform/hosts/$name.yaml"
 
           message "creating '$(basename "$template_file")'..."
-          nix eval .#nixosConfigurations."$name".config.sops.terraformTemplate --raw >"$template_file"
+          nix eval "$DOTFILES_DIR"#nixosConfigurations."$name".config.sops.terraformTemplate --raw >"$template_file"
 
           message "creating '$(basename "$plain_file")'..."
           sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
@@ -192,8 +192,12 @@
     devshells.default = {
       env = [
         {
+          name = "DOTFILES_DIR";
+          eval = "\${DOTFILES_DIR:-$PRJ_ROOT}";
+        }
+        {
           name = "TERRAFORM_DIR";
-          eval = "\${TERRAFORM_DIR:-$PRJ_ROOT/terraform}";
+          eval = "\${TERRAFORM_DIR:-$DOTFILES_DIR/terraform}";
         }
         {
           name = "SECRETS_DIR";
@@ -205,11 +209,11 @@
         }
         {
           name = "DATA_EXTRACT_DIR";
-          eval = "\${DATA_EXTRACT_DIR:-$PRJ_ROOT/lib/data}";
+          eval = "\${DATA_EXTRACT_DIR:-$DOTFILES_DIR/lib/data}";
         }
         {
           name = "SECRETS_EXTRACT_DIR";
-          eval = "\${SECRETS_EXTRACT_DIR:-$PRJ_ROOT/secrets}";
+          eval = "\${SECRETS_EXTRACT_DIR:-$DOTFILES_DIR/secrets}";
         }
       ];
       commands = [
