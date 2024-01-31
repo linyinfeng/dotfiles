@@ -170,12 +170,14 @@ jobs:
       if: always()
       run: |
         nix develop ./dotfiles --command terraform-update-outputs
-    - name: Terraform extract secret and data
+    - name: Terraform extract data
       if: always()
       run: |
-        set -e
-        nix develop ./dotfiles --command terraform-outputs-extract-secrets
         nix develop ./dotfiles --command terraform-outputs-extract-data
+    - name: Terraform extract secrets
+      if: always()
+      run: |
+        nix develop ./dotfiles --command terraform-outputs-extract-secrets        
     - name: Format
       if: always()
       run: |
