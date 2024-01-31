@@ -43,15 +43,15 @@ in {
   };
   config = {
     services.palworld.settings = {
-      ServerName = ''"palworld.li7g.com"'';
-      ServerDescription = ''"Palworld Server of li7g.com"'';
-      PublicPort = toString config.ports.palworld;
-      RCONEnabled = "True";
-      RCONPort = toString config.ports.palworld-rcon;
-      bIsMultiplay = "True";
+      # currently nothing
     };
     services.palworld.extraOptions = [
       "-servername=palworld.li7g.com"
+      "-port=${toString config.ports.palworld}"
+      "-publicport=${toString config.ports.palworld}"
+      "-queryport=${toString config.ports.palworld-query}"
+      "-RCONEnabled=true"
+      "-RCONPort=${toString config.ports.palworld-rcon}"
       "EpicApp=PalServer"
       "-useperfthreads"
       "-NoAsyncLoadingThread"
@@ -110,7 +110,7 @@ in {
         Group = "steam";
         CPUQuota = "400%"; # at most 4 core (8 cores in total)
         WorkingDirectory = "-${rootDir}";
-        Restart = "on-failure";
+        Restart = "always";
         MemoryMax = "16G";
         RuntimeMaxSec = "4h";
         KillMode = "mixed";
