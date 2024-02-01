@@ -33,6 +33,7 @@ in {
       # services.seafile
       services.commit-notifier
       services.pastebin
+      services.http-test
       services.static-file-hosting
       services.telegraf-http
       services.prebuilt-zip

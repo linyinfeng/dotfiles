@@ -66,6 +66,10 @@
       "on": "mtl0",
       "proxy": true
     },
+    "http-test": {
+      "on": "mtl0",
+      "proxy": true
+    },
     "hydra": {
       "on": "hil0",
       "proxy": true
