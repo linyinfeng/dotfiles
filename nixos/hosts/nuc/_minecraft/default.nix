@@ -24,10 +24,8 @@ in {
         sed -i "/^rcon.password=/ s/=.*/=$rcon_password/" server.properties
         sed -i "/^rcon.port=/ s/=.*/=${toString rconPort}/" server.properties
         sed -i "/^motd=/ s/=.*/=mc.li7g.com/" server.properties
-        # # disable online-mode
-        # sed -i "/^online-mode=/ s/=.*/=false/" server.properties
-        # disable enforce-secure-profile
-        sed -i "/^enforce-secure-profile=/ s/=.*/=false/" server.properties
+        sed -i "/^online-mode=/ s/=.*/=true/" server.properties
+        sed -i "/^enforce-secure-profile=/ s/=.*/=true/" server.properties
       fi
 
       if [ -f dynmap/configuration.txt ]; then
