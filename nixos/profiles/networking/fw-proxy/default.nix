@@ -66,7 +66,7 @@ in
 
       networking.fw-proxy.auto-update = {
         enable = true;
-        service = "exclusive";
+        service = "main";
       };
 
       systemd.services.nix-daemon.environment = cfg.environment;
