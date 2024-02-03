@@ -119,15 +119,9 @@ in
         users = usersCfg;
       };
 
-      system.activationScripts.ensurePersistenceRootExists = {
-        text = ''
-          if [ ! -d "${cfg.root}" ]; then
-            echo "Warning: global persistence storage '${cfg.root}' is not presented, create a fake one for test only."
-            mkdir -p "${cfg.root}"
-          fi
-        '';
-      };
-      system.activationScripts.${activationScriptName}.deps = ["ensurePersistenceRootExists"];
+      systemd.tmpfiles.rules = [
+        "d ${cfg.root} 755 root root - -"
+      ];
 
       environment.systemPackages = [
         cfg.persistMigrate
