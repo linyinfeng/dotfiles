@@ -38,11 +38,7 @@
           #   session-cleanup-script=${pkgs.procps}/bin/pkill -P1 -fx ${pkgs.lightdm}/sbin/lightdm
           # '';
         };
-        desktopManager.plasma5.mobile = {
-          enable = true;
-          # TODO undefined variable 'libsForQt5'
-          installRecommendedSoftware = false;
-        };
+        desktopManager.plasma5.mobile.enable = true;
         displayManager.autoLogin = {
           enable = true;
           user = "yinfeng";
