@@ -26,8 +26,6 @@ in
           ];
         tproxy = {
           enable = lib.mkDefault true;
-          slice = "tproxy";
-          bypassSlice = "bypasstproxy";
           routingTable = config.routingTables.fw-proxy;
           rulePriority = config.routingPolicyPriorities.fw-proxy;
         };

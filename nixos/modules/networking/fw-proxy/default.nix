@@ -170,8 +170,7 @@
       systemd
     ];
     text = ''
-      cgroup_path="${cfg.tproxy.slice}"
-      exec systemd-run --pipe --slice="$cgroup_path" "$@"
+      exec systemd-run --user --property=NFTSet="${cfg.tproxy.nftSet}" --pipe --pty --wait "$@"
     '';
   };
   tproxyCgroup = pkgs.writeShellApplication {
@@ -300,18 +299,22 @@ in
           type = with types; int;
           default = 26000;
         };
+        # TODO wait for https://github.com/systemd/systemd/issues/31189
+        # currently can not contain '-'
         nftTable = mkOption {
           type = with types; str;
           # tproxy is a keyword in nft
-          default = "fw-tproxy";
+          default = "fwtproxy";
         };
-        slice = mkOption {
+        nftSet = mkOption {
           type = with types; str;
-          default = "tproxy";
+          default = "cgroup:inet:${cfg.tproxy.nftTable}:cgroups";
         };
-        bypassSlice = mkOption {
+        # TODO wait for https://github.com/systemd/systemd/issues/31189
+        # currently can not contain '-'
+        bypassNftSet = mkOption {
           type = with types; str;
-          default = "bypasstproxy";
+          default = "cgroup:inet:${cfg.tproxy.nftTable}:bypass";
         };
         maxCgroupLevel = mkOption {
           type = with types; int;
@@ -481,10 +484,10 @@ in
             ConfigurationDirectoryMode = "700";
 
             StateDirectory = "sing-box";
-
-            # TODO wait for https://github.com/systemd/systemd/pull/29039
-            Slice = lib.mkIf (cfg.tproxy.enable) "${cfg.tproxy.bypassSlice}.slice";
+            NFTSet = [cfg.tproxy.bypassNftSet];
           };
+          after = ["nftables.service"];
+          requires = ["nftables.service"];
           wantedBy = ["multi-user.target"];
         };
 
@@ -583,13 +586,11 @@ in
             set cgroups {
               type cgroupsv2
               counter
-              elements = { "${cfg.tproxy.slice}.slice" }
             }
 
-            set cgroups-bypass {
+            set bypass {
               type cgroupsv2
               counter
-              elements = { "${cfg.tproxy.bypassSlice}.slice" }
             }
 
             chain prerouting {
@@ -616,7 +617,7 @@ in
 
               comment "marked packets will be routed to lo"
 
-              socket cgroupv2 level 1 @cgroups-bypass counter return comment "bypass packets of proxy service"
+              socket cgroupv2 level 2 @bypass counter return comment "bypass packets of proxy service"
 
               jump filter
 
@@ -634,23 +635,12 @@ in
           '';
         };
         networking.nftables.preCheckRuleset = ''
+          # Error: Could not process rule: Operation not supported
           sed 's/^.*socket cgroupv2.*$//g' -i ruleset.conf
-          sed 's/elements = { ".*\.slice" }//g' -i ruleset.conf
         '';
         networking.firewall.extraInputRules = ''
           meta mark ${toString cfg.tproxy.fwmark} counter accept
         '';
-
-        systemd.slices = {
-          ${cfg.tproxy.slice} = {
-            requiredBy = ["nftables.service"];
-            before = ["nftables.service"];
-          };
-          ${cfg.tproxy.bypassSlice} = {
-            requiredBy = ["nftables.service"];
-            before = ["nftables.service"];
-          };
-        };
 
         passthru.fw-proxy-tproxy-scripts = scripts;
       })
