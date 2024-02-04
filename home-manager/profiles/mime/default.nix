@@ -196,7 +196,7 @@ in {
     enable = true;
     defaultApplications =
       buildMap ["firefox.desktop"] webFormats
-      // buildMap ["org.gnome.eog.desktop"] imageFormats
+      // buildMap ["org.gnome.Loupe.desktop"] imageFormats
       // buildMap ["org.gnome.FileRoller.desktop"] archiveFormats
       // buildMap ["io.bassi.Amberol.desktop"] audioFormats
       // buildMap ["vlc.desktop"] videoFormats
