@@ -76,9 +76,9 @@
   boot = {
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages = let
-      version = "6.5";
-      versionIntel = "240104T134258Z";
-      hash = "sha256-zlI22ZIfaUlP5wd92Rax4GrVcB+LnzrCecaBgpPAC0U=";
+      version = "6.7";
+      versionIntel = "240110T080436Z";
+      hash = "sha256-mGGugqK6QNhI/4X/pRiGoBPzpb8RZP6Xuwb3Ccg0+X0=";
       major = lib.versions.major version;
       minor = lib.versions.minor version;
       linux_intel_fn = {
