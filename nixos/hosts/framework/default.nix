@@ -41,7 +41,8 @@ in {
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      hardware.sr-iov
+      # TODO not supported on current kernel
+      # hardware.sr-iov
       users.yinfeng
     ])
     ++ [
