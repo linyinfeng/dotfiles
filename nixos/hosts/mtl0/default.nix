@@ -27,10 +27,7 @@ in {
       services.minio
       services.vaultwarden
       services.gitweb
-      # TODO wait for https://github.com/NixOS/nixpkgs/issues/258719
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=249523
-      # the service is not actively using, so just disable it
-      # services.seafile
+      services.seafile
       services.commit-notifier
       services.pastebin
       services.http-test

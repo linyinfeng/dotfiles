@@ -12,8 +12,7 @@ in {
       element-desktop
       fractal
       gimp
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=281017
-      # gnuradio
+      gnuradio
       gparted
       inkscape
       libreoffice-fresh

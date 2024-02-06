@@ -16,9 +16,6 @@
   environment.systemPackages = with pkgs; [
     yubikey-manager
     pcsctools
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=281421
-    pcscliteWithPolkit.out
   ];
 
   # disabled

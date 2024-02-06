@@ -61,12 +61,10 @@
   };
   overrides = {
     box = [
-      # TODO wait for https://github.com/NixOS/nixpkgs/issues/258719
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=249523
-      # {
-      #   url = "https://box.li7g.com/accounts/login/?next=/";
-      #   code = 200;
-      # }
+      {
+        url = "https://box.li7g.com/accounts/login/?next=/";
+        code = 200;
+      }
     ];
     tar = [
       {
