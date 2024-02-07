@@ -8,7 +8,7 @@
   rawEmacsConfig = ./init.el;
   emacs = pkgs.emacsWithPackagesFromUsePackage {
     config = rawEmacsConfig;
-    package = pkgs.emacs-pgtk;
+    package = pkgs.emacs;
     alwaysEnsure = false;
     override = epkgs:
       epkgs
