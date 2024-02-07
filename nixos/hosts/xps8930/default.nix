@@ -118,11 +118,12 @@ in {
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "uas" "sd_mod" "sr_mod"];
   boot.initrd.luks.devices = {
     crypt-root = {
-      device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e";
+      device = "/dev/disk/by-uuid/29bb6dbb-7348-42a0-a9e9-6e7daa89d32e"; # ssd
       allowDiscards = true;
+      bypassWorkqueues = true;
     };
     crypt-data = {
-      device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea";
+      device = "/dev/disk/by-uuid/0f9a546e-f458-46d9-88a4-4f6b157579ea"; # hdd
       allowDiscards = true;
     };
   };
