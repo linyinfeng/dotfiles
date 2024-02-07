@@ -74,11 +74,19 @@
   };
 
   boot = {
+    # https://github.com/intel/linux-intel-lts/tags
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages = let
-      version = "6.7";
-      versionIntel = "240110T080436Z";
-      hash = "sha256-mGGugqK6QNhI/4X/pRiGoBPzpb8RZP6Xuwb3Ccg0+X0=";
+      kind = "lts";
+      repo =
+        if kind == "lts"
+        then "linux-intel-lts"
+        else if kind == "mainline-tracking"
+        then "mainline-tracking"
+        else throw "invalid intel kernel kind \"${kind}\"";
+      version = "6.6.14";
+      versionIntel = "240205T072842Z";
+      hash = "sha256-UGJ/y3fr7q2ThORkEGzDKNZ15XL/YDDJ84NVYSuGrZo=";
       major = lib.versions.major version;
       minor = lib.versions.minor version;
       linux_intel_fn = {
@@ -97,8 +105,8 @@
             extraMeta.branch = lib.versions.majorMinor version;
             src = fetchFromGitHub {
               owner = "intel";
-              repo = "mainline-tracking";
-              rev = "mainline-tracking-v${version}-linux-${versionIntel}";
+              inherit repo;
+              rev = "${kind}-v${version}-linux-${versionIntel}";
               inherit hash;
             };
           }
