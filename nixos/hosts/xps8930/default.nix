@@ -21,7 +21,6 @@ in {
   imports =
     suites.workstation
     ++ (with profiles; [
-      boot.systemd-initrd
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server

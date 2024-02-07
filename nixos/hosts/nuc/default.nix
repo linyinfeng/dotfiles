@@ -24,7 +24,6 @@ in {
     ++ suites.development
     ++ suites.virtualization
     ++ (with profiles; [
-      boot.systemd-initrd
       nix.access-tokens
       nix.hydra-builder-server
       nix.nixbuild

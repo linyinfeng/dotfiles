@@ -16,6 +16,7 @@
       suites.nixSettings
       ++ (with profiles; [
         boot.kernel
+        boot.systemd-initrd
         programs.tools
         programs.nix-index
         services.openssh
