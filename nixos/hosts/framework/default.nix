@@ -4,19 +4,7 @@
   profiles,
   lib,
   ...
-}: let
-  btrfsSubvol = device: subvol: extraConfig:
-    lib.mkMerge [
-      {
-        inherit device;
-        fsType = "btrfs";
-        options = ["subvol=${subvol}" "compress=zstd" "x-gvfs-hide"];
-      }
-      extraConfig
-    ];
-
-  btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
-in {
+}: {
   imports =
     suites.mobileWorkstation
     ++ (with profiles; [
@@ -116,50 +104,92 @@ in {
       services.btrfs.autoScrub = {
         enable = true;
         fileSystems = [
-          "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227"
+          config.fileSystems."/persist".device
         ];
       };
 
-      boot.supportedFilesystems = ["ntfs"];
-      boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod"];
-      boot.initrd.luks.devices = {
-        crypt-root = {
-          device = "/dev/disk/by-uuid/46fad3b7-6287-4bc2-a45e-0cdd053cbb85"; # ssd
-          allowDiscards = true;
-          bypassWorkqueues = true;
+      disko.devices = {
+        nodev."/" = {
+          fsType = "tmpfs";
+          mountOptions = ["defaults" "size=8G" "mode=755"];
         };
-        crypt-swap = {
-          device = "/dev/disk/by-uuid/bbf7e2ee-1a3b-4110-ac2a-1cd9169f2684"; # ssd
-          allowDiscards = true;
-          bypassWorkqueues = true;
+        disk.main = {
+          type = "disk";
+          device = "/dev/nvme0n1";
+          content = {
+            type = "gpt";
+            partitions = {
+              ESP = {
+                priority = 0;
+                size = "1G";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = ["dmask=077" "fmask=177"];
+                };
+              };
+              crypt-root = {
+                priority = 100;
+                size = "1T";
+                content = {
+                  type = "luks";
+                  name = "crypt-root";
+                  settings = {
+                    allowDiscards = true;
+                    bypassWorkqueues = true;
+                  };
+                  content = {
+                    type = "btrfs";
+                    subvolumes = let
+                      mountOptions = ["compress=zstd" "x-gvfs-hide"];
+                    in {
+                      "@persist" = {
+                        mountpoint = "/persist";
+                        inherit mountOptions;
+                      };
+                      "@var-log" = {
+                        mountpoint = "/var/log";
+                        inherit mountOptions;
+                      };
+                      "@nix" = {
+                        mountpoint = "/nix";
+                        inherit mountOptions;
+                      };
+                      "@swap" = {
+                        mountpoint = "/swap";
+                        inherit mountOptions;
+                        swap.swapfile.size = "32G";
+                      };
+                    };
+                  };
+                };
+              };
+              windows = {
+                priority = 900;
+                size = "512G";
+              };
+              reserved = {
+                priority = 1000;
+                size = "100%";
+              };
+            };
+          };
         };
       };
-      fileSystems."/" = {
-        device = "tmpfs";
-        fsType = "tmpfs";
-        options = ["defaults" "size=8G" "mode=755"];
-      };
-      fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
-      fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
-      fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-uuid/5C56-7693";
-        fsType = "vfat";
-        options = ["dmask=077" "fmask=177"];
-      };
+      fileSystems."/persist".neededForBoot = true;
+      fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
-      swapDevices = [
-        {
-          device = "/dev/disk/by-uuid/f9eb9a3a-2185-4f7e-83f0-76d88fa98557";
-          discardPolicy = "once";
-        }
-      ];
+
+      boot.supportedFilesystems = ["ntfs"];
+      boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
     }
 
     # windows fonts
     (
       let
-        windowsPart = "/dev/disk/by-uuid/A082C3A482C37CF2";
+        windowsPart = "/dev/disk/by-partlabel/disk-main-windows";
         windowsMountPoint = "/media/windows";
       in {
         users.groups.windows = {
@@ -168,7 +198,7 @@ in {
         fileSystems.${windowsMountPoint} = {
           device = windowsPart;
           fsType = "ntfs3";
-          options = ["gid=${toString config.users.groups.windows.gid}" "ro" "fmask=337" "dmask=227"];
+          options = ["gid=${toString config.users.groups.windows.gid}" "ro" "fmask=337" "dmask=227" "nofail"];
         };
         fonts.fontconfig.localConf = ''
           <?xml version="1.0" encoding="UTF-8"?>
