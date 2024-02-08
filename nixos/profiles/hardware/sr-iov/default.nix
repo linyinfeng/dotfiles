@@ -20,7 +20,8 @@
   systemd.services.detach-sriov-devices = {
     script = ''
       set -e
-      virsh nodedev-detach pci_0000_00_02_1
+      # TODO wait for https://github.com/NixOS/nixpkgs/issues/285929
+      # virsh nodedev-detach pci_0000_00_02_1
     '';
     path = with pkgs; [
       libvirt
