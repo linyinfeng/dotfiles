@@ -186,30 +186,6 @@
       boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
     }
 
-    # windows fonts
-    (
-      let
-        windowsPart = "/dev/disk/by-partlabel/disk-main-windows";
-        windowsMountPoint = "/media/windows";
-      in {
-        users.groups.windows = {
-          gid = config.ids.gids.windows;
-        };
-        fileSystems.${windowsMountPoint} = {
-          device = windowsPart;
-          fsType = "ntfs3";
-          options = ["gid=${toString config.users.groups.windows.gid}" "ro" "fmask=337" "dmask=227" "nofail"];
-        };
-        fonts.fontconfig.localConf = ''
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-          <fontconfig>
-            <dir>${windowsMountPoint}/Windows/Fonts</dir>
-          </fontconfig>
-        '';
-      }
-    )
-
     # enchilada usb network
     {
       systemd.network.links."80-mobile-nixos-usb" = {
