@@ -24,6 +24,7 @@
         services.oom-killer
         security.polkit
         security.rtkit
+        security.sudo-rs
         global-persistence
         system.common
         system.sysrq

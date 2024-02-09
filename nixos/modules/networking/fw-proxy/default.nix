@@ -494,7 +494,7 @@ in
         environment.systemPackages = [
           scripts
         ];
-        security.sudo.extraConfig = ''
+        security.sudo-rs.extraConfig = ''
           Defaults env_keep += "HTTP_PROXY HTTPS_PROXY FTP_PROXY ALL_PROXY NO_PROXY"
           Defaults env_keep += "http_proxy https_proxy ftp_proxy all_proxy no_proxy"
         '';

@@ -57,7 +57,7 @@
     text = ''
       run="exec"
       if [[ "$USER" != nextcloud ]]; then
-        run="exec sudo --user=nextcloud --preserve-env"
+        run="exec sudo --user=nextcloud"
       fi
       $run nextcloud-process-instant-upload-unwrapped "$@"
     '';

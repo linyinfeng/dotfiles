@@ -28,9 +28,9 @@
 
       install -d -m 0700 -o postgres -g postgres "$NEWDATA"
       cd "$NEWDATA"
-      sudo -u postgres $NEWBIN/initdb -D "$NEWDATA"
+      sudo --user=postgres $NEWBIN/initdb --pgdata="$NEWDATA"
 
-      sudo -u postgres $NEWBIN/pg_upgrade \
+      sudo --user=postgres $NEWBIN/pg_upgrade \
         --old-datadir "$OLDDATA" --new-datadir "$NEWDATA" \
         --old-bindir $OLDBIN --new-bindir $NEWBIN \
         "$@"
