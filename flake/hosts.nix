@@ -101,7 +101,6 @@
         services.printing
         services.snapper
         services.iperf3
-        services.udev.rtl9210
         security.hardware-keys
         hardware.rtl-sdr
         nix.nix-ld
