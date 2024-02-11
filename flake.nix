@@ -260,6 +260,7 @@
     # fixes
     # TODO wait for https://github.com/hashicorp/terraform/issues/34572
     nixpkgs-terraform.url = "github:nixos/nixpkgs/842d9d80cfd4560648c785f8a4e6f3b096790e19";
+    nixpkgs-shim.url = "github:linyinfeng/nixpkgs/shim";
   };
 
   outputs = inputs @ {flake-parts, ...}:

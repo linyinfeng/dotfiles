@@ -1002,6 +1002,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-shim": {
+      "locked": {
+        "lastModified": 1707628544,
+        "narHash": "sha256-4NV+Wcnnc+qaRUhFq8FkIHOs1uVJOPFxaxf/SbKptng=",
+        "owner": "linyinfeng",
+        "repo": "nixpkgs",
+        "rev": "262b86d639d8351086367b4c15c9ff750b0a75e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "ref": "shim",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-terraform": {
       "locked": {
         "lastModified": 1705496572,
@@ -1212,6 +1228,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-terraform": "nixpkgs-terraform",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",

@@ -1,5 +1,6 @@
 {
   config,
+  options,
   lib,
   pkgs,
   ...
@@ -87,6 +88,31 @@ in {
           '';
         }
       ];
+    }
+    # shim
+    {
+      boot.secureBoot.shim = {
+        enable = true;
+        loader = "systemd-boot${config.boot.secureBoot.shim.archSuffix}.efi";
+        directory = "EFI/systemd";
+        removable.enable = true;
+        bootEntry = {
+          install = true;
+          label = "Linux Boot Manager";
+        };
+      };
+      # install-shim after lzbt
+      boot.lanzaboote.package = lib.mkForce (pkgs.writeShellApplication {
+        name = "lzbt";
+        runtimeInputs = [
+          pkgs.lzbt
+          config.system.build.installShim
+        ];
+        text = ''
+          lzbt "$@"
+          install-shim
+        '';
+      });
     }
     # sbctl
     {

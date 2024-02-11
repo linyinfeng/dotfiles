@@ -25,6 +25,7 @@
       mc-config-nuc = inputs'.mc-config-nuc.packages;
       nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
       clash2sing-box = inputs'.clash2sing-box.packages.default;
+      lzbt = inputs'.lanzaboote.packages.tool;
 
       # ccache
       ccacheCacheDir = "/var/cache/ccache";
@@ -131,13 +132,19 @@
       inherit (config.nixpkgs) config;
     };
   in {
-    # currently nothing
     inherit
       (import inputs.nixpkgs-terraform {
         inherit system;
         inherit (config.nixpkgs) config;
       })
       terraform
+      ;
+    inherit
+      (import inputs.nixpkgs-shim {
+        inherit system;
+        inherit (config.nixpkgs) config;
+      })
+      shim-unsigned
       ;
   };
 in {
