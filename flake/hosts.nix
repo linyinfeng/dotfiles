@@ -66,6 +66,7 @@
       programs.qrcp
       programs.ccache
       services.gnupg
+      services.nixseparatedebuginfod
     ];
     multimediaDev =
       suites.multimedia
