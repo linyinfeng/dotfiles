@@ -22,6 +22,9 @@ in {
       services.nginx.virtualHosts."hydra.*" = {
         forceSSL = true;
         inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+        serverAliases = [
+          "hydra-proxy.*"
+        ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.ports.hydra}";
         };

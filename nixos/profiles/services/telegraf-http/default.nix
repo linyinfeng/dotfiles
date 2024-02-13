@@ -53,6 +53,12 @@
         code = 200;
       }
     ];
+    hydra = [
+      {
+        url = "https://hydra.ts.li7g.com";
+        code = 200;
+      }
+    ];
     palworld = [];
     dst = [];
     smtp = [];
