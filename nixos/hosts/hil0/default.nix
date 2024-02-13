@@ -32,7 +32,6 @@ in {
       services.mastodon
       services.maddy
       services.well-known
-      nix.hydra-builder-server
       nix.access-tokens
     ])
     ++ [
@@ -121,16 +120,6 @@ in {
         restartUnits = ["systemd-networkd.service"];
       };
     })
-
-    # hydra extra configurations
-    {
-      services.hydra.buildMachinesFiles = [
-        "/etc/nix-build-machines/hydra-builder/machines"
-      ];
-      # limit cpu usage of nix eval and builds
-      systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
-      systemd.services.hydra-evaluator.serviceConfig.CPUWeight = "idle";
-    }
 
     # mastodon extra configurations
     {

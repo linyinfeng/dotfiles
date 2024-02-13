@@ -52,6 +52,9 @@ in {
           </runcommand>
         '';
       };
+      services.hydra.buildMachinesFiles = [
+        "/etc/nix-build-machines/hydra-builder/machines"
+      ];
       # allow evaluator and queue-runner to access nix-access-tokens
       systemd.services.hydra-evaluator.serviceConfig.SupplementaryGroups = [config.users.groups.nix-access-tokens.name];
       systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [
@@ -122,6 +125,12 @@ in {
         terraformOutput.enable = true;
         restartUnits = ["hydra-notify.service"];
       };
+    }
+
+    # decrease cpu weight
+    {
+      systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
+      systemd.services.hydra-evaluator.serviceConfig.CPUWeight = "idle";
     }
   ];
 }
