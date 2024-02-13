@@ -26,6 +26,7 @@ in {
     ++ (with profiles; [
       nix.access-tokens
       nix.hydra-builder-server
+      nix.hydra-builder-client
       nix.nixbuild
       security.tpm
       networking.network-manager
@@ -41,6 +42,7 @@ in {
       services.acme
       services.smartd
       services.postgresql
+      services.hydra
       programs.service-mail
       programs.tg-send
       programs.ccache

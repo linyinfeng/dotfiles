@@ -32,10 +32,7 @@ in {
       services.mastodon
       services.maddy
       services.well-known
-      services.hydra
-      services.cache-overlay
       nix.hydra-builder-server
-      nix.hydra-builder-client
       nix.access-tokens
     ])
     ++ [

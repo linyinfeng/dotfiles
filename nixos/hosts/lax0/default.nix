@@ -17,7 +17,6 @@ in {
       services.acme
       services.ace-bot
       services.pgp-public-key-web
-      services.nuc-proxy
       services.oranc
       services.dot-tar
     ])

@@ -47,7 +47,7 @@
       "proxy": true
     },
     "cache-overlay": {
-      "on": "hil0",
+      "on": "hkg0",
       "proxy": true
     },
     "dn42": {
@@ -71,7 +71,11 @@
       "proxy": true
     },
     "hydra": {
-      "on": "hil0",
+      "on": "nuc",
+      "proxy": false
+    },
+    "hydra-proxy": {
+      "on": "hkg0",
       "proxy": true
     },
     "influxdb": {
@@ -123,7 +127,7 @@
       "proxy": true
     },
     "nuc-proxy": {
-      "on": "lax0",
+      "on": "hkg0",
       "proxy": true
     },
     "oranc": {

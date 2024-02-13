@@ -107,7 +107,9 @@ locals {
     portal          = { on = "hkg0", proxy = true }
     ntfy            = { on = "hkg0", proxy = true }
     atuin           = { on = "hkg0", proxy = true }
-    nuc-proxy       = { on = "lax0", proxy = true }
+    cache-overlay   = { on = "hkg0", proxy = true }
+    nuc-proxy       = { on = "hkg0", proxy = true }
+    hydra-proxy     = { on = "hkg0", proxy = true }
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
@@ -125,8 +127,6 @@ locals {
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }
     teamspeak       = { on = "shg0", proxy = false }
-    hydra           = { on = "hil0", proxy = true }
-    cache-overlay   = { on = "hil0", proxy = true }
     matrix          = { on = "hil0", proxy = true }
     matrix-syncv3   = { on = "hil0", proxy = true }
     synapse-admin   = { on = "hil0", proxy = true }
@@ -137,6 +137,7 @@ locals {
     bird-lg         = { on = "fsn0", proxy = true }
     dn42            = { on = "fsn0", proxy = true }
     keycloak        = { on = "fsn0", proxy = true }
+    hydra           = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     nextcloud       = { on = "nuc", proxy = false }
