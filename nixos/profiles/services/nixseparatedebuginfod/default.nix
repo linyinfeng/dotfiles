@@ -1,4 +1,3 @@
-{...}:
-{
+{...}: {
   services.nixseparatedebuginfod.enable = true;
 }
