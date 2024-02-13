@@ -100,6 +100,7 @@ in {
           install = true;
           label = "Linux Boot Manager";
         };
+        mokManager.addEntry = true;
       };
       # install-shim after lzbt
       boot.lanzaboote.package = lib.mkForce (pkgs.writeShellApplication {

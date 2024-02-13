@@ -63,7 +63,17 @@
         efibootmgr --quiet --delete-bootnum --label "${cfg.bootEntry.label}" || true
         echo "creating boot entry..."
         efibootmgr --quiet --create --label "${cfg.bootEntry.label}" \
-          --disk "$disk" --part "$part" --loader '\${lib.replaceStrings ["/"] ["\\"] cfg.directory}\shimx64.efi'
+          --disk "$disk" --part "$part" --loader '\${lib.replaceStrings ["/"] ["\\"] cfg.directory}\shim${cfg.archSuffix}.efi'
+      ''
+      + lib.optionalString cfg.mokManager.addEntry ''
+        echo "creating MokManager boot entry..."
+        mkdir --parents "${efiSysMountPoint}/loader/entries"
+        cat >"${efiSysMountPoint}/loader/entries/mok-manager.conf" <<EOF
+        title MokManager
+        version ${cfg.package.version}
+        sort-key mokmanager
+        efi /${cfg.directory}/mm${cfg.archSuffix}.efi
+        EOF
       '';
   };
   singEfiFile = pkgs.writeShellApplication {
@@ -127,6 +137,9 @@ in {
         label = lib.mkOption {
           type = lib.types.str;
         };
+      };
+      mokManager = {
+        addEntry = lib.mkEnableOption "MokManager boot entry";
       };
     };
   };
