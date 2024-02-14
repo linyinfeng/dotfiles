@@ -75,6 +75,7 @@
     virtualization = with profiles; [
       virtualization.libvirt
       virtualization.podman
+      virtualization.wine
     ];
     games = with profiles.graphical.game; [steam];
     monitoring = with profiles; [
