@@ -47,6 +47,7 @@
       key = "age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf";
       owned = true;
     };
+    # PLACEHOLDER new host
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);
   allHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) hosts;

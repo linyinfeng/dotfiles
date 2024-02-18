@@ -155,6 +155,7 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
+    # PLACEHOLDER new host
   }
 }
 

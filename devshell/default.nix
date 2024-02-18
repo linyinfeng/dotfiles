@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./terraform.nix
+    ./prepare
   ];
   perSystem = {
     inputs',

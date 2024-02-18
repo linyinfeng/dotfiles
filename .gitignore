@@ -10,6 +10,7 @@ terraform.plan
 terraform/moon
 .terraform.tfstate.lock.info
 .terraform
+prepare-host-notice*
 
 *.qcow2
 

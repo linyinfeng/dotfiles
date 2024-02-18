@@ -416,6 +416,7 @@ in {
       name = "hkg0";
       system = "x86_64-linux";
     })
+    # PLACEHOLDER new host
   ];
 
   flake.checks = lib.recursiveUpdate hostToplevels {
