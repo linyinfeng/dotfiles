@@ -175,6 +175,11 @@
     nixos-cn.inputs.nixpkgs.follows = "nixpkgs";
     nixos-cn.inputs.flake-utils.follows = "flake-utils";
 
+    nixos-wsl.url = "github:nix-community/nixos-wsl";
+    nixos-wsl.inputs.flake-compat.follows = "flake-compat";
+    nixos-wsl.inputs.flake-utils.follows = "flake-utils";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
     # libraries
 
     blank.url = "github:divnix/blank";

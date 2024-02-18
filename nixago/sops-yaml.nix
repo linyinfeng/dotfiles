@@ -47,6 +47,10 @@
       key = "age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf";
       owned = true;
     };
+    framework-wsl = {
+      key = "age188pg4utlvtj3adwqqy5kjmjala4arls5qkyeylry94233q6dhedsecean3";
+      owned = true;
+    };
     # PLACEHOLDER new host
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);

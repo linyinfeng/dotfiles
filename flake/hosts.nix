@@ -150,6 +150,15 @@
         services.bluetooth
         networking.network-manager
       ]);
+
+    wsl =
+      (with suites; base ++ network)
+      ++ (with profiles; [
+        system.types.workstation
+      ])
+      ++ [
+        inputs.nixos-wsl.nixosModules.wsl
+      ];
   });
 
   hmModules = self.lib.buildModuleList ../home-manager/modules;
@@ -414,6 +423,11 @@ in {
 
     (mkHost {
       name = "hkg0";
+      system = "x86_64-linux";
+    })
+
+    (mkHost {
+      name = "framework-wsl";
       system = "x86_64-linux";
     })
     # PLACEHOLDER new host

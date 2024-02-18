@@ -40,6 +40,7 @@
     "nuc".enable = false; # unmetered
     "xps8930".enable = false; # mobile
     "framework".enable = false; # mobile
+    "framework-wsl".enable = false; # mobile
     "enchilada".enable = false; # mobile
   };
   regionTable = {
@@ -78,6 +79,10 @@
     };
     # mobile devices
     "framework" = {
+      region = null;
+      country = null;
+    };
+    "framework-wsl" = {
       region = null;
       country = null;
     };

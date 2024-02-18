@@ -155,6 +155,13 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
+    framework-wsl = {
+      records      = {}
+      ddns_records = {}
+      host_indices = []
+      endpoints_v4 = []
+      endpoints_v6 = []
+    }
     # PLACEHOLDER new host
   }
 }
