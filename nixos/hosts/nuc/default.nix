@@ -67,6 +67,9 @@ in {
 
       services.thermald.enable = true;
 
+      # always enable gnome-keyring
+      services.gnome.gnome-keyring.enable = true;
+
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
