@@ -69,6 +69,9 @@ in {
 
       # always enable gnome-keyring
       services.gnome.gnome-keyring.enable = true;
+      environment.global-persistence.user.directories = [
+        ".local/share/keyrings"
+      ];
 
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
