@@ -13,8 +13,7 @@ in
         enable = true;
         dnssec = "allow-downgrade";
         llmnr = "true";
-        fallbackDns = [];
-        extraConfig = ''
+        extraConfig = lib.mkIf config.networking.mesh.enable ''
           DNS=${lib.concatStringsSep " " dnsServers}
           # link specific servers may not support dns over tls
           DNSOverTLS=opportunistic

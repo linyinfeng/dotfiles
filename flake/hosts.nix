@@ -57,6 +57,7 @@
       graphical.sway
       graphical.fonts
       graphical.i18n
+      services.gnome-keyring
       services.pipewire
     ];
     development = with profiles; [

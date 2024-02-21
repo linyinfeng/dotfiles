@@ -8,6 +8,9 @@
     suites.wsl
     ++ suites.development
     ++ (with profiles; [
+      networking.behind-fw
+      networking.fw-proxy
+      services.gnome-keyring
       nix.access-tokens
       users.yinfeng
     ]);
@@ -18,7 +21,7 @@
         enable = true;
         defaultUser = "yinfeng";
       };
-      services.resolved.enable = lib.mkForce false;
+      systemd.network.wait-online.enable = false;
       home-manager.users.yinfeng = {suites, ...}: {imports = suites.nonGraphical;};
     }
 

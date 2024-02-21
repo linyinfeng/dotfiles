@@ -32,6 +32,7 @@ in {
       networking.network-manager
       networking.behind-fw
       networking.fw-proxy
+      services.gnome-keyring
       services.transmission
       services.jellyfin
       services.samba
@@ -66,12 +67,6 @@ in {
       services.fwupd.enable = true;
 
       services.thermald.enable = true;
-
-      # always enable gnome-keyring
-      services.gnome.gnome-keyring.enable = true;
-      environment.global-persistence.user.directories = [
-        ".local/share/keyrings"
-      ];
 
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";

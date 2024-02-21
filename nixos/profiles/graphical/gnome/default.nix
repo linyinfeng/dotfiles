@@ -43,7 +43,6 @@ config.services.xserver.desktopManager.gnome.enable
       # ".config/dconf"
       ".config/goa-1.0" # gnome accounts
       ".config/gnome-boxes"
-      ".local/share/keyrings"
       ".local/share/applications"
       ".local/share/Trash"
       ".local/share/webkitgtk" # gnome accounts
