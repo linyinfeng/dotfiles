@@ -155,6 +155,7 @@
       (with suites; base ++ network)
       ++ (with profiles; [
         system.types.workstation
+        wsl.settings
       ])
       ++ [
         inputs.nixos-wsl.nixosModules.wsl
