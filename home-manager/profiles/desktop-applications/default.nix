@@ -10,7 +10,8 @@ in {
       amberol
       calibre
       element-desktop
-      fractal
+      # TODO broken
+      # fractal
       gimp
       gnuradio
       gparted
