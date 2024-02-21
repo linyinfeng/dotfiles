@@ -133,6 +133,7 @@
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.inputs.systems.follows = "systems";
     hyprland.inputs.xdph.follows = "xdph";
+    hyprland.inputs.hyprlang.follows = "hyprlang";
     hyprland.inputs.hyprland-protocols.follows = "hyprland-protocols";
     hyprland-protocols.url = "github:hyprwm/hyprland-protocols";
     hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
