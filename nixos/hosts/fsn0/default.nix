@@ -56,27 +56,22 @@
           type = "disk";
           device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_31303657";
           content = {
-            type = "table";
-            format = "gpt";
-            partitions = [
-              {
-                name = "efi";
+            type = "gpt";
+            partitions = {
+              efi = {
                 start = "1MiB"; # 2048 sectors (512 bytes per sector)
                 end = "1025MiB"; # total size 1024 MiB
-                fs-type = "fat32";
-                bootable = true;
+                type = "EF00";
                 content = {
                   type = "filesystem";
                   format = "vfat";
                   mountpoint = "/boot";
                   mountOptions = ["dmask=077" "fmask=177"];
                 };
-              }
-              {
-                name = "root";
+              };
+              root = {
                 start = "1025MiB";
                 end = "-${swapSize}";
-                fs-type = "btrfs";
                 content = {
                   type = "btrfs";
                   subvolumes = {
@@ -98,17 +93,15 @@
                     };
                   };
                 };
-              }
-              {
-                name = "swap";
+              };
+              swap = {
                 start = "-${swapSize}";
                 end = "100%";
-                fs-type = "linux-swap";
                 content = {
                   type = "swap";
                 };
-              }
-            ];
+              };
+            };
           };
         };
       };
