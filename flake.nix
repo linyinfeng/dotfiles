@@ -145,6 +145,7 @@
     xdph.inputs.hyprlang.follows = "hyprlang";
     hyprlang.url = "github:hyprwm/hyprlang";
     hyprlang.inputs.nixpkgs.follows = "nixpkgs";
+    hyprlang.inputs.systems.follows = "systems";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
