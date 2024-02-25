@@ -547,6 +547,35 @@
         "type": "github"
       }
     },
+    "lantian": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "flake-utils-plus": [
+          "flake-utils-plus"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nvfetcher": [
+          "nvfetcher"
+        ]
+      },
+      "locked": {
+        "lastModified": 1708756474,
+        "narHash": "sha256-VWyi+09eO6K0W7KrazpkBa2RN6ujxIVFM8ISTz37izw=",
+        "owner": "xddxdd",
+        "repo": "nur-packages",
+        "rev": "7eeb26f397fef45dd7f750c0dd4a797c95e7baf4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xddxdd",
+        "repo": "nur-packages",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": [
@@ -1242,6 +1271,7 @@
         "hyprlang": "hyprlang",
         "hyprwm-contrib": "hyprwm-contrib",
         "impermanence": "impermanence",
+        "lantian": "lantian",
         "lanzaboote": "lanzaboote",
         "latest": "latest",
         "linyinfeng": "linyinfeng",

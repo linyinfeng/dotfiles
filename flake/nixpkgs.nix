@@ -115,6 +115,7 @@
               });
           })
         else prev.gnome;
+      librime = inputs'.lantian.packages.lantianCustomized.librime-with-plugins;
     })
   ];
   earlyFixes = final: prev: let
