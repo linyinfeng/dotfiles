@@ -179,7 +179,6 @@
 
     lantian.url = "github:xddxdd/nur-packages";
     lantian.inputs.flake-utils.follows = "flake-utils";
-    lantian.inputs.flake-utils-plus.follows = "flake-utils-plus";
     lantian.inputs.nixpkgs.follows = "nixpkgs";
     lantian.inputs.nvfetcher.follows = "nvfetcher";
 
