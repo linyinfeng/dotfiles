@@ -17,22 +17,22 @@
       ];
     };
     environment = let
-      model = "gpt-4-1106-preview";
+      # https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo
+      model = "gpt-4-turbo-preview";
     in {
       DATA_PATH = "/var/lib/matrix-chatgpt-bot";
 
       CHATGPT_CONTEXT = "thread";
-      # https://platform.openai.com/docs/models/gpt-4-and-gpt-4-turbo
       CHATGPT_API_MODEL = model;
       CHATGPT_PROMPT_PREFIX = ''
         You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.
-        Code name of your model is "${model}". Knowledge cutoff: 2023-04
+        Code name of your model is "${model}". Knowledge cutoff: 2023-12
       '';
       # https://github.com/matrixgpt/matrix-chatgpt-bot?tab=readme-ov-file#how-to-set-the-temperature
       CHATGPT_TEMPERATURE = "0.8";
       # save money, gpt-4-turble: $0.01 per 1k input tokens, $0.03 per 1k output tokens
-      CHATGPT_MAX_CONTEXT_TOKENS = "4097";
-      CHATGPT_MAX_PROMPT_TOKENS = "3097";
+      CHATGPT_MAX_CONTEXT_TOKENS = "10000";
+      CHATGPT_MAX_PROMPT_TOKENS = "5000";
 
       KEYV_BACKEND = "file";
       KEYV_URL = "";
