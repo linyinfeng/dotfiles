@@ -29,7 +29,7 @@
         Code name of your model is "${model}". Knowledge cutoff: 2023-12
       '';
       # https://github.com/matrixgpt/matrix-chatgpt-bot?tab=readme-ov-file#how-to-set-the-temperature
-      CHATGPT_TEMPERATURE = "0.8";
+      CHATGPT_TEMPERATURE = "0.6";
       # save money, gpt-4-turble: $0.01 per 1k input tokens, $0.03 per 1k output tokens
       CHATGPT_MAX_CONTEXT_TOKENS = "10000";
       CHATGPT_MAX_PROMPT_TOKENS = "5000";
