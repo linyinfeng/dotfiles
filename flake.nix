@@ -178,9 +178,8 @@
     nixos-cn.inputs.flake-utils.follows = "flake-utils";
 
     lantian.url = "github:xddxdd/nur-packages";
-    lantian.inputs.flake-utils.follows = "flake-utils";
     lantian.inputs.nixpkgs.follows = "nixpkgs";
-    lantian.inputs.nvfetcher.follows = "nvfetcher";
+    lantian.inputs.flake-parts.follows = "flake-parts";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
