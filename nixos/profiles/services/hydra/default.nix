@@ -74,28 +74,14 @@ in {
       nix.settings.secret-key-files = [
         "${config.sops.secrets."cache-li7g-com/key".path}"
       ];
-      # TODO restricted eval might be deprecated
-      # https://github.com/NixOS/nix/issues/7098
-      # TODO wait for https://github.com/NixOS/nix/pull/9547
-      # replace the solution with "github:"
-      nix.settings.allowed-uris = let
-        selfLock = builtins.fromJSON (builtins.readFile "${self}/flake.lock");
-        inputOrigins = lib.mapAttrsToList (_: i: i.original) (lib.filterAttrs (_: i: i ? original) selfLock.nodes);
-        prefixes = lib.lists.map (o:
-          if o.type == "github" || o.type == "gitlab"
-          then "${o.type}:${o.owner}/"
-          # else if o.type == "..."
-          # then "..."
-          else throw "unknown origin type ${toString o.type}")
-        inputOrigins;
-      in
-        lib.unique ([
-            "https://github.com/"
-            "https://gitlab.com/"
-            "https://git.sr.ht/"
-            "git+https://github.com/"
-          ]
-          ++ prefixes);
+      nix.settings.allowed-uris = [
+        "github:"
+        "gitlab:"
+        "https://github.com/"
+        "https://gitlab.com/"
+        "https://git.sr.ht/"
+        "git+https://github.com/"
+      ];
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
         restartUnits = ["hydra.service"];
