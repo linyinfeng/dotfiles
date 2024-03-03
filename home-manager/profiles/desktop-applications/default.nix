@@ -10,10 +10,10 @@ in {
       amberol
       calibre
       element-desktop
-      # TODO broken
-      # fractal
+      fractal
       gimp
-      gnuradio
+      # TODO broken
+      # gnuradio
       gparted
       inkscape
       libreoffice-fresh
