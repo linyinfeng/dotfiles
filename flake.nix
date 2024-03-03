@@ -180,6 +180,7 @@
     lantian.url = "github:xddxdd/nur-packages";
     lantian.inputs.nixpkgs.follows = "nixpkgs";
     lantian.inputs.flake-parts.follows = "flake-parts";
+    lantian.inputs.nvfetcher.follows = "nvfetcher";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
