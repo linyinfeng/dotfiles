@@ -54,7 +54,7 @@ in
         favorite-apps = lib.mkBefore [
           "org.gnome.Console.desktop"
           "org.gnome.Nautilus.desktop"
-          "firefox.desktop"
+          "chromium-browser.desktop"
           "gnome-system-monitor.desktop"
           "code.desktop"
         ];
