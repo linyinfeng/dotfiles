@@ -61,12 +61,14 @@ in {
         };
       }
     ];
-    routes = lib.lists.map (ip: {
-      routeConfig = {
-        Destination = ip;
-        Scope = "site";
-      };
-    }) home.AllowedIPs;
+    routes =
+      lib.lists.map (ip: {
+        routeConfig = {
+          Destination = ip;
+          Scope = "site";
+        };
+      })
+      home.AllowedIPs;
   };
   sops.secrets."wireguard_private_key" = {
     terraformOutput = {
