@@ -12,13 +12,13 @@
   enableProxy = pkgs.writeShellApplication {
     name = "enable-proxy";
     text = ''
-      ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (lib.attrsToList cfg.environment)}
+      ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (lib.attrsToList cfg.environmentCommandLine)}
     '';
   };
   disableProxy = pkgs.writeShellApplication {
     name = "disable-proxy";
     text = ''
-      ${lib.concatMapStringsSep "\n" (name: ''export ${name}=""'') (lib.attrNames cfg.environment)}
+      ${lib.concatMapStringsSep "\n" (name: ''export ${name}=""'') (lib.attrNames cfg.environmentCommandLine)}
     '';
   };
   updateSingBoxUrl = pkgs.writeShellApplication {
@@ -394,6 +394,25 @@ in
           HTTPS_PROXY = proxyUrl;
           http_proxy = proxyUrl;
           https_proxy = proxyUrl;
+          NO_PROXY = cfg.noProxy;
+          no_proxy = cfg.noProxy;
+        };
+      };
+      environmentCommandLine = mkOption {
+        type = with types; attrsOf str;
+        description = ''
+          Proxy environment for command line.
+        '';
+        default = let
+          proxyUrl = "http://localhost:${toString mixedPort}";
+          socksProxyUrl = "socks5h://localhost:${toString mixedPort}";
+        in {
+          HTTP_PROXY = proxyUrl;
+          HTTPS_PROXY = proxyUrl;
+          ALL_PROXY = socksProxyUrl;
+          http_proxy = proxyUrl;
+          https_proxy = proxyUrl;
+          all_proxy = socksProxyUrl;
           NO_PROXY = cfg.noProxy;
           no_proxy = cfg.noProxy;
         };
