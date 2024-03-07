@@ -2,7 +2,6 @@
   config,
   suites,
   profiles,
-  pkgs,
   lib,
   modulesPath,
   ...
@@ -11,7 +10,6 @@
     suites.overseaServer
     ++ (with profiles; [
       programs.tg-send
-      programs.ccache
       services.nginx
       services.acme
       services.notify-failure
@@ -75,31 +73,31 @@
                 end = "-${swapSize}";
                 content = {
                   type = "btrfs";
-                  subvolumes = {
+                  subvolumes = let
+                      mountOptions = ["compress=zstd"];
+                  in {
                     "@persist" = {
                       mountpoint = "/persist";
-                      mountOptions = ["compress=zstd"];
+                      inherit mountOptions;
                     };
                     "@var-log" = {
                       mountpoint = "/var/log";
-                      mountOptions = ["compress=zstd"];
+                      inherit mountOptions;
                     };
                     "@nix" = {
                       mountpoint = "/nix";
-                      mountOptions = ["compress=zstd"];
+                      inherit mountOptions;
                     };
                     "@tmp" = {
                       mountpoint = "/tmp";
-                      mountOptions = ["compress=zstd"];
+                      inherit mountOptions;
+                    };
+                    "@swap" = {
+                      mountpoint = "/swap";
+                      inherit mountOptions;
+                      swap.swapfile.size = "8G";
                     };
                   };
-                };
-              };
-              swap = {
-                start = "-${swapSize}";
-                end = "100%";
-                content = {
-                  type = "swap";
                 };
               };
             };
@@ -108,6 +106,7 @@
       };
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
+      services.zswap.enable = true;
     }
 
     # networking
