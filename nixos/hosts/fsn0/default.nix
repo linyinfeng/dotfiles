@@ -74,7 +74,7 @@
                 content = {
                   type = "btrfs";
                   subvolumes = let
-                      mountOptions = ["compress=zstd"];
+                    mountOptions = ["compress=zstd"];
                   in {
                     "@persist" = {
                       mountpoint = "/persist";
