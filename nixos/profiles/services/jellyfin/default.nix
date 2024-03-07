@@ -18,6 +18,25 @@ in {
     ];
   };
 
+  systemd.services.jellyfin-setup = {
+    script = ''
+      xmlstarlet edit --inplace --update "/NetworkConfiguration/HttpServerPortNumber" --value "${toString config.ports.jellyfin}" network.xml
+    '';
+    path = with pkgs; [
+      xmlstarlet
+    ];
+    unitConfig = {
+      ConditionPathExists = config.services.jellyfin.configDir;
+    };
+    serviceConfig = {
+      Type = "oneshot";
+      WorkingDirectory = config.services.jellyfin.configDir;
+      User = "jellyfin";
+      Group = "jellyfin";
+    };
+    wantedBy = ["jellyfin.service"];
+    before = ["jellyfin.service"];
+  };
   systemd.services.jellyfin = {
     # faster metadata search
     environment =
@@ -55,10 +74,9 @@ in {
 
   # https://jellyfin.org/docs/general/networking/index.html
   networking.firewall = {
-    allowedUDPPorts = [
-      # service auto-discovery
-      1900
-      7359
+    allowedUDPPorts = with config.ports; [
+      jellyfin-auto-discovery-1
+      jellyfin-auto-discovery-1
     ];
   };
 }

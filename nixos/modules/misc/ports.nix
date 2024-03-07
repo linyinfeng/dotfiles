@@ -30,6 +30,7 @@
       ipsec-ike = 500;
       smtp-starttls = 587;
       dns-over-tls = 853;
+      jellyfin-auto-discovery-1 = 1900;
       ssh = 2222;
 
       pastebin = 3000;
@@ -83,10 +84,12 @@
       palworld-query = 3322;
       vlmcsd = 3330;
       jellyfin = 3340;
+      jellyfin-https = 3341;
       iperf = 3350;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;
+      jellyfin-auto-discovery-2 = 7359;
       http-alternative = 8080;
       https-alternative = 8443;
       zerotier = 9993;
