@@ -46,7 +46,7 @@ in {
         {device = "/dev/vda2";}
         {
           device = "/swapfile";
-          size = 2048; # 2 GiB
+          size = 4096; # 4 GiB
         }
       ];
     }
