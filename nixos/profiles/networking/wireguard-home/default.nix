@@ -1,59 +1,86 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
-  interfaceName = "wg0";
+  interfaceName = "wg-home";
   hostName = config.networking.hostName;
   port = config.ports.wireguard;
   hosts = {
     framework = {
-      ip = "192.168.2.2/32";
+      ip = "192.168.2.2";
       inherit port;
     };
     xps8930 = {
-      ip = "192.168.2.3/32";
+      ip = "192.168.2.3";
       inherit port;
     };
     shg0 = {
-      ip = "192.168.2.4/32";
+      ip = "192.168.2.4";
       inherit port;
     };
     enchilada = {
-      ip = "192.168.2.101/32";
+      ip = "192.168.2.101";
       inherit port;
     };
   };
   home = {
-    allowedIPs = [
+    AllowedIPs = [
       "192.168.0.0/24"
       "192.168.1.0/24"
       "192.168.2.0/24"
     ];
-    endpoint = "home.li7g.com:13231";
-    publicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
-    persistentKeepalive = 30;
-    # dynamicEndpointRefreshSeconds = 60;
+    Endpoint = "home.li7g.com:13231";
+    PublicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
+    PersistentKeepalive = 30;
   };
 in {
-  networking.wireguard.interfaces.${interfaceName} = {
-    ips = [hosts.${hostName}.ip];
-    listenPort = hosts.${hostName}.port;
-    peers = [home];
-    privateKeyFile = config.sops.secrets."wireguard_private_key".path;
+  systemd.network.netdevs."80-wg-home" = {
+    netdevConfig = {
+      Name = interfaceName;
+      Kind = "wireguard";
+    };
+    wireguardConfig = {
+      PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
+      ListenPort = hosts.${hostName}.port;
+    };
+    wireguardPeers = [
+      {wireguardPeerConfig = home;}
+    ];
+  };
+  systemd.network.networks."80-wg-home" = {
+    matchConfig = {
+      Name = interfaceName;
+    };
+    addresses = [
+      {
+        addressConfig = {
+          Address = "${hosts.${hostName}.ip}/24";
+          Scope = "link";
+        };
+      }
+    ];
+    routes = lib.lists.map (ip: {
+      routeConfig = {
+        Destination = ip;
+        Scope = "site";
+      };
+    }) home.AllowedIPs;
   };
   sops.secrets."wireguard_private_key" = {
     terraformOutput = {
       enable = true;
       perHost = true;
     };
-    restartUnits = ["wireguard-${interfaceName}.service"];
+    owner = "systemd-network";
+    restartUnits = ["sysemd-networkd.service"];
   };
   environment.systemPackages = with pkgs; [
     wireguard-tools
   ];
   networking.firewall.allowedUDPPorts = [
-    config.networking.wireguard.interfaces.${interfaceName}.listenPort
+    hosts.${hostName}.port
   ];
   networking.networkmanager.unmanaged = [interfaceName];
 }
