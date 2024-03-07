@@ -2,6 +2,7 @@
   config,
   suites,
   profiles,
+  pkgs,
   lib,
   modulesPath,
   ...
@@ -58,7 +59,7 @@
           content = {
             type = "gpt";
             partitions = {
-              efi = {
+              ESP = {
                 start = "1MiB"; # 2048 sectors (512 bytes per sector)
                 end = "1025MiB"; # total size 1024 MiB
                 type = "EF00";
