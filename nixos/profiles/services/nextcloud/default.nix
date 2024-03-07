@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  version = 27; # pinned
+  version = 28; # pinned
 
   cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
@@ -124,7 +124,6 @@ in {
         memories
         previewgenerator
         maps
-        news
         ;
     };
     notify_push = {
