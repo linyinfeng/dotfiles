@@ -9,8 +9,6 @@
       family = "Iosevka Yinfeng";
       spacing = "fontconfig-mono";
       serifs = "slab";
-      # no need to export character variants and stylistic set
-      no-cv-ss = "true";
       ligations = {
         inherits = "haskell";
       };
