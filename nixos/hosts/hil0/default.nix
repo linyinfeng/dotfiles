@@ -113,11 +113,11 @@ in {
       };
       sops.secrets."hil0_ipv6_address" = {
         terraformOutput.enable = true;
-        restartUnits = ["systemd-networkd.service"];
+        reloadUnits = ["systemd-networkd.service"];
       };
       sops.secrets."hil0_ipv6_prefix_length" = {
         terraformOutput.enable = true;
-        restartUnits = ["systemd-networkd.service"];
+        reloadUnits = ["systemd-networkd.service"];
       };
     })
 

@@ -30,8 +30,7 @@
     routingTables = {
       mesh = 200;
 
-      dn42-peer = 201;
-      dn42-bgp = 202;
+      dn42-bgp = 300;
 
       fw-proxy = 854;
     };
@@ -39,8 +38,7 @@
     routingPolicyPriorities = {
       mesh = 24000;
 
-      dn42-peer = 24500;
-      dn42-bgp = 24510;
+      dn42-bgp = 24500;
 
       fw-proxy = 26000;
     };

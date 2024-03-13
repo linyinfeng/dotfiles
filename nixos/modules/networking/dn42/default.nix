@@ -6,6 +6,7 @@
   cfg = config.networking.dn42;
   asCfg = cfg.autonomousSystem;
   bgpCfg = cfg.bgp;
+  selfLib = config.lib.self;
 
   padDn42LowerNumber = n: let
     s = toString n;
@@ -305,18 +306,6 @@ in {
             type = with lib.types; attrsOf (submodule peerOptions);
             default = {};
           };
-          routingTable = {
-            id = lib.mkOption {
-              type = lib.types.int;
-            };
-            name = lib.mkOption {
-              type = lib.types.str;
-              default = "dn42-peer";
-            };
-            priority = lib.mkOption {
-              type = lib.types.int;
-            };
-          };
         };
       };
       bird = {
@@ -353,6 +342,14 @@ in {
         };
         cidrV6 = lib.mkOption {
           type = lib.types.str;
+        };
+        parsedCidrV4 = lib.mkOption {
+          type = lib.types.submodule selfLib.cidr.module;
+          default = selfLib.cidr.parse asCfg.cidrV4;
+        };
+        parsedCidrV6 = lib.mkOption {
+          type = lib.types.submodule selfLib.cidr.module;
+          default = selfLib.cidr.parse asCfg.cidrV6;
         };
         me = lib.mkOption {
           type = lib.types.str;
@@ -446,14 +443,14 @@ in {
         addresses =
           lib.lists.map (a: {
             addressConfig = {
-              Address = "${a}/32";
+              Address = "${a}/${toString asCfg.parsedCidrV4.prefixLength}";
               Scope = "global";
             };
           })
           asCfg.thisHost.addressesV4
           ++ lib.lists.map (a: {
             addressConfig = {
-              Address = "${a}/128";
+              Address = "${a}/${toString asCfg.parsedCidrV6.prefixLength}";
               Scope = "global";
             };
           })

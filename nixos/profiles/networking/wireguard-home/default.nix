@@ -76,7 +76,7 @@ in {
       perHost = true;
     };
     owner = "systemd-network";
-    restartUnits = ["sysemd-networkd.service"];
+    reloadUnits = ["systemd-networkd.service"];
   };
   environment.systemPackages = with pkgs; [
     wireguard-tools

@@ -125,10 +125,6 @@ in
             trafficControl = trafficControlTable.${hostName};
           };
           peers = peerTable.${hostName} or {};
-          routingTable = {
-            id = config.routingTables.dn42-peer;
-            priority = config.routingPolicyPriorities.dn42-peer;
-          };
         };
         routingTable = {
           id = config.routingTables.dn42-bgp;
@@ -172,7 +168,7 @@ in
       };
       group = "systemd-network";
       mode = "440";
-      restartUnits = ["systemd-networkd.service"];
+      reloadUnits = ["systemd-networkd.service"];
     };
     networking.firewall.allowedUDPPortRanges = [
       {

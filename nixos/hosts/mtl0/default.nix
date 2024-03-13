@@ -82,15 +82,15 @@ in {
         config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
         sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
-        restartUnits = ["systemd-networkd.service"];
+        reloadUnits = ["systemd-networkd.service"];
       };
       sops.secrets."network/subnet" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["systemd-networkd.service"];
+        reloadUnits = ["systemd-networkd.service"];
       };
       sops.secrets."network/gateway" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["systemd-networkd.service"];
+        reloadUnits = ["systemd-networkd.service"];
       };
       sops.templates."enX0" = {
         content = ''

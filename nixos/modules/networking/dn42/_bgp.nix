@@ -253,18 +253,10 @@ in
       {
         systemd.network.config.routeTables = {
           ${bgpCfg.routingTable.name} = bgpCfg.routingTable.id;
-          ${bgpCfg.peering.routingTable.name} = bgpCfg.peering.routingTable.id;
         };
         systemd.network.networks = {
           "70-${cfg.interfaces.dummy.name}" = {
             routingPolicyRules = [
-              {
-                routingPolicyRuleConfig = {
-                  Family = "both";
-                  Table = bgpCfg.peering.routingTable.id;
-                  Priority = bgpCfg.peering.routingTable.priority;
-                };
-              }
               {
                 routingPolicyRuleConfig = {
                   Family = "both";

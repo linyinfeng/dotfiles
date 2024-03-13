@@ -17,7 +17,10 @@ in {
   services.bind = {
     enable = true;
     zones = {}; # not authority
-    cacheNetworks = ["any"];
+    cacheNetworks = [
+      "localnets"
+      "localhost"
+    ];
     # TODO DOT forwarders not supported in bind stable yet
     # forwarders = [];
     forwarders = [
@@ -39,7 +42,8 @@ in {
 
       dnssec-validation auto;
 
-      # TODO DOT forwarders not supported in bind stable yet
+      # DOT forwarders not supported in bind stable yet
+      # TODO wait for bind 9.20
       # forwarders port 853 tls cloudflare {
       #   1.1.1.1;
       #   1.0.0.1;
