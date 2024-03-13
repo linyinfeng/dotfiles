@@ -54,7 +54,6 @@
       graphical.gnome
       graphical.kde
       graphical.hyprland
-      graphical.sway
       graphical.fonts
       graphical.i18n
       services.gnome-keyring
