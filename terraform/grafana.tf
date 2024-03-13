@@ -1,6 +1,6 @@
 provider "grafana" {
-  alias         = "cloud"
-  cloud_api_key = data.sops_file.terraform.data["grafana.token"]
+  alias                     = "cloud"
+  cloud_access_policy_token = data.sops_file.terraform.data["grafana.token"]
 }
 resource "grafana_cloud_stack" "yinfeng" {
   provider    = grafana.cloud
