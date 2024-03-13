@@ -134,6 +134,7 @@
     hyprland.inputs.systems.follows = "systems";
     hyprland.inputs.xdph.follows = "xdph";
     hyprland.inputs.hyprlang.follows = "hyprlang";
+    hyprland.inputs.hyprcursor.follows = "hyprcursor";
     hyprland.inputs.hyprland-protocols.follows = "hyprland-protocols";
     hyprland-protocols.url = "github:hyprwm/hyprland-protocols";
     hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
@@ -146,6 +147,10 @@
     hyprlang.url = "github:hyprwm/hyprlang";
     hyprlang.inputs.nixpkgs.follows = "nixpkgs";
     hyprlang.inputs.systems.follows = "systems";
+    hyprcursor.url = "github:hyprwm/hyprcursor";
+    hyprcursor.inputs.hyprlang.follows = "hyprlang";
+    hyprcursor.inputs.nixpkgs.follows = "nixpkgs";
+    hyprcursor.inputs.systems.follows = "systems";
 
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
