@@ -53,35 +53,6 @@
         "type": "github"
       }
     },
-    "clash2sing-box": {
-      "inputs": {
-        "fenix": [
-          "fenix"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "naersk": [
-          "naersk"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1705993101,
-        "narHash": "sha256-V1F/nH7qUlZ6vjXwrhc8yMUv/tYALwjbC1aXrcoBfWs=",
-        "owner": "oluceps",
-        "repo": "clash2sing-box",
-        "rev": "2fbf7be3336c0e48d6a60674e566fbeaca29f7ef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "oluceps",
-        "repo": "clash2sing-box",
-        "type": "github"
-      }
-    },
     "commit-notifier": {
       "inputs": {
         "crane": [
@@ -1276,7 +1247,6 @@
       "inputs": {
         "ace-bot": "ace-bot",
         "blank": "blank",
-        "clash2sing-box": "clash2sing-box",
         "commit-notifier": "commit-notifier",
         "crane": "crane",
         "deploy-rs": "deploy-rs",

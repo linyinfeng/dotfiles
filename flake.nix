@@ -160,12 +160,6 @@
     nvfetcher.inputs.flake-utils.follows = "flake-utils";
     nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
-    clash2sing-box.url = "github:oluceps/clash2sing-box";
-    clash2sing-box.inputs.flake-utils.follows = "flake-utils";
-    clash2sing-box.inputs.naersk.follows = "naersk";
-    clash2sing-box.inputs.nixpkgs.follows = "nixpkgs";
-    clash2sing-box.inputs.fenix.follows = "fenix";
-
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";

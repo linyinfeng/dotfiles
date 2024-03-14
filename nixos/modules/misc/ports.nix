@@ -57,7 +57,7 @@
       proxy-mixed = 3142;
       proxy-tproxy = 3143;
       proxy-dns = 3149;
-      sing-box-controller = 3150;
+      clash-controller = 3150;
       transmission-rpc = 3160;
       elasticsearch = 3170;
       elasticsearch-node-to-node = 3171;

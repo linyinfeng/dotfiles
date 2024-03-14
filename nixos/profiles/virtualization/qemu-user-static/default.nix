@@ -27,7 +27,7 @@ lib.mkMerge [
   }
   {
     systemd.services.qemu-user-static = lib.mkIf (config.networking.fw-proxy.enable) {
-      after = ["sing-box.service"];
+      after = ["fw-proxy.service"];
       environment =
         lib.mkIf (config.networking.fw-proxy.enable)
         config.networking.fw-proxy.environment;

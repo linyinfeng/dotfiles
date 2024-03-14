@@ -21,23 +21,23 @@
       ${lib.concatMapStringsSep "\n" (name: ''export ${name}=""'') (lib.attrNames cfg.environmentCommandLine)}
     '';
   };
-  updateSingBoxUrl = pkgs.writeShellApplication {
-    name = "update-sing-box-url";
+  updateFwProxyUrl = pkgs.writeShellApplication {
+    name = "update-fw-proxy-url";
     runtimeInputs = with pkgs; [
       curl
       jq
-      yq
+      yq-go
       moreutils
       systemd
-      clash2sing-box
     ];
     text = ''
-      dir="/etc/sing-box"
+      dir="/var/lib/fw-proxy"
 
       url=""
-      downloaded_config_type="sing-box"
+      downloaded_config_type="clash"
       keep_temporary_directory="NO"
       profile_name=""
+      filename="config.yaml"
 
       positional_args=()
       while [[ $# -gt 0 ]]; do
@@ -75,21 +75,21 @@
       mkdir -p $dir
 
       echo 'Making temporary directory...'
-      tmp_dir=$(mktemp -t --directory update-sing-box-config.XXXXXXXXXX)
+      tmp_dir=$(mktemp -t --directory update-fw-proxy-config.XXXXXXXXXX)
       echo "Temporary directory is: $tmp_dir"
-      if [ -f "$dir/config.json" ]; then
-        echo 'Backup old config.json...'
-        cp "$dir/config.json" "$dir/config.json.old"
+      if [ -f "$dir/$filename" ]; then
+        echo "Backup old $filename..."
+        cp "$dir/$filename" "$dir/$filename.old"
       fi
       function cleanup {
         if [ "$keep_temporary_directory" != "YES" ]; then
           echo 'Remove temporary directory...'
           rm -rf "$tmp_dir"
         fi
-        if [ -f "$dir/config.json.old" ]; then
-          echo 'Restore old config.json...'
-          cp "$dir/config.json.old" "$dir/config.json"
-          rm "$dir/config.json.old"
+        if [ -f "$dir/$filename.old" ]; then
+          echo "Restore old $filename..."
+          cp "$dir/$filename.old" "$dir/$filename"
+          rm "$dir/$filename.old"
         fi
       }
       trap cleanup EXIT
@@ -110,44 +110,36 @@
       echo 'Preprocessing original configuration...'
       ${cfg.downloadedConfigPreprocessing}
 
-      echo 'Converting downloaded configuration file to raw config.json...'
-      raw_config="$tmp_dir/raw-config.json"
-      if [ "$downloaded_config_type" = "sing-box" ]; then
+      echo "Converting downloaded configuration file to raw $filename..."
+      raw_config="$tmp_dir/raw-$filename"
+      if [ "$downloaded_config_type" = "clash" ]; then
         cp "$downloaded_config" "$raw_config"
-        elif [ "$downloaded_config_type" = "clash" ]; then
-        ctos-${pkgs.stdenv.hostPlatform.system} --source="$downloaded_config" gen >"$raw_config"
       else
         echo "unknown config type: ''${downloaded_config_type}" >&2
         exit 1
       fi
 
-      echo 'Preprocessing raw config.json...'
+      echo "Preprocessing raw $filename..."
       ${cfg.configPreprocessing}
 
-      echo 'Build config.json...'
-      jq --slurp '.[0] * .[1]' "$raw_config" - <<EOF >"$dir/config.json"
+      echo "Build $filename..."
+      yq eval-all --prettyPrint 'select(fileIndex == 0) * select(fileIndex == 1)' "$raw_config" - <<EOF >"$dir/$filename"
       ${builtins.toJSON cfg.mixinConfig}
       EOF
 
-      external_controller_secrets=$(cat "${cfg.externalController.secretFile}")
-      jq "
-        .experimental.clash_api.secret = \"''${external_controller_secrets}\" |
-        .experimental.clash_api.external_ui = \"${pkgs.nur.repos.linyinfeng.yacd}\"
-        " "$dir/config.json" | sponge "$dir/config.json"
-
-      echo 'Restarting sing-box...'
-      systemctl restart sing-box
-      systemctl status sing-box --no-pager
-      if [ -f "$dir/config.json.old" ]; then
-        echo 'Remove old config.json...'
-        rm "$dir/config.json.old"
+      echo 'Restarting fw-proxy.service...'
+      systemctl restart fw-proxy
+      systemctl status fw-proxy --no-pager
+      if [ -f "$dir/$filename.old" ]; then
+        echo "Remove old $filename..."
+        rm "$dir/$filename.old"
       fi
     '';
   };
-  updateSingBox = pkgs.writeShellApplication {
-    name = "update-sing-box";
+  updateFwProxy = pkgs.writeShellApplication {
+    name = "update-fw-proxy";
     runtimeInputs = [
-      updateSingBoxUrl
+      updateFwProxyUrl
     ];
     text = ''
       profile="$1"
@@ -155,11 +147,11 @@
       case "$profile" in
       ${lib.concatMapStringsSep "\n" (p: ''
         "${p.name}")
-          update-sing-box-url "$(cat "${p.urlFile}")" --profile-name "$profile" "$@"
+          update-fw-proxy-url "$(cat "${p.urlFile}")" --profile-name "$profile" "$@"
           ;;
       '') (lib.attrValues cfg.profiles)}
       *)
-        update-sing-box-url "$profile" "$@"
+        update-fw-proxy-url "$profile" "$@"
         ;;
       esac
     '';
@@ -251,8 +243,8 @@
     paths = [
       enableProxy
       disableProxy
-      updateSingBoxUrl
-      updateSingBox
+      updateFwProxyUrl
+      updateFwProxy
       tproxyUse
       tproxyCgroup
       tproxyInterface
@@ -334,9 +326,20 @@ in
         default = "";
       };
       mixinConfig = mkOption {
-        type = with types; attrs;
+        type = with types; attrsOf anything;
       };
       ports = {
+        all = lib.mkOption {
+          type = with types; listOf port;
+          readOnly = true;
+          default = with cfg.ports; [http socks mixed tproxy];
+        };
+        http = mkOption {
+          type = with types; port;
+        };
+        socks = mkOption {
+          type = with types; port;
+        };
         mixed = mkOption {
           type = with types; port;
         };
@@ -460,50 +463,55 @@ in
 
     config = mkIf (cfg.enable) (mkMerge [
       {
-        networking.fw-proxy.mixinConfig = let
-          commonOptions = {
-            listen = "::";
-            tcp_fast_open = true;
-            udp_fragment = true;
-            sniff = true;
+        networking.fw-proxy.mixinConfig = {
+          port = cfg.ports.http;
+          socks-port = cfg.ports.socks;
+          tproxy-port = cfg.ports.tproxy;
+          mixed-port = cfg.ports.mixed;
+          external-controller = "127.0.0.1:${toString cfg.ports.controller}";
+          external-ui = "${pkgs.nur.repos.linyinfeng.yacd}";
+          allow-lan = lib.mkDefault true;
+          global-client-fingerprint = lib.mkDefault "random";
+          ipv6 = lib.mkDefault true;
+          geo-auto-update = lib.mkDefault true;
+          geo-update-interval = lib.mkDefault 8;
+          geox-url = let
+            meta-rules-dat = "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release";
+          in {
+            geoip = "${meta-rules-dat}/geoip.dat";
+            geosite = "${meta-rules-dat}/geosite.dat";
+            mmdb = "${meta-rules-dat}/country.mmdb";
           };
-        in {
-          inbounds = [
-            (commonOptions
-              // {
-                type = "mixed";
-                tag = "mixed-in";
-                listen_port = cfg.ports.mixed;
-              })
-            (commonOptions
-              // {
-                type = "tproxy";
-                tag = "tproxy-in";
-                listen_port = cfg.ports.tproxy;
-              })
-          ];
-          experimental.clash_api.external_controller = "127.0.0.1:${toString cfg.ports.controller}";
+          unified-delay = lib.mkDefault true;
+          tcp-concurrent = lib.mkDefault true;
         };
-        environment.global-persistence.directories = [
-          "/etc/sing-box"
-        ];
       }
 
       {
-        systemd.packages = with pkgs; [sing-box];
-        systemd.services.sing-box = {
-          serviceConfig = {
+        systemd.services.fw-proxy = {
+          script = ''
+            external_controller_secret=$(cat "$CREDENTIALS_DIRECTORY/secret")
+            clash-meta -d "$STATE_DIRECTORY" -secret "$external_controller_secret"
+          '';
+          reload = "kill -HUP $MAINPID";
+          path = with pkgs; [
+            clash-meta
+          ];
+          serviceConfig = let
+            capabilities = ["CAP_NET_ADMIN" "CAP_NET_RAW" "CAP_NET_BIND_SERVICE" "CAP_SYS_TIME" "CAP_SYS_PTRACE" "CAP_DAC_READ_SEARCH"];
+          in {
+            Type = "simple";
+            LimitNPROC = 500;
+            LimitNOFILE = 1000000;
+            CapabilityBoundingSet = capabilities;
+            AmbientCapabilities = capabilities;
+            Restart = "on-failure";
             DynamicUser = true;
-
-            ExecStartPre = [
-              "+${pkgs.coreutils}/bin/chown sing-box:sing-box $CONFIGURATION_DIRECTORY"
-              "+${pkgs.coreutils}/bin/chmod 0700              $CONFIGURATION_DIRECTORY"
-            ];
-            ConfigurationDirectory = "sing-box";
-            ConfigurationDirectoryMode = "700";
-
-            StateDirectory = "sing-box";
+            StateDirectory = "fw-proxy";
             NFTSet = [cfg.tproxy.bypassNftSet];
+            LoadCredential = [
+              "secret:${cfg.externalController.secretFile}"
+            ];
           };
           after = ["nftables.service"];
           requires = ["nftables.service"];
@@ -524,7 +532,7 @@ in
         services.nginx.virtualHosts.${cfg.externalController.virtualHost} = {
           locations = {
             "${cfg.externalController.location}" = {
-              proxyPass = "http://${cfg.mixinConfig.experimental.clash_api.external_controller}/";
+              proxyPass = "http://${cfg.mixinConfig.external-controller}/";
               proxyWebsockets = true;
             };
           };
@@ -665,19 +673,19 @@ in
       })
 
       (mkIf cfg.auto-update.enable {
-        systemd.services.sing-box-auto-update = {
+        systemd.services.fw-proxy-auto-update = {
           script = ''
-            "${scripts}/bin/update-sing-box" "${cfg.auto-update.service}"
+            "${scripts}/bin/update-fw-proxy" "${cfg.auto-update.service}"
           '';
           serviceConfig = {
             Type = "oneshot";
             Restart = "on-failure";
             RestartSec = 30;
           };
-          after = ["network-online.target" "sing-box.service"];
+          after = ["network-online.target" "fw-proxy.service"];
           requires = ["network-online.target"];
         };
-        systemd.timers.sing-box-auto-update = {
+        systemd.timers.fw-proxy-auto-update = {
           timerConfig = {
             OnCalendar = "03:30";
           };
@@ -689,14 +697,14 @@ in
         (let
           podmanInterface = config.virtualisation.podman.defaultNetwork.settings.network_interface;
         in {
-          networking.firewall.interfaces.${podmanInterface}.allowedTCPPorts = lib.lists.map (i: i.listen_port) cfg.mixinConfig.inbounds;
+          networking.firewall.interfaces.${podmanInterface}.allowedTCPPorts = cfg.ports.all;
         }))
 
       (mkIf (config.virtualisation.libvirtd.enable)
         (let
           libvirtdInterfaces = config.virtualisation.libvirtd.allowedBridges;
           mkIfCfg = name: {
-            ${name}.allowedTCPPorts = lib.lists.map (i: i.listen_port) cfg.mixinConfig.inbounds;
+            ${name}.allowedTCPPorts = cfg.ports.all;
           };
           ifCfgs = lib.mkMerge (lib.lists.map mkIfCfg libvirtdInterfaces);
         in {

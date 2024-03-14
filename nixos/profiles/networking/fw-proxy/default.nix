@@ -13,9 +13,11 @@ in
       networking.fw-proxy = {
         enable = true;
         ports = {
+          http = config.ports.proxy-http;
+          socks = config.ports.proxy-socks;
           mixed = config.ports.proxy-mixed;
           tproxy = config.ports.proxy-tproxy;
-          controller = config.ports.sing-box-controller;
+          controller = config.ports.clash-controller;
         };
         noProxyPattern =
           options.networking.fw-proxy.noProxyPattern.default
@@ -30,13 +32,10 @@ in
           rulePriority = config.routingPolicyPriorities.fw-proxy;
         };
         downloadedConfigPreprocessing = ''
-          # if [ $($jq --raw-output '.profile_name' "$profile_info_file") = "alternative" ]; then
-          #   $yq --inplace 'del(.proxies[] | select(.name != "*IEPL*"))' "$downloaded_config"
-          # fi
+          # nothing
         '';
         configPreprocessing = ''
-          jq 'del(.log) | del(.inbounds) | del(.experimental.clash_api)' "$raw_config" |\
-            sponge "$raw_config"
+          # nothing
         '';
         mixinConfig = {
           log = {
@@ -46,20 +45,20 @@ in
         };
         profiles = lib.listToAttrs (lib.lists.map (p:
           lib.nameValuePair p {
-            urlFile = config.sops.secrets."sing-box/${p}".path;
+            urlFile = config.sops.secrets."fw-proxy/${p}".path;
           })
         profiles);
         externalController = {
           expose = true;
           virtualHost = "${hostName}.*";
-          location = "/sing-box/";
+          location = "/clash/";
           secretFile = config.sops.secrets."fw_proxy_external_controller_secret".path;
         };
       };
 
       sops.secrets."fw_proxy_external_controller_secret" = {
         terraformOutput.enable = true;
-        restartUnits = ["sing-box-auto-update.service"];
+        restartUnits = ["fw-proxy.service"];
       };
 
       networking.fw-proxy.auto-update = {
@@ -71,9 +70,9 @@ in
     }
     {
       sops.secrets = lib.listToAttrs (lib.lists.map (p:
-        lib.nameValuePair "sing-box/${p}" {
+        lib.nameValuePair "fw-proxy/${p}" {
           sopsFile = config.sops-file.get "common.yaml";
-          restartUnits = ["sing-box-auto-update.service"];
+          restartUnits = ["fw-proxy-auto-update.service"];
         })
       profiles);
     }
