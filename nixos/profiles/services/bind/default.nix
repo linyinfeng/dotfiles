@@ -18,6 +18,8 @@ in {
     enable = true;
     zones = {}; # not authority
     cacheNetworks = [
+      data.dn42_anycast_v4_cidr
+      data.dn42_anycast_v6_cidr
       "localnets"
       "localhost"
     ];
