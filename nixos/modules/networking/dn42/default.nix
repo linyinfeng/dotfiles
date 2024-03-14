@@ -443,14 +443,14 @@ in {
         addresses =
           lib.lists.map (a: {
             addressConfig = {
-              Address = "${a}/${toString asCfg.parsedCidrV4.prefixLength}";
+              Address = "${a}/32";
               Scope = "global";
             };
           })
           asCfg.thisHost.addressesV4
           ++ lib.lists.map (a: {
             addressConfig = {
-              Address = "${a}/${toString asCfg.parsedCidrV6.prefixLength}";
+              Address = "${a}/128";
               Scope = "global";
             };
           })
