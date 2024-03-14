@@ -114,6 +114,12 @@
         code = 200;
       }
     ];
+    keycloak = [
+      {
+        url = "https://keycloak.li7g.com";
+        code = 302;
+      }
+    ];
   };
   mkServiceCfg = name: cnameMapping:
     if cnameMapping.proxy
