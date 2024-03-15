@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.ntfy-sh = {
     enable = true;
     settings = {

@@ -6,18 +6,24 @@
   lib,
   modulesPath,
   ...
-}: let
-  btrfsSubvol = device: subvol: extraConfig:
+}:
+let
+  btrfsSubvol =
+    device: subvol: extraConfig:
     lib.mkMerge [
       {
         inherit device;
         fsType = "btrfs";
-        options = ["subvol=${subvol}" "compress=zstd"];
+        options = [
+          "subvol=${subvol}"
+          "compress=zstd"
+        ];
       }
       extraConfig
     ];
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
-in {
+in
+{
   imports =
     suites.server
     ++ (with profiles; [
@@ -41,7 +47,13 @@ in {
         enable = true;
         device = "/dev/vda";
       };
-      boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
+      boot.initrd.availableKernelModules = [
+        "ata_piix"
+        "uhci_hcd"
+        "virtio_pci"
+        "sr_mod"
+        "virtio_blk"
+      ];
 
       boot.tmp.useTmpfs = true;
       environment.global-persistence.enable = true;
@@ -49,36 +61,32 @@ in {
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227"
-        ];
+        fileSystems = [ "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227" ];
       };
 
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";
-        options = ["defaults" "size=2G" "mode=755"];
+        options = [
+          "defaults"
+          "size=2G"
+          "mode=755"
+        ];
       };
-      fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
-      fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
-      fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-      fileSystems."/swap" = btrfsSubvolMain "@swap" {};
+      fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+      fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+      fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+      fileSystems."/swap" = btrfsSubvolMain "@swap" { };
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/4a186796-5865-4b47-985c-9354adec09a4";
         fsType = "ext4";
       };
       services.zswap.enable = true;
-      swapDevices = [
-        {
-          device = "/swap/swapfile";
-        }
-      ];
+      swapDevices = [ { device = "/swap/swapfile"; } ];
     }
 
     # nginx
-    {
-      services.nginx.defaultHTTPListenPort = 8080;
-    }
+    { services.nginx.defaultHTTPListenPort = 8080; }
 
     {
       services.rathole = {
@@ -95,7 +103,7 @@ in {
       '';
       sops.secrets."rathole_minecraft_token" = {
         terraformOutput.enable = true;
-        restartUnits = ["rathole.service"];
+        restartUnits = [ "rathole.service" ];
       };
       networking.firewall.allowedTCPPorts = with config.ports; [
         rathole # default transport is tcp
@@ -107,7 +115,7 @@ in {
       systemd.network.networks."40-ens" = {
         matchConfig = {
           # ethtool -i
-          Driver = ["virtio_net"];
+          Driver = [ "virtio_net" ];
         };
         networkConfig = {
           DHCP = "yes";
@@ -116,8 +124,6 @@ in {
     })
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

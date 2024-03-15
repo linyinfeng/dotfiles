@@ -1,8 +1,5 @@
+{ pkgs, lib, ... }:
 {
-  pkgs,
-  lib,
-  ...
-}: {
   #        default = 1000
   #   this default = 1250
   # option default = 1500

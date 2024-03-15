@@ -4,14 +4,16 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   hydra-hook = pkgs.substituteAll {
     src = ./hook.sh;
     isExecutable = true;
     inherit (pkgs.stdenvNoCC) shell;
     inherit (pkgs) jq systemd postgresql;
   };
-in {
+in
+{
   imports = [
     ./_dotfiles-channel-update.nix
     ./_cache.nix
@@ -22,9 +24,7 @@ in {
       services.nginx.virtualHosts."hydra.*" = {
         forceSSL = true;
         inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-        serverAliases = [
-          "hydra-proxy.*"
-        ];
+        serverAliases = [ "hydra-proxy.*" ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.ports.hydra}";
         };
@@ -52,11 +52,11 @@ in {
           </runcommand>
         '';
       };
-      services.hydra.buildMachinesFiles = [
-        "/etc/nix-build-machines/hydra-builder/machines"
-      ];
+      services.hydra.buildMachinesFiles = [ "/etc/nix-build-machines/hydra-builder/machines" ];
       # allow evaluator and queue-runner to access nix-access-tokens
-      systemd.services.hydra-evaluator.serviceConfig.SupplementaryGroups = [config.users.groups.nix-access-tokens.name];
+      systemd.services.hydra-evaluator.serviceConfig.SupplementaryGroups = [
+        config.users.groups.nix-access-tokens.name
+      ];
       systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [
         config.users.groups.nix-access-tokens.name
         config.users.groups.hydra-builder-client.name
@@ -71,9 +71,7 @@ in {
           </github_authorization>
         '';
       };
-      nix.settings.secret-key-files = [
-        "${config.sops.secrets."cache-li7g-com/key".path}"
-      ];
+      nix.settings.secret-key-files = [ "${config.sops.secrets."cache-li7g-com/key".path}" ];
       nix.settings.allowed-uris = [
         "github:"
         "gitlab:"
@@ -84,13 +82,13 @@ in {
       ];
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
-        restartUnits = ["hydra.service"];
+        restartUnits = [ "hydra.service" ];
       };
       sops.secrets."cache-li7g-com/key" = {
         sopsFile = config.sops-file.host;
-        restartUnits = ["nix-daemon.service"];
+        restartUnits = [ "nix-daemon.service" ];
       };
-      nix.settings.trusted-users = ["@hydra"];
+      nix.settings.trusted-users = [ "@hydra" ];
     }
 
     {
@@ -98,7 +96,8 @@ in {
       services.hydra.extraConfig = ''
         email_notification = 1
       '';
-      systemd.services.hydra-notify.serviceConfig.EnvironmentFile = config.sops.templates."hydra-email".path;
+      systemd.services.hydra-notify.serviceConfig.EnvironmentFile =
+        config.sops.templates."hydra-email".path;
       sops.templates."hydra-email".content = ''
         EMAIL_SENDER_TRANSPORT=SMTP
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
@@ -109,7 +108,7 @@ in {
       '';
       sops.secrets."mail_password" = {
         terraformOutput.enable = true;
-        restartUnits = ["hydra-notify.service"];
+        restartUnits = [ "hydra-notify.service" ];
       };
     }
 

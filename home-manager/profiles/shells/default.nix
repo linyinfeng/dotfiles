@@ -1,8 +1,5 @@
+{ lib, osConfig, ... }:
 {
-  lib,
-  osConfig,
-  ...
-}: {
   programs.fish.enable = true;
   programs.skim.enable = true;
   programs.zoxide.enable = true;

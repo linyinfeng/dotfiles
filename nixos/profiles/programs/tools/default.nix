@@ -1,4 +1,5 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   delink = pkgs.writeShellApplication {
     name = "delink";
     text = ''
@@ -24,7 +25,8 @@
       exec "$SHELL"
     '';
   };
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     bc
     btop
@@ -59,5 +61,7 @@ in {
     delink
     tmpTest
   ];
-  passthru = {inherit delink;};
+  passthru = {
+    inherit delink;
+  };
 }

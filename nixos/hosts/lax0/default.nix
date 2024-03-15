@@ -5,10 +5,12 @@
   lib,
   modulesPath,
   ...
-}: let
+}:
+let
   hostName = config.networking.hostName;
   hostData = config.lib.self.data.hosts.${hostName};
-in {
+in
+{
   imports =
     suites.overseaServer
     ++ (with profiles; [
@@ -20,15 +22,19 @@ in {
       services.oranc
       services.dot-tar
     ])
-    ++ [
-      (modulesPath + "/profiles/qemu-guest.nix")
-    ];
+    ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   config = lib.mkMerge [
     {
       boot.loader.grub.enable = true;
-      boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk"];
-      boot.kernelModules = ["kvm-intel"];
+      boot.initrd.availableKernelModules = [
+        "ata_piix"
+        "uhci_hcd"
+        "virtio_pci"
+        "sr_mod"
+        "virtio_blk"
+      ];
+      boot.kernelModules = [ "kvm-intel" ];
 
       boot.tmp.cleanOnBoot = true;
       services.fstrim.enable = true;
@@ -37,15 +43,17 @@ in {
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          config.fileSystems."/persist".device
-        ];
+        fileSystems = [ config.fileSystems."/persist".device ];
       };
 
       disko.devices = {
         nodev."/" = {
           fsType = "tmpfs";
-          mountOptions = ["defaults" "size=2G" "mode=755"];
+          mountOptions = [
+            "defaults"
+            "size=2G"
+            "mode=755"
+          ];
         };
         disk.main = {
           type = "disk";
@@ -64,7 +72,10 @@ in {
                   type = "filesystem";
                   format = "vfat";
                   mountpoint = "/boot";
-                  mountOptions = ["dmask=077" "fmask=177"];
+                  mountOptions = [
+                    "dmask=077"
+                    "fmask=177"
+                  ];
                 };
               };
               root = {
@@ -74,23 +85,23 @@ in {
                   subvolumes = {
                     "@persist" = {
                       mountpoint = "/persist";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                     "@var-log" = {
                       mountpoint = "/var/log";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                     "@nix" = {
                       mountpoint = "/nix";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                     "@tmp" = {
                       mountpoint = "/tmp";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                     "@swap" = {
                       mountpoint = "/swap";
-                      mountOptions = ["compress=zstd"];
+                      mountOptions = [ "compress=zstd" ];
                     };
                   };
                 };
@@ -120,20 +131,26 @@ in {
         };
         addresses = [
           {
-            addressConfig = let
-              address = assert lib.length hostData.endpoints_v4 == 1;
-                lib.elemAt hostData.endpoints_v4 0;
-            in {
-              Address = "${address}/26";
-            };
+            addressConfig =
+              let
+                address =
+                  assert lib.length hostData.endpoints_v4 == 1;
+                  lib.elemAt hostData.endpoints_v4 0;
+              in
+              {
+                Address = "${address}/26";
+              };
           }
           {
-            addressConfig = let
-              address = assert lib.length hostData.endpoints_v6 == 1;
-                lib.elemAt hostData.endpoints_v6 0;
-            in {
-              Address = "${address}/64";
-            };
+            addressConfig =
+              let
+                address =
+                  assert lib.length hostData.endpoints_v6 == 1;
+                  lib.elemAt hostData.endpoints_v6 0;
+              in
+              {
+                Address = "${address}/64";
+              };
           }
         ];
         dns = [
@@ -156,8 +173,6 @@ in {
     })
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

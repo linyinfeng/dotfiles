@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.obs-studio = {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [
@@ -14,7 +15,10 @@
     icon = "com.obsproject.Studio";
     terminal = false;
     type = "Application";
-    categories = ["AudioVideo" "Recorder"];
+    categories = [
+      "AudioVideo"
+      "Recorder"
+    ];
     settings = {
       "StartupWMClass" = "obs";
     };
@@ -22,8 +26,6 @@
   };
 
   home.global-persistence = {
-    directories = [
-      ".config/obs-studio"
-    ];
+    directories = [ ".config/obs-studio" ];
   };
 }

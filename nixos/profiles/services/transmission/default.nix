@@ -1,6 +1,8 @@
-{config, ...}: let
+{ config, ... }:
+let
   rpcPort = config.ports.transmission-rpc;
-in {
+in
+{
   services.transmission = {
     enable = true;
     openFirewall = true;
@@ -28,7 +30,7 @@ in {
       '';
     };
   };
-  users.users.nginx.extraGroups = [config.users.groups.transmission.name];
+  users.users.nginx.extraGroups = [ config.users.groups.transmission.name ];
 
   services.samba.shares.transmission = {
     "path" = "/var/lib/transmission/Downloads";
@@ -44,20 +46,22 @@ in {
 
   sops.templates."transmission-auth-file" = {
     content = ''
-      ${config.sops.placeholder."transmission_username"}:${config.sops.placeholder."transmission_hashed_password"}
+      ${config.sops.placeholder."transmission_username"}:${
+        config.sops.placeholder."transmission_hashed_password"
+      }
     '';
     owner = config.users.users.nginx.name;
   };
   sops.secrets."transmission_username" = {
     terraformOutput.enable = true;
-    restartUnits = ["nginx.service"];
+    restartUnits = [ "nginx.service" ];
   };
   sops.secrets."transmission_hashed_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["nginx.service"];
+    restartUnits = [ "nginx.service" ];
   };
   sops.secrets."transmission_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["transmission.service"];
+    restartUnits = [ "transmission.service" ];
   };
 }

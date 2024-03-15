@@ -1,4 +1,5 @@
-{config, ...}: let
+{ config, ... }:
+let
   stateDir = "/var/lib/zerotier-one";
   interfaceName = "zt0";
   port = config.ports.zerotier;
@@ -6,7 +7,8 @@
     "zerotierone-presetup.service"
     "zerotierone.service"
   ];
-in {
+in
+{
   services.zerotierone = {
     enable = true;
     inherit port;
@@ -41,12 +43,10 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    before = ["zerotierone.service"];
-    wantedBy = ["multi-user.target"];
+    before = [ "zerotierone.service" ];
+    wantedBy = [ "multi-user.target" ];
   };
-  systemd.services.zerotierone.requires = [
-    "zerotierone-presetup.service"
-  ];
+  systemd.services.zerotierone.requires = [ "zerotierone-presetup.service" ];
   sops.secrets."zerotier_network_id" = {
     terraformOutput.enable = true;
     restartUnits = units;
@@ -80,12 +80,8 @@ in {
     restartUnits = units;
   };
 
-  networking.firewall.allowedUDPPorts = [
-    config.services.zerotierone.port
-  ];
-  networking.firewall.allowedTCPPorts = [
-    config.services.zerotierone.port
-  ];
+  networking.firewall.allowedUDPPorts = [ config.services.zerotierone.port ];
+  networking.firewall.allowedTCPPorts = [ config.services.zerotierone.port ];
 
   services.zerotierone.localConf.settings.interfacePrefixBlacklist = [
     "tailscale"
@@ -94,5 +90,5 @@ in {
     "dn42"
   ];
 
-  networking.networkmanager.unmanaged = [interfaceName];
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

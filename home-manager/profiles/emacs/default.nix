@@ -4,52 +4,49 @@
   lib,
   osConfig,
   ...
-}: let
+}:
+let
   rawEmacsConfig = ./init.el;
   emacs = pkgs.emacsWithPackagesFromUsePackage {
     config = rawEmacsConfig;
     package = pkgs.emacs;
     alwaysEnsure = false;
-    override = epkgs:
+    override =
+      epkgs:
       epkgs
-      // (let
-        lEpkgs =
-          pkgs.nur.repos.linyinfeng.emacsPackages.override
-          {emacsPackagesTopLevel = epkgs;};
-      in {
-        # currently nothing
-        # inherit (lEpkgs) ;
-      });
+      // (
+        let
+          lEpkgs = pkgs.nur.repos.linyinfeng.emacsPackages.override { emacsPackagesTopLevel = epkgs; };
+        in
+        {
+          # currently nothing
+          # inherit (lEpkgs) ;
+        }
+      );
   };
   fw-proxy = osConfig.networking.fw-proxy;
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";
-    paths = with pkgs.nur.repos.linyinfeng.rimePackages;
-      withRimeDeps [
-        rime-ice
-      ];
+    paths = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
   };
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.substituteAll {
     src = rawEmacsConfig;
     inherit syncDir rimeShareDataDir;
-    telegaProxyEnable =
-      if fw-proxy.enable
-      then "t"
-      else "nil";
+    telegaProxyEnable = if fw-proxy.enable then "t" else "nil";
     telegaProxyServer = "localhost";
-    telegaProxyPort =
-      if fw-proxy.enable
-      then fw-proxy.ports.mixed
-      else "nil";
+    telegaProxyPort = if fw-proxy.enable then fw-proxy.ports.mixed else "nil";
     ledgerFile = config.home.sessionVariables."LEDGER_FILE";
   };
-in {
-  passthru = {inherit emacs;};
+in
+{
+  passthru = {
+    inherit emacs;
+  };
 
   home.packages =
-    [emacs]
+    [ emacs ]
     ++ (with pkgs; [
       ispell
       sqlite # org-roam
@@ -83,17 +80,13 @@ in {
     EDITOR = "emacsclient";
   };
   dconf.settings = lib.mkIf osConfig.programs.dconf.enable {
-    "org/gnome/shell".favorite-apps = [
-      "emacsclient.desktop"
-    ];
+    "org/gnome/shell".favorite-apps = [ "emacsclient.desktop" ];
   };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
   home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
 
-  home.global-persistence.directories = [
-    ".emacs.d/persist"
-  ];
+  home.global-persistence.directories = [ ".emacs.d/persist" ];
 
   programs.fish.interactiveShellInit = ''
     if test "$INSIDE_EMACS" = 'vterm'

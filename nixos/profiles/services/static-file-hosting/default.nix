@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.nginx.virtualHosts."static.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -7,7 +8,5 @@
       autoindex on;
     '';
   };
-  environment.global-persistence.directories = [
-    "/var/www/static"
-  ];
+  environment.global-persistence.directories = [ "/var/www/static" ];
 }

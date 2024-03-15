@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.seafile = {
     enable = true;
     adminEmail = "lin.yinfeng@outlook.com";
@@ -33,15 +34,13 @@
 
   systemd.services.seahub = {
     serviceConfig.EnvironmentFile = config.sops.templates."seahub-env".path;
-    restartTriggers = [
-      config.sops.templates."seahub-env".file
-    ];
+    restartTriggers = [ config.sops.templates."seahub-env".file ];
   };
   sops.templates."seahub-env".content = ''
     ADMIN_PASSWORD=${config.sops.placeholder."seahub_password"}
   '';
   sops.secrets."seahub_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["seahub.service"];
+    restartUnits = [ "seahub.service" ];
   };
 }

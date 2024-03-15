@@ -45,8 +45,6 @@ lib.mkMerge [
 
   (lib.mkIf (!config.services.xserver.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;
-    environment.global-persistence.user.directories = [
-      ".local/share/keyrings"
-    ];
+    environment.global-persistence.user.directories = [ ".local/share/keyrings" ];
   })
 ]

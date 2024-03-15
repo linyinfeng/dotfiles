@@ -3,11 +3,12 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options = {
     services.maddy-init.accounts = lib.mkOption {
       type = with lib.types; listOf str;
-      default = [];
+      default = [ ];
     };
   };
   config = {
@@ -15,7 +16,7 @@
       enable = true;
       hostname = "smtp.li7g.com";
       primaryDomain = "li7g.com";
-      localDomains = ["$(primary_domain)"];
+      localDomains = [ "$(primary_domain)" ];
       openFirewall = false;
       tls = {
         loader = "file";
@@ -114,26 +115,27 @@
     };
     sops.secrets."dkim_private_pem" = {
       terraformOutput.enable = true;
-      restartUnits = ["maddy.service"];
+      restartUnits = [ "maddy.service" ];
     };
     systemd.services.maddy.serviceConfig.LoadCredential = [
       "dkim.key:${config.sops.secrets."dkim_private_pem".path}"
     ];
-    services.postgresql.ensureDatabases = ["maddy"];
+    services.postgresql.ensureDatabases = [ "maddy" ];
     services.postgresql.ensureUsers = [
       {
         name = "maddy";
         ensureDBOwnership = true;
       }
     ];
-    users.users.maddy.extraGroups = [
-      config.users.groups.acmetf.name
-    ];
+    users.users.maddy.extraGroups = [ config.users.groups.acmetf.name ];
     # allow su to maddy to use maddyctl
     users.users.maddy.shell = pkgs.bash;
     systemd.services.maddy = {
-      requires = ["postgresql.service" "maddy-init.service"];
-      after = ["postgresql.service"];
+      requires = [
+        "postgresql.service"
+        "maddy-init.service"
+      ];
+      after = [ "postgresql.service" ];
     };
 
     # accounts
@@ -150,19 +152,17 @@
     ];
     sops.secrets."mail_password" = {
       terraformOutput.enable = true;
-      restartUnits = ["maddy-init.service"];
+      restartUnits = [ "maddy-init.service" ];
     };
     systemd.services.maddy-init = {
-      after = ["maddy.service"];
+      after = [ "maddy.service" ];
       serviceConfig = {
         User = "maddy";
         Type = "oneshot";
         RemainAfterExit = true;
-        LoadCredential = [
-          "password:${config.sops.secrets."mail_password".path}"
-        ];
+        LoadCredential = [ "password:${config.sops.secrets."mail_password".path}" ];
       };
-      path = [pkgs.maddy];
+      path = [ pkgs.maddy ];
       script = ''
         PASSWORD_FILE="$CREDENTIALS_DIRECTORY/password"
         function add_user {
@@ -177,12 +177,9 @@
           fi
         }
 
-        ${
-          lib.concatStringsSep "\n"
-          (builtins.map
-            (a: "add_user \"${a}\"")
-            config.services.maddy-init.accounts)
-        }
+        ${lib.concatStringsSep "\n" (
+          builtins.map (a: "add_user \"${a}\"") config.services.maddy-init.accounts
+        )}
       '';
     };
 

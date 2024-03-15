@@ -13,24 +13,25 @@
     flake-compat.flake = false;
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;}
-    {
+  outputs =
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import inputs.systems;
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
         inputs.devshell.flakeModule
         inputs.treefmt-nix.flakeModule
       ];
-      perSystem = {...}: {
-        treefmt = {
-          projectRootFile = "flake.nix";
-          programs = {
-            alejandra.enable = true;
+      perSystem =
+        { ... }:
+        {
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              alejandra.enable = true;
+            };
           };
+          devshells.default = { };
         };
-        devshells.default = {
-        };
-      };
     };
 }

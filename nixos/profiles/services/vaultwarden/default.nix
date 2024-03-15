@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   services.nginx.virtualHosts."vault.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -45,14 +46,14 @@
   '';
   sops.secrets."vaultwarden_admin_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["vaultwarden.service"];
+    restartUnits = [ "vaultwarden.service" ];
   };
   sops.secrets."mail_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["vaultwarden.service"];
+    restartUnits = [ "vaultwarden.service" ];
   };
 
-  services.postgresql.ensureDatabases = ["vaultwarden"];
+  services.postgresql.ensureDatabases = [ "vaultwarden" ];
   services.postgresql.ensureUsers = [
     {
       name = "vaultwarden";
@@ -60,8 +61,8 @@
     }
   ];
   systemd.services.vaultwarden = {
-    requires = ["postgresql.service"];
-    after = ["postgresql.service"];
+    requires = [ "postgresql.service" ];
+    after = [ "postgresql.service" ];
   };
 
   services.restic.backups.b2.paths = [

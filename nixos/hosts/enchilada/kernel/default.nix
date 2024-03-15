@@ -1,8 +1,4 @@
-{
-  mobile-nixos,
-  fetchFromGitLab,
-  ...
-}:
+{ mobile-nixos, fetchFromGitLab, ... }:
 mobile-nixos.kernel-builder {
   version = "6.6.3";
   configfile = ./config.aarch64;
@@ -14,7 +10,7 @@ mobile-nixos.kernel-builder {
     hash = "sha256-StE6pFwSPklhI0xjp85JSPG0yIFOZ6VU72mQoVrIFSo=";
   };
 
-  patches = [];
+  patches = [ ];
 
   isModular = false;
   isCompressed = "gz";

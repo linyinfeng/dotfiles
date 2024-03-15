@@ -1,6 +1,8 @@
-{config, ...}: let
+{ config, ... }:
+let
   homeDirectory = "/root";
-in {
+in
+{
   users.users.root = {
     hashedPasswordFile = config.sops.secrets."user-password/root".path;
     openssh.authorizedKeys.keyFiles = [
@@ -9,14 +11,16 @@ in {
     ];
   };
 
-  environment.global-persistence.user.users = ["root"];
-  home-manager.users.root = {suites, ...}: {
-    imports = suites.base;
-    home.global-persistence = {
-      enable = true;
-      home = homeDirectory;
+  environment.global-persistence.user.users = [ "root" ];
+  home-manager.users.root =
+    { suites, ... }:
+    {
+      imports = suites.base;
+      home.global-persistence = {
+        enable = true;
+        home = homeDirectory;
+      };
     };
-  };
 
   sops.secrets."user-password/root" = {
     neededForUsers = true;

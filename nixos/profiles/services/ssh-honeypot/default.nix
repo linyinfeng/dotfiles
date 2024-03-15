@@ -3,19 +3,21 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   port = config.ports.ssh-honeypot;
   cowrieSrc = pkgs.stdenv.mkDerivation {
     inherit (pkgs.nur.repos.linyinfeng.sources.cowrie) pname version src;
-    patches = [
-      ./cowrie-telegram-output-requests.patch
-    ];
+    patches = [ ./cowrie-telegram-output-requests.patch ];
     installPhase = ''
       cp -r . $out
     '';
   };
-in {
-  passthru = {inherit cowrieSrc;};
+in
+{
+  passthru = {
+    inherit cowrieSrc;
+  };
   systemd.services.cowrie = {
     # setting up environment as
     # https://github.com/cowrie/cowrie/blob/master/docker/Dockerfile
@@ -57,37 +59,30 @@ in {
       DynamicUser = true;
       StateDirectory = "cowrie";
       WorkingDirectory = "/var/lib/cowrie";
-      EnvironmentFile = [
-        config.sops.templates."cowrie-extra-env".path
-      ];
-      AmbientCapabilities = [
-        "CAP_NET_BIND_SERVICE"
-      ];
+      EnvironmentFile = [ config.sops.templates."cowrie-extra-env".path ];
+      AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
     };
-    environment =
-      {
-        COWRIE_SSH_LISTEN_ENDPOINTS = "tcp6:22:interface=\\:\\:";
-        COWRIE_HONEYPOT_STATE_PATH = "state";
-        COWRIE_HONEYPOT_SHARE_PATH = "share/cowrie";
-        COWRIE_HONEYPOT_LOG_PATH = "log";
-        COWRIE_HONEYPOT_CONTENTS_PATH = "honeyfs";
-        COWRIE_HONEYPOT_TXTCMDS_PATH = "txtcmds";
-        COWRIE_HONEYPOT_HOSTNAME = config.networking.hostName;
-        COWRIE_HONEYPOT_TIMEZONE = config.time.timeZone;
-        COWRIE_HONEYPOT_AUTH_CLASS = "AuthRandom";
-        COWRIE_SHELL_KERNEL_VERSION = "5.10.0-20-amd64";
-        COWRIE_SHELL_KERNEL_BUILD_STRING = "#1 SMP Debian 5.10.158-2 (2022-12-13)";
-      }
-      // lib.optionalAttrs (config.networking.fw-proxy.enable)
-      config.networking.fw-proxy.environment;
-    after = ["network-online.target"];
-    requires = ["network-online.target"];
-    wantedBy = ["multi-user.target"];
+    environment = {
+      COWRIE_SSH_LISTEN_ENDPOINTS = "tcp6:22:interface=\\:\\:";
+      COWRIE_HONEYPOT_STATE_PATH = "state";
+      COWRIE_HONEYPOT_SHARE_PATH = "share/cowrie";
+      COWRIE_HONEYPOT_LOG_PATH = "log";
+      COWRIE_HONEYPOT_CONTENTS_PATH = "honeyfs";
+      COWRIE_HONEYPOT_TXTCMDS_PATH = "txtcmds";
+      COWRIE_HONEYPOT_HOSTNAME = config.networking.hostName;
+      COWRIE_HONEYPOT_TIMEZONE = config.time.timeZone;
+      COWRIE_HONEYPOT_AUTH_CLASS = "AuthRandom";
+      COWRIE_SHELL_KERNEL_VERSION = "5.10.0-20-amd64";
+      COWRIE_SHELL_KERNEL_BUILD_STRING = "#1 SMP Debian 5.10.158-2 (2022-12-13)";
+    } // lib.optionalAttrs (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    after = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
   };
   sops.templates."cowrie-extra-env".content = ''
     COWRIE_OUTPUT_TELEGRAM_ENABLED=true
     COWRIE_OUTPUT_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram-bot/push"}
     COWRIE_OUTPUT_TELEGRAM_CHAT_ID=148111617
   '';
-  networking.firewall.allowedTCPPorts = [port];
+  networking.firewall.allowedTCPPorts = [ port ];
 }

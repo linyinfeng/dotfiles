@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.keycloak = {
     enable = true;
     database = {
@@ -20,6 +21,6 @@
   };
   sops.secrets."keycloak_db_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["keycloak.service"];
+    restartUnits = [ "keycloak.service" ];
   };
 }

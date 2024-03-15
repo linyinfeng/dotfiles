@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.matrix-sliding-sync = {
     enable = true;
     environmentFile = config.sops.templates."sliding-sync-env".path;
@@ -12,7 +13,7 @@
   '';
   sops.secrets."syncv3_secret" = {
     terraformOutput.enable = true;
-    restartUnits = ["matrix-sliding-sync.service"];
+    restartUnits = [ "matrix-sliding-sync.service" ];
   };
 
   services.nginx.virtualHosts."matrix-syncv3.*" = {

@@ -1,8 +1,5 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   setup = pkgs.substituteAll {
     src = ./setup.sh;
     isExecutable = true;
@@ -19,7 +16,8 @@
       "http"
     ];
   };
-in {
+in
+{
   services.influxdb2 = {
     enable = true;
     settings = {
@@ -42,21 +40,19 @@ in {
       INFLUX_HOST = "http://localhost:${toString config.ports.influxdb}";
       INFLUX_CONFIGS_PATH = "/var/lib/influxdb2-setup/configs";
     };
-    after = ["influxdb2.service"];
-    wantedBy = ["multi-user.target"];
+    after = [ "influxdb2.service" ];
+    wantedBy = [ "multi-user.target" ];
   };
   # TODO restartUnits: can't change password and token currently
   sops.secrets."influxdb_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["influxdb2-setup.service"];
+    restartUnits = [ "influxdb2-setup.service" ];
   };
   sops.secrets."influxdb_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["influxdb2-setup.service"];
+    restartUnits = [ "influxdb2-setup.service" ];
   };
-  environment.systemPackages = with pkgs; [
-    influxdb2
-  ];
+  environment.systemPackages = with pkgs; [ influxdb2 ];
   services.nginx.virtualHosts."influxdb.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -65,7 +61,5 @@ in {
     };
   };
 
-  services.notify-failure.services = [
-    "influxdb2"
-  ];
+  services.notify-failure.services = [ "influxdb2" ];
 }

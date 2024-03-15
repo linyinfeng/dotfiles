@@ -1,25 +1,16 @@
+{ pkgs, lib, ... }:
 {
-  pkgs,
-  lib,
-  ...
-}: {
   i18n.inputMethod = {
     enabled = lib.mkDefault "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       (rime.override {
-        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
-          withRimeDeps [
-            rime-ice
-          ];
+        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
       })
       mozc
     ];
     fcitx5.addons = with pkgs; [
       (fcitx5-rime.override {
-        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages;
-          withRimeDeps [
-            rime-ice
-          ];
+        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
       })
       fcitx5-mozc
     ];

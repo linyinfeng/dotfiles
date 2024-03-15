@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   repoName = "hledger-journal";
-in {
+in
+{
   services.hledger-web = {
     enable = true;
     baseUrl = lib.mkDefault "https://hledger.li7g.com";
@@ -19,9 +21,7 @@ in {
       "--infer-equity"
       "--verbose-tags"
     ];
-    journalFiles = [
-      "hledger-journal/main.journal"
-    ];
+    journalFiles = [ "hledger-journal/main.journal" ];
   };
   systemd.services.hledger-web-fetch = {
     script = ''
@@ -38,19 +38,15 @@ in {
         sleep 60
       done
     '';
-    path = with pkgs; [
-      git
-    ];
+    path = with pkgs; [ git ];
     serviceConfig = {
       User = config.users.users.hledger.name;
       Group = config.users.groups.hledger.name;
       WorkingDirectory = config.services.hledger-web.stateDir;
-      LoadCredential = [
-        "token:${config.sops.secrets."hledger/repo-token".path}"
-      ];
+      LoadCredential = [ "token:${config.sops.secrets."hledger/repo-token".path}" ];
     };
-    before = ["hledger-web.service"];
-    requiredBy = ["hledger-web.service"];
+    before = [ "hledger-web.service" ];
+    requiredBy = [ "hledger-web.service" ];
   };
   services.nginx.virtualHosts."hledger.*" = {
     forceSSL = true;
@@ -63,9 +59,7 @@ in {
       '';
     };
   };
-  systemd.services.nginx.restartTriggers = [
-    config.sops.templates."hledger-auth-file".file
-  ];
+  systemd.services.nginx.restartTriggers = [ config.sops.templates."hledger-auth-file".file ];
   sops.templates."hledger-auth-file" = {
     content = ''
       ${config.sops.placeholder."hledger_username"}:${config.sops.placeholder."hledger_hashed_password"}
@@ -74,17 +68,15 @@ in {
   };
   sops.secrets."hledger/repo-token" = {
     sopsFile = config.sops-file.host;
-    restartUnits = ["hledger-web-fetch.service"];
+    restartUnits = [ "hledger-web-fetch.service" ];
   };
   sops.secrets."hledger_username" = {
     terraformOutput.enable = true;
-    restartUnits = ["nginx.service"];
+    restartUnits = [ "nginx.service" ];
   };
   sops.secrets."hledger_hashed_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["nginx.service"];
+    restartUnits = [ "nginx.service" ];
   };
-  services.restic.backups.b2.paths = [
-    "/var/lib/hledger"
-  ];
+  services.restic.backups.b2.paths = [ "/var/lib/hledger" ];
 }

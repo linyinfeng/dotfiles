@@ -2,7 +2,8 @@
 # ==========
 # [wsl2]
 # networkingMode=mirrored
-{...}: {
+{ ... }:
+{
   wsl.wslConf = {
     interop.appendWindowsPath = false;
     network = {

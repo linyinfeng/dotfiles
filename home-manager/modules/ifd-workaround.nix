@@ -1,3 +1,4 @@
-{...}: {
+{ ... }:
+{
   manual.manpages.enable = true;
 }

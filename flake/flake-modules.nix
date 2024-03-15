@@ -1,6 +1,8 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   modules = import ../flake-modules;
-in {
+in
+{
   flake.flakeModules = modules;
   imports = lib.attrValues modules;
 }

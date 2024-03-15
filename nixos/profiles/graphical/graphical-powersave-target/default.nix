@@ -1,7 +1,8 @@
-{...}: {
+{ ... }:
+{
   systemd.targets.graphical-powersave = {
-    requires = ["graphical.target"];
-    after = ["graphical.target"];
+    requires = [ "graphical.target" ];
+    after = [ "graphical.target" ];
     conflicts = [
       "bird2.service"
       "cowrie.service"

@@ -1,10 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   cfg = config.programs.ccache;
-in {
+in
+{
   programs.ccache = {
     enable = true;
     cacheDir = pkgs.ccacheCacheDir;
@@ -13,7 +11,7 @@ in {
     cfg.cacheDir
     pkgs.ccacheLogDir
   ];
-  environment.global-persistence.directories = [cfg.cacheDir];
+  environment.global-persistence.directories = [ cfg.cacheDir ];
   systemd.tmpfiles.rules = [
     "d ${cfg.cacheDir}                 770 root nixbld - -"
     "d ${pkgs.ccacheLogDir}            750 root nixbld - -"

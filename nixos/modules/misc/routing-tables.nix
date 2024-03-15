@@ -1,26 +1,24 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   options = {
     routingTables = lib.mkOption {
       type = with lib.types; attrsOf int;
-      default = {};
+      default = { };
     };
     routingPolicyPriorities = lib.mkOption {
       type = with lib.types; attrsOf int;
-      default = {};
+      default = { };
     };
   };
 
   config = {
     assertions = [
       {
-        assertion = let
-          vals = lib.attrValues config.routingTables;
-          noCollision = l: lib.length (lib.unique l) == lib.length l;
-        in
+        assertion =
+          let
+            vals = lib.attrValues config.routingTables;
+            noCollision = l: lib.length (lib.unique l) == lib.length l;
+          in
           noCollision vals;
         message = "routing table id collision";
       }

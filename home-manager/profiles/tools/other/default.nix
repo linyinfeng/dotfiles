@@ -1,10 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   optionalPkg = config.lib.self.optionalPkg pkgs;
-in {
+in
+{
   programs = {
     tmux.enable = true;
     bat = {
@@ -16,7 +14,8 @@ in {
     jq.enable = true;
   };
 
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     [
       ffmpeg
       ghostscript
@@ -34,7 +33,7 @@ in {
       wl-clipboard
       xdg-ninja
     ]
-    ++ optionalPkg ["i7z"];
+    ++ optionalPkg [ "i7z" ];
 
   home.global-persistence.directories = [
     ".mc" # minio-client

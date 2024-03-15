@@ -5,7 +5,8 @@
   lib,
   modulesPath,
   ...
-}: {
+}:
+{
   imports =
     suites.overseaServer
     ++ (with profiles; [
@@ -20,9 +21,7 @@
       services.keycloak
       nix.hydra-builder-server
     ])
-    ++ [
-      "${modulesPath}/profiles/qemu-guest.nix"
-    ];
+    ++ [ "${modulesPath}/profiles/qemu-guest.nix" ];
 
   config = lib.mkMerge [
     {
@@ -30,7 +29,12 @@
         efi.canTouchEfiVariables = true;
         systemd-boot.enable = true;
       };
-      boot.initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "usbhid" "sr_mod"];
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "virtio_pci"
+        "usbhid"
+        "sr_mod"
+      ];
 
       boot.tmp.cleanOnBoot = true;
       services.fstrim.enable = true;
@@ -39,70 +43,79 @@
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          config.fileSystems."/persist".device
-        ];
+        fileSystems = [ config.fileSystems."/persist".device ];
       };
 
       disko.devices = {
         nodev."/" = {
           fsType = "tmpfs";
-          mountOptions = ["defaults" "size=2G" "mode=755"];
+          mountOptions = [
+            "defaults"
+            "size=2G"
+            "mode=755"
+          ];
         };
-        disk.main = let
-          swapSize = "4GiB";
-        in {
-          type = "disk";
-          device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_31303657";
-          content = {
-            type = "gpt";
-            partitions = {
-              ESP = {
-                start = "1MiB"; # 2048 sectors (512 bytes per sector)
-                end = "1025MiB"; # total size 1024 MiB
-                type = "EF00";
-                content = {
-                  type = "filesystem";
-                  format = "vfat";
-                  mountpoint = "/boot";
-                  mountOptions = ["dmask=077" "fmask=177"];
+        disk.main =
+          let
+            swapSize = "4GiB";
+          in
+          {
+            type = "disk";
+            device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_31303657";
+            content = {
+              type = "gpt";
+              partitions = {
+                ESP = {
+                  start = "1MiB"; # 2048 sectors (512 bytes per sector)
+                  end = "1025MiB"; # total size 1024 MiB
+                  type = "EF00";
+                  content = {
+                    type = "filesystem";
+                    format = "vfat";
+                    mountpoint = "/boot";
+                    mountOptions = [
+                      "dmask=077"
+                      "fmask=177"
+                    ];
+                  };
                 };
-              };
-              root = {
-                start = "1025MiB";
-                end = "-${swapSize}";
-                content = {
-                  type = "btrfs";
-                  subvolumes = let
-                    mountOptions = ["compress=zstd"];
-                  in {
-                    "@persist" = {
-                      mountpoint = "/persist";
-                      inherit mountOptions;
-                    };
-                    "@var-log" = {
-                      mountpoint = "/var/log";
-                      inherit mountOptions;
-                    };
-                    "@nix" = {
-                      mountpoint = "/nix";
-                      inherit mountOptions;
-                    };
-                    "@tmp" = {
-                      mountpoint = "/tmp";
-                      inherit mountOptions;
-                    };
-                    "@swap" = {
-                      mountpoint = "/swap";
-                      inherit mountOptions;
-                      swap.swapfile.size = "8G";
-                    };
+                root = {
+                  start = "1025MiB";
+                  end = "-${swapSize}";
+                  content = {
+                    type = "btrfs";
+                    subvolumes =
+                      let
+                        mountOptions = [ "compress=zstd" ];
+                      in
+                      {
+                        "@persist" = {
+                          mountpoint = "/persist";
+                          inherit mountOptions;
+                        };
+                        "@var-log" = {
+                          mountpoint = "/var/log";
+                          inherit mountOptions;
+                        };
+                        "@nix" = {
+                          mountpoint = "/nix";
+                          inherit mountOptions;
+                        };
+                        "@tmp" = {
+                          mountpoint = "/tmp";
+                          inherit mountOptions;
+                        };
+                        "@swap" = {
+                          mountpoint = "/swap";
+                          inherit mountOptions;
+                          swap.swapfile.size = "8G";
+                        };
+                      };
                   };
                 };
               };
             };
           };
-        };
       };
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
@@ -111,8 +124,7 @@
 
     # networking
     (lib.mkIf (!config.system.is-vm) {
-      environment.etc."systemd/network/45-enp1s0.network".source =
-        config.sops.templates."enp1s0".path;
+      environment.etc."systemd/network/45-enp1s0.network".source = config.sops.templates."enp1s0".path;
       sops.templates."enp1s0" = {
         content = ''
           [Match]
@@ -122,7 +134,9 @@
           DHCP=ipv4
 
           # manual ipv6 configuration
-          Address=${config.sops.placeholder."fsn0_ipv6_address"}/${config.sops.placeholder."fsn0_ipv6_prefix_length"}
+          Address=${config.sops.placeholder."fsn0_ipv6_address"}/${
+            config.sops.placeholder."fsn0_ipv6_prefix_length"
+          }
           Gateway=fe80::1
           DNS=2a01:4ff:ff00::add:1
           DNS=2a01:4ff:ff00::add:2
@@ -131,11 +145,11 @@
       };
       sops.secrets."fsn0_ipv6_address" = {
         terraformOutput.enable = true;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."fsn0_ipv6_prefix_length" = {
         terraformOutput.enable = true;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
     })
 
@@ -146,8 +160,6 @@
     }
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

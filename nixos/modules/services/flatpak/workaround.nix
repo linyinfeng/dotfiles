@@ -3,27 +3,31 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.flatpak.workaround;
   mkRoSymBind = path: {
     device = path;
     fsType = "fuse.bindfs";
-    options = ["ro" "resolve-symlinks" "x-gvfs-hide"];
+    options = [
+      "ro"
+      "resolve-symlinks"
+      "x-gvfs-hide"
+    ];
   };
   aggregatedFonts = pkgs.buildEnv {
     name = "system-fonts";
     paths = config.fonts.packages;
-    pathsToLink = ["/share/fonts"];
+    pathsToLink = [ "/share/fonts" ];
   };
-in {
+in
+{
   options.services.flatpak.workaround = {
     font.enable = lib.mkEnableOption "flatpak font workaround";
     icon.enable = lib.mkEnableOption "flatpak icon workaround";
   };
   config = lib.mkMerge [
-    (lib.mkIf (cfg.font.enable || cfg.icon.enable) {
-      system.fsPackages = [pkgs.bindfs];
-    })
+    (lib.mkIf (cfg.font.enable || cfg.icon.enable) { system.fsPackages = [ pkgs.bindfs ]; })
     (lib.mkIf cfg.font.enable {
       fileSystems."/usr/share/fonts" = mkRoSymBind (aggregatedFonts + "/share/fonts");
     })

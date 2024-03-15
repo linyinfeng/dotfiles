@@ -4,13 +4,15 @@
   pkgs,
   osConfig,
   ...
-}: let
+}:
+let
   wallPaperLight = "${pkgs.nixos-artwork.wallpapers.nineish}/share/backgrounds/nixos/nix-wallpaper-nineish.png";
   wallPaperDark = "${pkgs.nixos-artwork.wallpapers.nineish-dark-gray}/share/backgrounds/nixos/nix-wallpaper-nineish-dark-gray.png";
-  buildScss = name:
+  buildScss =
+    name:
     pkgs.runCommand "${name}.css" {
       src = ./_styles;
-      nativeBuildInputs = with pkgs; [sass];
+      nativeBuildInputs = with pkgs; [ sass ];
     } "sass $src/${name}.scss $out";
   swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
   hyprctl = "${pkgs.hyprland}/bin/hyprctl";
@@ -18,7 +20,8 @@
   proxyCfg = osConfig.networking.fw-proxy;
   variables = lib.optionalAttrs proxyCfg.enable proxyCfg.environment;
   mkVariableCfg = name: value: "env = ${name},${value}";
-in {
+in
+{
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
@@ -50,9 +53,7 @@ in {
           # https://github.com/Alexays/Waybar/issues/1968
           "wlr/taskbar"
         ];
-        modules-center = [
-          "clock"
-        ];
+        modules-center = [ "clock" ];
         modules-right = [
           "tray"
           "network"
@@ -88,7 +89,11 @@ in {
           format-bluetooth = "{volume}% 󰂯{icon}";
           format-muted = "󰖁";
           format-icons = {
-            default = ["󰕿" "󰖀" "󰕾"];
+            default = [
+              "󰕿"
+              "󰖀"
+              "󰕾"
+            ];
           };
           on-click = "volumectl toggle";
           on-scroll-up = "volumectl up";
@@ -97,7 +102,11 @@ in {
         "wireplumber" = {
           format = "{volume}% {icon}";
           format-muted = "󰖁";
-          format-icons = ["󰕿" "󰖀" "󰕾"];
+          format-icons = [
+            "󰕿"
+            "󰖀"
+            "󰕾"
+          ];
           on-click = "volumectl toggle";
           on-scroll-up = "volumectl up";
           on-scroll-down = "volumectl down";
@@ -201,20 +210,22 @@ in {
         command = swaylock;
       }
     ];
-    timeouts = let
-      screenTimeout = 300;
-      graceDelay = config.programs.swaylock.settings.grace;
-    in [
-      {
-        timeout = screenTimeout;
-        command = swaylock;
-      }
-      {
-        timeout = screenTimeout + graceDelay;
-        command = "${hyprctl} dispatch dpms off";
-        resumeCommand = "${hyprctl} dispatch dpms on";
-      }
-    ];
+    timeouts =
+      let
+        screenTimeout = 300;
+        graceDelay = config.programs.swaylock.settings.grace;
+      in
+      [
+        {
+          timeout = screenTimeout;
+          command = swaylock;
+        }
+        {
+          timeout = screenTimeout + graceDelay;
+          command = "${hyprctl} dispatch dpms off";
+          resumeCommand = "${hyprctl} dispatch dpms on";
+        }
+      ];
   };
 
   # hyprpaper

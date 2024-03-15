@@ -1,10 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   interfaceName = "tailscale0";
-in {
+in
+{
   services.tailscale = {
     enable = true;
     port = config.ports.tailscale;
@@ -26,9 +24,9 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    path = [config.services.tailscale.package];
-    after = ["tailscaled.service"];
-    requiredBy = ["tailscaled.service"];
+    path = [ config.services.tailscale.package ];
+    after = [ "tailscaled.service" ];
+    requiredBy = [ "tailscaled.service" ];
   };
   systemd.services.tailscaled.environment = {
     # use custom patch: tailscale-excluded-interface-prefixes.patch
@@ -43,12 +41,10 @@ in {
   };
   sops.secrets."tailscale_tailnet_key" = {
     terraformOutput.enable = true;
-    restartUnits = ["tailscale-setup.service"];
+    restartUnits = [ "tailscale-setup.service" ];
   };
   # no need to open ports
-  networking.firewall.allowedUDPPorts = [
-    config.services.tailscale.port
-  ];
+  networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
   networking.firewall.checkReversePath = false;
-  networking.networkmanager.unmanaged = [interfaceName];
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

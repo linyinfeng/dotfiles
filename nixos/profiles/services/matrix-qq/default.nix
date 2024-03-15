@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   systemd.services.matrix-qq = {
     script = ''
       # matrix-qq will write to config.yaml, always override it
@@ -15,16 +12,19 @@
       DynamicUser = true;
       StateDirectory = "matrix-qq";
       WorkingDirectory = "/var/lib/matrix-qq";
-      LoadCredential = [
-        "config:${config.sops.templates."matrix-qq-config".path}"
-      ];
+      LoadCredential = [ "config:${config.sops.templates."matrix-qq-config".path}" ];
     };
-    after = ["network-online.target" "matrix-synapse.service" "postgresql.service"];
-    requires = ["network-online.target" "postgresql.service"];
-    wantedBy = ["multi-user.target"];
-    restartTriggers = [
-      config.sops.templates."matrix-qq-config".file
+    after = [
+      "network-online.target"
+      "matrix-synapse.service"
+      "postgresql.service"
     ];
+    requires = [
+      "network-online.target"
+      "postgresql.service"
+    ];
+    wantedBy = [ "multi-user.target" ];
+    restartTriggers = [ config.sops.templates."matrix-qq-config".file ];
   };
   sops.templates."matrix-qq-config" = {
     content = builtins.toJSON {
@@ -61,17 +61,21 @@
 
   sops.secrets."matrix_qq_appservice_as_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
+    restartUnits = [
+      "matrix-synapse.service"
+      "matrix-qq.service"
+    ];
   };
   sops.secrets."matrix_qq_appservice_hs_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["matrix-synapse.service" "matrix-qq.service"];
+    restartUnits = [
+      "matrix-synapse.service"
+      "matrix-qq.service"
+    ];
   };
 
   services.postgresql = {
-    ensureDatabases = [
-      "matrix-qq"
-    ];
+    ensureDatabases = [ "matrix-qq" ];
     ensureUsers = [
       {
         name = "matrix-qq";

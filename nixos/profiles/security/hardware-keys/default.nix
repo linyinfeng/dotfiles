@@ -1,14 +1,11 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # canokey
-  services.udev.packages = [
-    pkgs.nur.repos.linyinfeng.canokey-udev-rules
-  ];
+  services.udev.packages = [ pkgs.nur.repos.linyinfeng.canokey-udev-rules ];
 
   services.pcscd = {
     enable = true;
-    plugins = with pkgs; [
-      ccid
-    ];
+    plugins = with pkgs; [ ccid ];
   };
 
   hardware.gpgSmartcards.enable = true;
@@ -23,7 +20,5 @@
     enable = false;
     cue = false;
   };
-  environment.global-persistence.user.directories = [
-    ".config/Yubico"
-  ];
+  environment.global-persistence.user.directories = [ ".config/Yubico" ];
 }

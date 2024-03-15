@@ -1,28 +1,25 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   inherit (config.lib.self) requireBigParallel;
-  iosevka-yinfeng = requireBigParallel (pkgs.iosevka.override {
-    privateBuildPlan = {
-      family = "Iosevka Yinfeng";
-      spacing = "fontconfig-mono";
-      serifs = "slab";
-      ligations = {
-        inherits = "haskell";
+  iosevka-yinfeng = requireBigParallel (
+    pkgs.iosevka.override {
+      privateBuildPlan = {
+        family = "Iosevka Yinfeng";
+        spacing = "fontconfig-mono";
+        serifs = "slab";
+        ligations = {
+          inherits = "haskell";
+        };
       };
-    };
-    set = "yinfeng";
-  });
+      set = "yinfeng";
+    }
+  );
   iosevka-yinfeng-nf = pkgs.stdenv.mkDerivation {
     name = "iosevka-yinfeng-nf";
     src = iosevka-yinfeng;
-    nativeBuildInputs = with pkgs; [
-      nerd-font-patcher
-    ];
+    nativeBuildInputs = with pkgs; [ nerd-font-patcher ];
     enableParallelBuilding = true;
-    requiredSystemFeatures = ["big-parallel"];
+    requiredSystemFeatures = [ "big-parallel" ];
     unpackPhase = ''
       mkdir -p fonts
       cp -r $src/share/fonts/truetype/. ./fonts/
@@ -32,7 +29,8 @@
       cp ${./NerdFontMakefile} ./Makefile
     '';
   };
-in {
+in
+{
   fonts.packages = with pkgs; [
     noto-fonts-emoji
 
@@ -74,10 +72,10 @@ in {
       "Iosevka Yinfeng"
       "Sarasa Mono Slab SC"
     ];
-    emoji = [
-      "Noto Color Emoji"
-    ];
+    emoji = [ "Noto Color Emoji" ];
   };
 
-  passthru = {inherit iosevka-yinfeng iosevka-yinfeng-nf;};
+  passthru = {
+    inherit iosevka-yinfeng iosevka-yinfeng-nf;
+  };
 }

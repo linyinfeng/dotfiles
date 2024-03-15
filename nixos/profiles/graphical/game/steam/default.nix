@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.programs.steam;
-in {
+in
+{
   options.programs.steam = {
     hidpi = {
       enable = lib.mkEnableOption "steam hidpi desktop item";
@@ -32,9 +34,7 @@ in {
           name = "stream-hidpi";
           desktopName = "Steam (HiDPI)";
           exec = "env GDK_SCALE=\"${cfg.hidpi.scale}\" steam %U";
-          categories = [
-            "Game"
-          ];
+          categories = [ "Game" ];
           icon = "steam";
         })
       ];

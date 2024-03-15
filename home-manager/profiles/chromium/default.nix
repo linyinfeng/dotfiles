@@ -1,8 +1,5 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   programs.chromium = {
     enable = true;
     commandLineArgs = [
@@ -14,9 +11,7 @@
     ];
   };
 
-  home.global-persistence.directories = [
-    ".config/chromium"
-  ];
+  home.global-persistence.directories = [ ".config/chromium" ];
 
   home.sessionVariables = {
     GOOGLE_DEFAULT_CLIENT_ID = "77185425430.apps.googleusercontent.com";

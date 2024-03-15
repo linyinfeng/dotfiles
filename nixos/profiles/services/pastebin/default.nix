@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   services.nginx.virtualHosts."pb.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -32,14 +29,14 @@
         "access-key:${config.sops.secrets."minio_pastebin_access_key".path}"
       ];
     };
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
   };
   sops.secrets."minio_pastebin_key_id" = {
     terraformOutput.enable = true;
-    restartUnits = ["pastebin.service"];
+    restartUnits = [ "pastebin.service" ];
   };
   sops.secrets."minio_pastebin_access_key" = {
     terraformOutput.enable = true;
-    restartUnits = ["pastebin.service"];
+    restartUnits = [ "pastebin.service" ];
   };
 }

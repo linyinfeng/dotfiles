@@ -3,48 +3,68 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   extraHostInfo = {
     hil0 = {
       comment = null;
       provider = "Hetzner";
-      location = ["Hillsboro" "Oregon" "United States"];
+      location = [
+        "Hillsboro"
+        "Oregon"
+        "United States"
+      ];
     };
     fsn0 = {
       comment = null;
       provider = "Hetzner";
-      location = ["Falkenstein" "Germany"];
+      location = [
+        "Falkenstein"
+        "Germany"
+      ];
     };
     mtl0 = {
       comment = null;
       provider = "ServaRICA";
-      location = ["Montreal" "Quebec" "Canada"];
+      location = [
+        "Montreal"
+        "Quebec"
+        "Canada"
+      ];
     };
     lax0 = {
       comment = null;
       provider = "RackNerd";
-      location = ["Los Angeles" "United States"];
+      location = [
+        "Los Angeles"
+        "United States"
+      ];
     };
     shg0 = {
       comment = "not available for peering";
       provider = "Tencent Cloud";
-      location = ["Shanghai" "China"];
+      location = [
+        "Shanghai"
+        "China"
+      ];
     };
     hkg0 = {
       comment = null;
       provider = "JuHost";
-      location = ["Hong Kong" "China"];
+      location = [
+        "Hong Kong"
+        "China"
+      ];
     };
   };
   cfg = config.networking.dn42;
   asCfg = cfg.autonomousSystem;
-  json = pkgs.formats.json {};
+  json = pkgs.formats.json { };
   data = config.lib.self.data;
-  filterHost = name: _hostCfg:
-    (data.hosts.${name}.endpoints_v4
-      ++ data.hosts.${name}.endpoints_v6)
-    != [];
-  mkHostInfo = name: hostCfg:
+  filterHost =
+    name: _hostCfg: (data.hosts.${name}.endpoints_v4 ++ data.hosts.${name}.endpoints_v6) != [ ];
+  mkHostInfo =
+    name: hostCfg:
     lib.recursiveUpdate {
       dn42 = {
         addresses = {
@@ -56,8 +76,10 @@
         supported_types = config.passthru.dn42SupportedTunnelTypes;
         network = {
           addresses = {
-            v4 = [hostCfg.preferredAddressV4];
-            v6 = [config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local] ++ [hostCfg.preferredAddressV6];
+            v4 = [ hostCfg.preferredAddressV4 ];
+            v6 = [
+              config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local
+            ] ++ [ hostCfg.preferredAddressV6 ];
           };
         };
         traffic_control = config.passthru.dn42TrafficControlTable.${name}.enable;
@@ -70,8 +92,7 @@
           port = "Last 5 digits of your ASN";
         };
       };
-    }
-    extraHostInfo.${name};
+    } extraHostInfo.${name};
   info = {
     autonomous_system = {
       number = asCfg.number;
@@ -82,11 +103,12 @@
     };
     hosts = lib.mapAttrs mkHostInfo (lib.filterAttrs filterHost asCfg.hosts);
   };
-  siteRoot = pkgs.runCommandNoCC "dn42-site-root" {} ''
+  siteRoot = pkgs.runCommandNoCC "dn42-site-root" { } ''
     mkdir -p $out
     cp "${json.generate "info.json" info}" $out/info.json
   '';
-in {
+in
+{
   services.nginx.virtualHosts."dn42.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;

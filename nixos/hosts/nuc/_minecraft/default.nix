@@ -3,15 +3,15 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   port = config.ports.minecraft; # also port for voice (udp)
   rconPort = config.ports.minecraft-rcon;
   mapPort = config.ports.minecraft-map;
   server = "${pkgs.mc-config-nuc.minecraft-default-server}/bin/minecraft-server --nogui";
-in {
-  imports = [
-    ./backup.nix
-  ];
+in
+{
+  imports = [ ./backup.nix ];
 
   systemd.services.minecraft = {
     script = ''
@@ -51,7 +51,10 @@ in {
       # start the server
       ${server}
     '';
-    path = with pkgs; [jre yq-go];
+    path = with pkgs; [
+      jre
+      yq-go
+    ];
     serviceConfig = {
       DynamicUser = true;
       StateDirectory = "minecraft";
@@ -62,21 +65,22 @@ in {
       ];
       CPUQuota = "400%"; # at most 2 cores (4/8 cores in total)
     };
-    environment.JAVA_TOOL_OPTIONS =
-      lib.mkIf config.networking.fw-proxy.enable
-      "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.ports.mixed}";
-    wantedBy = ["multi-user.target"];
+    environment.JAVA_TOOL_OPTIONS = lib.mkIf config.networking.fw-proxy.enable "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.ports.mixed}";
+    wantedBy = [ "multi-user.target" ];
   };
-  networking.firewall.allowedTCPPorts = [port rconPort];
-  networking.firewall.allowedUDPPorts = [port];
+  networking.firewall.allowedTCPPorts = [
+    port
+    rconPort
+  ];
+  networking.firewall.allowedUDPPorts = [ port ];
 
   sops.secrets."rcon_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["minecraft.service"];
+    restartUnits = [ "minecraft.service" ];
   };
   sops.secrets."influxdb_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["minecraft.service"];
+    restartUnits = [ "minecraft.service" ];
   };
   sops.templates."driver-influxdb".content = builtins.toJSON {
     output = {

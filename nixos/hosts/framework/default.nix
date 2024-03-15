@@ -4,7 +4,8 @@
   profiles,
   lib,
   ...
-}: {
+}:
+{
   imports =
     suites.mobileWorkstation
     ++ (with profiles; [
@@ -32,9 +33,7 @@
       hardware.sr-iov
       users.yinfeng
     ])
-    ++ [
-      ./_hardware.nix
-    ];
+    ++ [ ./_hardware.nix ];
 
   config = lib.mkMerge [
     {
@@ -43,7 +42,7 @@
         consoleMode = "auto";
       };
 
-      boot.kernelModules = ["kvm-intel"];
+      boot.kernelModules = [ "kvm-intel" ];
 
       hardware.enableRedistributableFirmware = true;
 
@@ -52,12 +51,10 @@
 
       services.fwupd = {
         enable = true;
-        extraRemotes = ["lvfs-testing"];
+        extraRemotes = [ "lvfs-testing" ];
       };
 
-      boot.binfmt.emulatedSystems = [
-        "aarch64-linux"
-      ];
+      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
       services.fprintd.enable = true;
 
@@ -70,7 +67,7 @@
           domains = [
             {
               domain_name = "li7g.com";
-              sub_domains = ["framework"];
+              sub_domains = [ "framework" ];
             }
           ];
           ip_type = "IPv6";
@@ -78,13 +75,15 @@
         };
       };
 
-      home-manager.users.yinfeng = {suites, ...}: {
-        imports = suites.full;
-        programs.firefox.profiles.main.settings = {
-          "media.ffmpeg.vaapi.enabled" = true;
-          "media.navigator.mediadatadecoder_vpx_enabled" = true;
+      home-manager.users.yinfeng =
+        { suites, ... }:
+        {
+          imports = suites.full;
+          programs.firefox.profiles.main.settings = {
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.navigator.mediadatadecoder_vpx_enabled" = true;
+          };
         };
-      };
 
       boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;
@@ -93,15 +92,17 @@
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          config.fileSystems."/persist".device
-        ];
+        fileSystems = [ config.fileSystems."/persist".device ];
       };
 
       disko.devices = {
         nodev."/" = {
           fsType = "tmpfs";
-          mountOptions = ["defaults" "size=8G" "mode=755"];
+          mountOptions = [
+            "defaults"
+            "size=8G"
+            "mode=755"
+          ];
         };
         disk.main = {
           type = "disk";
@@ -117,7 +118,10 @@
                   type = "filesystem";
                   format = "vfat";
                   mountpoint = "/boot";
-                  mountOptions = ["dmask=077" "fmask=177"];
+                  mountOptions = [
+                    "dmask=077"
+                    "fmask=177"
+                  ];
                 };
               };
               crypt-root = {
@@ -132,27 +136,32 @@
                   };
                   content = {
                     type = "btrfs";
-                    subvolumes = let
-                      mountOptions = ["compress=zstd" "x-gvfs-hide"];
-                    in {
-                      "@persist" = {
-                        mountpoint = "/persist";
-                        inherit mountOptions;
+                    subvolumes =
+                      let
+                        mountOptions = [
+                          "compress=zstd"
+                          "x-gvfs-hide"
+                        ];
+                      in
+                      {
+                        "@persist" = {
+                          mountpoint = "/persist";
+                          inherit mountOptions;
+                        };
+                        "@var-log" = {
+                          mountpoint = "/var/log";
+                          inherit mountOptions;
+                        };
+                        "@nix" = {
+                          mountpoint = "/nix";
+                          inherit mountOptions;
+                        };
+                        "@swap" = {
+                          mountpoint = "/swap";
+                          inherit mountOptions;
+                          swap.swapfile.size = "32G";
+                        };
                       };
-                      "@var-log" = {
-                        mountpoint = "/var/log";
-                        inherit mountOptions;
-                      };
-                      "@nix" = {
-                        mountpoint = "/nix";
-                        inherit mountOptions;
-                      };
-                      "@swap" = {
-                        mountpoint = "/swap";
-                        inherit mountOptions;
-                        swap.swapfile.size = "32G";
-                      };
-                    };
                   };
                 };
               };
@@ -172,30 +181,33 @@
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
 
-      boot.supportedFilesystems = ["ntfs"];
-      boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "nvme" "usb_storage" "usbhid" "sd_mod"];
+      boot.supportedFilesystems = [ "ntfs" ];
+      boot.initrd.availableKernelModules = [
+        "xhci_pci"
+        "thunderbolt"
+        "nvme"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+      ];
     }
 
     # enchilada usb network
     {
       systemd.network.links."80-mobile-nixos-usb" = {
         matchConfig = {
-          Property = [
-            "ID_USB_VENDOR=Mobile_NixOS"
-          ];
+          Property = [ "ID_USB_VENDOR=Mobile_NixOS" ];
         };
         linkConfig = {
           Name = "mobile0";
         };
       };
-      networking.networkmanager.unmanaged = [
-        "mobile0"
-      ];
+      networking.networkmanager.unmanaged = [ "mobile0" ];
       systemd.network.networks."80-mobile-nixos-usb" = {
         matchConfig = {
           Name = "mobile*";
         };
-        address = ["172.16.42.2/24"];
+        address = [ "172.16.42.2/24" ];
         linkConfig = {
           ActivationPolicy = "bound";
         };
@@ -212,8 +224,6 @@
     }
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

@@ -1,6 +1,8 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   backupDir = "/var/lib/minecraft-backup";
-in {
+in
+{
   systemd.services.minecraft-backup = {
     script = ''
       systemctl stop  minecraft
@@ -8,19 +10,20 @@ in {
       cp --recursive --reflink=always /var/lib/private/minecraft "${backupDir}"
       systemctl start minecraft
     '';
-    path = with pkgs; [gnutar zstd];
+    path = with pkgs; [
+      gnutar
+      zstd
+    ];
     serviceConfig = {
       Type = "oneshot";
     };
   };
 
   services.restic.backups.minio = {
-    paths = [
-      backupDir
-    ];
+    paths = [ backupDir ];
   };
   systemd.services."restic-backups-minio" = {
-    requires = ["minecraft-backup.service"];
-    after = ["minecraft-backup.service"];
+    requires = [ "minecraft-backup.service" ];
+    after = [ "minecraft-backup.service" ];
   };
 }

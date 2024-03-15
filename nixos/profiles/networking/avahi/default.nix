@@ -1,8 +1,5 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   services.avahi = {
     enable = true;
     nssmdns4 = true;

@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.zswap;
 
   zswapSetup = pkgs.writeShellApplication {
@@ -33,7 +34,8 @@
       esac
     '';
   };
-in {
+in
+{
   options.services.zswap = {
     enable = lib.mkEnableOption "zswap";
     compressor = lib.mkOption {
@@ -64,7 +66,7 @@ in {
         Type = "oneshot";
         RemainAfterExit = true;
       };
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

@@ -3,14 +3,12 @@
   config,
   pkgs,
   ...
-}: let
+}:
+let
   gameHome = "/home/steam";
-in {
-  imports =
-    suites.games
-    ++ [
-      ./palworld
-    ];
+in
+{
+  imports = suites.games ++ [ ./palworld ];
   programs.steam.hidpi = {
     enable = true;
     scale = "2";
@@ -31,19 +29,17 @@ in {
   users.groups.steam = {
     gid = config.ids.gids.steam;
   };
-  environment.global-persistence.user.users = ["steam"];
+  environment.global-persistence.user.users = [ "steam" ];
   home-manager.users.steam = {
     home.global-persistence = {
       enable = true;
       home = gameHome;
     };
-    home.global-persistence.directories = [
-      "Steam"
-    ];
+    home.global-persistence.directories = [ "Steam" ];
     home.packages = with pkgs; [
       steamcmd
       steam-run
     ];
   };
-  nix.settings.allowed-users = ["steam"];
+  nix.settings.allowed-users = [ "steam" ];
 }

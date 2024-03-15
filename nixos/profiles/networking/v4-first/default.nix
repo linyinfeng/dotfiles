@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   specialisation = {
     v4First = {
       inheritParentConfig = true;

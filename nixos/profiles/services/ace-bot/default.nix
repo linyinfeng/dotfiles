@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.ace-bot = {
     enable = true;
     managerChatId = "148111617";
@@ -17,8 +18,8 @@
       "/var/lib/ace-bot/.nix-profile"
     ];
   };
-  users.groups.ace-bot-nix = {};
-  nix.settings.allowed-users = ["ace-bot"];
+  users.groups.ace-bot-nix = { };
+  nix.settings.allowed-users = [ "ace-bot" ];
   sops.secrets."telegram-bot/ace-bot/token" = {
     sopsFile = config.sops-file.host;
   };

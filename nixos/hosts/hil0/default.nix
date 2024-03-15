@@ -6,19 +6,25 @@
   lib,
   modulesPath,
   ...
-}: let
-  btrfsSubvol = device: subvol: extraConfig:
+}:
+let
+  btrfsSubvol =
+    device: subvol: extraConfig:
     lib.mkMerge [
       {
         inherit device;
         fsType = "btrfs";
-        options = ["subvol=${subvol}" "compress=zstd"];
+        options = [
+          "subvol=${subvol}"
+          "compress=zstd"
+        ];
       }
       extraConfig
     ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
-in {
+in
+{
   imports =
     suites.overseaServer
     ++ (with profiles; [
@@ -34,9 +40,7 @@ in {
       services.well-known
       nix.access-tokens
     ])
-    ++ [
-      "${modulesPath}/profiles/qemu-guest.nix"
-    ];
+    ++ [ "${modulesPath}/profiles/qemu-guest.nix" ];
 
   config = lib.mkMerge [
     {
@@ -50,51 +54,55 @@ in {
           device = "/dev/sda";
         };
       };
-      boot.initrd.availableKernelModules = ["ahci" "xhci_pci" "virtio_pci" "sd_mod" "sr_mod"];
+      boot.initrd.availableKernelModules = [
+        "ahci"
+        "xhci_pci"
+        "virtio_pci"
+        "sd_mod"
+        "sr_mod"
+      ];
 
       boot.tmp.cleanOnBoot = true;
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
-      environment.systemPackages = with pkgs; [
-        tmux
-      ];
+      environment.systemPackages = with pkgs; [ tmux ];
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227"
-        ];
+        fileSystems = [ "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227" ];
       };
 
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";
-        options = ["defaults" "size=2G" "mode=755"];
+        options = [
+          "defaults"
+          "size=2G"
+          "mode=755"
+        ];
       };
-      fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
-      fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
-      fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-      fileSystems."/swap" = btrfsSubvolMain "@swap" {};
-      fileSystems."/tmp" = btrfsSubvolMain "@tmp" {};
+      fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+      fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+      fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+      fileSystems."/swap" = btrfsSubvolMain "@swap" { };
+      fileSystems."/tmp" = btrfsSubvolMain "@tmp" { };
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/5C56-7693";
         fsType = "vfat";
-        options = ["dmask=077" "fmask=177"];
+        options = [
+          "dmask=077"
+          "fmask=177"
+        ];
       };
       services.zswap.enable = true;
-      swapDevices = [
-        {
-          device = "/swap/swapfile";
-        }
-      ];
+      swapDevices = [ { device = "/swap/swapfile"; } ];
     }
 
     # networking
     (lib.mkIf (!config.system.is-vm) {
-      environment.etc."systemd/network/45-enp1s0.network".source =
-        config.sops.templates."enp1s0".path;
+      environment.etc."systemd/network/45-enp1s0.network".source = config.sops.templates."enp1s0".path;
       sops.templates."enp1s0" = {
         content = ''
           [Match]
@@ -104,7 +112,9 @@ in {
           DHCP=ipv4
 
           # manual ipv6 configuration
-          Address=${config.sops.placeholder."hil0_ipv6_address"}/${config.sops.placeholder."hil0_ipv6_prefix_length"}
+          Address=${config.sops.placeholder."hil0_ipv6_address"}/${
+            config.sops.placeholder."hil0_ipv6_prefix_length"
+          }
           Gateway=fe80::1
           DNS=2a01:4ff:ff00::add:1
           DNS=2a01:4ff:ff00::add:2
@@ -113,11 +123,11 @@ in {
       };
       sops.secrets."hil0_ipv6_address" = {
         terraformOutput.enable = true;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."hil0_ipv6_prefix_length" = {
         terraformOutput.enable = true;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
     })
 
@@ -127,8 +137,6 @@ in {
     }
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

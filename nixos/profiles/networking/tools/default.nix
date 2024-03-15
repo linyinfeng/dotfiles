@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   programs = {
     bandwhich.enable = true;
     traceroute.enable = true;

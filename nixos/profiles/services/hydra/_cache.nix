@@ -3,11 +3,13 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cacheS3Url = config.lib.self.data.b2_s3_api_url;
   cacheBucketName = config.lib.self.data.b2_cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
-in {
+in
+{
   systemd.services."copy-cache-li7g-com@" = {
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
@@ -48,11 +50,8 @@ in {
       CPUQuota = "200%"; # limit cpu usage for parallel-compression
     };
     environment = lib.mkMerge [
-      {
-        HOME = "/var/lib/cache-li7g-com";
-      }
-      (lib.mkIf (config.networking.fw-proxy.enable)
-        config.networking.fw-proxy.environment)
+      { HOME = "/var/lib/cache-li7g-com"; }
+      (lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment)
     ];
   };
   systemd.services."gc-cache-li7g-com" = {
@@ -94,11 +93,9 @@ in {
         "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
       ];
     };
-    environment =
-      lib.mkIf (config.networking.fw-proxy.enable)
-      config.networking.fw-proxy.environment;
-    requiredBy = ["hydra-update-gc-roots.service"];
-    after = ["hydra-update-gc-roots.service"];
+    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    requiredBy = [ "hydra-update-gc-roots.service" ];
+    after = [ "hydra-update-gc-roots.service" ];
   };
 
   sops.secrets."b2_cache_key_id" = {

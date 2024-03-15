@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   programs.gnupg = {
     agent = {
       enable = true;
@@ -11,9 +12,7 @@
     honor-http-proxy
   '';
 
-  environment.global-persistence.user.directories = [
-    ".gnupg"
-  ];
+  environment.global-persistence.user.directories = [ ".gnupg" ];
 
   services.openssh.extraConfig = ''
     StreamLocalBindUnlink yes

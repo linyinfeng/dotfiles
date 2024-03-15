@@ -1,10 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   backupDir = "/var/lib/palworld-backup";
-in {
+in
+{
   systemd.services.palworld-backup = {
     script = ''
       systemctl stop palworld
@@ -12,19 +10,20 @@ in {
       cp --recursive --reflink=always "${config.services.palworld.saveDirectory}" "${backupDir}"
       systemctl start palworld
     '';
-    path = with pkgs; [gnutar zstd];
+    path = with pkgs; [
+      gnutar
+      zstd
+    ];
     serviceConfig = {
       Type = "oneshot";
     };
   };
 
   services.restic.backups.minio = {
-    paths = [
-      backupDir
-    ];
+    paths = [ backupDir ];
   };
   systemd.services."restic-backups-minio" = {
-    requires = ["palworld-backup.service"];
-    after = ["palworld-backup.service"];
+    requires = [ "palworld-backup.service" ];
+    after = [ "palworld-backup.service" ];
   };
 }

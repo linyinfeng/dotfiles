@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # persistence directories for jetbrains ides
   environment.global-persistence.user.directories = [
     ".config/Google"

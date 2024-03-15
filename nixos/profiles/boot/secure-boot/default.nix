@@ -4,9 +4,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   inherit (config.lib.self) data;
-in {
+in
+{
   options = {
     boot.secureBoot = {
       publicKeyFile = lib.mkOption {
@@ -21,7 +23,13 @@ in {
     boot.kernelModuleSigning = {
       enable = lib.mkEnableOption "kernel module signing";
       hash = lib.mkOption {
-        type = lib.types.enum ["SHA1" "SHA224" "SHA256" "SHA384" "SHA512"];
+        type = lib.types.enum [
+          "SHA1"
+          "SHA224"
+          "SHA256"
+          "SHA384"
+          "SHA512"
+        ];
         default = "SHA512";
       };
       certificate = lib.mkOption {
@@ -43,16 +51,18 @@ in {
         type = lib.types.path;
         default = pkgs.writeShellApplication {
           name = "signModule";
-          text = let
-            inherit (config.boot.kernelPackages) kernel;
-          in ''
-            echo "Signing kernel module '$1'..."
-            "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build/scripts/sign-file" \
-              "${config.boot.kernelModuleSigning.hash}" \
-              "${config.boot.kernelModuleSigning.key}" \
-              "${config.boot.kernelModuleSigning.certificate}" \
-              "$@"
-          '';
+          text =
+            let
+              inherit (config.boot.kernelPackages) kernel;
+            in
+            ''
+              echo "Signing kernel module '$1'..."
+              "${kernel.dev}/lib/modules/${kernel.modDirVersion}/build/scripts/sign-file" \
+                "${config.boot.kernelModuleSigning.hash}" \
+                "${config.boot.kernelModuleSigning.key}" \
+                "${config.boot.kernelModuleSigning.certificate}" \
+                "$@"
+            '';
         };
       };
     };
@@ -103,27 +113,32 @@ in {
         mokManager.addEntry = true;
       };
       # install-shim after lzbt
-      boot.lanzaboote.package = lib.mkForce (pkgs.writeShellApplication {
-        name = "lzbt";
-        runtimeInputs = [
-          pkgs.lzbt
-          config.system.build.installShim
-        ];
-        text = ''
-          lzbt "$@"
-          install-shim
-        '';
-      });
+      boot.lanzaboote.package = lib.mkForce (
+        pkgs.writeShellApplication {
+          name = "lzbt";
+          runtimeInputs = [
+            pkgs.lzbt
+            config.system.build.installShim
+          ];
+          text = ''
+            lzbt "$@"
+            install-shim
+          '';
+        }
+      );
     }
     # sbctl
     {
-      environment.systemPackages = with pkgs; [sbctl];
+      environment.systemPackages = with pkgs; [ sbctl ];
       environment.etc."secureboot/GUID".text = data.secure_boot_signature_owner_guid;
-      environment.etc."secureboot/keys/PK/PK.key".source = config.sops.secrets."secure_boot_pk_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/PK/PK.key".source =
+        config.sops.secrets."secure_boot_pk_private_key_pkcs8".path;
       environment.etc."secureboot/keys/PK/PK.pem".text = data.secure_boot_pk_cert_pem;
-      environment.etc."secureboot/keys/KEK/KEK.key".source = config.sops.secrets."secure_boot_kek_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/KEK/KEK.key".source =
+        config.sops.secrets."secure_boot_kek_private_key_pkcs8".path;
       environment.etc."secureboot/keys/KEK/KEK.pem".text = data.secure_boot_kek_cert_pem;
-      environment.etc."secureboot/keys/db/db.key".source = config.sops.secrets."secure_boot_db_private_key_pkcs8".path;
+      environment.etc."secureboot/keys/db/db.key".source =
+        config.sops.secrets."secure_boot_db_private_key_pkcs8".path;
       environment.etc."secureboot/keys/db/db.pem".text = data.secure_boot_db_cert_pem;
       sops.secrets."secure_boot_pk_private_key_pkcs8".terraformOutput.enable = true;
       sops.secrets."secure_boot_kek_private_key_pkcs8".terraformOutput.enable = true;
@@ -145,9 +160,7 @@ in {
       ];
     })
     (lib.mkIf config.boot.kernelLockdown {
-      boot.kernelParams = [
-        "lockdown=integrity"
-      ];
+      boot.kernelParams = [ "lockdown=integrity" ];
       boot.kernelPatches = [
         {
           name = "lockdown";

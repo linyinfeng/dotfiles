@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   iperfExp = pkgs.writeText "iperf.exp" ''
     #!${lib.getExe pkgs.expect} -f
 
@@ -28,7 +29,8 @@
       expect -f "${iperfExp}" -- "$@"
     '';
   };
-in {
+in
+{
   services.iperf3 = {
     enable = true;
     port = config.ports.iperf;
@@ -45,39 +47,33 @@ in {
   };
   sops.secrets."iperf_private_key" = {
     terraformOutput.enable = true;
-    restartUnits = ["iperf3.service"];
+    restartUnits = [ "iperf3.service" ];
   };
   sops.secrets."iperf_hashed_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["iperf3.service"];
+    restartUnits = [ "iperf3.service" ];
   };
   networking.firewall = {
-    allowedTCPPorts = [
-      config.ports.iperf
-    ];
-    allowedUDPPorts = [
-      config.ports.iperf
-    ];
+    allowedTCPPorts = [ config.ports.iperf ];
+    allowedUDPPorts = [ config.ports.iperf ];
   };
 
-  environment.systemPackages = [
-    iperfAuthed
-  ];
+  environment.systemPackages = [ iperfAuthed ];
   sops.secrets."iperf_public_key" = {
     terraformOutput.enable = true;
-    restartUnits = [];
+    restartUnits = [ ];
     group = "wheel";
     mode = "440";
   };
   sops.secrets."iperf_username" = {
     terraformOutput.enable = true;
-    restartUnits = [];
+    restartUnits = [ ];
     group = "wheel";
     mode = "440";
   };
   sops.secrets."iperf_password" = {
     terraformOutput.enable = true;
-    restartUnits = [];
+    restartUnits = [ ];
     group = "wheel";
     mode = "440";
   };

@@ -1,31 +1,32 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  linkOpts = {name, ...}: {
-    options = {
-      target = lib.mkOption {
-        type = with lib.types; path;
-        description = ''
-          The target file.
-        '';
+{ config, lib, ... }:
+let
+  linkOpts =
+    { name, ... }:
+    {
+      options = {
+        target = lib.mkOption {
+          type = with lib.types; path;
+          description = ''
+            The target file.
+          '';
+        };
       };
     };
-  };
-in {
+in
+{
   options.home.link = lib.mkOption {
     type = with lib.types; attrsOf (submodule linkOpts);
-    default = {};
+    default = { };
   };
   config = {
-    home.activation.linkFiles = let
-      linkOne = path: cfg: ''
-        mkdir -p "$HOME/${dirOf path}"
-        ln -sf "${cfg.target}" "$HOME/${path}"
-      '';
-      script = lib.concatStrings (lib.mapAttrsToList linkOne config.home.link);
-    in
-      lib.hm.dag.entryAfter ["writeBoundary"] script;
+    home.activation.linkFiles =
+      let
+        linkOne = path: cfg: ''
+          mkdir -p "$HOME/${dirOf path}"
+          ln -sf "${cfg.target}" "$HOME/${path}"
+        '';
+        script = lib.concatStrings (lib.mapAttrsToList linkOne config.home.link);
+      in
+      lib.hm.dag.entryAfter [ "writeBoundary" ] script;
   };
 }

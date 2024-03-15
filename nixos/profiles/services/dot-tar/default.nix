@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.nginx.virtualHosts."tar.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -11,9 +12,7 @@
     config = {
       release = {
         port = config.ports.dot-tar;
-        authority_allow_list = [
-          "github.com"
-        ];
+        authority_allow_list = [ "github.com" ];
       };
     };
   };

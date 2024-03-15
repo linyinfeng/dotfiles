@@ -1,3 +1,4 @@
-{...}: {
+{ ... }:
+{
   services.bpftune.enable = true;
 }

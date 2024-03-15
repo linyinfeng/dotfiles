@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   assertions = [
     {
       assertion = config.services.resolved.enable;
@@ -12,8 +13,6 @@
   ];
   services.printing = {
     enable = true;
-    drivers = with pkgs; [
-      hplip
-    ];
+    drivers = with pkgs; [ hplip ];
   };
 }

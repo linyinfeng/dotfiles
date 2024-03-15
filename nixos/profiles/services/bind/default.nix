@@ -1,8 +1,5 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   inherit (config.lib.self) data;
   dotPort = config.ports.dns-over-tls;
   dohEndpoint = "/dns-query";
@@ -13,10 +10,11 @@
     dhparam-file "${config.sops.secrets."dhparam_pem".path}";
   '';
   dn42Cfg = config.networking.dn42;
-in {
+in
+{
   services.bind = {
     enable = true;
-    zones = {}; # not authority
+    zones = { }; # not authority
     cacheNetworks = [
       data.dn42_v4_cidr
       data.dn42_v6_cidr
@@ -80,20 +78,22 @@ in {
       };
     '';
   };
-  systemd.services.bind-address = let
-    addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Cfg.interfaces.dummy.name}"'';
-  in {
-    script = "ip address add ${addressLine}";
-    preStop = "ip address delete ${addressLine}";
-    path = with pkgs; [iproute2];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
+  systemd.services.bind-address =
+    let
+      addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Cfg.interfaces.dummy.name}"'';
+    in
+    {
+      script = "ip address add ${addressLine}";
+      preStop = "ip address delete ${addressLine}";
+      path = with pkgs; [ iproute2 ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
+      bindsTo = [ "bind.service" ];
+      after = [ "bind.service" ];
+      wantedBy = [ "bind.service" ];
     };
-    bindsTo = ["bind.service"];
-    after = ["bind.service"];
-    wantedBy = ["bind.service"];
-  };
   services.nginx.virtualHosts."dns.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
@@ -105,26 +105,22 @@ in {
     '';
   };
   environment.etc."bind/rndc.key".source = config.sops.secrets."bind_rndc_config".path;
-  users.users.named.extraGroups = [config.users.groups.acmetf.name];
-  networking.firewall.allowedTCPPorts = [
-    dotPort
-  ];
-  networking.firewall.allowedUDPPorts = [
-    config.ports.dns
-  ];
+  users.users.named.extraGroups = [ config.users.groups.acmetf.name ];
+  networking.firewall.allowedTCPPorts = [ dotPort ];
+  networking.firewall.allowedUDPPorts = [ config.ports.dns ];
   environment.systemPackages = [
     # for rndc cli
     config.services.bind.package
   ];
   sops.secrets."dhparam_pem" = {
     terraformOutput.enable = true;
-    restartUnits = ["bind.service"];
+    restartUnits = [ "bind.service" ];
     owner = config.users.users.named.name;
     group = config.users.groups.named.name;
   };
   sops.secrets."bind_rndc_config" = {
     terraformOutput.enable = true;
-    restartUnits = ["bind.service"];
+    restartUnits = [ "bind.service" ];
     owner = config.users.users.named.name;
     group = config.users.groups.named.name;
   };

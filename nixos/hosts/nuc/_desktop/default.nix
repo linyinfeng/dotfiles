@@ -1,8 +1,5 @@
+{ suites, profiles, ... }:
 {
-  suites,
-  profiles,
-  ...
-}: {
   imports =
     suites.multimedia
     ++ (with profiles; [

@@ -1,23 +1,13 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   inherit (config.networking) hostName;
-in {
+in
+{
   options.sops-file = {
-    directory = lib.mkOption {
-      type = lib.types.path;
-    };
-    get = lib.mkOption {
-      type = with lib.types; functionTo path;
-    };
-    host = lib.mkOption {
-      type = lib.types.path;
-    };
-    terraform = lib.mkOption {
-      type = lib.types.path;
-    };
+    directory = lib.mkOption { type = lib.types.path; };
+    get = lib.mkOption { type = with lib.types; functionTo path; };
+    host = lib.mkOption { type = lib.types.path; };
+    terraform = lib.mkOption { type = lib.types.path; };
   };
   config = {
     sops-file.directory = lib.mkDefault ../../../secrets;
@@ -25,16 +15,15 @@ in {
     sops-file.host = config.sops-file.get "hosts/${hostName}.yaml";
     sops-file.terraform = config.sops-file.get "terraform/hosts/${hostName}.yaml";
 
-    sops.gnupg.sshKeyPaths = [];
+    sops.gnupg.sshKeyPaths = [ ];
     sops.age = {
-      sshKeyPaths = [];
-      keyFile =
-        lib.mkDefault
-        (
-          if config.environment.global-persistence.enable
-          then "/persist/var/lib/sops-nix/key"
-          else "/var/lib/sops-nix/key"
-        );
+      sshKeyPaths = [ ];
+      keyFile = lib.mkDefault (
+        if config.environment.global-persistence.enable then
+          "/persist/var/lib/sops-nix/key"
+        else
+          "/var/lib/sops-nix/key"
+      );
     };
   };
 }

@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.palworld;
   gameHome = config.users.users.steam.home;
   rootDir' = "Games/palworld";
@@ -13,17 +14,16 @@
   appId = "2394010";
   palworldRcon = pkgs.writeShellApplication {
     name = "palworld-rcon";
-    runtimeInputs = with pkgs; [nur.repos.linyinfeng.rcon-cli];
+    runtimeInputs = with pkgs; [ nur.repos.linyinfeng.rcon-cli ];
     text = ''
       gorcon --address "localhost:${toString config.ports.palworld-rcon}" \
              --password "$(cat "${config.sops.secrets."palworld_admin_password".path}")" \
              "$@"
     '';
   };
-in {
-  imports = [
-    ./backup.nix
-  ];
+in
+{
+  imports = [ ./backup.nix ];
   options = {
     services.palworld = {
       saveDirectory = lib.mkOption {
@@ -33,11 +33,11 @@ in {
       };
       settings = lib.mkOption {
         type = with lib.types; attrsOf str;
-        default = {};
+        default = { };
       };
       extraOptions = lib.mkOption {
         type = with lib.types; listOf str;
-        default = [];
+        default = [ ];
       };
     };
   };
@@ -58,9 +58,7 @@ in {
       "-UseMultithreadForDS"
     ];
 
-    home-manager.users.steam.home.global-persistence.directories = [
-      rootDir'
-    ];
+    home-manager.users.steam.home.global-persistence.directories = [ rootDir' ];
     systemd.services.palworld = {
       preStart = ''
         # install game
@@ -74,11 +72,9 @@ in {
         mkdir --parents --verbose $(dirname "${configFilePath}")
         cp --verbose "${defaultConfigFilePath}" "${configFilePath}"
 
-        ${
-          lib.concatMapStringsSep "\n" (s: ''
-            sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}=${s.value}\1/' "${configFilePath}"
-          '') (lib.attrsToList cfg.settings)
-        }
+        ${lib.concatMapStringsSep "\n" (s: ''
+          sed --in-place 's/${s.name}=[^,)]*\([,)]\)/${s.name}=${s.value}\1/' "${configFilePath}"
+        '') (lib.attrsToList cfg.settings)}
       '';
       script = ''
         function shutdown() {
@@ -103,7 +99,11 @@ in {
         killpid="$!"
         wait "$killpid"
       '';
-      path = with pkgs; [steamcmd steam-run palworldRcon];
+      path = with pkgs; [
+        steamcmd
+        steam-run
+        palworldRcon
+      ];
       serviceConfig = {
         User = "steam";
         Group = "steam";
@@ -119,24 +119,22 @@ in {
           "server-password:${config.sops.secrets."palworld_server_password".path}"
         ];
       };
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
     };
-    environment.systemPackages = [palworldRcon];
-    networking.firewall.allowedTCPPorts = [
-      config.ports.palworld-rcon
-    ];
+    environment.systemPackages = [ palworldRcon ];
+    networking.firewall.allowedTCPPorts = [ config.ports.palworld-rcon ];
     networking.firewall.allowedUDPPorts = [
       config.ports.palworld
       config.ports.palworld-query
     ];
     sops.secrets."palworld_admin_password" = {
       terraformOutput.enable = true;
-      restartUnits = ["palworld.service"];
+      restartUnits = [ "palworld.service" ];
       owner = "steam";
     };
     sops.secrets."palworld_server_password" = {
       terraformOutput.enable = true;
-      restartUnits = ["palworld.service"];
+      restartUnits = [ "palworld.service" ];
       owner = "steam";
     };
   };

@@ -1,8 +1,5 @@
+{ pkgs, lib, ... }:
 {
-  pkgs,
-  lib,
-  ...
-}: {
   services.pipewire = {
     enable = true;
     wireplumber.enable = true;

@@ -1,11 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   optionalPkg = config.lib.self.optionalPkg pkgs;
-in {
-  home.packages = with pkgs;
+in
+{
+  home.packages =
+    with pkgs;
     [
       amberol
       calibre
@@ -29,18 +28,19 @@ in {
       xournalpp
       zotero
     ]
-    ++ optionalPkg ["nur" "repos" "linyinfeng" "wemeet"];
+    ++ optionalPkg [
+      "nur"
+      "repos"
+      "linyinfeng"
+      "wemeet"
+    ];
 
   dconf.settings = {
     "org/gnome/shell" = {
-      favorite-apps = [
-        "zotero.desktop"
-      ];
+      favorite-apps = [ "zotero.desktop" ];
     };
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = [
-        "qemu:///system"
-      ];
+      autoconnect = [ "qemu:///system" ];
       uris = [
         "qemu:///system"
         "qemu+ssh://root@nuc/system"

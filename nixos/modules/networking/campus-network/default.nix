@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.networking.campus-network;
   scripts = pkgs.stdenvNoCC.mkDerivation rec {
     name = "campus-network-scripts";
@@ -36,7 +37,8 @@
       maxTimeSec = cfg.auto-login.testMaxTime;
     };
   };
-in {
+in
+{
   options.networking.campus-network = {
     enable = lib.mkEnableOption "campus-network";
     auto-login = {
@@ -59,16 +61,14 @@ in {
   };
   config = lib.mkIf cfg.enable {
     passthru.campus-net-scripts = scripts;
-    environment.systemPackages = [
-      scripts
-    ];
+    environment.systemPackages = [ scripts ];
     sops.secrets."campus-net/username" = {
       sopsFile = config.sops-file.get "common.yaml";
-      restartUnits = ["campus-net-auto-login.service"];
+      restartUnits = [ "campus-net-auto-login.service" ];
     };
     sops.secrets."campus-net/password" = {
       sopsFile = config.sops-file.get "common.yaml";
-      restartUnits = ["campus-net-auto-login.service"];
+      restartUnits = [ "campus-net-auto-login.service" ];
     };
 
     systemd.services."campus-net-auto-login" = {
@@ -76,9 +76,9 @@ in {
       serviceConfig = {
         ExecStart = "${scripts}/bin/campus-net-auto-login";
       };
-      after = ["network-online.target"];
-      requires = ["network-online.target"];
-      wantedBy = ["multi-user.target"];
+      after = [ "network-online.target" ];
+      requires = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

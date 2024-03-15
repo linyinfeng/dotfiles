@@ -1,12 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   minioPort = config.ports.minio;
   minioConsolePort = config.ports.minio-console;
   minioAddress = "http://localhost:${toString minioPort}";
-in {
+in
+{
   services.minio = {
     enable = true;
     # use self-maintained minio
@@ -17,11 +15,11 @@ in {
   };
   sops.secrets."minio/root/user" = {
     sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
-    restartUnits = ["minio.service"];
+    restartUnits = [ "minio.service" ];
   };
   sops.secrets."minio/root/password" = {
     sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
-    restartUnits = ["minio.service"];
+    restartUnits = [ "minio.service" ];
   };
   sops.templates."minio-root-credentials".content = ''
     MINIO_ROOT_USER=${config.sops.placeholder."minio/root/user"}
@@ -52,7 +50,7 @@ in {
   services.telegraf.extraConfig = {
     inputs.prometheus = [
       {
-        urls = ["https://minio.li7g.com/minio/v2/metrics/cluster"];
+        urls = [ "https://minio.li7g.com/minio/v2/metrics/cluster" ];
         bearer_token = "$CREDENTIALS_DIRECTORY/minio_bearer_token";
         tags.output_bucket = "minio";
       }
@@ -63,6 +61,6 @@ in {
   ];
   sops.secrets."minio_metrics_bearer_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["telegraf.service"];
+    restartUnits = [ "telegraf.service" ];
   };
 }

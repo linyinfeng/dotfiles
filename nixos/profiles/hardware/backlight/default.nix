@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services.udev.extraRules = ''
     # Taken from https://wiki.archlinux.org/title/backlight
     # uaccess, GROUP and MODE does not work for sysfs

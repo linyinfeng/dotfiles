@@ -1,3 +1,4 @@
-{...}: {
-  system.types = ["server"];
+{ ... }:
+{
+  system.types = [ "server" ];
 }

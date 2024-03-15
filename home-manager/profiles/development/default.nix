@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   home.global-persistence.directories = [
     ".rustup"
     ".cargo"

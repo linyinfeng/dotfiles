@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   nix.extraOptions = ''
     !include ${config.sops.templates."nix-extra-config".path}
   '';
@@ -13,6 +14,6 @@
   users.groups.nix-access-tokens.gid = config.ids.gids.nix-access-tokens;
   sops.secrets."nano/github-token" = {
     sopsFile = config.sops-file.get "common.yaml";
-    restartUnits = ["nix-daemon.service"];
+    restartUnits = [ "nix-daemon.service" ];
   };
 }

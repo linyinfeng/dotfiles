@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.networking) hostName;
   defaultTimerConfig = {
     OnCalendar = "03:00:00";
@@ -28,14 +29,18 @@
     ];
   };
 
-  mkScript = cfg:
-    pkgs.substituteAll ({
+  mkScript =
+    cfg:
+    pkgs.substituteAll (
+      {
         src = ./wrapper.sh;
         isExecutable = true;
         inherit (pkgs) restic;
       }
-      // cfg);
-  mkServiceCfg = cfg:
+      // cfg
+    );
+  mkServiceCfg =
+    cfg:
     {
       initialize = true;
       timerConfig = lib.mkDefault defaultTimerConfig;
@@ -51,7 +56,8 @@
     resticB2 = mkScript cfgB2;
     resticMinio = mkScript cfgMinio;
   };
-in {
+in
+{
   config = {
     services.restic.backups.b2 = mkServiceCfg cfgB2;
     services.restic.backups.minio = mkServiceCfg cfgMinio;
@@ -69,39 +75,40 @@ in {
         enable = true;
         perHost = true;
       };
-      restartUnits = ["restic-backups-b2.service" "restic-backups-minio.service"];
+      restartUnits = [
+        "restic-backups-b2.service"
+        "restic-backups-minio.service"
+      ];
     };
     sops.secrets."b2_backup_key_id" = {
       terraformOutput = {
         enable = true;
         perHost = true;
       };
-      restartUnits = ["restic-backups-b2.service"];
+      restartUnits = [ "restic-backups-b2.service" ];
     };
     sops.secrets."b2_backup_access_key" = {
       terraformOutput = {
         enable = true;
         perHost = true;
       };
-      restartUnits = ["restic-backups-b2.service"];
+      restartUnits = [ "restic-backups-b2.service" ];
     };
     sops.secrets."minio_backup_key_id" = {
       terraformOutput = {
         enable = true;
         perHost = true;
       };
-      restartUnits = ["restic-backups-minio.service"];
+      restartUnits = [ "restic-backups-minio.service" ];
     };
     sops.secrets."minio_backup_access_key" = {
       terraformOutput = {
         enable = true;
         perHost = true;
       };
-      restartUnits = ["restic-backups-minio.service"];
+      restartUnits = [ "restic-backups-minio.service" ];
     };
 
-    environment.systemPackages = [
-      scripts
-    ];
+    environment.systemPackages = [ scripts ];
   };
 }

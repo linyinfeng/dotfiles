@@ -3,7 +3,8 @@
   profiles,
   lib,
   ...
-}: {
+}:
+{
   imports =
     suites.wsl
     ++ suites.development
@@ -22,12 +23,14 @@
         defaultUser = "yinfeng";
       };
       systemd.network.wait-online.enable = false;
-      home-manager.users.yinfeng = {suites, ...}: {imports = suites.nonGraphical;};
+      home-manager.users.yinfeng =
+        { suites, ... }:
+        {
+          imports = suites.nonGraphical;
+        };
     }
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

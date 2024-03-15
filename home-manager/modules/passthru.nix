@@ -1,5 +1,4 @@
-{lib, ...}: {
-  options.passthru = lib.mkOption {
-    type = with lib.types; attrsOf anything;
-  };
+{ lib, ... }:
+{
+  options.passthru = lib.mkOption { type = with lib.types; attrsOf anything; };
 }

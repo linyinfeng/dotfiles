@@ -5,10 +5,12 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports =
     suites.phone
-    ++ (with profiles;
+    ++ (
+      with profiles;
       [
         nix.access-tokens
         nix.nixbuild
@@ -23,7 +25,8 @@
       ++ [
         # ./_gnome-mobile # crash
         ./kernel.nix
-      ]);
+      ]
+    );
 
   config = lib.mkMerge [
     # desktop
@@ -57,9 +60,7 @@
       };
       programs.dconf.enable = true;
       # services.fprintd.enable = true; # not working
-      environment.systemPackages = with pkgs; [
-        discover
-      ];
+      environment.systemPackages = with pkgs; [ discover ];
     }
 
     # tweaks
@@ -91,26 +92,24 @@
             (cd /sys/class/udc; echo *) > UDC
           fi
         '';
-        path = with pkgs; [
-          iproute2
-        ];
-        wantedBy = ["multi-user.target"];
+        path = with pkgs; [ iproute2 ];
+        wantedBy = [ "multi-user.target" ];
       };
       systemd.network.networks."50-usb0" = {
         matchConfig = {
           Name = "usb0";
         };
-        address = [
-          "172.16.42.1/24"
-        ];
+        address = [ "172.16.42.1/24" ];
       };
     }
 
     # user
     {
-      home-manager.users.yinfeng = {suites, ...}: {
-        imports = suites.phone;
-      };
+      home-manager.users.yinfeng =
+        { suites, ... }:
+        {
+          imports = suites.phone;
+        };
       services.openssh.settings.PasswordAuthentication = false;
       users.users.yinfeng.hashedPasswordFile = lib.mkForce config.sops.secrets."user-pin/yinfeng".path;
       sops.secrets."user-pin/yinfeng" = {
@@ -137,9 +136,7 @@
           ACTION=="add", SUBSYSTEM=="net", KERNEL=="waydroid0", \
             RUN+="${config.networking.fw-proxy.scripts}/bin/fw-tproxy-if add waydroid0"
         '';
-        path = with pkgs; [
-          nftables
-        ];
+        path = with pkgs; [ nftables ];
       };
     }
 
@@ -164,8 +161,6 @@
     }
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

@@ -1,8 +1,5 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   programs.firefox = {
     enable = true;
     profiles = {
@@ -26,8 +23,6 @@
   };
 
   home.global-persistence = {
-    directories = [
-      ".mozilla"
-    ];
+    directories = [ ".mozilla" ];
   };
 }

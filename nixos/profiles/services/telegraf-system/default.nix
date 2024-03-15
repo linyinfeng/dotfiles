@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services.telegraf.extraConfig = {
     inputs = {
       cpu = [
@@ -20,55 +21,30 @@
       ];
       disk = [
         {
-          ignore_fs = ["tmpfs" "devtmpfs" "devfs" "overlay" "aufs" "squashfs"];
+          ignore_fs = [
+            "tmpfs"
+            "devtmpfs"
+            "devfs"
+            "overlay"
+            "aufs"
+            "squashfs"
+          ];
           tags.output_bucket = "system";
         }
       ];
-      diskio = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      mem = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      net = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      processes = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      swap = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      system = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      sensors = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
-      systemd_units = [
-        {
-          tags.output_bucket = "system";
-        }
-      ];
+      diskio = [ { tags.output_bucket = "system"; } ];
+      mem = [ { tags.output_bucket = "system"; } ];
+      net = [ { tags.output_bucket = "system"; } ];
+      processes = [ { tags.output_bucket = "system"; } ];
+      swap = [ { tags.output_bucket = "system"; } ];
+      system = [ { tags.output_bucket = "system"; } ];
+      sensors = [ { tags.output_bucket = "system"; } ];
+      systemd_units = [ { tags.output_bucket = "system"; } ];
     };
     processors = {
       topk = [
         {
-          namepass = ["procstat"];
+          namepass = [ "procstat" ];
           period = 10;
           k = 5;
           fields = [

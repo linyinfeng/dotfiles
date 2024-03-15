@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   environment.global-persistence = {
     directories = [
       # service state directory
@@ -9,8 +10,6 @@
       # systemd machine-id
       "/etc/machine-id"
     ];
-    user.directories = [
-      ".local/share/nix"
-    ];
+    user.directories = [ ".local/share/nix" ];
   };
 }

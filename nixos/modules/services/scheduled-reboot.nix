@@ -3,14 +3,16 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.services.scheduled-reboot;
 
   bootInfo = pkgs.writeScript "boot-info" ''
     readlink --canonicalize-existing "$1"/{initrd,kernel,kernel-modules}
     cat "$1"/kernel-params
   '';
-in {
+in
+{
   options.services.scheduled-reboot = {
     enable = lib.mkOption {
       type = with lib.types; bool;
@@ -52,7 +54,7 @@ in {
     };
     systemd.timers.scheduled-reboot = {
       timerConfig.OnCalendar = cfg.calendar;
-      wantedBy = ["timers.target"];
+      wantedBy = [ "timers.target" ];
     };
   };
 }

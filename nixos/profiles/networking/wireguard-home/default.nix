@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   interfaceName = "wg-home";
   hostName = config.networking.hostName;
   port = config.ports.wireguard;
@@ -35,7 +36,8 @@
     PublicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
     PersistentKeepalive = 30;
   };
-in {
+in
+{
   systemd.network.netdevs."80-wg-home" = {
     netdevConfig = {
       Name = interfaceName;
@@ -45,9 +47,7 @@ in {
       PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
       ListenPort = hosts.${hostName}.port;
     };
-    wireguardPeers = [
-      {wireguardPeerConfig = home;}
-    ];
+    wireguardPeers = [ { wireguardPeerConfig = home; } ];
   };
   systemd.network.networks."80-wg-home" = {
     matchConfig = {
@@ -61,14 +61,12 @@ in {
         };
       }
     ];
-    routes =
-      lib.lists.map (ip: {
-        routeConfig = {
-          Destination = ip;
-          Scope = "site";
-        };
-      })
-      home.AllowedIPs;
+    routes = lib.lists.map (ip: {
+      routeConfig = {
+        Destination = ip;
+        Scope = "site";
+      };
+    }) home.AllowedIPs;
   };
   sops.secrets."wireguard_private_key" = {
     terraformOutput = {
@@ -76,13 +74,9 @@ in {
       perHost = true;
     };
     owner = "systemd-network";
-    reloadUnits = ["systemd-networkd.service"];
+    reloadUnits = [ "systemd-networkd.service" ];
   };
-  environment.systemPackages = with pkgs; [
-    wireguard-tools
-  ];
-  networking.firewall.allowedUDPPorts = [
-    hosts.${hostName}.port
-  ];
-  networking.networkmanager.unmanaged = [interfaceName];
+  environment.systemPackages = with pkgs; [ wireguard-tools ];
+  networking.firewall.allowedUDPPorts = [ hosts.${hostName}.port ];
+  networking.networkmanager.unmanaged = [ interfaceName ];
 }

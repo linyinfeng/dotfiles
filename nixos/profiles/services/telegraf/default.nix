@@ -1,17 +1,17 @@
-{config, ...}: let
+{ config, ... }:
+let
   mainInfluxdb = bucket: {
-    urls = [config.lib.self.data.influxdb_url];
+    urls = [ config.lib.self.data.influxdb_url ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
     bucket = bucket;
-    tagpass.output_bucket = [bucket];
+    tagpass.output_bucket = [ bucket ];
   };
-in {
+in
+{
   services.telegraf = {
     enable = true;
-    environmentFiles = [
-      config.sops.templates."telegraf-environment".path
-    ];
+    environmentFiles = [ config.sops.templates."telegraf-environment".path ];
     extraConfig = {
       agent = {
         interval = "10s";
@@ -32,7 +32,7 @@ in {
   };
   sops.secrets."influxdb_token" = {
     terraformOutput.enable = true;
-    restartUnits = ["telegraf.service"];
+    restartUnits = [ "telegraf.service" ];
   };
   sops.templates."telegraf-environment".content = ''
     INFLUX_TOKEN=${config.sops.placeholder."influxdb_token"}

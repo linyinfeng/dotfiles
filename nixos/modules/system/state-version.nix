@@ -3,11 +3,13 @@
   options,
   lib,
   ...
-}: let
+}:
+let
   targetStateVersion = config.lib.self.flakeStateVersion;
 
   cfg = config.system;
-in {
+in
+{
   options = {
     system.targetStateVersion = lib.mkOption {
       inherit (options.system.stateVersion) type;

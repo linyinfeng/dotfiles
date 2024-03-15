@@ -1,3 +1,4 @@
-{...}: {
-  system.types = ["phone"];
+{ ... }:
+{
+  system.types = [ "phone" ];
 }

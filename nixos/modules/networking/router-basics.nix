@@ -1,10 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   cfg = config.netwokring.routerBasics;
-in {
+in
+{
   options.netwokring.routerBasics.enable = lib.mkEnableOption "router basics";
   config = lib.mkIf cfg.enable {
     boot.kernel.sysctl = {

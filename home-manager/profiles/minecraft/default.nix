@@ -3,12 +3,14 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   mc-li7g-com = pkgs.writeShellScriptBin "mc-li7g-com" ''
     ${pkgs.mc-config-nuc.minecraft-default-client}/bin/minecraft \
       --gameDir "$HOME/.local/share/mc-li7g-com"
   '';
-in {
+in
+{
   home.packages = with pkgs; [
     # lunar-client
     # minecraft

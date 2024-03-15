@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   gitRoot = "/srv/git";
-in {
+in
+{
   services.gitweb = {
     projectroot = gitRoot;
     gitwebTheme = true;
@@ -26,7 +28,5 @@ in {
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
   };
 
-  environment.global-persistence.directories = [
-    gitRoot
-  ];
+  environment.global-persistence.directories = [ gitRoot ];
 }

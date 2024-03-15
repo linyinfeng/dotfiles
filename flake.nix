@@ -274,28 +274,32 @@
     nixpkgs-shim.url = "github:linyinfeng/nixpkgs/shim";
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;}
-    ({
-      self,
-      lib,
-      ...
-    }: let
-      selfLib = import ./lib {inherit inputs lib;};
-    in {
-      flatFlake.config = {
-        allowed = [
-          ["hyprland" "wlroots"]
-          ["fenix" "rust-analyzer-src"]
+  outputs =
+    inputs@{ flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      { self, lib, ... }:
+      let
+        selfLib = import ./lib { inherit inputs lib; };
+      in
+      {
+        flatFlake.config = {
+          allowed = [
+            [
+              "hyprland"
+              "wlroots"
+            ]
+            [
+              "fenix"
+              "rust-analyzer-src"
+            ]
+          ];
+        };
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
         ];
-      };
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-      ];
-      flake.lib = selfLib;
-      imports =
-        [
+        flake.lib = selfLib;
+        imports = [
           inputs.flat-flake.flakeModules.flatFlake
           inputs.flake-parts.flakeModules.easyOverlay
           inputs.devshell.flakeModule
@@ -304,7 +308,7 @@
           inputs.linyinfeng.flakeModules.nixpkgs
           inputs.linyinfeng.flakeModules.passthru
           inputs.linyinfeng.flakeModules.nixago
-        ]
-        ++ selfLib.buildModuleList ./flake;
-    });
+        ] ++ selfLib.buildModuleList ./flake;
+      }
+    );
 }

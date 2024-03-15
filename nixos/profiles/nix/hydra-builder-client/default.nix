@@ -1,7 +1,9 @@
-{config, ...}: let
+{ config, ... }:
+let
   dir = "nix-build-machines/hydra-builder";
   keyFile = "${dir}/key";
-in {
+in
+{
   nix = {
     distributedBuilds = true;
     extraOptions = ''
@@ -26,7 +28,7 @@ in {
   sops.secrets."hydra_builder_private_key" = {
     neededForUsers = true; # needed for /etc
     terraformOutput.enable = true;
-    restartUnits = []; # nothing
+    restartUnits = [ ]; # nothing
   };
   environment.etc.${keyFile} = {
     mode = "440";

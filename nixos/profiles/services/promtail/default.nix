@@ -1,22 +1,18 @@
-{config, ...}: let
+{ config, ... }:
+let
   inherit (config.lib.self.data) loki_username loki_host;
-in {
+in
+{
   services.promtail = {
     enable = true;
-    extraFlags = [
-      "-config.expand-env=true"
-    ];
+    extraFlags = [ "-config.expand-env=true" ];
     configuration = {
       server = {
         http_listen_port = 0;
         grpc_listen_port = 0;
       };
       positions.filename = "/tmp/positions.yaml";
-      clients = [
-        {
-          url = "https://${loki_username}:\${LOKI_PASSWORD}@${loki_host}/api/prom/push";
-        }
-      ];
+      clients = [ { url = "https://${loki_username}:\${LOKI_PASSWORD}@${loki_host}/api/prom/push"; } ];
       scrape_configs = [
         {
           job_name = "journal";
@@ -29,27 +25,27 @@ in {
           };
           relabel_configs = [
             {
-              source_labels = ["__journal_priority"];
+              source_labels = [ "__journal_priority" ];
               target_label = "priority";
             }
             {
-              source_labels = ["__journal_priority_keyword"];
+              source_labels = [ "__journal_priority_keyword" ];
               target_label = "level";
             }
             {
-              source_labels = ["__journal__systemd_unit"];
+              source_labels = [ "__journal__systemd_unit" ];
               target_label = "unit";
             }
             {
-              source_labels = ["__journal__systemd_user_unit"];
+              source_labels = [ "__journal__systemd_user_unit" ];
               target_label = "user_unit";
             }
             {
-              source_labels = ["__journal__boot_id"];
+              source_labels = [ "__journal__boot_id" ];
               target_label = "boot_id";
             }
             {
-              source_labels = ["__journal__comm"];
+              source_labels = [ "__journal__comm" ];
               target_label = "command";
             }
           ];
@@ -65,6 +61,6 @@ in {
   '';
   sops.secrets."loki_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["promtail.service"];
+    restartUnits = [ "promtail.service" ];
   };
 }

@@ -1,11 +1,9 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   inherit (config.networking) hostName;
   cfg = config.services.nginx;
-in {
+in
+{
   options = {
     services.nginx.openFirewall = lib.mkOption {
       type = lib.types.bool;
@@ -23,12 +21,15 @@ in {
 
         virtualHosts."${hostName}.*" = {
           default = true;
-          serverAliases = ["localhost.*"];
+          serverAliases = [ "localhost.*" ];
         };
       };
 
-      networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [cfg.defaultHTTPListenPort cfg.defaultSSLListenPort];
-      networking.firewall.allowedUDPPorts = lib.mkIf cfg.openFirewall [cfg.defaultSSLListenPort];
+      networking.firewall.allowedTCPPorts = lib.mkIf cfg.openFirewall [
+        cfg.defaultHTTPListenPort
+        cfg.defaultSSLListenPort
+      ];
+      networking.firewall.allowedUDPPorts = lib.mkIf cfg.openFirewall [ cfg.defaultSSLListenPort ];
     }
 
     (lib.mkIf config.security.acme.acceptTerms {

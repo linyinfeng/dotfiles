@@ -4,7 +4,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   # boot.kernelParams = [
   #   # For Power consumption
   #   # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
@@ -39,9 +40,7 @@
   hardware.sensor.iio.enable = true;
 
   # deeded for window manager to manage display brightness
-  environment.systemPackages = with pkgs; [
-    wluma
-  ];
+  environment.systemPackages = with pkgs; [ wluma ];
   environment.etc."xdg/wluma/config.toml".text = ''
     [als.iio]
     path = "/sys/bus/iio/devices"
@@ -52,9 +51,7 @@
     path = "/sys/class/backlight/intel_backlight"
     capturer = "wlroots"
   '';
-  environment.global-persistence.user.directories = [
-    ".local/share/wluma"
-  ];
+  environment.global-persistence.user.directories = [ ".local/share/wluma" ];
 
   systemd.services = lib.mkIf (config.services.xserver.displayManager.gdm.enable) {
     gdm-prepare = {
@@ -68,53 +65,60 @@
         StateDirectory = "gdm";
         WorkingDirectory = "/var/lib/gdm";
       };
-      before = ["display-manager.service"];
-      wantedBy = ["display-manager.service"];
+      before = [ "display-manager.service" ];
+      wantedBy = [ "display-manager.service" ];
     };
   };
 
   boot = {
     # https://github.com/intel/linux-intel-lts/tags
     # https://github.com/intel/mainline-tracking/tags
-    kernelPackages = let
-      kind = "lts";
-      repo =
-        if kind == "lts"
-        then "linux-intel-lts"
-        else if kind == "mainline-tracking"
-        then "mainline-tracking"
-        else throw "invalid intel kernel kind \"${kind}\"";
-      version = "6.6.14";
-      versionIntel = "240205T072842Z";
-      hash = "sha256-UGJ/y3fr7q2ThORkEGzDKNZ15XL/YDDJ84NVYSuGrZo=";
-      major = lib.versions.major version;
-      minor = lib.versions.minor version;
-      linux_intel_fn = {
-        fetchFromGitHub,
-        buildLinux,
-        ccacheStdenv,
-        lib,
-        ...
-      } @ args:
-        buildLinux (args
-          // {
-            # build with ccacheStdenv
-            stdenv = ccacheStdenv;
-            inherit version;
-            modDirVersion = lib.versions.pad 3 version;
-            extraMeta.branch = lib.versions.majorMinor version;
-            src = fetchFromGitHub {
-              owner = "intel";
-              inherit repo;
-              rev = "${kind}-v${version}-linux-${versionIntel}";
-              inherit hash;
-            };
-          }
-          // (args.argsOverride or {}));
-      linux_intel = pkgs.callPackage linux_intel_fn {
-        kernelPatches = lib.filter (p: !(lib.elem p.name [])) pkgs."linuxPackages_${major}_${minor}".kernel.kernelPatches;
-      };
-    in
+    kernelPackages =
+      let
+        kind = "lts";
+        repo =
+          if kind == "lts" then
+            "linux-intel-lts"
+          else if kind == "mainline-tracking" then
+            "mainline-tracking"
+          else
+            throw "invalid intel kernel kind \"${kind}\"";
+        version = "6.6.14";
+        versionIntel = "240205T072842Z";
+        hash = "sha256-UGJ/y3fr7q2ThORkEGzDKNZ15XL/YDDJ84NVYSuGrZo=";
+        major = lib.versions.major version;
+        minor = lib.versions.minor version;
+        linux_intel_fn =
+          {
+            fetchFromGitHub,
+            buildLinux,
+            ccacheStdenv,
+            lib,
+            ...
+          }@args:
+          buildLinux (
+            args
+            // {
+              # build with ccacheStdenv
+              stdenv = ccacheStdenv;
+              inherit version;
+              modDirVersion = lib.versions.pad 3 version;
+              extraMeta.branch = lib.versions.majorMinor version;
+              src = fetchFromGitHub {
+                owner = "intel";
+                inherit repo;
+                rev = "${kind}-v${version}-linux-${versionIntel}";
+                inherit hash;
+              };
+            }
+            // (args.argsOverride or { })
+          );
+        linux_intel = pkgs.callPackage linux_intel_fn {
+          kernelPatches = lib.filter (
+            p: !(lib.elem p.name [ ])
+          ) pkgs."linuxPackages_${major}_${minor}".kernel.kernelPatches;
+        };
+      in
       pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
     kernelPatches = [
       # currently nothing

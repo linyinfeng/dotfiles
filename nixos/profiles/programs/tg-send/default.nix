@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   programs.tg-send = {
     enable = true;
     tokenFile = config.sops.secrets."telegram-bot/push".path;

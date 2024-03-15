@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   nix = {
     generateRegistryFromInputs = true;
     generateNixPathFromInputs = true;

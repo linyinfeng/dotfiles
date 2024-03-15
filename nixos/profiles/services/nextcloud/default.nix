@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   version = 28; # pinned
 
   cfg = config.services.nextcloud;
@@ -12,9 +13,7 @@
 
   exifRename = pkgs.writeShellApplication {
     name = "exif-rename";
-    runtimeInputs = with pkgs; [
-      exiftool
-    ];
+    runtimeInputs = with pkgs; [ exiftool ];
     text = ''
       exiftool \
         -fileOrder DateTimeOriginal \
@@ -62,7 +61,8 @@
       $run nextcloud-process-instant-upload-unwrapped "$@"
     '';
   };
-in {
+in
+{
   services.nextcloud = {
     enable = true;
     hostName = "nextcloud.li7g.com";
@@ -117,8 +117,7 @@ in {
     };
     secretFile = config.sops.templates."nextcloud-secret-config".path;
     extraApps = {
-      inherit
-        (apps)
+      inherit (apps)
         notify_push
         onlyoffice
         memories
@@ -133,9 +132,7 @@ in {
     };
   };
   sops.templates."nextcloud-secret-config" = {
-    content = builtins.toJSON {
-      mail_smtppassword = config.sops.placeholder."mail_password";
-    };
+    content = builtins.toJSON { mail_smtppassword = config.sops.placeholder."mail_password"; };
     owner = "nextcloud";
   };
   environment.systemPackages = with pkgs; [
@@ -149,20 +146,20 @@ in {
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     serverName = "nextcloud.*";
   };
-  services.restic.backups.b2.paths = [cfg.home];
+  services.restic.backups.b2.paths = [ cfg.home ];
 
-  systemd.services.nextcloud-cron.path = with pkgs; [
-    perl
-  ];
-  systemd.services.nextcloud-notify_push = let
-    nextcloudUrl = "https://nextcloud.li7g.com:${toString config.ports.https-alternative}";
-  in {
-    # add missing port
-    postStart = lib.mkForce "${cfg.occ}/bin/nextcloud-occ notify_push:setup ${nextcloudUrl}/push";
-    environment = {
-      NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
+  systemd.services.nextcloud-cron.path = with pkgs; [ perl ];
+  systemd.services.nextcloud-notify_push =
+    let
+      nextcloudUrl = "https://nextcloud.li7g.com:${toString config.ports.https-alternative}";
+    in
+    {
+      # add missing port
+      postStart = lib.mkForce "${cfg.occ}/bin/nextcloud-occ notify_push:setup ${nextcloudUrl}/push";
+      environment = {
+        NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
+      };
     };
-  };
   systemd.services.phpfpm-nextcloud.serviceConfig = {
     # allow access to VA-API device
     PrivateDevices = lib.mkForce false;
@@ -178,15 +175,13 @@ in {
       User = "nextcloud";
       Group = "nextcloud";
     };
-    path = [
-      cfg.occ
-    ];
+    path = [ cfg.occ ];
   };
   systemd.timers.nextcloud-cron-extra = {
     timerConfig = {
       OnCalendar = "*:0/5";
     };
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
   };
 
   systemd.services.nextcloud-cron-daily = {
@@ -199,24 +194,22 @@ in {
       User = "nextcloud";
       Group = "nextcloud";
     };
-    path = [
-      processInstantUpload
-    ];
+    path = [ processInstantUpload ];
   };
   systemd.timers.nextcloud-cron-daily = {
     timerConfig = {
       OnCalendar = "02:00";
     };
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
   };
 
   sops.secrets."nextcloud_admin_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["nextcloud-setup.service"];
+    restartUnits = [ "nextcloud-setup.service" ];
     owner = "nextcloud";
   };
   sops.secrets."mail_password" = {
     terraformOutput.enable = true;
-    restartUnits = ["nextcloud-setup.service"];
+    restartUnits = [ "nextcloud-setup.service" ];
   };
 }

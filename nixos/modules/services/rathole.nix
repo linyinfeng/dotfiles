@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.rathole;
-in {
+in
+{
   options.services.rathole = {
     enable = lib.mkEnableOption "rathole";
     package = lib.mkOption {
@@ -29,11 +31,9 @@ in {
         ExecStart = ''${pkgs.rathole}/bin/rathole "''${CREDENTIALS_DIRECTORY}/rathole.toml"'';
         DynamicUser = true;
         Restart = "on-failure";
-        LoadCredential = [
-          "rathole.toml:${cfg.configFile}"
-        ];
+        LoadCredential = [ "rathole.toml:${cfg.configFile}" ];
       };
-      wantedBy = ["multi-user.target"];
+      wantedBy = [ "multi-user.target" ];
     };
   };
 }

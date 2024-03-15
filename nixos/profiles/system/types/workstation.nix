@@ -1,3 +1,4 @@
-{...}: {
-  system.types = ["workstation"];
+{ ... }:
+{
+  system.types = [ "workstation" ];
 }

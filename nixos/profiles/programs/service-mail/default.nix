@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   domain = "li7g.com";
   serviceMail = pkgs.writeShellScriptBin "service-mail" ''
     set -e
@@ -31,7 +32,8 @@
     QUIT
     EOF
   '';
-in {
+in
+{
   options = {
     programs.service-mail.package = lib.mkOption {
       type = lib.types.package;
@@ -39,7 +41,7 @@ in {
     };
   };
   config = {
-    environment.systemPackages = [config.programs.service-mail.package];
+    environment.systemPackages = [ config.programs.service-mail.package ];
     sops.secrets."mail_password" = {
       terraformOutput.enable = true;
       mode = "440";

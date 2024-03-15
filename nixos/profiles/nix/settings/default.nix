@@ -1,11 +1,18 @@
+{ config, lib, ... }:
 {
-  config,
-  lib,
-  ...
-}: {
   nix = {
-    settings.experimental-features = ["nix-command" "flakes" "ca-derivations" "repl-flake"];
-    settings.system-features = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+      "ca-derivations"
+      "repl-flake"
+    ];
+    settings.system-features = [
+      "nixos-test"
+      "benchmark"
+      "big-parallel"
+      "kvm"
+    ];
 
     # use periodic store optimisation
     # settings.auto-optimise-store = true;
@@ -13,8 +20,11 @@
 
     settings.sandbox = true;
 
-    settings.allowed-users = ["@users"];
-    settings.trusted-users = ["root" "@wheel"];
+    settings.allowed-users = [ "@users" ];
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
 
     settings.keep-outputs = true;
     settings.keep-derivations = true;

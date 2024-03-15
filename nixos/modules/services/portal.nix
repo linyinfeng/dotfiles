@@ -3,16 +3,14 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.services.portal;
-in {
+in
+{
   options.services.portal = {
-    host = lib.mkOption {
-      type = with lib.types; str;
-    };
-    nginxVirtualHost = lib.mkOption {
-      type = with lib.types; str;
-    };
+    host = lib.mkOption { type = with lib.types; str; };
+    nginxVirtualHost = lib.mkOption { type = with lib.types; str; };
     logLevel = lib.mkOption {
       type = with lib.types; str;
       default = "Info";
@@ -32,7 +30,7 @@ in {
       };
       extraV2rayConfig = lib.mkOption {
         type = with lib.types; attrs;
-        default = {};
+        default = { };
       };
     };
     server = {
@@ -51,17 +49,13 @@ in {
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal_client_id" = {
         terraformOutput.enable = true;
-        restartUnits = ["v2ray-portal.service"];
+        restartUnits = [ "v2ray-portal.service" ];
       };
-      systemd.packages = [pkgs.v2ray];
+      systemd.packages = [ pkgs.v2ray ];
       systemd.services.v2ray-portal = {
         serviceConfig = {
-          ExecStart = [
-            "${pkgs.v2ray}/bin/v2ray run --config %d/config --format jsonv5"
-          ];
-          LoadCredential = [
-            "config:${config.sops.templates.portal-v2ray.path}"
-          ];
+          ExecStart = [ "${pkgs.v2ray}/bin/v2ray run --config %d/config --format jsonv5" ];
+          LoadCredential = [ "config:${config.sops.templates.portal-v2ray.path}" ];
           DynamicUser = true;
           CapabilityBoundingSet = [
             "CAP_NET_ADMIN"
@@ -73,12 +67,10 @@ in {
           ];
           NoNewPrivileges = true;
         };
-        wantedBy = ["multi-user.target"];
-        after = ["network-online.target"];
-        requires = ["network-online.target"];
-        restartTriggers = [
-          config.sops.templates.portal-v2ray.content
-        ];
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
+        requires = [ "network-online.target" ];
+        restartTriggers = [ config.sops.templates.portal-v2ray.content ];
       };
     })
 
@@ -115,9 +107,7 @@ in {
           {
             protocol = "trojan";
             settings = {
-              users = [
-                config.sops.placeholder."portal_client_id"
-              ];
+              users = [ config.sops.placeholder."portal_client_id" ];
               packetEncoding = "Packet"; # full cone
             };
             port = cfg.server.internalPort;
@@ -127,54 +117,51 @@ in {
             };
           }
         ];
-        outbounds = [
-          {
-            protocol = "freedom";
-          }
-        ];
+        outbounds = [ { protocol = "freedom"; } ];
       };
     })
 
     (lib.mkIf cfg.client.enable {
-      sops.templates.portal-v2ray.content = let
-        basicConfig = {
-          log = {
-            access = {
-              type = "Console";
-              level = cfg.logLevel;
+      sops.templates.portal-v2ray.content =
+        let
+          basicConfig = {
+            log = {
+              access = {
+                type = "Console";
+                level = cfg.logLevel;
+              };
+              error = {
+                type = "Console";
+                level = cfg.logLevel;
+              };
             };
-            error = {
-              type = "Console";
-              level = cfg.logLevel;
-            };
+            inbounds = [
+              {
+                protocol = "socks";
+                settings = {
+                  udpEnabled = true;
+                };
+                port = cfg.client.port;
+                listen = "127.0.0.1";
+              }
+            ];
+            outbounds = [
+              {
+                protocol = "trojan";
+                settings = {
+                  address = cfg.host;
+                  port = config.ports.https;
+                  password = config.sops.placeholder."portal_client_id";
+                };
+                streamSettings = {
+                  transport = "grpc";
+                  transportSettings.serviceName = cfg.grpcServiceName;
+                  security = "tls";
+                };
+              }
+            ];
           };
-          inbounds = [
-            {
-              protocol = "socks";
-              settings = {
-                udpEnabled = true;
-              };
-              port = cfg.client.port;
-              listen = "127.0.0.1";
-            }
-          ];
-          outbounds = [
-            {
-              protocol = "trojan";
-              settings = {
-                address = cfg.host;
-                port = config.ports.https;
-                password = config.sops.placeholder."portal_client_id";
-              };
-              streamSettings = {
-                transport = "grpc";
-                transportSettings.serviceName = cfg.grpcServiceName;
-                security = "tls";
-              };
-            }
-          ];
-        };
-      in
+        in
         builtins.toJSON (lib.recursiveUpdate basicConfig cfg.client.extraV2rayConfig);
     })
   ];

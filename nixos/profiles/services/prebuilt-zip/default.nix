@@ -1,9 +1,11 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   explicitRickRolls = [
     "nixos-minimal-23.05pre485269.e6e389917a8-aarch64-linux.prebuilt.zip"
     "unzip-6.0-amd64-linux.prebuilt.zip"
   ];
-in {
+in
+{
   services.nginx.virtualHosts."*.prebuilt.zip" = {
     # actually forced because of HSTS
     addSSL = true;
@@ -21,11 +23,8 @@ in {
   };
   security.acme.certs."prebuilt-zip" = {
     domain = "prebuilt.zip";
-    extraDomainNames =
-      [
-        "*.prebuilt.zip"
-      ]
-      ++ lib.lists.map (n: "*.${toString n}.prebuilt.zip") (lib.range 0 9)
-      ++ explicitRickRolls;
+    extraDomainNames = [
+      "*.prebuilt.zip"
+    ] ++ lib.lists.map (n: "*.${toString n}.prebuilt.zip") (lib.range 0 9) ++ explicitRickRolls;
   };
 }

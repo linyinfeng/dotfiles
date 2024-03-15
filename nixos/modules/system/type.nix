@@ -1,12 +1,14 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   options.system.types = lib.mkOption {
-    type = with lib.types;
+    type =
+      with lib.types;
       listOf (enum [
         "server"
         "workstation"
         "phone"
       ]);
-    default = [];
+    default = [ ];
     description = ''
       system types.
     '';

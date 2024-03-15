@@ -3,16 +3,16 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   name = "yinfeng";
   uid = config.ids.uids.${name};
   homeDirectory = "/home/${name}";
 
-  groupNameIfPresent = name:
-    lib.optional
-    (config.users.groups ? ${name})
-    config.users.groups.${name}.name;
-in {
+  groupNameIfPresent =
+    name: lib.optional (config.users.groups ? ${name}) config.users.groups.${name}.name;
+in
+{
   imports = [
     ./_syncthing
     ./_atuin
@@ -24,7 +24,8 @@ in {
     isNormalUser = true;
     shell = pkgs.fish;
     home = homeDirectory;
-    extraGroups = with config.users.groups;
+    extraGroups =
+      with config.users.groups;
       [
         users.name
         wheel.name
@@ -55,30 +56,28 @@ in {
     sopsFile = config.sops-file.get "common.yaml";
   };
 
-  environment.global-persistence.user.users = [name];
-  home-manager.users.${name} = {
-    suites,
-    profiles,
-    ...
-  }: {
-    home.global-persistence = {
-      enable = true;
-      home = homeDirectory;
-    };
+  environment.global-persistence.user.users = [ name ];
+  home-manager.users.${name} =
+    { suites, profiles, ... }:
+    {
+      home.global-persistence = {
+        enable = true;
+        home = homeDirectory;
+      };
 
-    programs.git = {
-      userName = "Lin Yinfeng";
-      userEmail = "lin.yinfeng@outlook.com";
-      # do not sign by default
-      # signing.signByDefault = true;
+      programs.git = {
+        userName = "Lin Yinfeng";
+        userEmail = "lin.yinfeng@outlook.com";
+        # do not sign by default
+        # signing.signByDefault = true;
+      };
+      programs.gpg.publicKeys = [
+        {
+          source = ./_pgp/pub.asc;
+          trust = "ultimate";
+        }
+      ];
     };
-    programs.gpg.publicKeys = [
-      {
-        source = ./_pgp/pub.asc;
-        trust = "ultimate";
-      }
-    ];
-  };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
 }

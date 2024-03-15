@@ -4,19 +4,25 @@
   profiles,
   lib,
   ...
-}: let
-  btrfsSubvol = device: subvol: extraConfig:
+}:
+let
+  btrfsSubvol =
+    device: subvol: extraConfig:
     lib.mkMerge [
       {
         inherit device;
         fsType = "btrfs";
-        options = ["subvol=${subvol}" "compress=zstd"];
+        options = [
+          "subvol=${subvol}"
+          "compress=zstd"
+        ];
       }
       extraConfig
     ];
 
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
-in {
+in
+{
   imports =
     suites.overseaServer
     ++ (with profiles; [
@@ -43,7 +49,12 @@ in {
         enable = true;
         device = "/dev/xvda";
       };
-      boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "sr_mod" "xen_blkfront"];
+      boot.initrd.availableKernelModules = [
+        "ata_piix"
+        "uhci_hcd"
+        "sr_mod"
+        "xen_blkfront"
+      ];
 
       boot.tmp.useTmpfs = true;
       environment.global-persistence.enable = true;
@@ -51,46 +62,43 @@ in {
 
       services.btrfs.autoScrub = {
         enable = true;
-        fileSystems = [
-          "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227"
-        ];
+        fileSystems = [ "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227" ];
       };
 
       fileSystems."/" = {
         device = "tmpfs";
         fsType = "tmpfs";
-        options = ["defaults" "size=2G" "mode=755"];
+        options = [
+          "defaults"
+          "size=2G"
+          "mode=755"
+        ];
       };
-      fileSystems."/persist" = btrfsSubvolMain "@persist" {neededForBoot = true;};
-      fileSystems."/var/log" = btrfsSubvolMain "@var-log" {neededForBoot = true;};
-      fileSystems."/nix" = btrfsSubvolMain "@nix" {neededForBoot = true;};
-      fileSystems."/swap" = btrfsSubvolMain "@swap" {};
+      fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
+      fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
+      fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
+      fileSystems."/swap" = btrfsSubvolMain "@swap" { };
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/4a186796-5865-4b47-985c-9354adec09a4";
         fsType = "ext4";
       };
       services.zswap.enable = true;
-      swapDevices = [
-        {
-          device = "/swap/swapfile";
-        }
-      ];
+      swapDevices = [ { device = "/swap/swapfile"; } ];
     }
 
     (lib.mkIf (!config.system.is-vm) {
-      environment.etc."systemd/network/45-enX0.network".source =
-        config.sops.templates."enX0".path;
+      environment.etc."systemd/network/45-enX0.network".source = config.sops.templates."enX0".path;
       sops.secrets."network/address" = {
         sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/subnet" = {
         sopsFile = config.sops-file.host;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.secrets."network/gateway" = {
         sopsFile = config.sops-file.host;
-        reloadUnits = ["systemd-networkd.service"];
+        reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.templates."enX0" = {
         content = ''
@@ -128,7 +136,7 @@ in {
         matchConfig = {
           Name = "he-ipv6";
         };
-        address = ["2001:470:1c:4ff::2/64"];
+        address = [ "2001:470:1c:4ff::2/64" ];
         routes = [
           {
             routeConfig = {
@@ -140,8 +148,6 @@ in {
     })
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

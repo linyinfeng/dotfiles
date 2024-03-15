@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.oranc = {
     enable = true;
     listen = "127.0.0.1:${toString config.ports.oranc}";

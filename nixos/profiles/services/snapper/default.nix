@@ -3,23 +3,28 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   subvolumes = lib.lists.map (v: v.SUBVOLUME) (lib.attrValues config.services.snapper.configs);
-  createForSubvolume = subvol: let
-    target = "${subvol}/.snapshots";
-  in ''
-    if [ ! -e "${target}" ]; then
-      btrfs subvolume create "${target}"
-    fi
-  '';
-in {
+  createForSubvolume =
+    subvol:
+    let
+      target = "${subvol}/.snapshots";
+    in
+    ''
+      if [ ! -e "${target}" ]; then
+        btrfs subvolume create "${target}"
+      fi
+    '';
+in
+{
   services.snapper.configs = {
     persist = {
       SUBVOLUME = "/persist";
       FSTYPE = "btrfs";
       SPACE_LIMIT = "0.3";
       FREE_LIMIT = "0.2";
-      ALLOW_GROUPS = ["wheel"];
+      ALLOW_GROUPS = [ "wheel" ];
       TIMELINE_CREATE = true;
       TIMELINE_CLEANUP = true;
       TIMELINE_LIMIT_HOURLY = 12;
@@ -34,10 +39,8 @@ in {
     serviceConfig = {
       Type = "oneshot";
     };
-    path = with pkgs; [
-      btrfs-progs
-    ];
-    requiredBy = ["snapper-timeline.service"];
-    before = ["snapper-timeline.service"];
+    path = with pkgs; [ btrfs-progs ];
+    requiredBy = [ "snapper-timeline.service" ];
+    before = [ "snapper-timeline.service" ];
   };
 }

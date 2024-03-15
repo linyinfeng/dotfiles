@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   dn42Cfg = config.networking.dn42;
   meshCfg = config.networking.mesh;
   asThisHostCfg = dn42Cfg.autonomousSystem.thisHost;
@@ -92,91 +89,91 @@
     };
   };
 in
-  lib.mkIf (meshCfg.enable) {
-    networking.mesh = {
-      interfaces.extraPatterns = [dn42If];
-      cidrs = {
-        dn42V4 = {
-          family = "ipv4";
-          prefix = data.dn42_v4_cidr;
-        };
-        dn42V6 = {
-          family = "ipv6";
-          prefix = data.dn42_v6_cidr;
-        };
+lib.mkIf (meshCfg.enable) {
+  networking.mesh = {
+    interfaces.extraPatterns = [ dn42If ];
+    cidrs = {
+      dn42V4 = {
+        family = "ipv4";
+        prefix = data.dn42_v4_cidr;
       };
-      thisHost.cidrs = {
-        dn42V4.preferredAddress = asThisHostCfg.preferredAddressV4;
-        dn42V6.preferredAddress = asThisHostCfg.preferredAddressV6;
+      dn42V6 = {
+        family = "ipv6";
+        prefix = data.dn42_v6_cidr;
       };
     };
-    networking.dn42 = {
+    thisHost.cidrs = {
+      dn42V4.preferredAddress = asThisHostCfg.preferredAddressV4;
+      dn42V6.preferredAddress = asThisHostCfg.preferredAddressV6;
+    };
+  };
+  networking.dn42 = {
+    enable = true;
+    bgp = {
+      gortr = {
+        port = config.ports.gortr;
+        metricPort = config.ports.gortr-metric;
+      };
+      collector.dn42.enable = dn42Cfg.bgp.peering.peers != { };
+      peering = {
+        defaults = {
+          localPortStart = config.ports.dn42-peer-min;
+          wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
+          trafficControl = trafficControlTable.${hostName};
+        };
+        peers = peerTable.${hostName} or { };
+      };
+      routingTable = {
+        id = config.routingTables.dn42-bgp;
+        priority = config.routingPolicyPriorities.dn42-bgp;
+      };
+      community.dn42 = {
+        inherit (regionTable.${hostName}) region country;
+      };
+    };
+    autonomousSystem = {
+      dn42LowerNumber = 128; # number = 4242420128;
+      cidrV4 = data.dn42_v4_cidr;
+      cidrV6 = data.dn42_v6_cidr;
+      hosts = lib.mapAttrs mkHostDn42Cfg filteredHost;
+      thisHost = {
+        addressesV4 = thisHostData.dn42_addresses_v4;
+        addressesV6 = thisHostData.dn42_addresses_v6;
+        preferredAddressV4 = lib.elemAt thisHostData.dn42_addresses_v4 0;
+        preferredAddressV6 = lib.elemAt thisHostData.dn42_addresses_v6 0;
+      };
+    };
+    dns.enable = true;
+    certificateAuthority.trust = true;
+  };
+
+  # bird-lg proxy
+  services.bird-lg.proxy = {
+    enable = true;
+    listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
+  };
+  # tailscale as control plane
+  networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
+    config.ports.bird-lg-proxy
+  ];
+
+  # wireguard
+  sops.secrets."wireguard_private_key" = {
+    terraformOutput = {
       enable = true;
-      bgp = {
-        gortr = {
-          port = config.ports.gortr;
-          metricPort = config.ports.gortr-metric;
-        };
-        collector.dn42.enable = dn42Cfg.bgp.peering.peers != {};
-        peering = {
-          defaults = {
-            localPortStart = config.ports.dn42-peer-min;
-            wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
-            trafficControl = trafficControlTable.${hostName};
-          };
-          peers = peerTable.${hostName} or {};
-        };
-        routingTable = {
-          id = config.routingTables.dn42-bgp;
-          priority = config.routingPolicyPriorities.dn42-bgp;
-        };
-        community.dn42 = {
-          inherit (regionTable.${hostName}) region country;
-        };
-      };
-      autonomousSystem = {
-        dn42LowerNumber = 0128; # number = 4242420128;
-        cidrV4 = data.dn42_v4_cidr;
-        cidrV6 = data.dn42_v6_cidr;
-        hosts = lib.mapAttrs mkHostDn42Cfg filteredHost;
-        thisHost = {
-          addressesV4 = thisHostData.dn42_addresses_v4;
-          addressesV6 = thisHostData.dn42_addresses_v6;
-          preferredAddressV4 = lib.elemAt thisHostData.dn42_addresses_v4 0;
-          preferredAddressV6 = lib.elemAt thisHostData.dn42_addresses_v6 0;
-        };
-      };
-      dns.enable = true;
-      certificateAuthority.trust = true;
+      perHost = true;
     };
+    group = "systemd-network";
+    mode = "440";
+    reloadUnits = [ "systemd-networkd.service" ];
+  };
+  networking.firewall.allowedUDPPortRanges = [
+    {
+      from = config.ports.dn42-peer-min;
+      to = config.ports.dn42-peer-max;
+    }
+  ];
 
-    # bird-lg proxy
-    services.bird-lg.proxy = {
-      enable = true;
-      listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
-    };
-    # tailscale as control plane
-    networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [
-      config.ports.bird-lg-proxy
-    ];
-
-    # wireguard
-    sops.secrets."wireguard_private_key" = {
-      terraformOutput = {
-        enable = true;
-        perHost = true;
-      };
-      group = "systemd-network";
-      mode = "440";
-      reloadUnits = ["systemd-networkd.service"];
-    };
-    networking.firewall.allowedUDPPortRanges = [
-      {
-        from = config.ports.dn42-peer-min;
-        to = config.ports.dn42-peer-max;
-      }
-    ];
-
-    # for dn42-site
-    passthru.dn42TrafficControlTable = trafficControlTable;
-  }
+  # for dn42-site
+  passthru.dn42TrafficControlTable = trafficControlTable;
+}

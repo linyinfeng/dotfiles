@@ -1,14 +1,13 @@
-{
-  config,
-  pkgs,
-  ...
-}: let
+{ config, pkgs, ... }:
+let
   proxyPort = toString config.networking.fw-proxy.ports.mixed;
   proxyCommand =
-    if config.networking.fw-proxy.enable
-    then "ProxyCommand ${pkgs.netcat}/bin/nc -X 5 -x localhost:${proxyPort} %h %p"
-    else "";
-in {
+    if config.networking.fw-proxy.enable then
+      "ProxyCommand ${pkgs.netcat}/bin/nc -X 5 -x localhost:${proxyPort} %h %p"
+    else
+      "";
+in
+{
   nix = {
     distributedBuilds = true;
     extraOptions = ''
@@ -26,7 +25,7 @@ in {
   };
   services.openssh.knownHosts = {
     nixbuild = {
-      extraHostNames = ["eu.nixbuild.net"];
+      extraHostNames = [ "eu.nixbuild.net" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
     };
   };

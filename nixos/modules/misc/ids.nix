@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   ids.uids = {
     # human users
     yinfeng = 1000;

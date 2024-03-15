@@ -1,10 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   tgSend = config.programs.tg-send.wrapped;
-in {
+in
+{
   services.notify-failure = lib.mkIf (config.programs.tg-send.enable) {
     enable = true;
     config = {

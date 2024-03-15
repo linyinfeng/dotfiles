@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   sbCfg = config.boot.secureBoot;
   cfg = sbCfg.shim;
   inherit (config.boot.loader.efi) efiSysMountPoint;
@@ -63,7 +64,9 @@
         efibootmgr --quiet --delete-bootnum --label "${cfg.bootEntry.label}" || true
         echo "creating boot entry..."
         efibootmgr --quiet --create --label "${cfg.bootEntry.label}" \
-          --disk "$disk" --part "$part" --loader '\${lib.replaceStrings ["/"] ["\\"] cfg.directory}\shim${cfg.archSuffix}.efi'
+          --disk "$disk" --part "$part" --loader '\${
+            lib.replaceStrings [ "/" ] [ "\\" ] cfg.directory
+          }\shim${cfg.archSuffix}.efi'
       ''
       + lib.optionalString cfg.mokManager.addEntry ''
         echo "creating MokManager boot entry..."
@@ -78,9 +81,7 @@
   };
   singEfiFile = pkgs.writeShellApplication {
     name = "sign-efi-file";
-    runtimeInputs = with pkgs; [
-      sbsigntool
-    ];
+    runtimeInputs = with pkgs; [ sbsigntool ];
     text = ''
       file="$1"
       tmpfile=$(mktemp -t "sign-efi-file.XXXXXXXX")
@@ -90,19 +91,18 @@
       cp "$tmpfile" "$file"
     '';
   };
-in {
+in
+{
   options = {
     boot.secureBoot.shim = {
       enable = lib.mkEnableOption "shim";
       loader = lib.mkOption {
         type = lib.types.str;
-        apply = lib.replaceStrings ["\\"] ["\\\\"];
+        apply = lib.replaceStrings [ "\\" ] [ "\\\\" ];
       };
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.shim-unsigned.override {
-          defaultLoader = cfg.loader;
-        };
+        default = pkgs.shim-unsigned.override { defaultLoader = cfg.loader; };
       };
       archSuffix = lib.mkOption {
         type = lib.types.str;
@@ -126,17 +126,13 @@ in {
         };
         comments = lib.mkOption {
           type = with lib.types; listOf str;
-          default = [
-            "This is the boot entry for ${cfg.fallback.label}"
-          ];
+          default = [ "This is the boot entry for ${cfg.fallback.label}" ];
         };
       };
       removable.enable = lib.mkEnableOption "removable";
       bootEntry = {
         install = lib.mkEnableOption "EFI boot entry";
-        label = lib.mkOption {
-          type = lib.types.str;
-        };
+        label = lib.mkOption { type = lib.types.str; };
       };
       mokManager = {
         addEntry = lib.mkEnableOption "MokManager boot entry";
@@ -144,7 +140,9 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    system.build = {inherit installShim;};
-    environment.systemPackages = with pkgs; [mokutil];
+    system.build = {
+      inherit installShim;
+    };
+    environment.systemPackages = with pkgs; [ mokutil ];
   };
 }

@@ -1,26 +1,36 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   aliveInterval = "15";
   aliveCountMax = "4";
-  knownHosts = lib.listToAttrs (lib.flatten (lib.mapAttrsToList
-    (host: hostData: [
-      (lib.nameValuePair "${host}-ed25519" {
-        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.dn42.li7g.com"];
-        publicKey = hostData.ssh_host_ed25519_key_pub;
-      })
-      (lib.nameValuePair "${host}-rsa" {
-        hostNames = [host "${host}.li7g.com" "${host}.ts.li7g.com" "${host}.dn42.li7g.com"];
-        publicKey = hostData.ssh_host_rsa_key_pub;
-      })
-    ])
-    config.lib.self.data.hosts));
-in {
+  knownHosts = lib.listToAttrs (
+    lib.flatten (
+      lib.mapAttrsToList (host: hostData: [
+        (lib.nameValuePair "${host}-ed25519" {
+          hostNames = [
+            host
+            "${host}.li7g.com"
+            "${host}.ts.li7g.com"
+            "${host}.dn42.li7g.com"
+          ];
+          publicKey = hostData.ssh_host_ed25519_key_pub;
+        })
+        (lib.nameValuePair "${host}-rsa" {
+          hostNames = [
+            host
+            "${host}.li7g.com"
+            "${host}.ts.li7g.com"
+            "${host}.dn42.li7g.com"
+          ];
+          publicKey = hostData.ssh_host_rsa_key_pub;
+        })
+      ]) config.lib.self.data.hosts
+    )
+  );
+in
+{
   services.openssh = {
     enable = true;
-    ports = [config.ports.ssh];
+    ports = [ config.ports.ssh ];
     openFirewall = true;
     extraConfig = ''
       ClientAliveInterval ${aliveInterval}
@@ -47,8 +57,7 @@ in {
         ServerAliveInterval ${aliveInterval}
         ServerAliveCountMax ${aliveCountMax}
       ''
-      + lib.concatMapStringsSep "\n"
-      (h: ''
+      + lib.concatMapStringsSep "\n" (h: ''
         Host ${h}
           HostName ${h}.ts.li7g.com
           Port ${toString config.ports.ssh}
@@ -58,8 +67,7 @@ in {
         Host ${h}.ts
           HostName ${h}.ts.li7g.com
           Port ${toString config.ports.ssh}
-      '')
-      (lib.attrNames config.lib.self.data.hosts);
+      '') (lib.attrNames config.lib.self.data.hosts);
   };
 
   sops.secrets."ssh_host_rsa_key" = {
@@ -67,17 +75,15 @@ in {
       enable = true;
       perHost = true;
     };
-    restartUnits = ["sshd.service"];
+    restartUnits = [ "sshd.service" ];
   };
   sops.secrets."ssh_host_ed25519_key" = {
     terraformOutput = {
       enable = true;
       perHost = true;
     };
-    restartUnits = ["sshd.service"];
+    restartUnits = [ "sshd.service" ];
   };
 
-  environment.global-persistence.user.directories = [
-    ".ssh"
-  ];
+  environment.global-persistence.user.directories = [ ".ssh" ];
 }

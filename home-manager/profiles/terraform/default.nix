@@ -1,5 +1,4 @@
-{...}: {
-  home.global-persistence.directories = [
-    ".terraform.d"
-  ];
+{ ... }:
+{
+  home.global-persistence.directories = [ ".terraform.d" ];
 }

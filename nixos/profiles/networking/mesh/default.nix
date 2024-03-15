@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   cfg = config.networking.mesh;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
@@ -10,20 +7,19 @@
   mkHost = name: hostData: {
     # resolved by /etc/hosts
     connection.endpoint =
-      if (lib.length (hostData.endpoints_v4 ++ hostData.endpoints_v6) != 0)
-      then "${name}.endpoints.li7g.com"
-      else null;
+      if (lib.length (hostData.endpoints_v4 ++ hostData.endpoints_v6) != 0) then
+        "${name}.endpoints.li7g.com"
+      else
+        null;
     ipsec.xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
   };
-  ipv4OnlyHosts = ["shg0"];
-in {
+  ipv4OnlyHosts = [ "shg0" ];
+in
+{
   networking.mesh = {
     enable = filteredHost ? ${hostName};
     hosts = lib.mapAttrs mkHost filteredHost;
-    thisHost.ipsec.initiate =
-      if lib.elem hostName ipv4OnlyHosts
-      then "ipv4"
-      else "ipv6";
+    thisHost.ipsec.initiate = if lib.elem hostName ipv4OnlyHosts then "ipv4" else "ipv6";
     routingTable = {
       id = config.routingTables.mesh;
       priority = config.routingPolicyPriorities.mesh;
@@ -45,10 +41,9 @@ in {
           extraConfig = cfg.bird.babelInterfaceConfig;
         };
       }
-      //
       # not working because tailscale does not support multicast currently
       # TODO wait for https://github.com/tailscale/tailscale/issues/1013
-      lib.optionalAttrs config.services.tailscale.enable {
+      // lib.optionalAttrs config.services.tailscale.enable {
         "${config.passthru.tailscaleInterfaceName}" = {
           type = "tunnel";
           extraConfig = cfg.bird.babelInterfaceConfig;
@@ -60,6 +55,6 @@ in {
       enable = true;
       perHost = true;
     };
-    restartUnits = ["strongswan-swanctl.service"];
+    restartUnits = [ "strongswan-swanctl.service" ];
   };
 }

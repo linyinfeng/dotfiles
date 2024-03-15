@@ -1,10 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   cfg = config.system.constant;
-in {
+in
+{
   options.system.constant = lib.mkOption {
     type = lib.types.bool;
     default = false;

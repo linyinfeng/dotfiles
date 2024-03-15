@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   serviceMail = "${config.programs.service-mail.package}/bin/service-mail";
   tgSend = config.programs.tg-send.wrapped;
   mailAddress = "lin.yinfeng@outlook.com";
@@ -25,7 +26,8 @@
     $SMARTD_MESSAGE
     EOF
   '';
-in {
+in
+{
   services.smartd = {
     enable = true;
     autodetect = true;
@@ -36,10 +38,6 @@ in {
     #   extended self-test weekly on Saturdays between 2-3am
     defaults.monitored = ''-a -n standby,12 -s (S/../.././01|L/../../6/02) -m ${mailAddress} -M exec ${smartdNotify}'';
   };
-  systemd.services.smartd.environment =
-    lib.mkIf (config.networking.fw-proxy.enable)
-    config.networking.fw-proxy.environment;
-  environment.systemPackages = with pkgs; [
-    smartmontools
-  ];
+  systemd.services.smartd.environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+  environment.systemPackages = with pkgs; [ smartmontools ];
 }

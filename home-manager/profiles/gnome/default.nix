@@ -3,7 +3,8 @@
   lib,
   osConfig,
   ...
-}: let
+}:
+let
   extensionPkgs = with pkgs.gnomeExtensions; [
     gsconnect
     appindicator
@@ -17,154 +18,171 @@
   ];
   gtkThemes = pkgs.symlinkJoin {
     name = "gtk-themes";
-    paths = with pkgs; [
-      adw-gtk3
-    ];
+    paths = with pkgs; [ adw-gtk3 ];
   };
-  inherit (lib.hm.gvariant) mkArray mkTuple mkString mkUint32 type;
+  inherit (lib.hm.gvariant)
+    mkArray
+    mkTuple
+    mkString
+    mkUint32
+    type
+    ;
 in
-  lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable
-  {
-    home.packages =
-      extensionPkgs
-      ++ (with pkgs; [
-        blackbox-terminal
-      ]);
+lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
+  home.packages = extensionPkgs ++ (with pkgs; [ blackbox-terminal ]);
 
-    programs.chromium.extensions = [
-      "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
-      "jfnifeihccihocjbfcfhicmmgpjicaec" # GSConnect
-    ];
+  programs.chromium.extensions = [
+    "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
+    "jfnifeihccihocjbfcfhicmmgpjicaec" # GSConnect
+  ];
 
-    # remove initial setup dialog
-    home.file.".config/gnome-initial-setup-done".text = "yes";
+  # remove initial setup dialog
+  home.file.".config/gnome-initial-setup-done".text = "yes";
 
-    # themes
-    home.file.".local/share/themes".source = "${gtkThemes}/share/themes";
+  # themes
+  home.file.".local/share/themes".source = "${gtkThemes}/share/themes";
 
-    dconf.settings = {
-      # Do not sleep when ac power connected
-      "org/gnome/settings-daemon/plugins/power" = {
-        sleep-inactive-ac-type = "nothing";
-      };
-      "org/gnome/shell" = {
-        disable-user-extensions = false;
-        enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
-        disabled-extensions = [];
-        favorite-apps = lib.mkBefore [
-          "org.gnome.Console.desktop"
-          "org.gnome.Nautilus.desktop"
-          "chromium-browser.desktop"
-          "gnome-system-monitor.desktop"
-          "code.desktop"
-        ];
-        welcome-dialog-last-shown-version = "43.1";
-      };
-      "org/gnome/mutter" = {
-        edge-tiling = true;
-      };
-      "org/gnome/desktop/interface" = {
-        gtk-theme = "adw-gtk3";
-        clock-show-weekday = true;
-        show-battery-percentage = true;
-        locate-pointer = true;
-        monospace-font-name = "Monospace 10";
-      };
-      "org/gnome/desktop/input-sources" = {
-        sources = mkArray (type.tupleOf [type.string type.string]) [
-          (mkTuple [(mkString "xkb") (mkString "us")])
-          (mkTuple [(mkString "ibus") (mkString "rime")])
-          (mkTuple [(mkString "ibus") (mkString "mozc-jp")])
-        ];
-      };
-      "org/gnome/shell/extensions/customize-ibus" = {
-        use-custom-font = true;
-        custom-font = "sans-serif 10";
-        input-indicator-only-on-toggle = true;
-      };
-      "org/gnome/desktop/wm/preferences" = {
-        action-middle-click-titlebar = "lower";
-      };
-      "org/gnome/system/location" = {
-        enabled = true;
-      };
-      # just use the standard touchpad and mouse speed
-      "org/gnome/desktop/peripherals/mouse" = {
-        speed = 0;
-      };
-      "org/gnome/desktop/peripherals/touchpad" = {
-        speed = 0;
-        natural-scroll = true;
-        tap-to-click = true;
-      };
-      "org/gnome/desktop/remote-desktop/rdp" = {
-        enable = true;
-        tls-cert = "${osConfig.security.acme.tfCerts."li7g_com".fullChain}";
-        tls-key = "${osConfig.security.acme.tfCerts."li7g_com".key}";
-        view-only = false;
-      };
-      "org/gnome/desktop/calendar" = {
-        show-weekdate = true;
-      };
-      "org/gnome/shell/extensions/dash-to-dock" = {
-        apply-custom-theme = true;
-        custom-theme-shrink = true;
-        dash-max-icon-size = 32;
-        show-mounts = false;
-        click-action = "focus-or-appspread";
-        scroll-action = "switch-workspace";
-        intellihide-mode = "ALL_WINDOWS";
-        show-dock-urgent-notify = false;
-        show-trash = false;
-      };
-      "org/gnome/shell/extensions/gsconnect" = {
-        show-indicators = true;
-      };
-      "org/gnome/Console" = {
-        theme = "auto";
-      };
-      "ca/desrt/dconf-editor" = {
-        show-warning = false;
-      };
-      "org/gnome/desktop/background" = {
-        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
-        picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.png";
-        primary-color = "#26a269";
-        secondary-color = "#000000";
-        color-shading-type = "solid";
-        picture-options = "zoom";
-      };
-      "org/gnome/desktop/screensaver" = {
-        picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
-        primary-color = "#26a269";
-        secondary-color = "#000000";
-        color-shading-type = "solid";
-        picture-options = "zoom";
-      };
-      "com/raggesilver/BlackBox" = {
-        terminal-padding = mkTuple [(mkUint32 5) (mkUint32 5) (mkUint32 5) (mkUint32 5)];
-        font = "IosevkaYinfeng Nerd Font 10";
-        theme-light = "Tomorrow";
-        theme-dark = "Tomorrow Night";
-        show-menu-button = false;
-      };
+  dconf.settings = {
+    # Do not sleep when ac power connected
+    "org/gnome/settings-daemon/plugins/power" = {
+      sleep-inactive-ac-type = "nothing";
     };
-
-    home.link = {
-      ".config/systemd/user/gnome-session.target.wants/gnome-remote-desktop.service".target = "/etc/systemd/user/gnome-remote-desktop.service";
+    "org/gnome/shell" = {
+      disable-user-extensions = false;
+      enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
+      disabled-extensions = [ ];
+      favorite-apps = lib.mkBefore [
+        "org.gnome.Console.desktop"
+        "org.gnome.Nautilus.desktop"
+        "chromium-browser.desktop"
+        "gnome-system-monitor.desktop"
+        "code.desktop"
+      ];
+      welcome-dialog-last-shown-version = "43.1";
     };
-
-    home.activation.allowGdmReadFace = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
-    '';
-
-    # gsconnect association
-    xdg.mimeApps.associations.added = {
-      "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-      "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    "org/gnome/mutter" = {
+      edge-tiling = true;
     };
+    "org/gnome/desktop/interface" = {
+      gtk-theme = "adw-gtk3";
+      clock-show-weekday = true;
+      show-battery-percentage = true;
+      locate-pointer = true;
+      monospace-font-name = "Monospace 10";
+    };
+    "org/gnome/desktop/input-sources" = {
+      sources =
+        mkArray
+          (type.tupleOf [
+            type.string
+            type.string
+          ])
+          [
+            (mkTuple [
+              (mkString "xkb")
+              (mkString "us")
+            ])
+            (mkTuple [
+              (mkString "ibus")
+              (mkString "rime")
+            ])
+            (mkTuple [
+              (mkString "ibus")
+              (mkString "mozc-jp")
+            ])
+          ];
+    };
+    "org/gnome/shell/extensions/customize-ibus" = {
+      use-custom-font = true;
+      custom-font = "sans-serif 10";
+      input-indicator-only-on-toggle = true;
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      action-middle-click-titlebar = "lower";
+    };
+    "org/gnome/system/location" = {
+      enabled = true;
+    };
+    # just use the standard touchpad and mouse speed
+    "org/gnome/desktop/peripherals/mouse" = {
+      speed = 0;
+    };
+    "org/gnome/desktop/peripherals/touchpad" = {
+      speed = 0;
+      natural-scroll = true;
+      tap-to-click = true;
+    };
+    "org/gnome/desktop/remote-desktop/rdp" = {
+      enable = true;
+      tls-cert = "${osConfig.security.acme.tfCerts."li7g_com".fullChain}";
+      tls-key = "${osConfig.security.acme.tfCerts."li7g_com".key}";
+      view-only = false;
+    };
+    "org/gnome/desktop/calendar" = {
+      show-weekdate = true;
+    };
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      apply-custom-theme = true;
+      custom-theme-shrink = true;
+      dash-max-icon-size = 32;
+      show-mounts = false;
+      click-action = "focus-or-appspread";
+      scroll-action = "switch-workspace";
+      intellihide-mode = "ALL_WINDOWS";
+      show-dock-urgent-notify = false;
+      show-trash = false;
+    };
+    "org/gnome/shell/extensions/gsconnect" = {
+      show-indicators = true;
+    };
+    "org/gnome/Console" = {
+      theme = "auto";
+    };
+    "ca/desrt/dconf-editor" = {
+      show-warning = false;
+    };
+    "org/gnome/desktop/background" = {
+      picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
+      picture-uri-dark = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.png";
+      primary-color = "#26a269";
+      secondary-color = "#000000";
+      color-shading-type = "solid";
+      picture-options = "zoom";
+    };
+    "org/gnome/desktop/screensaver" = {
+      picture-uri = "file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
+      primary-color = "#26a269";
+      secondary-color = "#000000";
+      color-shading-type = "solid";
+      picture-options = "zoom";
+    };
+    "com/raggesilver/BlackBox" = {
+      terminal-padding = mkTuple [
+        (mkUint32 5)
+        (mkUint32 5)
+        (mkUint32 5)
+        (mkUint32 5)
+      ];
+      font = "IosevkaYinfeng Nerd Font 10";
+      theme-light = "Tomorrow";
+      theme-dark = "Tomorrow Night";
+      show-menu-button = false;
+    };
+  };
 
-    home.global-persistence.directories = [
-      ".config/gsconnect"
-    ];
-  }
+  home.link = {
+    ".config/systemd/user/gnome-session.target.wants/gnome-remote-desktop.service".target = "/etc/systemd/user/gnome-remote-desktop.service";
+  };
+
+  home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
+  '';
+
+  # gsconnect association
+  xdg.mimeApps.associations.added = {
+    "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+  };
+
+  home.global-persistence.directories = [ ".config/gsconnect" ];
+}

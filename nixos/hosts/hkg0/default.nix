@@ -5,10 +5,12 @@
   lib,
   modulesPath,
   ...
-}: let
+}:
+let
   hostName = config.networking.hostName;
   hostData = config.lib.self.data.hosts.${hostName};
-in {
+in
+{
   imports =
     suites.overseaServer
     ++ (with profiles; [
@@ -22,9 +24,7 @@ in {
       services.hydra-proxy
       services.cache-overlay
     ])
-    ++ [
-      (modulesPath + "/profiles/qemu-guest.nix")
-    ];
+    ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   config = lib.mkMerge [
     {
@@ -32,7 +32,12 @@ in {
         enable = true;
         device = "/dev/vda";
       };
-      boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "virtio_blk"];
+      boot.initrd.availableKernelModules = [
+        "ata_piix"
+        "uhci_hcd"
+        "virtio_pci"
+        "virtio_blk"
+      ];
 
       boot.tmp.cleanOnBoot = true;
       environment.global-persistence.enable = false;
@@ -43,7 +48,7 @@ in {
       };
       services.zswap.enable = true;
       swapDevices = [
-        {device = "/dev/vda2";}
+        { device = "/dev/vda2"; }
         {
           device = "/swapfile";
           size = 4096; # 4 GiB
@@ -59,12 +64,15 @@ in {
         DHCP = "ipv4";
         addresses = [
           {
-            addressConfig = let
-              address = assert lib.length hostData.endpoints_v6 == 1;
-                lib.elemAt hostData.endpoints_v6 0;
-            in {
-              Address = "${address}/64";
-            };
+            addressConfig =
+              let
+                address =
+                  assert lib.length hostData.endpoints_v6 == 1;
+                  lib.elemAt hostData.endpoints_v6 0;
+              in
+              {
+                Address = "${address}/64";
+              };
           }
         ];
         dns = [
@@ -84,8 +92,6 @@ in {
     })
 
     # stateVersion
-    {
-      system.stateVersion = "23.11";
-    }
+    { system.stateVersion = "23.11"; }
   ];
 }

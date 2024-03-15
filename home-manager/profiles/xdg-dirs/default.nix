@@ -1,6 +1,8 @@
-{...}: let
+{ ... }:
+let
   prefix = "$HOME/Data";
-in {
+in
+{
   xdg.enable = true;
 
   xdg.userDirs = {
@@ -16,7 +18,5 @@ in {
     videos = "${prefix}/Videos";
   };
 
-  home.global-persistence.directories = [
-    "Data"
-  ];
+  home.global-persistence.directories = [ "Data" ];
 }

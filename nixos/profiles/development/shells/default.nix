@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, lib, ... }:
 lib.mkMerge [
   # fish
   {
@@ -23,15 +19,9 @@ lib.mkMerge [
         comma
       ]);
 
-    environment.global-persistence.user.directories = [
-      ".local/share/fish"
-    ];
+    environment.global-persistence.user.directories = [ ".local/share/fish" ];
   }
 
   # bash
-  {
-    environment.global-persistence.user.files = [
-      ".bash_history"
-    ];
-  }
+  { environment.global-persistence.user.files = [ ".bash_history" ]; }
 ]

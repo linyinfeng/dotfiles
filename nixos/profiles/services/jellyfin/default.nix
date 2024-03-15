@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   user = config.services.jellyfin.user;
-in {
+in
+{
   services.jellyfin = {
     enable = true;
   };
@@ -13,18 +15,14 @@ in {
     shell = pkgs.fish; # for media storage operation
     home = "/var/lib/jellyfin-media";
     createHome = true;
-    extraGroups = [
-      config.users.groups.transmission.name
-    ];
+    extraGroups = [ config.users.groups.transmission.name ];
   };
 
   systemd.services.jellyfin-setup = {
     script = ''
       xmlstarlet edit --inplace --update "/NetworkConfiguration/HttpServerPortNumber" --value "${toString config.ports.jellyfin}" network.xml
     '';
-    path = with pkgs; [
-      xmlstarlet
-    ];
+    path = with pkgs; [ xmlstarlet ];
     unitConfig = {
       ConditionPathExists = config.services.jellyfin.configDir;
     };
@@ -34,14 +32,12 @@ in {
       User = "jellyfin";
       Group = "jellyfin";
     };
-    wantedBy = ["jellyfin.service"];
-    before = ["jellyfin.service"];
+    wantedBy = [ "jellyfin.service" ];
+    before = [ "jellyfin.service" ];
   };
   systemd.services.jellyfin = {
     # faster metadata search
-    environment =
-      lib.mkIf (config.networking.fw-proxy.enable)
-      config.networking.fw-proxy.environment;
+    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
   };
 
   services.nginx.virtualHosts."jellyfin.*" = {

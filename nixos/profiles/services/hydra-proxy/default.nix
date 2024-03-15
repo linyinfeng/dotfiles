@@ -1,6 +1,7 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.nginx.upstreams."hydra".servers = {
-    "hydra.ts.li7g.com:${toString config.ports.https}" = {};
+    "hydra.ts.li7g.com:${toString config.ports.https}" = { };
   };
   services.nginx.virtualHosts."hydra-proxy.*" = {
     forceSSL = true;

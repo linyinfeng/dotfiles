@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   systemd.services."dotfiles-channel-update@" = {
     script = ''
       cd "$STATE_DIRECTORY"
@@ -71,22 +72,16 @@
       User = "hydra";
       Group = "hydra";
       Type = "oneshot";
-      SupplementaryGroups = [
-        config.users.groups.tg-send.name
-      ];
+      SupplementaryGroups = [ config.users.groups.tg-send.name ];
       StateDirectory = "dotfiles-channel-update";
       Restart = "on-failure";
-      LoadCredential = [
-        "github-token:${config.sops.secrets."nano/github-token".path}"
-      ];
+      LoadCredential = [ "github-token:${config.sops.secrets."nano/github-token".path}" ];
     };
-    environment =
-      lib.mkIf (config.networking.fw-proxy.enable)
-      config.networking.fw-proxy.environment;
+    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
   };
   sops.secrets."nano/github-token" = {
     sopsFile = config.sops-file.get "common.yaml";
-    restartUnits = ["dotfiles-channel-update@.service"];
+    restartUnits = [ "dotfiles-channel-update@.service" ];
   };
 
   security.polkit.extraConfig = ''

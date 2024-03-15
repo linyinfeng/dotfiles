@@ -1,8 +1,5 @@
-{
-  config,
-  lib,
-  ...
-}: let
+{ config, lib, ... }:
+let
   servicesCnameMappings = config.lib.self.data.service_cname_mappings;
   unproxiedServiceUrls = {
     prebuilt-zip = [
@@ -59,11 +56,11 @@
         code = 200;
       }
     ];
-    palworld = [];
-    dst = [];
-    smtp = [];
-    teamspeak = [];
-    "shanghai.derp" = [];
+    palworld = [ ];
+    dst = [ ];
+    smtp = [ ];
+    teamspeak = [ ];
+    "shanghai.derp" = [ ];
   };
   overrides = {
     box = [
@@ -121,53 +118,59 @@
       }
     ];
   };
-  mkServiceCfg = name: cnameMapping:
-    if cnameMapping.proxy
-    then [
-      {
-        url = "https://${name}.li7g.com";
-        code = 200;
-      }
-    ]
-    else unproxiedServiceUrls.${name};
+  mkServiceCfg =
+    name: cnameMapping:
+    if cnameMapping.proxy then
+      [
+        {
+          url = "https://${name}.li7g.com";
+          code = 200;
+        }
+      ]
+    else
+      unproxiedServiceUrls.${name};
   serviceCfgs = lib.recursiveUpdate (lib.mapAttrs mkServiceCfg servicesCnameMappings) overrides;
   urlCfgs = lib.flatten (lib.mapAttrsToList (_name: cfg: cfg) serviceCfgs);
   allCodes = lib.unique (lib.lists.map (c: c.code) urlCfgs);
-in {
+in
+{
   assertions = [
-    (let
-      unproxiedCnameMappings = lib.attrNames (lib.filterAttrs (_: m: !m.proxy) servicesCnameMappings);
-      unproxiedCfgs = lib.attrNames unproxiedServiceUrls;
-      inherit (lib.lists) subtractLists;
-      uncoveredCfgs = subtractLists unproxiedCnameMappings unproxiedCfgs;
-      uncoveredCnameMappings = subtractLists unproxiedCfgs unproxiedCnameMappings;
-    in {
-      assertion = uncoveredCfgs == [] && uncoveredCnameMappings == [];
-      message = ''
-        unproxied services configurations does not match with services unproxied CNAME mappings
-        uncovered configurations: ${toString uncoveredCfgs}
-        uncovered CNAME mappings: ${toString uncoveredCnameMappings}
-      '';
-    })
-    (let
-      invalidOverrides =
-        lib.lists.subtractLists
-        (lib.attrNames (lib.filterAttrs (_: m: m.proxy) servicesCnameMappings))
-        (lib.attrNames overrides);
-    in {
-      assertion = invalidOverrides == [];
-      message = "invalid overrides: ${toString invalidOverrides}";
-    })
+    (
+      let
+        unproxiedCnameMappings = lib.attrNames (lib.filterAttrs (_: m: !m.proxy) servicesCnameMappings);
+        unproxiedCfgs = lib.attrNames unproxiedServiceUrls;
+        inherit (lib.lists) subtractLists;
+        uncoveredCfgs = subtractLists unproxiedCnameMappings unproxiedCfgs;
+        uncoveredCnameMappings = subtractLists unproxiedCfgs unproxiedCnameMappings;
+      in
+      {
+        assertion = uncoveredCfgs == [ ] && uncoveredCnameMappings == [ ];
+        message = ''
+          unproxied services configurations does not match with services unproxied CNAME mappings
+          uncovered configurations: ${toString uncoveredCfgs}
+          uncovered CNAME mappings: ${toString uncoveredCnameMappings}
+        '';
+      }
+    )
+    (
+      let
+        invalidOverrides = lib.lists.subtractLists (lib.attrNames (
+          lib.filterAttrs (_: m: m.proxy) servicesCnameMappings
+        )) (lib.attrNames overrides);
+      in
+      {
+        assertion = invalidOverrides == [ ];
+        message = "invalid overrides: ${toString invalidOverrides}";
+      }
+    )
   ];
   services.telegraf.extraConfig = {
     inputs = {
-      http_response =
-        lib.lists.map (code: {
-          urls = lib.lists.map (c: c.url) (lib.filter (c: c.code == code) urlCfgs);
-          response_status_code = code;
-          tags.output_bucket = "http";
-        })
-        allCodes;
+      http_response = lib.lists.map (code: {
+        urls = lib.lists.map (c: c.url) (lib.filter (c: c.code == code) urlCfgs);
+        response_status_code = code;
+        tags.output_bucket = "http";
+      }) allCodes;
     };
   };
 }

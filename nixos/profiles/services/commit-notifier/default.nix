@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   services.commit-notifier = {
     enable = true;
     cron = "0 */5 * * * *";
@@ -9,10 +10,10 @@
   };
   sops.secrets."telegram-bot/commit-notifier" = {
     sopsFile = config.sops-file.host;
-    restartUnits = ["commit-notifier.service"];
+    restartUnits = [ "commit-notifier.service" ];
   };
   sops.secrets."nano/github-token" = {
     sopsFile = config.sops-file.get "common.yaml";
-    restartUnits = ["commit-notifier.service"];
+    restartUnits = [ "commit-notifier.service" ];
   };
 }
