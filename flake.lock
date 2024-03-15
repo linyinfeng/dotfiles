@@ -38,6 +38,38 @@
         "type": "github"
       }
     },
+    "angrr": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1710481060,
+        "narHash": "sha256-GlP0nU+RxrdraDPdW24S4V6XcgTY6EnLmcKej+Z+AAA=",
+        "owner": "linyinfeng",
+        "repo": "angrr",
+        "rev": "1b3dc7ffff117a12770e210212e76519abbbd049",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "angrr",
+        "type": "github"
+      }
+    },
     "blank": {
       "locked": {
         "lastModified": 1625557891,
@@ -1246,6 +1278,7 @@
     "root": {
       "inputs": {
         "ace-bot": "ace-bot",
+        "angrr": "angrr",
         "blank": "blank",
         "commit-notifier": "commit-notifier",
         "crane": "crane",

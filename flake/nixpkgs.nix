@@ -13,6 +13,7 @@ let
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
     inputs.commit-notifier.overlays.default
+    inputs.angrr.overlays.default
     inputs.emacs-overlay.overlay
     inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default

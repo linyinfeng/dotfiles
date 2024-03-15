@@ -29,6 +29,7 @@ let
           services.openssh
           services.dbus
           services.oom-killer
+          services.angrr
           security.polkit
           security.rtkit
           security.sudo-rs
@@ -220,6 +221,7 @@ let
     inputs.oranc.nixosModules.oranc
     inputs.ace-bot.nixosModules.ace-bot
     inputs.commit-notifier.nixosModules.commit-notifier
+    inputs.angrr.nixosModules.angrr
     inputs.hyprland.nixosModules.default
 
     {
