@@ -3,7 +3,7 @@
     treefmt = {
       projectRootFile = "flake.nix";
       programs = {
-        alejandra.enable = true;
+        nixfmt-rfc-style.enable = true;
         shfmt.enable = true;
         shellcheck.enable = true;
         terraform.enable = true;
