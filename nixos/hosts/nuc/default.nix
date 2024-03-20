@@ -77,7 +77,11 @@ in
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
-      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+      boot.binfmt.emulatedSystems = [
+        "aarch64-linux"
+        "riscv64-linux"
+        "loongarch64-linux"
+      ];
 
       systemd.watchdog.runtimeTime = "60s";
 
