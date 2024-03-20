@@ -1096,14 +1096,14 @@
       "locked": {
         "lastModified": 1707641152,
         "narHash": "sha256-vvZy5MPpSbixH648GL50ikDl+0c+PyljFbgvr/sLO8k=",
-        "owner": "linyinfeng",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "ce40f498e786864b024d77185e967ca2b2fcf0c7",
         "type": "github"
       },
       "original": {
-        "owner": "linyinfeng",
-        "ref": "shim",
+        "owner": "nixos",
+        "ref": "pull/287964/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1121,6 +1121,22 @@
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "842d9d80cfd4560648c785f8a4e6f3b096790e19",
+        "type": "github"
+      }
+    },
+    "nixpkgs-waybar": {
+      "locked": {
+        "lastModified": 1710848093,
+        "narHash": "sha256-pOBxHb78EP7+nYEh9+v+eQps3yCBTuxuvoAEzVUSrbs=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "49f83b701e7939079c529f378c79fa8544f4db72",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/297158/head",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -1323,6 +1339,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-terraform": "nixpkgs-terraform",
+        "nixpkgs-waybar": "nixpkgs-waybar",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",

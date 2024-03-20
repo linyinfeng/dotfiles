@@ -120,26 +120,16 @@ let
     let
       inherit (prev.stdenv.hostPlatform) system;
       inherit ((getSystem system).allModuleArgs) inputs';
-      latest = import inputs.latest {
+      nixpkgsArgs = {
         inherit system;
         inherit (config.nixpkgs) config;
       };
+      latest = import inputs.latest nixpkgsArgs;
     in
     {
-      inherit
-        (import inputs.nixpkgs-terraform {
-          inherit system;
-          inherit (config.nixpkgs) config;
-        })
-        terraform
-        ;
-      inherit
-        (import inputs.nixpkgs-shim {
-          inherit system;
-          inherit (config.nixpkgs) config;
-        })
-        shim-unsigned
-        ;
+      inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
+      inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
+      inherit (import inputs.nixpkgs-waybar nixpkgsArgs) nixpkgs-waybar;
     };
 in
 {
