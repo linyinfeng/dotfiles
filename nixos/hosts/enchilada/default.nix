@@ -48,6 +48,9 @@
         };
         displayManager.defaultSession = "plasma-mobile";
       };
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=296866
+      # https://github.com/NixOS/nixpkgs/issues/296797
+      programs.gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
       i18n.inputMethod.enabled = "fcitx5";
       hardware.sensor.iio.enable = true;
       # pulseaudio as main sound server
