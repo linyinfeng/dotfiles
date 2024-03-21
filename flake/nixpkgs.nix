@@ -30,6 +30,7 @@ let
         mc-config-nuc = inputs'.mc-config-nuc.packages;
         nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
         lzbt = inputs'.lanzaboote.packages.tool;
+        nix-fast-build = inputs'.nix-fast-build.packages.default;
 
         # ccache
         ccacheCacheDir = "/var/cache/ccache";

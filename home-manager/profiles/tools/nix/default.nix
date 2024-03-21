@@ -4,6 +4,8 @@
     cachix
     flat-flake
     nil
+    nix-eval-jobs
+    nix-fast-build
     nix-output-monitor
     nix-prefetch-scripts
     nix-prefetch-github
