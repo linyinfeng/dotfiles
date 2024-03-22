@@ -24,9 +24,9 @@ if [ "$hit" = "true" ]; then
   job=$(jq -r ".job" "$HYDRA_JSON")
   echo "job = $job"
 
-  if [[ $job =~ ^(.*)\.nixos/([^/]*)$ && "$(jq --raw-output '.jobset' "$HYDRA_JSON")" == "main" ]]; then
-    _system="${BASH_REMATCH[1]}"
-    host="${BASH_REMATCH[2]}"
+  if [[ $job =~ ^nixos/([^/]*)\.(.*)$ && "$(jq --raw-output '.jobset' "$HYDRA_JSON")" == "main" ]]; then
+    host="${BASH_REMATCH[1]}"
+    _system="${BASH_REMATCH[2]}"
 
     build_id=$(jq '.build' "$HYDRA_JSON")
     flake_url=$(psql -t -U hydra -d hydra -c "
