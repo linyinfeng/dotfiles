@@ -67,6 +67,7 @@ in
         echo "enter critical section"
 
         echo "canceling all unfinished multipart uploads..."
+        # TODO broken https://github.com/NixOS/nixpkgs/issues/298601
         # backblaze-b2 cancel-all-unfinished-large-files "${cacheBucketName}"
 
         echo "removing narinfo cache..."
