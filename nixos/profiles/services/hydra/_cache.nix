@@ -67,7 +67,7 @@ in
         echo "enter critical section"
 
         echo "canceling all unfinished multipart uploads..."
-        backblaze-b2 cancel-all-unfinished-large-files "${cacheBucketName}"
+        # backblaze-b2 cancel-all-unfinished-large-files "${cacheBucketName}"
 
         echo "removing narinfo cache..."
         rm -rf /var/lib/cache-li7g-com/.cache
@@ -80,7 +80,8 @@ in
       nix-gc-s3
       config.nix.package
       util-linux
-      backblaze-b2
+      # TODO broken https://github.com/NixOS/nixpkgs/issues/298601
+      # backblaze-b2
     ];
     serviceConfig = {
       Restart = "on-failure";
