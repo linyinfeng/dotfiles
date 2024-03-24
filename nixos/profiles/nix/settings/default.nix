@@ -40,10 +40,14 @@
       "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
+
+    settings.use-xdg-base-directories = true;
   };
 
   nix.channel.enable = false;
   # TODO wait for https://github.com/NixOS/nix/issues/9574
   # `nix.channel.enable = false` will set 'nix-path =' in system nix.conf
   nix.settings.nix-path = config.nix.nixPath;
+
+  systemd.services.nix-daemon.serviceConfig.Slice = "system-minor";
 }

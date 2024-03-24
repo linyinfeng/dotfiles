@@ -113,9 +113,6 @@ in
     }
 
     # decrease cpu weight
-    {
-      systemd.services.nix-daemon.serviceConfig.CPUWeight = "idle";
-      systemd.services.hydra-evaluator.serviceConfig.CPUWeight = "idle";
-    }
+    { systemd.services.hydra-evaluator.serviceConfig.Slice = "system-minor"; }
   ];
 }

@@ -285,8 +285,8 @@
     nixpkgs-terraform.url = "github:nixos/nixpkgs/842d9d80cfd4560648c785f8a4e6f3b096790e19";
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=287964
     nixpkgs-shim.url = "github:nixos/nixpkgs/pull/287964/head";
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=297158
-    nixpkgs-waybar.url = "github:nixos/nixpkgs/pull/297158/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=298491
+    nixpkgs-fprintd.url = "github:nixos/nixpkgs/pull/298491/head";
   };
 
   outputs =

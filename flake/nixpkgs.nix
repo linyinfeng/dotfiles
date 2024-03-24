@@ -130,7 +130,7 @@ let
     {
       inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
       inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
-      inherit (import inputs.nixpkgs-waybar nixpkgsArgs) waybar;
+      inherit (import inputs.nixpkgs-fprintd nixpkgsArgs) fprintd;
     };
 in
 {

@@ -214,15 +214,6 @@
       };
     }
 
-    # limit cpu quota for nix-daemon for laptop
-    {
-      systemd.services.nix-daemon.serviceConfig = {
-        # 16 cores in total
-        CPUQuota = "800%";
-        CPUWeight = "idle";
-      };
-    }
-
     # stateVersion
     { system.stateVersion = "23.11"; }
   ];
