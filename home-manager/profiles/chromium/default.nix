@@ -4,7 +4,6 @@
     enable = true;
     commandLineArgs = [
       # TODO disabled
-      # ibus not working
       # "--ozone-platform-hint=auto"
       # "--enable-wayland-ime" # text-input-v1, only works in hyprland
       # "--gtk-version=4"

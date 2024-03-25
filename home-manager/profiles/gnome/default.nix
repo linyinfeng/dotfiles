@@ -62,6 +62,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/mutter" = {
       edge-tiling = true;
+      # experimental-features = [ "scale-monitor-framebuffer" ];
     };
     "org/gnome/desktop/interface" = {
       gtk-theme = "adw-gtk3";
@@ -94,11 +95,11 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/shell/extensions/customize-ibus" = {
       use-custom-font = true;
-      custom-font = "sans 10";
+      custom-font = "sans 11";
       input-indicator-only-on-toggle = true;
     };
     "org/gnome/shell/extensions/kimpanel" = {
-      font = "Sans 10";
+      font = "Sans 11";
     };
     "org/gnome/desktop/wm/keybindings" = {
       # use fcitx5 for binding
