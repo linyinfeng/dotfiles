@@ -14,12 +14,12 @@ persist="@persist@"
 NC='\033[0m'
 function output {
   GREEN='\033[0;32m'
-  printf "%s-- %s%s\n" "$GREEN" "$@" "$NC"
+  printf "$GREEN-- %s$NC\n" "$@"
 }
 
 function failure {
   RED='\033[0;31m'
-  printf "%s-- %s%s\n" "$RED" "$@" "$NC"
+  printf "$RED-- %s$NC\n" "$@"
 }
 
 for file in "$@"; do
