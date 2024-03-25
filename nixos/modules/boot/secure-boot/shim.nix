@@ -87,7 +87,7 @@ let
       tmpfile=$(mktemp -t "sign-efi-file.XXXXXXXX")
       sbsign --cert "${config.boot.secureBoot.publicKeyFile}" \
              --key "${config.boot.secureBoot.privateKeyFile}" \
-             "$file" --output "$tmpfile"
+             "$file" --output "$tmpfile" 2>/dev/null
       cp "$tmpfile" "$file"
     '';
   };
