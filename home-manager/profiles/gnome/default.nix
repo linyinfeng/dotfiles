@@ -10,7 +10,7 @@ let
     appindicator
     dash-to-dock
     # clipboard-history
-    # kimpanel # fcitx5 disabled
+    kimpanel
     upower-battery
     alphabetical-app-grid
     customize-ibus
@@ -94,8 +94,16 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/shell/extensions/customize-ibus" = {
       use-custom-font = true;
-      custom-font = "sans-serif 10";
+      custom-font = "sans 10";
       input-indicator-only-on-toggle = true;
+    };
+    "org/gnome/shell/extensions/kimpanel" = {
+      font = "Sans 10";
+    };
+    "org/gnome/desktop/wm/keybindings" = {
+      # use fcitx5 for binding
+      switch-input-source = [ ];
+      switch-input-source-backward = [ ];
     };
     "org/gnome/desktop/wm/preferences" = {
       action-middle-click-titlebar = "lower";

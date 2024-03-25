@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
   i18n.inputMethod = {
-    enabled = lib.mkDefault "ibus";
+    enabled = lib.mkDefault "fcitx5";
     ibus.engines = with pkgs.ibus-engines; [
       (rime.override {
         rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
