@@ -93,8 +93,7 @@ let
               gnomeFinal: gnomePrev: {
                 mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
                   patches = (old.patches or [ ]) ++ [
-                    # https://aur.archlinux.org/packages/mutter-dynamic-buffering
-                    # https://aur.archlinux.org/cgit/aur.git/plain/mr1441.patch?h=mutter-dynamic-buffering
+                    # git format-patch (git merge-base origin/gnome-MV ubuntu/triple-buffering-PV-MV)..ubuntu/triple-buffering-PV-MV --stdout
                     ../patches/mutter-triple-buffering.patch
                   ];
                 });
