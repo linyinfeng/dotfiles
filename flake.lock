@@ -1118,18 +1118,18 @@
         "type": "github"
       }
     },
-    "nixpkgs-fprintd": {
+    "nixpkgs-hledger-web": {
       "locked": {
-        "lastModified": 1711238606,
-        "narHash": "sha256-vxNSvV5fgsDcYogwCTNgaELi9tK8tVyI6Tr5TDCs8/4=",
+        "lastModified": 1711534501,
+        "narHash": "sha256-4iP1BOotrU1B8VuEmn0SnhQSsxbt2HniPT7VDVjEoRI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "87ca2dc071581aea0e691c730d6844f1beb07c9f",
+        "rev": "c692034dede05fa49e28a1ad5d97818634f8b251",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "pull/298491/head",
+        "ref": "pull/299460/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1364,7 +1364,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-fprintd": "nixpkgs-fprintd",
+        "nixpkgs-hledger-web": "nixpkgs-hledger-web",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-terraform": "nixpkgs-terraform",
         "nvfetcher": "nvfetcher",

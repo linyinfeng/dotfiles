@@ -11,10 +11,10 @@ in
   services.hledger-web = {
     enable = true;
     baseUrl = lib.mkDefault "https://hledger.li7g.com";
-    capabilities = {
+    allow = {
       view = true;
       add = false;
-      manage = false;
+      edit = false;
     };
     port = config.ports.hledger-web;
     extraOptions = [
@@ -23,27 +23,6 @@ in
     ];
     journalFiles = [ "hledger-journal/main.journal" ];
   };
-  # TODO broken due to https://github.com/simonmichael/hledger/pull/2104
-  systemd.services.hledger-web.serviceConfig.ExecStart =
-    let
-      cfg = config.services.hledger-web;
-      inherit (lib) escapeShellArgs optionalString;
-      serverArgs =
-        with cfg;
-        escapeShellArgs (
-          [
-            "--serve"
-            "--host=${host}"
-            "--port=${toString port}"
-            "--allow=view"
-            (optionalString (cfg.baseUrl != null) "--base-url=${cfg.baseUrl}")
-            (optionalString (cfg.serveApi) "--serve-api")
-          ]
-          ++ (map (f: "--file=${stateDir}/${f}") cfg.journalFiles)
-          ++ extraOptions
-        );
-    in
-    lib.mkForce "${pkgs.hledger-web}/bin/hledger-web ${serverArgs}";
   systemd.services.hledger-web-fetch = {
     script = ''
       token=$(cat "$CREDENTIALS_DIRECTORY/token")
