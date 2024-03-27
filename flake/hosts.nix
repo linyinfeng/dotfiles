@@ -234,12 +234,7 @@ let
     }
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299460
-    {
-      disabledModules = ["services/web-apps/hledger-web.nix"];
-      imports = [
-        "${inputs.nixpkgs-hledger-web}/nixos/modules/services/web-apps/hledger-web.nix"
-      ];
-    }
+    (self.lib.replaceModuleSimple inputs.nixpkgs-hledger-web "services/web-apps/hledger-web.nix")
   ];
 
   commonHmModules = hmModules ++ [

@@ -10,4 +10,6 @@ lib.makeExtensible (self: {
   cidr = import ./cidr.nix { inherit lib; };
   requireSystemFeatures = import ./require-system-features.nix { inherit lib; };
   requireBigParallel = self.requireSystemFeatures [ "big-parallel" ];
+  replaceModules = import ./replace-modules.nix { inherit lib; };
+  replaceModuleSimple = import ./replace-module-simple.nix { inherit (self) replaceModules; };
 })
