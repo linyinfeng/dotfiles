@@ -193,5 +193,8 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
   };
 
-  home.global-persistence.directories = [ ".config/gsconnect" ];
+  home.global-persistence.directories = [
+    ".config/gsconnect"
+    ".cache/gsconnect"
+  ];
 }

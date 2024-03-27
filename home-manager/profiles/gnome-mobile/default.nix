@@ -88,5 +88,8 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"
   '';
 
-  home.global-persistence.directories = [ ".config/gsconnect" ];
+  home.global-persistence.directories = [
+    ".config/gsconnect"
+    ".cache/gsconnect"
+  ];
 }
