@@ -27,9 +27,10 @@ in
   systemd.services.hledger-web.serviceConfig.ExecStart =
     let
       cfg = config.services.hledger-web;
+      inherit (lib) escapeShellArgs optionalString;
       serverArgs =
         with cfg;
-        lib.escapeShellArgs (
+        escapeShellArgs (
           [
             "--serve"
             "--host=${host}"
