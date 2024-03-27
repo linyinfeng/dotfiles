@@ -23,6 +23,26 @@ in
     ];
     journalFiles = [ "hledger-journal/main.journal" ];
   };
+  # TODO broken due to https://github.com/simonmichael/hledger/pull/2104
+  systemd.services.hledger-web.serviceConfig.ExecStart =
+    let
+      cfg = config.services.hledger-web;
+      serverArgs =
+        with cfg;
+        lib.escapeShellArgs (
+          [
+            "--serve"
+            "--host=${host}"
+            "--port=${toString port}"
+            "--allow=view"
+            (optionalString (cfg.baseUrl != null) "--base-url=${cfg.baseUrl}")
+            (optionalString (cfg.serveApi) "--serve-api")
+          ]
+          ++ (map (f: "--file=${stateDir}/${f}") cfg.journalFiles)
+          ++ extraOptions
+        );
+    in
+    lib.mkForce "${pkgs.hledger-web}/bin/hledger-web ${serverArgs}";
   systemd.services.hledger-web-fetch = {
     script = ''
       token=$(cat "$CREDENTIALS_DIRECTORY/token")
