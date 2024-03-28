@@ -284,23 +284,14 @@ let
               if forceFlakeNixpkgs then
                 {
                   imports = [ nixpkgs.nixosModules.readOnlyPkgs ];
-                  nixpkgs =
-                    let
-                      inherit ((getSystem system).allModuleArgs) pkgs;
-                    in
-                    {
-                      inherit pkgs;
-                      # TODO workaround for the gnome module
-                      # the gnome module sets the config `vim.gui = "gtk3";`
-                      config = lib.mkForce pkgs.config;
-                    };
+                  nixpkgs = {
+                    inherit ((getSystem system).allModuleArgs) pkgs;
+                  };
                 }
               else
                 {
-                  nixpkgs = {
-                    inherit (config.nixpkgs) config overlays;
-                    hostPlatform = system;
-                  };
+                  # crossOverlays has not been suppored by nixos module
+                  nixpkgs = lib.attrsets.removeAttrs (getSystem system).nixpkgs [ "crossOverlays" ];
                 }
             )
           ];
@@ -390,8 +381,9 @@ in
         (
           { pkgs, ... }:
           {
-            # TODO mobile-nixos tests `config.nixpkgs.localSystem`
-            nixpkgs.system = "aarch64-linux";
+            # # TODO mobile-nixos tests `config.nixpkgs.localSystem`
+            # nixpkgs.system = "aarch64-linux";
+            # nixpkgs.hostPlatform = "aarch64-linux";
           }
         )
       ];

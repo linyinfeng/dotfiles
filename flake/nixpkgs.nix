@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   getSystem,
   lib,
@@ -105,25 +104,13 @@ let
       }
     )
   ];
-  earlyFixes =
-    final: prev:
-    let
-      inherit (prev.stdenv.hostPlatform) system;
-      inherit ((getSystem system).allModuleArgs) inputs';
-    in
-    {
-      # currently nothing
-    };
+  earlyFixes = nixpkgsArgs: final: prev: {
+    # currently nothing
+  };
 
   lateFixes =
-    final: prev:
+    nixpkgsArgs: final: prev:
     let
-      inherit (prev.stdenv.hostPlatform) system;
-      inherit ((getSystem system).allModuleArgs) inputs';
-      nixpkgsArgs = {
-        inherit system;
-        inherit (config.nixpkgs) config;
-      };
       latest = import inputs.latest nixpkgsArgs;
     in
     {
@@ -132,13 +119,34 @@ let
     };
 in
 {
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      # TODO wait for zotero 7
-      allowInsecurePredicate =
-        p: (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6";
-    };
-    overlays = [ earlyFixes ] ++ packages ++ [ lateFixes ];
-  };
+  perSystem =
+    { config, system, ... }:
+    lib.mkMerge [
+      # common nixpkgs options
+      {
+        nixpkgs = {
+          config = {
+            allowUnfree = true;
+            # TODO wait for zotero 7
+            allowInsecurePredicate =
+              p: (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6";
+          };
+          overlays =
+            let
+              # do not include overlays to prevent infinite recursion
+              overlayNixpkgsArgs = lib.attrsets.removeAttrs config.nixpkgs [ "overlays" ];
+            in
+            [ (earlyFixes overlayNixpkgsArgs) ] ++ packages ++ [ (lateFixes overlayNixpkgsArgs) ];
+        };
+      }
+      (lib.mkIf (system == "riscv64-linux") {
+        # cross from x86_64-linux
+        nixpkgs.localSystem = {
+          system = "x86_64-linux";
+        };
+        nixpkgs.crossSystem = {
+          inherit system;
+        };
+      })
+    ];
 }
