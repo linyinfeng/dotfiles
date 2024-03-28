@@ -160,5 +160,14 @@ in
           inherit system;
         };
       })
+      (lib.mkIf (system == "loongarch64-linux") {
+        # cross from x86_64-linux
+        nixpkgs.localSystem = {
+          system = "x86_64-linux";
+        };
+        nixpkgs.crossSystem = {
+          inherit system;
+        };
+      })
     ];
 }
