@@ -84,9 +84,6 @@ let
       message "formatting..."
       nix fmt
 
-      message "initializing zerotier_member.host..."
-      terraform-wrapper apply --target "module.hosts[\"$host\"].zerotier_member.host"
-
       message "creating notice..."
       cat >"prepare-host-notice-$host" <<EOF
       age key
@@ -96,6 +93,7 @@ let
       manual run
       ==========
       sops-update-keys
+      terraform-wrapper apply --target 'module.hosts["$host"].zerotier_member.host'
 
       manual tweaks
       =============
