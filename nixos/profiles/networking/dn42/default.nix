@@ -37,8 +37,6 @@ let
     "nuc".enable = false; # unmetered
     "xps8930".enable = false; # mobile
     "framework".enable = false; # mobile
-    "framework-wsl".enable = false; # mobile
-    "enchilada".enable = false; # mobile
   };
   regionTable = {
     "hil0" = {
@@ -79,17 +77,9 @@ let
       region = null;
       country = null;
     };
-    "framework-wsl" = {
-      region = null;
-      country = null;
-    };
-    "enchilada" = {
-      region = null;
-      country = null;
-    };
   };
 in
-lib.mkIf (meshCfg.enable) {
+lib.mkIf (meshCfg.enable && filteredHost ? ${hostName}) {
   networking.mesh = {
     interfaces.extraPatterns = [ dn42If ];
     cidrs = {
@@ -119,7 +109,9 @@ lib.mkIf (meshCfg.enable) {
         defaults = {
           localPortStart = config.ports.dn42-peer-min;
           wireguard.localPrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
-          trafficControl = trafficControlTable.${hostName};
+          trafficControl = {
+            inherit (trafficControlTable.${hostName}) enable rate;
+          };
         };
         peers = peerTable.${hostName} or { };
       };
