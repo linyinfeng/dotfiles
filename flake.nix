@@ -321,6 +321,10 @@
           "riscv64-linux"
           "loongarch64-linux"
         ];
+        devSystems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
         flake.lib = selfLib // {
           inherit (config) systems;
         };
