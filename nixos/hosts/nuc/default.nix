@@ -30,6 +30,7 @@ in
     ++ suites.development
     ++ suites.virtualization
     ++ (with profiles; [
+      boot.binfmt
       nix.access-tokens
       nix.hydra-builder-server
       nix.hydra-builder-client
@@ -76,12 +77,6 @@ in
 
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
-
-      boot.binfmt.emulatedSystems = [
-        "aarch64-linux"
-        "riscv64-linux"
-        "loongarch64-linux"
-      ];
 
       systemd.watchdog.runtimeTime = "60s";
 

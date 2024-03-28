@@ -72,8 +72,6 @@ in
       };
     };
   };
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
   networking.campus-network = {
     enable = true;
     auto-login.enable = true;

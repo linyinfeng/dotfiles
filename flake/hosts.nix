@@ -90,6 +90,7 @@ let
       workstation =
         (with suites; base ++ multimediaDev ++ virtualization ++ network ++ backup ++ monitoring)
         ++ (with profiles; [
+          boot.binfmt
           system.types.workstation
           networking.network-manager
           services.bluetooth

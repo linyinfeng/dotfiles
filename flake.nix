@@ -293,7 +293,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, lib, ... }:
+      { config, self, lib, ... }:
       let
         selfLib = import ./lib { inherit inputs lib; };
       in
@@ -314,8 +314,11 @@
           "x86_64-linux"
           "aarch64-linux"
           "riscv64-linux"
+          "loongarch64-linux"
         ];
-        flake.lib = selfLib;
+        flake.lib = selfLib // {
+          inherit (config) systems;
+        };
         imports = [
           inputs.flat-flake.flakeModules.flatFlake
           inputs.flake-parts.flakeModules.easyOverlay

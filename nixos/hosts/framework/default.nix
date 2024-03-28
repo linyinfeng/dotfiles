@@ -54,8 +54,6 @@
         extraRemotes = [ "lvfs-testing" ];
       };
 
-      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
       services.fprintd.enable = true;
 
       networking.campus-network = {
