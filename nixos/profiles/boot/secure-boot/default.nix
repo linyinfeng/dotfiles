@@ -82,6 +82,9 @@ in
       boot.lanzaboote = {
         enable = true;
         inherit (config.boot.secureBoot) publicKeyFile privateKeyFile;
+        settings = {
+          reboot-for-bitlocker = true;
+        };
       };
       boot.kernelPatches = [
         {
