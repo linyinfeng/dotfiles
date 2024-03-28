@@ -291,7 +291,13 @@ let
               else
                 {
                   # crossOverlays has not been suppored by nixos module
-                  nixpkgs = lib.attrsets.removeAttrs (getSystem system).nixpkgs [ "crossOverlays" ];
+                  nixpkgs =
+                    let
+                      nixpkgsArgs = (getSystem system).nixpkgs;
+                    in
+                    {
+                      inherit (nixpkgsArgs) config overlays;
+                    };
                 }
             )
           ];
@@ -379,11 +385,10 @@ in
       extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
         "${inputs.mobile-nixos}/devices/oneplus-enchilada"
         (
-          { pkgs, ... }:
+          { config, pkgs, ... }:
           {
-            # # TODO mobile-nixos tests `config.nixpkgs.localSystem`
-            # nixpkgs.system = "aarch64-linux";
-            # nixpkgs.hostPlatform = "aarch64-linux";
+            # TODO mobile-nixos tests `config.nixpkgs.localSystem`
+            nixpkgs.system = "aarch64-linux";
           }
         )
       ];

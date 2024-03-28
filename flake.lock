@@ -363,11 +363,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711556526,
-        "narHash": "sha256-n6RRlZ7aRnn+YDPWXJlgiU8+2U1l8CPmsZtq7dRavcQ=",
+        "lastModified": 1711639589,
+        "narHash": "sha256-yhGpa0Jy+C+LzSkFhcm9R5ZjfTvUjIGMlavJlEkrTQk=",
         "owner": "linyinfeng",
         "repo": "flat-flake",
-        "rev": "e201af3754fc8e1b9f54b14d238b69a121a99921",
+        "rev": "87bcd6311b40e03d30c508d0c24e56ed11750235",
         "type": "github"
       },
       "original": {
@@ -725,11 +725,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711555270,
-        "narHash": "sha256-wPLMHhbilaDZc2CPgF3ScQUgGSkcm/KMRwX/f048xYI=",
+        "lastModified": 1711633278,
+        "narHash": "sha256-uoafZerFaZ2zQZqC13ERnJnNl34EhI5oXpVprOghwDE=",
         "owner": "linyinfeng",
         "repo": "mc-config",
-        "rev": "32ab509c4912d57b514644856634a1da2117962e",
+        "rev": "d310e62ca1a26f1bca478ecabb25b1052bb1f8a1",
         "type": "github"
       },
       "original": {
@@ -757,11 +757,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711293302,
-        "narHash": "sha256-amyOG926X9V1wNw0cT3qfB9Wya72fip2zpWYY7PTpVU=",
+        "lastModified": 1711633299,
+        "narHash": "sha256-auhrLj/ouK1WNMB9cQZCAxnqU08snDX3FBmHzbecUko=",
         "owner": "linyinfeng",
         "repo": "mc-config-nuc",
-        "rev": "227ef25f0f1deefaad1cf236bcebf799df5ad452",
+        "rev": "738dac9921fc1aa3aacb8d730ea78c3f8d60a47d",
         "type": "github"
       },
       "original": {
@@ -910,11 +910,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711555742,
-        "narHash": "sha256-CuT3L8ia6ppsbHHJkigDJ27/ggwPftnl3M35qq+hCKA=",
+        "lastModified": 1711634914,
+        "narHash": "sha256-6os7qXEdqTwovoYco4/u5rewfX2FzNv3QBkUjPMHfck=",
         "owner": "linyinfeng",
         "repo": "nix-gc-s3",
-        "rev": "b4848c0d728f9349c851aef8f9e556d7794f0820",
+        "rev": "ca2005a256349df4d8eed48d6324b7522ad02ea9",
         "type": "github"
       },
       "original": {
@@ -1232,19 +1232,22 @@
     },
     "pastebin": {
       "inputs": {
-        "flake-utils-plus": [
-          "flake-utils-plus"
+        "flake-parts": [
+          "flake-parts"
         ],
         "nixpkgs": [
           "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
         ]
       },
       "locked": {
-        "lastModified": 1661133748,
-        "narHash": "sha256-WCUE0ybn+KhFgKxMtnfvEk82djqNAC2W6sQTRCRbKQs=",
+        "lastModified": 1711635652,
+        "narHash": "sha256-VX/nwfc/JXQkuQj1JgjC1llv2Ye14QLkEPf+rwANRvk=",
         "owner": "linyinfeng",
         "repo": "pastebin",
-        "rev": "137cbaf60473c92c1ed9df2fa54030ab830bc8c7",
+        "rev": "8a0f8f8e140d650dca993aa20bf154e031e53cd0",
         "type": "github"
       },
       "original": {

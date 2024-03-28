@@ -1,1 +1,1 @@
-{ }
+{ devSystems = ./dev-systems.nix; }

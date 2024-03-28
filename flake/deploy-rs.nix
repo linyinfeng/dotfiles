@@ -40,18 +40,28 @@ in
     };
   };
   perSystem =
-    { inputs', system, ... }:
     {
-      # evaluation of deployChecks is slow
-      # checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
-      devshells.default = {
-        commands = [
-          {
-            package = inputs'.deploy-rs.packages.deploy-rs;
-            name = "deploy";
-            category = "deploy";
-          }
-        ];
-      };
-    };
+      config,
+      system,
+      pkgs,
+      ...
+    }:
+    lib.mkMerge [
+      (lib.mkIf (inputs.deploy-rs.lib ? ${system}) {
+        # disabled
+        # evaluation of deployChecks is slow
+        checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
+      })
+      (lib.mkIf config.isDevSystem {
+        devshells.default = {
+          commands = [
+            {
+              package = pkgs.deploy-rs.deploy-rs;
+              name = "deploy";
+              category = "deploy";
+            }
+          ];
+        };
+      })
+    ];
 }

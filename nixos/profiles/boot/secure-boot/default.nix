@@ -120,7 +120,7 @@ in
         pkgs.writeShellApplication {
           name = "lzbt";
           runtimeInputs = [
-            pkgs.lzbt
+            pkgs.lanzaboote.tool
             config.system.build.installShim
           ];
           text = ''

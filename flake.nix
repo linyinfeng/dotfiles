@@ -97,7 +97,8 @@
 
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
-    pastebin.inputs.flake-utils-plus.follows = "flake-utils-plus";
+    pastebin.inputs.flake-parts.follows = "flake-parts";
+    pastebin.inputs.treefmt-nix.follows = "treefmt-nix";
 
     oranc.url = "github:linyinfeng/oranc";
     oranc.inputs.crane.follows = "crane";

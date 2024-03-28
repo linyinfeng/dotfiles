@@ -6,17 +6,32 @@
 }:
 let
   packages = [
+    (
+      final: prev:
+      let
+        mkEmptyPkg = name: final.runCommand name { } "touch $out";
+      in
+      {
+        # spacial packages
+        eval-only-check = mkEmptyPkg "eval-only-check";
+      }
+    )
+
     inputs.sops-nix.overlays.default
     inputs.nixos-cn.overlay
     inputs.linyinfeng.overlays.singleRepoNur
+    inputs.nix-gc-s3.overlays.default
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
     inputs.commit-notifier.overlays.default
     inputs.angrr.overlays.default
+    inputs.pastebin.overlays.default
     inputs.emacs-overlay.overlay
     inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default
     inputs.flat-flake.overlays.default
+    inputs.deploy-rs.overlay
+    inputs.nix-index-database.overlays.nix-index
     (
       final: prev:
       let
@@ -24,11 +39,8 @@ let
         inherit ((getSystem system).allModuleArgs) inputs';
       in
       {
-        nix-gc-s3 = inputs'.nix-gc-s3.packages.nix-gc-s3;
-        pastebin = inputs'.pastebin.packages.default;
-        mc-config-nuc = inputs'.mc-config-nuc.packages;
-        nix-index-with-db = inputs'.nix-index-database.packages.nix-index-with-db;
-        lzbt = inputs'.lanzaboote.packages.tool;
+        mc-config-nuc = inputs.mc-config-nuc.overlays.default final prev;
+        lanzaboote = inputs.lanzaboote.overlays.default final prev;
         nix-fast-build = inputs'.nix-fast-build.packages.default;
 
         # ccache
