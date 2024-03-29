@@ -38,10 +38,10 @@ let
         inherit (prev.stdenv.hostPlatform) system;
       in
       (self.lib.maybeAttrByPath "nix-index-with-db" inputs [
-        "nix-index-with-db"
+        "nix-index-database"
         "packages"
         system
-        "nix-index"
+        "nix-index-with-db"
       ])
       // (self.lib.maybeAttrByPath "nix-fast-build" inputs [
         "nix-fast-build"
