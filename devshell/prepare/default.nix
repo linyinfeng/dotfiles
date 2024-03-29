@@ -84,6 +84,9 @@ let
       message "formatting..."
       nix fmt
 
+      message "git add..."
+      git add --all
+
       message "creating notice..."
       cat >"prepare-host-notice-$host" <<EOF
       age key
