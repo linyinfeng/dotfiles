@@ -11,6 +11,7 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     latest.url = "github:nixos/nixpkgs/master";
+    nixpkgs-riscv.url = "github:nickcao/nixpkgs/riscv";
 
     # flake modules
 
@@ -72,7 +73,7 @@
     # TODO use upstream
     # nixos-riscv.url = "github:nickcao/nixos-riscv";
     nixos-riscv.url = "github:linyinfeng/nixos-riscv";
-    nixos-riscv.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-riscv.inputs.nixpkgs.follows = "nixpkgs-riscv";
     nixos-riscv.inputs.nixos-hardware.follows = "nixos-hardware";
 
     # home-manager modules

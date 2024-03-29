@@ -304,13 +304,9 @@ let
               else
                 {
                   # crossOverlays has not been suppored by nixos module
-                  nixpkgs =
-                    let
-                      nixpkgsArgs = (getSystem system).nixpkgs;
-                    in
-                    {
-                      inherit (nixpkgsArgs) config overlays;
-                    };
+                  nixpkgs = {
+                    inherit ((getSystem system).nixpkgs) config overlays;
+                  };
                 }
             )
           ];

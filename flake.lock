@@ -687,12 +687,12 @@
         ]
       },
       "locked": {
+        "dirtyRev": "ddc8fc2fbf7d0bf75e7de11deb182381362c48a5-dirty",
+        "dirtyShortRev": "ddc8fc2-dirty",
         "lastModified": 1711694100,
-        "narHash": "sha256-TPpdhzeR1kUB/chDJRFjtJRo+ABVxtfwyCeZDPZYvCs=",
-        "owner": "linyinfeng",
-        "repo": "nur-packages",
-        "rev": "ddc8fc2fbf7d0bf75e7de11deb182381362c48a5",
-        "type": "github"
+        "narHash": "sha256-QiLVJi1zUqaSHSsq6xfJS4NblCWyXOHHVBRPZCTBQu0=",
+        "type": "git",
+        "url": "file:///home/yinfeng/Source/nur-packages"
       },
       "original": {
         "owner": "linyinfeng",
@@ -1082,7 +1082,7 @@
           "nixos-hardware"
         ],
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-riscv"
         ]
       },
       "locked": {
@@ -1169,6 +1169,22 @@
       "original": {
         "owner": "nixos",
         "ref": "pull/299926/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-riscv": {
+      "locked": {
+        "lastModified": 1711649155,
+        "narHash": "sha256-wwJh0BmGclIAqEvKj99gVtM83aHQkNw0bLPWzGw9tKg=",
+        "owner": "nickcao",
+        "repo": "nixpkgs",
+        "rev": "bbb1116a23766cfe5608cc5f419c1b5f13cda68c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nickcao",
+        "ref": "riscv",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1409,6 +1425,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-hledger-web": "nixpkgs-hledger-web",
         "nixpkgs-linux-manual-config-ifd": "nixpkgs-linux-manual-config-ifd",
+        "nixpkgs-riscv": "nixpkgs-riscv",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-terraform": "nixpkgs-terraform",
         "nvfetcher": "nvfetcher",

@@ -168,13 +168,21 @@ in
           overlays =
             let
               # do not include overlays to prevent infinite recursion
-              overlayNixpkgsArgs = lib.attrsets.removeAttrs config.nixpkgs [ "overlays" ];
+              overlayNixpkgsArgs = {
+                inherit (config.nixpkgs)
+                  localSystem
+                  crossSystem
+                  config
+                  crossOverlays
+                  ;
+              };
             in
             [ (earlyFixes overlayNixpkgsArgs) ] ++ packages ++ [ (lateFixes overlayNixpkgsArgs) ];
         };
       }
       (lib.mkIf (system == "riscv64-linux") {
         # cross from x86_64-linux
+        nixpkgs.path = inputs.nixpkgs-riscv;
         nixpkgs.localSystem = {
           system = "x86_64-linux";
         };
