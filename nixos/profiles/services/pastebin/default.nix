@@ -20,6 +20,7 @@
       ${pkgs.pastebin}/bin/pastebin \
         --endpoint-host minio.li7g.com \
         --bucket pastebin \
+        --addressing-style path \
         --port "${toString config.ports.pastebin}"
     '';
     serviceConfig = {
