@@ -12,7 +12,7 @@
       MemoryMax = "128M";
       MemorySwapMax = "512M";
       LimitNPROC = "100";
-      Slice = "system-minor";
+      Slice = "minor.slice";
     };
     path = [
       config.nix.package
