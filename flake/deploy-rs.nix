@@ -50,7 +50,7 @@ in
       (lib.mkIf (inputs.deploy-rs.lib ? ${system}) {
         # disabled
         # evaluation of deployChecks is slow
-        checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
+        # checks = inputs.deploy-rs.lib.${system}.deployChecks self.deploy;
       })
       (lib.mkIf config.isDevSystem {
         devshells.default = {
