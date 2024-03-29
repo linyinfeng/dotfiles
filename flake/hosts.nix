@@ -24,8 +24,6 @@ let
         ++ (with profiles; [
           boot.kernel
           boot.systemd-initrd
-          programs.tools
-          programs.nix-index
           services.openssh
           services.dbus
           services.oom-killer
@@ -46,7 +44,6 @@ let
         networking.resolved
         networking.tailscale
         networking.zerotier
-        networking.tools
         networking.mesh
         networking.dn42
         networking.endpoints
@@ -92,6 +89,9 @@ let
           boot.binfmt
           system.types.workstation
           networking.network-manager
+          networking.tools
+          programs.tools
+          programs.nix-index
           services.bluetooth
           services.auto-upgrade
           services.kde-connect
