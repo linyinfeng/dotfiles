@@ -29,7 +29,6 @@ let
           services.openssh
           services.dbus
           services.oom-killer
-          services.angrr
           security.polkit
           security.rtkit
           security.sudo-rs
@@ -100,6 +99,7 @@ let
           services.snapper
           services.iperf3
           security.hardware-keys
+          services.angrr
           hardware.rtl-sdr
           nix.nix-ld
           nix.hydra-builder-client
@@ -147,7 +147,9 @@ let
   hmProfiles = self.lib.rakeLeaves ../home-manager/profiles;
   hmSuites = buildSuites hmProfiles (
     profiles: suites: {
-      base = with profiles; [ git ];
+      base = with profiles; [
+        # nothing
+      ];
       multimedia = with profiles; [
         gnome
         dconf-proxy
@@ -162,6 +164,7 @@ let
         desktop-applications
       ];
       development = with profiles; [
+        git
         development
         direnv
         emacs
@@ -226,7 +229,10 @@ let
     inputs.hyprland.nixosModules.default
 
     {
-      lib.self = self.lib;
+      lib = {
+        self = self.lib;
+        nur = inputs.linyinfeng.lib;
+      };
       home-manager = {
         sharedModules = commonHmModules;
         extraSpecialArgs = hmSpecialArgs;
@@ -429,11 +435,31 @@ in
       name = "framework-wsl";
       system = "x86_64-linux";
     })
+
+    (mkHost {
+      name = "duo";
+      system = "riscv64-linux";
+      extraModules = [
+        "${inputs.nixos-riscv}/duo-256.nix"
+        (
+          { lib, ... }:
+          {
+            # readOnlyPkgs disables nixpkgs module
+            # nixos-riscv sets `nixpkgs.crossSystem` and `nixpkgs.localSystem`
+            options.nixpkgs = {
+              localSystem = lib.mkSinkUndeclaredOptions { };
+              crossSystem = lib.mkSinkUndeclaredOptions { };
+            };
+          }
+        )
+      ];
+    })
     # PLACEHOLDER new host
   ];
 
   flake.checks = lib.recursiveUpdate hostToplevels {
     "aarch64-linux"."nixos/enchilada/android-bootimg" =
       self.nixosConfigurations.enchilada.config.mobile.outputs.android.android-bootimg;
+    "riscv64-linux"."nixos/duo/sdImage" = self.nixosConfigurations.duo.config.system.build.sdImage;
   };
 }

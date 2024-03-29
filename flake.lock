@@ -687,11 +687,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1711629517,
-        "narHash": "sha256-aacu3r12WBTW9lVozgS4UMMXd4K1v9+WbiWSy+cwNAQ=",
+        "lastModified": 1711694100,
+        "narHash": "sha256-TPpdhzeR1kUB/chDJRFjtJRo+ABVxtfwyCeZDPZYvCs=",
         "owner": "linyinfeng",
         "repo": "nur-packages",
-        "rev": "077b5e0ab53de6472ccb29dc14267aabb6ef7290",
+        "rev": "ddc8fc2fbf7d0bf75e7de11deb182381362c48a5",
         "type": "github"
       },
       "original": {
@@ -1076,6 +1076,29 @@
         "type": "github"
       }
     },
+    "nixos-riscv": {
+      "inputs": {
+        "nixos-hardware": [
+          "nixos-hardware"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1711701741,
+        "narHash": "sha256-N/xkkuzG2kUOGGJ5WSrnK1TVcM3bOVGvB8YPDqqhL1Q=",
+        "owner": "linyinfeng",
+        "repo": "nixos-riscv",
+        "rev": "e9226c052024cf50fdb2f7a71a7fa1ec634724f4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "nixos-riscv",
+        "type": "github"
+      }
+    },
     "nixos-wsl": {
       "inputs": {
         "flake-compat": [
@@ -1130,6 +1153,22 @@
       "original": {
         "owner": "nixos",
         "ref": "pull/299460/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-linux-manual-config-ifd": {
+      "locked": {
+        "lastModified": 1711699771,
+        "narHash": "sha256-ef/BgNUYidWA4bywZkn7R87e9ORolZ+D9JqIW0rl2y4=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b613d3c99f1b94c401abc6dfd1ccb58154883035",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/299926/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1365,9 +1404,11 @@
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
+        "nixos-riscv": "nixos-riscv",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-hledger-web": "nixpkgs-hledger-web",
+        "nixpkgs-linux-manual-config-ifd": "nixpkgs-linux-manual-config-ifd",
         "nixpkgs-shim": "nixpkgs-shim",
         "nixpkgs-terraform": "nixpkgs-terraform",
         "nvfetcher": "nvfetcher",

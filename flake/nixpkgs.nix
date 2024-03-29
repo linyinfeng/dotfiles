@@ -1,4 +1,5 @@
 {
+  self,
   inputs,
   getSystem,
   lib,
@@ -31,90 +32,110 @@ let
     inputs.hyprwm-contrib.overlays.default
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlay
-    inputs.nix-index-database.overlays.nix-index
     (
       final: prev:
       let
         inherit (prev.stdenv.hostPlatform) system;
-        inherit ((getSystem system).allModuleArgs) inputs';
       in
-      {
-        mc-config-nuc = inputs.mc-config-nuc.overlays.default final prev;
-        lanzaboote = inputs.lanzaboote.overlays.default final prev;
-        nix-fast-build = inputs'.nix-fast-build.packages.default;
-
-        # ccache
-        ccacheCacheDir = "/var/cache/ccache";
-        ccacheLogDir = "/var/log/ccache";
-        ccacheWrapper = prev.ccacheWrapper.override {
-          extraConfig = ''
-            export CCACHE_COMPRESS=1
-            export CCACHE_UMASK=007
-            if [ -d "${final.ccacheCacheDir}" ]; then
-              export CCACHE_DIR="${final.ccacheCacheDir}"
-            else
-              export CCACHE_DIR="/tmp/ccache"
-              mkdir -p "$CCACHE_DIR"
-              echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
-            fi
-            if [ -d "${final.ccacheLogDir}" ]; then
-              export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
-            fi
-            if [ ! -w "$CCACHE_DIR" ]; then
-              echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
-              exit 1
-            fi
-          '';
-        };
-        ccacheTest = final.ccacheStdenv.mkDerivation {
-          name = "test-ccache";
-          src = builtins.toFile "hello-world.c" ''
-            #include <stdio.h>
-            int main() { printf("hello, world\n"); }
-          '';
-          dontUnpack = true;
-          env.NIX_DEBUG = 1;
-          buildPhase = "cc $src -o hello";
-          installPhase = "install -D hello $out/bin/hello";
-        };
-
-        # adjustment
-        comma = prev.comma.override { nix-index-unwrapped = final.nix-index-with-db; };
-        gnuradio = prev.gnuradio.override {
-          unwrapped = prev.gnuradio.unwrapped.override {
-            stdenv = final.ccacheStdenv;
-            soapysdr = final.soapysdr-with-plugins;
-          };
-        };
-        zerotierone = prev.zerotierone.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-debug-moon.patch ];
-          buildFlags = (old.buildFlags or [ ]) ++ [ "ZT_DEBUG=1" ];
-        });
-        tailscale = prev.tailscale.overrideAttrs (old: {
-          subPackages = old.subPackages ++ [ "cmd/derper" ];
-          patches = (old.patches or [ ]) ++ [ ../patches/tailscale-excluded-interface-prefixes.patch ];
-        });
-        tailscale-derp = final.tailscale;
-        waydroid = prev.waydroid.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
-        });
-        gnome =
-          if (lib.versions.major prev.gnome.mutter.version == "45") then
-            prev.gnome.overrideScope (
-              gnomeFinal: gnomePrev: {
-                mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
-                  patches = (old.patches or [ ]) ++ [
-                    # git format-patch (git merge-base origin/gnome-MV ubuntu/triple-buffering-PV-MV)..ubuntu/triple-buffering-PV-MV --stdout
-                    ../patches/mutter-triple-buffering.patch
-                  ];
-                });
-              }
-            )
-          else
-            prev.gnome;
-        librime = inputs'.lantian.packages.lantianCustomized.librime-with-plugins;
-      }
+      (self.lib.maybeAttrByPath "nix-index-with-db" inputs [
+        "nix-index-with-db"
+        "packages"
+        system
+        "nix-index"
+      ])
+      // (self.lib.maybeAttrByPath "nix-fast-build" inputs [
+        "nix-fast-build"
+        "packages"
+        system
+        "default"
+      ])
+      // (self.lib.maybeAttrByPath "lantian" inputs [
+        "lantian"
+        "packages"
+        system
+      ])
     )
+    (final: prev: {
+      # scoped overlays
+      mc-config-nuc = inputs.mc-config-nuc.overlays.default final prev;
+      lanzaboote = inputs.lanzaboote.overlays.default final prev;
+    })
+    (final: prev: {
+      # ccache
+      ccacheCacheDir = "/var/cache/ccache";
+      ccacheLogDir = "/var/log/ccache";
+      ccacheWrapper = prev.ccacheWrapper.override {
+        extraConfig = ''
+          export CCACHE_COMPRESS=1
+          export CCACHE_UMASK=007
+          if [ -d "${final.ccacheCacheDir}" ]; then
+            export CCACHE_DIR="${final.ccacheCacheDir}"
+          else
+            export CCACHE_DIR="/tmp/ccache"
+            mkdir -p "$CCACHE_DIR"
+            echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
+          fi
+          if [ -d "${final.ccacheLogDir}" ]; then
+            export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
+          fi
+          if [ ! -w "$CCACHE_DIR" ]; then
+            echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
+            exit 1
+          fi
+        '';
+      };
+      ccacheTest = final.ccacheStdenv.mkDerivation {
+        name = "test-ccache";
+        src = builtins.toFile "hello-world.c" ''
+          #include <stdio.h>
+          int main() { printf("hello, world\n"); }
+        '';
+        dontUnpack = true;
+        env.NIX_DEBUG = 1;
+        buildPhase = "cc $src -o hello";
+        installPhase = "install -D hello $out/bin/hello";
+      };
+
+      # adjustment
+      comma =
+        if prev ? nix-index-with-db then
+          prev.comma.override { nix-index-unwrapped = final.nix-index-with-db; }
+        else
+          prev.comma;
+      gnuradio = prev.gnuradio.override {
+        unwrapped = prev.gnuradio.unwrapped.override {
+          stdenv = final.ccacheStdenv;
+          soapysdr = final.soapysdr-with-plugins;
+        };
+      };
+      zerotierone = prev.zerotierone.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-debug-moon.patch ];
+        buildFlags = (old.buildFlags or [ ]) ++ [ "ZT_DEBUG=1" ];
+      });
+      tailscale = prev.tailscale.overrideAttrs (old: {
+        subPackages = old.subPackages ++ [ "cmd/derper" ];
+        patches = (old.patches or [ ]) ++ [ ../patches/tailscale-excluded-interface-prefixes.patch ];
+      });
+      tailscale-derp = final.tailscale;
+      waydroid = prev.waydroid.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
+      });
+      gnome =
+        if (lib.versions.major prev.gnome.mutter.version == "45") then
+          prev.gnome.overrideScope (
+            gnomeFinal: gnomePrev: {
+              mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
+                patches = (old.patches or [ ]) ++ [
+                  # git format-patch (git merge-base origin/gnome-MV ubuntu/triple-buffering-PV-MV)..ubuntu/triple-buffering-PV-MV --stdout
+                  ../patches/mutter-triple-buffering.patch
+                ];
+              });
+            }
+          )
+        else
+          prev.gnome;
+      librime = prev.lantian.lantianCustomized.librime-with-plugins;
+    })
   ];
   earlyFixes = nixpkgsArgs: final: prev: {
     # currently nothing
@@ -128,6 +149,7 @@ let
     {
       inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
       inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
+      inherit (import inputs.nixpkgs-linux-manual-config-ifd nixpkgsArgs) linuxManualConfig;
     };
 in
 {

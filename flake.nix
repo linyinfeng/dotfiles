@@ -69,6 +69,12 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    # TODO use upstream
+    # nixos-riscv.url = "github:nickcao/nixos-riscv";
+    nixos-riscv.url = "github:linyinfeng/nixos-riscv";
+    nixos-riscv.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-riscv.inputs.nixos-hardware.follows = "nixos-hardware";
+
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -288,6 +294,8 @@
     nixpkgs-shim.url = "github:nixos/nixpkgs/pull/287964/head";
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299460
     nixpkgs-hledger-web.url = "github:nixos/nixpkgs/pull/299460/head";
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299926
+    nixpkgs-linux-manual-config-ifd.url = "github:nixos/nixpkgs/pull/299926/head";
   };
 
   outputs =
