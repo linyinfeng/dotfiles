@@ -3,7 +3,7 @@ let
   cfg = config.networking.mesh;
   hostName = config.networking.hostName;
   data = config.lib.self.data;
-  filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
+  inherit (config.networking.hostsData) indexedHosts;
   mkHost = name: hostData: {
     # resolved by /etc/hosts
     connection.endpoint =
@@ -17,8 +17,8 @@ let
 in
 {
   networking.mesh = {
-    enable = filteredHost ? ${hostName};
-    hosts = lib.mapAttrs mkHost filteredHost;
+    enable = config.networking.hostsData.indexed;
+    hosts = lib.mapAttrs mkHost indexedHosts;
     thisHost.ipsec.initiate = if lib.elem hostName ipv4OnlyHosts then "ipv4" else "ipv6";
     routingTable = {
       id = config.routingTables.mesh;

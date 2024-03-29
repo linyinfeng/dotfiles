@@ -7,7 +7,7 @@ let
   dn42If = dn42Cfg.interfaces.dummy.name;
   inherit (config.lib.self) data;
   thisHostData = data.hosts.${hostName};
-  filteredHost = lib.filterAttrs (_: hostData: (lib.length hostData.host_indices != 0)) data.hosts;
+  inherit (config.networking.hostsData) indexedHosts;
   mkHostDn42Cfg = name: hostData: {
     preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
     preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
@@ -79,7 +79,7 @@ let
     };
   };
 in
-lib.mkIf (meshCfg.enable && filteredHost ? ${hostName}) {
+lib.mkIf meshCfg.enable {
   networking.mesh = {
     interfaces.extraPatterns = [ dn42If ];
     cidrs = {
@@ -127,7 +127,7 @@ lib.mkIf (meshCfg.enable && filteredHost ? ${hostName}) {
       dn42LowerNumber = 128; # number = 4242420128;
       cidrV4 = data.dn42_v4_cidr;
       cidrV6 = data.dn42_v6_cidr;
-      hosts = lib.mapAttrs mkHostDn42Cfg filteredHost;
+      hosts = lib.mapAttrs mkHostDn42Cfg indexedHosts;
       thisHost = {
         addressesV4 = thisHostData.dn42_addresses_v4;
         addressesV6 = thisHostData.dn42_addresses_v6;
