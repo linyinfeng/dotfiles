@@ -6,7 +6,7 @@
 
     sliceConfig = {
       # weights default is 100
-      CPUWeight = "25";
+      CPUWeight = "idle";
       IOWeight = "25";
     };
   };
