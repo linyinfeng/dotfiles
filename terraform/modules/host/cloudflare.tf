@@ -38,7 +38,7 @@ resource "cloudflare_record" "ddns_records" {
   lifecycle { ignore_changes = [value] }
 }
 resource "cloudflare_record" "zerotier" {
-  for_each = toset([for a in zerotier_member.host.ip_assignments : a if length(regexall("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", a)) > 0])
+  for_each = toset(flatten([for h in zerotier_member.host : [for a in h.ip_assignments : a if length(regexall("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", a)) > 0]]))
   name     = "${var.name}.zt"
   ttl      = 1 # default ttl
   proxied  = false

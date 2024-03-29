@@ -11,6 +11,9 @@ resource "zerotier_member" "host" {
   hidden                  = false
   allow_ethernet_bridging = true
   no_auto_assign_ips      = false
+
+  # only create for indexed hosts
+  count = min(length(var.host_indices), 1)
 }
 
 output "zerotier_id" {

@@ -92,15 +92,11 @@ let
 
       manual run
       ==========
+      terraform-pipe
       sops-update-keys
-      terraform-wrapper apply --target 'module.hosts["$host"].zerotier_member.host'
-
-      manual tweaks
-      =============
-      nixos/profiles/networking/dn42/default.nix
       EOF
 
-      message "!!notice!!"
+      message "notice saved in 'prepare-host-notice-$host'"
       cat "prepare-host-notice-$host"
     '';
   };
