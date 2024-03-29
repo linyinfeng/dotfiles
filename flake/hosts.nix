@@ -129,7 +129,6 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.phone
-          graphical.fonts
           graphical.i18n
           development.shells
           services.gnupg
