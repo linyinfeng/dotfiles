@@ -23,7 +23,7 @@ let
           ];
           publicKey = hostData.ssh_host_rsa_key_pub;
         })
-      ]) config.lib.self.data.hosts
+      ]) config.networking.hostsData.indexedHosts
     )
   );
 in
@@ -67,7 +67,7 @@ in
         Host ${h}.ts
           HostName ${h}.ts.li7g.com
           Port ${toString config.ports.ssh}
-      '') (lib.attrNames config.lib.self.data.hosts);
+      '') (lib.attrNames config.networking.hostsData.indexedHosts);
   };
 
   sops.secrets."ssh_host_rsa_key" = {
