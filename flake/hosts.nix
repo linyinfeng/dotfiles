@@ -117,6 +117,13 @@ let
         ]);
       overseaServer = suites.server ++ (with profiles; [ services.bind ]);
       homeServer = suites.server ++ (with profiles; [ networking.network-manager ]);
+      embeddedServer =
+        (with suites; base ++ network)
+        ++ (with profiles; [
+          system.types.server
+          services.auto-upgrade
+          networking.bbr
+        ]);
 
       phone =
         (with suites; base ++ network)

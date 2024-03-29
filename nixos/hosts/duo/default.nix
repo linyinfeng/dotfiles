@@ -6,7 +6,7 @@
 }:
 {
   imports =
-    suites.server
+    suites.embeddedServer
     ++ (with profiles; [
       # TODO
     ])
