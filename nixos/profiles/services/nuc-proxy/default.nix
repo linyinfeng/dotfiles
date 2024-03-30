@@ -9,6 +9,10 @@
   services.nginx.virtualHosts."nuc-proxy.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+    serverAliases = [
+      "hydra-proxy.*"
+      "typhon-proxy.*"
+    ];
     locations."/" = {
       proxyPass = "https://nuc";
     };

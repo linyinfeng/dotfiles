@@ -21,7 +21,6 @@ in
       services.portal-server
       services.atuin
       services.nuc-proxy
-      services.hydra-proxy
       services.cache-overlay
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];

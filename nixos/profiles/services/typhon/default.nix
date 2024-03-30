@@ -14,8 +14,8 @@
   services.nginx.virtualHosts."typhon.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+    serverAliases = [ "typhon-proxy.*" ];
     locations."/" = {
-
       proxyPass = "http://[::1]:${toString config.ports.typhon}";
       recommendedProxySettings = true;
     };

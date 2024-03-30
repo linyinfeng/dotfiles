@@ -110,6 +110,7 @@ locals {
     cache-overlay   = { on = "hkg0", proxy = true }
     nuc-proxy       = { on = "hkg0", proxy = true }
     hydra-proxy     = { on = "hkg0", proxy = true }
+    typhon-proxy    = { on = "hkg0", proxy = true }
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
