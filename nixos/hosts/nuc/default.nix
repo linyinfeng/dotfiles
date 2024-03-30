@@ -123,14 +123,15 @@ in
         ];
       };
       boot.tmp = {
-        useTmpfs = true;
-        # reasonable because of swap
-        tmpfsSize = "100%";
+        # CI builds requires a lot of space
+        useTmpfs = false;
+        cleanOnBoot = true;
       };
       fileSystems."/nix" = btrfsSubvolMain "@nix" { neededForBoot = true; };
       fileSystems."/persist" = btrfsSubvolMain "@persist" { neededForBoot = true; };
       fileSystems."/var/log" = btrfsSubvolMain "@var-log" { neededForBoot = true; };
       fileSystems."/swap" = btrfsSubvolMain "@swap" { };
+      fileSystems."/tmp" = btrfsSubvolMain "@tmp" { };
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/C9A4-3DE6";
         fsType = "vfat";
