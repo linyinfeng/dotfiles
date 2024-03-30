@@ -138,6 +138,7 @@ locals {
     dn42            = { on = "fsn0", proxy = true }
     keycloak        = { on = "fsn0", proxy = true }
     hydra           = { on = "nuc", proxy = false }
+    typhon          = { on = "nuc", proxy = false }
     transmission    = { on = "nuc", proxy = false }
     jellyfin        = { on = "nuc", proxy = false }
     nextcloud       = { on = "nuc", proxy = false }

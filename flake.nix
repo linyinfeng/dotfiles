@@ -332,7 +332,10 @@
               "rust-analyzer-src"
             ]
             # TODO wasm-binding workaround
-            [ "typhon" "nixpkgs" ]
+            [
+              "typhon"
+              "nixpkgs"
+            ]
           ];
         };
         systems = [

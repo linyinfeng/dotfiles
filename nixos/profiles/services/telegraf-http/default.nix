@@ -56,6 +56,12 @@ let
         code = 200;
       }
     ];
+    typhon = [
+      {
+        url = "https://typhon.ts.li7g.com";
+        code = 200;
+      }
+    ];
     palworld = [ ];
     dst = [ ];
     smtp = [ ];
