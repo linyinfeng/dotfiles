@@ -31,7 +31,7 @@ let
     inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default
     inputs.flat-flake.overlays.default
-    inputs.deploy-rs.overlay
+    inputs.deploy-rs.overlays.default
     (
       final: prev:
       let
