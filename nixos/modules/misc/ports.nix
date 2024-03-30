@@ -84,6 +84,7 @@
       jellyfin = 3340;
       jellyfin-https = 3341;
       iperf = 3350;
+      typhon = 3360;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

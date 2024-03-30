@@ -295,6 +295,21 @@
         "type": "github"
       }
     },
+    "flake-schemas": {
+      "locked": {
+        "lastModified": 1697467827,
+        "narHash": "sha256-j8SR19V1SRysyJwpOBF4TLuAvAjF5t+gMiboN4gYQDU=",
+        "owner": "determinatesystems",
+        "repo": "flake-schemas",
+        "rev": "764932025c817d4e500a8d2a4d8c565563923d29",
+        "type": "github"
+      },
+      "original": {
+        "owner": "determinatesystems",
+        "repo": "flake-schemas",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": [
@@ -1221,6 +1236,21 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1706371002,
+        "narHash": "sha256-dwuorKimqSYgyu8Cw6ncKhyQjUDOyuXoxDTVmAXq88s=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "c002c6aa977ad22c60398daaa9be52f2203d0006",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
     "nvfetcher": {
       "inputs": {
         "flake-compat": [
@@ -1389,6 +1419,7 @@
         "fenix": "fenix",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
+        "flake-schemas": "flake-schemas",
         "flake-utils": "flake-utils",
         "flake-utils-plus": "flake-utils-plus",
         "flat-flake": "flat-flake",
@@ -1437,6 +1468,7 @@
         "sops-nix": "sops-nix",
         "systems": "systems",
         "treefmt-nix": "treefmt-nix",
+        "typhon": "typhon",
         "xdph": "xdph"
       }
     },
@@ -1535,6 +1567,36 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "typhon": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-schemas": [
+          "flake-schemas"
+        ],
+        "nixpkgs": "nixpkgs_2",
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1708693001,
+        "narHash": "sha256-1jRuMCCSabHPcaNvkcyd+4HdDFnn4Wr2JiB57kwba40=",
+        "owner": "typhon-ci",
+        "repo": "typhon",
+        "rev": "f4bafa37cc195831d7ed6f52ef69b0de5b880b9f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "typhon-ci",
+        "repo": "typhon",
         "type": "github"
       }
     },

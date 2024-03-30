@@ -70,6 +70,13 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    typhon.url = "github:typhon-ci/typhon";
+    typhon.inputs.crane.follows = "crane";
+    typhon.inputs.flake-compat.follows = "flake-compat";
+    typhon.inputs.flake-schemas.follows = "flake-schemas";
+    # typhon.inputs.nixpkgs.follows = "nixpkgs";
+    typhon.inputs.rust-overlay.follows = "rust-overlay";
+
     # TODO use upstream
     # nixos-riscv.url = "github:nickcao/nixos-riscv";
     nixos-riscv.url = "github:linyinfeng/nixos-riscv";
@@ -278,6 +285,8 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    flake-schemas.url = "github:determinatesystems/flake-schemas";
+
     # compatibility layer
 
     flake-compat.url = "github:edolstra/flake-compat";
@@ -322,6 +331,8 @@
               "fenix"
               "rust-analyzer-src"
             ]
+            # TODO wasm-binding workaround
+            [ "typhon" "nixpkgs" ]
           ];
         };
         systems = [

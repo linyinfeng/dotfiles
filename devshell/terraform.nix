@@ -59,6 +59,7 @@ let
       zerotierone
       minio-client
       syncthing
+      libargon2
       jq
       openssl
       ruby

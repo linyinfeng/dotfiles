@@ -233,6 +233,7 @@ let
     inputs.commit-notifier.nixosModules.commit-notifier
     inputs.angrr.nixosModules.angrr
     inputs.hyprland.nixosModules.default
+    inputs.typhon.nixosModules.default
 
     {
       lib = {
