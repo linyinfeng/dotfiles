@@ -83,6 +83,8 @@ in
       };
       services.zswap.enable = true;
       swapDevices = [ { device = "/swap/swapfile"; } ];
+
+      system.nproc = 2;
     }
 
     # nginx

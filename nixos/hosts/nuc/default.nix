@@ -144,6 +144,8 @@ in
       swapDevices = [ { device = "/swap/swapfile"; } ];
       fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
       fileSystems."/media/data" = btrfsSubvolMobile "@data" { };
+
+      system.nproc = 8;
     }
 
     # godns

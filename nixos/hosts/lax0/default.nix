@@ -119,6 +119,8 @@ in
           size = 4096;
         }
       ];
+
+      system.nproc = 1;
     }
 
     (lib.mkIf (!config.system.is-vm) {

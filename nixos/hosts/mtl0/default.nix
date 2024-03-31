@@ -84,6 +84,8 @@ in
       };
       services.zswap.enable = true;
       swapDevices = [ { device = "/swap/swapfile"; } ];
+
+      system.nproc = 4;
     }
 
     (lib.mkIf (!config.system.is-vm) {

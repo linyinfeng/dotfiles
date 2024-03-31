@@ -28,6 +28,7 @@
         {
           imports = suites.nonGraphical;
         };
+      system.nproc = 16;
     }
 
     # stateVersion

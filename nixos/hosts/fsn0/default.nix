@@ -120,6 +120,8 @@
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
+
+      system.nproc = 2;
     }
 
     # networking

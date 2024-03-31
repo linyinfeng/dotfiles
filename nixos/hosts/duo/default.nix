@@ -13,9 +13,7 @@
     ++ [ ./nixos-riscv-tweaks.nix ];
 
   config = lib.mkMerge [
-    {
-      # TODO
-    }
+    { system.nproc = 1; }
 
     # stateVersion
     { system.stateVersion = "23.11"; }

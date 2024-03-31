@@ -188,6 +188,8 @@
         "usbhid"
         "sd_mod"
       ];
+
+      system.nproc = 16;
     }
 
     # enchilada usb network

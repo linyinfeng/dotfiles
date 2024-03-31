@@ -64,6 +64,7 @@
       programs.dconf.enable = true;
       # services.fprintd.enable = true; # not working
       environment.systemPackages = with pkgs; [ discover ];
+      system.nproc = 8;
     }
 
     # tweaks

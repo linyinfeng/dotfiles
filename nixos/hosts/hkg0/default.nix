@@ -53,6 +53,8 @@ in
           size = 4096; # 4 GiB
         }
       ];
+
+      system.nproc = 1;
     }
 
     (lib.mkIf (!config.system.is-vm) {

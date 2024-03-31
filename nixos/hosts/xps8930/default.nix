@@ -163,4 +163,6 @@ in
   swapDevices = [ { device = "/swap/swapfile"; } ];
 
   system.stateVersion = "23.11";
+
+  system.nproc = 8;
 }
