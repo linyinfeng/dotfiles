@@ -76,7 +76,7 @@ in
       User = "steam";
       Group = "steam";
       ExecStop = stopScript;
-      CPUQuota = "150%"; # at most 1.5 core (2 cores in total)
+      CPUQuota = "${toString (config.system.nproc * 75)}%";
     };
     environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
     wantedBy = [ "multi-user.target" ];

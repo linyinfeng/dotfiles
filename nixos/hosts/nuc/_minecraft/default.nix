@@ -63,7 +63,7 @@ in
         "rcon-password:${config.sops.secrets."rcon_password".path}"
         "driver-influxdb:${config.sops.templates."driver-influxdb".path}"
       ];
-      CPUQuota = "400%"; # at most 2 cores (4/8 cores in total)
+      CPUQuota = "${toString (config.system.nproc * 50)}%";
     };
     environment.JAVA_TOOL_OPTIONS = lib.mkIf config.networking.fw-proxy.enable "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.ports.mixed}";
     wantedBy = [ "multi-user.target" ];

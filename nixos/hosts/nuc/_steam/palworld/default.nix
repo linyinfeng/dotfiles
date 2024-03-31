@@ -107,7 +107,7 @@ in
       serviceConfig = {
         User = "steam";
         Group = "steam";
-        CPUQuota = "400%"; # at most 4 core (8 cores in total)
+        CPUQuota = "${toString (config.system.nproc * 50)}%";
         WorkingDirectory = "-${rootDir}";
         Restart = "always";
         MemoryMax = "16G";
