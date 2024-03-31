@@ -11,11 +11,7 @@ in
   services.hledger-web = {
     enable = true;
     baseUrl = lib.mkDefault "https://hledger.li7g.com";
-    allow = {
-      view = true;
-      add = false;
-      edit = false;
-    };
+    allow = "view";
     port = config.ports.hledger-web;
     extraOptions = [
       "--infer-equity"
