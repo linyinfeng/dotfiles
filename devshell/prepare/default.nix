@@ -103,6 +103,23 @@ let
       cat "prepare-host-notice-$host"
     '';
   };
+
+  installKey = pkgs.writeShellApplication {
+    name = "install-key";
+    text = ''
+      set  -x
+      ssh "$@" sh <<EOF
+        mkdir --parents /var/lib/sops-nix
+        chown root:root /var/lib/sops-nix
+        chmod 700 /var/lib/sops-nix
+        cd /var/lib/sops-nix
+        touch key
+        chown root:root key
+        chmod 600 key
+      EOF
+      ssh "$@" "cat >/var/lib/sops-nix/key"
+    '';
+  };
 in
 {
   devshells.default = {
@@ -110,6 +127,10 @@ in
       {
         category = "infrastructure";
         package = prepareNewHost;
+      }
+      {
+        category = "infrastructure";
+        package = installKey;
       }
     ];
   };

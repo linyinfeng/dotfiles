@@ -45,6 +45,7 @@ in
     jq
     keyutils
     lm_sensors
+    minicom
     moreutils
     ncdu
     openssl

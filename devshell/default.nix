@@ -2,6 +2,7 @@
 {
   imports = [
     ./terraform.nix
+    ./boot-sd.nix
     ./prepare
   ];
   devshells.default = {

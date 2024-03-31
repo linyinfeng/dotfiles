@@ -135,22 +135,17 @@ let
         else
           prev.gnome;
       librime = prev.lantian.lantianCustomized.librime-with-plugins;
+      linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
   ];
   earlyFixes = nixpkgsArgs: final: prev: {
-    # currently nothing
+    inherit (import inputs.nixpkgs-linux-manual-config-ifd nixpkgsArgs) linuxManualConfig;
   };
 
-  lateFixes =
-    nixpkgsArgs: final: prev:
-    let
-      latest = import inputs.latest nixpkgsArgs;
-    in
-    {
-      inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
-      inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
-      inherit (import inputs.nixpkgs-linux-manual-config-ifd nixpkgsArgs) linuxManualConfig;
-    };
+  lateFixes = nixpkgsArgs: final: prev: {
+    inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
+    inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
+  };
 in
 {
   perSystem =

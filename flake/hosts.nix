@@ -444,7 +444,21 @@ in
       name = "duo";
       system = "riscv64-linux";
       extraModules = [
-        "${inputs.nixos-riscv}/duo-256.nix"
+        (
+          { pkgs, lib, ... }@args:
+          let
+            originalModule = (import "${inputs.nixos-riscv}/duo-256.nix" args);
+          in
+          lib.recursiveUpdate (lib.updateManyAttrsByPath [
+            {
+              path = [
+                "system"
+                "nssModules"
+              ];
+              update = old: [ ];
+            }
+          ] originalModule) { passthru.kernel = originalModule.boot.kernelPackages.kernel; }
+        )
         (
           { lib, ... }:
           {
