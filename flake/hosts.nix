@@ -16,7 +16,7 @@ let
       nixSettings = with profiles.nix; [
         gc
         settings
-        cachix
+        cache
         version
       ];
       base =
