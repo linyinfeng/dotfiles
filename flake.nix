@@ -11,7 +11,7 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     latest.url = "github:nixos/nixpkgs/master";
-    nixpkgs-riscv.url = "github:nickcao/nixpkgs/riscv";
+    nixpkgs-riscv.follows = "nixos-riscv/nixpkgs";
 
     # flake modules
 
@@ -80,7 +80,7 @@
     # TODO use upstream
     # nixos-riscv.url = "github:nickcao/nixos-riscv";
     nixos-riscv.url = "github:linyinfeng/nixos-riscv";
-    nixos-riscv.inputs.nixpkgs.follows = "nixpkgs-riscv";
+    # nixos-riscv.inputs.nixpkgs.follows = "nixpkgs-riscv"; # use pinned nixpkgs
     nixos-riscv.inputs.nixos-hardware.follows = "nixos-hardware";
 
     # home-manager modules
@@ -330,6 +330,10 @@
             [
               "fenix"
               "rust-analyzer-src"
+            ]
+            [
+              "nixos-riscv"
+              "nixpkgs"
             ]
             # TODO wasm-binding workaround
             [
