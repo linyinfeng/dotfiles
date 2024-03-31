@@ -103,6 +103,7 @@ let
           hardware.rtl-sdr
           nix.nix-ld
           nix.hydra-builder-client
+          nix.auto-gen
         ]);
       mobileWorkstation = suites.workstation;
 
