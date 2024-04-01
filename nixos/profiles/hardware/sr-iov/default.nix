@@ -48,7 +48,7 @@
             postBuild =
               (old.postBuild or "")
               + ''
-                signModule kvmfr.ko
+                sign-module kvmfr.ko
               '';
           }))
         else

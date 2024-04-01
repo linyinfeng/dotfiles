@@ -127,5 +127,6 @@
   # because kernel needs to be recompiled
   # enable module signing and lockdown by the way
   boot.kernelModuleSigning.enable = true;
-  boot.kernelLockdown = true;
+  # disabled for kernel module development
+  boot.kernelLockdown = false;
 }

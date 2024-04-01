@@ -50,7 +50,7 @@ in
       signModule = lib.mkOption {
         type = lib.types.path;
         default = pkgs.writeShellApplication {
-          name = "signModule";
+          name = "sign-module";
           text =
             let
               inherit (config.boot.kernelPackages) kernel;
