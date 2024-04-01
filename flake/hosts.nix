@@ -122,7 +122,6 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.server
-          services.auto-upgrade
           networking.bbr
         ]);
 
