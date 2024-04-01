@@ -118,8 +118,6 @@
     oranc.inputs.crane.follows = "crane";
     oranc.inputs.flake-compat.follows = "flake-compat";
     oranc.inputs.flake-parts.follows = "flake-parts";
-    oranc.inputs.flake-utils.follows = "flake-utils";
-    oranc.inputs.rust-overlay.follows = "rust-overlay";
     oranc.inputs.nixpkgs.follows = "nixpkgs";
     oranc.inputs.treefmt-nix.follows = "treefmt-nix";
 
