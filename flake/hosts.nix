@@ -190,6 +190,7 @@ let
         ++ (with profiles; [
           xdg-dirs
           vscode
+          logseq
           kitty
         ]);
       synchronize = with profiles; [
