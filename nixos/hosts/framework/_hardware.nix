@@ -83,9 +83,9 @@
             "mainline-tracking"
           else
             throw "invalid intel kernel kind \"${kind}\"";
-        version = "6.6.14";
-        versionIntel = "240205T072842Z";
-        hash = "sha256-UGJ/y3fr7q2ThORkEGzDKNZ15XL/YDDJ84NVYSuGrZo=";
+        version = "6.6.22";
+        versionIntel = "240328T142423Z";
+        hash = "sha256-XoON93iw1J2IkFnB0Bc5xttY6wzry0OkHsbu0Ttsrao=";
         major = lib.versions.major version;
         minor = lib.versions.minor version;
         linux_intel_fn =
