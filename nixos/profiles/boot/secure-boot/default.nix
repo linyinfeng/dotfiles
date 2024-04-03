@@ -90,13 +90,13 @@ in
           name = "uefi-keyring";
           patch = null;
           extraStructuredConfig = with lib.kernel; {
-            INTEGRITY_MACHINE_KEYRING= yes;
-            INTEGRITY_PLATFORM_KEYRING= yes;
-            INTEGRITY_ASYMMETRIC_KEYS= yes;
-            INTEGRITY_SIGNATURE= yes;
-            SECONDARY_TRUSTED_KEYRING= yes;
-            SYSTEM_BLACKLIST_KEYRING= yes;
-            LOAD_UEFI_KEYS= yes;
+            INTEGRITY_MACHINE_KEYRING = yes;
+            INTEGRITY_PLATFORM_KEYRING = yes;
+            INTEGRITY_ASYMMETRIC_KEYS = yes;
+            INTEGRITY_SIGNATURE = yes;
+            SECONDARY_TRUSTED_KEYRING = yes;
+            SYSTEM_BLACKLIST_KEYRING = yes;
+            LOAD_UEFI_KEYS = yes;
           };
         }
       ];
