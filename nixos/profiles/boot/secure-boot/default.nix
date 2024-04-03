@@ -1,6 +1,5 @@
 {
   config,
-  options,
   lib,
   pkgs,
   ...
@@ -90,15 +89,15 @@ in
         {
           name = "uefi-keyring";
           patch = null;
-          extraConfig = ''
-            INTEGRITY_MACHINE_KEYRING y
-            INTEGRITY_PLATFORM_KEYRING y
-            INTEGRITY_ASYMMETRIC_KEYS y
-            INTEGRITY_SIGNATURE y
-            SECONDARY_TRUSTED_KEYRING y
-            SYSTEM_BLACKLIST_KEYRING y
-            LOAD_UEFI_KEYS y
-          '';
+          extraStructuredConfig = with lib.kernel; {
+            INTEGRITY_MACHINE_KEYRING= yes;
+            INTEGRITY_PLATFORM_KEYRING= yes;
+            INTEGRITY_ASYMMETRIC_KEYS= yes;
+            INTEGRITY_SIGNATURE= yes;
+            SECONDARY_TRUSTED_KEYRING= yes;
+            SYSTEM_BLACKLIST_KEYRING= yes;
+            LOAD_UEFI_KEYS= yes;
+          };
         }
       ];
     }
@@ -151,14 +150,15 @@ in
       boot.kernelPatches = [
         # this patch makes the linux kernel unreproducible
         {
+          _file = ./default.nix;
           name = "moduel-signing";
           patch = null;
-          extraConfig = ''
-            MODULE_SIG y
-            MODULE_SIG_SHA512 y
-            MODULE_SIG_HASH sha512
-            MODULE_SIG_KEY ${config.boot.kernelModuleSigning.combined}
-          '';
+          extraStructuredConfig = with lib.kernel; {
+            MODULE_SIG = lib.mkForce yes;
+            MODULE_SIG_SHA512 = yes;
+            MODULE_SIG_HASH = freeform "sha512";
+            MODULE_SIG_KEY = freeform config.boot.kernelModuleSigning.combined;
+          };
         }
       ];
     })
@@ -168,9 +168,9 @@ in
         {
           name = "lockdown";
           patch = null;
-          extraConfig = ''
-            SECURITY_LOCKDOWN_LSM y
-          '';
+          extraStructuredConfig = with lib.kernel; {
+            SECURITY_LOCKDOWN_LSM = yes;
+          };
         }
       ];
     })
