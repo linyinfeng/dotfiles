@@ -23,20 +23,12 @@
 
   boot.kernelPatches = [
     {
-      name = "module-relocations";
-      patch = ./kernel/patches/20231101-module_relocations-v9-2.patch;
-    }
-    {
       name = "nftables";
       patch = null;
-      extraStructuredConfig =
-        let
-          inherit (lib.kernel) yes module;
-        in
-        lib.mapAttrs (_: v: lib.mkForce (v // { optional = false; })) (
-          import ./kernel/configs/nftables.config.nix { inherit lib; }
-          // import ./kernel/configs/merge.nix { inherit lib; }
-        );
+      extraStructuredConfig = lib.mapAttrs (_: v: lib.mkForce (v // { optional = false; })) (
+        import ./kernel/configs/nftables.config.nix { inherit lib; }
+        // import ./kernel/configs/merge.nix { inherit lib; }
+      );
     }
   ];
 
