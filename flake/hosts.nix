@@ -458,8 +458,8 @@ in
               update = old: [ ];
             }
             {
-              path =["nixpkgs"];
-              update = old: {};
+              path = [ "nixpkgs" ];
+              update = old: { };
             }
           ] originalModule
         )

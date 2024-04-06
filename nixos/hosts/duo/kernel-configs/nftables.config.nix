@@ -1,7 +1,13 @@
 { lib }:
 let
-  inherit (lib.kernel) yes no module freeform;
-in {
+  inherit (lib.kernel)
+    yes
+    no
+    module
+    freeform
+    ;
+in
+{
   # Linux/riscv 5.10.4 Kernel Configuration
 
   ### Networking options
