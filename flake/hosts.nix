@@ -249,7 +249,7 @@ let
     }
 
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299460
-    (self.lib.replaceModuleSimple inputs.nixpkgs-hledger-web "services/web-apps/hledger-web.nix")
+    (self.lib.replaceModuleSimple inputs.latest "services/web-apps/hledger-web.nix")
   ];
 
   commonHmModules = hmModules ++ [
@@ -449,7 +449,7 @@ in
           let
             originalModule = (import "${inputs.nixos-riscv}/duo-256.nix" args);
           in
-          lib.recursiveUpdate (lib.updateManyAttrsByPath [
+          lib.updateManyAttrsByPath [
             {
               path = [
                 "system"
@@ -457,18 +457,11 @@ in
               ];
               update = old: [ ];
             }
-          ] originalModule) { passthru.kernel = originalModule.boot.kernelPackages.kernel; }
-        )
-        (
-          { lib, ... }:
-          {
-            # readOnlyPkgs disables nixpkgs module
-            # nixos-riscv sets `nixpkgs.crossSystem` and `nixpkgs.localSystem`
-            options.nixpkgs = {
-              localSystem = lib.mkSinkUndeclaredOptions { };
-              crossSystem = lib.mkSinkUndeclaredOptions { };
-            };
-          }
+            {
+              path =["nixpkgs"];
+              update = old: {};
+            }
+          ] originalModule
         )
       ];
     })
