@@ -9,6 +9,7 @@
   networking.firewall.enable = lib.mkForce true;
   networking.defaultGateway = lib.mkForce null;
   networking.nameservers = lib.mkForce [ ];
+  services.udev.enable = lib.mkForce true;
   services.nscd.enable = lib.mkForce true;
   services.dnsmasq.enable = lib.mkForce false;
   services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
@@ -16,15 +17,26 @@
   users.users.root.initialPassword = lib.mkForce null;
 
   boot.initrd.systemd = {
-    enable = lib.mkForce false;
+    # enable = lib.mkForce false;
     enableTpm2 = false;
   };
 
   boot.kernelPatches = [
     {
-      name = "enable-nftables";
+      name = "module-relocations";
+      patch = ./kernel/patches/20231101-module_relocations-v9-2.patch;
+    }
+    {
+      name = "nftables";
       patch = null;
-      extraStructuredConfig = lib.mkForce (import ./kernel-configs/nftables.config.nix { inherit lib; });
+      extraStructuredConfig =
+        let
+          inherit (lib.kernel) yes module;
+        in
+        lib.mapAttrs (_: v: lib.mkForce (v // { optional = false; })) (
+          import ./kernel/configs/nftables.config.nix { inherit lib; }
+          // import ./kernel/configs/merge.nix { inherit lib; }
+        );
     }
   ];
 

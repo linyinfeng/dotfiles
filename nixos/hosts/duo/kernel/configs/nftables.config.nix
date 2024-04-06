@@ -43,6 +43,7 @@ in
   "NF_CT_NETLINK" = module; # Connection tracking netlink interface
   "NF_CT_NETLINK_TIMEOUT" = module; # Connection tracking timeout tuning via Netlink
   "NF_CT_NETLINK_HELPER" = module; # Connection tracking helpers in user-space via Netlink
+  "NETFILTER_NETLINK_GLUE_CT" = yes; # NFQUEUE and NFLOG integration with Connection Tracking
   "NF_NAT" = module; # Network Address Translation support
   "NF_TABLES" = module; # Netfilter nf_tables support
   "NF_TABLES_INET" = yes; # Netfilter nf_tables mixed IPv4/IPv6 tables support
