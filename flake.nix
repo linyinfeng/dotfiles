@@ -205,6 +205,7 @@
     lantian.inputs.nixpkgs.follows = "nixpkgs";
     lantian.inputs.flake-parts.follows = "flake-parts";
     lantian.inputs.nvfetcher.follows = "nvfetcher";
+    lantian.inputs.nix-index-database.follows = "nix-index-database";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
@@ -298,12 +299,6 @@
     # fixes
     # TODO wait for terraform 1.8
     nixpkgs-terraform.url = "github:nixos/nixpkgs/842d9d80cfd4560648c785f8a4e6f3b096790e19";
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=287964
-    nixpkgs-shim.url = "github:nixos/nixpkgs/pull/287964/head";
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299460
-    nixpkgs-hledger-web.url = "github:nixos/nixpkgs/pull/299460/head";
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299926
-    nixpkgs-linux-manual-config-ifd.url = "github:nixos/nixpkgs/pull/299926/head";
   };
 
   outputs =

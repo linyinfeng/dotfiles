@@ -139,12 +139,11 @@ let
     })
   ];
   earlyFixes = nixpkgsArgs: final: prev: {
-    inherit (import inputs.nixpkgs-linux-manual-config-ifd nixpkgsArgs) linuxManualConfig;
+    # currently nothing
   };
 
   lateFixes = nixpkgsArgs: final: prev: {
     inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
-    inherit (import inputs.nixpkgs-shim nixpkgsArgs) shim-unsigned;
   };
 in
 {
