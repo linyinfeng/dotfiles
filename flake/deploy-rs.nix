@@ -5,11 +5,6 @@
   ...
 }:
 let
-  excludedNodes = [
-    "framework-wsl"
-    "enchilada"
-    "duo"
-  ];
   mkNode =
     name: cfg:
     let
@@ -30,9 +25,8 @@ let
         path = deployLib.activate.nixos cfg;
       };
     };
-  nodes = lib.mapAttrs mkNode (
-    lib.filterAttrs (name: _: !lib.elem name excludedNodes) self.nixosConfigurations
-  );
+  isIndexed = name: self.lib.data.${name}.host_indices != [ ];
+  nodes = lib.mapAttrs mkNode (lib.filterAttrs (name: _: isIndexed name) self.nixosConfigurations);
 in
 {
   flake = {
