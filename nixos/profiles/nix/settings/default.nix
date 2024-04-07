@@ -7,12 +7,6 @@
       "ca-derivations"
       "repl-flake"
     ];
-    settings.system-features = [
-      "nixos-test"
-      "benchmark"
-      "big-parallel"
-      "kvm"
-    ];
 
     # use periodic store optimisation
     # settings.auto-optimise-store = true;
