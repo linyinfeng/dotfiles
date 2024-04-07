@@ -6,6 +6,7 @@
 }:
 let
   excludedNodes = [
+    "framework-wsl"
     "enchilada"
     "duo"
   ];
