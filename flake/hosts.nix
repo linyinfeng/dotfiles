@@ -90,6 +90,7 @@ let
           system.types.workstation
           networking.network-manager
           networking.tools
+          programs.tmux
           programs.tools
           programs.nix-index
           services.bluetooth
@@ -114,6 +115,7 @@ let
           services.auto-upgrade
           services.bpftune
           services.iperf3
+          programs.tmux
           networking.bbr
         ]);
       overseaServer = suites.server ++ (with profiles; [ services.bind ]);
@@ -175,9 +177,7 @@ let
         direnv
         emacs
         pssh
-        tools.nix
-        tools.network
-        tools.other
+        tools
         tex
         awscli
         terraform

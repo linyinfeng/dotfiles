@@ -7,6 +7,7 @@
     wireshark.enable = true;
   };
   environment.systemPackages = with pkgs; [
+    # sorted list for convenience
     curl
     dnsutils
     ethtool
@@ -16,5 +17,9 @@
     nftables
     nmap
     tcpdump
+    wget
+    aria2
+    rsync
+    axel
   ];
 }

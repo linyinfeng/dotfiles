@@ -50,4 +50,6 @@
   nix.settings.nix-path = config.nix.nixPath;
 
   systemd.services.nix-daemon.serviceConfig.Slice = "minor.slice";
+
+  environment.global-persistence.user.directories = [ ".cache/nix" ];
 }
