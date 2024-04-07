@@ -1,12 +1,11 @@
 {
-  config,
+  osConfig,
   pkgs,
   lib,
   ...
 }:
 let
-  hosts' = lib.attrNames config.lib.self.data.hosts;
-  hosts = lib.subtractLists [ "enchilada" ] hosts';
+  hosts = lib.attrNames osConfig.networking.hostsData.indexedHosts;
   hostsSpecs = lib.lists.map (h: "root@${h}") hosts;
   hostsFile = pkgs.writeText "pssh-hosts" ''
     ${lib.concatStringsSep "\n" hostsSpecs}
