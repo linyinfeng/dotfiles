@@ -5,7 +5,10 @@
   ...
 }:
 let
-  excludedNodes = [ "enchilada" ];
+  excludedNodes = [
+    "enchilada"
+    "duo"
+  ];
   mkNode =
     name: cfg:
     let
