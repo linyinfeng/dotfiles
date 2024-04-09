@@ -179,6 +179,14 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
   };
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
+    };
+  };
+
   home.link = {
     ".config/systemd/user/gnome-session.target.wants/gnome-remote-desktop.service".target = "/etc/systemd/user/gnome-remote-desktop.service";
   };
