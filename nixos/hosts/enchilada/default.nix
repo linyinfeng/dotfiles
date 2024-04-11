@@ -76,9 +76,7 @@
     # applications
     {
       environment.systemPackages = with pkgs; [
-        telegram-desktop
-        element-desktop
-        qq
+        # currently nothing
       ];
     }
 
