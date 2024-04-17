@@ -2,47 +2,47 @@ name: "Check"
 on:
   push:
     branches:
-      - 'main'
-      - 'staging'
+      - "main"
+      - "staging"
   pull_request:
     branches:
-      - 'main'
+      - "main"
   workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@main
-      with:
-        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
-    - name: Install nix
-      uses: cachix/install-nix-action@master
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-        extra_nix_config: |
-          experimental-features = nix-command flakes
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - name: Setup cachix
-      uses: cachix/cachix-action@master
-      with:
-        name: linyinfeng
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - name: Set swap space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 10
-    - name: Test nix flake show
-      run: |
-        nix flake show
-    - name: Test evaluation
-      run: |
-        set -e
-        system=$(nix eval --impure --raw  --expr "builtins.currentSystem")
-        checks=$(nix eval --impure --json --expr "builtins.attrNames (builtins.getFlake \"$PWD\").checks.$system")
-        for check in $(echo "$checks" | jq -r '.[]'); do
-          echo "--- eval .#checks.$system.$check"
-          nix eval --raw .#checks.$system.$check --accept-flake-config
-          echo # add a new line
-        done
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
+      - name: Install nix
+        uses: cachix/install-nix-action@master
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Setup cachix
+        uses: cachix/cachix-action@master
+        with:
+          name: linyinfeng
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+      - name: Test nix flake show
+        run: |
+          nix flake show
+      - name: Test evaluation
+        run: |
+          set -e
+          system=$(nix eval --impure --raw  --expr "builtins.currentSystem")
+          checks=$(nix eval --impure --json --expr "builtins.attrNames (builtins.getFlake \"$PWD\").checks.$system")
+          for check in $(echo "$checks" | jq -r '.[]'); do
+            echo "--- eval .#checks.$system.$check"
+            nix eval --raw ".#checks.$system.$check" --accept-flake-config
+            echo # add a new line
+          done

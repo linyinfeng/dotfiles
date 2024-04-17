@@ -19,12 +19,19 @@
             prettier.enable = true;
           };
           settings.formatter.prettier = {
+            includes = [ ".github/workflows/check.yml" ];
             excludes = [
               # no need to format generated secrets files
               "secrets/**/*.yaml"
             ];
           };
         };
+        devshells.default.commands = [
+          {
+            category = "misc";
+            package = config.treefmt.build.wrapper;
+          }
+        ];
       })
       (lib.mkIf (!config.isDevSystem) { treefmt.flakeCheck = false; })
     ];

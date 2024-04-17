@@ -26,7 +26,7 @@ let
       chmod u+w -R ./fonts
     '';
     postPatch = ''
-      cp ${./NerdFontMakefile} ./Makefile
+      cp ${./_nerd-font/Makefile} ./Makefile
     '';
   };
 in

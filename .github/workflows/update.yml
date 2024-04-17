@@ -2,7 +2,7 @@ name: "Automatic update"
 on:
   schedule:
     # every day 00:00 +08:00
-    - cron: '0 16 * * *'
+    - cron: "0 16 * * *"
   workflow_dispatch:
 
 concurrency: push-to-main
@@ -11,56 +11,56 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@main
-      with:
-        ref: main
-        token: '${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}'
-    - name: Install nix
-      uses: cachix/install-nix-action@master
-      with:
-        nix_path: nixpkgs=channel:nixos-unstable
-        extra_nix_config: |
-          experimental-features = nix-command flakes
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - name: Setup cachix
-      uses: cachix/cachix-action@master
-      with:
-        name: linyinfeng
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
-    - name: Set swap space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 10
-    - name: Git config
-      run: |
-        git config --global user.email "nano@linyinfeng.com"
-        git config --global user.name "Nano"
-    - name: Terraform update
-      run: |
-        nix develop --command terraform-init -upgrade
-        if [ -z "$(git status --porcelain)" ]; then
-          echo "repository is clean, skip commit"
-        else
-          git add --all
-          git commit --message "terraform-init -upgrade"
-        fi
-    - name: Nix flake update
-      run: |
-        nix flake update --commit-lock-file
-    - name: Test nix flake show
-      run: |
-        nix flake show
-    - name: Test evaluation
-      run: |
-        set -e
-        system=$(nix eval --impure --raw  --expr "builtins.currentSystem")
-        checks=$(nix eval --impure --json --expr "builtins.attrNames (builtins.getFlake \"$PWD\").checks.$system")
-        for check in $(echo "$checks" | jq -r '.[]'); do
-          echo "--- eval .#checks.$system.$check"
-          nix eval --raw .#checks.$system.$check --accept-flake-config
-          echo # add a new line
-        done
-    - name: Git push
-      run: |
-        git push
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          ref: main
+          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
+      - name: Install nix
+        uses: cachix/install-nix-action@master
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Setup cachix
+        uses: cachix/cachix-action@master
+        with:
+          name: linyinfeng
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+      - name: Git config
+        run: |
+          git config --global user.email "nano@linyinfeng.com"
+          git config --global user.name "Nano"
+      - name: Terraform update
+        run: |
+          nix develop --command terraform-init -upgrade
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "repository is clean, skip commit"
+          else
+            git add --all
+            git commit --message "terraform-init -upgrade"
+          fi
+      - name: Nix flake update
+        run: |
+          nix flake update --commit-lock-file
+      - name: Test nix flake show
+        run: |
+          nix flake show
+      - name: Test evaluation
+        run: |
+          set -e
+          system=$(nix eval --impure --raw  --expr "builtins.currentSystem")
+          checks=$(nix eval --impure --json --expr "builtins.attrNames (builtins.getFlake \"$PWD\").checks.$system")
+          for check in $(echo "$checks" | jq -r '.[]'); do
+            echo "--- eval .#checks.$system.$check"
+            nix eval --raw ".#checks.$system.$check" --accept-flake-config
+            echo # add a new line
+          done
+      - name: Git push
+        run: |
+          git push
