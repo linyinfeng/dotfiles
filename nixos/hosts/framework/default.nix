@@ -30,7 +30,8 @@
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      hardware.sr-iov
+      # TODO wait for https://github.com/NixOS/nixpkgs/issues/304559
+      # hardware.sr-iov
       users.yinfeng
     ])
     ++ [ ./_hardware.nix ];
