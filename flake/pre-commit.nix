@@ -9,7 +9,6 @@
     }:
     lib.mkMerge [
       (lib.mkIf config.isDevSystem {
-        pre-commit.check.enable = true;
         pre-commit.settings.hooks = {
           actionlint.enable = true;
           check-json.enable = true;
@@ -21,13 +20,8 @@
           flake-treefmt = {
             enable = true;
             name = "flake-treefmt";
+            # also include .github explicitly
             entry = "${config.treefmt.build.wrapper}/bin/treefmt . .github";
-            pass_filenames = false;
-          };
-          flake-show = {
-            enable = true;
-            name = "flake-show";
-            entry = "${pkgs.nix}/bin/nix --extra-experimental-features 'nix-command flakes' flake show";
             pass_filenames = false;
           };
         };
