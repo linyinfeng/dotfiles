@@ -1,17 +1,11 @@
 {
   suites,
-  profiles,
   lib,
   pkgs,
   ...
 }:
 {
-  imports =
-    suites.embeddedServer
-    ++ (with profiles; [
-      # TODO
-    ])
-    ++ [ ./nixos-riscv-tweaks.nix ];
+  imports = suites.embeddedServer ++ [ ./nixos-riscv-tweaks.nix ];
 
   config = lib.mkMerge [
     {

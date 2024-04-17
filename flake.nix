@@ -295,10 +295,6 @@
 
     mobile-nixos.url = "github:nixos/mobile-nixos/development";
     mobile-nixos.flake = false;
-
-    # fixes
-    # TODO wait for terraform 1.8
-    nixpkgs-terraform.url = "github:nixos/nixpkgs/842d9d80cfd4560648c785f8a4e6f3b096790e19";
   };
 
   outputs =

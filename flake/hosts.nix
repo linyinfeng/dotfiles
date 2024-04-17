@@ -247,9 +247,6 @@ let
       };
       system.configurationRevision = self.rev or null;
     }
-
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=299460
-    (self.lib.replaceModuleSimple inputs.latest "services/web-apps/hledger-web.nix")
   ];
 
   commonHmModules = hmModules ++ [

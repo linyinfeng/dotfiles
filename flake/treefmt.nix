@@ -8,10 +8,6 @@
       ...
     }:
     lib.mkMerge [
-      {
-        # always needed in evaluation if we use treefmt
-        # treefmt.projectRootFile = "flake.nix";
-      }
       (lib.mkIf config.isDevSystem {
         treefmt = {
           projectRootFile = "flake.nix";

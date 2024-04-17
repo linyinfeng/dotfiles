@@ -143,7 +143,7 @@ let
   };
 
   lateFixes = nixpkgsArgs: final: prev: {
-    inherit (import inputs.nixpkgs-terraform nixpkgsArgs) terraform;
+    # currently nothing
   };
 in
 {
