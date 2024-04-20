@@ -57,7 +57,7 @@ let
         graphical.kde
         graphical.hyprland
         graphical.fonts
-        graphical.i18n
+        i18n.input-method
         services.gnome-keyring
         services.pipewire
       ];
@@ -131,7 +131,7 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.phone
-          graphical.i18n
+          i18n.input-method
           development.shells
           services.gnupg
           services.pipewire
@@ -145,6 +145,7 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.workstation
+          i18n.input-method
           wsl.settings
         ])
         ++ [ inputs.nixos-wsl.nixosModules.wsl ];

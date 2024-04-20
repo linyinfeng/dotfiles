@@ -36,6 +36,7 @@ in
       nix.hydra-builder-client
       nix.nixbuild
       security.tpm
+      i18n.input-method
       networking.network-manager
       networking.behind-fw
       networking.fw-proxy
