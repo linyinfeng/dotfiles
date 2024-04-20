@@ -7,7 +7,8 @@ in
     with pkgs;
     [
       amberol
-      calibre
+      # TODO broken
+      # calibre
       element-desktop
       fractal
       gimp
