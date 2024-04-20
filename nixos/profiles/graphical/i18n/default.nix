@@ -1,23 +1,37 @@
-{ pkgs, lib, ... }:
 {
-  i18n.inputMethod = {
-    enabled = lib.mkDefault "fcitx5";
-    ibus.engines = with pkgs.ibus-engines; [
-      (rime.override {
-        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
-      })
-      mozc
-    ];
-    fcitx5.addons = with pkgs; [
-      (fcitx5-rime.override {
-        rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
-      })
-      fcitx5-mozc
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  cfg = config.i18n.inputMethod;
+in
+{
+  options = {
+    i18n.inputMethod.rime.rimeDataPkgs = lib.mkOption {
+      type = with lib.types; listOf package;
+      default = with pkgs; [ rime-data ];
+      apply = pkgs.nur.repos.linyinfeng.rimePackages.withRimeDeps;
+    };
+  };
+  config = {
+    i18n.inputMethod = {
+      enabled = lib.mkDefault "fcitx5";
+      ibus.engines = with pkgs.ibus-engines; [
+        (rime.override { rimeDataPkgs = cfg.rime.rimeDataPkgs; })
+        mozc
+      ];
+      fcitx5.addons = with pkgs; [
+        (fcitx5-rime.override { rimeDataPkgs = cfg.rime.rimeDataPkgs; })
+        fcitx5-mozc
+      ];
+      rime.rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; [ rime-ice ];
+    };
+    environment.global-persistence.user.directories = [
+      ".config/ibus"
+      ".config/fcitx5"
+      ".config/mozc"
     ];
   };
-  environment.global-persistence.user.directories = [
-    ".config/ibus"
-    ".config/fcitx5"
-    ".config/mozc"
-  ];
 }

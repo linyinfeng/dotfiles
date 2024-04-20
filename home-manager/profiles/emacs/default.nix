@@ -28,7 +28,7 @@ let
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";
-    paths = with pkgs.nur.repos.linyinfeng.rimePackages; withRimeDeps [ rime-ice ];
+    paths = osConfig.i18n.inputMethod.rime.rimeDataPkgs;
   };
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.substituteAll {
@@ -57,7 +57,7 @@ in
   home.file = {
     ".emacs.d/var/orgs/templates".source = ./_org-roam/templates;
     ".emacs.d/rime" = {
-      source = ./_rime;
+      source = ../rime/_user-data;
       recursive = true;
     };
   };

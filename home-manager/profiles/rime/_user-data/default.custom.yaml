@@ -1,5 +1,22 @@
 patch:
-  "schema_list":
-    - schema: rime_ice
-  "switcher/hotkeys":
+  __include: rime_ice_suggestion.yaml:/
+  switcher/hotkeys:
     - F4
+  key_binder/bindings/+:
+    - { when: paging, accept: comma, send: Page_Up }
+    - { when: has_menu, accept: period, send: Page_Down }
+    # emacs style
+    - { when: composing, accept: Control+p, send: Up }
+    - { when: composing, accept: Control+n, send: Down }
+    - { when: composing, accept: Control+b, send: Left }
+    - { when: composing, accept: Control+f, send: Right }
+    - { when: composing, accept: Control+a, send: Home }
+    - { when: composing, accept: Control+e, send: End }
+    - { when: composing, accept: Control+d, send: Delete }
+    - { when: composing, accept: Control+k, send: Shift+Delete }
+    - { when: composing, accept: Control+h, send: BackSpace }
+    - { when: composing, accept: Control+g, send: Escape }
+    - { when: composing, accept: Control+bracketleft, send: Escape }
+    - { when: composing, accept: Control+y, send: Page_Up }
+    - { when: composing, accept: Alt+v, send: Page_Up }
+    - { when: composing, accept: Control+v, send: Page_Down }
