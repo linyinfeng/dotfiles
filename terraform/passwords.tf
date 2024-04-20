@@ -340,7 +340,7 @@ resource "random_password" "typhon_salt" {
 }
 module "typhon_argon2" {
   source   = "./modules/argon2"
-  password = random_password.hledger.result
+  password = random_password.typhon.result
   salt     = random_password.typhon_salt.result
 }
 output "typhon_password" {
