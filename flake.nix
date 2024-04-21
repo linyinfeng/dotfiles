@@ -317,6 +317,10 @@
               "wlroots"
             ]
             [
+              "hyprland"
+              "hyprwayland-scanner"
+            ]
+            [
               "fenix"
               "rust-analyzer-src"
             ]
