@@ -674,15 +674,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1713369831,
-        "narHash": "sha256-G4OGxvlIIjphpkxcRAkf1QInYsAeqbfNh6Yl1JLy2uM=",
-        "owner": "nix-community",
+        "lastModified": 1713791479,
+        "narHash": "sha256-lsd9AiDkHXK3Nk9erxFwxGHZHe2/b8a9qvoD/eSb8yc=",
+        "owner": "linyinfeng",
         "repo": "lanzaboote",
-        "rev": "850f27322239f8cfa56b122cc9a278ab99a49015",
+        "rev": "2e6ac59d4b34eec2e46d488e486fa1d5bbb0fc41",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "linyinfeng",
+        "ref": "uki",
         "repo": "lanzaboote",
         "type": "github"
       }

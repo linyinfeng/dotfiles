@@ -41,8 +41,10 @@
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
         consoleMode = "auto";
+        configurationLimit = 10;
       };
       boot.loader.timeout = 30;
+      boot.lanzaboote.mode = "uki";
 
       boot.kernelModules = [ "kvm-intel" ];
 

@@ -53,7 +53,7 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
 
-    lanzaboote.url = "github:nix-community/lanzaboote";
+    lanzaboote.url = "github:linyinfeng/lanzaboote/uki";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.crane.follows = "crane";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
