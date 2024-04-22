@@ -42,6 +42,7 @@
       boot.loader.systemd-boot = {
         consoleMode = "auto";
       };
+      boot.loader.timeout = 30;
 
       boot.kernelModules = [ "kvm-intel" ];
 
