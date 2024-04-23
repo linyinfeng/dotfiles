@@ -55,7 +55,7 @@ let
       multimedia = with profiles; [
         graphical.gnome
         graphical.kde
-        graphical.hyprland
+        # graphical.hyprland
         graphical.fonts
         i18n.input-method
         services.gnome-keyring
@@ -162,7 +162,7 @@ let
       multimedia = with profiles; [
         gnome
         dconf-proxy
-        hyprland
+        # hyprland
         chromium
         firefox
         rime

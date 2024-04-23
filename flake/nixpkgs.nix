@@ -28,7 +28,6 @@ let
     inputs.angrr.overlays.default
     inputs.pastebin.overlays.default
     inputs.emacs-overlay.overlay
-    inputs.hyprland.overlays.default
     inputs.hyprwm-contrib.overlays.default
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlays.default
