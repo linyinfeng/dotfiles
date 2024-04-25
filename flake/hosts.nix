@@ -22,7 +22,7 @@ let
       base =
         suites.nixSettings
         ++ (with profiles; [
-          boot.kernel
+          boot.kernel.latest
           boot.systemd-initrd
           services.openssh
           services.dbus
@@ -236,6 +236,7 @@ let
     inputs.angrr.nixosModules.angrr
     inputs.hyprland.nixosModules.default
     inputs.typhon.nixosModules.default
+    inputs.lanzaboote.nixosModules.lanzaboote
 
     {
       lib = {
@@ -358,7 +359,6 @@ in
       name = "framework";
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
-        inputs.lanzaboote.nixosModules.lanzaboote
         common-pc
         common-cpu-intel
         common-pc-ssd

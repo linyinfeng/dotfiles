@@ -162,17 +162,17 @@ in
         }
       ];
     })
-    (lib.mkIf config.boot.kernelLockdown {
-      boot.kernelParams = [ "lockdown=integrity" ];
+    {
+      boot.kernelParams = lib.mkIf config.boot.kernelLockdown [ "lockdown=integrity" ];
       boot.kernelPatches = [
         {
           name = "lockdown";
           patch = null;
           extraStructuredConfig = with lib.kernel; {
-            SECURITY_LOCKDOWN_LSM = yes;
+            SECURITY_LOCKDOWN_LSM = lib.mkForce yes;
           };
         }
       ];
-    })
+    }
   ];
 }

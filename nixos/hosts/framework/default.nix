@@ -9,8 +9,8 @@
   imports =
     suites.mobileWorkstation
     ++ (with profiles; [
-      boot.systemd-initrd
       boot.secure-boot
+      boot.kernel.intel-lts
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
