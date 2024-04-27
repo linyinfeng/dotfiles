@@ -5,7 +5,6 @@
       "nix-command"
       "flakes"
       "ca-derivations"
-      "repl-flake"
     ];
 
     # use periodic store optimisation
