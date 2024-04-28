@@ -38,7 +38,7 @@ let
   );
   devices = lib.recursiveUpdate simpleDevices {
     shiba = {
-      id = "IQHYQR7-XD4GDX7-U6VGMGJ-GRQTGLF-NGZCNNL-Z5RPMJV-UMAJQVH-6T77HQU";
+      id = "72DS252-MBNAXGN-JFPDUOA-VKGV2MR-EAL6T6L-22B37DL-HOPAGF3-CJLW2QF";
     };
     sailfish = {
       id = "WJCWZOM-A3DSD2V-NHKMH4K-KMTQZAP-WAQLJH5-WWBR7QL-WYX53FR-DGC7TQL";
