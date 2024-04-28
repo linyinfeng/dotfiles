@@ -25,7 +25,7 @@ let
         path = deployLib.activate.nixos cfg;
       };
     };
-  isIndexed = name: self.lib.data.${name}.host_indices != [ ];
+  isIndexed = name: self.lib.data.hosts.${name}.host_indices != [ ];
   nodes = lib.mapAttrs mkNode (lib.filterAttrs (name: _: isIndexed name) self.nixosConfigurations);
 in
 {
