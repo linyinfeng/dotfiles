@@ -44,6 +44,7 @@ in
       dosfstools
       dstat
       efibootmgr
+      efitools
       eza
       fd
       file
