@@ -6,6 +6,18 @@
 }:
 let
   inherit (config.lib.self) data;
+  aggregateCustomCerts =
+    type: paths:
+    let
+      symlinks = pkgs.buildEnv {
+        name = "secureboot-custom-${type}-symlinks";
+        inherit paths;
+      };
+    in
+    # ensure certificates are regular files (required by sbctl)
+    pkgs.runCommand "secureboot-custom-${type}" { } ''
+      cp --recursive --dereference "${symlinks}" "$out"
+    '';
 in
 {
   options = {
@@ -142,6 +154,14 @@ in
       environment.etc."secureboot/keys/db/db.key".source =
         config.sops.secrets."secure_boot_db_private_key_pkcs8".path;
       environment.etc."secureboot/keys/db/db.pem".text = data.secure_boot_db_cert_pem;
+      environment.etc."secureboot/keys/custom/KEK".source = aggregateCustomCerts "KEK" [
+        # microsoft
+        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/keystore/Kek"
+      ];
+      environment.etc."secureboot/keys/custom/db".source = aggregateCustomCerts "sb" [
+        # microsoft
+        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/keystore/Db"
+      ];
       sops.secrets."secure_boot_pk_private_key_pkcs8".terraformOutput.enable = true;
       sops.secrets."secure_boot_kek_private_key_pkcs8".terraformOutput.enable = true;
       sops.secrets."secure_boot_db_private_key_pkcs8".terraformOutput.enable = true;
