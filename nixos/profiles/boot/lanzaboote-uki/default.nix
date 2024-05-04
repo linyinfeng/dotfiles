@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   splash = pkgs.runCommand "splash.bmp" { nativeBuildInputs = with pkgs; [ imagemagick ]; } ''
     convert \
@@ -10,8 +15,8 @@ let
   '';
   ini = pkgs.formats.ini { };
   ukifyConfig = ini.generate "ukify-config" {
-    UKI = {
-      Splash = splash;
+    UKI = lib.optionalAttrs (config.boot.efiStub.splash != null) {
+      Splash = config.boot.efiStub.splash;
     };
   };
   extraUkifyArgs = [
@@ -20,11 +25,20 @@ let
   ];
 in
 {
-  boot.lanzaboote = {
-    mode = "uki";
-    extraArgs = lib.lists.map (a: "--extra-ukify-args=${a}") extraUkifyArgs;
+  options = {
+    boot.efiStub.splash = lib.mkOption {
+      type = with lib.types; nullOr path;
+      default = "${splash}";
+      defaultText = "nixos logo 256x256";
+    };
   };
-  passthru = {
-    inherit ukifyConfig;
+  config = {
+    boot.lanzaboote = {
+      mode = "uki";
+      extraArgs = lib.lists.map (a: "--extra-ukify-args=${a}") extraUkifyArgs;
+    };
+    passthru = {
+      inherit ukifyConfig;
+    };
   };
 }

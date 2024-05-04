@@ -80,4 +80,22 @@
       };
     };
   };
+  boot.efiStub.splash =
+    let
+      # /sys/firmware/acpi/bgrt/image
+      # size 900 x 119
+      # /sys/firmware/acpi/bgrt/xoffset = 678
+      # /sys/firmware/acpi/bgrt/yoffset = 515
+      # screen size 2256 x 1504
+      #
+      # set extent to (2256 - 678 * 2) x (1504 - 515 * 2) to properly locate the image
+      splash =
+        pkgs.runCommand "logo-with-offset.bmp" { nativeBuildInputs = with pkgs; [ imagemagick ]; }
+          ''
+            convert -background black \
+              -extent 900x474 \
+              "${./logo.bmp}" $out
+          '';
+    in
+    "${splash}";
 }

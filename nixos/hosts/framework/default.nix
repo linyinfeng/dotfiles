@@ -45,7 +45,7 @@
         consoleMode = "auto";
         configurationLimit = 10;
       };
-      boot.loader.timeout = 30;
+      boot.loader.timeout = 0;
 
       boot.kernelModules = [ "kvm-intel" ];
 
