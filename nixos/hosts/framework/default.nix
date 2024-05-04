@@ -9,7 +9,9 @@
   imports =
     suites.mobileWorkstation
     ++ (with profiles; [
+      boot.plymouth
       boot.secure-boot
+      boot.lanzaboote-uki
       boot.kernel.intel-lts
       nix.access-tokens
       nix.nixbuild
@@ -44,7 +46,6 @@
         configurationLimit = 10;
       };
       boot.loader.timeout = 30;
-      boot.lanzaboote.mode = "uki";
 
       boot.kernelModules = [ "kvm-intel" ];
 

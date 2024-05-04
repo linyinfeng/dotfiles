@@ -6,14 +6,18 @@
   ...
 }:
 {
-  # boot.kernelParams = [
-  #   # For Power consumption
-  #   # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
-  #   "mem_sleep_default=deep"
-  #   # Workaround iGPU hangs
-  #   # https://discourse.nixos.org/t/intel-12th-gen-igpu-freezes/21768/4
-  #   "i915.enable_psr=1"
-  # ];
+  # early KMS
+  hardware.intelgpu.loadInInitrd = true;
+
+  # https://community.frame.work/t/tracking-hard-freezing-on-fedora-36-with-the-new-12th-gen-system/20675/391
+  boot.kernelParams = [
+    # Workaround iGPU hangs
+    # https://discourse.nixos.org/t/intel-12th-gen-igpu-freezes/21768/4
+    "i915.enable_psr=1"
+
+    # Try
+    "i915.enable_psr2_sel_fetch=1"
+  ];
 
   # boot.blacklistedKernelModules = [
   #   # This enables the brightness and airplane mode keys to work
