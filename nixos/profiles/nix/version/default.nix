@@ -1,4 +1,4 @@
 { pkgs, lib, ... }:
 {
-  nix.package = lib.mkDefault pkgs.nixVersions.unstable;
+  nix.package = lib.mkDefault pkgs.nixVersions.latest;
 }
