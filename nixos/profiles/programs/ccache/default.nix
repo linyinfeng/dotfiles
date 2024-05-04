@@ -12,11 +12,29 @@ in
     pkgs.ccacheLogDir
   ];
   environment.global-persistence.directories = [ cfg.cacheDir ];
-  systemd.tmpfiles.rules = [
-    "d ${cfg.cacheDir}                 770 root nixbld - -"
-    "d ${pkgs.ccacheLogDir}            750 root nixbld - -"
-    "f ${pkgs.ccacheLogDir}/ccache.log 660 root nixbld - -"
-  ];
+  systemd.tmpfiles.settings."50-ccache" = {
+    ${cfg.cacheDir} = {
+      d = {
+        user = "root";
+        group = "nixbld";
+        mode = "0770";
+      };
+    };
+    ${pkgs.ccacheLogDir} = {
+      d = {
+        user = "root";
+        group = "nixbld";
+        mode = "0750";
+      };
+    };
+    "${pkgs.ccacheLogDir}/ccache.log" = {
+      f = {
+        user = "root";
+        group = "nixbld";
+        mode = "660";
+      };
+    };
+  };
   services.logrotate.settings = {
     "${pkgs.ccacheLogDir}/ccache.log" = {
       create = "0660 root nixbld";

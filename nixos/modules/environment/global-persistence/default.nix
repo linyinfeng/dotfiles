@@ -118,7 +118,15 @@ with lib;
       users = usersCfg;
     };
 
-    systemd.tmpfiles.rules = [ "d ${cfg.root} 755 root root - -" ];
+    systemd.tmpfiles.settings."10-global-persistence" = {
+      ${cfg.root} = {
+        d = {
+          user = "root";
+          group = "root";
+          mode = "0755";
+        };
+      };
+    };
 
     environment.systemPackages = [ cfg.persistMigrate ];
 

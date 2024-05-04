@@ -73,4 +73,11 @@
       wantedBy = [ "display-manager.service" ];
     };
   };
+  systemd.tmpfiles.settings."80-gdm-monitors" = {
+    "${config.users.users.gdm.home}/.config/monitors.xml" = {
+      "L+" = {
+        argument = "${./monitors.xml}";
+      };
+    };
+  };
 }

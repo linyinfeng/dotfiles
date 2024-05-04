@@ -48,7 +48,16 @@ in
     compression = "zstd";
   };
   environment.global-persistence.directories = [ config.services.postgresqlBackup.location ];
-  systemd.tmpfiles.rules = [ "z ${config.services.postgresqlBackup.location} 700 postgres root - -" ];
+  systemd.tmpfiles.settings."50-postgresql-backup" = {
+    ${config.services.postgresqlBackup.location} = {
+      z = {
+        user = "postgres";
+        group = "root";
+        mode = "0700";
+      };
+    };
+  };
+
   services.restic.backups.b2 = {
     paths = [ config.services.postgresqlBackup.location ];
   };
