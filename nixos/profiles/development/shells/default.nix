@@ -16,7 +16,7 @@ lib.mkMerge [
       ])
       ++ (with pkgs; [
         libnotify # for done notification
-        comma
+        comma-with-db
       ]);
 
     environment.global-persistence.user.directories = [ ".local/share/fish" ];

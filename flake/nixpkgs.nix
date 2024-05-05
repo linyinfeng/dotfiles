@@ -36,7 +36,13 @@ let
       let
         inherit (prev.stdenv.hostPlatform) system;
       in
-      (self.lib.maybeAttrByPath "nix-index-with-db" inputs [
+      (self.lib.maybeAttrByPath "comma-with-db" inputs [
+        "nix-index-database"
+        "packages"
+        system
+        "comma-with-db"
+      ])
+      // (self.lib.maybeAttrByPath "nix-index-with-db" inputs [
         "nix-index-database"
         "packages"
         system
@@ -96,11 +102,6 @@ let
       };
 
       # adjustment
-      comma =
-        if prev ? nix-index-with-db then
-          prev.comma.override { nix-index-unwrapped = final.nix-index-with-db; }
-        else
-          prev.comma;
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;
