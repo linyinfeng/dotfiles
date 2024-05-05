@@ -28,6 +28,9 @@ let
   };
 in
 {
+  programs.htop.enable = true;
+  programs.nh.enable = true;
+  programs.git.enable = true;
   environment.systemPackages =
     with pkgs;
     [
@@ -48,9 +51,7 @@ in
       eza
       fd
       file
-      git
       gptfdisk
-      htop
       jq
       keyutils
       libtree
@@ -68,7 +69,6 @@ in
       procs
       ripgrep
       rlwrap
-      tmux
       unar
       unrar
       unzip
@@ -95,6 +95,7 @@ in
       nix-prefetch-scripts
       nix-tree
       nix-update
+      nvd
     ]
     ++ [
       # custom tools
