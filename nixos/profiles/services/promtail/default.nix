@@ -12,7 +12,15 @@ in
         grpc_listen_port = 0;
       };
       positions.filename = "/tmp/positions.yaml";
-      clients = [ { url = "https://${loki_username}:\${LOKI_PASSWORD}@${loki_host}/api/prom/push"; } ];
+      clients = [
+        {
+          url = "https://${loki_host}/api/prom/push";
+          basic_auth = {
+            username = loki_username;
+            password = "\${LOKI_PASSWORD}";
+          };
+        }
+      ];
       scrape_configs = [
         {
           job_name = "journal";
