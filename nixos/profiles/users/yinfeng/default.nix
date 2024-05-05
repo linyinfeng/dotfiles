@@ -80,4 +80,5 @@ in
     };
 
   environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
+  programs.nh.flake = "${homeDirectory}/Source/dotfiles";
 }
