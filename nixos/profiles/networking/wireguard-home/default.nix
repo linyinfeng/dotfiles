@@ -65,6 +65,7 @@ in
       routeConfig = {
         Destination = ip;
         Scope = "site";
+        PreferredSource = hosts.${hostName}.ip;
       };
     }) home.AllowedIPs;
   };
