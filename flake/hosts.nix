@@ -180,7 +180,8 @@ let
         pssh
         tools
         tex
-        awscli
+        # TODO broken
+        # awscli
         terraform
         shells
       ];
