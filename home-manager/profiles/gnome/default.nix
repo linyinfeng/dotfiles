@@ -48,7 +48,9 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/shell" = {
       disable-user-extensions = false;
-      enabled-extensions = map (p: p.extensionUuid) extensionPkgs;
+      enabled-extensions = map (p: p.extensionUuid) extensionPkgs ++ [
+        "light-style@gnome-shell-extensions.gcampax.github.com"
+      ];
       disabled-extensions = [ ];
       favorite-apps = lib.mkBefore [
         "org.gnome.Console.desktop"
