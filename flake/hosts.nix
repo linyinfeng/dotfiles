@@ -93,6 +93,7 @@ let
           programs.tmux
           programs.tools
           programs.nix-index
+          programs.solaar
           services.bluetooth
           services.auto-upgrade
           services.kde-connect
