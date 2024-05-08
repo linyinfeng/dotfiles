@@ -42,7 +42,7 @@
     {
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
-        consoleMode = "auto";
+        consoleMode = "max";
         configurationLimit = 10;
       };
       boot.loader.timeout = 0;
