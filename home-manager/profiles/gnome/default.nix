@@ -24,12 +24,11 @@ let
     mkArray
     mkTuple
     mkString
-    mkUint32
     type
     ;
 in
 lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
-  home.packages = extensionPkgs ++ (with pkgs; [ blackbox-terminal ]);
+  home.packages = extensionPkgs;
 
   programs.chromium.extensions = [
     "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
@@ -164,18 +163,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
       secondary-color = "#000000";
       color-shading-type = "solid";
       picture-options = "zoom";
-    };
-    "com/raggesilver/BlackBox" = {
-      terminal-padding = mkTuple [
-        (mkUint32 5)
-        (mkUint32 5)
-        (mkUint32 5)
-        (mkUint32 5)
-      ];
-      font = "IosevkaYinfeng Nerd Font 10";
-      theme-light = "Tomorrow";
-      theme-dark = "Tomorrow Night";
-      show-menu-button = false;
     };
   };
 
