@@ -85,7 +85,7 @@ in
       nix-du
       nix-eval-jobs
       nix-fast-build
-      nixfmt
+      nixfmt-rfc-style
       nix-melt
       nix-output-monitor
       nixpkgs-fmt
