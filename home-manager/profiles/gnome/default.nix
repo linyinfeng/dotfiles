@@ -15,6 +15,7 @@ let
     alphabetical-app-grid
     customize-ibus
     caffeine
+    custom-reboot
   ];
   gtkThemes = pkgs.symlinkJoin {
     name = "gtk-themes";
