@@ -19,7 +19,6 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
     gnome.gnome-sound-recorder
     gnome.gnome-power-manager
     gnome.gnome-tweaks
-    gnome.gnome-remote-desktop
   ];
 
   # disabled
