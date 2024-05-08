@@ -25,14 +25,49 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   # install extensions declaratively with home-manager dconf options
   services.gnome.gnome-browser-connector.enable = false;
 
+  # manually enable remote desktop service
+  systemd.services.gnome-remote-desktop.wantedBy = [ "graphical.target" ];
+  # acme certificates and credentials
+  systemd.tmpfiles.settings."80-gnome-remote-desktop" = {
+    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.crt" = {
+      "L+" = {
+        argument = "${config.security.acme.tfCerts."li7g_com".fullChain}";
+      };
+    };
+    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.key" = {
+      "L+" = {
+        argument = config.security.acme.tfCerts."li7g_com".key;
+      };
+    };
+    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" = {
+      "L+" = {
+        argument = config.sops.templates."gnome-remote-desktop-credentials".path;
+      };
+    };
+  };
+  users.users.gnome-remote-desktop.extraGroups = [ config.users.groups.acmetf.name ];
+  sops.templates."gnome-remote-desktop-credentials" = {
+    content =
+      let
+        password = config.sops.placeholder."gnome_remote_desktop_password";
+      in
+      ''
+        [RDP]
+        credentials={'username': <'grd'>, 'password': <'${password}'>}
+      '';
+    owner = config.users.users.gnome-remote-desktop.name;
+  };
+  sops.secrets."gnome_remote_desktop_password" = {
+    terraformOutput.enable = true;
+    restartUnits = [ "gnome-remote-desktop.service" ];
+  };
+
   networking.firewall.allowedTCPPorts = [
     3389 # RDP
-    # 5900 # VNC
   ];
   networking.firewall.allowedUDPPorts = [
     53 # DNS  server for hotsport
     67 # DHCP server for hotsport
-    3389 # RDP
   ];
 
   environment.global-persistence.user = {

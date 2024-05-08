@@ -351,3 +351,12 @@ output "typhon_hashed_password" {
   value     = module.typhon_argon2.hashed_password
   sensitive = true
 }
+
+resource "random_password" "gnome_remote_desktop" {
+  length  = 16
+  special = false
+}
+output "gnome_remote_desktop_password" {
+  value     = random_password.gnome_remote_desktop.result
+  sensitive = true
+}

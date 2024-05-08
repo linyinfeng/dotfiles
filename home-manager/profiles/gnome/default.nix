@@ -123,12 +123,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
       natural-scroll = true;
       tap-to-click = true;
     };
-    "org/gnome/desktop/remote-desktop/rdp" = {
-      enable = true;
-      tls-cert = "${osConfig.security.acme.tfCerts."li7g_com".fullChain}";
-      tls-key = "${osConfig.security.acme.tfCerts."li7g_com".key}";
-      view-only = false;
-    };
     "org/gnome/desktop/calendar" = {
       show-weekdate = true;
     };
@@ -175,10 +169,6 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
       name = "Papirus";
       package = pkgs.papirus-icon-theme;
     };
-  };
-
-  home.link = {
-    ".config/systemd/user/gnome-session.target.wants/gnome-remote-desktop.service".target = "/etc/systemd/user/gnome-remote-desktop.service";
   };
 
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
