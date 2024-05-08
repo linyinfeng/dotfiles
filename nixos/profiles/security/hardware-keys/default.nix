@@ -11,8 +11,7 @@
   hardware.gpgSmartcards.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # TODO broken
-    # yubikey-manager
+    yubikey-manager
     pcsctools
   ];
 
@@ -23,7 +22,7 @@
   };
   environment.global-persistence.user.directories = [ ".config/Yubico" ];
 
-  # TODO wait for https://github.com/NixOS/nixpkgs/pull/308884
+  # TODO wait for https://nixpk.gs/pr-tracker.html?pr=308884
   systemd.user.services.gpg-agent.environment.LD_LIBRARY_PATH = "${lib.getLib pkgs.pcsclite}/lib";
   environment.sessionVariables.LD_LIBRARY_PATH = [ "${lib.getLib pkgs.pcsclite}/lib" ];
 }

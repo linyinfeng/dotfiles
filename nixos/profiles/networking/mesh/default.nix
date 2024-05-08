@@ -41,8 +41,9 @@ lib.mkMerge [
           extraConfig = cfg.bird.babelInterfaceConfig;
         };
       };
-      # not working because tailscale does not support multicast currently
-      # TODO wait for https://github.com/tailscale/tailscale/issues/1013
+      # not working because tailscale does not support multicast
+      # since tailscale is working on L3, multicast is unlikely to be supported
+      # https://github.com/tailscale/tailscale/issues/1013
       # // lib.optionalAttrs config.services.tailscale.enable {
       #   "${config.passthru.tailscaleInterfaceName}" = {
       #     type = "tunnel";

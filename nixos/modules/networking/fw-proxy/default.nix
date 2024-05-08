@@ -289,8 +289,8 @@ with lib;
         type = with types; int;
         default = 26000;
       };
-      # TODO wait for https://github.com/systemd/systemd/issues/31189
-      # currently can not contain '-'
+      # table name currently can not contain '-' due to systemd limitation
+      # https://github.com/systemd/systemd/issues/31189
       nftTable = mkOption {
         type = with types; str;
         # tproxy is a keyword in nft
@@ -300,8 +300,6 @@ with lib;
         type = with types; str;
         default = "cgroup:inet:${cfg.tproxy.nftTable}:cgroups";
       };
-      # TODO wait for https://github.com/systemd/systemd/issues/31189
-      # currently can not contain '-'
       bypassNftSet = mkOption {
         type = with types; str;
         default = "cgroup:inet:${cfg.tproxy.nftTable}:bypass";

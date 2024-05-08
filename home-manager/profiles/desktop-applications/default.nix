@@ -7,13 +7,11 @@ in
     with pkgs;
     [
       amberol
-      # TODO broken
-      # calibre
+      calibre
       element-desktop
       fractal
       gimp
-      # TODO broken
-      # gnuradio
+      gnuradio
       gparted
       inkscape
       libreoffice-fresh
