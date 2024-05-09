@@ -28,23 +28,42 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   # manually enable remote desktop service
   systemd.services.gnome-remote-desktop.wantedBy = [ "graphical.target" ];
   # acme certificates and credentials
-  systemd.tmpfiles.settings."80-gnome-remote-desktop" = {
-    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.crt" = {
-      "L+" = {
-        argument = "${config.security.acme.tfCerts."li7g_com".fullChain}";
+  systemd.tmpfiles.settings."80-gnome-remote-desktop" =
+    let
+      ownerOptions = {
+        user = config.users.users.gnome-remote-desktop.name;
+        group = config.users.users.gnome-remote-desktop.group;
+      };
+    in
+    {
+      ${config.users.users.gnome-remote-desktop.home} = {
+        "d" = {
+          mode = "0700";
+          inherit (ownerOptions) user group;
+        };
+        "Z" = {
+          inherit (ownerOptions) user group;
+        };
+      };
+      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.crt" = {
+        "L+" = {
+          argument = "${config.security.acme.tfCerts."li7g_com".fullChain}";
+          inherit (ownerOptions) user group;
+        };
+      };
+      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.key" = {
+        "L+" = {
+          argument = config.security.acme.tfCerts."li7g_com".key;
+          inherit (ownerOptions) user group;
+        };
+      };
+      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" = {
+        "L+" = {
+          argument = config.sops.templates."gnome-remote-desktop-credentials".path;
+          inherit (ownerOptions) user group;
+        };
       };
     };
-    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.key" = {
-      "L+" = {
-        argument = config.security.acme.tfCerts."li7g_com".key;
-      };
-    };
-    "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" = {
-      "L+" = {
-        argument = config.sops.templates."gnome-remote-desktop-credentials".path;
-      };
-    };
-  };
   users.users.gnome-remote-desktop.extraGroups = [ config.users.groups.acmetf.name ];
   sops.templates."gnome-remote-desktop-credentials" = {
     content =
@@ -56,6 +75,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
         credentials={'username': <'grd'>, 'password': <'${password}'>}
       '';
     owner = config.users.users.gnome-remote-desktop.name;
+    group = config.users.users.gnome-remote-desktop.group;
   };
   sops.secrets."gnome_remote_desktop_password" = {
     terraformOutput.enable = true;
