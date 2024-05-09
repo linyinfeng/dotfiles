@@ -285,6 +285,8 @@
 
     flake-schemas.url = "github:determinatesystems/flake-schemas";
 
+    weird-deployer.url = "github:linyinfeng/weird-deployer";
+
     # compatibility layer
 
     flake-compat.url = "github:edolstra/flake-compat";

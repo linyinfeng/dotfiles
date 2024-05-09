@@ -1422,6 +1422,7 @@
         "systems": "systems",
         "treefmt-nix": "treefmt-nix",
         "typhon": "typhon",
+        "weird-deployer": "weird-deployer",
         "xdph": "xdph"
       }
     },
@@ -1550,6 +1551,21 @@
       "original": {
         "owner": "typhon-ci",
         "repo": "typhon",
+        "type": "github"
+      }
+    },
+    "weird-deployer": {
+      "locked": {
+        "lastModified": 1715274337,
+        "narHash": "sha256-VJjz0BulY1HIaZAs8CxcKCR3BkZ9x3aKjhydb6L2G2g=",
+        "owner": "linyinfeng",
+        "repo": "weird-deployer",
+        "rev": "6edbf53d5e1b0302e90017f3b55e26c52f75f372",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "weird-deployer",
         "type": "github"
       }
     },
