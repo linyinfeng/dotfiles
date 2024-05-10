@@ -74,6 +74,7 @@ in
       unzip
       usbutils
       util-linux
+      viddy
       yq-go
     ]
     ++ optionalPkg pkgs [ "i7z" ]
