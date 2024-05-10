@@ -27,16 +27,16 @@ in
               identifier = "dotfiles";
               flake = "${self}";
               inherit hosts;
+              syncOn = {
+                # fully parallel evaluate + build + copy
+                evaluated = false;
+                built = false;
+                # only sync on copied and tested
+              };
             };
           }
         ];
       };
     in
-    (lib.mkIf config.isDevSystem {
-      packages = {
-        weird-deployer = wdCfg.config.build.deployer;
-        weird-deployer-clean = wdCfg.config.build.clean;
-        weird-deployer-monitor = wdCfg.config.build.monitor;
-      };
-    });
+    (lib.mkIf config.isDevSystem { packages.weird-deployer = wdCfg.config.build.deployer; });
 }
