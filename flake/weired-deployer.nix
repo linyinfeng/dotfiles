@@ -28,10 +28,9 @@ in
               flake = "${self}";
               inherit hosts;
               syncOn = {
-                # fully parallel evaluate + build + copy
-                evaluated = false;
-                built = false;
-                # only sync on copied and tested
+                default = false;
+                copied = true;
+                tested = true;
               };
             };
           }
