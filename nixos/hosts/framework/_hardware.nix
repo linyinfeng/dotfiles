@@ -12,6 +12,13 @@ lib.mkMerge [
   }
 
   {
+    boot.kernelParams = [
+      "i915.enable_psr=1"
+      "i915.enable_psr2_sel_fetch=1"
+    ];
+  }
+
+  {
     # needed for desktop environments to detect/manage display brightness
     hardware.sensor.iio.enable = true;
 
