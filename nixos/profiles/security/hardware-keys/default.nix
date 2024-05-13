@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   # canokey
   services.udev.packages = [ pkgs.nur.repos.linyinfeng.canokey-udev-rules ];
@@ -21,8 +21,4 @@
     cue = false;
   };
   environment.global-persistence.user.directories = [ ".config/Yubico" ];
-
-  # TODO wait for https://nixpk.gs/pr-tracker.html?pr=308884
-  systemd.user.services.gpg-agent.environment.LD_LIBRARY_PATH = "${lib.getLib pkgs.pcsclite}/lib";
-  environment.sessionVariables.LD_LIBRARY_PATH = [ "${lib.getLib pkgs.pcsclite}/lib" ];
 }
