@@ -181,8 +181,7 @@ let
         pssh
         tools
         tex
-        # TODO wait for https://nixpk.gs/pr-tracker.html?pr=309747
-        # awscli
+        awscli
         terraform
         shells
       ];
