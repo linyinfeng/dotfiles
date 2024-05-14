@@ -114,7 +114,6 @@ let
       });
       tailscale = prev.tailscale.overrideAttrs (old: {
         subPackages = old.subPackages ++ [ "cmd/derper" ];
-        patches = (old.patches or [ ]) ++ [ ../patches/tailscale-excluded-interface-prefixes.patch ];
       });
       tailscale-derp = final.tailscale;
       waydroid = prev.waydroid.overrideAttrs (old: {

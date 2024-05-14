@@ -30,17 +30,17 @@ lib.mkMerge [
       after = [ "tailscaled.service" ];
       requiredBy = [ "tailscaled.service" ];
     };
-    systemd.services.tailscaled.environment = {
-      # use custom patch: tailscale-excluded-interface-prefixes.patch
-      # exclusion of "zt" is already hardcoded by tailscale
-      # so "zt" is included just for clearness
-      TS_EXCLUDED_INTERFACE_PREFIXES = lib.concatStringsSep " " [
-        "zt"
-        # mesh interfaces
-        "mesh"
-        "dn42"
-      ];
-    };
+    # systemd.services.tailscaled.environment = {
+    #   # use custom patch: tailscale-excluded-interface-prefixes.patch
+    #   # exclusion of "zt" is already hardcoded by tailscale
+    #   # so "zt" is included just for clearness
+    #   TS_EXCLUDED_INTERFACE_PREFIXES = lib.concatStringsSep " " [
+    #     "zt"
+    #     # mesh interfaces
+    #     "mesh"
+    #     "dn42"
+    #   ];
+    # };
     sops.secrets."tailscale_tailnet_key" = {
       terraformOutput.enable = true;
       restartUnits = [ "tailscale-setup.service" ];
