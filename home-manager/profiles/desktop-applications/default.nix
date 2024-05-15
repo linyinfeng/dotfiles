@@ -16,6 +16,7 @@ in
       inkscape
       libreoffice-fresh
       meld
+      mission-center
       picard
       praat
       qq
