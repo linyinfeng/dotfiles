@@ -5,7 +5,7 @@
   ...
 }:
 let
-  version = 28; # pinned
+  version = 29; # pinned
 
   cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
