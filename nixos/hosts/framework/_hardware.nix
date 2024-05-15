@@ -30,7 +30,7 @@ lib.mkMerge [
       thresholds = { 0 = "night", 20 = "dark", 80 = "dim", 250 = "normal", 500 = "bright", 800 = "outdoors" }
 
       [[output.backlight]]
-      name = "embedded"
+      name = "eDP-1"
       path = "/sys/class/backlight/intel_backlight"
       capturer = "wlroots"
     '';
