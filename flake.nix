@@ -155,6 +155,7 @@
     hyprland.inputs.xdph.follows = "xdph";
     hyprland.inputs.hyprlang.follows = "hyprlang";
     hyprland.inputs.hyprcursor.follows = "hyprcursor";
+    hyprland.inputs.hyprwayland-scanner.follows = "hyprwayland-scanner";
     hyprland-protocols.url = "github:hyprwm/hyprland-protocols";
     hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
     hyprland-protocols.inputs.systems.follows = "systems";
@@ -170,7 +171,9 @@
     hyprcursor.inputs.hyprlang.follows = "hyprlang";
     hyprcursor.inputs.nixpkgs.follows = "nixpkgs";
     hyprcursor.inputs.systems.follows = "systems";
-
+    hyprwayland-scanner.url = "github:hyprwm/hyprwayland-scanner";
+    hyprwayland-scanner.inputs.nixpkgs.follows = "nixpkgs";
+    hyprwayland-scanner.inputs.systems.follows = "systems";
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -205,6 +208,8 @@
     lantian.inputs.flake-parts.follows = "flake-parts";
     lantian.inputs.nvfetcher.follows = "nvfetcher";
     lantian.inputs.nix-index-database.follows = "nix-index-database";
+    lantian.inputs.treefmt-nix.follows = "treefmt-nix";
+    lantian.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
@@ -313,10 +318,6 @@
       {
         flatFlake.config = {
           allowed = [
-            [
-              "hyprland"
-              "hyprwayland-scanner"
-            ]
             [
               "fenix"
               "rust-analyzer-src"
