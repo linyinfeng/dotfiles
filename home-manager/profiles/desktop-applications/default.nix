@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   optionalPkg = config.lib.self.optionalPkg pkgs;
 in
@@ -34,6 +39,30 @@ in
       "linyinfeng"
       "wemeet"
     ];
+
+  xdg.desktopEntries = {
+    qq = {
+      name = "QQ";
+      exec = "qq --enable-wayland-ime %U";
+      icon = "qq";
+      categories = [ "Network" ];
+      settings.StartupWMClass = "Element";
+    };
+    element-desktop = {
+      name = "Elment";
+      genericName = "Matrix Client";
+      exec = "element-desktop --enable-wayland-ime %U";
+      icon = "element";
+      mimeType = [ "x-scheme-handler/element" ];
+      categories = [
+        "Network"
+        "InstantMessaging"
+        "Chat"
+      ];
+      comment = "A feature-rich client for Matrix.org";
+      settings.StartupWMClass = "Element";
+    };
+  };
 
   dconf.settings = {
     "org/gnome/shell" = {
