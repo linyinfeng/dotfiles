@@ -12,12 +12,10 @@
       update_file="$1"
       echo "update_file = $update_file"
 
-      host=$(jq -r '.host' "$update_file")
+      host=$(jq --raw-output '.host' "$update_file")
       echo "host = $host"
-      commit=$(jq -r '.commit' "$update_file")
+      commit=$(jq --raw-output '.commit' "$update_file")
       echo "commit = $commit"
-      out=$(jq -r '.out' "$update_file")
-      echo "out = $out"
 
       target_branch="nixos-tested-$host"
       echo "target_branch = $target_branch"
@@ -27,7 +25,11 @@
         flock 200
         echo "enter critical section"
 
-        systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service"
+        jq --raw-output '.outs[]' "$update_file" | (
+          while read -r out; do
+            systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service"
+          done
+        )
 
         # update channel
         if [ ! -d dotfiles ]; then

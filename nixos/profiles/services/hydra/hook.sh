@@ -21,7 +21,7 @@ hit=$(jq '
 echo "hit = $hit"
 
 if [ "$hit" = "true" ]; then
-  job=$(jq -r ".job" "$HYDRA_JSON")
+  job=$(jq --raw-output ".job" "$HYDRA_JSON")
   echo "job = $job"
 
   if [[ $job =~ ^nixos/([^/]*)\.(.*)$ && "$(jq --raw-output '.jobset' "$HYDRA_JSON")" == "main" ]]; then
@@ -39,17 +39,17 @@ if [ "$hit" = "true" ]; then
       ")
     commit=$(echo "$flake_url" | grep -E -o '\w{40}$')
 
-    out=$(jq -r '.outputs[0].path' "$HYDRA_JSON")
-
     mkdir -p "/tmp/dotfiles-channel-update"
     update_file="/tmp/dotfiles-channel-update/$(basename "$dump_file")"
-    cat >"$update_file" <<EOF
-{
-  "host": "$host",
-  "commit": "$commit",
-  "out": "$out"
-}
-EOF
+    jq \
+      --arg host "$host" \
+      --arg commit "$commit" \
+      '{
+      host: $host,
+      commit: $commit,
+      outs: .products | map(.path),
+    }' "$HYDRA_JSON" >"$update_file"
+
     echo "channel update: $update_file"
     cat "$update_file"
     systemctl start "dotfiles-channel-update@$(systemd-escape "$update_file")" --no-block
@@ -58,7 +58,10 @@ EOF
     echo "job is not a nixos toplevel, or jobset is not main"
 
     echo "copy out: $out"
-    out=$(jq -r '.outputs[0].path' "$HYDRA_JSON")
-    systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service" --no-block
+    jq --raw-output '.products[].path' "$HYDRA_JSON" | (
+      while read -r out; do
+        systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service" --no-block
+      done
+    )
   fi
 fi
