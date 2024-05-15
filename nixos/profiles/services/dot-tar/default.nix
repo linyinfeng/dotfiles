@@ -12,7 +12,10 @@
     config = {
       release = {
         port = config.ports.dot-tar;
-        authority_allow_list = [ "github.com" ];
+        authority_allow_list = [
+          "github.com"
+          "gitlab.gnome.org"
+        ];
       };
     };
   };

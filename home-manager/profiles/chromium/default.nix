@@ -1,12 +1,10 @@
-{ config, lib, ... }:
+{ ... }:
 {
   programs.chromium = {
     enable = true;
     commandLineArgs = [
-      # TODO disabled
-      # "--ozone-platform-hint=auto"
-      # "--enable-wayland-ime" # text-input-v1, only works in hyprland
-      # "--gtk-version=4"
+      "--ozone-platform-hint=auto"
+      "--enable-wayland-ime" # text-input-v1, works with mutter #3751
     ];
   };
 

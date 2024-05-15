@@ -120,19 +120,25 @@ let
         patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
       });
       gnome =
-        if (lib.versions.major prev.gnome.mutter.version == "45") then
+        if (lib.versions.major prev.gnome.mutter.version == "46") then
           prev.gnome.overrideScope (
             gnomeFinal: gnomePrev: {
               mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
                 patches = (old.patches or [ ]) ++ [
-                  # git format-patch (git merge-base origin/gnome-MV ubuntu/triple-buffering-PV-MV)..ubuntu/triple-buffering-PV-MV --stdout
-                  ../patches/mutter-triple-buffering.patch
+                  # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
+                  ../patches/mutter-text-input-v1.patch
                 ];
               });
+              gnome-shell =
+                (gnomePrev.gnome-shell.override { stdenv = final.ccacheStdenv; }).overrideAttrs
+                  (old: {
+                    patches = (old.patches or [ ]) ++ [ ../patches/gnome-shell-preedit-fix.patch ];
+                  });
             }
           )
         else
           prev.gnome;
+      vscode = prev.vscode.override { commandLineArgs = [ "--enable-wayland-ime" ]; };
       librime = prev.lantian.lantianCustomized.librime-with-plugins;
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
