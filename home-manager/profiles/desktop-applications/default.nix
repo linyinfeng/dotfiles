@@ -46,6 +46,9 @@ in
         "qemu+ssh://root@nuc/system"
       ];
     };
+    "io/missioncenter/MissionCenter" = {
+      performance-page-cpu-graph = "2";
+    };
   };
 
   home.global-persistence = {
