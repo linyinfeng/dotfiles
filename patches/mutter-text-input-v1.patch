@@ -26,7 +26,7 @@ index 04ee51dbaa5..6ae226131c4 100644
 GitLab
 
 
-From d39dfa32b19f0b6e1b49bb508d16f4bbbbdb2bc3 Mon Sep 17 00:00:00 2001
+From 9e35a63a0511bd84a911fd75d356448b433278ab Mon Sep 17 00:00:00 2001
 From: Alynx Zhou <alynx.zhou@gmail.com>
 Date: Wed, 15 May 2024 00:07:41 +0800
 Subject: [PATCH 2/2] wayland/text-input-v1: Implement basic text-input-v1
@@ -44,12 +44,12 @@ Closes <https://gitlab.gnome.org/GNOME/mutter/-/issues/3200>.
  src/meson.build                          |   3 +
  src/wayland/meta-wayland-seat.c          |  12 +-
  src/wayland/meta-wayland-seat.h          |   2 +
- src/wayland/meta-wayland-text-input-v1.c | 862 +++++++++++++++++++++++
+ src/wayland/meta-wayland-text-input-v1.c | 859 +++++++++++++++++++++++
  src/wayland/meta-wayland-text-input-v1.h |  38 +
  src/wayland/meta-wayland-versions.h      |   1 +
  src/wayland/meta-wayland.c               |   7 +
  src/wayland/meta-wayland.h               |   2 +
- 10 files changed, 936 insertions(+), 5 deletions(-)
+ 10 files changed, 933 insertions(+), 5 deletions(-)
  create mode 100644 src/wayland/meta-wayland-text-input-v1.c
  create mode 100644 src/wayland/meta-wayland-text-input-v1.h
 
@@ -198,10 +198,10 @@ index 169a92e4e17..10633b02947 100644
    MetaWaylandEventHandler *default_handler;
 diff --git a/src/wayland/meta-wayland-text-input-v1.c b/src/wayland/meta-wayland-text-input-v1.c
 new file mode 100644
-index 00000000000..c6e44c6c2c6
+index 00000000000..f822e39f120
 --- /dev/null
 +++ b/src/wayland/meta-wayland-text-input-v1.c
-@@ -0,0 +1,862 @@
+@@ -0,0 +1,859 @@
 +/*
 + * Copyright (C) 2024 SUSE LLC
 + *
@@ -712,23 +712,20 @@ index 00000000000..c6e44c6c2c6
 +{
 +  MetaWaylandTextInputV1 *text_input = wl_resource_get_user_data (resource);
 +  ClutterInputFocus *focus = text_input->input_focus;
-+  graphene_rect_t cursor_rect;
-+  float x1, y1;
 +
 +  if (!client_matches_focus (text_input, client))
 +    return;
 +
++  /*
++   * This means text was changed outside of normal input method flow, but we are
++   * still focusing the same text entry, so we only reset states, but don't
++   * reset focus, cursor position and panel visibility.
++   */
 +  g_clear_pointer (&text_input->surrounding.text, g_free);
-+  /* Reset everything we pass to Clutter. */
-+  /* FIXME: Is this necessary? */
 +  clutter_input_focus_set_surrounding (focus, NULL, 0, 0);
 +  clutter_input_focus_set_content_hints (focus, 0);
 +  clutter_input_focus_set_content_purpose (focus,
 +                                           CLUTTER_INPUT_CONTENT_PURPOSE_NORMAL);
-+  meta_wayland_surface_get_absolute_coordinates (text_input->surface,
-+                                                 0, 0, &x1, &y1);
-+  graphene_rect_init (&cursor_rect, x1, y1, 0, 0);
-+  clutter_input_focus_set_cursor_location (focus, &cursor_rect);
 +}
 +
 +static ClutterInputContentHintFlags
@@ -818,12 +815,12 @@ index 00000000000..c6e44c6c2c6
 +}
 +
 +static void
-+text_input_v1_set_cursor_rectangle (struct wl_client *client,
-+                                 struct wl_resource  *resource,
-+                                 int32_t              x,
-+                                 int32_t              y,
-+                                 int32_t              width,
-+                                 int32_t              height)
++text_input_v1_set_cursor_rectangle (struct wl_client   *client,
++                                    struct wl_resource *resource,
++                                    int32_t             x,
++                                    int32_t             y,
++                                    int32_t             width,
++                                    int32_t             height)
 +{
 +  MetaWaylandTextInputV1 *text_input = wl_resource_get_user_data (resource);
 +  ClutterInputFocus *focus = text_input->input_focus;
