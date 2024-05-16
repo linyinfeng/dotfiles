@@ -10,9 +10,5 @@
     [General]
     ApiLevel = 30
   '';
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    "armv7l-linux"
-  ];
   environment.global-persistence.user.directories = [ ".local/share/waydroid" ];
 }
