@@ -24,7 +24,6 @@
 
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks-nix.inputs.flake-compat.follows = "flake-compat";
-    pre-commit-hooks-nix.inputs.flake-utils.follows = "flake-utils";
     pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
     pre-commit-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     pre-commit-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
