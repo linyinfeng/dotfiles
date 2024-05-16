@@ -27,7 +27,7 @@ in
         echo "push cache to cahche.li7g.com for hydra gcroot: $root"
         # TODO set multipart-upload=true
         # currently this does not work on aws-s3-reverse-proxy
-        nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true" "$root" --verbose
+        nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd" "$root" --verbose
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     scriptArgs = "%I";
