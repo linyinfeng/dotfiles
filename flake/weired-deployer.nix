@@ -10,7 +10,6 @@ let
   mkHost = _name: _cfg: { };
 in
 {
-  debug = true;
   perSystem =
     {
       config,
