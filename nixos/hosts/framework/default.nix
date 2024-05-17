@@ -47,7 +47,7 @@
       boot.loader.timeout = 0;
 
       # kernel tweaks
-      boot.kernel.intel.type = "lts";
+      boot.kernel.intel.type = "mainline-tracking";
       boot.kernelModuleSigning.enable = true;
       boot.kernelLockdown = true;
 
