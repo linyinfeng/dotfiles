@@ -46,7 +46,7 @@ in
       exec = "qq --enable-wayland-ime %U";
       icon = "qq";
       categories = [ "Network" ];
-      settings.StartupWMClass = "Element";
+      settings.StartupWMClass = "QQ";
     };
     element-desktop = {
       name = "Elment";
