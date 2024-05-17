@@ -26,7 +26,7 @@ index 04ee51dbaa5..6ae226131c4 100644
 GitLab
 
 
-From 9e35a63a0511bd84a911fd75d356448b433278ab Mon Sep 17 00:00:00 2001
+From 6b9bbebbdc3a8b35f898a269227f36a36590359e Mon Sep 17 00:00:00 2001
 From: Alynx Zhou <alynx.zhou@gmail.com>
 Date: Wed, 15 May 2024 00:07:41 +0800
 Subject: [PATCH 2/2] wayland/text-input-v1: Implement basic text-input-v1
@@ -198,7 +198,7 @@ index 169a92e4e17..10633b02947 100644
    MetaWaylandEventHandler *default_handler;
 diff --git a/src/wayland/meta-wayland-text-input-v1.c b/src/wayland/meta-wayland-text-input-v1.c
 new file mode 100644
-index 00000000000..f822e39f120
+index 00000000000..1826a4ff43e
 --- /dev/null
 +++ b/src/wayland/meta-wayland-text-input-v1.c
 @@ -0,0 +1,859 @@
@@ -240,22 +240,21 @@ index 00000000000..f822e39f120
 + * us to hold pending state and apply on commit, and all responses are applied
 + * after we send done.
 + *
-+ * This implementation is currently incomplete and WIP!!!
-+ * Reminders for my self:
-+ * Things won't be implemented:
-+ * - set_preferred_language (We don't have equivalence in Clutter.)
++ * This implementation is incomplete, but it do make IME work.
++ *
++ * Things won't be implemented (Reminders for myself):
++ * - set_preferred_language (We don't have equivalence in ClutterInputMethod.)
 + * - invoke_action (No description about what button and index are.)
-+ * - input_panel_state (We don't set this from Clutter to text_input, we only
-+ *   set this from text_input to Clutter.)
-+ * - cursor_position (Don't understand why we need this and Clutter does not set
-+ *   this.)
-+ * - language (We don't have equivalence in Clutter.)
-+ * - text_direction (We don't have equivalence in Clutter.)
-+ * Things will be implemented but currently not (They are not necessary if you
-+ * only needs to make IMEs work, and I currently don't know where to update
-+ * those events.):
-+ * - modifiers_map
-+ * - keysym
++ * - input_panel_state (We don't set this from ClutterInputFocus to text_input,
++ *   we only set this from text_input to ClutterInputFocus.)
++ * - cursor_position (We don't have equivalence in ClutterInputMethod.)
++ * - language (We don't have equivalence in ClutterInputMethod.)
++ * - text_direction (We don't have equivalence in ClutterInputMethod.)
++ * - keysym (This matches keysym request in input-method-v1, but we only have
++ *   forward_key in ClutterInputMethod, which is more like key request in
++ *   input-method-v1 and will finally become a keyboard key event, we don't have
++ *   equivalence for this in ClutterInputMethod.)
++ * - modifiers_map (This is used by keysym and we don't support keysym.)
 + */
 +
 +struct _MetaWaylandTextInputV1
@@ -993,6 +992,7 @@ index 00000000000..f822e39f120
 +  return text_input;
 +}
 +
++/* This function eats key events and will send them to input method. */
 +gboolean
 +meta_wayland_text_input_v1_update (MetaWaylandTextInputV1 *text_input,
 +                                   const ClutterEvent     *event)
