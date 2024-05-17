@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  ini = pkgs.formats.ini { };
+in
 lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   services.xserver = {
     enable = true;
@@ -47,21 +50,23 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
           inherit (ownerOptions) user group;
         };
       };
-      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.crt" = {
-        "L+" = {
-          argument = "${config.security.acme.tfCerts."li7g_com".fullChain}";
-          inherit (ownerOptions) user group;
-        };
-      };
-      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/certificates/rdp-tls.key" = {
-        "L+" = {
-          argument = config.security.acme.tfCerts."li7g_com".key;
-          inherit (ownerOptions) user group;
-        };
-      };
       "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" = {
         "L+" = {
           argument = config.sops.templates."gnome-remote-desktop-credentials".path;
+          inherit (ownerOptions) user group;
+        };
+      };
+      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/grd.conf" = {
+        "L+" = {
+          argument = toString (
+            ini.generate "grd.conf" {
+              RDP = {
+                enabled = true;
+                tls-key = config.security.acme.tfCerts."li7g_com".key;
+                tls-cert = "${config.security.acme.tfCerts."li7g_com".fullChain}";
+              };
+            }
+          );
           inherit (ownerOptions) user group;
         };
       };
