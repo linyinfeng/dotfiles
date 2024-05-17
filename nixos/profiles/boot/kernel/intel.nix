@@ -1,13 +1,30 @@
-{ pkgs, lib, ... }:
 {
-  boot = {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  cfg = config.boot.kernel.intel;
+in
+{
+  options.boot.kernel.intel.type = lib.mkOption {
+    type = lib.types.enum [
+      "lts"
+      "mainline-tracking"
+    ];
+    default = "lts";
+  };
+  config.boot = {
     # https://github.com/intel/linux-intel-lts/tags
     # https://github.com/intel/mainline-tracking/tags
     kernelPackages =
       let
-        source = pkgs.nur.repos.linyinfeng.sources.linux-intel-lts;
+        source = pkgs.nur.repos.linyinfeng.sources."linux-intel-${cfg.type}";
         intelVersion = source.version;
-        version = lib.elemAt (lib.strings.match "lts-v([0-9\\.]+)-linux-([0-9]+T[0-9]+Z)" intelVersion) 0;
+        version =
+          lib.elemAt (lib.strings.match "${cfg.type}-v([0-9\\.]+)-linux-([0-9]+T[0-9]+Z)" intelVersion)
+            0;
         major = lib.versions.major version;
         minor = lib.versions.minor version;
         linux_intel_fn =
@@ -41,8 +58,4 @@
       # currently nothing
     ];
   };
-  # because kernel needs to be recompiled
-  # enable module signing and lockdown by the way
-  boot.kernelModuleSigning.enable = true;
-  boot.kernelLockdown = true;
 }

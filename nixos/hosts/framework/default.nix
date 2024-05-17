@@ -12,7 +12,7 @@
       boot.plymouth
       boot.secure-boot
       boot.lanzaboote-uki
-      boot.kernel.intel-lts
+      boot.kernel.intel
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
@@ -32,8 +32,7 @@
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      # TODO wait for https://github.com/NixOS/nixpkgs/issues/304559
-      # hardware.sr-iov
+      hardware.sr-iov
       users.yinfeng
     ])
     ++ [ ./_hardware.nix ];
@@ -46,6 +45,11 @@
         configurationLimit = 10;
       };
       boot.loader.timeout = 0;
+
+      # kernel tweaks
+      boot.kernel.intel.type = "lts";
+      boot.kernelModuleSigning.enable = true;
+      boot.kernelLockdown = true;
 
       boot.kernelModules = [ "kvm-intel" ];
 
