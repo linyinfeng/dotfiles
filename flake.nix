@@ -73,7 +73,7 @@
     typhon.inputs.crane.follows = "crane";
     typhon.inputs.flake-compat.follows = "flake-compat";
     typhon.inputs.flake-schemas.follows = "flake-schemas";
-    # typhon.inputs.nixpkgs.follows = "nixpkgs";
+    typhon.inputs.nixpkgs.follows = "nixpkgs";
     typhon.inputs.rust-overlay.follows = "rust-overlay";
 
     # TODO use upstream
@@ -323,11 +323,6 @@
             ]
             [
               "nixos-riscv"
-              "nixpkgs"
-            ]
-            # TODO wasm-binding workaround
-            [
-              "typhon"
               "nixpkgs"
             ]
           ];
