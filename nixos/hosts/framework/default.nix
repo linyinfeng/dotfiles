@@ -32,7 +32,8 @@
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      hardware.sr-iov
+      # TODO wait for mainlining
+      # hardware.sr-iov
       users.yinfeng
     ])
     ++ [ ./_hardware.nix ];
