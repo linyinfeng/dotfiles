@@ -2,6 +2,7 @@
 let
   cfg = config.services.tailscale;
   interfaceName = "tailscale0";
+  exitNode = config.networking.hostsData.indexed;
 in
 lib.mkMerge [
   { services.tailscale.enable = lib.mkDefault config.networking.hostsData.indexed; }
@@ -19,7 +20,9 @@ lib.mkMerge [
           echo "tailscale already up, skip"
         else
           echo "tailscale down, login using auth key"
-          tailscale up --auth-key "file:${config.sops.secrets."tailscale_tailnet_key".path}"
+          tailscale up --reset \
+            --auth-key "file:${config.sops.secrets."tailscale_tailnet_key".path}" \
+            ${lib.optionalString exitNode "--advertise-exit-node"}
         fi
       '';
       serviceConfig = {
