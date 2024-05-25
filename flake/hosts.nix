@@ -468,8 +468,8 @@ in
   ];
 
   flake.checks = lib.recursiveUpdate hostToplevels {
-    "aarch64-linux"."nixos/enchilada/android-bootimg" =
+    "aarch64-linux"."android-bootimg/enchilada" =
       self.nixosConfigurations.enchilada.config.mobile.outputs.android.android-bootimg;
-    "riscv64-linux"."nixos/duo/bootsd" = self.nixosConfigurations.duo.config.system.build.bootsd;
+    "riscv64-linux"."bootsd/duo" = self.nixosConfigurations.duo.config.system.build.bootsd;
   };
 }
