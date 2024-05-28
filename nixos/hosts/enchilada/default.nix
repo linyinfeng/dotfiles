@@ -22,33 +22,16 @@
         virtualization.waydroid
         users.yinfeng
       ]
-      ++ [
-        # ./_gnome-mobile # crash
-        ./kernel.nix
-      ]
+      ++ [ ./kernel.nix ]
     );
 
   config = lib.mkMerge [
     # desktop
     {
-      services.xserver = {
+      services.xserver.desktopManager.phosh = {
         enable = true;
-        displayManager.lightdm = {
-          enable = true;
-          # # Workaround for autologin only working at first launch.
-          # # A logout or session crashing will show the login screen otherwise.
-          # extraSeatDefaults = ''
-          #   session-cleanup-script=${pkgs.procps}/bin/pkill -P1 -fx ${pkgs.lightdm}/sbin/lightdm
-          # '';
-        };
-        desktopManager.plasma5.mobile.enable = true;
-      };
-      services.displayManager = {
-        autoLogin = {
-          enable = true;
-          user = "yinfeng";
-        };
-        defaultSession = "plasma-mobile";
+        user = "yinfeng";
+        group = "users";
       };
       i18n.inputMethod.enabled = "fcitx5";
       hardware.sensor.iio.enable = true;
@@ -60,16 +43,14 @@
         alsa.enable = false;
         jack.enable = false;
       };
+      programs.calls.enable = true;
       programs.dconf.enable = true;
-      # services.fprintd.enable = true; # not working
-      environment.systemPackages = with pkgs; [ discover ];
+      services.fprintd.enable = true;
+      environment.systemPackages = with pkgs; [
+        chatty
+        megapixels
+      ];
       system.nproc = 8;
-    }
-
-    # tweaks
-    {
-      # not working
-      systemd.services.msm-modem-uim-selection.enable = lib.mkForce false;
     }
 
     # applications
@@ -81,27 +62,28 @@
 
     # usb network
     {
+      mobile.boot.stage-1.usb.features = [ "rndis" ];
       # TODO broken
       # mobile.boot.stage-1.usb.features = ["rndis"];
-      # manual rndis setup
-      systemd.services.setup-rndis = {
-        script = ''
-          cd /sys/kernel/config/usb_gadget/g1
-          if [ ! -e functions/rndis.usb0 ]; then
-            mkdir functions/rndis.usb0
-            ln -s functions/rndis.usb0 configs/c.1/rndis
-            (cd /sys/class/udc; echo *) > UDC
-          fi
-        '';
-        path = with pkgs; [ iproute2 ];
-        wantedBy = [ "multi-user.target" ];
-      };
-      systemd.network.networks."50-usb0" = {
-        matchConfig = {
-          Name = "usb0";
-        };
-        address = [ "172.16.42.1/24" ];
-      };
+      # # manual rndis setup
+      # systemd.services.setup-rndis = {
+      #   script = ''
+      #     cd /sys/kernel/config/usb_gadget/g1
+      #     if [ ! -e functions/rndis.usb0 ]; then
+      #       mkdir functions/rndis.usb0
+      #       ln -s functions/rndis.usb0 configs/c.1/rndis
+      #       (cd /sys/class/udc; echo *) > UDC
+      #     fi
+      #   '';
+      #   path = with pkgs; [ iproute2 ];
+      #   wantedBy = [ "multi-user.target" ];
+      # };
+      # systemd.network.networks."50-usb0" = {
+      #   matchConfig = {
+      #     Name = "usb0";
+      #   };
+      #   address = [ "172.16.42.1/24" ];
+      # };
     }
 
     # user

@@ -298,7 +298,7 @@
 
     # other
 
-    mobile-nixos.url = "github:nixos/mobile-nixos/development";
+    mobile-nixos.url = "github:linyinfeng/mobile-nixos/development";
     mobile-nixos.flake = false;
   };
 
