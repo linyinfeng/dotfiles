@@ -8,6 +8,7 @@
 {
   imports =
     suites.mobileWorkstation
+    ++ suites.games
     ++ (with profiles; [
       boot.plymouth
       boot.secure-boot
