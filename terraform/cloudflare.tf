@@ -289,18 +289,6 @@ resource "cloudflare_record" "github_pages_challenge" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-# acme
-
-resource "cloudflare_page_rule" "acme" {
-  zone_id  = cloudflare_zone.com_li7g.id
-  target   = "*.li7g.com/.well-known/acme-challenge/*"
-  priority = 1
-  actions {
-    automatic_https_rewrites = "off"
-    ssl                      = "off"
-  }
-}
-
 # cache
 
 resource "cloudflare_record" "li7g_b2" {
@@ -319,7 +307,10 @@ resource "cloudflare_record" "li7g_cache" {
   value   = module.b2_download_url.host
   zone_id = cloudflare_zone.com_li7g.id
 }
-resource "cloudflare_ruleset" "li7g_rewrite" {
+
+# Ruleset
+
+resource "cloudflare_ruleset" "li7g_http_request_transform" {
   name        = "url-rewrite"
   description = "URL Rewrite"
   kind        = "zone"
@@ -341,9 +332,28 @@ resource "cloudflare_ruleset" "li7g_rewrite" {
   }
 }
 
-# CN Block
+resource "cloudflare_ruleset" "li7g_http_config_settings" {
+  name        = "acme-challenge"
+  description = "Disable SSL for ACME challenge"
+  kind        = "zone"
+  zone_id     = cloudflare_zone.com_li7g.id
+  phase       = "http_config_settings"
 
-resource "cloudflare_ruleset" "li7g_block_cn_traffic" {
+  rules {
+    enabled = true
+    action  = "set_config"
+    action_parameters {
+      automatic_https_rewrites = false
+      ssl                      = "off"
+    }
+    expression  = <<EOT
+      (starts_with(http.request.uri.path, "/.well-known/acme-challenge/"))
+    EOT
+    description = "Disable SSL for ACME challenge"
+  }
+}
+
+resource "cloudflare_ruleset" "li7g_http_request_firewall_custom" {
   name        = "block-cn-traffic"
   description = "Block CN GET traffic for some hosts"
   kind        = "zone"
@@ -366,8 +376,6 @@ resource "cloudflare_ruleset" "li7g_block_cn_traffic" {
     description = "Block Traffic to some site from CN"
   }
 }
-
-# http request cache settings
 
 resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
   name        = "cache-settings"
