@@ -71,6 +71,7 @@ in
         "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
         "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
       ];
+      Restart = "on-failure";
     };
     wantedBy = [ "multi-user.target" ];
   };
