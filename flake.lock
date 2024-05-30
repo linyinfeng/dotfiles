@@ -451,6 +451,29 @@
         "type": "github"
       }
     },
+    "hydra": {
+      "inputs": {
+        "nix": [
+          "blank"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716479415,
+        "narHash": "sha256-WAJJ4UL3hsqsfZ05cHthjEwItnv7Xy84r2y6lzkBMh8=",
+        "owner": "nixos",
+        "repo": "hydra",
+        "rev": "b3e0d9a8b78d55e5fea394839524f5a24d694230",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "hydra",
+        "type": "github"
+      }
+    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -1368,6 +1391,7 @@
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
         "home-manager": "home-manager",
+        "hydra": "hydra",
         "hyprcursor": "hyprcursor",
         "hyprland": "hyprland",
         "hyprland-protocols": "hyprland-protocols",

@@ -31,6 +31,7 @@ let
     inputs.hyprwm-contrib.overlays.default
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlays.default
+    inputs.hydra.overlays.default
     (
       final: prev:
       let
@@ -102,6 +103,10 @@ let
       };
 
       # adjustment
+      nixVersions = prev.nixVersions // {
+        selected = final.nixVersions.latest;
+      };
+      hydra = prev.hydra.override { nix = final.nixVersions.selected; };
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;
