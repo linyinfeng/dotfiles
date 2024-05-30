@@ -43,7 +43,10 @@
   # `nix.channel.enable = false` will set 'nix-path =' in system nix.conf
   nix.settings.nix-path = config.nix.nixPath;
 
-  systemd.services.nix-daemon.serviceConfig.Slice = "minor.slice";
+  systemd.services.nix-daemon.serviceConfig = {
+    Slice = "minor.slice";
+    CPUWeight = "idle";
+  };
 
   environment.global-persistence.user.directories = [ ".cache/nix" ];
 }
