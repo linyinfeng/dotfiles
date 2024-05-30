@@ -114,8 +114,7 @@ let
         };
       };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-debug-moon.patch ];
-        buildFlags = (old.buildFlags or [ ]) ++ [ "ZT_DEBUG=1" ];
+        patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
       });
       tailscale = prev.tailscale.overrideAttrs (old: {
         subPackages = old.subPackages ++ [ "cmd/derper" ];

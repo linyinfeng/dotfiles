@@ -1,0 +1,13 @@
+diff --git a/node/World.hpp b/node/World.hpp
+index a13d59a2..a4fedf80 100644
+--- a/node/World.hpp
++++ b/node/World.hpp
+@@ -31,7 +31,7 @@
+  * of one root or its withdrawal due to compromise without taking the whole net
+  * down.
+  */
+-#define ZT_WORLD_MAX_ROOTS 4
++#define ZT_WORLD_MAX_ROOTS 16
+
+ /**
+  * Maximum number of stable endpoints per root (sanity limit, okay to increase)
