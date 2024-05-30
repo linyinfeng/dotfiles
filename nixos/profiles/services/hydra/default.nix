@@ -9,7 +9,12 @@ let
     src = ./hook.sh;
     isExecutable = true;
     inherit (pkgs.stdenvNoCC) shell;
-    inherit (pkgs) jq systemd postgresql;
+    inherit (pkgs)
+      jq
+      systemd
+      postgresql
+      ripgrep
+      ;
   };
 in
 {

@@ -2,10 +2,12 @@
 # shellcheck shell=bash
 
 set -e
+set -x
 
 export PATH="@jq@/bin:$PATH"
 export PATH="@postgresql@/bin:$PATH"
 export PATH="@systemd@/bin:$PATH"
+export PATH="@ripgrep@/bin:$PATH"
 
 time=$(date --iso-8601=seconds)
 mkdir -p "/tmp/hydra-events"
@@ -37,7 +39,7 @@ if [ "$hit" = "true" ]; then
           ORDER BY id DESC
           LIMIT 1
       ")
-    commit=$(echo "$flake_url" | grep -E -o '\w{40}$')
+    commit=$(echo "$flake_url" | rg --only-matching '/(\w{40})(\?.*)?$' --replace '$1')
 
     mkdir -p "/tmp/dotfiles-channel-update"
     update_file="/tmp/dotfiles-channel-update/$(basename "$dump_file")"
