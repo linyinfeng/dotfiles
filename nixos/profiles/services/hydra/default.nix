@@ -118,6 +118,11 @@ in
     }
 
     # decrease cpu weight
-    { systemd.services.hydra-evaluator.serviceConfig.Slice = "minor.slice"; }
+    {
+      systemd.services.hydra-evaluator.serviceConfig = {
+        Slice = "minor.slice";
+        CPUWeight = 1000; # very high cpu weight in minor.slice
+      };
+    }
   ];
 }
