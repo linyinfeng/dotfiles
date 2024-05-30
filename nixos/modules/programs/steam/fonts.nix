@@ -1,13 +1,13 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 let
-  steamFontsDir = pkgs.symlinkJoin {
-    name = "steam-fonts-dir";
-    paths = config.fonts.packages;
+  steamFonts = pkgs.symlinkJoin {
+    name = "steam-fonts";
+    paths = with pkgs; [
+      source-han-serif
+      source-han-sans
+      noto-fonts-emoji
+    ];
   };
-  steamFonts = pkgs.runCommand "steam-fonts" { preferLocalBuild = true; } ''
-    mkdir -p "$out/share"
-    ln -s "${steamFontsDir}" "$out/share/fonts"
-  '';
 in
 {
   programs.steam.fontPackages = [ steamFonts ];
