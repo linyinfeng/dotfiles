@@ -232,9 +232,7 @@
     haumea.url = "github:nix-community/haumea";
     haumea.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO wait for https://github.com/oxalica/rust-overlay/issues/173
-    # rust-overlay.url = "github:oxalica/rust-overlay";
-    rust-overlay.url = "github:oxalica/rust-overlay/2e7ccf572ce0f0547d4cf4426de4482936882d0e";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
     rust-overlay.inputs.flake-utils.follows = "flake-utils";
 
