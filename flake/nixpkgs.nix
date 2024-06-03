@@ -163,7 +163,11 @@ let
   };
 
   lateFixes = nixpkgsArgs: final: prev: {
-    # currently nothing
+    # # currently nothing
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=316558
+    ccache = prev.ccache.overrideAttrs (oldAttrs: {
+      src = (import inputs.nixpkgs-fix-ccache nixpkgsArgs).ccache.src;
+    });
   };
 in
 {

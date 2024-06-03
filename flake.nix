@@ -304,6 +304,10 @@
 
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/development";
     mobile-nixos.flake = false;
+
+    # fixes
+    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=316558
+    nixpkgs-fix-ccache.url = "github:nixos/nixpkgs/pull/316558/head";
   };
 
   outputs =
