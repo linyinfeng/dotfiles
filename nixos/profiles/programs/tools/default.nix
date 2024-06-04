@@ -67,6 +67,7 @@ in
       powerstat
       powertop
       procs
+      pv
       ripgrep
       rlwrap
       unar
