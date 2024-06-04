@@ -132,6 +132,8 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.phone
+          graphical.gnome
+          graphical.fonts
           i18n.input-method
           development.shells
           services.gnupg
