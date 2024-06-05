@@ -6,6 +6,8 @@ let
       source-han-serif
       source-han-sans
       noto-fonts-emoji
+      wqy_zenhei
+      wqy_microhei
     ];
   };
 in
