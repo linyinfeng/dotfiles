@@ -60,7 +60,7 @@ in
         # desktop
         {
           services.xserver.desktopManager.gnome.enable = true;
-          hardware.sensor.iio.enable = true;
+          i18n.inputMethod.enabled = "ibus";
           # pulseaudio as main sound server
           hardware.pulseaudio.enable = lib.mkForce true;
           services.pipewire = {
@@ -83,13 +83,12 @@ in
         {
           environment.systemPackages = with pkgs; [
             # currently nothing
+            libssc
           ];
         }
 
         # usb network
         {
-          # TODO broken
-          # mobile.boot.stage-1.usb.features = ["rndis"];
           # manual rndis setup
           systemd.services.setup-rndis = {
             script = ''

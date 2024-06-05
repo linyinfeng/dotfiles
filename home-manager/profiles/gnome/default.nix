@@ -27,6 +27,7 @@ let
     mkString
     type
     ;
+  longStatusBar = lib.elem "workstation" osConfig.system.types;
 in
 lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
   home.packages = extensionPkgs;
@@ -72,7 +73,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     "org/gnome/desktop/interface" = {
       gtk-theme = "adw-gtk3";
       clock-show-weekday = true;
-      show-battery-percentage = true;
+      show-battery-percentage = longStatusBar;
       locate-pointer = true;
       monospace-font-name = "Monospace 10";
     };

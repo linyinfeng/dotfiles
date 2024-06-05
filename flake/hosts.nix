@@ -135,6 +135,7 @@ let
           graphical.gnome
           graphical.fonts
           i18n.input-method
+          programs.tools
           development.shells
           services.gnupg
           services.pipewire
@@ -213,9 +214,11 @@ let
       phone =
         (with suites; base)
         ++ (with profiles; [
+          gnome
           dconf-proxy
-          firefox
+          chromium
           fcitx5
+          rime
           development
           direnv
           shells
