@@ -545,28 +545,22 @@ with lib;
         };
         routes = [
           {
-            routeConfig = {
-              Destination = "0.0.0.0/0";
-              Type = "local";
-              Table = cfg.tproxy.routingTable;
-            };
+            Destination = "0.0.0.0/0";
+            Type = "local";
+            Table = cfg.tproxy.routingTable;
           }
           {
-            routeConfig = {
-              Destination = "::/0";
-              Type = "local";
-              Table = cfg.tproxy.routingTable;
-            };
+            Destination = "::/0";
+            Type = "local";
+            Table = cfg.tproxy.routingTable;
           }
         ];
         routingPolicyRules = [
           {
-            routingPolicyRuleConfig = {
-              Family = "both";
-              FirewallMark = cfg.tproxy.fwmark;
-              Priority = config.routingPolicyPriorities.fw-proxy;
-              Table = cfg.tproxy.routingTable;
-            };
+            Family = "both";
+            FirewallMark = cfg.tproxy.fwmark;
+            Priority = config.routingPolicyPriorities.fw-proxy;
+            Table = cfg.tproxy.routingTable;
           }
         ];
       };

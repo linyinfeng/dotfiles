@@ -391,16 +391,12 @@ in
         };
         addresses =
           lib.lists.map (a: {
-            addressConfig = {
-              Address = "${a}/32";
-              Scope = "global";
-            };
+            Address = "${a}/32";
+            Scope = "global";
           }) asCfg.thisHost.addressesV4
           ++ lib.lists.map (a: {
-            addressConfig = {
-              Address = "${a}/128";
-              Scope = "global";
-            };
+            Address = "${a}/128";
+            Scope = "global";
           }) asCfg.thisHost.addressesV6;
       };
     };

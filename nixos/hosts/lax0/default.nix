@@ -133,26 +133,22 @@ in
         };
         addresses = [
           {
-            addressConfig =
+            Address =
               let
                 address =
                   assert lib.length hostData.endpoints_v4 == 1;
                   lib.elemAt hostData.endpoints_v4 0;
               in
-              {
-                Address = "${address}/26";
-              };
+              "${address}/26";
           }
           {
-            addressConfig =
+            Address =
               let
                 address =
                   assert lib.length hostData.endpoints_v6 == 1;
                   lib.elemAt hostData.endpoints_v6 0;
               in
-              {
-                Address = "${address}/64";
-              };
+              "${address}/64";
           }
         ];
         dns = [
@@ -160,16 +156,8 @@ in
           "8.8.4.4"
         ];
         routes = [
-          {
-            routeConfig = {
-              Gateway = "142.171.74.65";
-            };
-          }
-          {
-            routeConfig = {
-              Gateway = "fe80::217:dfff:feb3:a800";
-            };
-          }
+          { Gateway = "142.171.74.65"; }
+          { Gateway = "fe80::217:dfff:feb3:a800"; }
         ];
       };
     })

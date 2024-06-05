@@ -140,13 +140,7 @@ in
           Name = "he-ipv6";
         };
         address = [ "2001:470:1c:4ff::2/64" ];
-        routes = [
-          {
-            routeConfig = {
-              Gateway = "::";
-            };
-          }
-        ];
+        routes = [ { Gateway = "::"; } ];
       };
     })
 

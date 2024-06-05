@@ -250,11 +250,9 @@ in
           "70-${cfg.interfaces.dummy.name}" = {
             routingPolicyRules = [
               {
-                routingPolicyRuleConfig = {
-                  Family = "both";
-                  Table = cfg.routingTable.id;
-                  Priority = cfg.routingTable.priority;
-                };
+                Family = "both";
+                Table = cfg.routingTable.id;
+                Priority = cfg.routingTable.priority;
               }
             ];
           };

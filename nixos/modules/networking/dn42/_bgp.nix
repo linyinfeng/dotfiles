@@ -253,11 +253,9 @@ lib.mkIf (cfg.enable) (
         "70-${cfg.interfaces.dummy.name}" = {
           routingPolicyRules = [
             {
-              routingPolicyRuleConfig = {
-                Family = "both";
-                Table = bgpCfg.routingTable.id;
-                Priority = bgpCfg.routingTable.priority;
-              };
+              Family = "both";
+              Table = bgpCfg.routingTable.id;
+              Priority = bgpCfg.routingTable.priority;
             }
           ];
         };
@@ -353,12 +351,10 @@ lib.mkIf (cfg.enable) (
               };
               wireguardPeers = [
                 {
-                  wireguardPeerConfig = {
-                    Endpoint = "${peerCfg.endpoint.address}:${toString peerCfg.endpoint.port}";
-                    PublicKey = peerCfg.wireguard.remotePublicKey;
-                    AllowedIPs = peerCfg.wireguard.allowedIps;
-                    PersistentKeepalive = peerCfg.wireguard.persistentKeepAlive;
-                  };
+                  Endpoint = "${peerCfg.endpoint.address}:${toString peerCfg.endpoint.port}";
+                  PublicKey = peerCfg.wireguard.remotePublicKey;
+                  AllowedIPs = peerCfg.wireguard.allowedIps;
+                  PersistentKeepalive = peerCfg.wireguard.persistentKeepAlive;
                 }
               ];
             }
@@ -376,25 +372,19 @@ lib.mkIf (cfg.enable) (
           };
           addresses =
             lib.lists.map (address: {
-              addressConfig = {
-                Address = "${address}/32";
-                Peer = "${peerCfg.linkAddresses.v4.peer}/32";
-                Scope = "link";
-              };
+              Address = "${address}/32";
+              Peer = "${peerCfg.linkAddresses.v4.peer}/32";
+              Scope = "link";
             }) asCfg.thisHost.addressesV4
             ++ lib.lists.map (address: {
-              addressConfig = {
-                Address = "${address}/128";
-                Peer = "${peerCfg.linkAddresses.v6.peer}/128";
-                Scope = "link";
-              };
+              Address = "${address}/128";
+              Peer = "${peerCfg.linkAddresses.v6.peer}/128";
+              Scope = "link";
             }) asCfg.thisHost.addressesV6
             ++ [
               {
-                addressConfig = {
-                  Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";
-                  Scope = "link";
-                };
+                Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";
+                Scope = "link";
               }
             ];
           networkConfig = {

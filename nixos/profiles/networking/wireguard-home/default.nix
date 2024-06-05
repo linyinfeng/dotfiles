@@ -47,7 +47,7 @@ in
       PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
       ListenPort = hosts.${hostName}.port;
     };
-    wireguardPeers = [ { wireguardPeerConfig = home; } ];
+    wireguardPeers = [ home ];
   };
   systemd.network.networks."80-wg-home" = {
     matchConfig = {
@@ -55,18 +55,14 @@ in
     };
     addresses = [
       {
-        addressConfig = {
-          Address = "${hosts.${hostName}.ip}/24";
-          Scope = "link";
-        };
+        Address = "${hosts.${hostName}.ip}/24";
+        Scope = "link";
       }
     ];
     routes = lib.lists.map (ip: {
-      routeConfig = {
-        Destination = ip;
-        Scope = "site";
-        PreferredSource = hosts.${hostName}.ip;
-      };
+      Destination = ip;
+      Scope = "site";
+      PreferredSource = hosts.${hostName}.ip;
     }) home.AllowedIPs;
   };
   sops.secrets."wireguard_private_key" = {

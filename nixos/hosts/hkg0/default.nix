@@ -65,15 +65,14 @@ in
         DHCP = "ipv4";
         addresses = [
           {
-            addressConfig =
+
+            Address =
               let
                 address =
                   assert lib.length hostData.endpoints_v6 == 1;
                   lib.elemAt hostData.endpoints_v6 0;
               in
-              {
-                Address = "${address}/64";
-              };
+              "${address}/64";
           }
         ];
         dns = [
@@ -82,13 +81,7 @@ in
           "2001:4860:4860:0:0:0:0:8888"
           "2001:4860:4860:0:0:0:0:8844"
         ];
-        routes = [
-          {
-            routeConfig = {
-              Gateway = "2404:8c80:85:1011::1";
-            };
-          }
-        ];
+        routes = [ { Gateway = "2404:8c80:85:1011::1"; } ];
       };
     })
 
