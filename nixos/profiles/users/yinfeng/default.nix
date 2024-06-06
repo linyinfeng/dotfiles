@@ -46,7 +46,8 @@ in
       ++ groupNameIfPresent "acme"
       ++ groupNameIfPresent "acmetf"
       ++ groupNameIfPresent "windows"
-      ++ groupNameIfPresent "wireshark";
+      ++ groupNameIfPresent "wireshark"
+      ++ groupNameIfPresent "feedbackd";
 
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };

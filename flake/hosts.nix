@@ -132,10 +132,10 @@ let
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.phone
-          graphical.gnome
           graphical.fonts
           i18n.input-method
           programs.tools
+          programs.nix-index
           development.shells
           services.gnupg
           services.pipewire

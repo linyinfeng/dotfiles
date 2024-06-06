@@ -10,6 +10,7 @@ EnumerateGroupBackwardKeys=
 
 [Hotkey/TriggerKeys]
 0=Super+space
+1=Control+space
 
 [Hotkey/AltTriggerKeys]
 0=Shift_L
@@ -74,4 +75,3 @@ AllowInputMethodForPassword=False
 ShowPreeditForPassword=False
 # Interval of saving user data in minutes
 AutoSavePeriod=30
-

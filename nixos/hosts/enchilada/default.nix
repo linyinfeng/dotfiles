@@ -59,22 +59,24 @@ in
 
         # desktop
         {
-          services.xserver.desktopManager.gnome.enable = true;
-          i18n.inputMethod.enabled = "ibus";
-          # pulseaudio as main sound server
-          hardware.pulseaudio.enable = lib.mkForce true;
-          services.pipewire = {
-            audio.enable = false;
-            pulse.enable = false;
-            alsa.enable = false;
-            jack.enable = false;
+          services.xserver.desktopManager.phosh = {
+            enable = true;
+            user = "yinfeng";
+            group = "users";
+            phocConfig = {
+              outputs."DSI-1".scale = 3;
+            };
           };
+          services.gnome.core-utilities.enable = true;
+
+          # not working
+          # services.fprintd.enable = true;
           programs.calls.enable = true;
-          programs.dconf.enable = true;
           services.fprintd.enable = true;
+          programs.feedbackd.enable = true;
           environment.systemPackages = with pkgs; [
             chatty
-            megapixels
+            gnome-console
           ];
           system.nproc = 8;
         }
@@ -82,8 +84,8 @@ in
         # applications
         {
           environment.systemPackages = with pkgs; [
-            # currently nothing
             libssc
+            fastfetch
           ];
         }
 
@@ -113,9 +115,26 @@ in
         # user
         {
           home-manager.users.yinfeng =
-            { suites, ... }:
+            { suites, lib, ... }:
             {
               imports = suites.phone;
+
+              dconf.settings = {
+                "sm/puri/phoc" = {
+                  scale-to-fit = true;
+                  auto-maximize = true;
+                };
+
+                # old gnome configurations
+                "org/gnome/settings-daemon/plugins/power" = {
+                  power-button-action = "nothing";
+                  sleep-inactive-battery-type = "nothing";
+                  sleep-inactive-ac-type = "nothing";
+                };
+                "org/gnome/desktop/session" = {
+                  idle-delay = lib.hm.gvariant.mkUint32 60;
+                };
+              };
             };
           users.users.yinfeng.hashedPasswordFile = lib.mkForce config.sops.secrets."user-pin/yinfeng".path;
           sops.secrets."user-pin/yinfeng" = {
@@ -135,19 +154,9 @@ in
           ];
         }
 
-        # waydroid
-        {
-          services.udev = {
-            extraRules = ''
-              ACTION=="add", SUBSYSTEM=="net", KERNEL=="waydroid0", \
-                RUN+="${config.networking.fw-proxy.scripts}/bin/fw-tproxy-if add waydroid0"
-            '';
-            path = with pkgs; [ nftables ];
-          };
-        }
-
         # other
         {
+          services.tailscale.enable = true;
           networking.campus-network = {
             enable = true;
             auto-login.enable = true;
