@@ -72,7 +72,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/desktop/interface" = {
       gtk-theme = "adw-gtk3";
-      clock-show-weekday = true;
+      clock-show-weekday = longStatusBar;
       show-battery-percentage = longStatusBar;
       locate-pointer = true;
       monospace-font-name = "Monospace 10";
