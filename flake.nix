@@ -155,28 +155,6 @@
     hyprland.url = "github:hyprwm/hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
     hyprland.inputs.systems.follows = "systems";
-    hyprland.inputs.xdph.follows = "xdph";
-    hyprland.inputs.hyprlang.follows = "hyprlang";
-    hyprland.inputs.hyprcursor.follows = "hyprcursor";
-    hyprland.inputs.hyprwayland-scanner.follows = "hyprwayland-scanner";
-    hyprland-protocols.url = "github:hyprwm/hyprland-protocols";
-    hyprland-protocols.inputs.nixpkgs.follows = "nixpkgs";
-    hyprland-protocols.inputs.systems.follows = "systems";
-    xdph.url = "github:hyprwm/xdg-desktop-portal-hyprland";
-    xdph.inputs.hyprland-protocols.follows = "hyprland-protocols";
-    xdph.inputs.nixpkgs.follows = "nixpkgs";
-    xdph.inputs.systems.follows = "systems";
-    xdph.inputs.hyprlang.follows = "hyprlang";
-    hyprlang.url = "github:hyprwm/hyprlang";
-    hyprlang.inputs.nixpkgs.follows = "nixpkgs";
-    hyprlang.inputs.systems.follows = "systems";
-    hyprcursor.url = "github:hyprwm/hyprcursor";
-    hyprcursor.inputs.hyprlang.follows = "hyprlang";
-    hyprcursor.inputs.nixpkgs.follows = "nixpkgs";
-    hyprcursor.inputs.systems.follows = "systems";
-    hyprwayland-scanner.url = "github:hyprwm/hyprwayland-scanner";
-    hyprwayland-scanner.inputs.nixpkgs.follows = "nixpkgs";
-    hyprwayland-scanner.inputs.systems.follows = "systems";
     hyprwm-contrib.url = "github:hyprwm/contrib";
     hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -332,6 +310,32 @@
             [
               "nixos-riscv"
               "nixpkgs"
+            ]
+            [
+              "hyprland"
+              "hyprlang"
+            ]
+            [
+              "hyprland"
+              "hyprlang"
+              "hyprutils"
+            ]
+            [
+              "hyprland"
+              "hyprcursor"
+            ]
+            [
+              "hyprland"
+              "hyprwayland-scanner"
+            ]
+            [
+              "hyprland"
+              "xdph"
+            ]
+            [
+              "hyprland"
+              "xdph"
+              "hyprland-protocols"
             ]
           ];
         };
