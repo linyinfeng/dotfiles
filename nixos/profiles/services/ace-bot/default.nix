@@ -4,12 +4,22 @@
     enable = true;
     managerChatId = "148111617";
     tokenFile = config.sops.secrets."telegram-bot/ace-bot/token".path;
+    packages =
+      with pkgs;
+      [
+        coreutils
+        util-linux
+        procps
+        curlFull
+        wget
+        texlive.combined.scheme-full
+        python3Full
+      ]
+      ++ [ config.nix.package ];
   };
-  nix.settings.allowed-users = [ "ace-bot" ];
   sops.secrets."telegram-bot/ace-bot/token" = {
     sopsFile = config.sops-file.host;
   };
-  environment.systemPackages = with pkgs; [ texlive.combined.scheme-full ];
   services.nginx.virtualHosts."ace-bot.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
