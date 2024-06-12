@@ -15,6 +15,7 @@
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".root = "/var/lib/ace-bot/home";
     extraConfig = ''
+      index =404;
       autoindex on;
     '';
   };
