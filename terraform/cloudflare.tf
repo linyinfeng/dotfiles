@@ -114,6 +114,7 @@ locals {
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
+    ace-bot         = { on = "lax0", proxy = true }
     hledger         = { on = "mtl0", proxy = true }
     vault           = { on = "mtl0", proxy = true }
     pb              = { on = "mtl0", proxy = true }
@@ -370,7 +371,8 @@ resource "cloudflare_ruleset" "li7g_http_request_firewall_custom" {
         ( http.host eq "pb.li7g.com" or
           http.host eq "social.li7g.com" or
           http.host eq "mastodon.li7g.com" or
-          http.host eq "matrix.li7g.com")
+          http.host eq "matrix.li7g.com" or
+          http.host eq "ace-bot.li7g.com")
       )
     EOT
     description = "Block Traffic to some site from CN"
