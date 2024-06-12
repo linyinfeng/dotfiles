@@ -317,11 +317,6 @@
             ]
             [
               "hyprland"
-              "hyprlang"
-              "hyprutils"
-            ]
-            [
-              "hyprland"
               "hyprcursor"
             ]
             [
@@ -336,6 +331,10 @@
               "hyprland"
               "xdph"
               "hyprland-protocols"
+            ]
+            [
+              "hyprland"
+              "hyprutils"
             ]
           ];
         };
