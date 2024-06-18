@@ -180,8 +180,11 @@ in
           config = {
             allowUnfree = true;
             # TODO wait for zotero 7
+            # TODO wati for logseq update
             allowInsecurePredicate =
-              p: (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6";
+              p:
+              (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6"
+              || (p.pname or null) == "electron" && lib.versions.major (p.version or null) == "27"; # for dependency of logseq
           };
           overlays =
             let
