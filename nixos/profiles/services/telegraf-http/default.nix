@@ -70,10 +70,11 @@ let
   };
   overrides = {
     box = [
-      {
-        url = "https://box.li7g.com/accounts/login/?next=/";
-        code = 200;
-      }
+      # TODO broken https://github.com/NixOS/nixpkgs/issues/262907#issuecomment-2018578833
+      # {
+      #   url = "https://box.li7g.com/accounts/login/?next=/";
+      #   code = 200;
+      # }
     ];
     tar = [
       {
