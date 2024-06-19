@@ -1242,22 +1242,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-fix-ccache": {
-      "locked": {
-        "lastModified": 1717341234,
-        "narHash": "sha256-xdlWcQVxQGkBT+NqPd605iHKce+RQphw3H3m4OjZqiw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "898be2ef0f52c3feea5041770929a871c2c73777",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "pull/316558/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-fix-influxdb2": {
       "locked": {
         "lastModified": 1718514032,
@@ -1482,7 +1466,6 @@
         "nixos-riscv": "nixos-riscv",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-fix-ccache": "nixpkgs-fix-ccache",
         "nixpkgs-fix-influxdb2": "nixpkgs-fix-influxdb2",
         "nixpkgs-riscv": [
           "nixos-riscv",

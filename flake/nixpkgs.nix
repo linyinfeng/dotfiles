@@ -164,10 +164,6 @@ let
 
   lateFixes = nixpkgsArgs: final: prev: {
     # # currently nothing
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=316558
-    ccache = prev.ccache.overrideAttrs (oldAttrs: {
-      src = (import inputs.nixpkgs-fix-ccache nixpkgsArgs).ccache.src;
-    });
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=319969
     inherit (import inputs.nixpkgs-fix-influxdb2 nixpkgsArgs) influxdb2;
   };

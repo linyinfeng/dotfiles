@@ -283,8 +283,6 @@
     mobile-nixos.flake = false;
 
     # fixes
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=316558
-    nixpkgs-fix-ccache.url = "github:nixos/nixpkgs/pull/316558/head";
     # TODO wait for https://nixpk.gs/pr-tracker.html?pr=319969
     nixpkgs-fix-influxdb2.url = "github:nixos/nixpkgs/pull/319969/head";
   };
