@@ -7,8 +7,8 @@
       "ca-derivations"
     ];
 
-    # use periodic store optimisation
-    # settings.auto-optimise-store = true;
+    # auto-optimise-store to decrease TBW to SSD
+    settings.auto-optimise-store = true;
     optimise.automatic = lib.mkDefault true;
 
     settings.sandbox = true;
