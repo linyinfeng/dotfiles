@@ -62,7 +62,6 @@ let
     #     code = 200;
     #   }
     # ];
-    palworld = [ ];
     dst = [ ];
     smtp = [ ];
     teamspeak = [ ];

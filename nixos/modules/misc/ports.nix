@@ -77,9 +77,6 @@
       rathole = 3290;
       ntfy = 3300;
       atuin = 3310;
-      palworld = 3320;
-      palworld-rcon = 3321;
-      palworld-query = 3322;
       vlmcsd = 3330;
       jellyfin = 3340;
       jellyfin-https = 3341;

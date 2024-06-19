@@ -8,7 +8,7 @@ let
   gameHome = "/home/steam";
 in
 {
-  imports = suites.games ++ [ ./palworld ];
+  imports = suites.games;
   programs.steam.hidpi = {
     enable = true;
     scale = "2";
