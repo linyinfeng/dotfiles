@@ -44,7 +44,7 @@ in
     };
     zpool = lib.mkOption {
       type = with lib.types; str;
-      default = "zsmalloc";
+      default = "zbud";
     };
     maxPoolPercent = lib.mkOption {
       type = with lib.types; int;
