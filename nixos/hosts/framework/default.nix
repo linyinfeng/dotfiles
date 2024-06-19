@@ -13,7 +13,8 @@
       boot.plymouth
       boot.secure-boot
       boot.lanzaboote-uki
-      boot.kernel.intel
+      # TODO broken
+      # boot.kernel.intel
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
@@ -49,7 +50,8 @@
       boot.loader.timeout = 0;
 
       # kernel tweaks
-      boot.kernel.intel.type = "mainline-tracking";
+      # TODO broken
+      # boot.kernel.intel.type = "mainline-tracking";
       boot.kernelModuleSigning.enable = true;
       boot.kernelLockdown = true;
 
