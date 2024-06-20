@@ -2,32 +2,32 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/aminueza/minio" {
-  version = "2.3.0"
+  version = "2.3.1"
   hashes = [
-    "h1:oRhxnPE5ZSHi1DRg9FgZEURr24URmKpQsfuyAOD4IRc=",
-    "zh:61a8e097e8be360ee213993c059dbbc182c351604f6305736efbeba6b43065c5",
-    "zh:6be11b92754c13fa1052b1f9e84d8d194ec2a9ac22d1e2263c6aa143a097809a",
-    "zh:6e3c3c28143cda788fe7e8193856b5d338f4d19862097d20301eaf5dd681dc27",
-    "zh:79e3f9eb51f5ddaf22e81e7ce9a0580e7d1b9aa8d4ec7fc3f3460123a7d2ed32",
-    "zh:829cab24f11b66cb8adc7468e121e0c418cb9c926c2e25d7b61ba5e67a4b86aa",
-    "zh:8de7afa4f61cc988155934cebd995e55eb3a29be18c7b00308b704f3f3eeac44",
-    "zh:9266c66fa5d456d1e9b559ce17d62e60a0d395989b723c4b9f4ee268ace2d734",
-    "zh:b12d9c33e85d577d3fa1bb1fb60feee9508b2b804bcfb87559a84094c6d4c815",
-    "zh:b87e9b721bf35ce6dcfedbf1341781e84ebdffc71b4fc7fb4a426fc7f639b11c",
-    "zh:bde3acb8cf0834515168d47767a0fae9146d37a412d47e69fed27e46878e2c1e",
-    "zh:d84d300ffbfe0df85fcf2ff522fc98dd1d719974a43a5056af8628dc101424c6",
-    "zh:e758899d278a7a48c41fcf35ff5f572ad7ec900f2d0e712ac76974dbfa14cdce",
+    "h1:qEFCASR1wkwKBVv3AVBzoJEyOmsIWK/D4gQ28TM0nIY=",
+    "zh:13e1afd77318756f12654f177ed1e3b06eb2ed9fe6ac807b5826a1005dbba628",
+    "zh:19ca26bebc2a3297b7b0fdb627c98f800ed8102fa3ecad570f6746ce8d631bf7",
+    "zh:245bd9decc720f16f5837b3483ebb3af97f2c78f7910fe21fe3419699f292eb1",
+    "zh:310a0655bc85e6076e266a0aa04f47271fce543798028dd81e576f988270e1cf",
+    "zh:3fb53acc96e644fbef1b33674db4c388f1d5c2929bf1e9101be0cc8541c17b4b",
+    "zh:54ff3f4fe1fef8f1e60474bcf8e5d7e981c4af58fa9704de9d3138cd11656632",
+    "zh:71c02bc8211ca8daacade12fe6a9a280f89d5eea5f6019c4c70d87fed7a9a605",
+    "zh:8fd5cb13fa505d348870bcd5266e49a5aa8576b11da894e4fa6265e455dbda82",
+    "zh:a0cafae252d13dbf858f35a380278d9b9522308d87e2e2aeabf6bf9d301f5fba",
+    "zh:ada24aad81f0727549223178fe37d2b728a8b18076c73fe5cb50703569fd3163",
+    "zh:c65df91fb34205ad4a12b925d9c618e54d2ef0f99b727cdbcf43fc6e814c3407",
+    "zh:f7c5bf7939b1a1f955921fc29fa03190174a3fe33b88c7626f4b24038f9f558f",
   ]
 }
 
 provider "registry.terraform.io/backblaze/b2" {
-  version = "0.8.9"
+  version = "0.8.12"
   hashes = [
-    "h1:N5oxkisGmkDIdAmncwcmcN5KilDdOG1kJu2+k0ARj80=",
-    "zh:3534b7737d5d555187faec4db6abeb202a90559f2f68e569e48b0acbbdaabe9d",
-    "zh:372e97f55308babb98e175e3464d7088c8182d649e899e3067bb042e655a62c8",
-    "zh:59935a938882daccf93a76ddfdd24113aac7349e0ae555028f340acb211cbaff",
-    "zh:da2d510b081ed9683acd201318f096ea6848843f325eaf8db555702244149532",
+    "h1:rA+Y9HyJGPV7kU52+9vKRM90RiGjdwj9Tas5ZImfsw0=",
+    "zh:bc9d25d21adeafba8edde8d6ffb6150cd5c86c207412c8941347966be3363de5",
+    "zh:c538eaea1b15379635b9d8a2cb862248813022bb0de5481741f18fcc77a10a1b",
+    "zh:cc2767797ad27b9a3b4ad97b6a2f3eeea9f50a6000bbcfa9b44189945dae30b3",
+    "zh:d83b5f0e632ea56570a0737c1896f049367201cc67f5de83baa24272ccdd56a4",
   ]
 }
 
