@@ -106,7 +106,8 @@ let
       nixVersions = prev.nixVersions // {
         selected = final.nixVersions.latest;
       };
-      hydra = prev.hydra.override { nix = final.nixVersions.selected; };
+      # TODO broken with nix 2.23
+      hydra = prev.hydra.override { nix = final.nixVersions.nix_2_22; };
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;
