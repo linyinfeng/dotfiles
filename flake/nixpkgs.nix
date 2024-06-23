@@ -182,7 +182,7 @@ in
             allowInsecurePredicate =
               p:
               (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6"
-              || (p.pname or null) == "electron" && lib.versions.major (p.version or null) == "27"; # for dependency of logseq
+              || (p.pname or null) == "electron" && lib.versions.major (p.version or null) == "28"; # for dependency of logseq
           };
           overlays =
             let
