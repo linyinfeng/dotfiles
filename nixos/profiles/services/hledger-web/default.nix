@@ -26,6 +26,7 @@ in
         git clone "https://-:$token@github.com/linyinfeng/${repoName}.git" "${repoName}"
       fi
       cd "${repoName}"
+      git remote set-url origin "https://-:$token@github.com/linyinfeng/${repoName}.git"
       while true; do
         set +e
         git fetch origin
