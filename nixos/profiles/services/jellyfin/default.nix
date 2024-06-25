@@ -66,7 +66,7 @@ in
   };
 
   # for vaapi support
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   # https://jellyfin.org/docs/general/networking/index.html
   networking.firewall = {
