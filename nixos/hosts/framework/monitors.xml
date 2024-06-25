@@ -1,6 +1,28 @@
 <monitors version="2">
   <configuration>
     <logicalmonitor>
+      <x>1128</x>
+      <y>0</y>
+      <scale>1</scale>
+      <transform>
+        <rotation>right</rotation>
+        <flipped>no</flipped>
+      </transform>
+      <monitor>
+        <monitorspec>
+          <connector>DP-3</connector>
+          <vendor>ASM</vendor>
+          <product>ASM-125FC</product>
+          <serial>0x01010101</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1080</height>
+          <rate>59.999</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
       <x>0</x>
       <y>0</y>
       <scale>2</scale>
@@ -41,24 +63,20 @@
       </monitor>
     </logicalmonitor>
     <logicalmonitor>
-      <x>2256</x>
+      <x>1128</x>
       <y>0</y>
       <scale>1</scale>
-      <transform>
-        <rotation>right</rotation>
-        <flipped>no</flipped>
-      </transform>
       <monitor>
         <monitorspec>
           <connector>DP-3</connector>
-          <vendor>ASM</vendor>
-          <product>ASM-125FC</product>
-          <serial>0x01010101</serial>
+          <vendor>SKY</vendor>
+          <product>24X1Q</product>
+          <serial>0x00000000</serial>
         </monitorspec>
         <mode>
-          <width>1920</width>
-          <height>1080</height>
-          <rate>60.000</rate>
+          <width>2560</width>
+          <height>1440</height>
+          <rate>59.951</rate>
         </mode>
       </monitor>
     </logicalmonitor>
