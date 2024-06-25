@@ -17,12 +17,8 @@
             inherit (config.nix.registry) nixpkgs;
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
-          environment.systemPackages = with pkgs; [
-            util-linux
-            procps
-            curlFull
-            wget
-            python3Full
+          environment.systemPackages = [
+            # currently nothing
           ];
         }
       )
