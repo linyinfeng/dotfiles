@@ -22,7 +22,6 @@
             procps
             curlFull
             wget
-            texlive.combined.scheme-full
             python3Full
           ];
         }
