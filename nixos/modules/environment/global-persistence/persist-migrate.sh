@@ -45,8 +45,8 @@ for file in "$@"; do
   fi
   output "mkdir -p $("$dirname" "$target")"
   $mkdir -p "$("$dirname" "$target")"
-  output "migrate '%s' to '%s'" "$source" "$target"
+  output "migrate '$source' to '$target'"
   $rsync --archive --recursive --progress --delete --compress \
     "$rsync_source" "$target"
-  output "migration of '%s' finished" "$source"
+  output "migration of '$source' finished"
 done
