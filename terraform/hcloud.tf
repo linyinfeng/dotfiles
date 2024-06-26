@@ -13,65 +13,6 @@ data "hcloud_locations" "all" {
 data "hcloud_datacenters" "all" {
 }
 
-resource "hcloud_server" "hil0" {
-  name               = "hil0"
-  server_type        = "cpx31"
-  datacenter         = "hil-dc1"
-  image              = "debian-11"
-  delete_protection  = true
-  rebuild_protection = true
-  # ssh_keys           = [hcloud_ssh_key.pgp.id]
-  public_net {
-    ipv4 = hcloud_primary_ip.hil0_ipv4.id
-    ipv6 = hcloud_primary_ip.hil0_ipv6.id
-  }
-}
-
-resource "hcloud_primary_ip" "hil0_ipv4" {
-  name              = "hil0-v4"
-  type              = "ipv4"
-  datacenter        = "hil-dc1"
-  assignee_type     = "server"
-  auto_delete       = false
-  delete_protection = true
-}
-
-resource "hcloud_primary_ip" "hil0_ipv6" {
-  name              = "hil0-v6"
-  type              = "ipv6"
-  datacenter        = "hil-dc1"
-  assignee_type     = "server"
-  auto_delete       = false
-  delete_protection = true
-}
-
-resource "hcloud_rdns" "hil0_ipv4" {
-  server_id  = hcloud_server.hil0.id
-  ip_address = hcloud_server.hil0.ipv4_address
-  dns_ptr    = "smtp.li7g.com"
-}
-
-resource "hcloud_rdns" "hil0_ipv6" {
-  server_id  = hcloud_server.hil0.id
-  ip_address = hcloud_server.hil0.ipv6_address
-  dns_ptr    = "smtp.li7g.com"
-}
-
-output "hil0_ipv6_address" {
-  value     = hcloud_server.hil0.ipv6_address
-  sensitive = true
-}
-
-output "hil0_ipv6_prefix" {
-  value     = split("/", hcloud_server.hil0.ipv6_network)[0]
-  sensitive = true
-}
-
-output "hil0_ipv6_prefix_length" {
-  value     = split("/", hcloud_server.hil0.ipv6_network)[1]
-  sensitive = true
-}
-
 resource "hcloud_server" "fsn0" {
   name               = "fsn0"
   server_type        = "cax31"
@@ -117,4 +58,16 @@ output "fsn0_ipv6_prefix" {
 output "fsn0_ipv6_prefix_length" {
   value     = split("/", hcloud_server.fsn0.ipv6_network)[1]
   sensitive = true
+}
+
+resource "hcloud_rdns" "fsn0_ipv4" {
+  server_id  = hcloud_server.fsn0.id
+  ip_address = hcloud_server.fsn0.ipv4_address
+  dns_ptr    = "smtp.li7g.com"
+}
+
+resource "hcloud_rdns" "fsn0_ipv6" {
+  server_id  = hcloud_server.fsn0.id
+  ip_address = hcloud_server.fsn0.ipv6_address
+  dns_ptr    = "smtp.li7g.com"
 }

@@ -28,10 +28,6 @@ let
       key = "age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa";
       owned = true;
     };
-    hil0 = {
-      key = "age1q4f93vlxr4k5a9tnu5r8p7q3ks597fnu7kyc42kp0qsg6y0zxekqpmpj7g";
-      owned = true;
-    };
     fsn0 = {
       key = "age1q8rds85ppw8uas9jk4dl4ynfvwm9qp92m0mry9aqse7zjvh5fpms5c98at";
       owned = true;

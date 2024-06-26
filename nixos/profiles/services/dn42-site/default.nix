@@ -6,15 +6,6 @@
 }:
 let
   extraHostInfo = {
-    hil0 = {
-      comment = null;
-      provider = "Hetzner";
-      location = [
-        "Hillsboro"
-        "Oregon"
-        "United States"
-      ];
-    };
     fsn0 = {
       comment = null;
       provider = "Hetzner";

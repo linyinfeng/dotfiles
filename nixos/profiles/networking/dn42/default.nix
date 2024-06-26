@@ -15,7 +15,6 @@ let
   peerTable = import ./_peers.nix;
   trafficControlTable = {
     # Hetzner 20 TB/month
-    "hil0".enable = false; # 20TB/month
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
     "lax0" = {
@@ -39,10 +38,6 @@ let
     "framework".enable = false; # mobile
   };
   regionTable = {
-    "hil0" = {
-      region = 44; # North America-W
-      country = 1840; # United States of America
-    };
     "lax0" = {
       region = 44; # North America-W
       country = 1840; # United States of America

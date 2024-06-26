@@ -1,23 +1,5 @@
 locals {
   hosts = {
-    hil0 = {
-      records = {
-        a = {
-          proxied = true
-          type    = "A"
-          value   = hcloud_server.hil0.ipv4_address
-        }
-        aaaa = {
-          proxied = true
-          type    = "AAAA"
-          value   = hcloud_server.hil0.ipv6_address
-        }
-      }
-      ddns_records = {}
-      host_indices = [1]
-      endpoints_v4 = [hcloud_server.hil0.ipv4_address]
-      endpoints_v6 = [hcloud_server.hil0.ipv6_address]
-    }
     fsn0 = {
       records = {
         a = {
