@@ -74,7 +74,7 @@ output "hil0_ipv6_prefix_length" {
 
 resource "hcloud_server" "fsn0" {
   name               = "fsn0"
-  server_type        = "cax11"
+  server_type        = "cax31"
   datacenter         = "fsn1-dc14"
   image              = "debian-11"
   delete_protection  = true

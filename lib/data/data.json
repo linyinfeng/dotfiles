@@ -95,11 +95,11 @@
       "proxy": true
     },
     "mastodon": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": true
     },
     "matrix": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": true
     },
     "matrix-qq": {
@@ -107,7 +107,7 @@
       "proxy": false
     },
     "matrix-syncv3": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": true
     },
     "mc": {
@@ -159,11 +159,11 @@
       "proxy": false
     },
     "smtp": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": false
     },
     "social": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": true
     },
     "static": {
@@ -171,7 +171,7 @@
       "proxy": true
     },
     "synapse-admin": {
-      "on": "hil0",
+      "on": "fsn0",
       "proxy": true
     },
     "tar": {

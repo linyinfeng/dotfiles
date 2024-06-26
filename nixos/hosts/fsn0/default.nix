@@ -19,6 +19,14 @@
       services.dn42-site
       services.bird-lg
       services.keycloak
+      services.matrix
+      services.matrix-sliding-sync
+      # my account is banned by openai
+      # services.matrix-chatgpt-bot
+      services.mastodon
+      services.maddy
+      services.well-known
+      nix.access-tokens
       nix.hydra-builder-server
     ])
     ++ [ "${modulesPath}/profiles/qemu-guest.nix" ];
@@ -121,7 +129,7 @@
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
 
-      system.nproc = 2;
+      system.nproc = 8;
     }
 
     # networking

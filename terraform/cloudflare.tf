@@ -79,7 +79,7 @@ resource "cloudflare_record" "li7g" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = "hil0.li7g.com"
+  value   = "fsn0.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -129,12 +129,12 @@ locals {
     dst             = { on = "shg0", proxy = false }
     matrix-qq       = { on = "shg0", proxy = false }
     teamspeak       = { on = "shg0", proxy = false }
-    matrix          = { on = "hil0", proxy = true }
-    matrix-syncv3   = { on = "hil0", proxy = true }
-    synapse-admin   = { on = "hil0", proxy = true }
-    social          = { on = "hil0", proxy = true }
-    mastodon        = { on = "hil0", proxy = true }
-    smtp            = { on = "hil0", proxy = false }
+    matrix          = { on = "fsn0", proxy = true }
+    matrix-syncv3   = { on = "fsn0", proxy = true }
+    synapse-admin   = { on = "fsn0", proxy = true }
+    social          = { on = "fsn0", proxy = true }
+    mastodon        = { on = "fsn0", proxy = true }
+    smtp            = { on = "fsn0", proxy = false }
     influxdb        = { on = "fsn0", proxy = true }
     bird-lg         = { on = "fsn0", proxy = true }
     dn42            = { on = "fsn0", proxy = true }

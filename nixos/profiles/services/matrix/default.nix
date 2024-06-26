@@ -293,17 +293,11 @@ lib.mkMerge [
 
     sops.secrets."matrix_qq_appservice_as_token" = {
       terraformOutput.enable = true;
-      restartUnits = [
-        "matrix-synapse.service"
-        "matrix-qq.service"
-      ];
+      restartUnits = [ "matrix-synapse.service" ];
     };
     sops.secrets."matrix_qq_appservice_hs_token" = {
       terraformOutput.enable = true;
-      restartUnits = [
-        "matrix-synapse.service"
-        "matrix-qq.service"
-      ];
+      restartUnits = [ "matrix-synapse.service" ];
     };
   }
 
