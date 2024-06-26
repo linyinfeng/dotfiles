@@ -48,6 +48,7 @@ lib.mkMerge [
         S3_ENDPOINT = config.lib.self.data.b2_s3_api_url;
         S3_ALIAS_HOST = "b2.li7g.com/file/${config.lib.self.data.b2_mastodon_media_bucket_name}";
       };
+      streamingProcesses = config.system.nproc - 1;
     };
     users.users.${config.services.mastodon.user}.shell = pkgs.bash;
     systemd.services =
