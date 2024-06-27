@@ -76,7 +76,7 @@ in
       ];
     };
     "io/missioncenter/MissionCenter" = {
-      performance-page-cpu-graph = "2";
+      performance-page-cpu-graph = 2;
     };
   };
 
