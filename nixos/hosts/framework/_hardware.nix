@@ -83,4 +83,44 @@ lib.mkMerge [
       in
       "${splash}";
   }
+
+  (
+    let
+      fprintdLidAction = pkgs.writeShellApplication {
+        name = "fprintd-lid-action";
+        text = ''
+          if grep --fixed-strings --quiet closed /proc/acpi/button/lid/LID0/state; then
+            systemctl stop fprintd
+            # systemctl unmask fprintd --runtime
+            # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
+            ln --symbolic --force /dev/null /run/systemd/transient/fprintd.service
+            systemctl daemon-reload
+          else
+            # systemctl mask fprintd --runtime
+            # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
+            rm /run/systemd/transient/fprintd.service
+            systemctl daemon-reload
+          fi
+        '';
+      };
+    in
+    {
+      services.acpid = {
+        enable = true;
+        logEvents = true;
+        lidEventCommands = ''
+          "${lib.getExe fprintdLidAction}"
+        '';
+      };
+      systemd.services.fprintd-lid-action = {
+        description = "Fprintd Lid Action";
+        after = [ "suspend.target" ];
+        wantedBy = [
+          "multi-user.target"
+          "suspend.target"
+        ];
+        serviceConfig.ExecStart = "${lib.getExe fprintdLidAction}";
+      };
+    }
+  )
 ]
