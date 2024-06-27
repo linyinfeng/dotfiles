@@ -164,9 +164,11 @@ let
   };
 
   lateFixes = nixpkgsArgs: final: prev: {
-    # # currently nothing
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=319969
-    inherit (import inputs.nixpkgs-fix-influxdb2 nixpkgsArgs) influxdb2;
+    inherit (import inputs.nixpkgs-latest nixpkgsArgs); # nothing
+    inherit (import inputs.nixpkgs-unstable-small nixpkgsArgs)
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=322721
+      emacsPackagesFor
+      ;
   };
 in
 {

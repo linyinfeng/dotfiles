@@ -746,22 +746,6 @@
         "type": "github"
       }
     },
-    "latest": {
-      "locked": {
-        "lastModified": 1719473538,
-        "narHash": "sha256-A3C8IhvEmrlTJT+vHveEbg9XCptMLWQKKwR5hOHiM7g=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "129f53f49ad3d1b2bb3e9cac899bdc906bfd0e68",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "linyinfeng": {
       "inputs": {
         "devshell": [
@@ -1242,18 +1226,34 @@
         "type": "github"
       }
     },
-    "nixpkgs-fix-influxdb2": {
+    "nixpkgs-latest": {
       "locked": {
-        "lastModified": 1718514032,
-        "narHash": "sha256-jd6XVfq3oBg+2U1Z76+etKyNJpsFp7w+cmy59embkmw=",
+        "lastModified": 1719473538,
+        "narHash": "sha256-A3C8IhvEmrlTJT+vHveEbg9XCptMLWQKKwR5hOHiM7g=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d7aecd3cb0073633628806fc1ee215b69f3384a0",
+        "rev": "129f53f49ad3d1b2bb3e9cac899bdc906bfd0e68",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "pull/319969/head",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable-small": {
+      "locked": {
+        "lastModified": 1719451888,
+        "narHash": "sha256-Ky0sgEEJMcBmNEJztY6KcVn+6bq74EKM7pd1CR1wnPQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "3664857c48feacb35770c00abfdc671e55849be5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1446,7 +1446,6 @@
         "impermanence": "impermanence",
         "lantian": "lantian",
         "lanzaboote": "lanzaboote",
-        "latest": "latest",
         "linyinfeng": "linyinfeng",
         "mc-config": "mc-config",
         "mc-config-nuc": "mc-config-nuc",
@@ -1466,11 +1465,12 @@
         "nixos-riscv": "nixos-riscv",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-fix-influxdb2": "nixpkgs-fix-influxdb2",
+        "nixpkgs-latest": "nixpkgs-latest",
         "nixpkgs-riscv": [
           "nixos-riscv",
           "nixpkgs"
         ],
+        "nixpkgs-unstable-small": "nixpkgs-unstable-small",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",

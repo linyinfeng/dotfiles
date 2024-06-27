@@ -10,7 +10,8 @@
     # nixpkgs
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    latest.url = "github:nixos/nixpkgs/master";
+    nixpkgs-latest.url = "github:nixos/nixpkgs/master";
+    nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-riscv.follows = "nixos-riscv/nixpkgs";
 
     # flake modules
@@ -281,10 +282,6 @@
 
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/development";
     mobile-nixos.flake = false;
-
-    # fixes
-    # TODO wait for https://nixpk.gs/pr-tracker.html?pr=319969
-    nixpkgs-fix-influxdb2.url = "github:nixos/nixpkgs/pull/319969/head";
   };
 
   outputs =
