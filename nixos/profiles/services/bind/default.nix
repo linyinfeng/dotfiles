@@ -90,8 +90,14 @@ in
         Type = "oneshot";
         RemainAfterExit = true;
       };
-      bindsTo = [ "bind.service" ];
-      after = [ "bind.service" ];
+      bindsTo = [
+        "systemd-networkd.service"
+        "bind.service"
+      ];
+      after = [
+        "systemd-networkd.service"
+        "bind.service"
+      ];
       wantedBy = [ "bind.service" ];
     };
   services.nginx.virtualHosts."dns.*" = {
