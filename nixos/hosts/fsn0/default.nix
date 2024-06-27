@@ -26,6 +26,7 @@
       services.mastodon
       services.maddy
       services.well-known
+      programs.ccache
       nix.access-tokens
       nix.hydra-builder-server
     ])
