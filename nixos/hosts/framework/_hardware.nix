@@ -93,6 +93,7 @@ lib.mkMerge [
             systemctl stop fprintd
             # systemctl unmask fprintd --runtime
             # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
+            mkdir --parents /run/systemd/transient
             ln --symbolic --force /dev/null /run/systemd/transient/fprintd.service
             systemctl daemon-reload
           else
