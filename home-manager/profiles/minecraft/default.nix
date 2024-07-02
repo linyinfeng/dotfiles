@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, ... }:
 let
   mc-li7g-com = pkgs.writeShellScriptBin "mc-li7g-com" ''
     ${pkgs.mc-config-nuc.minecraft-default-client}/bin/minecraft \
