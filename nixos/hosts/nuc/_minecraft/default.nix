@@ -5,7 +5,8 @@
   ...
 }:
 let
-  port = config.ports.minecraft; # also port for voice (udp)
+  port = config.ports.minecraft;
+  voicePort = config.ports.minecraft-voice; # also port for voice (udp)
   rconPort = config.ports.minecraft-rcon;
   mapPort = config.ports.minecraft-map;
   server = "${pkgs.mc-config-nuc.minecraft-default-server}/bin/minecraft-server --nogui";
@@ -32,9 +33,9 @@ in
         yq -i '.webserver-port = ${toString mapPort}' dynmap/configuration.txt
       fi
 
-      # if [ -f config/PlasmoVoice/server.yml ]; then
-      #   yq -i '.udp.port = ${toString port}' config/PlasmoVoice/server.yml
-      # fi
+      if [ -f config/voicechat/voicechat-server.properties ]; then
+        sed -i "/^port=/ s/=.*/=${toString voicePort}/" config/voicechat/voicechat-server.properties
+      fi
 
       if [ -f config/unifiedmetrics/config.yml ]; then
         mkdir -p config/unifiedmetrics/driver
@@ -72,7 +73,7 @@ in
     port
     rconPort
   ];
-  networking.firewall.allowedUDPPorts = [ port ];
+  networking.firewall.allowedUDPPorts = [ voicePort ];
 
   sops.secrets."rcon_password" = {
     terraformOutput.enable = true;

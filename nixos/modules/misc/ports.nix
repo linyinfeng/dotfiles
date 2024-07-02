@@ -95,6 +95,7 @@
       dn42-peer-min = 20000;
       # interval: no ports here
       dn42-peer-max = 23999;
+      minecraft-voice = 24454;
       minecraft = 25565;
       minecraft-rcon = 25566;
       minecraft-map = 25567;
