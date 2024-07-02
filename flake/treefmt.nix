@@ -17,13 +17,21 @@
             shellcheck.enable = true;
             terraform.enable = true;
             prettier.enable = true;
+            stylua.enable = true;
           };
-          settings.formatter.prettier = {
-            includes = [ ".github/workflows/check.yml" ];
-            excludes = [
-              # no need to format generated secrets files
-              "secrets/**/*.yaml"
-            ];
+          settings.formatter = {
+            shfmt = {
+              includes = [
+                ".envrc"
+                "**/.envrc"
+              ];
+            };
+            shellcheck = {
+              includes = [
+                ".envrc"
+                "**/.envrc"
+              ];
+            };
           };
         };
         devshells.default.commands = [

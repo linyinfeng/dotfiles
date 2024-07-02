@@ -1,6 +1,6 @@
 { pkgs, flake-lib, ... }:
 let
-  common = builtins.readFile ../common;
+  common = builtins.readFile ../common.sh;
 
   hostDefaultNixTemplate = pkgs.writeText "host-default-template.nix" ''
     {

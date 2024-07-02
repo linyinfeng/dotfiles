@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 function message {
   green='\033[0;32m'
   no_color='\033[0m'

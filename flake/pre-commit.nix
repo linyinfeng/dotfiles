@@ -20,8 +20,7 @@
           flake-treefmt = {
             enable = true;
             name = "flake-treefmt";
-            # also include .github explicitly
-            entry = "${config.treefmt.build.wrapper}/bin/treefmt . .github";
+            entry = "${config.treefmt.build.wrapper}/bin/treefmt";
             pass_filenames = false;
           };
         };

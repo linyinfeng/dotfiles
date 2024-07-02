@@ -1,5 +1,4 @@
 return {
-    override_enabled = true,
-    overrides = {
-    },
+	override_enabled = true,
+	overrides = {},
 }

@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  common = builtins.readFile ./common;
+  common = builtins.readFile ./common.sh;
 
   encryptTo = pkgs.writeShellApplication {
     name = "encrypt-to";
