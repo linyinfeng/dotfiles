@@ -247,8 +247,7 @@
     mc-config.inputs.systems.follows = "systems";
     mc-config.inputs.treefmt-nix.follows = "treefmt-nix";
 
-    #  TODO wait for https://github.com/Ninlives/minecraft.nix/pull/27
-    minecraft-nix.url = "github:ninlives/minecraft.nix/pull/27/head";
+    minecraft-nix.url = "github:ninlives/minecraft.nix";
     minecraft-nix.inputs.nixpkgs.follows = "nixpkgs";
     minecraft-nix.inputs.flake-utils.follows = "flake-utils";
     minecraft-nix.inputs.metadata.follows = "minecraft-json";
