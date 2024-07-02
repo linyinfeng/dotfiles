@@ -18,6 +18,7 @@
             terraform.enable = true;
             prettier.enable = true;
             stylua.enable = true;
+            keep-sorted.enable = true;
           };
           settings.formatter = {
             shfmt = {
@@ -31,6 +32,9 @@
                 ".envrc"
                 "**/.envrc"
               ];
+            };
+            keep-sorted = {
+              includes = lib.mkForce [ "*.nix" ];
             };
           };
         };

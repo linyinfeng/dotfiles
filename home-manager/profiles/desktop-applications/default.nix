@@ -11,6 +11,7 @@ in
   home.packages =
     with pkgs;
     [
+      # keep-sorted start
       amberol
       calibre
       element-desktop
@@ -32,6 +33,7 @@ in
       vlc
       xournalpp
       zotero
+      # keep-sorted end
     ]
     ++ optionalPkg [
       "nur"

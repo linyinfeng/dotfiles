@@ -9,6 +9,7 @@
   };
 
   home.packages = with pkgs; [
+    # keep-sorted start
     ffmpeg
     ghostscript
     imagemagick
@@ -16,6 +17,7 @@
     nur.repos.linyinfeng.mstickereditor
     wl-clipboard
     xdg-ninja
+    # keep-sorted end
   ];
 
   home.global-persistence.directories = [

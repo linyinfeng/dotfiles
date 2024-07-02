@@ -34,9 +34,7 @@ in
   environment.systemPackages =
     with pkgs;
     [
-      # sorted list for convenience
-      # simply sort by
-      # cat | sort | wl-copy
+      # keep-sorted start
       bat
       bc
       binutils
@@ -77,27 +75,30 @@ in
       util-linux
       viddy
       yq-go
+      # keep-sorted end
     ]
     ++ optionalPkg pkgs [ "i7z" ]
     ++ [
       # nix tools
+      # keep-sorted start
       cabal2nix
       flat-flake
       nil
       nix-du
       nix-eval-jobs
       nix-fast-build
-      nixfmt-rfc-style
       nix-melt
       nix-output-monitor
-      nixpkgs-fmt
-      nixpkgs-lint
-      nixpkgs-review
       nix-prefetch-github
       nix-prefetch-scripts
       nix-tree
       nix-update
+      nixfmt-rfc-style
+      nixpkgs-fmt
+      nixpkgs-lint
+      nixpkgs-review
       nvd
+      # keep-sorted end
     ]
     ++ [
       # custom tools

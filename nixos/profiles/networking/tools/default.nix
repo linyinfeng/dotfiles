@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   programs = {
     bandwhich.enable = true;
@@ -7,7 +7,9 @@
     wireshark.enable = true;
   };
   environment.systemPackages = with pkgs; [
-    # sorted list for convenience
+    # keep-sorted start
+    aria2
+    axel
     curl
     dnsutils
     ethtool
@@ -16,10 +18,9 @@
     iputils
     nftables
     nmap
+    rsync
     tcpdump
     wget
-    aria2
-    rsync
-    axel
+    # keep-sorted end
   ];
 }
