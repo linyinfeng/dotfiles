@@ -62,12 +62,11 @@ resource "grafana_data_source" "influxdb" {
 resource "grafana_folder" "infrastructure" {
   title = "Infrastructure"
 }
+resource "grafana_folder" "application" {
+  title = "Application"
+}
 resource "grafana_dashboard" "http_response" {
   config_json = file("${path.module}/grafana/dashboards/http-response.json")
-  folder      = grafana_folder.infrastructure.uid
-}
-resource "grafana_dashboard" "minecraft" {
-  config_json = file("${path.module}/grafana/dashboards/minecraft.json")
   folder      = grafana_folder.infrastructure.uid
 }
 resource "grafana_dashboard" "minio" {
@@ -78,6 +77,11 @@ resource "grafana_dashboard" "system" {
   config_json = file("${path.module}/grafana/dashboards/system.json")
   folder      = grafana_folder.infrastructure.uid
 }
+resource "grafana_dashboard" "minecraft" {
+  config_json = file("${path.module}/grafana/dashboards/minecraft.json")
+  folder      = grafana_folder.application.uid
+}
+
 
 resource "grafana_rule_group" "infrastructure" {
   name             = "Infrastructure Rules"
