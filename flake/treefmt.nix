@@ -12,7 +12,7 @@
         treefmt = {
           projectRootFile = "flake.nix";
           programs = {
-            nixfmt-rfc-style.enable = true;
+            nixfmt.enable = true;
             shfmt.enable = true;
             shellcheck.enable = true;
             terraform.enable = true;
