@@ -18,10 +18,10 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
 
   environment.systemPackages = with pkgs; [
     kooha
-    gnome.dconf-editor
+    dconf-editor
     gnome.gnome-sound-recorder
     gnome.gnome-power-manager
-    gnome.gnome-tweaks
+    gnome-tweaks
   ];
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -127,7 +127,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
       auth       optional                    pam_permit.so
       auth       required                    pam_env.so
       auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
-      auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+      auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
 
       account    include                     login
 
