@@ -17,9 +17,7 @@
             inherit (config.nix.registry) nixpkgs;
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
-          environment.systemPackages = [
-            # currently nothing
-          ];
+          environment.systemPackages = with pkgs; [ nix-index-with-db ];
         }
       )
     ];
