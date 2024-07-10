@@ -35,14 +35,4 @@ jobs:
           swap-size-gb: 10
       - name: Test nix flake show
         run: |
-          nix flake show
-      - name: Test evaluation
-        run: |
-          set -e
-          system=$(nix eval --impure --raw  --expr "builtins.currentSystem")
-          checks=$(nix eval --impure --json --expr "builtins.attrNames (builtins.getFlake \"$PWD\").checks.$system")
-          for check in $(echo "$checks" | jq -r '.[]'); do
-            echo "--- eval .#checks.$system.$check"
-            nix eval --raw ".#checks.$system.$check" --accept-flake-config
-            echo # add a new line
-          done
+          nix flake show --all-systems
