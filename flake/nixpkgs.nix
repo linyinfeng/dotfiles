@@ -190,6 +190,8 @@ let
           python3Packages
           # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325587
           bpftune
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325602
+          fail2ban
           ;
       })
       (final: prev: {
