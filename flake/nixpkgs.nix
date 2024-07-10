@@ -188,6 +188,8 @@ let
           # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325680
           python3
           python3Packages
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325587
+          bpftune
           ;
       })
       (final: prev: {

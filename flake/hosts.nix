@@ -114,9 +114,7 @@ let
         ++ (with profiles; [
           system.types.server
           services.auto-upgrade
-          # TODO broken
-          # wait for https://github.com/NixOS/nixpkgs/issues/325910
-          # services.bpftune
+          services.bpftune
           services.iperf3
           programs.tmux
           networking.bbr
