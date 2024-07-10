@@ -159,17 +159,45 @@ let
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
   ];
-  earlyFixes = nixpkgsArgs: final: prev: {
-    # currently nothing
+  alternativeChannels = nixpkgsArgs: {
+    latest = import inputs.nixpkgs-latest nixpkgsArgs;
+    unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
   };
-
-  lateFixes = nixpkgsArgs: final: prev: {
-    inherit (import inputs.nixpkgs-latest nixpkgsArgs); # nothing
-    inherit (import inputs.nixpkgs-unstable-small nixpkgsArgs)
-      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=322721
-      emacsPackagesFor
-      ;
-  };
+  earlyFixes =
+    nixpkgsArgs:
+    let
+      inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
+    in
+    [
+      (final: prev: {
+        inherit (latest); # nothing
+        inherit (unstable-small); # nothing
+      })
+    ];
+  lateFixes =
+    nixpkgsArgs:
+    let
+      inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
+    in
+    [
+      (final: prev: {
+        inherit (latest); # nothing
+        inherit (unstable-small)
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325682
+          hplip
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325680
+          python3
+          python3Packages
+          ;
+      })
+      (final: prev: {
+        # TODO fix for gnuradio
+        # TODO wait for https://github.com/NixOS/nixpkgs/pull/325935
+        python3 = prev.python3.override {
+          packageOverrides = self: super: { thrift = super.thrift.overrideAttrs { doCheck = false; }; };
+        };
+      })
+    ];
 in
 {
   perSystem =
@@ -204,7 +232,7 @@ in
                   ;
               };
             in
-            [ (earlyFixes overlayNixpkgsArgs) ] ++ packages ++ [ (lateFixes overlayNixpkgsArgs) ];
+            (earlyFixes overlayNixpkgsArgs) ++ packages ++ (lateFixes overlayNixpkgsArgs);
         };
       }
       (lib.mkIf (system == "riscv64-linux") {
