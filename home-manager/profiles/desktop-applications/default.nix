@@ -17,14 +17,15 @@ in
       element-desktop
       fractal
       gimp
-      # TODO wait for https://github.com/NixOS/nixpkgs/pull/325968
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325968
       # gnuradio
       gparted
       inkscape
       libreoffice-fresh
       meld
       mission-center
-      picard
+      # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325893
+      # picard
       praat
       qq
       tdesktop
