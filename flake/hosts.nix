@@ -468,8 +468,13 @@ in
   ];
 
   flake.checks = lib.recursiveUpdate hostToplevels {
-    "aarch64-linux"."android-bootimg/enchilada" =
-      self.nixosConfigurations.enchilada.config.mobile.outputs.android.android-bootimg;
+    "aarch64-linux" = {
+      "android-bootimg/enchilada" =
+        self.nixosConfigurations.enchilada.config.mobile.outputs.android.android-bootimg;
+      "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
+    };
     "riscv64-linux"."bootsd/duo" = self.nixosConfigurations.duo.config.system.build.bootsd;
+    "x86_64-linux"."linux/framework" =
+      self.nixosConfigurations.framework.config.boot.kernelPackages.kernel;
   };
 }
