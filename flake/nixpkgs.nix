@@ -182,24 +182,7 @@ let
     [
       (final: prev: {
         inherit (latest); # nothing
-        inherit (unstable-small)
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325682
-          hplip
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325680
-          python3
-          python3Packages
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325587
-          bpftune
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=325602
-          fail2ban
-          ;
-      })
-      (final: prev: {
-        # TODO fix for gnuradio
-        # TODO wait for https://github.com/NixOS/nixpkgs/pull/325935
-        python3 = prev.python3.override {
-          packageOverrides = self: super: { thrift = super.thrift.overrideAttrs { doCheck = false; }; };
-        };
+        inherit (unstable-small); # nothing
       })
     ];
 in
