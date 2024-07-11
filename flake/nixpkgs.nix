@@ -170,8 +170,8 @@ let
     in
     [
       (final: prev: {
-        inherit (latest); # nothing
-        inherit (unstable-small); # nothing
+        inherit (latest);
+        inherit (unstable-small);
       })
     ];
   lateFixes =
@@ -181,8 +181,11 @@ let
     in
     [
       (final: prev: {
-        inherit (latest); # nothing
-        inherit (unstable-small); # nothing
+        inherit (latest);
+        inherit (unstable-small)
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=326057
+          miniupnpc
+          ;
       })
     ];
 in
