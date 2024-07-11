@@ -109,10 +109,14 @@ let
       # TODO broken with nix 2.23
       hydra = prev.hydra.override { nix = final.nixVersions.nix_2_22; };
       gnuradio = prev.gnuradio.override {
-        unwrapped = prev.gnuradio.unwrapped.override {
+        unwrapped = prev.gnuradio.unwrapped.override (old: {
           stdenv = final.ccacheStdenv;
           soapysdr = final.soapysdr-with-plugins;
-        };
+          # TODO wait for https://github.com/NixOS/nixpkgs/pull/325935
+          python = old.python.override {
+            packageOverrides = self: super: { thrift = super.thrift.overrideAttrs { doCheck = false; }; };
+          };
+        });
       };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
