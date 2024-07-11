@@ -112,10 +112,6 @@ let
         unwrapped = prev.gnuradio.unwrapped.override (old: {
           stdenv = final.ccacheStdenv;
           soapysdr = final.soapysdr-with-plugins;
-          # TODO wait for https://github.com/NixOS/nixpkgs/pull/325935
-          python = old.python.override {
-            packageOverrides = self: super: { thrift = super.thrift.overrideAttrs { doCheck = false; }; };
-          };
         });
       };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
