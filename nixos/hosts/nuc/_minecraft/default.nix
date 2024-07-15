@@ -37,20 +37,8 @@ in
         sed -i "/^port=/ s/=.*/=${toString voicePort}/" config/voicechat/voicechat-server.properties
       fi
 
-      if [ -f config/unifiedmetrics/config.yml ]; then
-        mkdir -p config/unifiedmetrics/driver
-        cp $CREDENTIALS_DIRECTORY/driver-influxdb config/unifiedmetrics/driver/influx.yml
-        chmod 644 config/unifiedmetrics/driver/influx.yml
-        yq -i '.metrics.driver = "influx"' config/unifiedmetrics/config.yml
-      fi
-
-      if [ -f config/EssentialCommands.properties ]; then
-        sed -i "/^use_permissions_api=/ s/=.*/=true/" config/EssentialCommands.properties
-        sed -i "/^home_limit=/ s/=.*/=[1, 10, 100]/" config/EssentialCommands.properties
-      fi
-
       # start the server
-      ${server}
+      exec ${server}
     '';
     path = with pkgs; [
       jre
