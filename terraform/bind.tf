@@ -4,7 +4,7 @@ resource "shell_sensitive_script" "generate_dhparam" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory generate_dhparam.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT
@@ -36,7 +36,7 @@ resource "shell_sensitive_script" "generate_bind_rndc_config" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory generate_bind_rndc_config.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT

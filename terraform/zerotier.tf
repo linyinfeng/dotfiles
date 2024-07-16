@@ -71,7 +71,7 @@ resource "shell_sensitive_script" "init_moon" {
 
       PUBLIC_KEY_FILE=$(mktemp -t zerotier-init-moon-public-key.XXXXXXXXXX)
       echo "$ZEROTIER_MAIN_HOST_PUBLIC_KEY" > "$PUBLIC_KEY_FILE"
-      function cleanup {
+      cleanup() {
         rm "$PUBLIC_KEY_FILE"
       }
       trap cleanup EXIT
@@ -112,7 +112,7 @@ resource "shell_sensitive_script" "generate_moon" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory zerotier-generate-moon.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT

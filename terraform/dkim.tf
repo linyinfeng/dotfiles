@@ -4,7 +4,7 @@ resource "shell_sensitive_script" "generate_dkim" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory zerotier-dkim.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT

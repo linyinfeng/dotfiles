@@ -4,7 +4,7 @@ resource "shell_sensitive_script" "generate_syncthing_config" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory generate-syncthing-config.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT

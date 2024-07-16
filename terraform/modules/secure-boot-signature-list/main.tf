@@ -26,7 +26,7 @@ resource "shell_script" "genertate_efi_sigature_list" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory generate-efi-signature-list.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT
@@ -60,7 +60,7 @@ resource "shell_script" "generate_signed_efi_sigature_list" {
       set -e
 
       TMP_DIR=$(mktemp -t --directory generate-signature-list.XXXXXXXXXX)
-      function cleanup {
+      cleanup() {
         rm -r "$TMP_DIR"
       }
       trap cleanup EXIT
