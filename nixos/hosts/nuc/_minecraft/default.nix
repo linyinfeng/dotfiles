@@ -54,7 +54,10 @@ in
       ];
       CPUQuota = "${toString (config.system.nproc * 50)}%";
     };
-    environment.JAVA_TOOL_OPTIONS = lib.mkIf config.networking.fw-proxy.enable "-Dhttp.proxyHost=localhost -Dhttp.proxyPort=${toString config.networking.fw-proxy.ports.mixed}";
+    environment = lib.mkMerge [
+      (lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment)
+      { JAVA_TOOL_OPTIONS = "-Djava.net.useSystemProxies=true"; }
+    ];
     wantedBy = [ "multi-user.target" ];
   };
   networking.firewall.allowedTCPPorts = [
