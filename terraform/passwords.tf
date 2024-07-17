@@ -313,23 +313,6 @@ output "atuin_password_yinfeng" {
   value     = random_password.atuin_yinfeng.result
   sensitive = true
 }
-resource "random_password" "palworld_admin" {
-  length  = 16
-  special = false
-}
-output "palworld_admin_password" {
-  value     = random_password.palworld_admin.result
-  sensitive = true
-}
-resource "random_password" "palworld_server" {
-  length  = 16
-  special = false
-}
-output "palworld_server_password" {
-  value     = random_password.palworld_server.result
-  sensitive = true
-}
-
 resource "random_password" "typhon" {
   length  = 32
   special = false
