@@ -31,6 +31,7 @@ let
           security.rtkit
           security.sudo-rs
           global-persistence
+          system.constant
           system.common
           system.sysrq
           users.root
