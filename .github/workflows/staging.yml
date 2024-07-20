@@ -17,5 +17,5 @@ jobs:
       - name: Rebase and push
         run: |
           git fetch
-          git merge origin/main --no-edit
-          git push
+          git rebase origin/main
+          git push --force
