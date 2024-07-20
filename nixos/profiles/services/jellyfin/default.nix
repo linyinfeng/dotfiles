@@ -5,7 +5,7 @@
   ...
 }:
 let
-  user = config.services.jellyfin.user;
+  inherit (config.services.jellyfin) user;
 in
 {
   services.jellyfin = {
@@ -37,7 +37,7 @@ in
   };
   systemd.services.jellyfin = {
     # faster metadata search
-    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   };
 
   services.nginx.virtualHosts."jellyfin.*" = {

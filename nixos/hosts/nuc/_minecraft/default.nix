@@ -55,7 +55,7 @@ in
       CPUQuota = "${toString (config.system.nproc * 50)}%";
     };
     environment = lib.mkMerge [
-      (lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment)
+      (lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment)
       { JAVA_TOOL_OPTIONS = "-Djava.net.useSystemProxies=true"; }
     ];
     wantedBy = [ "multi-user.target" ];

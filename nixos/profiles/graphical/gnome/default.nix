@@ -37,7 +37,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
     let
       ownerOptions = {
         user = config.users.users.gnome-remote-desktop.name;
-        group = config.users.users.gnome-remote-desktop.group;
+        inherit (config.users.users.gnome-remote-desktop) group;
       };
     in
     {
@@ -82,7 +82,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
         credentials={'username': <'grd'>, 'password': <'${password}'>}
       '';
     owner = config.users.users.gnome-remote-desktop.name;
-    group = config.users.users.gnome-remote-desktop.group;
+    inherit (config.users.users.gnome-remote-desktop) group;
   };
   sops.secrets."gnome_remote_desktop_password" = {
     terraformOutput.enable = true;

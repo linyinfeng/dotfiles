@@ -3,7 +3,7 @@ let
   tgSend = config.programs.tg-send.wrapped;
 in
 {
-  services.notify-failure = lib.mkIf (config.programs.tg-send.enable) {
+  services.notify-failure = lib.mkIf config.programs.tg-send.enable {
     enable = true;
     config = {
       script = ''
@@ -19,7 +19,7 @@ in
         $extra_information
         EOF
       '';
-      environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+      environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
     };
   };
 }

@@ -70,7 +70,7 @@ let
 
   cfgs = lib.listToAttrs (map makeServiceAndTimerCfg scrubCfg.fileSystems);
 in
-lib.mkIf (scrubCfg.enable) {
+lib.mkIf scrubCfg.enable {
   systemd.services =
     lib.mapAttrs (_name: cfg: cfg.serviceCfg) cfgs
     // lib.listToAttrs (map makeServiceOverride scrubCfg.fileSystems);

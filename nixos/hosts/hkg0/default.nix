@@ -7,7 +7,7 @@
   ...
 }:
 let
-  hostName = config.networking.hostName;
+  inherit (config.networking) hostName;
   hostData = config.lib.self.data.hosts.${hostName};
 in
 {

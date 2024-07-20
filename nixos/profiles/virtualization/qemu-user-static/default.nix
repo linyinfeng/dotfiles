@@ -24,9 +24,9 @@ lib.mkMerge [
     };
   }
   {
-    systemd.services.qemu-user-static = lib.mkIf (config.networking.fw-proxy.enable) {
+    systemd.services.qemu-user-static = lib.mkIf config.networking.fw-proxy.enable {
       after = [ "fw-proxy.service" ];
-      environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+      environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
     };
   }
 ]

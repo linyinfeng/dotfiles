@@ -3,7 +3,7 @@ let
   dn42Cfg = config.networking.dn42;
   meshCfg = config.networking.mesh;
   asThisHostCfg = dn42Cfg.autonomousSystem.thisHost;
-  hostName = config.networking.hostName;
+  inherit (config.networking) hostName;
   dn42If = dn42Cfg.interfaces.dummy.name;
   inherit (config.lib.self) data;
   thisHostData = data.hosts.${hostName};

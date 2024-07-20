@@ -356,7 +356,7 @@ in
     ./_ca.nix
     ./_firewall.nix
   ];
-  config = lib.mkIf (cfg.enable) {
+  config = lib.mkIf cfg.enable {
     # basic bird2 configurations
     services.bird2 = {
       enable = true;

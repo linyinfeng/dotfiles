@@ -24,7 +24,7 @@ let
         }
       );
   };
-  fw-proxy = osConfig.networking.fw-proxy;
+  inherit (osConfig.networking) fw-proxy;
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";

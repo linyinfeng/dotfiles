@@ -6,7 +6,7 @@
 }:
 let
   interfaceName = "wg-home";
-  hostName = config.networking.hostName;
+  inherit (config.networking) hostName;
   port = config.ports.wireguard;
   hosts = {
     framework = {

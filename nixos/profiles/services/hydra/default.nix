@@ -42,7 +42,7 @@ in
         hydraURL = "https://hydra.li7g.com";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
-        extraEnv = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+        extraEnv = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
         extraConfig = ''
           Include "${config.sops.templates."hydra-extra-config".path}"
 

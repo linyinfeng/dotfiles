@@ -78,7 +78,7 @@ in
       ExecStop = stopScript;
       CPUQuota = "${toString (config.system.nproc * 75)}%";
     };
-    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
     wantedBy = [ "multi-user.target" ];
   };
   networking.firewall.allowedUDPPorts = [ 10999 ];

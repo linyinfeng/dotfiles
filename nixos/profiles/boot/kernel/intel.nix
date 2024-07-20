@@ -43,7 +43,7 @@ in
               inherit version;
               modDirVersion = lib.versions.pad 3 version;
               extraMeta.branch = lib.versions.majorMinor version;
-              src = source.src;
+              inherit (source) src;
             }
             // (args.argsOverride or { })
           );

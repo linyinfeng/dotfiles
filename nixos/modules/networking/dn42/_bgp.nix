@@ -9,7 +9,7 @@ let
   bgpCfg = cfg.bgp;
   asCfg = cfg.autonomousSystem;
 in
-lib.mkIf (cfg.enable) (
+lib.mkIf cfg.enable (
   lib.mkMerge [
     # common bird configuration
     {

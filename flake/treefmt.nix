@@ -13,6 +13,10 @@
           projectRootFile = "flake.nix";
           programs = {
             nixfmt.enable = true;
+            statix = {
+              enable = true;
+              disabled-lints = [ "empty_pattern" ];
+            };
             shfmt.enable = true;
             shellcheck.enable = true;
             terraform.enable = true;

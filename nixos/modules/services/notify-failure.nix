@@ -26,7 +26,7 @@ with lib;
       '';
     };
   };
-  config = mkIf (cfg.enable) (mkMerge [
+  config = mkIf cfg.enable (mkMerge [
     {
       systemd.services."notify-failure@" = mkMerge [
         {

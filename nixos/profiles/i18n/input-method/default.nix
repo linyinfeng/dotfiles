@@ -20,11 +20,11 @@ in
       enable = true;
       type = lib.mkDefault "fcitx5";
       ibus.engines = with pkgs.ibus-engines; [
-        (rime.override { rimeDataPkgs = cfg.rime.rimeDataPkgs; })
+        (rime.override { inherit (cfg.rime) rimeDataPkgs; })
         mozc
       ];
       fcitx5.addons = with pkgs; [
-        (fcitx5-rime.override { rimeDataPkgs = cfg.rime.rimeDataPkgs; })
+        (fcitx5-rime.override { inherit (cfg.rime) rimeDataPkgs; })
         fcitx5-mozc
       ];
       rime.rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; [ rime-ice ];

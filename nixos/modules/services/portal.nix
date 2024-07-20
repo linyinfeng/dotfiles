@@ -141,7 +141,7 @@ in
                 settings = {
                   udpEnabled = true;
                 };
-                port = cfg.client.port;
+                inherit (cfg.client) port;
                 listen = "127.0.0.1";
               }
             ];

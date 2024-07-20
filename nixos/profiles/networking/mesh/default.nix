@@ -1,8 +1,8 @@
 { config, lib, ... }:
 let
   cfg = config.networking.mesh;
-  hostName = config.networking.hostName;
-  data = config.lib.self.data;
+  inherit (config.networking) hostName;
+  inherit (config.lib.self) data;
   inherit (config.networking.hostsData) indexedHosts;
   mkHost = name: hostData: {
     # resolved by /etc/hosts

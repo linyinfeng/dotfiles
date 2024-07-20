@@ -36,5 +36,5 @@ in
         ];
       };
     in
-    (lib.mkIf config.isDevSystem { packages.weird-deployer = wdCfg.config.build.deployer; });
+    lib.mkIf config.isDevSystem { packages.weird-deployer = wdCfg.config.build.deployer; };
 }

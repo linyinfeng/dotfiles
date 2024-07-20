@@ -51,7 +51,7 @@ in
     };
     environment = lib.mkMerge [
       { HOME = "/var/lib/cache-li7g-com"; }
-      (lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment)
+      (lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment)
     ];
   };
   systemd.services."gc-cache-li7g-com" = {
@@ -93,7 +93,7 @@ in
         "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
       ];
     };
-    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
     requiredBy = [ "hydra-update-gc-roots.service" ];
     after = [ "hydra-update-gc-roots.service" ];
   };

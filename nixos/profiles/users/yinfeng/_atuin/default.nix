@@ -54,11 +54,11 @@
   sops.secrets."atuin_password_yinfeng" = {
     terraformOutput.enable = true;
     owner = "yinfeng";
-    group = config.users.users.yinfeng.group;
+    inherit (config.users.users.yinfeng) group;
   };
   sops.secrets."yinfeng/atuin-key" = {
     sopsFile = config.sops-file.get "common.yaml";
     owner = "yinfeng";
-    group = config.users.users.yinfeng.group;
+    inherit (config.users.users.yinfeng) group;
   };
 }

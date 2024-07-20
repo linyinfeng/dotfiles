@@ -447,7 +447,7 @@ in
         (
           { pkgs, lib, ... }@args:
           let
-            originalModule = (import "${inputs.nixos-riscv}/duo-256.nix" args);
+            originalModule = import "${inputs.nixos-riscv}/duo-256.nix" args;
           in
           lib.updateManyAttrsByPath [
             {

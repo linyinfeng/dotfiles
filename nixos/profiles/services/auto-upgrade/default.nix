@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  hostName = config.networking.hostName;
+  inherit (config.networking) hostName;
 in
 {
   system.autoUpgrade = {
@@ -11,7 +11,7 @@ in
     randomizedDelaySec = "30min";
     flags = [ "--refresh" ];
   };
-  systemd.services.nixos-upgrade.environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+  systemd.services.nixos-upgrade.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
 
   services.scheduled-reboot = {
     enable = true;

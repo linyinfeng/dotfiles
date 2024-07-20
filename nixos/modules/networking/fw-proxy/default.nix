@@ -451,7 +451,7 @@ with lib;
     };
   };
 
-  config = mkIf (cfg.enable) (mkMerge [
+  config = mkIf cfg.enable (mkMerge [
     {
       networking.fw-proxy.mixinConfig = {
         port = cfg.ports.http;
@@ -522,7 +522,7 @@ with lib;
       '';
     }
 
-    (mkIf (cfg.externalController.expose) {
+    (mkIf cfg.externalController.expose {
       services.nginx.enable = true;
       services.nginx.virtualHosts.${cfg.externalController.virtualHost} = {
         locations = {
@@ -534,7 +534,7 @@ with lib;
       };
     })
 
-    (mkIf (cfg.tproxy.enable) {
+    (mkIf cfg.tproxy.enable {
       netwokring.routerBasics.enable = true;
       systemd.network.config.routeTables = {
         fw-tproxy = cfg.tproxy.routingTable;
@@ -689,7 +689,7 @@ with lib;
       };
     })
 
-    (mkIf (config.virtualisation.podman.enable) (
+    (mkIf config.virtualisation.podman.enable (
       let
         podmanInterface = config.virtualisation.podman.defaultNetwork.settings.network_interface;
       in
@@ -698,7 +698,7 @@ with lib;
       }
     ))
 
-    (mkIf (config.virtualisation.libvirtd.enable) (
+    (mkIf config.virtualisation.libvirtd.enable (
       let
         libvirtdInterfaces = config.virtualisation.libvirtd.allowedBridges;
         mkIfCfg = name: { ${name}.allowedTCPPorts = cfg.ports.all; };

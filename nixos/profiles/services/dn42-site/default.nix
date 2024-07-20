@@ -51,7 +51,7 @@ let
   cfg = config.networking.dn42;
   asCfg = cfg.autonomousSystem;
   json = pkgs.formats.json { };
-  data = config.lib.self.data;
+  inherit (config.lib.self) data;
   filterHost =
     name: _hostCfg: (data.hosts.${name}.endpoints_v4 ++ data.hosts.${name}.endpoints_v6) != [ ];
   mkHostInfo =
@@ -86,7 +86,7 @@ let
     } extraHostInfo.${name};
   info = {
     autonomous_system = {
-      number = asCfg.number;
+      inherit (asCfg) number;
       cidrs = {
         v4 = asCfg.cidrV4;
         v6 = asCfg.cidrV6;

@@ -4,7 +4,7 @@ let
     urls = [ config.lib.self.data.influxdb_url ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
-    bucket = bucket;
+    inherit bucket;
     tagpass.output_bucket = [ bucket ];
   };
 in

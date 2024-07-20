@@ -79,7 +79,7 @@
       Restart = "on-failure";
       LoadCredential = [ "github-token:${config.sops.secrets."nano/github-token".path}" ];
     };
-    environment = lib.mkIf (config.networking.fw-proxy.enable) config.networking.fw-proxy.environment;
+    environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   };
   sops.secrets."nano/github-token" = {
     sopsFile = config.sops-file.get "common.yaml";

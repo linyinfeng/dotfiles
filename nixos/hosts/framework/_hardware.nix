@@ -38,7 +38,7 @@ lib.mkMerge [
   }
 
   {
-    systemd.services = lib.mkIf (config.services.xserver.displayManager.gdm.enable) {
+    systemd.services = lib.mkIf config.services.xserver.displayManager.gdm.enable {
       gdm-prepare = {
         script = ''
           mkdir -p .config

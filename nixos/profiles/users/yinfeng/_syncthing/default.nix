@@ -44,14 +44,14 @@ let
       id = "WJCWZOM-A3DSD2V-NHKMH4K-KMTQZAP-WAQLJH5-WWBR7QL-WYX53FR-DGC7TQL";
     };
   };
-  hostName = config.networking.hostName;
+  inherit (config.networking) hostName;
   others = lib.filterAttrs (h: _: h != hostName) devices;
   defaultOtherNames = lib.remove "sailfish" (lib.attrNames others);
 
   user = "yinfeng";
-  group = config.users.users.yinfeng.group;
-  uid = config.users.users.${user}.uid;
-  gid = config.users.groups.${group}.gid;
+  inherit (config.users.users.yinfeng) group;
+  inherit (config.users.users.${user}) uid;
+  inherit (config.users.groups.${group}) gid;
 in
 lib.mkIf (devices ? ${hostName}) {
   containers.syncthing-yinfeng = {

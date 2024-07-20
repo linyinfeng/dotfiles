@@ -53,8 +53,8 @@ with lib;
 
   config = mkIf sysCfg.enable {
     home.global-persistence = {
-      directories = sysCfg.user.directories;
-      files = sysCfg.user.files;
+      inherit (sysCfg.user) directories;
+      inherit (sysCfg.user) files;
       enabled = cfg.enable;
     };
   };

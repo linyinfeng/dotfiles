@@ -72,7 +72,7 @@ in
     };
 
     systemd.services."campus-net-auto-login" = {
-      enable = cfg.auto-login.enable;
+      inherit (cfg.auto-login) enable;
       serviceConfig = {
         ExecStart = "${scripts}/bin/campus-net-auto-login";
       };
