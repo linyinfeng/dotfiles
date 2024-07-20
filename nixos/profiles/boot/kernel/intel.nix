@@ -29,7 +29,6 @@ in
         minor = lib.versions.minor version;
         linux_intel_fn =
           {
-            fetchFromGitHub,
             buildLinux,
             ccacheStdenv,
             lib,

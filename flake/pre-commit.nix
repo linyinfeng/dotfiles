@@ -1,12 +1,7 @@
 { ... }:
 {
   perSystem =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { config, lib, ... }:
     lib.mkMerge [
       (lib.mkIf config.isDevSystem {
         pre-commit.settings.hooks = {

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   linkOpts =
-    { name, ... }:
+    { ... }:
     {
       options = {
         target = lib.mkOption {

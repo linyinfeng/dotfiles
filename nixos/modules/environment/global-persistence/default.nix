@@ -27,7 +27,6 @@ let
       persist = cfg.root;
     };
   };
-  activationScriptName = "createPersistentStorageDirs";
 
   userCfg =
     name:

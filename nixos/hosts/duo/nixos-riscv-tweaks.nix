@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ lib, ... }:
 {
   networking.hostName = lib.mkForce "duo";
   networking.firewall.enable = lib.mkForce true;

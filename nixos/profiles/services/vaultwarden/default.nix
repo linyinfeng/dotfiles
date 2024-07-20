@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, ... }:
 {
   services.nginx.virtualHosts."vault.*" = {
     forceSSL = true;

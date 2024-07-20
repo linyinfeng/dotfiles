@@ -1,12 +1,7 @@
 { ... }:
 {
   perSystem =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { config, lib, ... }:
     lib.mkMerge [
       (lib.mkIf config.isDevSystem {
         treefmt = {
@@ -17,6 +12,7 @@
               enable = true;
               disabled-lints = [ "empty_pattern" ];
             };
+            deadnix.enable = true;
             shfmt.enable = true;
             shellcheck.enable = true;
             terraform.enable = true;

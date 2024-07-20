@@ -59,7 +59,7 @@ in
 
   environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} =
-    { suites, profiles, ... }:
+    { ... }:
     {
       home.global-persistence = {
         enable = true;

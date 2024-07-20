@@ -1,18 +1,8 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, ... }:
 let
   name = "nianyi";
   uid = config.ids.uids.${name};
-  user = config.users.users.${name};
-  homeManager = config.home-manager.users.${name};
   homeDirectory = "/home/${name}";
-
-  groupNameIfPresent =
-    name: lib.optional (config.users.groups ? ${name}) config.users.groups.${name}.name;
 in
 {
   users.users.${name} = {
@@ -27,7 +17,7 @@ in
 
   environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} =
-    { pkgs, suites, ... }:
+    { pkgs, ... }:
     {
       home.global-persistence = {
         enable = true;

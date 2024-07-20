@@ -1,4 +1,4 @@
-{ config, hmUsers, ... }:
+{ config, ... }:
 {
   home-manager.users.nixos =
     { suites, ... }:

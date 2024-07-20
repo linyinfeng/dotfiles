@@ -1,14 +1,13 @@
 {
   self,
   inputs,
-  getSystem,
   lib,
   ...
 }:
 let
   packages = [
     (
-      final: prev:
+      final: _prev:
       let
         mkEmptyPkg = name: final.runCommand name { } "touch $out";
       in
@@ -33,7 +32,7 @@ let
     inputs.deploy-rs.overlays.default
     inputs.hydra.overlays.default
     (
-      final: prev:
+      _final: prev:
       let
         inherit (prev.stdenv.hostPlatform) system;
       in
@@ -109,10 +108,10 @@ let
       # TODO broken with nix 2.23
       hydra = prev.hydra.override { nix = final.nixVersions.nix_2_22; };
       gnuradio = prev.gnuradio.override {
-        unwrapped = prev.gnuradio.unwrapped.override (old: {
+        unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;
           soapysdr = final.soapysdr-with-plugins;
-        });
+        };
       };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
@@ -127,7 +126,7 @@ let
       gnome =
         if (lib.versions.major prev.gnome.mutter.version == "46") then
           prev.gnome.overrideScope (
-            gnomeFinal: gnomePrev: {
+            _gnomeFinal: gnomePrev: {
               mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
                 patches = (old.patches or [ ]) ++ [
                   # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
@@ -166,22 +165,18 @@ let
   earlyFixes =
     nixpkgsArgs:
     let
+      # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
     in
-    [
-      (final: prev: {
-        inherit (latest);
-        inherit (unstable-small);
-      })
-    ];
+    [ (_final: _prev: { }) ];
   lateFixes =
     nixpkgsArgs:
     let
+      # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
     in
     [
-      (final: prev: {
-        inherit (latest);
+      (_final: _prev: {
         inherit (unstable-small)
           # TODO wait for https://nixpk.gs/pr-tracker.html?pr=326057
           miniupnpc

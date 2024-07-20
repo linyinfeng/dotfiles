@@ -31,7 +31,7 @@ let
       check = v: int.check v && 1000 <= v && v <= 1999;
     };
   peerHostOptions =
-    { name, config, ... }:
+    { name, ... }:
     {
       options = {
         name = lib.mkOption {

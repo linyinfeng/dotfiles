@@ -8,7 +8,7 @@ let
   inherit (config.lib.self) data;
   thisHostData = data.hosts.${hostName};
   inherit (config.networking.hostsData) indexedHosts;
-  mkHostDn42Cfg = name: hostData: {
+  mkHostDn42Cfg = _name: hostData: {
     preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
     preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
   };

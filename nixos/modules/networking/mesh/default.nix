@@ -9,7 +9,7 @@ let
 
   xfrmIfId = hostCfg: hostCfg.ipsec.xfrmInterfaceId;
   xfrmIfIdString = hostCfg: toString (xfrmIfId hostCfg);
-  xfrmIfName = name: hostCfg: "${cfg.interfaces.namePrefix}-i${name}";
+  xfrmIfName = name: _hostCfg: "${cfg.interfaces.namePrefix}-i${name}";
 
   hostPrefixLength =
     family:
@@ -43,7 +43,7 @@ let
     };
 
   peerHostOptions =
-    { name, config, ... }:
+    { name, ... }:
     {
       options = {
         name = lib.mkOption {
@@ -56,7 +56,7 @@ let
     };
 
   thisHostOptions =
-    { config, ... }:
+    { ... }:
     {
       options = {
         name = lib.mkOption {
@@ -78,7 +78,7 @@ let
     };
 
   hostCidrOptions =
-    { config, name, ... }:
+    { name, ... }:
     {
       options = {
         cidr = lib.mkOption {

@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   suites,
   profiles,
   lib,

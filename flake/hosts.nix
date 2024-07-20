@@ -321,6 +321,7 @@ let
       };
     };
 
+  # deadnix: skip
   mkHostAllSystems =
     { name }@args:
     lib.mkMerge (
@@ -401,7 +402,7 @@ in
       extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
         "${inputs.mobile-nixos}/devices/oneplus-enchilada"
         (
-          { config, pkgs, ... }:
+          { ... }:
           {
             # TODO mobile-nixos tests `config.nixpkgs.localSystem`
             nixpkgs.system = "aarch64-linux";
@@ -445,9 +446,22 @@ in
       system = "riscv64-linux";
       extraModules = [
         (
-          { pkgs, lib, ... }@args:
+          {
+            config,
+            lib,
+            pkgs,
+            modulesPath,
+            ...
+          }:
           let
-            originalModule = import "${inputs.nixos-riscv}/duo-256.nix" args;
+            originalModule = import "${inputs.nixos-riscv}/duo-256.nix" {
+              inherit
+                config
+                lib
+                pkgs
+                modulesPath
+                ;
+            };
           in
           lib.updateManyAttrsByPath [
             {
@@ -455,11 +469,11 @@ in
                 "system"
                 "nssModules"
               ];
-              update = old: [ ];
+              update = _old: [ ];
             }
             {
               path = [ "nixpkgs" ];
-              update = old: { };
+              update = _old: { };
             }
           ] originalModule
         )

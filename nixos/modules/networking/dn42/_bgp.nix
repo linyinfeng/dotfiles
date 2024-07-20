@@ -337,7 +337,7 @@ lib.mkIf cfg.enable (
     {
       # devices
       systemd.network.netdevs = lib.mapAttrs' (
-        peerName: peerCfg:
+        _peerName: peerCfg:
         lib.nameValuePair "70-${peerCfg.tunnel.interface.name}" (
           if (peerCfg.tunnel.type == "wireguard") then
             {
@@ -365,7 +365,7 @@ lib.mkIf cfg.enable (
       environment.systemPackages = with pkgs; [ wireguard-tools ];
       # links
       systemd.network.networks = lib.mapAttrs' (
-        peerName: peerCfg:
+        _peerName: peerCfg:
         lib.nameValuePair "70-${peerCfg.tunnel.interface.name}" {
           matchConfig = {
             Name = peerCfg.tunnel.interface.name;

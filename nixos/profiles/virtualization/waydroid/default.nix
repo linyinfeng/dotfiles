@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ lib, ... }:
 {
   virtualisation.waydroid.enable = true;
   environment.etc."gbinder.d/waydroid.conf".text = lib.mkForce ''

@@ -287,12 +287,7 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      {
-        config,
-        self,
-        lib,
-        ...
-      }:
+      { config, lib, ... }:
       let
         selfLib = import ./lib { inherit inputs lib; };
       in
