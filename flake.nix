@@ -327,6 +327,10 @@
               "hyprland"
               "hyprutils"
             ]
+            [
+              "hyprland"
+              "aquamarine"
+            ]
           ];
         };
         systems = [
