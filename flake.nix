@@ -58,7 +58,6 @@
     lanzaboote.inputs.crane.follows = "crane";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
     lanzaboote.inputs.flake-compat.follows = "flake-compat";
-    lanzaboote.inputs.flake-utils.follows = "flake-utils";
     lanzaboote.inputs.flake-parts.follows = "flake-parts";
     lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
 
