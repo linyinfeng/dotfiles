@@ -43,6 +43,7 @@
     },
     {
       "datasource": {
+        "default": false,
         "type": "influxdb",
         "uid": "influxdb"
       },
@@ -59,18 +60,71 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Failed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Jobs"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Jobs"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 3,
+        "h": 4,
         "w": 3,
         "x": 0,
         "y": 1
@@ -80,7 +134,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -92,7 +146,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "repeat": "host",
       "repeatDirection": "h",
       "targets": [
@@ -102,7 +156,16 @@
             "uid": "influxdb"
           },
           "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
-          "refId": "A"
+          "refId": "Failed"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 1 or r._value == 4 or r._value == 5, onEmpty: \"keep\") // 1 -- reloading | 4 -- activating | 5 -- deactivating\n  |> group()\n  |> count()",
+          "refId": "Jobs"
         }
       ],
       "title": "${host}",
@@ -118,11 +181,12 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 5
       },
       "id": 4,
       "panels": [],
       "repeat": "host",
+      "repeatDirection": "h",
       "targets": [
         {
           "datasource": {
@@ -163,7 +227,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 8
+        "y": 6
       },
       "id": 6,
       "options": {
@@ -181,7 +245,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -197,9 +261,11 @@
     },
     {
       "datasource": {
+        "default": false,
         "type": "influxdb",
         "uid": "influxdb"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -212,27 +278,80 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Failed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "Jobs"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Jobs"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 4,
-        "w": 2,
+        "w": 3,
         "x": 4,
-        "y": 8
+        "y": 6
       },
-      "id": 29,
+      "id": 323,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
@@ -244,7 +363,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -252,10 +371,19 @@
             "uid": "influxdb"
           },
           "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
-          "refId": "A"
+          "refId": "Failed"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 1 or r._value == 4 or r._value == 5, onEmpty: \"keep\") // 1 -- reloading | 4 -- activating | 5 -- deactivating\n  |> group()\n  |> count()",
+          "refId": "Jobs"
         }
       ],
-      "title": "Failed Units",
+      "title": "Systemd Units",
       "type": "stat"
     },
     {
@@ -277,6 +405,7 @@
             "axisSoftMax": 1,
             "axisSoftMin": 0,
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -322,9 +451,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 8
+        "w": 5,
+        "x": 7,
+        "y": 6
       },
       "id": 2,
       "options": {
@@ -381,7 +510,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 8
+        "y": 6
       },
       "id": 8,
       "options": {
@@ -399,7 +528,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -441,7 +570,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 8
+        "y": 6
       },
       "id": 9,
       "options": {
@@ -459,7 +588,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -490,6 +619,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -532,7 +662,7 @@
         "h": 4,
         "w": 6,
         "x": 18,
-        "y": 8
+        "y": 6
       },
       "id": 18,
       "options": {
@@ -589,7 +719,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 10
+        "y": 8
       },
       "id": 10,
       "options": {
@@ -607,7 +737,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -640,6 +770,7 @@
             "axisPlacement": "auto",
             "axisSoftMin": 0,
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 25,
             "gradientMode": "none",
@@ -802,7 +933,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 10
       },
       "id": 12,
       "options": {
@@ -910,7 +1041,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 12
+        "y": 10
       },
       "id": 14,
       "options": {
@@ -926,7 +1057,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.2.0-72125",
+      "pluginVersion": "11.2.0-73451",
       "targets": [
         {
           "datasource": {
@@ -957,6 +1088,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1003,7 +1135,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 12
+        "y": 10
       },
       "id": 25,
       "options": {
@@ -1049,6 +1181,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1095,7 +1228,7 @@
         "h": 5,
         "w": 8,
         "x": 0,
-        "y": 17
+        "y": 15
       },
       "id": 23,
       "options": {
@@ -1141,6 +1274,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1188,7 +1322,7 @@
         "h": 5,
         "w": 8,
         "x": 8,
-        "y": 17
+        "y": 15
       },
       "id": 31,
       "options": {
@@ -1233,6 +1367,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1280,7 +1415,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 17
+        "y": 15
       },
       "id": 33,
       "options": {
@@ -1490,6 +1625,6 @@
   "timezone": "",
   "title": "Systems",
   "uid": "dashboard-system",
-  "version": 7,
+  "version": 8,
   "weekStart": ""
 }
