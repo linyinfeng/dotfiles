@@ -178,8 +178,8 @@ let
     [
       (_final: _prev: {
         inherit (unstable-small)
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=326057
-          miniupnpc
+          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=331856
+          nix-du
           ;
       })
     ];
