@@ -2,7 +2,10 @@
 {
   services.ace-bot = {
     enable = true;
-    managerChatId = "148111617";
+    telegram = {
+      enable = true;
+      managerChatId = "148111617";
+    };
     tokenFile = config.sops.secrets."telegram-bot/ace-bot/token".path;
     extraModules = [
       (
