@@ -30,21 +30,16 @@ in
     };
   };
   sops.secrets."nixbuild/id-ed25519" = {
-    neededForUsers = true; # needed for /etc
     sopsFile = config.sops-file.get "common.yaml";
+    owner = config.users.users.nixbuild.name;
+    group = config.users.groups.nixbuild.name;
   };
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519
-      IdentityFile /etc/nix-build-machines/nixbuild/key
+      IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
       ${proxyCommand}
   '';
-  environment.etc."nix-build-machines/nixbuild/key" = {
-    mode = "440";
-    user = config.users.users.nixbuild.name;
-    group = config.users.groups.nixbuild.name;
-    source = config.sops.secrets."nixbuild/id-ed25519".path;
-  };
   users.users.nixbuild = {
     uid = config.ids.uids.nixbuild;
     isSystemUser = true;
