@@ -92,15 +92,20 @@ in
     {
       services.rathole = {
         enable = true;
-        configFile = config.sops.templates."rathole-toml".path;
+        role = "server";
+        settings = {
+          server = {
+            bind_addr = "[::]:${toString config.ports.rathole}";
+            services.minecraft = {
+              bind_addr = "[::]:${toString config.ports.minecraft}";
+            };
+          };
+        };
+        credentialsFile = config.sops.templates."rathole-toml".path;
       };
       sops.templates."rathole-toml".content = ''
-        [server]
-        bind_addr = "[::]:${toString config.ports.rathole}"
-
         [server.services.minecraft]
         token = "${config.sops.placeholder."rathole_minecraft_token"}"
-        bind_addr = "[::]:${toString config.ports.minecraft}"
       '';
       sops.secrets."rathole_minecraft_token" = {
         terraformOutput.enable = true;
