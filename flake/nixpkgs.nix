@@ -175,14 +175,7 @@ let
       # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
     in
-    [
-      (_final: _prev: {
-        inherit (unstable-small)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=331856
-          nix-du
-          ;
-      })
-    ];
+    [ (_final: _prev: { }) ];
 in
 {
   perSystem =
