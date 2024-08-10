@@ -178,7 +178,7 @@ let
     [
       (_final: _prev: {
         inherit (unstable-small)
-          # TODO wait for https://nixpk.gs/pr-tracker.html?pr=331856
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=331856
           nix-du
           ;
       })
