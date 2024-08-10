@@ -11,13 +11,6 @@
           check-yaml.enable = true;
           checkmake.enable = true;
           markdownlint.enable = true;
-
-          flake-treefmt = {
-            enable = true;
-            name = "flake-treefmt";
-            entry = "${config.treefmt.build.wrapper}/bin/treefmt";
-            pass_filenames = false;
-          };
         };
         devshells.default.devshell.startup.pre-commit-hook.text = config.pre-commit.installationScript;
       })

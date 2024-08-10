@@ -1,7 +1,18 @@
 { ... }:
 {
   perSystem =
-    { config, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      treefmtWrapper = pkgs.writeShellScriptBin "treefmt" ''
+        unset PRJ_ROOT
+        exec "${lib.getExe config.treefmt.build.wrapper}" "$@"
+      '';
+    in
     lib.mkMerge [
       (lib.mkIf config.isDevSystem {
         treefmt = {
@@ -39,11 +50,20 @@
           };
         };
         devshells.default.commands = [
+          # treefmt defaults --tree-root from $PRJ_ROOT
           {
             category = "misc";
-            package = config.treefmt.build.wrapper;
+            package = treefmtWrapper;
           }
         ];
+        pre-commit.settings.hooks = {
+          flake-treefmt = {
+            enable = true;
+            name = "flake-treefmt";
+            entry = lib.getExe treefmtWrapper;
+            pass_filenames = false;
+          };
+        };
       })
       (lib.mkIf (!config.isDevSystem) { treefmt.flakeCheck = false; })
     ];
