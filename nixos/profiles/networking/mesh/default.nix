@@ -14,6 +14,7 @@ let
     ipsec.xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
   };
   ipv4OnlyHosts = [ "shg0" ];
+  bandwidthLimitedHosts = [ "shg0" ];
 in
 lib.mkMerge [
   { networking.mesh.enable = config.networking.hostsData.indexed; }
@@ -32,6 +33,9 @@ lib.mkMerge [
         hostCertKeyFile = config.sops.secrets."ike_private_key_pem".path;
       };
       bird.babelInterfaceConfig = ''
+        ${lib.optionalString (!indexedHosts ? ${hostName} || lib.elem hostName bandwidthLimitedHosts) ''
+          rxcost 200;
+        ''}
         rtt cost 1024;
         rtt max 1024 ms;
       '';
