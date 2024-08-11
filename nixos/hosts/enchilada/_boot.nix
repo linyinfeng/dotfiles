@@ -27,6 +27,19 @@ let
       cp --verbose --no-preserve=mode {"${config.hardware.firmware}","$out"}"${f}"
     '') extraInitrdFirmware}
   '';
+
+  # TODO switch UEFI and ZBOOT with vmlinuz.efi
+  imageGz = pkgs.runCommand "Image.gz" { nativeBuildInputs = with pkgs; [ gzip ]; } ''
+    mkdir $out
+    gzip --stdout "${config.boot.kernelPackages.kernel}/Image" >"$out/Image.gz"
+  '';
+  kernelForBootImg = pkgs.symlinkJoin {
+    name = "kernel-for-bootimg";
+    paths = [
+      config.boot.kernelPackages.kernel
+      imageGz
+    ];
+  };
 in
 {
   boot.initrd.kernelModules = [
@@ -72,7 +85,7 @@ in
             "init=${toplevel}/init"
           ]
         );
-        kernel = "${config.boot.kernelPackages.kernel}/${config.system.boot.loader.kernelFile}";
+        kernel = "${kernelForBootImg}/Image.gz";
         initrd = "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
         inherit (config.mobile.system.android) appendDTB;
       };

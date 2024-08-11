@@ -16,5 +16,7 @@
       isExynosDT = false;
     }
   );
+  # not used
+  # boot.img only support Image.gz
   system.boot.loader.kernelFile = "vmlinuz.efi";
 }
