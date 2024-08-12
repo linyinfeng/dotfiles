@@ -72,6 +72,6 @@ resource "cloudflare_record" "li7g_ts" {
   proxied = false
   ttl     = 1
   type    = "A" # ipv4
-  value   = each.value
+  content = each.value
   zone_id = cloudflare_zone.com_li7g.id
 }

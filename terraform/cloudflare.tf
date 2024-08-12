@@ -70,7 +70,7 @@ resource "cloudflare_record" "li7g_home" {
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "ae370c7d335a.sn.mynetname.net"
+  content = "ae370c7d335a.sn.mynetname.net"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -79,7 +79,7 @@ resource "cloudflare_record" "li7g" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = "fsn0.li7g.com"
+  content = "fsn0.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -88,7 +88,7 @@ resource "cloudflare_record" "zip_prebuilt" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = "prebuilt-zip.li7g.com"
+  content = "prebuilt-zip.li7g.com"
   zone_id = cloudflare_zone.zip_prebuilt.id
 }
 resource "cloudflare_record" "zip_prebuilt_wildcard" {
@@ -98,7 +98,7 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "prebuilt-zip.li7g.com"
+  content = "prebuilt-zip.li7g.com"
   zone_id = cloudflare_zone.zip_prebuilt.id
 }
 
@@ -159,7 +159,7 @@ resource "cloudflare_record" "general_cname" {
   proxied = each.value.proxy
   ttl     = 1
   type    = "CNAME"
-  value   = "${each.value.on}.li7g.com"
+  content = "${each.value.on}.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -170,7 +170,7 @@ resource "cloudflare_record" "general_tailscale_cname" {
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "${each.value.on}.ts.li7g.com"
+  content = "${each.value.on}.ts.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -181,7 +181,7 @@ resource "cloudflare_record" "general_zerotier_cname" {
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "${each.value.on}.zt.li7g.com"
+  content = "${each.value.on}.zt.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -192,7 +192,7 @@ resource "cloudflare_record" "general_dn42_cname" {
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  value   = "${each.value.on}.dn42.li7g.com"
+  content = "${each.value.on}.dn42.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -203,7 +203,7 @@ resource "cloudflare_record" "dns" {
   proxied = false
   ttl     = 1
   type    = "AAAA"
-  value   = local.dn42_anycast_dns_v6
+  content = local.dn42_anycast_dns_v6
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -214,7 +214,7 @@ resource "cloudflare_record" "localhost_a" {
   proxied = false
   ttl     = 1
   type    = "A"
-  value   = "127.0.0.1"
+  content = "127.0.0.1"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -223,7 +223,7 @@ resource "cloudflare_record" "localhost_aaaa" {
   proxied = false
   ttl     = 1
   type    = "AAAA"
-  value   = "::1"
+  content = "::1"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -235,9 +235,9 @@ resource "cloudflare_record" "localhost_aaaa" {
 #   proxied = false
 #   ttl     = 1
 #   type    = "A"
-#   value   = "127.0.0.1"
+#   content   = "127.0.0.1"
 #   zone_id = cloudflare_zone.com_li7g.id
-#   lifecycle { ignore_changes = [value] }
+#   lifecycle { ignore_changes = [content] }
 # }
 
 # smtp records for sending
@@ -247,7 +247,7 @@ resource "cloudflare_record" "li7g_dkim" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "v=DKIM1; k=${local.dkim_algorithm}; p=${local.dkim_public_key}"
+  content = "v=DKIM1; k=${local.dkim_algorithm}; p=${local.dkim_public_key}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -256,7 +256,7 @@ resource "cloudflare_record" "li7g_dmarc" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "v=DMARC1; p=quarantine; ruf=mailto:postmaster@li7g.com"
+  content = "v=DMARC1; p=quarantine; ruf=mailto:postmaster@li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -265,7 +265,7 @@ resource "cloudflare_record" "li7g_spf" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "v=spf1 include:_spf.mx.cloudflare.net redirect=smtp.li7g.com"
+  content = "v=spf1 include:_spf.mx.cloudflare.net redirect=smtp.li7g.com"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -274,7 +274,7 @@ resource "cloudflare_record" "li7g_smtp_spf" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "v=spf1 a ~all"
+  content = "v=spf1 a ~all"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -285,7 +285,7 @@ resource "cloudflare_record" "github_pages_challenge" {
   proxied = false
   ttl     = 1
   type    = "TXT"
-  value   = "6d2a79cedb6068b2a2b13ed18ccf4e"
+  content = "6d2a79cedb6068b2a2b13ed18ccf4e"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
@@ -296,7 +296,7 @@ resource "cloudflare_record" "li7g_b2" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = module.b2_download_url.host
+  content = module.b2_download_url.host
   zone_id = cloudflare_zone.com_li7g.id
 }
 resource "cloudflare_record" "li7g_cache" {
@@ -304,7 +304,7 @@ resource "cloudflare_record" "li7g_cache" {
   proxied = true
   ttl     = 1
   type    = "CNAME"
-  value   = module.b2_download_url.host
+  content = module.b2_download_url.host
   zone_id = cloudflare_zone.com_li7g.id
 }
 
