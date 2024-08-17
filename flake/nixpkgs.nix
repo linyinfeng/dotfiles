@@ -180,7 +180,7 @@ let
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
           delta
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334968
-          emacs
+          emacsPackagesFor
           ;
       })
     ];
