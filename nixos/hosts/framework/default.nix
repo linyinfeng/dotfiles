@@ -36,7 +36,10 @@
       hardware.sr-iov
       users.yinfeng
     ])
-    ++ [ ./_hardware.nix ];
+    ++ [
+      ./_hardware.nix
+      ./_nvidia.nix
+    ];
 
   config = lib.mkMerge [
     {
