@@ -27,9 +27,7 @@ in
         echo "push cache to cahche.li7g.com for hydra gcroot: $root"
         # TODO set multipart-upload=true
         # currently this does not work on aws-s3-reverse-proxy
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=333986
-        # error: AWS error fetching 'nix-cache-info': The specified bucket does not exist: nix-cache-info
-        "${pkgs.nixVersions.stable}/bin/nix" copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd" "$root" --verbose
+        nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd" "$root" --verbose
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     scriptArgs = "%I";
