@@ -35,9 +35,6 @@ let
   emacsConfig = pkgs.substituteAll {
     src = rawEmacsConfig;
     inherit syncDir rimeShareDataDir;
-    telegaProxyEnable = if fw-proxy.enable then "t" else "nil";
-    telegaProxyServer = "localhost";
-    telegaProxyPort = if fw-proxy.enable then fw-proxy.ports.mixed else "nil";
     ledgerFile = config.home.sessionVariables."LEDGER_FILE";
   };
 in

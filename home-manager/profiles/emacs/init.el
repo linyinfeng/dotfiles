@@ -410,15 +410,6 @@
 (use-package swift-mode
   :ensure t)
 
-(use-package telega
-  :ensure t
-  :defer t
-  :custom
-  (telega-proxies '(( :enable @telegaProxyEnable@
-                      :server "@telegaProxyServer@"
-                      :port @telegaProxyPort@
-                      :type (:@type "proxyTypeSocks5") ))))
-
 (use-package terraform-mode
   :ensure t)
 
