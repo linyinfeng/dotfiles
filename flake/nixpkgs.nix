@@ -161,19 +161,20 @@ let
   alternativeChannels = nixpkgsArgs: {
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
     unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
+    stable = import inputs.nixpkgs-stable nixpkgsArgs;
   };
   earlyFixes =
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
+      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
-    [ (_final: _prev: { }) ];
+    [ (_final: _prev: { inherit (stable) zerotierone; }) ];
   lateFixes =
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs) latest unstable-small;
+      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [ (_final: _prev: { }) ];
 in
