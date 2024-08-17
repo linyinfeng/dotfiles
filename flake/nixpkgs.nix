@@ -169,7 +169,17 @@ let
       # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
-    [ (_final: _prev: { inherit (stable) zerotierone; }) ];
+    [
+      (_final: _prev: {
+        # https://github.com/NixOS/nixpkgs/issues/332957
+        inherit (stable)
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335051
+          zerotierone
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
+          delta
+          ;
+      })
+    ];
   lateFixes =
     nixpkgsArgs:
     let
