@@ -175,6 +175,8 @@ let
         inherit (stable)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335051
           zerotierone
+          # TODO no PR yet
+          rathole
           ;
         inherit (unstable-small)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
