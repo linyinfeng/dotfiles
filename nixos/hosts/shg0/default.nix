@@ -32,7 +32,8 @@ in
       services.nginx
       services.acme
       services.postgresql
-      services.matrix-qq
+      # TODO disabled since matrix-qq uses deprecated libolm
+      # services.matrix-qq
       services.teamspeak
     ])
     ++ [
