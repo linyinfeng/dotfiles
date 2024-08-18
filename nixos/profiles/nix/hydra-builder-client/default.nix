@@ -27,6 +27,7 @@ in
   '';
   sops.secrets."hydra_builder_private_key" = {
     terraformOutput.enable = true;
+    mode = "440";
     owner = config.users.users.hydra-builder-client.name;
     group = config.users.groups.hydra-builder-client.name;
     restartUnits = [ ]; # nothing
