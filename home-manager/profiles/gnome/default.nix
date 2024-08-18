@@ -59,10 +59,7 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
         "org.gnome.Nautilus.desktop"
         "chromium-browser.desktop"
         "gnome-system-monitor.desktop"
-        # "code.desktop"
-        # TODO https://github.com/microsoft/vscode/issues/129953
-        # https://github.com/microsoft/vscode/issues/129953#issuecomment-1315491384
-        "code-url-handler.desktop"
+        "code.desktop"
       ];
       welcome-dialog-last-shown-version = "43.1";
     };

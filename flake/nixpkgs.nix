@@ -142,18 +142,6 @@ let
           )
         else
           prev.gnome;
-      vscode =
-        (prev.vscode.override { commandLineArgs = [ "--enable-wayland-ime" ]; }).overrideAttrs
-          (old: {
-            # TODO https://github.com/microsoft/vscode/issues/129953
-            # https://github.com/microsoft/vscode/issues/129953#issuecomment-1315491384
-            postInstall =
-              (old.postInstall or "")
-              + ''
-                mv "$out/share/applications/code.desktop" "$out/share/applications/code-url-handler.desktop"
-                sed -i 's/^StartupWMClass=.*$/StartupWMClass=code-url-handler/' "$out/share/applications/code-url-handler.desktop"
-              '';
-          });
       librime = prev.lantian.lantianCustomized.librime-with-plugins;
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
