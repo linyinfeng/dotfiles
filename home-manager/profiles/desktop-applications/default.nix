@@ -68,7 +68,10 @@ in
 
   dconf.settings = {
     "org/gnome/shell" = {
-      favorite-apps = [ "zotero.desktop" ];
+      favorite-apps = [
+        "zotero.desktop"
+        "io.missioncenter.MissionCenter.desktop"
+      ];
     };
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
