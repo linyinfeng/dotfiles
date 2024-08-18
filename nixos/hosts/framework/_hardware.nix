@@ -99,7 +99,7 @@ lib.mkMerge [
           else
             # systemctl mask fprintd --runtime
             # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
-            rm /run/systemd/transient/fprintd.service
+            rm --force /run/systemd/transient/fprintd.service
             systemctl daemon-reload
           fi
         '';
