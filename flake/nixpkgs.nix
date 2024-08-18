@@ -185,6 +185,8 @@ let
           delta
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334838
           deepfilternet
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334824
+          bandwhich
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334968
           emacsPackagesFor
           ;
