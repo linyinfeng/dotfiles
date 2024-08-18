@@ -31,6 +31,7 @@ in
   };
   sops.secrets."nixbuild/id-ed25519" = {
     sopsFile = config.sops-file.get "common.yaml";
+    mode = "440";
     owner = config.users.users.nixbuild.name;
     group = config.users.groups.nixbuild.name;
   };
