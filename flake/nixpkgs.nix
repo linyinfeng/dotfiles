@@ -183,6 +183,8 @@ let
         inherit (unstable-small)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
           delta
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334838
+          deepfilternet
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334968
           emacsPackagesFor
           ;
