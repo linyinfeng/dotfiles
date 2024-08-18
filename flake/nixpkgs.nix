@@ -177,6 +177,7 @@ let
           zerotierone
           # TODO no PR yet
           rathole
+          nix-melt
           ;
         inherit (unstable-small)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
