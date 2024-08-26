@@ -48,7 +48,7 @@
         consoleMode = "max";
         configurationLimit = 10;
       };
-      boot.loader.timeout = 0;
+      boot.loader.timeout = 10;
 
       # kernel tweaks
       boot.kernel.intel.type = "lts";
