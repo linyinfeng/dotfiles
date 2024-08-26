@@ -163,20 +163,12 @@ let
         inherit (stable)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335051
           zerotierone
-          # TODO no PR yet
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=337095
           rathole
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335060
-          nix-melt
           ;
         inherit (unstable-small)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334814
-          delta
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334838
-          deepfilternet
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334824
-          bandwhich
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=334968
-          emacsPackagesFor
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335060
+          nix-melt
           ;
       })
     ];
@@ -197,17 +189,18 @@ in
         nixpkgs = {
           config = {
             allowUnfree = true;
-            # TODO wait for zotero 7
+            # TODO wati for mautrix-telegram update
             # TODO wati for logseq update
             allowInsecurePredicate =
               p:
-              (p.pname or null) == "zotero" && lib.versions.major (p.version or null) == "6"
-              ||
+              (p.pname or null) == "olm"
+              || (
                 (p.pname or null) == "electron"
                 && lib.elem (lib.versions.major (p.version or null)) [
                   "27"
                   "28"
-                ]; # for dependency of logseq
+                ]
+              ); # for dependency of logseq
           };
           overlays =
             let
