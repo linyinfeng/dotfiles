@@ -19,8 +19,8 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   environment.systemPackages = with pkgs; [
     kooha
     dconf-editor
-    gnome.gnome-sound-recorder
-    gnome.gnome-power-manager
+    gnome-sound-recorder
+    gnome-power-manager
     gnome-tweaks
   ];
 
@@ -126,7 +126,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
       auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
       auth       optional                    pam_permit.so
       auth       required                    pam_env.so
-      auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
+      auth       [success=ok default=1]      ${pkgs.gdm}/lib/security/pam_gdm.so
       auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
 
       account    include                     login
