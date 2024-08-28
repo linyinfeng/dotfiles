@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   originalPackage = config.boot.kernelPackages.nvidiaPackages.stable;
   package = originalPackage // {
@@ -27,4 +27,9 @@ in
     inherit package;
   };
   services.switcherooControl.enable = true;
+  environment.systemPackages = with pkgs; [
+    intel-gpu-tools
+    nvitop
+    mesa-demos
+  ];
 }
