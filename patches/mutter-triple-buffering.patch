@@ -1,4 +1,4 @@
-From 6a87d89aff36d62b2a062f437b664cae7ea278bb Mon Sep 17 00:00:00 2001
+From e3ad4264fe00e8f7631ac7a01a5a47a5ffe220b2 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 17 Sep 2021 17:48:20 +0800
 Subject: [PATCH 01/34] cogl/onscreen: Add function
@@ -40,10 +40,10 @@ index afb648bcd..086be7ed7 100644
  cogl_onscreen_add_frame_callback (CoglOnscreen *onscreen,
                                    CoglFrameCallback callback,
 -- 
-2.44.0
+2.45.2
 
 
-From 9240d40c44519c15f4bde53e4b82aa706f47f923 Mon Sep 17 00:00:00 2001
+From b61fe512ef8a1ad1d9217e045ca8e8944a6bfad3 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Mon, 12 Feb 2024 17:16:03 +0800
 Subject: [PATCH 02/34] cogl/onscreen: Indent declaration parameters to align
@@ -68,10 +68,10 @@ index 785f67aca..86d8ea2d5 100644
  COGL_EXPORT unsigned int
  cogl_onscreen_count_pending_frames (CoglOnscreen *onscreen);
 -- 
-2.44.0
+2.45.2
 
 
-From 902dee95d123ddc7c479bd7df83175ec8e0f8d0b Mon Sep 17 00:00:00 2001
+From 0f18e6653508c53ff46868d0f9c7237944547ea5 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 20 Apr 2022 18:33:43 +0800
 Subject: [PATCH 03/34] kms: Keep a shutting_down flag
@@ -82,7 +82,7 @@ Subject: [PATCH 03/34] kms: Keep a shutting_down flag
  2 files changed, 11 insertions(+)
 
 diff --git a/src/backends/native/meta-kms.c b/src/backends/native/meta-kms.c
-index 795008b21..70d1e792c 100644
+index d41fcefb5..4809ca059 100644
 --- a/src/backends/native/meta-kms.c
 +++ b/src/backends/native/meta-kms.c
 @@ -63,6 +63,8 @@ struct _MetaKms
@@ -102,7 +102,7 @@ index 795008b21..70d1e792c 100644
    meta_kms_run_impl_task_sync (kms, prepare_shutdown_in_impl, NULL, NULL);
    meta_thread_flush_callbacks (META_THREAD (kms));
  
-@@ -408,6 +411,12 @@ meta_kms_new (MetaBackend   *backend,
+@@ -413,6 +416,12 @@ meta_kms_new (MetaBackend   *backend,
    return kms;
  }
  
@@ -129,10 +129,10 @@ index 743401406..f6b19520b 100644
                          MetaKmsFlags   flags,
                          GError       **error);
 -- 
-2.44.0
+2.45.2
 
 
-From 034de98e76be201ebd5a1b62ecc27b8e6d2f61fa Mon Sep 17 00:00:00 2001
+From 5ff79eb6b7c5b2265a9fe4000bf8550628d9c65f Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 26 Oct 2021 18:50:50 +0800
 Subject: [PATCH 04/34] renderer/native: Avoid requeuing the same onscreen for
@@ -163,10 +163,10 @@ index aa76d018c..770b5ab75 100644
      {
        renderer_native->power_save_page_flip_source_id =
 -- 
-2.44.0
+2.45.2
 
 
-From 6095010970ae6f77c4f1529baf7acad05293b58e Mon Sep 17 00:00:00 2001
+From 74dc77b65b4513284e35f16d8f70d8af3fdb343f Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Mon, 1 Nov 2021 19:35:34 +0800
 Subject: [PATCH 05/34] renderer/native: Steal the power save flip list before
@@ -203,10 +203,10 @@ index 770b5ab75..601fd674a 100644
  
    return G_SOURCE_REMOVE;
 -- 
-2.44.0
+2.45.2
 
 
-From 581de2f7ee384615545456f00f2e5c0f100c2619 Mon Sep 17 00:00:00 2001
+From c25bcd54774e6d8d83429eea76cf0d1e8dd88965 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 10 Dec 2021 16:40:58 +0800
 Subject: [PATCH 06/34] onscreen/native: Log swapbuffers and N-buffering when
@@ -241,10 +241,10 @@ index 1a31f04a1..2b57731be 100644
      update_secondary_gpu_state_pre_swap_buffers (onscreen,
                                                   rectangles,
 -- 
-2.44.0
+2.45.2
 
 
-From 17f101b17d367fd1d5c75eaec617101b0ec605e6 Mon Sep 17 00:00:00 2001
+From 91453c1b88ba1a159241c224578a3bb868c90a26 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 28 Jul 2021 16:35:56 +0800
 Subject: [PATCH 07/34] onscreen/native: Replace an assertion that double
@@ -271,10 +271,10 @@ index 2b57731be..dbc503ebf 100644
    _cogl_onscreen_notify_frame_sync (onscreen, info);
    _cogl_onscreen_notify_complete (onscreen, info);
 -- 
-2.44.0
+2.45.2
 
 
-From e7754b38c77ff88da16af8361851563ed2e9ea61 Mon Sep 17 00:00:00 2001
+From 271dee0967630e4bc2c3ca4d057dab53ae6ae2c1 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 16 Sep 2021 16:26:25 +0800
 Subject: [PATCH 08/34] onscreen/native: Deduplicate calls to
@@ -350,10 +350,10 @@ index dbc503ebf..06f9e81e8 100644
  
  gboolean
 -- 
-2.44.0
+2.45.2
 
 
-From 42e23ce307b06eac156ef7877603427862f9f4a2 Mon Sep 17 00:00:00 2001
+From 0e903858dfb21633fb37a9c207d5de8b5c0fcc81 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 28 Jul 2021 16:29:27 +0800
 Subject: [PATCH 09/34] onscreen/native: Split swap_buffers_with_damage into
@@ -495,10 +495,10 @@ index 06f9e81e8..524bc393d 100644
  
  static void
 -- 
-2.44.0
+2.45.2
 
 
-From db2680938786f83147215c6ac2ceddc3ea805ab9 Mon Sep 17 00:00:00 2001
+From c12fbdb912faf7b1efb647d3d96067c4ae229b7c Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 28 Oct 2021 17:24:11 +0800
 Subject: [PATCH 10/34] onscreen/native: Add a missing frame notification
@@ -531,10 +531,10 @@ index 524bc393d..eaa00d45a 100644
          g_set_object (&onscreen_native->gbm.next_fb, secondary_gpu_fb);
        else
 -- 
-2.44.0
+2.45.2
 
 
-From dfa3cd632df4e2856855d7b8ae8ee557466e24bf Mon Sep 17 00:00:00 2001
+From f5a36efe3a125737d4ccad912c05cfccee704c79 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 5 Dec 2023 17:50:44 +0800
 Subject: [PATCH 11/34] onscreen/native: Insert a 'posted' frame between 'next'
@@ -688,10 +688,10 @@ index eaa00d45a..2617b1606 100644
      case META_RENDERER_NATIVE_MODE_SURFACELESS:
        g_assert_not_reached ();
 -- 
-2.44.0
+2.45.2
 
 
-From 4c18c898c9bb06855da10b451dae960939cebda9 Mon Sep 17 00:00:00 2001
+From d6d0fa3f3c873d478318343f8497269487ba727b Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 17 Sep 2021 17:59:28 +0800
 Subject: [PATCH 12/34] onscreen/native: Defer posting if there's already a
@@ -1038,10 +1038,10 @@ index 2617b1606..d57aad0b2 100644
  
  static gboolean
 -- 
-2.44.0
+2.45.2
 
 
-From 24b5694ab79f028933678b8148d43e6a03edb16f Mon Sep 17 00:00:00 2001
+From 2fbaa03a9da71dc76aa1b022e4152d9382b88dd6 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 9 Dec 2022 14:22:31 +0800
 Subject: [PATCH 13/34] onscreen/native: Increase secondary GPU dumb_fbs from 2
@@ -1091,10 +1091,10 @@ index d57aad0b2..a8e8dcfb7 100644
  
  static MetaDrmBuffer *
 -- 
-2.44.0
+2.45.2
 
 
-From a63610a3175bf5cc2202930eef8d1986d2660c7c Mon Sep 17 00:00:00 2001
+From 5a6892f3e21cefaef982fb2fd8d47764d4a2dc90 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 4 Nov 2021 16:09:26 +0800
 Subject: [PATCH 14/34] onscreen/native: Add function
@@ -1143,10 +1143,10 @@ index 0e1193325..e30357d19 100644
                                      MetaRendererView *view);
  
 -- 
-2.44.0
+2.45.2
 
 
-From 99d1a2d1be42502ab419f947e1aac483c8950000 Mon Sep 17 00:00:00 2001
+From 5209a0896b49b5005768838ea2740a1b0493a455 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 11 May 2022 16:00:32 +0800
 Subject: [PATCH 15/34] onscreen/native: Skip try_post_latest_swap if shutting
@@ -1192,10 +1192,10 @@ index 0c608237c..65e48f2ea 100644
  
    power_save_mode = meta_monitor_manager_get_power_save_mode (monitor_manager);
 -- 
-2.44.0
+2.45.2
 
 
-From 0daf4a48f8cec7cc672249b28652bf0267bda9ee Mon Sep 17 00:00:00 2001
+From dc37139410d44dea62825aea5d00475c4f55d083 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 4 Nov 2021 16:09:52 +0800
 Subject: [PATCH 16/34] renderer/native: Discard pending swaps when rebuilding
@@ -1251,10 +1251,10 @@ index 601fd674a..3c22b4e86 100644
    g_hash_table_remove_all (renderer_native->mode_set_updates);
  
 -- 
-2.44.0
+2.45.2
 
 
-From fab0d3d57ed2721b32dcc2e282b9f5f6cce3857d Mon Sep 17 00:00:00 2001
+From 28e3334b106502eeea9c2f2104979975284106ad Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 7 Dec 2023 16:28:20 +0800
 Subject: [PATCH 17/34] clutter/frame-clock: Reuse existing idle period
@@ -1270,10 +1270,10 @@ Fixes: 8f27ebf87eee6057992a90560d4118ab7bdf138d
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 93e4c9329..1b212ee3f 100644
+index 30a319f60..0c578a7af 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -491,6 +491,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -496,6 +496,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
    int64_t min_render_time_allowed_us;
    int64_t max_render_time_allowed_us;
    int64_t next_presentation_time_us;
@@ -1281,7 +1281,7 @@ index 93e4c9329..1b212ee3f 100644
    int64_t next_update_time_us;
  
    now_us = g_get_monotonic_time ();
-@@ -535,7 +536,8 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -540,7 +541,8 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
     *
     */
    last_presentation_time_us = frame_clock->last_presentation_time_us;
@@ -1291,20 +1291,20 @@ index 93e4c9329..1b212ee3f 100644
  
    /*
     * However, the last presentation could have happened more than a frame ago.
-@@ -601,7 +603,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
-         }
+@@ -607,7 +609,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
      }
  
--  if (next_presentation_time_us != last_presentation_time_us + refresh_interval_us)
-+  if (next_presentation_time_us != next_smooth_presentation_time_us)
+   if (frame_clock->last_presentation_flags & CLUTTER_FRAME_INFO_FLAG_VSYNC &&
+-      next_presentation_time_us != last_presentation_time_us + refresh_interval_us)
++      next_presentation_time_us != next_smooth_presentation_time_us)
      {
        /* There was an idle period since the last presentation, so there seems
         * be no constantly updating actor. In this case it's best to start
 -- 
-2.44.0
+2.45.2
 
 
-From e106557ea916ca8400f2059c7e5a257ce5d2ceac Mon Sep 17 00:00:00 2001
+From 09fa9d14d9a2775f20425f7f81f604933a3ac023 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 10 Aug 2021 17:46:49 +0800
 Subject: [PATCH 18/34] clutter/frame-clock: Lower the threshold for disabling
@@ -1337,10 +1337,10 @@ logical threshold is halfway again: refresh_interval_us/4.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 1b212ee3f..48f07e101 100644
+index 0c578a7af..d1a9f25c9 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -924,7 +924,7 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
+@@ -930,7 +930,7 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
                               frame_clock->refresh_interval_us;
  
    lateness_us = time_us - ideal_dispatch_time_us;
@@ -1350,10 +1350,10 @@ index 1b212ee3f..48f07e101 100644
    else
      frame_clock->last_dispatch_lateness_us = lateness_us;
 -- 
-2.44.0
+2.45.2
 
 
-From 776e619e0311eebd9ff87c5d303512b91df42b20 Mon Sep 17 00:00:00 2001
+From 6cc1801e45ff017f69e19078eec4a9b031a3c8f1 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 24 Jul 2020 14:13:11 +0800
 Subject: [PATCH 19/34] clutter/frame-clock: Merge states DISPATCHING and
@@ -1372,7 +1372,7 @@ later.
  1 file changed, 11 insertions(+), 20 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 48f07e101..384537e41 100644
+index d1a9f25c9..e00f5c8a3 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
 @@ -70,8 +70,7 @@ typedef enum _ClutterFrameClockState
@@ -1385,7 +1385,7 @@ index 48f07e101..384537e41 100644
  } ClutterFrameClockState;
  
  struct _ClutterFrameClock
-@@ -413,8 +412,7 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -418,8 +417,7 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        g_warn_if_reached ();
        break;
@@ -1395,7 +1395,7 @@ index 48f07e101..384537e41 100644
        frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
        maybe_reschedule_update (frame_clock);
        break;
-@@ -435,8 +433,7 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
+@@ -440,8 +438,7 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        g_warn_if_reached ();
        break;
@@ -1405,7 +1405,7 @@ index 48f07e101..384537e41 100644
        frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
        maybe_reschedule_update (frame_clock);
        break;
-@@ -735,8 +732,7 @@ clutter_frame_clock_inhibit (ClutterFrameClock *frame_clock)
+@@ -741,8 +738,7 @@ clutter_frame_clock_inhibit (ClutterFrameClock *frame_clock)
            frame_clock->pending_reschedule_now = TRUE;
            frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
            break;
@@ -1415,7 +1415,7 @@ index 48f07e101..384537e41 100644
            break;
          }
  
-@@ -775,8 +771,7 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
+@@ -781,8 +777,7 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
        break;
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        return;
@@ -1425,7 +1425,7 @@ index 48f07e101..384537e41 100644
        frame_clock->pending_reschedule = TRUE;
        frame_clock->pending_reschedule_now = TRUE;
        return;
-@@ -831,8 +826,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -837,8 +832,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED:
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        return;
@@ -1435,7 +1435,7 @@ index 48f07e101..384537e41 100644
        frame_clock->pending_reschedule = TRUE;
        return;
      }
-@@ -887,8 +881,7 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
+@@ -893,8 +887,7 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
        frame_clock->pending_reschedule_now = TRUE;
        frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
        break;
@@ -1445,7 +1445,7 @@ index 48f07e101..384537e41 100644
        break;
      }
  
-@@ -948,7 +941,7 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
+@@ -954,7 +947,7 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
    frame_clock->last_dispatch_time_us = time_us;
    g_source_set_ready_time (frame_clock->source, -1);
  
@@ -1454,7 +1454,7 @@ index 48f07e101..384537e41 100644
  
    frame_count = frame_clock->frame_count++;
  
-@@ -982,20 +975,20 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
+@@ -988,20 +981,20 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
    switch (frame_clock->state)
      {
      case CLUTTER_FRAME_CLOCK_STATE_INIT:
@@ -1478,7 +1478,7 @@ index 48f07e101..384537e41 100644
            frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
            maybe_reschedule_update (frame_clock);
            break;
-@@ -1212,8 +1205,6 @@ clutter_frame_clock_dispose (GObject *object)
+@@ -1218,8 +1211,6 @@ clutter_frame_clock_dispose (GObject *object)
  {
    ClutterFrameClock *frame_clock = CLUTTER_FRAME_CLOCK (object);
  
@@ -1488,10 +1488,10 @@ index 48f07e101..384537e41 100644
      {
        g_signal_emit (frame_clock, signals[DESTROY], 0);
 -- 
-2.44.0
+2.45.2
 
 
-From f28ce8aa1cc9d5dba8611cefb570f4ca1dec43d6 Mon Sep 17 00:00:00 2001
+From e4df8853067aa8c4f6341e285eb0fa50dbac0a32 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Mon, 13 Dec 2021 17:03:44 +0800
 Subject: [PATCH 20/34] clutter/frame-clock: Clamp render times to two frames,
@@ -1505,10 +1505,10 @@ the scaling is necessary.
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 384537e41..6a11d4b66 100644
+index e00f5c8a3..08524f5e3 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -385,7 +385,7 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -390,7 +390,7 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
          CLAMP (frame_clock->last_dispatch_lateness_us + dispatch_to_swap_us +
                 MAX (swap_to_rendering_done_us, swap_to_flip_us),
                 frame_clock->shortterm_max_update_duration_us,
@@ -1517,7 +1517,7 @@ index 384537e41..6a11d4b66 100644
  
        maybe_update_longterm_max_duration_us (frame_clock, frame_info);
  
-@@ -471,7 +471,7 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
+@@ -476,7 +476,7 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
      frame_clock->vblank_duration_us +
      clutter_max_render_time_constant_us;
  
@@ -1527,10 +1527,10 @@ index 384537e41..6a11d4b66 100644
    return max_render_time_us;
  }
 -- 
-2.44.0
+2.45.2
 
 
-From cfaee218edf230a29d443773ff40c94d45ee2dea Mon Sep 17 00:00:00 2001
+From 1328fa9ff83d68354ca25a98e82f44d7ca950956 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 10 Sep 2020 16:34:53 +0800
 Subject: [PATCH 21/34] clutter/frame-clock: Add triple buffering support
@@ -1540,7 +1540,7 @@ Subject: [PATCH 21/34] clutter/frame-clock: Add triple buffering support
  1 file changed, 170 insertions(+), 28 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 6a11d4b66..32d2b2d87 100644
+index 08524f5e3..3df3f5f5f 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
 @@ -70,7 +70,10 @@ typedef enum _ClutterFrameClockState
@@ -1563,7 +1563,7 @@ index 6a11d4b66..32d2b2d87 100644
    int64_t last_dispatch_lateness_us;
    int64_t last_presentation_time_us;
    int64_t next_update_time_us;
-@@ -110,6 +114,7 @@ struct _ClutterFrameClock
+@@ -112,6 +116,7 @@ struct _ClutterFrameClock
    int64_t vblank_duration_us;
    /* Last KMS buffer submission time. */
    int64_t last_flip_time_us;
@@ -1571,7 +1571,7 @@ index 6a11d4b66..32d2b2d87 100644
  
    /* Last time we promoted short-term maximum to long-term one */
    int64_t longterm_promotion_us;
-@@ -364,14 +369,35 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -369,14 +374,35 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
        frame_info->has_valid_gpu_rendering_duration)
      {
        int64_t dispatch_to_swap_us, swap_to_rendering_done_us, swap_to_flip_us;
@@ -1609,7 +1609,7 @@ index 6a11d4b66..32d2b2d87 100644
          frame_info->cpu_time_before_buffer_swap_us;
  
        CLUTTER_NOTE (FRAME_TIMINGS,
-@@ -412,10 +438,22 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -417,10 +443,22 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        g_warn_if_reached ();
        break;
@@ -1633,7 +1633,7 @@ index 6a11d4b66..32d2b2d87 100644
      }
  }
  
-@@ -433,10 +471,22 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
+@@ -438,10 +476,22 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
        g_warn_if_reached ();
        break;
@@ -1657,7 +1657,7 @@ index 6a11d4b66..32d2b2d87 100644
      }
  }
  
-@@ -451,7 +501,14 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
+@@ -456,7 +506,14 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
    if (!frame_clock->ever_got_measurements ||
        G_UNLIKELY (clutter_paint_debug_flags &
                    CLUTTER_DEBUG_DISABLE_DYNAMIC_MAX_RENDER_TIME))
@@ -1673,7 +1673,7 @@ index 6a11d4b66..32d2b2d87 100644
  
    /* Max render time shows how early the frame clock needs to be dispatched
     * to make it to the predicted next presentation time. It is an estimate of
-@@ -488,7 +545,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -493,7 +550,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
    int64_t min_render_time_allowed_us;
    int64_t max_render_time_allowed_us;
    int64_t next_presentation_time_us;
@@ -1682,7 +1682,7 @@ index 6a11d4b66..32d2b2d87 100644
    int64_t next_update_time_us;
  
    now_us = g_get_monotonic_time ();
-@@ -533,7 +590,27 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -538,7 +595,27 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
     *
     */
    last_presentation_time_us = frame_clock->last_presentation_time_us;
@@ -1711,7 +1711,7 @@ index 6a11d4b66..32d2b2d87 100644
    next_presentation_time_us = next_smooth_presentation_time_us;
  
    /*
-@@ -732,7 +809,17 @@ clutter_frame_clock_inhibit (ClutterFrameClock *frame_clock)
+@@ -738,7 +815,17 @@ clutter_frame_clock_inhibit (ClutterFrameClock *frame_clock)
            frame_clock->pending_reschedule_now = TRUE;
            frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
            break;
@@ -1730,7 +1730,7 @@ index 6a11d4b66..32d2b2d87 100644
            break;
          }
  
-@@ -768,10 +855,18 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
+@@ -774,10 +861,18 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_INIT:
      case CLUTTER_FRAME_CLOCK_STATE_IDLE:
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED:
@@ -1750,7 +1750,7 @@ index 6a11d4b66..32d2b2d87 100644
        frame_clock->pending_reschedule = TRUE;
        frame_clock->pending_reschedule_now = TRUE;
        return;
-@@ -800,7 +895,6 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
+@@ -806,7 +901,6 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
  
    frame_clock->next_update_time_us = next_update_time_us;
    g_source_set_ready_time (frame_clock->source, next_update_time_us);
@@ -1758,7 +1758,7 @@ index 6a11d4b66..32d2b2d87 100644
  }
  
  void
-@@ -822,11 +916,23 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -828,11 +922,23 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
        frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_SCHEDULED;
        return;
      case CLUTTER_FRAME_CLOCK_STATE_IDLE:
@@ -1783,7 +1783,7 @@ index 6a11d4b66..32d2b2d87 100644
        frame_clock->pending_reschedule = TRUE;
        return;
      }
-@@ -855,7 +961,6 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -861,7 +967,6 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
  
    frame_clock->next_update_time_us = next_update_time_us;
    g_source_set_ready_time (frame_clock->source, next_update_time_us);
@@ -1791,7 +1791,7 @@ index 6a11d4b66..32d2b2d87 100644
  }
  
  void
-@@ -871,6 +976,8 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
+@@ -877,6 +982,8 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
      {
      case CLUTTER_FRAME_CLOCK_STATE_INIT:
      case CLUTTER_FRAME_CLOCK_STATE_IDLE:
@@ -1800,7 +1800,7 @@ index 6a11d4b66..32d2b2d87 100644
        break;
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED:
        frame_clock->pending_reschedule = TRUE;
-@@ -881,7 +988,14 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
+@@ -887,7 +994,14 @@ clutter_frame_clock_set_mode (ClutterFrameClock     *frame_clock,
        frame_clock->pending_reschedule_now = TRUE;
        frame_clock->state = CLUTTER_FRAME_CLOCK_STATE_IDLE;
        break;
@@ -1816,7 +1816,7 @@ index 6a11d4b66..32d2b2d87 100644
        break;
      }
  
-@@ -938,10 +1052,27 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
+@@ -944,10 +1058,27 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
      }
  #endif
  
@@ -1845,7 +1845,7 @@ index 6a11d4b66..32d2b2d87 100644
  
    frame_count = frame_clock->frame_count++;
  
-@@ -972,26 +1103,36 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
+@@ -978,26 +1109,36 @@ clutter_frame_clock_dispatch (ClutterFrameClock *frame_clock,
    result = iface->frame (frame_clock, frame, frame_clock->listener.user_data);
    COGL_TRACE_END (ClutterFrameClockFrame);
  
@@ -1895,7 +1895,7 @@ index 6a11d4b66..32d2b2d87 100644
          }
        break;
      }
-@@ -1027,6 +1168,7 @@ void
+@@ -1033,6 +1174,7 @@ void
  clutter_frame_clock_record_flip_time (ClutterFrameClock *frame_clock,
                                        int64_t            flip_time_us)
  {
@@ -1904,10 +1904,10 @@ index 6a11d4b66..32d2b2d87 100644
  }
  
 -- 
-2.44.0
+2.45.2
 
 
-From 92b566e4d992c32ff344d5cbfde55a3f2fe721e1 Mon Sep 17 00:00:00 2001
+From 0c44b387c2408c4b24c2f95e4c17249a8c8c4226 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Fri, 10 Dec 2021 16:28:04 +0800
 Subject: [PATCH 22/34] clutter/frame-clock: Log N-buffers in
@@ -1918,10 +1918,10 @@ Subject: [PATCH 22/34] clutter/frame-clock: Log N-buffers in
  1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 32d2b2d87..e3fb23086 100644
+index 3df3f5f5f..d99501299 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -279,6 +279,12 @@ void
+@@ -281,6 +281,12 @@ void
  clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
                                        ClutterFrameInfo  *frame_info)
  {
@@ -1934,7 +1934,7 @@ index 32d2b2d87..e3fb23086 100644
    COGL_TRACE_BEGIN_SCOPED (ClutterFrameClockNotifyPresented,
                             "Clutter::FrameClock::presented()");
    COGL_TRACE_DESCRIBE (ClutterFrameClockNotifyPresented,
-@@ -401,7 +407,8 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -406,7 +412,8 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
          frame_info->cpu_time_before_buffer_swap_us;
  
        CLUTTER_NOTE (FRAME_TIMINGS,
@@ -1944,7 +1944,7 @@ index 32d2b2d87..e3fb23086 100644
                      frame_clock->last_dispatch_lateness_us,
                      dispatch_to_swap_us,
                      swap_to_rendering_done_us,
-@@ -420,7 +427,8 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -425,7 +432,8 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
      }
    else
      {
@@ -1955,10 +1955,10 @@ index 32d2b2d87..e3fb23086 100644
      }
  
 -- 
-2.44.0
+2.45.2
 
 
-From 9209eba42a0f37c0d178362152d93b2729f93ed4 Mon Sep 17 00:00:00 2001
+From d7bd143b1c7be098e372f76b37d3146fd2fd83e0 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 7 Sep 2021 19:08:15 +0800
 Subject: [PATCH 23/34] clutter/frame: Add ClutterFrameHint to ClutterFrame
@@ -2039,10 +2039,10 @@ index 34f0770bd..c7b3d02ac 100644
 +
  G_DEFINE_AUTOPTR_CLEANUP_FUNC (ClutterFrame, clutter_frame_unref)
 -- 
-2.44.0
+2.45.2
 
 
-From fb3a7d3fba001d2154b38bac0abe660458e50b0d Mon Sep 17 00:00:00 2001
+From cd81b7538c6c8467cd1bf18da9ae1e0ae5e4b36e Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 7 Sep 2021 19:10:26 +0800
 Subject: [PATCH 24/34] backends: Flag that the frame attempted direct scanout
@@ -2069,10 +2069,10 @@ index 7aa24439d..727e1a5f3 100644
                                          stage_view,
                                          scanout,
 -- 
-2.44.0
+2.45.2
 
 
-From 70d35955aca38a14aafef8bbe9eefde93e508eec Mon Sep 17 00:00:00 2001
+From 5fb8b37183702ee1e07ea57f9060be767492942b Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 7 Sep 2021 19:15:18 +0800
 Subject: [PATCH 25/34] clutter: Pass ClutterFrameHint(s) to the frame clock
@@ -2084,10 +2084,10 @@ Subject: [PATCH 25/34] clutter: Pass ClutterFrameHint(s) to the frame clock
  3 files changed, 18 insertions(+), 6 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index e3fb23086..84d2f1f31 100644
+index d99501299..4b4f912d9 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -116,6 +116,8 @@ struct _ClutterFrameClock
+@@ -118,6 +118,8 @@ struct _ClutterFrameClock
    int64_t last_flip_time_us;
    int64_t prev_last_flip_time_us;
  
@@ -2096,7 +2096,7 @@ index e3fb23086..84d2f1f31 100644
    /* Last time we promoted short-term maximum to long-term one */
    int64_t longterm_promotion_us;
    /* Long-term maximum update duration */
-@@ -1173,11 +1175,13 @@ frame_clock_source_dispatch (GSource     *source,
+@@ -1179,11 +1181,13 @@ frame_clock_source_dispatch (GSource     *source,
  }
  
  void
@@ -2156,10 +2156,10 @@ index f5188e2ac..d53e37785 100644
    _clutter_stage_window_finish_frame (stage_window, view, frame);
  
 -- 
-2.44.0
+2.45.2
 
 
-From b1046b6b838bc4cb6ff089e5817455d763a874f1 Mon Sep 17 00:00:00 2001
+From 53888593a8353e24dfbe70df7394432b64cf61e9 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 7 Sep 2021 19:15:55 +0800
 Subject: [PATCH 26/34] clutter/frame-clock: Throttle back to double buffering
@@ -2173,10 +2173,10 @@ Stick to double buffering and enjoy the lower latency.
  1 file changed, 7 insertions(+)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 84d2f1f31..c02eb85e2 100644
+index 4b4f912d9..b2a54e874 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -934,6 +934,13 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -940,6 +940,13 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED_NOW:
        return;
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE:
@@ -2191,10 +2191,10 @@ index 84d2f1f31..c02eb85e2 100644
                                       &next_update_time_us,
                                       &frame_clock->next_presentation_time_us,
 -- 
-2.44.0
+2.45.2
 
 
-From 2a3bb7638d72bd262a70b3833ee82319646f14f1 Mon Sep 17 00:00:00 2001
+From cc9fdb67ce3732468037cd6eb8f4e4c4d2ce2e70 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 10 Mar 2022 16:44:14 +0800
 Subject: [PATCH 27/34] clutter/frame-clock: Add environment variable
@@ -2209,7 +2209,7 @@ direct scanout.
  1 file changed, 45 insertions(+), 10 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index c02eb85e2..142f670f5 100644
+index b2a54e874..016c4c209 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
 @@ -42,6 +42,15 @@ enum
@@ -2228,7 +2228,7 @@ index c02eb85e2..142f670f5 100644
  #define SYNC_DELAY_FALLBACK_FRACTION 0.875
  
  #define MINIMUM_REFRESH_RATE 30.f
-@@ -911,6 +920,12 @@ void
+@@ -917,6 +926,12 @@ void
  clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
  {
    int64_t next_update_time_us = -1;
@@ -2241,7 +2241,7 @@ index c02eb85e2..142f670f5 100644
  
    if (frame_clock->inhibit_count > 0)
      {
-@@ -934,20 +949,31 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -940,20 +955,31 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED_NOW:
        return;
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE:
@@ -2283,7 +2283,7 @@ index c02eb85e2..142f670f5 100644
        break;
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_TWO:
        frame_clock->pending_reschedule = TRUE;
-@@ -1389,6 +1415,15 @@ static void
+@@ -1395,6 +1421,15 @@ static void
  clutter_frame_clock_class_init (ClutterFrameClockClass *klass)
  {
    GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -2300,10 +2300,10 @@ index c02eb85e2..142f670f5 100644
    object_class->dispose = clutter_frame_clock_dispose;
  
 -- 
-2.44.0
+2.45.2
 
 
-From 98b65e3c59979f616e5ff99b3eda8d1375a59e23 Mon Sep 17 00:00:00 2001
+From 87947f7fc50d6c51424a3e587dc025c6c97e242c Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 30 Jun 2022 18:56:06 +0800
 Subject: [PATCH 28/34] tests/native-kms-render: Fix failing client-scanout
@@ -2561,10 +2561,10 @@ index f5ebc23fe..2f870fdc3 100644
    };
  
 -- 
-2.44.0
+2.45.2
 
 
-From e39543fb6a6daba10faa195bb7aabf276d9698db Mon Sep 17 00:00:00 2001
+From 0cb8c3783fa882931b1c7027b1e0546d1afd99cc Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Thu, 22 Jun 2023 15:19:53 +0800
 Subject: [PATCH 29/34] onscreen/native: Avoid callbacks on "detached"
@@ -2591,10 +2591,10 @@ index 65e48f2ea..b35021c4f 100644
      return;
  
 -- 
-2.44.0
+2.45.2
 
 
-From 7f334ef6c6d33baffad04887affe5583524393a0 Mon Sep 17 00:00:00 2001
+From 17648c4b2d03f93a17ab76c642461f0ce2801f70 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Tue, 18 Jul 2023 16:08:25 +0800
 Subject: [PATCH 30/34] clutter/frame-clock: Record measurements of zero for
@@ -2611,10 +2611,10 @@ Closes: https://launchpad.net/bugs/2023363
  1 file changed, 16 insertions(+), 12 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 142f670f5..eed8fd2a8 100644
+index 016c4c209..0993ae8c6 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -260,10 +260,6 @@ static void
+@@ -262,10 +262,6 @@ static void
  maybe_update_longterm_max_duration_us (ClutterFrameClock *frame_clock,
                                         ClutterFrameInfo  *frame_info)
  {
@@ -2625,7 +2625,7 @@ index 142f670f5..eed8fd2a8 100644
    if ((frame_info->presentation_time - frame_clock->longterm_promotion_us) <
        G_USEC_PER_SEC)
      return;
-@@ -382,8 +378,9 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -387,8 +383,9 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
  
    frame_clock->got_measurements_last_frame = FALSE;
  
@@ -2637,7 +2637,7 @@ index 142f670f5..eed8fd2a8 100644
      {
        int64_t dispatch_to_swap_us, swap_to_rendering_done_us, swap_to_flip_us;
        int64_t dispatch_time_us = 0, flip_time_us = 0;
-@@ -408,14 +405,21 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
+@@ -413,14 +410,21 @@ clutter_frame_clock_notify_presented (ClutterFrameClock *frame_clock,
            break;
          }
  
@@ -2666,10 +2666,10 @@ index 142f670f5..eed8fd2a8 100644
        CLUTTER_NOTE (FRAME_TIMINGS,
                      "%s: update2dispatch %ld µs, dispatch2swap %ld µs, swap2render %ld µs, swap2flip %ld µs",
 -- 
-2.44.0
+2.45.2
 
 
-From 295a866d5810b39bcab0e4fe0f7a31d9f0befebd Mon Sep 17 00:00:00 2001
+From bd3b5b64eed3a3e164ed7e038cfd87d0e105b9e4 Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 26 Jul 2023 17:27:10 +0800
 Subject: [PATCH 31/34] backends/native: Make await_flush later and inlined
@@ -2697,10 +2697,10 @@ Cherry picked from !3149
  2 files changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/src/backends/native/meta-kms-impl-device.c b/src/backends/native/meta-kms-impl-device.c
-index b15eee14d..05bc89e83 100644
+index 6758982a6..315ed2717 100644
 --- a/src/backends/native/meta-kms-impl-device.c
 +++ b/src/backends/native/meta-kms-impl-device.c
-@@ -1559,9 +1559,11 @@ meta_kms_impl_device_handle_update (MetaKmsImplDevice *impl_device,
+@@ -1586,9 +1586,11 @@ meta_kms_impl_device_handle_update (MetaKmsImplDevice *impl_device,
        meta_kms_update_merge_from (crtc_frame->pending_update, update);
        meta_kms_update_free (update);
        update = g_steal_pointer (&crtc_frame->pending_update);
@@ -2730,10 +2730,10 @@ index b35021c4f..9836663d0 100644
  }
  
 -- 
-2.44.0
+2.45.2
 
 
-From 2602e42ca255847123a567deb30dd51431fecb64 Mon Sep 17 00:00:00 2001
+From 8124914758fcd8e40f852c0acd06c718e95deebb Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 17 Jan 2024 17:21:03 +0800
 Subject: [PATCH 32/34] clutter/frame-clock: Optimize latency for platforms
@@ -2760,10 +2760,10 @@ TIMESTAMP_QUERY such as Raspberry Pi.
  1 file changed, 45 insertions(+), 24 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index eed8fd2a8..a6c7ecea2 100644
+index 0993ae8c6..63a4b3aaa 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -513,25 +513,18 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
+@@ -518,25 +518,18 @@ clutter_frame_clock_notify_ready (ClutterFrameClock *frame_clock)
      }
  }
  
@@ -2793,7 +2793,7 @@ index eed8fd2a8..a6c7ecea2 100644
  
    /* Max render time shows how early the frame clock needs to be dispatched
     * to make it to the predicted next presentation time. It is an estimate of
-@@ -545,15 +538,15 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
+@@ -550,15 +543,15 @@ clutter_frame_clock_compute_max_render_time_us (ClutterFrameClock *frame_clock)
     * - The duration of vertical blank.
     * - A constant to account for variations in the above estimates.
     */
@@ -2812,7 +2812,7 @@ index eed8fd2a8..a6c7ecea2 100644
  }
  
  static void
-@@ -570,6 +563,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -575,6 +568,7 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
    int64_t next_presentation_time_us;
    int64_t next_smooth_presentation_time_us = 0;
    int64_t next_update_time_us;
@@ -2820,7 +2820,7 @@ index eed8fd2a8..a6c7ecea2 100644
  
    now_us = g_get_monotonic_time ();
  
-@@ -589,10 +583,13 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -594,10 +588,13 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
      }
  
    min_render_time_allowed_us = refresh_interval_us / 2;
@@ -2837,7 +2837,7 @@ index eed8fd2a8..a6c7ecea2 100644
      min_render_time_allowed_us = max_render_time_allowed_us;
  
    /*
-@@ -712,6 +709,24 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
+@@ -718,6 +715,24 @@ calculate_next_update_time_us (ClutterFrameClock *frame_clock,
      }
    else
      {
@@ -2862,7 +2862,7 @@ index eed8fd2a8..a6c7ecea2 100644
        while (next_presentation_time_us - min_render_time_allowed_us < now_us)
          next_presentation_time_us += refresh_interval_us;
  
-@@ -743,7 +758,9 @@ calculate_next_variable_update_time_us (ClutterFrameClock *frame_clock,
+@@ -749,7 +764,9 @@ calculate_next_variable_update_time_us (ClutterFrameClock *frame_clock,
  
    refresh_interval_us = frame_clock->refresh_interval_us;
  
@@ -2873,7 +2873,7 @@ index eed8fd2a8..a6c7ecea2 100644
      {
        *out_next_update_time_us =
          frame_clock->last_dispatch_time_us ?
-@@ -756,9 +773,6 @@ calculate_next_variable_update_time_us (ClutterFrameClock *frame_clock,
+@@ -762,9 +779,6 @@ calculate_next_variable_update_time_us (ClutterFrameClock *frame_clock,
        return;
      }
  
@@ -2883,7 +2883,7 @@ index eed8fd2a8..a6c7ecea2 100644
    last_presentation_time_us = frame_clock->last_presentation_time_us;
    next_presentation_time_us = last_presentation_time_us + refresh_interval_us;
  
-@@ -1224,12 +1238,19 @@ clutter_frame_clock_record_flip (ClutterFrameClock *frame_clock,
+@@ -1230,12 +1244,19 @@ clutter_frame_clock_record_flip (ClutterFrameClock *frame_clock,
  GString *
  clutter_frame_clock_get_max_render_time_debug_info (ClutterFrameClock *frame_clock)
  {
@@ -2907,10 +2907,10 @@ index eed8fd2a8..a6c7ecea2 100644
    if (frame_clock->got_measurements_last_frame)
      g_string_append_printf (string, " =");
 -- 
-2.44.0
+2.45.2
 
 
-From 04e002f472ef46e258f8c971f157644e170d84e2 Mon Sep 17 00:00:00 2001
+From d4832ab57839c3f9685ea643944ba53d551b62ab Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 24 Apr 2024 18:21:01 +0800
 Subject: [PATCH 33/34] clutter/frame-clock: Break a feedback loop between VRR
@@ -2932,10 +2932,10 @@ the latency penalty remains to be seen.
  1 file changed, 28 insertions(+), 3 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index a6c7ecea2..129d4f533 100644
+index 63a4b3aaa..9d4a2531a 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -875,6 +875,25 @@ clutter_frame_clock_uninhibit (ClutterFrameClock *frame_clock)
+@@ -881,6 +881,25 @@ clutter_frame_clock_uninhibit (ClutterFrameClock *frame_clock)
      maybe_reschedule_update (frame_clock);
  }
  
@@ -2961,7 +2961,7 @@ index a6c7ecea2..129d4f533 100644
  void
  clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
  {
-@@ -897,12 +916,19 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
+@@ -903,12 +922,19 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_SCHEDULED_NOW:
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED_NOW:
        return;
@@ -2982,7 +2982,7 @@ index a6c7ecea2..129d4f533 100644
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_TWO:
        frame_clock->pending_reschedule = TRUE;
        frame_clock->pending_reschedule_now = TRUE;
-@@ -941,8 +967,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -947,8 +973,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
    TripleBufferingMode current_mode = triple_buffering_mode;
  
    if (current_mode == TRIPLE_BUFFERING_MODE_AUTO &&
@@ -2993,10 +2993,10 @@ index a6c7ecea2..129d4f533 100644
  
    if (frame_clock->inhibit_count > 0)
 -- 
-2.44.0
+2.45.2
 
 
-From 663f19bc02c1b4e3d1a67b4ad72d644f9b9d6970 Mon Sep 17 00:00:00 2001
+From 29a72bfb0bdb060d91196c57dc1940e5049858ed Mon Sep 17 00:00:00 2001
 From: Daniel van Vugt <daniel.van.vugt@canonical.com>
 Date: Wed, 24 Apr 2024 18:42:54 +0800
 Subject: [PATCH 34/34] clutter/frame-clock: Remove some redundant logic
@@ -3007,10 +3007,10 @@ Which became unused with the introduction of VRR.
  1 file changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/clutter/clutter/clutter-frame-clock.c b/clutter/clutter/clutter-frame-clock.c
-index 129d4f533..6bd83101e 100644
+index 9d4a2531a..75e33088c 100644
 --- a/clutter/clutter/clutter-frame-clock.c
 +++ b/clutter/clutter/clutter-frame-clock.c
-@@ -917,7 +917,6 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
+@@ -923,7 +923,6 @@ clutter_frame_clock_schedule_update_now (ClutterFrameClock *frame_clock)
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED_NOW:
        return;
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED:
@@ -3018,7 +3018,7 @@ index 129d4f533..6bd83101e 100644
        frame_clock->state =
          CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED_NOW;
        break;
-@@ -998,14 +997,6 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -1004,14 +1003,6 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
            frame_clock->pending_reschedule = TRUE;
            return;
          case TRIPLE_BUFFERING_MODE_AUTO:
@@ -3033,7 +3033,7 @@ index 129d4f533..6bd83101e 100644
            frame_clock->state =
              CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED;
            break;
-@@ -1015,7 +1006,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -1021,7 +1012,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
            frame_clock->is_next_presentation_time_valid = FALSE;
            frame_clock->state =
              CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_ONE_AND_SCHEDULED;
@@ -3042,7 +3042,7 @@ index 129d4f533..6bd83101e 100644
          }
        break;
      case CLUTTER_FRAME_CLOCK_STATE_DISPATCHED_TWO:
-@@ -1043,6 +1034,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
+@@ -1049,6 +1040,7 @@ clutter_frame_clock_schedule_update (ClutterFrameClock *frame_clock)
        break;
      }
  
@@ -3051,5 +3051,5 @@ index 129d4f533..6bd83101e 100644
  
    frame_clock->next_update_time_us = next_update_time_us;
 -- 
-2.44.0
+2.45.2
 
