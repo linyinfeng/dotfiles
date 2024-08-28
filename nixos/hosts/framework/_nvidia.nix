@@ -26,4 +26,5 @@ in
     nvidiaSettings = true;
     inherit package;
   };
+  services.switcherooControl.enable = true;
 }
