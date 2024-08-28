@@ -33,6 +33,9 @@ let
       exec "$@"
     '';
   };
+  envVars = {
+    # currently nothing
+  };
 in
 {
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -47,6 +50,8 @@ in
     primeRun
     intel-gpu-tools
     nvitop
-    mesa-demos
+    vulkan-tools
   ];
+  systemd.services.display-manager.environment = envVars;
+  environment.sessionVariables = envVars;
 }
