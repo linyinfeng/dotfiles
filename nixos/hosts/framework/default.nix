@@ -13,7 +13,7 @@
       boot.plymouth
       boot.secure-boot
       boot.lanzaboote-uki
-      boot.kernel.intel
+      # boot.kernel.intel
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
@@ -33,7 +33,7 @@
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      hardware.sr-iov
+      # hardware.sr-iov
       users.yinfeng
     ])
     ++ [
@@ -51,7 +51,7 @@
       boot.loader.timeout = 10;
 
       # kernel tweaks
-      boot.kernel.intel.type = "lts";
+      # boot.kernel.intel.type = "lts";
       boot.kernelModuleSigning.enable = true;
       boot.kernelLockdown = true;
 
