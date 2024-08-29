@@ -56,6 +56,7 @@ let
       multimedia = with profiles; [
         graphical.gnome
         graphical.kde
+        graphical.niri
         graphical.fonts
         i18n.input-method
         services.gnome-keyring
@@ -165,6 +166,7 @@ let
       ];
       multimedia = with profiles; [
         gnome
+        niri
         dconf-proxy
         chromium
         firefox
@@ -241,6 +243,7 @@ let
     inputs.angrr.nixosModules.angrr
     inputs.typhon.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.niri-flake.nixosModules.niri
 
     {
       lib = {

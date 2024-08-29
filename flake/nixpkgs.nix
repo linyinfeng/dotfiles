@@ -58,6 +58,12 @@ let
         "packages"
         system
       ])
+      // (self.lib.maybeAttrByPath "niri-unstable" inputs [
+        "niri-flake"
+        "packages"
+        system
+        "niri-unstable"
+      ])
     )
     (final: prev: {
       # scoped overlays

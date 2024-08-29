@@ -85,6 +85,36 @@
         "type": "github"
       }
     },
+    "cachix": {
+      "inputs": {
+        "devenv": [
+          "blank"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pre-commit-hooks": [
+          "pre-commit-hooks-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1716549461,
+        "narHash": "sha256-lHy5kgx6J8uD+16SO47dPrbob98sh+W1tf4ceSqPVK4=",
+        "owner": "cachix",
+        "repo": "cachix",
+        "rev": "e2bb269fb8c0828d5d4d2d7b8d09ea85abcacbd4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "ref": "latest",
+        "repo": "cachix",
+        "type": "github"
+      }
+    },
     "commit-notifier": {
       "inputs": {
         "crane": [
@@ -140,6 +170,47 @@
       "original": {
         "owner": "ipetkov",
         "repo": "crane",
+        "type": "github"
+      }
+    },
+    "crate2nix": {
+      "inputs": {
+        "cachix": [
+          "cachix"
+        ],
+        "crate2nix_stable": [
+          "blank"
+        ],
+        "devshell": [
+          "devshell"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nix-test-runner": [
+          "blank"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pre-commit-hooks": [
+          "pre-commit-hooks-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1723311214,
+        "narHash": "sha256-xdGZQBEa1AC2us/sY3igS/CucWY6jErXsAvCFRhB2LI=",
+        "owner": "nix-community",
+        "repo": "crate2nix",
+        "rev": "236f6addfd452a48be805819e3216af79e988fd5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "crate2nix",
         "type": "github"
       }
     },
@@ -757,6 +828,58 @@
         "type": "github"
       }
     },
+    "niri-flake": {
+      "inputs": {
+        "crate2nix": [
+          "crate2nix"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "niri-stable": [
+          "blank"
+        ],
+        "niri-unstable": "niri-unstable",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-stable": [
+          "nixpkgs-stable"
+        ],
+        "xwayland-satellite": [
+          "blank"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724902026,
+        "narHash": "sha256-+5zZPAq2veI8yAIR7WgHCQpZ1B6D1Z1sL+YrhyEBVGE=",
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "rev": "dcd1772fb763ba9cfa179a378b9e08f4f2d4d789",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "type": "github"
+      }
+    },
+    "niri-unstable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724685339,
+        "narHash": "sha256-cj1KiXxO1DnzRX7qGjEGpEoKKM/TCr8cUzFMVtsH4ZM=",
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "rev": "598b27f83c4d4dd72c5cfbd06ca60b12e2833429",
+        "type": "github"
+      },
+      "original": {
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "type": "github"
+      }
+    },
     "nix-fast-build": {
       "inputs": {
         "flake-parts": [
@@ -780,6 +903,21 @@
       "original": {
         "owner": "mic92",
         "repo": "nix-fast-build",
+        "type": "github"
+      }
+    },
+    "nix-filter": {
+      "locked": {
+        "lastModified": 1710156097,
+        "narHash": "sha256-1Wvk8UP7PXdf8bCCaEoMnOT1qe5/Duqgj+rL8sRQsSM=",
+        "owner": "numtide",
+        "repo": "nix-filter",
+        "rev": "3342559a24e85fc164b295c3444e8a139924675b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "nix-filter",
         "type": "github"
       }
     },
@@ -1254,8 +1392,10 @@
         "ace-bot": "ace-bot",
         "angrr": "angrr",
         "blank": "blank",
+        "cachix": "cachix",
         "commit-notifier": "commit-notifier",
         "crane": "crane",
+        "crate2nix": "crate2nix",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
         "disko": "disko",
@@ -1281,7 +1421,9 @@
         "minecraft-nix": "minecraft-nix",
         "mobile-nixos": "mobile-nixos",
         "naersk": "naersk",
+        "niri-flake": "niri-flake",
         "nix-fast-build": "nix-fast-build",
+        "nix-filter": "nix-filter",
         "nix-gc-s3": "nix-gc-s3",
         "nix-github-actions": "nix-github-actions",
         "nix-index-database": "nix-index-database",

@@ -39,9 +39,10 @@ in
 {
   options.fonts.customFonts = {
     enable = lib.mkEnableOption "custom fonts";
-    default = lib.elem "workstation" config.system.types;
   };
   config = {
+    fonts.customFonts.enable = lib.mkDefault (lib.elem "workstation" config.system.types);
+
     fonts.packages =
       with pkgs;
       [

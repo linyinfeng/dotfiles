@@ -133,6 +133,12 @@
     ace-bot.inputs.nixpkgs.follows = "nixpkgs";
     ace-bot.inputs.treefmt-nix.follows = "treefmt-nix";
 
+    cachix.url = "github:cachix/cachix/latest";
+    cachix.inputs.nixpkgs.follows = "nixpkgs";
+    cachix.inputs.devenv.follows = "blank";
+    cachix.inputs.flake-compat.follows = "flake-compat";
+    cachix.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
+
     commit-notifier.url = "github:linyinfeng/commit-notifier";
     commit-notifier.inputs.crane.follows = "crane";
     commit-notifier.inputs.flake-parts.follows = "flake-parts";
@@ -148,6 +154,14 @@
     mc-config-nuc.inputs.flake-utils.follows = "flake-utils";
     mc-config-nuc.inputs.mc-config.follows = "mc-config";
     mc-config-nuc.inputs.treefmt-nix.follows = "treefmt-nix";
+
+    niri-flake.url = "github:sodiboo/niri-flake";
+    niri-flake.inputs.nixpkgs.follows = "nixpkgs";
+    niri-flake.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
+    niri-flake.inputs.niri-stable.follows = "blank";
+    niri-flake.inputs.flake-parts.follows = "flake-parts";
+    niri-flake.inputs.crate2nix.follows = "crate2nix";
+    niri-flake.inputs.xwayland-satellite.follows = "blank";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -211,6 +225,16 @@
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
 
+    crate2nix.url = "github:nix-community/crate2nix";
+    crate2nix.inputs.nixpkgs.follows = "nixpkgs";
+    crate2nix.inputs.flake-parts.follows = "flake-parts";
+    crate2nix.inputs.flake-compat.follows = "flake-compat";
+    crate2nix.inputs.devshell.follows = "devshell";
+    crate2nix.inputs.crate2nix_stable.follows = "blank";
+    crate2nix.inputs.nix-test-runner.follows = "blank";
+    crate2nix.inputs.cachix.follows = "cachix";
+    crate2nix.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
+
     naersk.url = "github:nix-community/naersk";
     naersk.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -249,6 +273,8 @@
     minecraft-json.url = "github:ninlives/minecraft.json";
     minecraft-json.inputs.nixpkgs.follows = "nixpkgs";
     minecraft-json.inputs.flake-utils.follows = "flake-utils";
+
+    nix-filter.url = "github:numtide/nix-filter";
 
     nixago.url = "github:nix-community/nixago";
     nixago.inputs.nixpkgs.follows = "nixpkgs";
@@ -295,6 +321,10 @@
             [
               "nixos-riscv"
               "nixpkgs"
+            ]
+            [
+              "niri-flake"
+              "niri-unstable"
             ]
           ];
         };
