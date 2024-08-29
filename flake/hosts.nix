@@ -56,7 +56,6 @@ let
       multimedia = with profiles; [
         graphical.gnome
         graphical.kde
-        # graphical.hyprland
         graphical.fonts
         i18n.input-method
         services.gnome-keyring
@@ -167,7 +166,6 @@ let
       multimedia = with profiles; [
         gnome
         dconf-proxy
-        # hyprland
         chromium
         firefox
         rime
@@ -241,7 +239,6 @@ let
     inputs.ace-bot.nixosModules.ace-bot
     inputs.commit-notifier.nixosModules.commit-notifier
     inputs.angrr.nixosModules.angrr
-    inputs.hyprland.nixosModules.default
     inputs.typhon.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
 
@@ -259,8 +256,6 @@ let
   ];
 
   commonHmModules = hmModules ++ [
-    inputs.hyprland.homeManagerModules.default
-
     { lib.self = self.lib; }
   ];
 

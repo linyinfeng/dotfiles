@@ -152,12 +152,6 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
-    hyprland.inputs.systems.follows = "systems";
-    hyprwm-contrib.url = "github:hyprwm/contrib";
-    hyprwm-contrib.inputs.nixpkgs.follows = "nixpkgs";
-
     nvfetcher.url = "github:berberman/nvfetcher";
     nvfetcher.inputs.nixpkgs.follows = "nixpkgs";
     nvfetcher.inputs.flake-utils.follows = "flake-utils";
@@ -301,35 +295,6 @@
             [
               "nixos-riscv"
               "nixpkgs"
-            ]
-            [
-              "hyprland"
-              "hyprlang"
-            ]
-            [
-              "hyprland"
-              "hyprcursor"
-            ]
-            [
-              "hyprland"
-              "hyprwayland-scanner"
-            ]
-            [
-              "hyprland"
-              "xdph"
-            ]
-            [
-              "hyprland"
-              "xdph"
-              "hyprland-protocols"
-            ]
-            [
-              "hyprland"
-              "hyprutils"
-            ]
-            [
-              "hyprland"
-              "aquamarine"
             ]
           ];
         };
