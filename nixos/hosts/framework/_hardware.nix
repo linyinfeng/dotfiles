@@ -16,6 +16,9 @@ lib.mkMerge [
       "i915.enable_psr=1"
       "i915.enable_psr2_sel_fetch=1"
     ];
+    hardware.graphics.extraPackages = with pkgs; [
+      vpl-gpu-rt
+    ];
   }
 
   {
