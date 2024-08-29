@@ -161,15 +161,9 @@ let
     [
       (_final: _prev: {
         # https://github.com/NixOS/nixpkgs/issues/332957
-        inherit (stable)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335051
-          zerotierone
+        inherit (unstable-small)
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=337095
           rathole
-          ;
-        inherit (unstable-small)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335060
-          nix-melt
           ;
       })
     ];
