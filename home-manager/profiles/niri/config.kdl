@@ -245,35 +245,35 @@ binds {
     Mod+P     { focus-window-up; }
     Mod+F     { focus-column-right; }
 
-    Mod+Ctrl+Left  { move-column-left; }
-    Mod+Ctrl+Down  { move-window-down; }
-    Mod+Ctrl+Up    { move-window-up; }
-    Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+B     { move-column-left; }
-    Mod+Ctrl+N     { move-window-down; }
-    Mod+Ctrl+P     { move-window-up; }
-    Mod+Ctrl+F     { move-column-right; }
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Down  { move-window-down; }
+    Mod+Shift+Up    { move-window-up; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+B     { move-column-left; }
+    Mod+Shift+N     { move-window-down; }
+    Mod+Shift+P     { move-window-up; }
+    Mod+Shift+F     { move-column-right; }
 
     // Alternative commands that move across workspaces when reaching
     // the first or last window in a column.
     // Mod+J     { focus-window-or-workspace-down; }
     // Mod+K     { focus-window-or-workspace-up; }
-    // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-    // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
+    // Mod+Shift+J     { move-window-down-or-to-workspace-down; }
+    // Mod+Shift+K     { move-window-up-or-to-workspace-up; }
 
     Mod+A { focus-column-first; }
     Mod+E  { focus-column-last; }
-    Mod+Ctrl+A { move-column-to-first; }
-    Mod+Ctrl+E  { move-column-to-last; }
+    Mod+Shift+A { move-column-to-first; }
+    Mod+Shift+E  { move-column-to-last; }
 
-    Mod+Shift+Left  { focus-monitor-left; }
-    Mod+Shift+Down  { focus-monitor-down; }
-    Mod+Shift+Up    { focus-monitor-up; }
-    Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+B     { focus-monitor-left; }
-    Mod+Shift+N     { focus-monitor-down; }
-    Mod+Shift+P     { focus-monitor-up; }
-    Mod+Shift+F     { focus-monitor-right; }
+    Mod+Ctrl+Left  { focus-monitor-left; }
+    Mod+Ctrl+Down  { focus-monitor-down; }
+    Mod+Ctrl+Up    { focus-monitor-up; }
+    Mod+Ctrl+Right { focus-monitor-right; }
+    Mod+Ctrl+B     { focus-monitor-left; }
+    Mod+Ctrl+N     { focus-monitor-down; }
+    Mod+Ctrl+P     { focus-monitor-up; }
+    Mod+Ctrl+F     { focus-monitor-right; }
 
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
@@ -416,7 +416,7 @@ binds {
     Alt+Print { screenshot-window; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
-    Mod+Shift+E { quit; }
+    Mod+Ctrl+E { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
