@@ -176,8 +176,12 @@ in
     # xwayland
     systemd.user.services.xwayland-satellite = {
       Unit = {
-        BindsTo = "niri.service";
-        After = "niri.service";
+        BindsTo = [ "niri.service" ];
+        After = [ "niri.service" ];
+        Requires = [ "niri.service" ];
+      };
+      Install = {
+        WantedBy = [ "niri.service" ];
       };
       Service = {
         Type = "simple";
