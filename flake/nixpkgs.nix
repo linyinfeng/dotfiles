@@ -164,12 +164,11 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
-        # https://github.com/NixOS/nixpkgs/issues/332957
-        inherit (unstable-small)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=337095
-          rathole
-          ;
+      (final: prev: {
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=338845
+        swayidle = prev.swayidle.overrideAttrs (old: {
+          depsBuildBuild = (old.depsBuildBuild or [ ]) ++ [ final.pkgsBuildBuild.pkg-config ];
+        });
       })
     ];
   lateFixes =
