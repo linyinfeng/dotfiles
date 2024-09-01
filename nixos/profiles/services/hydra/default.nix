@@ -84,6 +84,7 @@ in
         "https://gitlab.com/"
         "https://git.sr.ht/"
         "git+https://github.com/"
+        "git+https://gitlab.freedesktop.org/"
       ];
       sops.secrets."nano/github-token" = {
         sopsFile = config.sops-file.get "common.yaml";
