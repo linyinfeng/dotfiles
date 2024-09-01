@@ -197,7 +197,7 @@ let
           xdg-dirs
           vscode
           logseq
-          kitty
+          alacritty
         ]);
       synchronize = with profiles; [
         onedrive
