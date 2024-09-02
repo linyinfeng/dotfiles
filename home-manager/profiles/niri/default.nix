@@ -14,11 +14,15 @@ let
       nativeBuildInputs = with pkgs; [ sass ];
     } "sass $src/${name}.scss $out";
 
-  lockAndTurnOffMonitors = pkgs.writeShellApplication {
-    name = "lock-and-turn-off-monitors";
+  turnOffMonitorsAndLock = pkgs.writeShellApplication {
+    name = "turn-off-monitors-and-lock";
+    runtimeInputs = [
+      config.programs.niri.package
+      config.programs.swaylock.package
+    ];
     text = ''
-      swaylock
       niri msg action power-off-monitors
+      swaylock
     '';
   };
 in
@@ -232,7 +236,7 @@ in
               # terminal, app launcher, and screen locker
               "Mod+Return".action = spawn "alacritty";
               "Mod+D".action = spawn "fuzzel";
-              "Mod+L".action = spawn (lib.getExe lockAndTurnOffMonitors);
+              "Mod+L".action = spawn (lib.getExe turnOffMonitorsAndLock);
               # volume keys
               "XF86AudioRaiseVolume" = {
                 allow-when-locked = true;
@@ -501,11 +505,18 @@ in
     # swayidle
     services.swayidle =
       let
-        swaylock = "${lib.getExe config.programs.swaylock.package}";
+        swaylock = lib.getExe config.programs.swaylock.package;
       in
       {
         enable = true;
         systemdTarget = "niri.service";
+        extraArgs = [
+          "-d"
+          "-S"
+          "$XDG_SEAT"
+          "idlehint"
+          "300"
+        ]; # enable debug output
         events = [
           {
             event = "before-sleep";
@@ -513,16 +524,31 @@ in
           }
           {
             event = "lock";
-            command = lib.getExe lockAndTurnOffMonitors;
+            command = lib.getExe turnOffMonitorsAndLock;
           }
         ];
-        timeouts = [
-          {
+        timeouts =
+          let
             timeout = 300;
-            command = lib.getExe lockAndTurnOffMonitors;
-          }
-        ];
+            graceTime = config.programs.swaylock.settings.grace;
+          in
+          [
+            {
+              inherit timeout;
+              command = swaylock;
+            }
+            {
+              timeout = timeout + graceTime;
+              command = "${lib.getExe config.programs.niri.package} msg action power-off-monitors";
+            }
+          ];
       };
-    systemd.user.services.swayidle.Unit.After = [ "niri.service" ];
+    systemd.user.services.swayidle.Unit = {
+      ConditionEnvironment = lib.mkForce [
+        "XDG_SEAT"
+        "WAYLAND_DISPLAY"
+      ];
+      After = [ "niri.service" ];
+    };
   };
 }
