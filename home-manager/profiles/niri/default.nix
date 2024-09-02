@@ -13,7 +13,6 @@ let
       src = ./_styles;
       nativeBuildInputs = with pkgs; [ sass ];
     } "sass $src/${name}.scss $out";
-  swaylock = "${pkgs.swaylock-effects}/bin/swaylock";
 
   # configFile = pkgs.substituteAll {
   #   src = ./config.kdl;
@@ -205,49 +204,58 @@ in
     };
 
     # swaylock
-    programs.swaylock.settings = {
-      daemonize = true;
-      screenshots = true;
-      indicator = true;
-      clock = true;
-      show-failed-attempts = true;
-      indicator-caps-lock = true;
-      grace = 5;
-      font = "monospace";
+    programs.swaylock = {
+      enable = true;
+      package = pkgs.swaylock-effects;
+      settings = {
+        daemonize = true;
+        screenshots = true;
+        indicator = true;
+        clock = true;
+        show-failed-attempts = true;
+        indicator-caps-lock = true;
+        grace = 5;
+        font = "monospace";
 
-      effect-blur = "10x10";
-      fade-in = 5;
+        effect-blur = "10x10";
+        fade-in = 5;
+      };
     };
 
     # swayidle
-    services.swayidle = {
-      enable = true;
-      systemdTarget = "niri.service";
-      events = [
-        {
-          event = "before-sleep";
-          command = swaylock;
-        }
-        {
-          event = "lock";
-          command = swaylock;
-        }
-      ];
-      timeouts =
-        let
-          screenTimeout = 300;
-          graceDelay = config.programs.swaylock.settings.grace;
-        in
-        [
+    services.swayidle =
+      let
+        swaylock = "${lib.getExe config.programs.swaylock.package}";
+      in
+      {
+        enable = true;
+        systemdTarget = "niri.service";
+        events = [
           {
-            timeout = screenTimeout;
+            event = "before-sleep";
             command = swaylock;
           }
           {
-            timeout = screenTimeout + graceDelay;
-            command = "niri msg action power-off-monitors";
+            event = "lock";
+            command = swaylock;
           }
         ];
-    };
+        timeouts =
+          let
+            screenTimeout = 300;
+            graceDelay = config.programs.swaylock.settings.grace;
+          in
+          [
+            {
+              timeout = screenTimeout;
+              command = swaylock;
+            }
+            {
+              timeout = screenTimeout + graceDelay;
+              command = "niri msg action power-off-monitors";
+            }
+          ];
+      };
+    systemd.user.services.swayidle.Unit.After = [ "niri.service" ];
   };
 }
