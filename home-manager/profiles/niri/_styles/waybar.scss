@@ -86,7 +86,7 @@ button {
 }
 
 #wireplumber {
-  .muted {
+  &.muted {
     color: $warn;
   }
 }

@@ -14,42 +14,292 @@ let
       nativeBuildInputs = with pkgs; [ sass ];
     } "sass $src/${name}.scss $out";
 
-  # configFile = pkgs.substituteAll {
-  #   src = ./config.kdl;
-  #   inherit (cfg) extraConfig;
-  # };
-  # validatedConfigFile = pkgs.runCommand "config.kdl" {
-  #   nativeBuildInputs = with pkgs; [
-  #     niri
-  #   ];
-  # } ''
-  #   cp "${configFile}" "$out"
-  #   niri validate --config="$out"
-  # '';
-
-  proxyCfg = osConfig.networking.fw-proxy;
-  variables = lib.optionalAttrs proxyCfg.enable proxyCfg.environment // {
-    # extra env variables
-    DISPLAY = ":1"; # xwayland-satellite
+  lockAndTurnOffMonitors = pkgs.writeShellApplication {
+    name = "lock-and-turn-off-monitors";
+    text = ''
+      swaylock
+      niri msg action power-off-monitors
+    '';
   };
-  mkVariableConfig = name: value: ''${name} "${value}"'';
-  proxyConfigBlock = ''
-    environment {
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList mkVariableConfig variables)}
-    }
-  '';
-
 in
 {
   config = {
     programs.niri = {
       inherit (osConfig.programs.niri) package;
-      config =
-        builtins.readFile ./config.kdl
-        + ''
-          // extra configurations
-          ${proxyConfigBlock}
-        '';
+      settings = {
+        input = {
+          keyboard = {
+            xkb = {
+              layout = "us";
+            };
+          };
+          touchpad = {
+            tap = true;
+            natural-scroll = true;
+            dwt = true; # disable touchpad while typing
+            dwtp = true; # disable touchpad while the trackpoint is in use
+          };
+          mouse =
+            {
+            };
+          warp-mouse-to-focus = true;
+          focus-follows-mouse = {
+            enable = true;
+            max-scroll-amount = "0%";
+          };
+        };
+        layout = {
+          gaps = 16;
+          center-focused-column = "never";
+          preset-column-widths = [
+            { proportion = 1.0 / 3.0; }
+            { proportion = 1.0 / 2.0; }
+            { proportion = 2.0 / 3.0; }
+          ];
+          default-column-width = {
+            proportion = 1.0 / 2.0;
+          };
+          focus-ring = {
+            width = 4;
+            active.color = "#7fc8ff";
+            inactive.color = "#505050";
+          };
+          border = {
+            enable = false;
+            width = 4;
+            active.color = "#ffc87f";
+            inactive.color = "#505050";
+          };
+          struts = { };
+        };
+        spawn-at-startup = [ ];
+        prefer-no-csd = true;
+        screenshot-path = "~/Data/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+        animations = {
+          enable = true;
+          # all default
+        };
+        window-rules = [
+          {
+            geometry-corner-radius =
+              let
+                radius = 16.0;
+              in
+              {
+                bottom-left = radius;
+                bottom-right = radius;
+                top-left = radius;
+                top-right = radius;
+              };
+            clip-to-geometry = true;
+          }
+        ];
+        binds =
+          with config.lib.niri.actions;
+          let
+            inherit (config.lib.niri) actions;
+            modMove = "Shift";
+            modMonitor = "Ctrl";
+            keyUp = "P";
+            keyDown = "N";
+            keyLeft = "B";
+            keyRight = "F";
+            keyWorkspaceUp = "W";
+            keyWorkspaceDown = "S";
+            directions = {
+              left = {
+                keys = [
+                  "Left"
+                  keyLeft
+                  "WheelScrollLeft"
+                ];
+                windowTerm = "column";
+              };
+              down = {
+                keys = [
+                  "Down"
+                  keyDown
+                ];
+                windowTerm = "window";
+              };
+              up = {
+                keys = [
+                  "Up"
+                  keyUp
+                ];
+                windowTerm = "window";
+              };
+              right = {
+                keys = [
+                  "Right"
+                  keyRight
+                  "WheelScrollRight"
+                ];
+                windowTerm = "column";
+              };
+            };
+            workspaceDirections = {
+              up = {
+                keys = [
+                  "Page_Up"
+                  keyWorkspaceUp
+                  "WheelScrollUp"
+                ];
+              };
+              down = {
+                keys = [
+                  "Page_Down"
+                  keyWorkspaceDown
+                  "WheelScrollDown"
+                ];
+              };
+            };
+            workspaceIndices = lib.range 1 9;
+            isWheelKey = lib.hasPrefix "Wheel";
+            wheelCooldownMs = 100;
+
+            windowBindings = lib.mkMerge (
+              lib.concatLists (
+                lib.mapAttrsToList (
+                  direction: cfg:
+                  (lib.lists.map (
+                    key:
+                    let
+                      cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
+                    in
+                    {
+                      "Mod+${key}" = {
+                        action = actions."focus-${cfg.windowTerm}-${direction}";
+                        inherit cooldown-ms;
+                      };
+                      "Mod+${modMove}+${key}" = {
+                        action = actions."move-${cfg.windowTerm}-${direction}";
+                        inherit cooldown-ms;
+                      };
+                      "Mod+${modMonitor}+${key}" = {
+                        action = actions."focus-monitor-${direction}";
+                        inherit cooldown-ms;
+                      };
+                      "Mod+${modMove}+${modMonitor}+${key}" = {
+                        action = actions."move-column-to-monitor-${direction}";
+                        inherit cooldown-ms;
+                      };
+                    }
+                  ) cfg.keys)
+                ) directions
+              )
+            );
+            workspaceBindings = lib.mkMerge (
+              lib.concatLists (
+                lib.mapAttrsToList (
+                  direction: cfg:
+                  (lib.lists.map (
+                    key:
+                    let
+                      cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
+                    in
+                    {
+                      "Mod+${key}" = {
+                        action = actions."focus-workspace-${direction}";
+                        inherit cooldown-ms;
+                      };
+                      "Mod+${modMove}+${key}" = {
+                        action = actions."move-column-to-workspace-${direction}";
+                        inherit cooldown-ms;
+                      };
+                      "Mod+Ctrl+${key}" = {
+                        action = actions."move-workspace-${direction}";
+                        inherit cooldown-ms;
+                      };
+                    }
+                  ) cfg.keys)
+                ) workspaceDirections
+              )
+            );
+            indexedWorkspaceBindings = lib.mkMerge (
+              lib.map (index: {
+                "Mod+${toString index}" = {
+                  action = focus-workspace index;
+                };
+                "Mod+${modMove}+${toString index}" = {
+                  action = move-column-to-workspace index;
+                };
+              }) workspaceIndices
+            );
+            specialBindings = {
+              # show help
+              "Mod+Shift+Slash".action = show-hotkey-overlay;
+              # terminal, app launcher, and screen locker
+              "Mod+Return".action = spawn "alacritty";
+              "Mod+D".action = spawn "fuzzel";
+              "Mod+L".action = spawn (lib.getExe lockAndTurnOffMonitors);
+              # volume keys
+              "XF86AudioRaiseVolume" = {
+                allow-when-locked = true;
+                action = spawn "volumectl" "up";
+                # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
+              };
+              "XF86AudioLowerVolume" = {
+                allow-when-locked = true;
+                action = spawn "volumectl" "down";
+                # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
+              };
+              "XF86AudioMute" = {
+                allow-when-locked = true;
+                action = spawn "volumectl" "toggle-mute";
+                # action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+              };
+              "XF86AudioMicMute" = {
+                allow-when-locked = true;
+                action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
+              };
+              # quit windnow
+              "Mod+Q".action = close-window;
+              # first and last
+              "Mod+A".action = focus-column-first;
+              "Mod+E".action = focus-column-last;
+              "Mod+${modMove}+A".action = move-column-to-first;
+              "Mod+${modMove}+E".action = move-column-to-last;
+              # previous workspace
+              "Mod+Tab".action = focus-workspace-previous;
+              # consume and expel
+              "Mod+Comma".action = consume-window-into-column;
+              "Mod+Period".action = expel-window-from-column;
+              "Mod+BracketLeft".action = consume-or-expel-window-left;
+              "Mod+BracketRight".action = consume-or-expel-window-right;
+              # preset size
+              "Mod+R".action = switch-preset-column-width;
+              "Mod+Shift+R".action = reset-window-height;
+              "Mod+M".action = maximize-column;
+              "Mod+Shift+M".action = fullscreen-window;
+              # center column
+              "Mod+C".action = center-column;
+              # manual size
+              "Mod+Minus".action = set-column-width "-10%";
+              "Mod+Equal".action = set-column-width "+10%";
+              "Mod+Shift+Minus".action = set-window-height "-10%";
+              "Mod+Shift+Equal".action = set-window-height "+10%";
+              # screenshot
+              "Print".action = screenshot;
+              "Ctrl+Print".action = screenshot-screen;
+              "Alt+Print".action = screenshot-window;
+              # quit
+              "Mod+Ctrl+E".action = quit;
+            };
+          in
+          lib.mkMerge [
+            specialBindings
+            workspaceBindings
+            indexedWorkspaceBindings
+            windowBindings
+          ];
+        environment = lib.mkMerge [
+          {
+            DISPLAY = ":1"; # xwayland-satellite
+          }
+          (lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.environment)
+        ];
+      };
     };
 
     # tools
@@ -93,7 +343,7 @@ in
             format = "{ifname}";
             format-wifi = "{essid} 󰖩";
             format-ethernet = "{ifname} 󰈀";
-            format-disconnected = ""; # An empty format will hide the module.
+            format-disconnected = ""; # An empty format will hide the"Module.
             tooltip-format = "{ifname} via {gwaddr}";
             tooltip-format-wifi = "{essid} ({signalStrength}%) 󰖩";
             tooltip-format-ethernet = "{ipaddr}/{cidr} 󰈀";
@@ -161,7 +411,7 @@ in
             ];
           };
           "clock" = {
-            format = "{:%Y-%m-%d %H:%M} 󰥔";
+            format = "{:%Y-%m-%d %a. %H:%M}";
           };
           "tray" = {
             spacing = 5;
@@ -178,6 +428,7 @@ in
         BindsTo = [ "niri.service" ];
         After = [ "niri.service" ];
         Requires = [ "niri.service" ];
+        OnFailure = [ "xwayland-satellite-failure-report.service" ];
       };
       Install = {
         WantedBy = [ "niri.service" ];
@@ -187,6 +438,18 @@ in
         ExecStart = "${lib.getExe pkgs.xwayland-satellite} :1";
         NotifyAccess = "all";
         StandardOutput = "journal";
+        Restart = "on-failure";
+      };
+    };
+    systemd.user.services.xwayland-satellite-failure-report = {
+      Service = {
+        Type = "oneshot";
+        ExecStart = lib.escapeShellArgs [
+          (lib.getExe pkgs.libnotify)
+          "--urgency=critical"
+          "xwayland-satellite"
+          "Crashed and restarting..."
+        ];
       };
     };
 
@@ -201,6 +464,19 @@ in
     # mako
     services.mako = {
       enable = true;
+      borderRadius = 8;
+      borderSize = 2;
+      backgroundColor = "#000000FF";
+      extraConfig = ''
+        [urgency=low]
+        border-color=#66ffccff
+
+        [urgency=normal]
+        border-color=#7fc8ffff
+
+        [urgency=critical]
+        border-color=#ff3300ff
+      '';
     };
 
     # swaylock
@@ -237,24 +513,15 @@ in
           }
           {
             event = "lock";
-            command = swaylock;
+            command = lib.getExe lockAndTurnOffMonitors;
           }
         ];
-        timeouts =
-          let
-            screenTimeout = 300;
-            graceDelay = config.programs.swaylock.settings.grace;
-          in
-          [
-            {
-              timeout = screenTimeout;
-              command = swaylock;
-            }
-            {
-              timeout = screenTimeout + graceDelay;
-              command = "niri msg action power-off-monitors";
-            }
-          ];
+        timeouts = [
+          {
+            timeout = 300;
+            command = lib.getExe lockAndTurnOffMonitors;
+          }
+        ];
       };
     systemd.user.services.swayidle.Unit.After = [ "niri.service" ];
   };
