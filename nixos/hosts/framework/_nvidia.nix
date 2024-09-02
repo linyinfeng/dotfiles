@@ -50,6 +50,7 @@ in
     primeRun
     intel-gpu-tools
     nvitop
+    nvtopPackages.full
     vulkan-tools
   ];
   systemd.services.display-manager.environment = envVars;
