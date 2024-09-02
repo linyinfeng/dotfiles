@@ -169,6 +169,9 @@ let
         swayidle = prev.swayidle.overrideAttrs (old: {
           depsBuildBuild = (old.depsBuildBuild or [ ]) ++ [ final.pkgsBuildBuild.pkg-config ];
         });
+        swaylock-effects = prev.swaylock-effects.overrideAttrs (old: {
+          depsBuildBuild = (old.depsBuildBuild or [ ]) ++ [ final.pkgsBuildBuild.pkg-config ];
+        });
       })
     ];
   lateFixes =
