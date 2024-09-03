@@ -100,7 +100,6 @@ in
         ];
         binds =
           let
-            inherit (config.lib.niri) actions;
             modMove = "Shift";
             modMonitor = "Ctrl";
             keyUp = "P";
@@ -172,19 +171,19 @@ in
                     in
                     {
                       "Mod+${key}" = {
-                        action = actions."focus-${cfg.windowTerm}-${direction}";
+                        action."focus-${cfg.windowTerm}-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                       "Mod+${modMove}+${key}" = {
-                        action = actions."move-${cfg.windowTerm}-${direction}";
+                        action."move-${cfg.windowTerm}-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                       "Mod+${modMonitor}+${key}" = {
-                        action = actions."focus-monitor-${direction}";
+                        action."focus-monitor-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                       "Mod+${modMove}+${modMonitor}+${key}" = {
-                        action = actions."move-column-to-monitor-${direction}";
+                        action."move-column-to-monitor-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                     }
@@ -203,15 +202,15 @@ in
                     in
                     {
                       "Mod+${key}" = {
-                        action = actions."focus-workspace-${direction}";
+                        action."focus-workspace-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                       "Mod+${modMove}+${key}" = {
-                        action = actions."move-column-to-workspace-${direction}";
+                        action."move-column-to-workspace-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                       "Mod+Ctrl+${key}" = {
-                        action = actions."move-workspace-${direction}";
+                        action."move-workspace-${direction}" = [ ];
                         inherit cooldown-ms;
                       };
                     }
@@ -222,72 +221,86 @@ in
             indexedWorkspaceBindings = lib.mkMerge (
               lib.map (index: {
                 "Mod+${toString index}" = {
-                  action = actions.focus-workspace index;
+                  action.focus-workspace = [ index ];
                 };
                 "Mod+${modMove}+${toString index}" = {
-                  action = actions.move-column-to-workspace index;
+                  action.move-column-to-workspace = [ index ];
                 };
               }) workspaceIndices
             );
             specialBindings = {
               # show help
-              "Mod+Shift+Slash".action = actions.show-hotkey-overlay;
+              "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
               # terminal, app launcher, and screen locker
-              "Mod+Return".action = actions.spawn "alacritty";
-              "Mod+D".action = actions.spawn "fuzzel";
-              "Mod+L".action = actions.spawn (lib.getExe turnOffMonitorsAndLock);
+              "Mod+Return".action.spawn = [ "alacritty" ];
+              "Mod+D".action.spawn = [ "fuzzel" ];
+              "Mod+L".action.spawn = [ (lib.getExe turnOffMonitorsAndLock) ];
               # volume keys
               "XF86AudioRaiseVolume" = {
                 allow-when-locked = true;
-                action = actions.spawn "volumectl" "up";
+                action.spawn = [
+                  "volumectl"
+                  "up"
+                ];
                 # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
               };
               "XF86AudioLowerVolume" = {
                 allow-when-locked = true;
-                action = actions.spawn "volumectl" "down";
+                action.spawn = [
+                  "volumectl"
+                  "down"
+                ];
                 # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
               };
               "XF86AudioMute" = {
                 allow-when-locked = true;
-                action = actions.spawn "volumectl" "toggle-mute";
+                action.spawn = [
+                  "volumectl"
+                  "toggle-mute"
+                ];
                 # action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
               };
               "XF86AudioMicMute" = {
                 allow-when-locked = true;
-                action = actions.spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
+                action.spawn = [
+                  "wpctl"
+                  "set-mute"
+                  "@DEFAULT_AUDIO_SOURCE@"
+                  "toggle"
+                ];
               };
               # quit windnow
-              "Mod+Q".action = actions.close-window;
+              "Mod+Q".action.close-window = [ ];
               # first and last
-              "Mod+A".action = actions.focus-column-first;
-              "Mod+E".action = actions.focus-column-last;
-              "Mod+${modMove}+A".action = actions.move-column-to-first;
-              "Mod+${modMove}+E".action = actions.move-column-to-last;
+              "Mod+A".action.focus-column-first = [ ];
+              "Mod+E".action.focus-column-last = [ ];
+              "Mod+${modMove}+A".action.move-column-to-first = [ ];
+              "Mod+${modMove}+E".action.move-column-to-last = [ ];
               # previous workspace
-              "Mod+Tab".action = actions.focus-workspace-previous;
+              "Mod+Tab".action.focus-workspace-previous = [ ];
               # consume and expel
-              "Mod+Comma".action = actions.consume-window-into-column;
-              "Mod+Period".action = actions.expel-window-from-column;
-              "Mod+BracketLeft".action = actions.consume-or-expel-window-left;
-              "Mod+BracketRight".action = actions.consume-or-expel-window-right;
+              "Mod+Comma".action.consume-window-into-column = [ ];
+              "Mod+Period".action.expel-window-from-column = [ ];
+              "Mod+BracketLeft".action.consume-or-expel-window-left = [ ];
+              "Mod+BracketRight".action.consume-or-expel-window-right = [ ];
               # preset size
-              "Mod+R".action = actions.switch-preset-column-width;
-              "Mod+Shift+R".action = actions.reset-window-height;
-              "Mod+M".action = actions.maximize-column;
-              "Mod+Shift+M".action = actions.fullscreen-window;
+              "Mod+R".action.switch-preset-column-width = [ ];
+              "Mod+Shift+R".action.reset-window-height = [ ];
+              "Mod+M".action.maximize-column = [ ];
+              "Mod+Shift+M".action.fullscreen-window = [ ];
               # center column
-              "Mod+C".action = actions.center-column;
+              "Mod+C".action.center-column = [ ];
               # manual size
-              "Mod+Minus".action = actions.set-column-width "-10%";
-              "Mod+Equal".action = actions.set-column-width "+10%";
-              "Mod+Shift+Minus".action = actions.set-window-height "-10%";
-              "Mod+Shift+Equal".action = actions.set-window-height "+10%";
+              "Mod+Minus".action.set-column-width = [ "-10%" ];
+              "Mod+Equal".action.set-column-width = [ "+10%" ];
+              "Mod+Shift+Minus".action.set-window-height = [ "-10%" ];
+              "Mod+Shift+Equal".action.set-window-height = [ "+10%" ];
               # screenshot
-              "Print".action = actions.screenshot;
-              "Ctrl+Print".action = actions.screenshot-screen;
-              "Alt+Print".action = actions.screenshot-window;
+              "Print".action.screenshot = [ ];
+              "Ctrl+Print".action.screenshot-screen = [ ];
+              "Alt+Print".action.screenshot-window = [ ];
               # quit
-              "Mod+Ctrl+E".action = actions.quit;
+              "Mod+Ctrl+E".action.quit = [ ];
             };
           in
           lib.mkMerge [
