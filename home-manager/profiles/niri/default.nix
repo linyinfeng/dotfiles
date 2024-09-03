@@ -347,7 +347,7 @@ in
             format = "{ifname}";
             format-wifi = "{essid} 󰖩";
             format-ethernet = "{ifname} 󰈀";
-            format-disconnected = ""; # An empty format will hide the"Module.
+            format-disconnected = ""; # an empty format will hide the module.
             tooltip-format = "{ifname} via {gwaddr}";
             tooltip-format-wifi = "{essid} ({signalStrength}%) 󰖩";
             tooltip-format-ethernet = "{ipaddr}/{cidr} 󰈀";
