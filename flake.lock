@@ -514,29 +514,6 @@
         "type": "github"
       }
     },
-    "hydra": {
-      "inputs": {
-        "nix": [
-          "blank"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1724787702,
-        "narHash": "sha256-ZU8/LzdZ0nbUxVxTsRZyMpTGEtps9oG0Yx2cpS9J8I4=",
-        "owner": "nixos",
-        "repo": "hydra",
-        "rev": "2d79b0a4da9e2a8ff97c1173aa56fe92e1f4629b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "hydra",
-        "type": "github"
-      }
-    },
     "impermanence": {
       "locked": {
         "lastModified": 1724489415,
@@ -1405,7 +1382,6 @@
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
         "home-manager": "home-manager",
-        "hydra": "hydra",
         "impermanence": "impermanence",
         "lantian": "lantian",
         "lanzaboote": "lanzaboote",

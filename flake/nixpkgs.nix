@@ -29,7 +29,6 @@ let
     inputs.emacs-overlay.overlay
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlays.default
-    inputs.hydra.overlays.default
     (
       _final: prev:
       let
@@ -110,8 +109,6 @@ let
       nixVersions = prev.nixVersions // {
         selected = final.nixVersions.latest;
       };
-      # TODO broken with nix 2.23
-      hydra = prev.hydra.override { nix = final.nixVersions.nix_2_22; };
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;

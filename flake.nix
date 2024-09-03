@@ -91,10 +91,6 @@
 
     # programs
 
-    hydra.url = "github:nixos/hydra";
-    hydra.inputs.nixpkgs.follows = "nixpkgs";
-    hydra.inputs.nix.follows = "blank";
-
     nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
     nix-gc-s3.inputs.nixpkgs.follows = "nixpkgs";
     nix-gc-s3.inputs.flake-parts.follows = "flake-parts";
