@@ -89,7 +89,11 @@ in
         "Source Han Serif HW"
         "Source Han Serif K"
       ];
-      monospace = lib.optional cfg.customFonts.enable "Iosevka Yinfeng" ++ [ "Sarasa Mono Slab SC" ];
+      monospace =
+        lib.optionals cfg.customFonts.enable [
+          "IosevkaYinfeng Nerd Font"
+        ]
+        ++ [ "Sarasa Mono Slab SC" ];
       emoji = [ "Noto Color Emoji" ];
     };
 
