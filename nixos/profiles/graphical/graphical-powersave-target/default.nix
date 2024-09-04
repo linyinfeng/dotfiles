@@ -4,7 +4,6 @@
     requires = [ "graphical.target" ];
     after = [ "graphical.target" ];
     conflicts = [
-      "bird2.service"
       "cowrie.service"
       "telegraf.service"
       "promtail.service"
