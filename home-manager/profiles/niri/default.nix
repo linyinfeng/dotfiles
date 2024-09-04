@@ -441,9 +441,9 @@ in
     # xwayland
     systemd.user.services.xwayland-satellite = {
       Unit = {
-        BindsTo = [ "niri.service" ];
-        After = [ "niri.service" ];
-        Requires = [ "niri.service" ];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        Requisite = [ "graphical-session.target" ];
         OnFailure = [ "xwayland-satellite-failure-report.service" ];
       };
       Install = {
@@ -561,6 +561,28 @@ in
         "WAYLAND_DISPLAY"
       ];
       After = [ "niri.service" ];
+    };
+
+    # swaybg
+    systemd.user.services.swaybg = {
+      Unit = {
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        Requisite = [ "graphical-session.target" ];
+      };
+      Install = {
+        WantedBy = [ "niri.service" ];
+      };
+      Service = {
+        Restart = "on-failure";
+        ExecStart = lib.escapeShellArgs [
+          (lib.getExe pkgs.swaybg)
+          "--mode"
+          "fill"
+          "--image"
+          "${pkgs.nixos-artwork.wallpapers.catppuccin-macchiato}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-macchiato.png"
+        ];
+      };
     };
   };
 }
