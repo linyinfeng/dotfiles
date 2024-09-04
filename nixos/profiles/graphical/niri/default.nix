@@ -8,9 +8,7 @@ lib.mkMerge [
   {
     programs.niri = {
       enable = true;
-      # TODO broken
-      # package = pkgs.niri-unstable;
-      package = pkgs.niri;
+      package = pkgs.niri-unstable;
     };
     niri-flake.cache.enable = false;
     environment.systemPackages = with pkgs; [

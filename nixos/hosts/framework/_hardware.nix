@@ -64,6 +64,82 @@ lib.mkMerge [
         };
       };
     };
+
+    home-manager.users.yinfeng.services.kanshi.settings =
+      let
+        embedded = "eDP-1";
+        labMonitor = "DP-4"; # TODO use monitor model
+        dormMonitor = "A/Vaux Electronics AVT GC551G2 Unknown"; # capture card
+      in
+      [
+        {
+          output = {
+            criteria = embedded;
+            scale = 1.75;
+          };
+        }
+        {
+          output = {
+            criteria = labMonitor;
+            scale = 1.0;
+          };
+        }
+        {
+          output = {
+            criteria = dormMonitor;
+            scale = 1.25;
+          };
+        }
+        {
+          profile = {
+            name = "undocked";
+            outputs = [
+              { criteria = embedded; }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-lab";
+            outputs = [
+              {
+                criteria = labMonitor;
+                position = "0,0";
+              }
+              {
+                criteria = embedded;
+                position = "2560,580";
+              }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-lab-single";
+            outputs = [
+              {
+                criteria = labMonitor;
+                position = "0,0";
+              }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-dorm-single";
+            outputs = [
+              {
+                criteria = dormMonitor;
+                position = "0,0";
+              }
+              {
+                criteria = embedded;
+                status = "disable";
+              }
+            ];
+          };
+        }
+      ];
   }
 
   {

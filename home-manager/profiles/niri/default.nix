@@ -13,18 +13,6 @@ let
       src = ./_styles;
       nativeBuildInputs = with pkgs; [ sass ];
     } "sass $src/${name}.scss $out";
-
-  turnOffMonitorsAndLock = pkgs.writeShellApplication {
-    name = "turn-off-monitors-and-lock";
-    runtimeInputs = [
-      config.programs.niri.package
-      config.programs.swaylock.package
-    ];
-    text = ''
-      niri msg action power-off-monitors
-      swaylock
-    '';
-  };
 in
 {
   config = {
@@ -234,7 +222,10 @@ in
               # terminal, app launcher, and screen locker
               "Mod+Return".action.spawn = [ "alacritty" ];
               "Mod+D".action.spawn = [ "fuzzel" ];
-              "Mod+L".action.spawn = [ (lib.getExe turnOffMonitorsAndLock) ];
+              "Mod+L".action.spawn = [
+                "loginctl"
+                "lock-session"
+              ];
               # volume keys
               "XF86AudioRaiseVolume" = {
                 allow-when-locked = true;
@@ -514,16 +505,64 @@ in
       };
     };
 
+    systemd.user.services.swaylock = {
+      Unit = {
+        ConditionEnvironment = [
+          "WAYLAND_DISPLAY"
+        ];
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        Wants = [ "swayidle-locked.service" ];
+      };
+      Service = {
+        Type = "forking";
+        ExecStartPre = "${lib.getExe config.programs.niri.package} msg action do-screen-transition --delay-ms 1000";
+        ExecStart = "${lib.getExe config.programs.swaylock.package}";
+        KillSignal = "SIGUSR1";
+      };
+    };
+    systemd.user.services.swayidle-locked = {
+      Unit = {
+        ConditionEnvironment = [
+          "WAYLAND_DISPLAY"
+          "XDG_SEAT"
+        ];
+        PartOf = [ "graphical-session.target" ];
+        BindsTo = [ "swaylock.service" ];
+        After = [
+          "swaylock.service"
+          "graphical-session.target"
+        ];
+      };
+      Service = {
+        ExecStart = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "swayidle-locked";
+            runtimeInputs = [
+              config.programs.niri.package
+              config.services.swayidle.package
+            ];
+            text = ''
+              exec swayidle -d -w -S "$XDG_SEAT" \
+                timeout 10 "niri msg action power-off-monitors"
+            '';
+          }
+        );
+      };
+    };
+
     # swayidle
     services.swayidle =
       let
-        swaylock = lib.getExe config.programs.swaylock.package;
+        systemctl = "${osConfig.systemd.package}/bin/systemctl";
+        loginctl = "${osConfig.systemd.package}/bin/loginctl";
       in
       {
         enable = true;
         systemdTarget = "niri.service";
         extraArgs = [
-          "-d"
+          "-d" # debug output
+          "-w" # wait for command
           "-S"
           "$XDG_SEAT"
           "idlehint"
@@ -532,28 +571,23 @@ in
         events = [
           {
             event = "before-sleep";
-            command = swaylock;
+            command = "${systemctl} --user start swaylock";
           }
           {
             event = "lock";
-            command = lib.getExe turnOffMonitorsAndLock;
+            command = "${systemctl} --user start swaylock";
+          }
+          {
+            event = "unlock";
+            command = "${systemctl} --user stop swaylock";
           }
         ];
-        timeouts =
-          let
+        timeouts = [
+          {
             timeout = 300;
-            graceTime = config.programs.swaylock.settings.grace;
-          in
-          [
-            {
-              inherit timeout;
-              command = swaylock;
-            }
-            {
-              timeout = timeout + graceTime;
-              command = "${lib.getExe config.programs.niri.package} msg action power-off-monitors";
-            }
-          ];
+            command = "${loginctl} lock-session";
+          }
+        ];
       };
     systemd.user.services.swayidle.Unit = {
       ConditionEnvironment = lib.mkForce [
@@ -583,6 +617,12 @@ in
           "${pkgs.nixos-artwork.wallpapers.catppuccin-macchiato}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-macchiato.png"
         ];
       };
+    };
+
+    # kanshi
+    services.kanshi = {
+      enable = true;
+      systemdTarget = "niri.service";
     };
   };
 }
