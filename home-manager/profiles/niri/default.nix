@@ -555,7 +555,6 @@ in
     services.swayidle =
       let
         systemctl = "${osConfig.systemd.package}/bin/systemctl";
-        loginctl = "${osConfig.systemd.package}/bin/loginctl";
       in
       {
         enable = true;
@@ -585,7 +584,7 @@ in
         timeouts = [
           {
             timeout = 300;
-            command = "${loginctl} lock-session";
+            command = "${systemctl} --user start swaylock";
           }
         ];
       };
