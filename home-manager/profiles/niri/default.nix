@@ -326,7 +326,7 @@ in
           layer = "top";
           position = "top";
           modules-left = [
-            # "wlr/workspaces" # not working with niri
+            "niri/workspaces"
             "wlr/taskbar"
           ];
           modules-center = [ "clock" ];
@@ -338,6 +338,10 @@ in
             "wireplumber"
             "battery"
           ];
+          "niri/workspaces" = {
+            # "current-only" = true;
+            # "all-outputs" = true;
+          };
           "wlr/workspaces" = {
             format = "{name}";
           };
@@ -349,7 +353,7 @@ in
           "network" = {
             format = "{ifname}";
             format-wifi = "{essid} 󰖩";
-            format-ethernet = "{ifname} 󰈀";
+            format-ethernet = "󰈀";
             format-disconnected = ""; # an empty format will hide the module.
             tooltip-format = "{ifname} via {gwaddr}";
             tooltip-format-wifi = "{essid} ({signalStrength}%) 󰖩";

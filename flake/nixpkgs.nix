@@ -145,6 +145,10 @@ let
           )
         else
           prev.gnome;
+      # TODO wait for https://github.com/Alexays/Waybar/pull/3551
+      waybar = prev.waybar.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/waybar-niri.patch ];
+      });
       librime = prev.lantian.lantianCustomized.librime-with-plugins;
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })

@@ -1,0 +1,1282 @@
+From 5c30d42fba3c4bc34e5eaac153d4f80a54e57365 Mon Sep 17 00:00:00 2001
+From: Ivan Molodetskikh <yalterz@gmail.com>
+Date: Thu, 29 Aug 2024 11:45:17 +0300
+Subject: [PATCH] Add niri/workspaces, niri/window, niri/language
+
+---
+ README.md                           |   1 +
+ include/modules/niri/backend.hpp    |  52 ++++++
+ include/modules/niri/language.hpp   |  38 +++++
+ include/modules/niri/window.hpp     |  28 ++++
+ include/modules/niri/workspaces.hpp |  30 ++++
+ man/waybar-niri-language.5.scd      |  58 +++++++
+ man/waybar-niri-window.5.scd        |  81 +++++++++
+ man/waybar-niri-workspaces.5.scd    |  97 +++++++++++
+ man/waybar.5.scd.in                 |   3 +
+ meson.build                         |  15 ++
+ src/factory.cpp                     |  16 ++
+ src/modules/niri/backend.cpp        | 249 ++++++++++++++++++++++++++++
+ src/modules/niri/language.cpp       | 138 +++++++++++++++
+ src/modules/niri/window.cpp         | 121 ++++++++++++++
+ src/modules/niri/workspaces.cpp     | 204 +++++++++++++++++++++++
+ 15 files changed, 1131 insertions(+)
+ create mode 100644 include/modules/niri/backend.hpp
+ create mode 100644 include/modules/niri/language.hpp
+ create mode 100644 include/modules/niri/window.hpp
+ create mode 100644 include/modules/niri/workspaces.hpp
+ create mode 100644 man/waybar-niri-language.5.scd
+ create mode 100644 man/waybar-niri-window.5.scd
+ create mode 100644 man/waybar-niri-workspaces.5.scd
+ create mode 100644 src/modules/niri/backend.cpp
+ create mode 100644 src/modules/niri/language.cpp
+ create mode 100644 src/modules/niri/window.cpp
+ create mode 100644 src/modules/niri/workspaces.cpp
+
+diff --git a/README.md b/README.md
+index a019eb6fb..55a6c7d9e 100644
+--- a/README.md
++++ b/README.md
+@@ -8,6 +8,7 @@
+ - Sway (Workspaces, Binding mode, Focused window name)
+ - River (Mapping mode, Tags, Focused window name)
+ - Hyprland (Window Icons, Workspaces, Focused window name)
++- Niri (Workspaces, Focused window name, Language)
+ - DWL (Tags, Focused window name) [requires dwl ipc patch](https://github.com/djpohly/dwl/wiki/ipc)
+ - Tray [#21](https://github.com/Alexays/Waybar/issues/21)
+ - Local time
+diff --git a/include/modules/niri/backend.hpp b/include/modules/niri/backend.hpp
+new file mode 100644
+index 000000000..01af50174
+--- /dev/null
++++ b/include/modules/niri/backend.hpp
+@@ -0,0 +1,52 @@
++#pragma once
++
++#include <list>
++#include <mutex>
++#include <string>
++#include <utility>
++
++#include "util/json.hpp"
++
++namespace waybar::modules::niri {
++
++class EventHandler {
++ public:
++  virtual void onEvent(const Json::Value& ev) = 0;
++  virtual ~EventHandler() = default;
++};
++
++class IPC {
++ public:
++  IPC() { startIPC(); }
++
++  void registerForIPC(const std::string& ev, EventHandler* ev_handler);
++  void unregisterForIPC(EventHandler* handler);
++
++  static Json::Value send(const Json::Value& request);
++
++  // The data members are only safe to access while dataMutex_ is locked.
++  std::lock_guard<std::mutex> lockData() { return std::lock_guard(dataMutex_); }
++  const std::vector<Json::Value> &workspaces() const { return workspaces_; }
++  const std::vector<Json::Value> &windows() const { return windows_; }
++  const std::vector<std::string> &keyboardLayoutNames() const { return keyboardLayoutNames_; }
++  unsigned keyboardLayoutCurrent() const { return keyboardLayoutCurrent_; }
++
++ private:
++  void startIPC();
++  static int connectToSocket();
++  void parseIPC(const std::string&);
++
++  std::mutex dataMutex_;
++  std::vector<Json::Value> workspaces_;
++  std::vector<Json::Value> windows_;
++  std::vector<std::string> keyboardLayoutNames_;
++  unsigned keyboardLayoutCurrent_;
++
++  util::JsonParser parser_;
++  std::mutex callbackMutex_;
++  std::list<std::pair<std::string, EventHandler*>> callbacks_;
++};
++
++inline std::unique_ptr<IPC> gIPC;
++
++};  // namespace waybar::modules::niri
+diff --git a/include/modules/niri/language.hpp b/include/modules/niri/language.hpp
+new file mode 100644
+index 000000000..1cecd206c
+--- /dev/null
++++ b/include/modules/niri/language.hpp
+@@ -0,0 +1,38 @@
++#pragma once
++
++#include <string>
++
++#include "ALabel.hpp"
++#include "bar.hpp"
++#include "modules/niri/backend.hpp"
++
++namespace waybar::modules::niri {
++
++class Language : public ALabel, public EventHandler {
++ public:
++  Language(const std::string&, const Bar&, const Json::Value&);
++  ~Language() override;
++  void update() override;
++
++ private:
++  void updateFromIPC();
++  void onEvent(const Json::Value &ev) override;
++  void doUpdate();
++
++  struct Layout {
++    std::string full_name;
++    std::string short_name;
++    std::string variant;
++    std::string short_description;
++  };
++
++  static Layout getLayout(const std::string &fullName);
++
++  std::mutex mutex_;
++  const Bar &bar_;
++
++  std::vector<Layout> layouts_;
++  unsigned current_idx_;
++};
++
++}  // namespace waybar::modules::niri
+diff --git a/include/modules/niri/window.hpp b/include/modules/niri/window.hpp
+new file mode 100644
+index 000000000..909ae6f0e
+--- /dev/null
++++ b/include/modules/niri/window.hpp
+@@ -0,0 +1,28 @@
++#pragma once
++
++#include <gtkmm/button.h>
++#include <json/value.h>
++
++#include "AAppIconLabel.hpp"
++#include "bar.hpp"
++#include "modules/niri/backend.hpp"
++
++namespace waybar::modules::niri {
++
++class Window : public AAppIconLabel, public EventHandler {
++ public:
++  Window(const std::string &, const Bar &, const Json::Value &);
++  ~Window() override;
++  void update() override;
++
++ private:
++  void onEvent(const Json::Value &ev) override;
++  void doUpdate();
++  void setClass(const std::string &className, bool enable);
++
++  const Bar &bar_;
++
++  std::string oldAppId_;
++};
++
++}  // namespace waybar::modules::niri
+diff --git a/include/modules/niri/workspaces.hpp b/include/modules/niri/workspaces.hpp
+new file mode 100644
+index 000000000..a6850ed10
+--- /dev/null
++++ b/include/modules/niri/workspaces.hpp
+@@ -0,0 +1,30 @@
++#pragma once
++
++#include <gtkmm/button.h>
++#include <json/value.h>
++
++#include "AModule.hpp"
++#include "bar.hpp"
++#include "modules/niri/backend.hpp"
++
++namespace waybar::modules::niri {
++
++class Workspaces : public AModule, public EventHandler {
++ public:
++  Workspaces(const std::string &, const Bar &, const Json::Value &);
++  ~Workspaces() override;
++  void update() override;
++
++ private:
++  void onEvent(const Json::Value &ev) override;
++  void doUpdate();
++  Gtk::Button &addButton(const Json::Value &ws);
++  std::string getIcon(const std::string &value, const Json::Value &ws);
++
++  const Bar &bar_;
++  Gtk::Box box_;
++  // Map from niri workspace id to button.
++  std::unordered_map<uint64_t, Gtk::Button> buttons_;
++};
++
++}  // namespace waybar::modules::niri
+diff --git a/man/waybar-niri-language.5.scd b/man/waybar-niri-language.5.scd
+new file mode 100644
+index 000000000..6895d25c0
+--- /dev/null
++++ b/man/waybar-niri-language.5.scd
+@@ -0,0 +1,58 @@
++waybar-niri-language(5)
++
++# NAME
++
++waybar - niri language module
++
++# DESCRIPTION
++
++The *language* module displays the currently selected language in niri.
++
++# CONFIGURATION
++
++Addressed by *niri/language*
++
++*format*: ++
++	typeof: string ++
++	default: {} ++
++	The format, how information should be displayed.
++
++*format-<lang>* ++
++	typeof: string++
++	Provide an alternative name to display per language where <lang> is the language of your choosing. Can be passed multiple times with multiple languages as shown by the example below.
++
++*menu*: ++
++	typeof: string ++
++	Action that popups the menu.
++
++*menu-file*: ++
++	typeof: string ++
++	Location of the menu descriptor file. There need to be an element of type GtkMenu with id *menu*
++
++*menu-actions*: ++
++	typeof: array ++
++	The actions corresponding to the buttons of the menu.
++
++# FORMAT REPLACEMENTS
++
++*{short}*: Short name of layout (e.g. "us"). Equals to {}.
++
++*{shortDescription}*: Short description of layout (e.g. "en").
++
++*{long}*: Long name of layout (e.g. "English (Dvorak)").
++
++*{variant}*: Variant of layout (e.g. "dvorak").
++
++# EXAMPLES
++
++```
++"niri/language": {
++	"format": "Lang: {long}"
++	"format-en": "AMERICA, HELL YEAH!"
++	"format-tr": "As bayrakları"
++}
++```
++
++# STYLE
++
++- *#language*
+diff --git a/man/waybar-niri-window.5.scd b/man/waybar-niri-window.5.scd
+new file mode 100644
+index 000000000..9e2e9f632
+--- /dev/null
++++ b/man/waybar-niri-window.5.scd
+@@ -0,0 +1,81 @@
++waybar-niri-window(5)
++
++# NAME
++
++waybar - niri window module
++
++# DESCRIPTION
++
++The *window* module displays the title of the currently focused window in niri.
++
++# CONFIGURATION
++
++Addressed by *niri/window*
++
++*format*: ++
++	typeof: string ++
++	default: {title} ++
++	The format, how information should be displayed. On {} the current window title is displayed.
++
++*rewrite*: ++
++	typeof: object ++
++	Rules to rewrite window title. See *rewrite rules*.
++
++*separate-outputs*: ++
++	typeof: bool ++
++	Show the active window of the monitor the bar belongs to, instead of the focused window.
++
++*icon*: ++
++	typeof: bool ++
++	default: false ++
++	Option to hide the application icon.
++
++*icon-size*: ++
++	typeof: integer ++
++	default: 24 ++
++	Option to change the size of the application icon.
++
++# FORMAT REPLACEMENTS
++
++See the output of "niri msg windows" for examples
++
++*{title}*: The current title of the focused window.
++
++*{app_id}*: The current app ID of the focused window.
++
++# REWRITE RULES
++
++*rewrite* is an object where keys are regular expressions and values are
++rewrite rules if the expression matches. Rules may contain references to
++captures of the expression.
++
++Regular expression and replacement follow ECMA-script rules.
++
++If no expression matches, the title is left unchanged.
++
++Invalid expressions (e.g., mismatched parentheses) are skipped.
++
++# EXAMPLES
++
++```
++"niri/window": {
++	"format": "{}",
++	"rewrite": {
++		"(.*) - Mozilla Firefox": "🌎 $1",
++		"(.*) - zsh": "> [$1]"
++	}
++}
++```
++
++# STYLE
++
++- *#window*
++- *window#waybar.empty #window* When no windows are on the workspace
++
++The following classes are applied to the entire Waybar rather than just the
++window widget:
++
++- *window#waybar.empty* When no windows are in the workspace
++- *window#waybar.solo* When only one window is on the workspace
++- *window#waybar.<app-id>* Where *app-id* is the app ID of the only window on
++  the workspace
+diff --git a/man/waybar-niri-workspaces.5.scd b/man/waybar-niri-workspaces.5.scd
+new file mode 100644
+index 000000000..50e497cdf
+--- /dev/null
++++ b/man/waybar-niri-workspaces.5.scd
+@@ -0,0 +1,97 @@
++waybar-niri-workspaces(5)
++
++# NAME
++
++waybar - niri workspaces module
++
++# DESCRIPTION
++
++The *workspaces* module displays the currently used workspaces in niri.
++
++# CONFIGURATION
++
++Addressed by *niri/workspaces*
++
++*all-outputs*: ++
++	typeof: bool ++
++	default: false ++
++	If set to false, workspaces will only be shown on the output they are on. If set to true all workspaces will be shown on every output.
++
++*format*: ++
++	typeof: string ++
++	default: {value} ++
++	The format, how information should be displayed.
++
++*format-icons*: ++
++	typeof: array ++
++	Based on the workspace name, index and state, the corresponding icon gets selected. See *icons*.
++
++*disable-click*: ++
++	typeof: bool ++
++	default: false ++
++	If set to false, you can click to change workspace. If set to true this behaviour is disabled.
++
++*disable-markup*: ++
++	typeof: bool ++
++	default: false ++
++	If set to true, button label will escape pango markup.
++
++*current-only*: ++
++	typeof: bool ++
++	default: false ++
++	If set to true, only the active or focused workspace will be shown.
++
++*on-update*: ++
++	typeof: string ++
++	Command to execute when the module is updated.
++
++# FORMAT REPLACEMENTS
++
++*{value}*: Name of the workspace, or index for unnamed workspaces,
++as defined by niri.
++
++*{name}*: Name of the workspace for named workspaces.
++
++*{icon}*: Icon, as defined in *format-icons*.
++
++*{index}*: Index of the workspace on its output.
++
++*{output}*: Output where the workspace is located.
++
++# ICONS
++
++Additional to workspace name matching, the following *format-icons* can be set.
++
++- *default*: Will be shown, when no string matches are found.
++- *focused*: Will be shown, when workspace is focused.
++- *active*: Will be shown, when workspace is active on its output.
++
++# EXAMPLES
++
++```
++"niri/workspaces": {
++	"format": "{icon}",
++	"format-icons": {
++		// Named workspaces
++		// (you need to configure them in niri)
++		"browser": "",
++		"discord": "",
++		"chat": "<b></b>",
++
++		// Icons by state
++		"active": "",
++		"default": ""
++	}
++}
++```
++
++# Style
++
++- *#workspaces button*
++- *#workspaces button.focused*: The single focused workspace.
++- *#workspaces button.active*: The workspace is active (visible) on its output.
++- *#workspaces button.empty*: The workspace is empty.
++- *#workspaces button.current_output*: The workspace is from the same output as
++  the bar that it is displayed on.
++- *#workspaces button#niri-workspace-<name>*: Workspaces named this, or index
++  for unnamed workspaces.
+diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
+index db546e178..f3a896565 100644
+--- a/man/waybar.5.scd.in
++++ b/man/waybar.5.scd.in
+@@ -323,6 +323,9 @@ A group may hide all but one element, showing them only on mouse hover. In order
+ - *waybar-hyprland-submap(5)*
+ - *waybar-hyprland-window(5)*
+ - *waybar-hyprland-workspaces(5)*
++- *waybar-niri-language(5)*
++- *waybar-niri-window(5)*
++- *waybar-niri-workspaces(5)*
+ - *waybar-idle-inhibitor(5)*
+ - *waybar-image(5)*
+ - *waybar-inhibitor(5)*
+diff --git a/meson.build b/meson.build
+index 8daa6c9cf..09d7fa6c3 100644
+--- a/meson.build
++++ b/meson.build
+@@ -318,6 +318,21 @@ if true
+     )
+ endif
+ 
++if true
++    add_project_arguments('-DHAVE_NIRI', language: 'cpp')
++    src_files += files(
++        'src/modules/niri/backend.cpp',
++        'src/modules/niri/language.cpp',
++        'src/modules/niri/window.cpp',
++        'src/modules/niri/workspaces.cpp',
++    )
++    man_files += files(
++        'man/waybar-niri-language.5.scd',
++        'man/waybar-niri-window.5.scd',
++        'man/waybar-niri-workspaces.5.scd',
++    )
++endif
++
+ if libnl.found() and libnlgen.found()
+     add_project_arguments('-DHAVE_LIBNL', language: 'cpp')
+     src_files += files('src/modules/network.cpp')
+diff --git a/src/factory.cpp b/src/factory.cpp
+index ca10ef956..6c2313e38 100644
+--- a/src/factory.cpp
++++ b/src/factory.cpp
+@@ -36,6 +36,11 @@
+ #include "modules/hyprland/window.hpp"
+ #include "modules/hyprland/workspaces.hpp"
+ #endif
++#ifdef HAVE_NIRI
++#include "modules/niri/language.hpp"
++#include "modules/niri/window.hpp"
++#include "modules/niri/workspaces.hpp"
++#endif
+ #if defined(__FreeBSD__) || defined(__linux__)
+ #include "modules/battery.hpp"
+ #endif
+@@ -205,6 +210,17 @@ waybar::AModule* waybar::Factory::makeModule(const std::string& name,
+     if (ref == "hyprland/workspaces") {
+       return new waybar::modules::hyprland::Workspaces(id, bar_, config_[name]);
+     }
++#endif
++#ifdef HAVE_NIRI
++    if (ref == "niri/language") {
++      return new waybar::modules::niri::Language(id, bar_, config_[name]);
++    }
++    if (ref == "niri/window") {
++      return new waybar::modules::niri::Window(id, bar_, config_[name]);
++    }
++    if (ref == "niri/workspaces") {
++      return new waybar::modules::niri::Workspaces(id, bar_, config_[name]);
++    }
+ #endif
+     if (ref == "idle_inhibitor") {
+       return new waybar::modules::IdleInhibitor(id, bar_, config_[name]);
+diff --git a/src/modules/niri/backend.cpp b/src/modules/niri/backend.cpp
+new file mode 100644
+index 000000000..ef23c8817
+--- /dev/null
++++ b/src/modules/niri/backend.cpp
+@@ -0,0 +1,249 @@
++#include "modules/niri/backend.hpp"
++
++#include <netdb.h>
++#include <netinet/in.h>
++#include <spdlog/spdlog.h>
++#include <sys/socket.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <sys/un.h>
++#include <unistd.h>
++
++#include <ext/stdio_filebuf.h>
++#include <iostream>
++#include <string>
++#include <thread>
++
++namespace waybar::modules::niri {
++
++int IPC::connectToSocket() {
++    const char* socket_path = getenv("NIRI_SOCKET");
++
++    if (socket_path == nullptr) {
++      spdlog::warn("Niri is not running, niri IPC will not be available.");
++      return -1;
++    }
++
++    struct sockaddr_un addr;
++    int socketfd = socket(AF_UNIX, SOCK_STREAM, 0);
++
++    if (socketfd == -1) {
++      throw std::runtime_error("socketfd failed");
++    }
++
++    addr.sun_family = AF_UNIX;
++
++    strncpy(addr.sun_path, socket_path, sizeof(addr.sun_path) - 1);
++
++    addr.sun_path[sizeof(addr.sun_path) - 1] = 0;
++
++    int l = sizeof(struct sockaddr_un);
++
++    if (connect(socketfd, (struct sockaddr*)&addr, l) == -1) {
++      close(socketfd);
++      throw std::runtime_error("unable to connect");
++    }
++
++    return socketfd;
++}
++
++void IPC::startIPC() {
++  // will start IPC and relay events to parseIPC
++
++  std::thread([&]() {
++    int socketfd;
++    try {
++      socketfd = connectToSocket();
++    } catch (std::exception &e) {
++      spdlog::error("Niri IPC: failed to start, reason: {}", e.what());
++      return;
++    }
++    if (socketfd == -1)
++      return;
++
++    spdlog::info("Niri IPC starting");
++
++    __gnu_cxx::stdio_filebuf<char> filebuf(socketfd, std::ios::in | std::ios::out);
++    std::iostream fs(&filebuf);
++    fs << R"("EventStream")" << std::endl;
++
++    std::string line;
++    std::getline(fs, line);
++    if (line != R"({"Ok":"Handled"})") {
++      spdlog::error("Niri IPC: failed to start event stream");
++      return;
++    }
++
++    while (std::getline(fs, line)) {
++      spdlog::debug("Niri IPC: received {}", line);
++
++      try {
++        parseIPC(line);
++      } catch (std::exception& e) {
++        spdlog::warn("Failed to parse IPC message: {}, reason: {}", line, e.what());
++      } catch (...) {
++        throw;
++      }
++
++      std::this_thread::sleep_for(std::chrono::milliseconds(1));
++    }
++  }).detach();
++}
++
++void IPC::parseIPC(const std::string& line) {
++  const auto ev = parser_.parse(line);
++  const auto members = ev.getMemberNames();
++  if (members.size() != 1)
++    throw std::runtime_error("Event must have a single member");
++
++  {
++    auto lock = lockData();
++
++    if (const auto &payload = ev["WorkspacesChanged"]) {
++      workspaces_.clear();
++      const auto &values = payload["workspaces"];
++      std::copy(values.begin(), values.end(), std::back_inserter(workspaces_));
++
++      std::sort(workspaces_.begin(), workspaces_.end(),
++                [](const auto &a, const auto &b) {
++                  const auto &aOutput = a["output"].asString();
++                  const auto &bOutput = b["output"].asString();
++                  const auto aIdx = a["idx"].asUInt();
++                  const auto bIdx = b["idx"].asUInt();
++                  if (aOutput == bOutput)
++                    return aIdx < bIdx;
++                  return aOutput < bOutput;
++                });
++    } else if (const auto& payload = ev["WorkspaceActivated"]) {
++      const auto id = payload["id"].asUInt64();
++      const auto focused = payload["focused"].asBool();
++      auto it = std::find_if(workspaces_.begin(), workspaces_.end(),
++                             [id](const auto &ws) { return ws["id"].asUInt64() == id; });
++      if (it != workspaces_.end()) {
++        const auto &ws = *it;
++        const auto &output = ws["output"].asString();
++        for (auto &ws : workspaces_) {
++          const auto got_activated = (ws["id"].asUInt64() == id);
++          if (ws["output"] == output)
++            ws["is_active"] = got_activated;
++
++          if (focused)
++            ws["is_focused"] = got_activated;
++        }
++      } else {
++        spdlog::error("Activated unknown workspace");
++      }
++    } else if (const auto& payload = ev["WorkspaceActiveWindowChanged"]) {
++      const auto workspaceId = payload["workspace_id"].asUInt64();
++      auto it = std::find_if(workspaces_.begin(), workspaces_.end(),
++                             [workspaceId](const auto &ws) { return ws["id"].asUInt64() == workspaceId; });
++      if (it != workspaces_.end()) {
++        auto &ws = *it;
++        ws["active_window_id"] = payload["active_window_id"];
++      } else {
++        spdlog::error("Active window changed on unknown workspace");
++      }
++    } else if (const auto &payload = ev["KeyboardLayoutsChanged"]) {
++      const auto &layouts = payload["keyboard_layouts"];
++      const auto &names = layouts["names"];
++      keyboardLayoutCurrent_ = layouts["current_idx"].asUInt();
++
++      keyboardLayoutNames_.clear();
++      for (const auto &fullName : names)
++        keyboardLayoutNames_.push_back(fullName.asString());
++    } else if (const auto& payload = ev["KeyboardLayoutSwitched"]) {
++      keyboardLayoutCurrent_ = payload["idx"].asUInt();
++    } else if (const auto &payload = ev["WindowsChanged"]) {
++      windows_.clear();
++      const auto &values = payload["windows"];
++      std::copy(values.begin(), values.end(), std::back_inserter(windows_));
++    } else if (const auto &payload = ev["WindowOpenedOrChanged"]) {
++      const auto &window = payload["window"];
++      const auto id = window["id"].asUInt64();
++      auto it = std::find_if(windows_.begin(), windows_.end(),
++                             [id](const auto &win) { return win["id"].asUInt64() == id; });
++      if (it == windows_.end()) {
++        windows_.push_back(window);
++
++        if (window["is_focused"].asBool()) {
++          for (auto &win : windows_) {
++            win["is_focused"] = win["id"].asUInt64() == id;
++          }
++        }
++      } else {
++        *it = window;
++      }
++    } else if (const auto &payload = ev["WindowClosed"]) {
++      const auto id = payload["id"].asUInt64();
++      auto it = std::find_if(windows_.begin(), windows_.end(),
++                             [id](const auto &win) { return win["id"].asUInt64() == id; });
++      if (it != windows_.end()) {
++        windows_.erase(it);
++      } else {
++        spdlog::error("Unknown window closed");
++      }
++    } else if (const auto &payload = ev["WindowFocusChanged"]) {
++      const auto focused = !payload["id"].isNull();
++      const auto id = payload["id"].asUInt64();
++      for (auto &win : windows_) {
++        win["is_focused"] = focused && win["id"].asUInt64() == id;
++      }
++    }
++  }
++
++  std::unique_lock lock(callbackMutex_);
++
++  for (auto& [eventname, handler] : callbacks_) {
++    if (eventname == members[0]) {
++      handler->onEvent(ev);
++    }
++  }
++}
++
++void IPC::registerForIPC(const std::string& ev, EventHandler* ev_handler) {
++  if (ev_handler == nullptr) {
++    return;
++  }
++
++  std::unique_lock lock(callbackMutex_);
++  callbacks_.emplace_back(ev, ev_handler);
++}
++
++void IPC::unregisterForIPC(EventHandler* ev_handler) {
++  if (ev_handler == nullptr) {
++    return;
++  }
++
++  std::unique_lock lock(callbackMutex_);
++
++  for (auto it = callbacks_.begin(); it != callbacks_.end();) {
++    auto& [eventname, handler] = *it;
++    if (handler == ev_handler) {
++      it = callbacks_.erase(it);
++    } else {
++      ++it;
++    }
++  }
++}
++
++Json::Value IPC::send(const Json::Value& request) {
++  int socketfd = connectToSocket();
++  if (socketfd == -1)
++    throw std::runtime_error("Niri is not running");
++
++  __gnu_cxx::stdio_filebuf<char> filebuf(socketfd, std::ios::in | std::ios::out);
++  std::iostream fs(&filebuf);
++
++  // Niri needs the request on a single line.
++  Json::StreamWriterBuilder builder;
++  builder["indentation"] = "";
++  std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
++  writer->write(request, &fs);
++  fs << std::endl;
++
++  Json::Value response;
++  fs >> response;
++  return response;
++}
++
++}  // namespace waybar::modules::hyprland
+diff --git a/src/modules/niri/language.cpp b/src/modules/niri/language.cpp
+new file mode 100644
+index 000000000..f124d4dd9
+--- /dev/null
++++ b/src/modules/niri/language.cpp
+@@ -0,0 +1,138 @@
++#include "modules/niri/language.hpp"
++
++#include <spdlog/spdlog.h>
++#include <xkbcommon/xkbcommon.h>
++#include <xkbcommon/xkbregistry.h>
++
++#include "util/string.hpp"
++
++namespace waybar::modules::niri {
++
++Language::Language(const std::string &id, const Bar &bar, const Json::Value &config)
++    : ALabel(config, "language", id, "{}", 0, true), bar_(bar) {
++  label_.hide();
++
++  if (!gIPC)
++    gIPC = std::make_unique<IPC>();
++
++  gIPC->registerForIPC("KeyboardLayoutsChanged", this);
++  gIPC->registerForIPC("KeyboardLayoutSwitched", this);
++
++  updateFromIPC();
++  dp.emit();
++}
++
++Language::~Language() {
++  gIPC->unregisterForIPC(this);
++  // wait for possible event handler to finish
++  std::lock_guard<std::mutex> lock(mutex_);
++}
++
++void Language::updateFromIPC() {
++  std::lock_guard<std::mutex> lock(mutex_);
++  auto ipcLock = gIPC->lockData();
++
++  layouts_.clear();
++  for (const auto &fullName : gIPC->keyboardLayoutNames())
++    layouts_.push_back(getLayout(fullName));
++
++  current_idx_ = gIPC->keyboardLayoutCurrent();
++}
++
++/**
++ *  Language::doUpdate - update workspaces in UI thread.
++ *
++ * Note: some member fields are modified by both UI thread and event listener thread, use mutex_ to
++ *       protect these member fields, and lock should released before calling ALabel::update().
++ */
++void Language::doUpdate() {
++  std::lock_guard<std::mutex> lock(mutex_);
++
++  if (layouts_.size() <= current_idx_) {
++    spdlog::error("niri language layout index out of bounds");
++    label_.hide();
++    return;
++  }
++  const auto &layout = layouts_[current_idx_];
++
++  spdlog::debug("niri language update with full name {}", layout.full_name);
++  spdlog::debug("niri language update with short name {}", layout.short_name);
++  spdlog::debug("niri language update with short description {}", layout.short_description);
++  spdlog::debug("niri language update with variant {}", layout.variant);
++
++  std::string layoutName = std::string{};
++  if (config_.isMember("format-" + layout.short_description + "-" + layout.variant)) {
++    const auto propName = "format-" + layout.short_description + "-" + layout.variant;
++    layoutName = fmt::format(fmt::runtime(format_), config_[propName].asString());
++  } else if (config_.isMember("format-" + layout.short_description)) {
++    const auto propName = "format-" + layout.short_description;
++    layoutName = fmt::format(fmt::runtime(format_), config_[propName].asString());
++  } else {
++    layoutName = trim(fmt::format(fmt::runtime(format_), fmt::arg("long", layout.full_name),
++                                  fmt::arg("short", layout.short_name),
++                                  fmt::arg("shortDescription", layout.short_description),
++                                  fmt::arg("variant", layout.variant)));
++  }
++
++  spdlog::debug("niri language formatted layout name {}", layoutName);
++
++  if (!format_.empty()) {
++    label_.show();
++    label_.set_markup(layoutName);
++  } else {
++    label_.hide();
++  }
++}
++
++void Language::update() {
++  doUpdate();
++  ALabel::update();
++}
++
++void Language::onEvent(const Json::Value& ev) {
++  if (ev["KeyboardLayoutsChanged"]) {
++    updateFromIPC();
++  } else if (ev["KeyboardLayoutSwitched"]) {
++    std::lock_guard<std::mutex> lock(mutex_);
++    auto ipcLock = gIPC->lockData();
++    current_idx_ = gIPC->keyboardLayoutCurrent();
++  }
++
++  dp.emit();
++}
++
++Language::Layout Language::getLayout(const std::string &fullName) {
++  auto* const context = rxkb_context_new(RXKB_CONTEXT_LOAD_EXOTIC_RULES);
++  rxkb_context_parse_default_ruleset(context);
++
++  rxkb_layout* layout = rxkb_layout_first(context);
++  while (layout != nullptr) {
++    std::string nameOfLayout = rxkb_layout_get_description(layout);
++
++    if (nameOfLayout != fullName) {
++      layout = rxkb_layout_next(layout);
++      continue;
++    }
++
++    auto name = std::string(rxkb_layout_get_name(layout));
++    const auto* variantPtr = rxkb_layout_get_variant(layout);
++    std::string variant = variantPtr == nullptr ? "" : std::string(variantPtr);
++
++    const auto* descriptionPtr = rxkb_layout_get_brief(layout);
++    std::string description = descriptionPtr == nullptr ? "" : std::string(descriptionPtr);
++
++    Layout info = Layout{nameOfLayout, name, variant, description};
++
++    rxkb_context_unref(context);
++
++    return info;
++  }
++
++  rxkb_context_unref(context);
++
++  spdlog::debug("niri language didn't find matching layout for {}", fullName);
++
++  return Layout{"", "", "", ""};
++}
++
++}  // namespace waybar::modules::niri
+diff --git a/src/modules/niri/window.cpp b/src/modules/niri/window.cpp
+new file mode 100644
+index 000000000..b2405435c
+--- /dev/null
++++ b/src/modules/niri/window.cpp
+@@ -0,0 +1,121 @@
++#include "modules/niri/window.hpp"
++
++#include <gtkmm/button.h>
++#include <gtkmm/label.h>
++#include <spdlog/spdlog.h>
++
++#include "util/rewrite_string.hpp"
++#include "util/sanitize_str.hpp"
++
++namespace waybar::modules::niri {
++
++Window::Window(const std::string &id, const Bar &bar, const Json::Value &config)
++    : AAppIconLabel(config, "window", id, "{title}", 0, true), bar_(bar) {
++  if (!gIPC)
++    gIPC = std::make_unique<IPC>();
++
++  gIPC->registerForIPC("WindowsChanged", this);
++  gIPC->registerForIPC("WindowOpenedOrChanged", this);
++  gIPC->registerForIPC("WindowClosed", this);
++  gIPC->registerForIPC("WindowFocusChanged", this);
++
++  dp.emit();
++}
++
++Window::~Window() {
++  gIPC->unregisterForIPC(this);
++}
++
++void Window::onEvent(const Json::Value &ev) {
++  dp.emit();
++}
++
++void Window::doUpdate() {
++  auto ipcLock = gIPC->lockData();
++
++  const auto &windows = gIPC->windows();
++  const auto &workspaces = gIPC->workspaces();
++
++  const auto separateOutputs = config_["separate-outputs"].asBool();
++  const auto ws_it = std::find_if(workspaces.cbegin(), workspaces.cend(),
++                                  [&](const auto &ws) {
++                                    if (separateOutputs) {
++                                      return ws["is_active"].asBool() && ws["output"].asString() == bar_.output->name;
++                                    }
++
++                                    return ws["is_focused"].asBool();
++                                  });
++
++  std::vector<Json::Value>::const_iterator it;
++  if (ws_it == workspaces.cend() || (*ws_it)["active_window_id"].isNull()) {
++    it = windows.cend();
++  } else {
++    const auto id = (*ws_it)["active_window_id"].asUInt64();
++    it = std::find_if(windows.cbegin(), windows.cend(),
++                      [id](const auto &win) { return win["id"].asUInt64() == id; });
++  }
++
++  setClass("empty", ws_it == workspaces.cend() || (*ws_it)["active_window_id"].isNull());
++
++  if (it != windows.cend()) {
++    const auto &window = *it;
++
++    const auto title = window["title"].asString();
++    const auto appId = window["app_id"].asString();
++    const auto sanitizedTitle = waybar::util::sanitize_string(title);
++    const auto sanitizedAppId = waybar::util::sanitize_string(appId);
++
++    label_.show();
++    label_.set_markup(waybar::util::rewriteString(
++        fmt::format(fmt::runtime(format_),
++                    fmt::arg("title", sanitizedTitle),
++                    fmt::arg("app_id", sanitizedAppId)),
++        config_["rewrite"]));
++
++    updateAppIconName(appId, "");
++
++    if (tooltipEnabled())
++      label_.set_tooltip_text(title);
++
++    const auto id = window["id"].asUInt64();
++    const auto workspaceId = window["workspace_id"].asUInt64();
++    const auto isSolo = std::none_of(windows.cbegin(), windows.cend(),
++                                     [&](const auto &win) {
++                                       return win["id"].asUInt64() != id && win["workspace_id"].asUInt64() == workspaceId;
++                                     });
++    setClass("solo", isSolo);
++    if (!appId.empty())
++      setClass(appId, isSolo);
++
++    if (oldAppId_ != appId) {
++      if (!oldAppId_.empty())
++        setClass(oldAppId_, false);
++      oldAppId_ = appId;
++    }
++  } else {
++    label_.hide();
++    updateAppIconName("", "");
++    setClass("solo", false);
++    if (!oldAppId_.empty())
++      setClass(oldAppId_, false);
++    oldAppId_.clear();
++  }
++}
++
++void Window::update() {
++  doUpdate();
++  AAppIconLabel::update();
++}
++
++void Window::setClass(const std::string &className, bool enable) {
++  auto styleContext = bar_.window.get_style_context();
++  if (enable) {
++    if (!styleContext->has_class(className)) {
++      styleContext->add_class(className);
++    }
++  } else {
++    styleContext->remove_class(className);
++  }
++}
++
++}  // namespace waybar::modules::niri
+diff --git a/src/modules/niri/workspaces.cpp b/src/modules/niri/workspaces.cpp
+new file mode 100644
+index 000000000..2ecfa1ba3
+--- /dev/null
++++ b/src/modules/niri/workspaces.cpp
+@@ -0,0 +1,204 @@
++#include "modules/niri/workspaces.hpp"
++
++#include <gtkmm/button.h>
++#include <gtkmm/label.h>
++#include <spdlog/spdlog.h>
++
++namespace waybar::modules::niri {
++
++Workspaces::Workspaces(const std::string &id, const Bar &bar, const Json::Value &config)
++    : AModule(config, "workspaces", id, false, false),
++      bar_(bar),
++      box_(bar.orientation, 0) {
++  box_.set_name("workspaces");
++  if (!id.empty()) {
++    box_.get_style_context()->add_class(id);
++  }
++  box_.get_style_context()->add_class(MODULE_CLASS);
++  event_box_.add(box_);
++
++  if (!gIPC)
++    gIPC = std::make_unique<IPC>();
++
++  gIPC->registerForIPC("WorkspacesChanged", this);
++  gIPC->registerForIPC("WorkspaceActivated", this);
++  gIPC->registerForIPC("WorkspaceActiveWindowChanged", this);
++
++  dp.emit();
++}
++
++Workspaces::~Workspaces() {
++  gIPC->unregisterForIPC(this);
++}
++
++void Workspaces::onEvent(const Json::Value &ev) {
++  dp.emit();
++}
++
++void Workspaces::doUpdate() {
++  auto ipcLock = gIPC->lockData();
++
++  const auto alloutputs = config_["all-outputs"].asBool();
++  std::vector<Json::Value> my_workspaces;
++  const auto &workspaces = gIPC->workspaces();
++  std::copy_if(workspaces.cbegin(), workspaces.cend(), std::back_inserter(my_workspaces),
++               [&](const auto &ws) {
++                 if (alloutputs)
++                   return true;
++                 return ws["output"].asString() == bar_.output->name;
++               });
++
++  // Remove buttons for removed workspaces.
++  for (auto it = buttons_.begin(); it != buttons_.end(); ) {
++    auto ws = std::find_if(my_workspaces.begin(), my_workspaces.end(),
++                           [it](const auto &ws) { return ws["id"].asUInt64() == it->first; });
++    if (ws == my_workspaces.end()) {
++      it = buttons_.erase(it);
++    } else {
++      ++it;
++    }
++  }
++
++  // Add buttons for new workspaces, update existing ones.
++  for (const auto &ws : my_workspaces) {
++    auto bit = buttons_.find(ws["id"].asUInt64());
++    auto &button = bit == buttons_.end() ? addButton(ws) : bit->second;
++    auto style_context = button.get_style_context();
++
++    if (ws["is_focused"].asBool())
++      style_context->add_class("focused");
++    else
++      style_context->remove_class("focused");
++
++    if (ws["is_active"].asBool())
++      style_context->add_class("active");
++    else
++      style_context->remove_class("active");
++
++    if (ws["output"]) {
++      if (ws["output"].asString() == bar_.output->name)
++        style_context->add_class("current_output");
++      else
++        style_context->remove_class("current_output");
++    } else {
++      style_context->remove_class("current_output");
++    }
++
++    if (ws["active_window_id"].isNull())
++      style_context->add_class("empty");
++    else
++      style_context->remove_class("empty");
++
++    std::string name;
++    if (ws["name"]) {
++      name = ws["name"].asString();
++    } else {
++      name = std::to_string(ws["idx"].asUInt());
++    }
++    button.set_name("niri-workspace-" + name);
++
++    if (config_["format"].isString()) {
++      auto format = config_["format"].asString();
++      name = fmt::format(
++          fmt::runtime(format),
++          fmt::arg("icon", getIcon(name, ws)),
++          fmt::arg("value", name),
++          fmt::arg("name", ws["name"].asString()),
++          fmt::arg("index", ws["idx"].asUInt()),
++          fmt::arg("output", ws["output"].asString()));
++    }
++    if (!config_["disable-markup"].asBool()) {
++      static_cast<Gtk::Label *>(button.get_children()[0])->set_markup(name);
++    } else {
++      button.set_label(name);
++    }
++
++    if (config_["current-only"].asBool()) {
++      const auto *property = alloutputs ? "is_focused" : "is_active";
++      if (ws[property].asBool())
++        button.show();
++      else
++        button.hide();
++    } else {
++      button.show();
++    }
++  }
++
++  // Refresh the button order.
++  for (auto it = my_workspaces.cbegin(); it != my_workspaces.cend(); ++it) {
++    const auto &ws = *it;
++
++    auto pos = ws["idx"].asUInt() - 1;
++    if (alloutputs)
++      pos = it - my_workspaces.cbegin();
++
++    auto &button = buttons_[ws["id"].asUInt64()];
++    box_.reorder_child(button, pos);
++  }
++}
++
++void Workspaces::update() {
++  doUpdate();
++  AModule::update();
++}
++
++Gtk::Button &Workspaces::addButton(const Json::Value &ws) {
++  std::string name;
++  if (ws["name"]) {
++    name = ws["name"].asString();
++  } else {
++    name = std::to_string(ws["idx"].asUInt());
++  }
++
++  auto pair = buttons_.emplace(ws["id"].asUInt64(), name);
++  auto &&button = pair.first->second;
++  box_.pack_start(button, false, false, 0);
++  button.set_relief(Gtk::RELIEF_NONE);
++  if (!config_["disable-click"].asBool()) {
++    const auto id = ws["id"].asUInt64();
++    button.signal_pressed().connect([=] {
++      try {
++        // {"Action":{"FocusWorkspace":{"reference":{"Id":1}}}}
++        Json::Value request(Json::objectValue);
++        auto &action = (request["Action"] = Json::Value(Json::objectValue));
++        auto &focusWorkspace = (action["FocusWorkspace"] = Json::Value(Json::objectValue));
++        auto &reference = (focusWorkspace["reference"] = Json::Value(Json::objectValue));
++        reference["Id"] = id;
++
++        IPC::send(request);
++      } catch (const std::exception &e) {
++        spdlog::error("Error switching workspace: {}", e.what());
++      }
++    });
++  }
++  return button;
++}
++
++std::string Workspaces::getIcon(const std::string &value, const Json::Value &ws) {
++  const auto &icons = config_["format-icons"];
++  if (!icons)
++    return value;
++
++  if (ws["is_focused"].asBool() && icons["focused"])
++    return icons["focused"].asString();
++
++  if (ws["is_active"].asBool() && icons["active"])
++    return icons["active"].asString();
++
++  if (ws["name"]) {
++    const auto &name = ws["name"].asString();
++    if (icons[name])
++      return icons[name].asString();
++  }
++
++  const auto idx = ws["idx"].asString();
++  if (icons[idx])
++    return icons[idx].asString();
++
++  if (icons["default"])
++    return icons["default"].asString();
++
++  return value;
++}
++
++}  // namespace waybar::modules::niri

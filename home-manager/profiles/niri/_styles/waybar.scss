@@ -46,6 +46,10 @@ button {
 
 #taskbar button {
   padding: 0 2px;
+
+  &.active {
+    box-shadow: inset 0 -3px $text;
+  }
 }
 
 #clock,
