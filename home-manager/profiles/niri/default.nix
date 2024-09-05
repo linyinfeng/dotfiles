@@ -219,12 +219,25 @@ in
             specialBindings = {
               # show help
               "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
-              # terminal, app launcher, and screen locker
+              # terminal, app launcher, screen locker, ...
               "Mod+Return".action.spawn = [ "alacritty" ];
               "Mod+D".action.spawn = [ "fuzzel" ];
               "Mod+L".action.spawn = [
                 "loginctl"
                 "lock-session"
+              ];
+              "Mod+V".action.spawn = [
+                (lib.getExe (
+                  pkgs.writeShellApplication {
+                    name = "cliphist-picker";
+                    runtimeInputs = with pkgs; [
+                      wl-clipboard
+                    ];
+                    text = ''
+                      cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
+                    '';
+                  }
+                ))
               ];
               # volume keys
               "XF86AudioRaiseVolume" = {
@@ -687,6 +700,12 @@ in
 
     # kanshi
     services.kanshi = {
+      enable = true;
+      systemdTarget = "niri.service";
+    };
+
+    # cliphist
+    services.cliphist = {
       enable = true;
       systemdTarget = "niri.service";
     };
