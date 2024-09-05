@@ -3,8 +3,10 @@
   programs.chromium = {
     enable = true;
     commandLineArgs = [
+      "--enable-experimental-web-platform-features"
       "--ozone-platform-hint=auto"
-      "--enable-wayland-ime" # text-input-v1, works with mutter #3751
+      "--enable-wayland-ime"
+      "--wayland-text-input-version=3" # wait for chromium update
     ];
   };
 
