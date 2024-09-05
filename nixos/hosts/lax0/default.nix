@@ -21,6 +21,7 @@ in
       services.pgp-public-key-web
       services.oranc
       services.dot-tar
+      services.dotfiles-update-trigger
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
