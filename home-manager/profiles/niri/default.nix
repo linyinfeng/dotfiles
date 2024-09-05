@@ -311,6 +311,7 @@ in
 
     # tools
     home.packages = with pkgs; [
+      pavucontrol
       avizo
     ];
 
@@ -359,6 +360,7 @@ in
             tooltip-format = "{ifname} via {gwaddr}";
             tooltip-format-wifi = "{essid} ({signalStrength}%) 󰖩";
             tooltip-format-ethernet = "{ipaddr}/{cidr} 󰈀";
+            on-click = "alacritty --command nmtui";
           };
           "pulseaudio" = {
             format = "{volume}% {icon}";
@@ -371,7 +373,8 @@ in
                 "󰕾"
               ];
             };
-            on-click = "volumectl toggle-mute";
+            on-click = "pavucontrol";
+            on-click-right = "volumectl toggle-mute";
             on-scroll-up = "volumectl up";
             on-scroll-down = "volumectl down";
           };
@@ -383,7 +386,8 @@ in
               "󰖀"
               "󰕾"
             ];
-            on-click = "volumectl toggle-mute";
+            on-click = "pavucontrol";
+            on-click-right = "volumectl toggle-mute";
             on-scroll-up = "volumectl up";
             on-scroll-down = "volumectl down";
           };
@@ -421,6 +425,7 @@ in
               "󰂂"
               "󰁹"
             ];
+            on-click = "gnome-power-statistics";
           };
           "clock" = {
             format = "{:%Y-%m-%d %a. %H:%M}";
