@@ -31,6 +31,8 @@ in
             services.flatpak
             services.nginx
             services.acme
+            # not working
+            # services.fprintd
             virtualization.waydroid
             users.yinfeng
           ])
@@ -104,10 +106,7 @@ in
           };
           services.gnome.core-utilities.enable = true;
 
-          # not working
-          # services.fprintd.enable = true;
           programs.calls.enable = true;
-          services.fprintd.enable = true;
           programs.feedbackd.enable = true;
           environment.systemPackages = with pkgs; [
             chatty

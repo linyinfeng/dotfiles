@@ -332,6 +332,7 @@ in
           modules-center = [ "clock" ];
           modules-right = [
             "tray"
+            "custom/fprintd"
             "network"
             "backlight"
             # "pulseaudio"
@@ -427,6 +428,63 @@ in
           "tray" = {
             spacing = 5;
           };
+          "custom/fprintd" =
+            let
+              signal = 10;
+            in
+            {
+              exec = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-fprintd";
+                  runtimeInputs = [
+                    osConfig.systemd.package
+                  ];
+                  text = ''
+                    if [ -f /run/fprintd-blocker ]; then
+                      echo '{"text": "Disabled", "alt": "fprintd-disabled", "class": "disabled"}'
+                    else
+                      echo '{"text": "Enabled", "alt": "fprintd-enabled", "class": "enabled"}'
+                    fi
+                  '';
+                }
+              );
+              exec-if = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-fprintd-if";
+                  runtimeInputs = [
+                    osConfig.systemd.package
+                  ];
+                  text = ''
+                    systemctl list-unit-files fprintd.service &>/dev/null
+                  '';
+                }
+              );
+              return-type = "json";
+              format = "{icon}";
+              interval = 3;
+              format-icons = {
+                "fprintd-enabled" = "󰈷";
+                "fprintd-disabled" = "󰺱";
+              };
+              inherit signal;
+              on-click = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "toggle-fprintd";
+                  runtimeInputs = [
+                    osConfig.systemd.package
+                    pkgs.procps
+                  ];
+                  text = ''
+                    if [ -f /run/fprintd-blocker ]; then
+                      systemctl stop fprintd-blocker
+                    else
+                      systemctl start fprintd-blocker
+                    fi
+                    pkill "-SIGRTMIN+${toString signal}" waybar
+                  '';
+                }
+              );
+            };
         }
       ];
     };

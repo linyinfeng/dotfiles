@@ -29,6 +29,7 @@
       services.flatpak
       services.ssh-honeypot
       services.portal-client
+      services.fprintd
       graphical.graphical-powersave-target
       programs.service-mail
       programs.tg-send
@@ -74,8 +75,6 @@
         enable = true;
         extraRemotes = [ "lvfs-testing" ];
       };
-
-      services.fprintd.enable = true;
 
       networking.campus-network = {
         enable = true;

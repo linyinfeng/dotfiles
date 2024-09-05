@@ -169,17 +169,9 @@ lib.mkMerge [
         name = "fprintd-lid-action";
         text = ''
           if grep --fixed-strings --quiet closed /proc/acpi/button/lid/LID0/state; then
-            systemctl stop fprintd
-            # systemctl unmask fprintd --runtime
-            # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
-            mkdir --parents /run/systemd/transient
-            ln --symbolic --force /dev/null /run/systemd/transient/fprintd.service
-            systemctl daemon-reload
+            systemctl start fprintd-blocker
           else
-            # systemctl mask fprintd --runtime
-            # TODO wait for https://github.com/NixOS/nixpkgs/issues/252591
-            rm --force /run/systemd/transient/fprintd.service
-            systemctl daemon-reload
+            systemctl stop fprintd-blocker
           fi
         '';
       };

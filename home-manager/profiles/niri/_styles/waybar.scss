@@ -105,3 +105,9 @@ button {
     background-color: $warn;
   }
 }
+
+#custom-fprintd {
+  &.disabled {
+    color: $warn;
+  }
+}
