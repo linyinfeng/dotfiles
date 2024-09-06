@@ -125,26 +125,18 @@ let
       waydroid = prev.waydroid.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
       });
-      gnome =
-        if (lib.versions.major prev.gnome.mutter.version == "46") then
-          prev.gnome.overrideScope (
-            _gnomeFinal: gnomePrev: {
-              mutter = (gnomePrev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
-                patches = (old.patches or [ ]) ++ [
-                  # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
-                  ../patches/mutter-triple-buffering.patch
-                  ../patches/mutter-text-input-v1.patch
-                ];
-              });
-              gnome-shell =
-                (gnomePrev.gnome-shell.override { stdenv = final.ccacheStdenv; }).overrideAttrs
-                  (old: {
-                    patches = (old.patches or [ ]) ++ [ ../patches/gnome-shell-preedit-fix.patch ];
-                  });
-            }
-          )
-        else
-          prev.gnome;
+      gnome-shell = (prev.gnome-shell.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/gnome-shell-preedit-fix.patch ];
+      });
+      mutter =
+        assert (lib.versions.major prev.mutter.version == "46");
+        (prev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
+            ../patches/mutter-triple-buffering.patch
+            ../patches/mutter-text-input-v1.patch
+          ];
+        });
       # TODO wait for https://github.com/Alexays/Waybar/pull/3551
       waybar = prev.waybar.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/waybar-niri.patch ];
