@@ -68,7 +68,7 @@ lib.mkMerge [
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "eDP-1";
-        labMonitor = "DP-4"; # TODO use monitor model
+        labMonitor = "Lenovo Group Limited P27h-20 U5HCT52K";
         dormMonitor = "A/Vaux Electronics AVT GC551G2 Unknown"; # capture card
       in
       [
