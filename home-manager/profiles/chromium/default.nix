@@ -6,7 +6,7 @@
       "--enable-experimental-web-platform-features"
       "--ozone-platform-hint=auto"
       "--enable-wayland-ime"
-      "--wayland-text-input-version=3" # wait for chromium update
+      "--wayland-text-input-version=3" # wait for chromium 129
     ];
   };
 

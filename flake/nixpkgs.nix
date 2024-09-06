@@ -141,7 +141,6 @@ let
       waybar = prev.waybar.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/waybar-niri.patch ];
       });
-      librime = prev.lantian.lantianCustomized.librime-with-plugins;
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
   ];
@@ -156,17 +155,7 @@ let
       # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
-    [
-      (final: prev: {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=338845
-        swayidle = prev.swayidle.overrideAttrs (old: {
-          depsBuildBuild = (old.depsBuildBuild or [ ]) ++ [ final.pkgsBuildBuild.pkg-config ];
-        });
-        swaylock-effects = prev.swaylock-effects.overrideAttrs (old: {
-          depsBuildBuild = (old.depsBuildBuild or [ ]) ++ [ final.pkgsBuildBuild.pkg-config ];
-        });
-      })
-    ];
+    [ (_final: _prev: { }) ];
   lateFixes =
     nixpkgsArgs:
     let

@@ -256,19 +256,6 @@ let
       };
       system.configurationRevision = self.rev or null;
     }
-
-    (
-      { modulesPath, ... }:
-      {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=338621
-        disabledModules = [
-          "${modulesPath}/i18n/input-method/fcitx5.nix"
-        ];
-        imports = [
-          "${inputs.nixpkgs-latest}/nixos/modules/i18n/input-method/fcitx5.nix"
-        ];
-      }
-    )
   ];
 
   commonHmModules = hmModules ++ [
