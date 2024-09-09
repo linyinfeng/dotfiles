@@ -51,7 +51,7 @@ in
       python3 cowrie-venv/bin/twistd --umask=0022 --nodaemon --pidfile= --logfile=- cowrie
     '';
     path = with pkgs; [
-      python3
+      python311
       gcc
       rsync
     ];
