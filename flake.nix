@@ -156,8 +156,6 @@
     niri-flake.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     niri-flake.inputs.niri-stable.follows = "blank";
     niri-flake.inputs.flake-parts.follows = "flake-parts";
-    niri-flake.inputs.crate2nix.follows = "crate2nix";
-    niri-flake.inputs.xwayland-satellite.follows = "blank";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -320,6 +318,14 @@
             [
               "niri-flake"
               "niri-unstable"
+            ]
+            [
+              "niri-flake"
+              "xwayland-satellite-unstable"
+            ]
+            [
+              "niri-flake"
+              "xwayland-satellite-stable"
             ]
           ];
         };
