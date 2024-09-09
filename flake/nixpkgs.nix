@@ -173,8 +173,9 @@ in
         nixpkgs = {
           config = {
             allowUnfree = true;
-            # TODO wati for mautrix-telegram update
-            # TODO wati for logseq update
+            # TODO wait for mautrix-telegram update
+            # TODO wait for matrix-qq update
+            # TODO wait for logseq update
             allowInsecurePredicate =
               p:
               (p.pname or null) == "olm"
