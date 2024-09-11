@@ -296,6 +296,11 @@
 
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/development";
     mobile-nixos.flake = false;
+
+    # fixes
+
+    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341180
+    nixpkgs-userborn-home-dir.url = "github:linyinfeng/nixpkgs/userborn-home-dir";
   };
 
   outputs =

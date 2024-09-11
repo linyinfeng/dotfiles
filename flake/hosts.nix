@@ -257,6 +257,19 @@ let
       };
       system.configurationRevision = self.rev or null;
     }
+
+    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341180
+    (
+      { modulesPath, ... }:
+      {
+        disabledModules = [
+          "${modulesPath}/services/system/userborn.nix"
+        ];
+        imports = [
+          "${inputs.nixpkgs-userborn-home-dir}/nixos/modules/services/system/userborn.nix"
+        ];
+      }
+    )
   ];
 
   commonHmModules = hmModules ++ [

@@ -1194,6 +1194,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-userborn-home-dir": {
+      "locked": {
+        "lastModified": 1726049824,
+        "narHash": "sha256-HiTfw7SNFeYrSYN0MjS68ySrbjsRSRFNJTOpqRVJjkQ=",
+        "owner": "linyinfeng",
+        "repo": "nixpkgs",
+        "rev": "9ff227c8af6381e390ba6f8725d35a93575776ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "ref": "userborn-home-dir",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1725634671,
@@ -1409,6 +1425,7 @@
         ],
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
+        "nixpkgs-userborn-home-dir": "nixpkgs-userborn-home-dir",
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",
