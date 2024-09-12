@@ -91,8 +91,6 @@ in
       flat-flake
       nil
       nix-du
-      nix-eval-jobs
-      nix-fast-build
       nix-melt
       nix-output-monitor
       nix-prefetch-github

@@ -32,7 +32,7 @@ in
   };
   users.users.nginx.extraGroups = [ config.users.groups.transmission.name ];
 
-  services.samba.shares.transmission = {
+  services.samba.settings.transmission = {
     "path" = "/var/lib/transmission/Downloads";
     "read only" = true;
     "browseable" = true;

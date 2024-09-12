@@ -120,9 +120,10 @@ in
 
     # decrease cpu weight
     {
-      systemd.services.hydra-evaluator.serviceConfig = {
-        Slice = "minor.slice";
-        CPUWeight = 100; # default weight
+      systemd.slices.system-hydra = {
+        sliceConfig = {
+          CPUWeight = "idle";
+        };
       };
     }
   ];

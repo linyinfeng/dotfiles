@@ -63,6 +63,13 @@ let
         system
         "niri-unstable"
       ])
+      # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341007
+      // (self.lib.maybeAttrByPath "nixVersions" inputs [
+        "nixpkgs-unstable-small"
+        "legacyPackages"
+        system
+        "nixVersions"
+      ])
     )
     (final: prev: {
       # scoped overlays
@@ -109,6 +116,7 @@ let
       nixVersions = prev.nixVersions // {
         selected = final.nixVersions.latest;
       };
+      nix = final.nixVersions.selected;
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
           stdenv = final.ccacheStdenv;
