@@ -4,10 +4,7 @@
     enable = true;
     settings = {
       window = {
-        padding = {
-          x = 3;
-          y = 3;
-        };
+        dynamic_padding = true;
       };
       import = [
         "${pkgs.alacritty-theme}/github_light.toml"
