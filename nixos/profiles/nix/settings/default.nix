@@ -5,7 +5,10 @@
       "nix-command"
       "flakes"
       "ca-derivations"
+      "auto-allocate-uids"
     ];
+
+    settings.auto-allocate-uids = true;
 
     # auto-optimise-store to decrease TBW to SSD
     settings.auto-optimise-store = true;
