@@ -1,7 +1,111 @@
-From 5c30d42fba3c4bc34e5eaac153d4f80a54e57365 Mon Sep 17 00:00:00 2001
+From d623a89cd17b89d8e69d8185170c9a05413fac30 Mon Sep 17 00:00:00 2001
+From: Alex <alexisr245@gmail.com>
+Date: Fri, 13 Sep 2024 09:33:40 +0200
+Subject: [PATCH 1/4] fix: sni item fmt
+
+---
+ src/modules/image.cpp            |  4 ++--
+ src/modules/sni/item.cpp         | 21 +++++++++++++--------
+ subprojects/gtk-layer-shell.wrap |  8 ++++----
+ 3 files changed, 19 insertions(+), 14 deletions(-)
+
+diff --git a/src/modules/image.cpp b/src/modules/image.cpp
+index 5e6c1493f..71e93b946 100644
+--- a/src/modules/image.cpp
++++ b/src/modules/image.cpp
+@@ -57,8 +57,8 @@ auto waybar::modules::Image::update() -> void {
+     int scaled_icon_size = size_ * image_.get_scale_factor();
+     pixbuf = Gdk::Pixbuf::create_from_file(path_, scaled_icon_size, scaled_icon_size);
+ 
+-    auto surface =
+-      Gdk::Cairo::create_surface_from_pixbuf(pixbuf, image_.get_scale_factor(), image_.get_window());
++    auto surface = Gdk::Cairo::create_surface_from_pixbuf(pixbuf, image_.get_scale_factor(),
++                                                          image_.get_window());
+     image_.set(surface);
+     image_.show();
+ 
+diff --git a/src/modules/sni/item.cpp b/src/modules/sni/item.cpp
+index 6c4ec8c06..126545b1f 100644
+--- a/src/modules/sni/item.cpp
++++ b/src/modules/sni/item.cpp
+@@ -104,9 +104,11 @@ void Item::proxyReady(Glib::RefPtr<Gio::AsyncResult>& result) {
+     this->updateImage();
+ 
+   } catch (const Glib::Error& err) {
+-    spdlog::error("Failed to create DBus Proxy for {} {}: {}", bus_name, object_path, err.what());
++    spdlog::error("Failed to create DBus Proxy for {} {}: {}", bus_name, object_path,
++                  std::string(err.what()));
+   } catch (const std::exception& err) {
+-    spdlog::error("Failed to create DBus Proxy for {} {}: {}", bus_name, object_path, err.what());
++    spdlog::error("Failed to create DBus Proxy for {} {}: {}", bus_name, object_path,
++                  std::string(err.what()));
+   }
+ }
+ 
+@@ -124,14 +126,15 @@ ToolTip get_variant<ToolTip>(const Glib::VariantBase& value) {
+   result.text = get_variant<Glib::ustring>(container.get_child(2));
+   auto description = get_variant<Glib::ustring>(container.get_child(3));
+   if (!description.empty()) {
+-    result.text = fmt::format("<b>{}</b>\n{}", result.text, description);
++    result.text = fmt::format("<b>{}</b>\n{}", std::string(result.text), std::string(description));
+   }
+   return result;
+ }
+ 
+ void Item::setProperty(const Glib::ustring& name, Glib::VariantBase& value) {
+   try {
+-    spdlog::trace("Set tray item property: {}.{} = {}", id.empty() ? bus_name : id, name, value);
++    spdlog::trace("Set tray item property: {}.{} = {}", id.empty() ? bus_name : id,
++                  std::string(name), get_variant<std::string>(value));
+ 
+     if (name == "Category") {
+       category = get_variant<std::string>(value);
+@@ -176,10 +179,12 @@ void Item::setProperty(const Glib::ustring& name, Glib::VariantBase& value) {
+     }
+   } catch (const Glib::Error& err) {
+     spdlog::warn("Failed to set tray item property: {}.{}, value = {}, err = {}",
+-                 id.empty() ? bus_name : id, name, value, err.what());
++                 id.empty() ? bus_name : id, std::string(name), get_variant<std::string>(value),
++                 std::string(err.what()));
+   } catch (const std::exception& err) {
+     spdlog::warn("Failed to set tray item property: {}.{}, value = {}, err = {}",
+-                 id.empty() ? bus_name : id, name, value, err.what());
++                 id.empty() ? bus_name : id, std::string(name), get_variant<std::string>(value),
++                 std::string(err.what()));
+   }
+ }
+ 
+@@ -221,9 +226,9 @@ void Item::processUpdatedProperties(Glib::RefPtr<Gio::AsyncResult>& _result) {
+ 
+     this->updateImage();
+   } catch (const Glib::Error& err) {
+-    spdlog::warn("Failed to update properties: {}", err.what());
++    spdlog::warn("Failed to update properties: {}", std::string(err.what()));
+   } catch (const std::exception& err) {
+-    spdlog::warn("Failed to update properties: {}", err.what());
++    spdlog::warn("Failed to update properties: {}", std::string(err.what()));
+   }
+   update_pending_.clear();
+ }
+diff --git a/subprojects/gtk-layer-shell.wrap b/subprojects/gtk-layer-shell.wrap
+index cb7303455..fc0ddf743 100644
+--- a/subprojects/gtk-layer-shell.wrap
++++ b/subprojects/gtk-layer-shell.wrap
+@@ -1,5 +1,5 @@
+ [wrap-file]
+-directory = gtk-layer-shell-0.8.2
+-source_filename = gtk-layer-shell-0.8.2.tar.gz
+-source_hash = 254dd246303127c5d5236ea640f01a82e35d2d652a48d139dd669c832a0f0dce
+-source_url = https://github.com/wmww/gtk-layer-shell/archive/v0.8.2/gtk-layer-shell-0.8.2.tar.gz
++directory = gtk-layer-shell-0.9.0
++source_filename = gtk-layer-shell-0.9.0.tar.gz
++source_hash = 3809e5565d9ed02e44bb73787ff218523e8760fef65830afe60ea7322e22da1c
++source_url = https://github.com/wmww/gtk-layer-shell/archive/v0.9.0/gtk-layer-shell-0.9.0.tar.gz
+
+From 46e7ed35de6d105d7f65b5172a69250a57af4462 Mon Sep 17 00:00:00 2001
 From: Ivan Molodetskikh <yalterz@gmail.com>
 Date: Thu, 29 Aug 2024 11:45:17 +0300
-Subject: [PATCH] Add niri/workspaces, niri/window, niri/language
+Subject: [PATCH 2/4] Add niri/workspaces, niri/window, niri/language
 
 ---
  README.md                           |   1 +
@@ -485,7 +589,7 @@ index db546e178..f3a896565 100644
  - *waybar-image(5)*
  - *waybar-inhibitor(5)*
 diff --git a/meson.build b/meson.build
-index 8daa6c9cf..09d7fa6c3 100644
+index ed5ec7b8b..7097a9fbf 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -318,6 +318,21 @@ if true
@@ -1280,3 +1384,128 @@ index 000000000..2ecfa1ba3
 +}
 +
 +}  // namespace waybar::modules::niri
+
+From fef0bb995c0300f796856460173ce731c075a0ab Mon Sep 17 00:00:00 2001
+From: Ivan Molodetskikh <yalterz@gmail.com>
+Date: Fri, 13 Sep 2024 10:33:08 +0300
+Subject: [PATCH 3/4] niri: Replace gnu extension with GDataInputStream
+
+---
+ src/modules/niri/backend.cpp | 43 ++++++++++++++++++++++++++----------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/src/modules/niri/backend.cpp b/src/modules/niri/backend.cpp
+index ef23c8817..6e251d31f 100644
+--- a/src/modules/niri/backend.cpp
++++ b/src/modules/niri/backend.cpp
+@@ -8,8 +8,11 @@
+ #include <sys/types.h>
+ #include <sys/un.h>
+ #include <unistd.h>
++#include "giomm/datainputstream.h"
++#include "giomm/dataoutputstream.h"
++#include "giomm/unixinputstream.h"
++#include "giomm/unixoutputstream.h"
+ 
+-#include <ext/stdio_filebuf.h>
+ #include <iostream>
+ #include <string>
+ #include <thread>
+@@ -63,18 +66,23 @@ void IPC::startIPC() {
+ 
+     spdlog::info("Niri IPC starting");
+ 
+-    __gnu_cxx::stdio_filebuf<char> filebuf(socketfd, std::ios::in | std::ios::out);
+-    std::iostream fs(&filebuf);
+-    fs << R"("EventStream")" << std::endl;
++    auto unix_istream = Gio::UnixInputStream::create(socketfd, true);
++    auto unix_ostream = Gio::UnixOutputStream::create(socketfd, false);
++    auto istream = Gio::DataInputStream::create(unix_istream);
++    auto ostream = Gio::DataOutputStream::create(unix_ostream);
++
++    if (!ostream->put_string("\"EventStream\"\n") || !ostream->flush()) {
++      spdlog::error("Niri IPC: failed to start event stream");
++      return;
++    }
+ 
+     std::string line;
+-    std::getline(fs, line);
+-    if (line != R"({"Ok":"Handled"})") {
++    if (!istream->read_line(line) || line != R"({"Ok":"Handled"})") {
+       spdlog::error("Niri IPC: failed to start event stream");
+       return;
+     }
+ 
+-    while (std::getline(fs, line)) {
++    while (istream->read_line(line)) {
+       spdlog::debug("Niri IPC: received {}", line);
+ 
+       try {
+@@ -231,18 +239,29 @@ Json::Value IPC::send(const Json::Value& request) {
+   if (socketfd == -1)
+     throw std::runtime_error("Niri is not running");
+ 
+-  __gnu_cxx::stdio_filebuf<char> filebuf(socketfd, std::ios::in | std::ios::out);
+-  std::iostream fs(&filebuf);
++  auto unix_istream = Gio::UnixInputStream::create(socketfd, true);
++  auto unix_ostream = Gio::UnixOutputStream::create(socketfd, false);
++  auto istream = Gio::DataInputStream::create(unix_istream);
++  auto ostream = Gio::DataOutputStream::create(unix_ostream);
+ 
+   // Niri needs the request on a single line.
+   Json::StreamWriterBuilder builder;
+   builder["indentation"] = "";
+   std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+-  writer->write(request, &fs);
+-  fs << std::endl;
++  std::ostringstream oss;
++  writer->write(request, &oss);
++  oss << '\n';
++
++  if (!ostream->put_string(oss.str()) || !ostream->flush())
++    throw std::runtime_error("error writing to niri socket");
++
++  std::string line;
++  if (!istream->read_line(line))
++    throw std::runtime_error("error reading from niri socket");
+ 
++  std::istringstream iss(std::move(line));
+   Json::Value response;
+-  fs >> response;
++  iss >> response;
+   return response;
+ }
+ 
+
+From 34bfefcd2e6f6916a1b6b6b29c5836b5aeaf70b4 Mon Sep 17 00:00:00 2001
+From: Ivan Molodetskikh <yalterz@gmail.com>
+Date: Fri, 13 Sep 2024 10:33:50 +0300
+Subject: [PATCH 4/4] niri: Gate behind a meson option
+
+---
+ meson.build       | 2 +-
+ meson_options.txt | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 7097a9fbf..666c0dd05 100644
+--- a/meson.build
++++ b/meson.build
+@@ -318,7 +318,7 @@ if true
+     )
+ endif
+ 
+-if true
++if get_option('niri')
+     add_project_arguments('-DHAVE_NIRI', language: 'cpp')
+     src_files += files(
+         'src/modules/niri/backend.cpp',
+diff --git a/meson_options.txt b/meson_options.txt
+index fef508397..303ef038e 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -19,3 +19,4 @@ option('experimental', type : 'boolean', value : false, description: 'Enable exp
+ option('jack', type: 'feature', value: 'auto', description: 'Enable support for JACK')
+ option('wireplumber', type: 'feature', value: 'auto', description: 'Enable support for WirePlumber')
+ option('cava', type: 'feature', value: 'auto', description: 'Enable support for Cava')
++option('niri', type: 'boolean', description: 'Enable support for niri')
