@@ -72,7 +72,7 @@ in
   home.shellAliases = {
     en = "emacsclient --no-wait";
     ecn = "emacsclient --create-frame --no-wait";
-    ect = "emacsclient --create-frame --tty";
+    # ect = "emacsclient --create-frame --tty";
   };
   home.sessionVariables = {
     EDITOR = "emacsclient";
@@ -89,6 +89,12 @@ in
   programs.fish.interactiveShellInit = ''
     if test "$INSIDE_EMACS" = 'vterm'
       source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+    end
+
+    function ect --wraps='emacsclient --create-frame --tty'
+      if test "$TERM" = 'alacritty'
+        TERM=xterm-256color emacsclient --create-frame --tty $argv
+      end
     end
   '';
 }
