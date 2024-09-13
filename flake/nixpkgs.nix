@@ -63,13 +63,6 @@ let
         system
         "niri-unstable"
       ])
-      # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341007
-      // (self.lib.maybeAttrByPath "nixVersions" inputs [
-        "nixpkgs-unstable-small"
-        "legacyPackages"
-        system
-        "nixVersions"
-      ])
     )
     (final: prev: {
       # scoped overlays
@@ -145,9 +138,14 @@ let
             ../patches/mutter-text-input-v1.patch
           ];
         });
-      # TODO wait for https://github.com/Alexays/Waybar/pull/3551
-      waybar = prev.waybar.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ../patches/waybar-niri.patch ];
+      # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341520
+      waybar = prev.waybar.overrideAttrs (_old: {
+        src = final.fetchFromGitHub {
+          owner = "Alexays";
+          repo = "Waybar";
+          rev = "0.11.0";
+          hash = "sha256-3lc0voMU5RS+mEtxKuRayq/uJO09X7byq6Rm5NZohq8=";
+        };
       });
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
     })
