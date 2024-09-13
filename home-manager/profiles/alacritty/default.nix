@@ -10,7 +10,7 @@
         };
       };
       import = [
-        "${pkgs.alacritty-theme}/alabaster.toml"
+        "${pkgs.alacritty-theme}/github_light.toml"
       ];
     };
   };
