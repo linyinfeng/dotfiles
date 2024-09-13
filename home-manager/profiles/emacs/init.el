@@ -38,7 +38,7 @@
 ;; default font
 (set-face-attribute 'default nil
                     :family "monospace"
-                    :height 100
+                    :height 110
                     :weight 'normal
                     :width 'normal)
 
