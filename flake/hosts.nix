@@ -102,8 +102,9 @@ let
           services.printing
           services.snapper
           services.iperf3
-          security.hardware-keys
           services.angrr
+          services.homed
+          security.hardware-keys
           hardware.rtl-sdr
           nix.nix-ld
           nix.hydra-builder-client
