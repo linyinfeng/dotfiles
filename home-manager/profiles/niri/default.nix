@@ -531,6 +531,9 @@ lib.mkMerge [
                   ];
                   text = ''
                     mode="$(darkman get)"
+                    if [ "$mode" != light ] && [ "$mode" != dark ]; then
+                      mode="unknown"
+                    fi
                     echo '{"text": "'"$mode"'", "alt": "'"$mode"'", "class": "'"$mode"'"}'
                   '';
                 }
@@ -552,6 +555,7 @@ lib.mkMerge [
               format-icons = {
                 "light" = "󰖙";
                 "dark" = "󰖔";
+                "unknown" = "󰔎";
               };
               inherit signal;
               on-click = lib.getExe (

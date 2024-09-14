@@ -94,3 +94,9 @@ button {
     color: $warn;
   }
 }
+
+#custom-darkman {
+  &.unknown {
+    color: $warn;
+  }
+}
