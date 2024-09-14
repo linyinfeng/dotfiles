@@ -1,12 +1,14 @@
 { pkgs, lib, ... }:
 let
+  # an empty file used to trigger config hot reloading
+  touchFile = ".config/alacritty/touch.toml";
   themeFile = ".config/alacritty/theme.toml";
   darkmanSwitch = pkgs.writeShellApplication {
     name = "darkman-switch-alacritty";
     text = ''
       mode="$1"
       ln --force --symbolic "${pkgs.alacritty-theme}/github_$mode.toml" "$HOME/${themeFile}"
-      touch "$XDG_CONFIG_HOME/alacritty/alacritty.toml"
+      touch "$HOME/${touchFile}"
     '';
   };
 in
@@ -21,6 +23,7 @@ in
         };
       };
       import = [
+        touchFile
         themeFile
       ];
     };
@@ -28,6 +31,7 @@ in
   systemd.user.tmpfiles.rules = [
     # link theme if not exists
     "L %h/${themeFile} - - - - ${pkgs.alacritty-theme}/github_light.toml"
+    "f %h/${touchFile} - - - -"
   ];
   services.darkman = {
     lightModeScripts.alacritty = "${lib.getExe darkmanSwitch} light";
