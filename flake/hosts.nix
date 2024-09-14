@@ -169,6 +169,7 @@ let
       multimedia = with profiles; [
         gnome
         niri
+        darkman
         dconf-proxy
         chromium
         firefox

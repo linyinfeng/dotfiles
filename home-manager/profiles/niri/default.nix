@@ -8,14 +8,26 @@
 let
 
   buildScss =
-    name:
-    pkgs.runCommand "${name}.css" {
+    path:
+    pkgs.runCommand "${lib.replaceStrings [ "/" ] [ "-" ] path}.css" {
       src = ./_styles;
       nativeBuildInputs = with pkgs; [ sass ];
-    } "sass $src/${name}.scss $out";
+    } "sass $src/${path}.scss $out";
+
+  toggleDarkMode = pkgs.writeShellApplication {
+    name = "niri-toggle-dark-mode";
+    runtimeInputs = [
+      config.programs.niri.package
+      config.services.darkman.package
+    ];
+    text = ''
+      niri msg action do-screen-transition --delay-ms 500
+      darkman toggle
+    '';
+  };
 in
-{
-  config = {
+lib.mkMerge [
+  {
     programs.niri = {
       inherit (osConfig.programs.niri) package;
       settings = {
@@ -327,8 +339,10 @@ in
       pavucontrol
       avizo
     ];
+  }
 
-    # waybar
+  # bar
+  {
     programs.waybar = {
       enable = true;
       systemd = {
@@ -347,6 +361,7 @@ in
           modules-right = [
             "tray"
             "custom/fprintd"
+            "custom/darkman"
             "network"
             "backlight"
             # "pulseaudio"
@@ -503,13 +518,65 @@ in
                 }
               );
             };
+          "custom/darkman" =
+            let
+              signal = 11;
+            in
+            {
+              exec = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-darkman";
+                  runtimeInputs = [
+                    config.services.darkman.package
+                  ];
+                  text = ''
+                    mode="$(darkman get)"
+                    echo '{"text": "'"$mode"'", "alt": "'"$mode"'", "class": "'"$mode"'"}'
+                  '';
+                }
+              );
+              exec-if = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-darkman-if";
+                  runtimeInputs = [
+                    osConfig.systemd.package
+                  ];
+                  text = ''
+                    systemctl --user is-active darkman
+                  '';
+                }
+              );
+              return-type = "json";
+              format = "{icon}";
+              interval = 3;
+              format-icons = {
+                "light" = "󰖙";
+                "dark" = "󰖔";
+              };
+              inherit signal;
+              on-click = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "toggle-fprintd";
+                  runtimeInputs = [
+                    pkgs.procps
+                  ];
+                  text = ''
+                    "${lib.getExe toggleDarkMode}"
+                    pkill "-SIGRTMIN+${toString signal}" waybar
+                  '';
+                }
+              );
+            };
         }
       ];
     };
     systemd.user.services.waybar.Unit.After = [ "niri.service" ];
-    xdg.configFile."waybar/style.css".source = buildScss "waybar";
+    xdg.configFile."waybar/style-light.css".source = buildScss "waybar/light";
+    xdg.configFile."waybar/style-dark.css".source = buildScss "waybar/dark";
+  }
 
-    # xwayland
+  # xwayland
+  {
     systemd.user.services.xwayland-satellite = {
       Unit = {
         PartOf = [ "graphical-session.target" ];
@@ -539,16 +606,20 @@ in
         ];
       };
     };
+  }
 
-    # fuzzel
+  # fuzzel
+  {
     programs.fuzzel = {
       enable = true;
       settings =
         {
         };
     };
+  }
 
-    # mako
+  # mako
+  {
     services.mako = {
       enable = true;
       borderRadius = 8;
@@ -565,8 +636,10 @@ in
         border-color=#ff3300ff
       '';
     };
+  }
 
-    # swaylock
+  # swaylcok and swayidle
+  {
     programs.swaylock = {
       enable = true;
       package = pkgs.swaylock-effects;
@@ -631,7 +704,6 @@ in
       };
     };
 
-    # swayidle
     services.swayidle =
       let
         systemctl = "${osConfig.systemd.package}/bin/systemctl";
@@ -675,39 +747,81 @@ in
       ];
       After = [ "niri.service" ];
     };
+  }
 
-    # swaybg
-    systemd.user.services.swaybg = {
-      Unit = {
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
-        Requisite = [ "graphical-session.target" ];
-      };
-      Install = {
-        WantedBy = [ "niri.service" ];
-      };
-      Service = {
-        Restart = "on-failure";
-        ExecStart = lib.escapeShellArgs [
-          (lib.getExe pkgs.swaybg)
-          "--mode"
-          "fill"
-          "--image"
-          "${pkgs.nixos-artwork.wallpapers.catppuccin-macchiato}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-macchiato.png"
-        ];
-      };
-    };
-
-    # kanshi
+  # kanshi
+  {
     services.kanshi = {
       enable = true;
       systemdTarget = "niri.service";
     };
+  }
 
-    # cliphist
+  # cliphist
+  {
     services.cliphist = {
       enable = true;
       systemdTarget = "niri.service";
     };
-  };
-}
+  }
+
+  # swaybg
+  (
+    let
+      lightBg = "${pkgs.nixos-artwork.wallpapers.catppuccin-macchiato}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-macchiato.png";
+      darkBg = "${pkgs.nixos-artwork.wallpapers.catppuccin-mocha}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-mocha.png";
+    in
+    {
+      systemd.user.services.swaybg = {
+        Unit = {
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+          Requisite = [ "graphical-session.target" ];
+        };
+        Install = {
+          WantedBy = [ "niri.service" ];
+        };
+        Service = {
+          Restart = "on-failure";
+          ExecStart = lib.escapeShellArgs [
+            (lib.getExe pkgs.swaybg)
+            "--mode"
+            "fill"
+            "--image"
+            "%h/.config/swaybg/image"
+          ];
+        };
+      };
+      systemd.user.tmpfiles.rules = [
+        # link theme if not exists
+        "L %h/.config/swaybg/image - - - - ${lightBg}"
+      ];
+      services.darkman =
+        let
+          swaybgSwitch = pkgs.writeShellApplication {
+            name = "darkman-switch-swaybg";
+            text = ''
+              mode="$1"
+              if ! systemctl --user is-active swaybg; then
+                echo "swaybg is not active"
+                exit 1
+              fi
+              if [ "$mode" = light ]; then
+                ln --force --symbolic --verbose "${lightBg}" "$HOME/.config/swaybg/image"
+              elif [ "$mode" = dark ]; then
+                ln --force --symbolic --verbose "${darkBg}" "$HOME/.config/swaybg/image"
+              else
+                echo "invalid mode: $mode"
+                exit 1
+              fi
+              systemctl --user restart swaybg
+            '';
+          };
+        in
+        {
+          lightModeScripts.swaybg = "${lib.getExe swaybgSwitch} light";
+          darkModeScripts.swaybg = "${lib.getExe swaybgSwitch} dark";
+        };
+    }
+  )
+]
