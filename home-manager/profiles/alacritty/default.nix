@@ -15,7 +15,10 @@ in
     enable = true;
     settings = {
       window = {
-        dynamic_padding = true;
+        padding = {
+          x = 3;
+          y = 3;
+        };
       };
       import = [
         themeFile
