@@ -51,7 +51,7 @@ in
       settings.StartupWMClass = "QQ";
     };
     element-desktop = {
-      name = "Elment";
+      name = "Element";
       genericName = "Matrix Client";
       exec = "element-desktop --enable-wayland-ime %U";
       icon = "element";
