@@ -2,6 +2,14 @@
 {
   programs.vscode = {
     enable = true;
+    package = pkgs.vscode.overrideAttrs (old: {
+      postInstall =
+        (old.postInstall or "")
+        + ''
+          wrapProgram "$out/bin/code" \
+            --add-flags --password-store=gnome-libsecret
+        '';
+    });
     extensions = with pkgs.vscode-extensions; [ ];
   };
 
