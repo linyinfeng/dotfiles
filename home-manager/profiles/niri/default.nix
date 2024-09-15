@@ -239,19 +239,7 @@ lib.mkMerge [
                 "loginctl"
                 "lock-session"
               ];
-              "Mod+V".action.spawn = [
-                (lib.getExe (
-                  pkgs.writeShellApplication {
-                    name = "cliphist-picker";
-                    runtimeInputs = with pkgs; [
-                      wl-clipboard
-                    ];
-                    text = ''
-                      cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
-                    '';
-                  }
-                ))
-              ];
+              "Mod+V".action.spawn = [ "cliphist-fuzzel" ];
               # volume keys
               "XF86AudioRaiseVolume" = {
                 allow-when-locked = true;
@@ -339,6 +327,15 @@ lib.mkMerge [
     home.packages = with pkgs; [
       pavucontrol
       avizo
+      (pkgs.writeShellApplication {
+        name = "cliphist-fuzzel";
+        runtimeInputs = with pkgs; [
+          wl-clipboard
+        ];
+        text = ''
+          cliphist list | fuzzel --dmenu | cliphist decode | wl-copy
+        '';
+      })
     ];
   }
 
