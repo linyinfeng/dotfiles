@@ -577,6 +577,7 @@ lib.mkMerge [
     systemd.user.services.waybar.Unit.After = [ "niri.service" ];
     xdg.configFile."waybar/style-light.css".source = buildScss "waybar/light";
     xdg.configFile."waybar/style-dark.css".source = buildScss "waybar/dark";
+    xdg.configFile."waybar/style.css".source = config.xdg.configFile."waybar/style-light.css".source;
   }
 
   # xwayland
