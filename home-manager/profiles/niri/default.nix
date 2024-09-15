@@ -53,7 +53,7 @@ lib.mkMerge [
           };
         };
         layout = {
-          gaps = 16;
+          gaps = 8;
           center-focused-column = "never";
           preset-column-widths = [
             { proportion = 1.0 / 3.0; }
@@ -64,6 +64,7 @@ lib.mkMerge [
             proportion = 1.0 / 2.0;
           };
           focus-ring = {
+            enable = true;
             width = 4;
             active.color = "#7fc8ff";
             inactive.color = "#505050";
@@ -87,7 +88,7 @@ lib.mkMerge [
           {
             geometry-corner-radius =
               let
-                radius = 16.0;
+                radius = 12.0;
               in
               {
                 bottom-left = radius;
