@@ -71,6 +71,7 @@ let
     })
     (final: prev: {
       # TODO broken with auto-allocate-uids
+      ccacheStdenv = final.stdenv;
       # # ccache
       # ccacheCacheDir = "/var/cache/ccache";
       # ccacheLogDir = "/var/log/ccache";
