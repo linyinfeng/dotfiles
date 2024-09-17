@@ -70,40 +70,41 @@ let
       lanzaboote = inputs.lanzaboote.overlays.default final prev;
     })
     (final: prev: {
-      # ccache
-      ccacheCacheDir = "/var/cache/ccache";
-      ccacheLogDir = "/var/log/ccache";
-      ccacheWrapper = prev.ccacheWrapper.override {
-        extraConfig = ''
-          export CCACHE_COMPRESS=1
-          export CCACHE_UMASK=007
-          if [ -d "${final.ccacheCacheDir}" ]; then
-            export CCACHE_DIR="${final.ccacheCacheDir}"
-          else
-            export CCACHE_DIR="/tmp/ccache"
-            mkdir -p "$CCACHE_DIR"
-            echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
-          fi
-          if [ -d "${final.ccacheLogDir}" ]; then
-            export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
-          fi
-          if [ ! -w "$CCACHE_DIR" ]; then
-            echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
-            exit 1
-          fi
-        '';
-      };
-      ccacheTest = final.ccacheStdenv.mkDerivation {
-        name = "test-ccache";
-        src = builtins.toFile "hello-world.c" ''
-          #include <stdio.h>
-          int main() { printf("hello, world\n"); }
-        '';
-        dontUnpack = true;
-        env.NIX_DEBUG = 1;
-        buildPhase = "cc $src -o hello";
-        installPhase = "install -D hello $out/bin/hello";
-      };
+      # TODO broken with auto-allocate-uids
+      # # ccache
+      # ccacheCacheDir = "/var/cache/ccache";
+      # ccacheLogDir = "/var/log/ccache";
+      # ccacheWrapper = prev.ccacheWrapper.override {
+      #   extraConfig = ''
+      #     export CCACHE_COMPRESS=1
+      #     export CCACHE_UMASK=007
+      #     if [ -d "${final.ccacheCacheDir}" ]; then
+      #       export CCACHE_DIR="${final.ccacheCacheDir}"
+      #     else
+      #       export CCACHE_DIR="/tmp/ccache"
+      #       mkdir -p "$CCACHE_DIR"
+      #       echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
+      #     fi
+      #     if [ -d "${final.ccacheLogDir}" ]; then
+      #       export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
+      #     fi
+      #     if [ ! -w "$CCACHE_DIR" ]; then
+      #       echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
+      #       exit 1
+      #     fi
+      #   '';
+      # };
+      # ccacheTest = final.ccacheStdenv.mkDerivation {
+      #   name = "test-ccache";
+      #   src = builtins.toFile "hello-world.c" ''
+      #     #include <stdio.h>
+      #     int main() { printf("hello, world\n"); }
+      #   '';
+      #   dontUnpack = true;
+      #   env.NIX_DEBUG = 1;
+      #   buildPhase = "cc $src -o hello";
+      #   installPhase = "install -D hello $out/bin/hello";
+      # };
 
       # adjustment
       nixVersions = prev.nixVersions // {
