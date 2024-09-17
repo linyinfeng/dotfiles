@@ -53,8 +53,9 @@
 
       # kernel tweaks
       # boot.kernel.intel.type = "lts";
-      boot.kernelModuleSigning.enable = true;
-      boot.kernelLockdown = true;
+      # TODO broken with auto-allocate-uids
+      # boot.kernelModuleSigning.enable = true;
+      # boot.kernelLockdown = true;
 
       boot.kernelModules = [ "kvm-intel" ];
 

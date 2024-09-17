@@ -182,8 +182,8 @@ in
         }
       ];
     })
-    {
-      boot.kernelParams = lib.mkIf config.boot.kernelLockdown [ "lockdown=integrity" ];
+    (lib.mkIf config.boot.kernelLockdown {
+      boot.kernelParams = [ "lockdown=integrity" ];
       boot.kernelPatches = [
         {
           name = "lockdown";
@@ -193,6 +193,6 @@ in
           };
         }
       ];
-    }
+    })
   ];
 }

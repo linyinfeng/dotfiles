@@ -1,22 +1,27 @@
 { config, pkgs, ... }:
 let
   originalPackage = config.boot.kernelPackages.nvidiaPackages.stable;
-  package = originalPackage // {
-    open = originalPackage.open.overrideAttrs (old: {
-      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
-        config.boot.kernelModuleSigning.signModule
-      ];
-      # signature will be stripped
-      dontStrip = true;
-      postBuild =
-        (old.postBuild or "")
-        + ''
-          for module in kernel-open/*.ko; do
-            sign-module "$module"
-          done
-        '';
-    });
-  };
+  package =
+    if (config.boot ? kernelModuleSigning && config.boot.kernelModuleSigning.enable) then
+      originalPackage
+      // {
+        open = originalPackage.open.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
+            config.boot.kernelModuleSigning.signModule
+          ];
+          # signature will be stripped
+          dontStrip = true;
+          postBuild =
+            (old.postBuild or "")
+            + ''
+              for module in kernel-open/*.ko; do
+                sign-module "$module"
+              done
+            '';
+        });
+      }
+    else
+      originalPackage;
   # switcherooctl is broken
   # Traceback (most recent call last):
   # File "/nix/store/zv2w5xrj6m4jx9yi3v37p5grcpl3hxp4-switcheroo-control-2.6/bin/.switcherooctl-wrapped", line 4, in <module>
