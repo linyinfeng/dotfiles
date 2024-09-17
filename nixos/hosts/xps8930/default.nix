@@ -43,7 +43,6 @@ in
       services.portal-client
       programs.service-mail
       programs.tg-send
-      programs.ccache
       users.yinfeng
     ]);
 

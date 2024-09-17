@@ -68,7 +68,6 @@ let
         development.documentation
         programs.adb
         programs.qrcp
-        programs.ccache
         services.gnupg
         services.nixseparatedebuginfod
       ];
