@@ -845,7 +845,7 @@ lib.mkMerge [
           }
           trap cleanup EXIT
           emacsclient --create-frame "$file"
-          wl-copy --foreground <"$file"
+          wl-copy --foreground --trim-newline --type text/plain <"$file"
         '';
       })
     ];
