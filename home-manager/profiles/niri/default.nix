@@ -77,6 +77,9 @@ lib.mkMerge [
           };
           struts = { };
         };
+        cursor = {
+          theme = "Adwaita";
+        };
         spawn-at-startup = [ ];
         prefer-no-csd = true;
         screenshot-path = "~/Data/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
@@ -85,6 +88,14 @@ lib.mkMerge [
           # all default
         };
         window-rules = [
+          {
+            matches = [
+              {
+                app-id = "^org\.wezfurlong\.wezterm$";
+              }
+            ];
+            default-column-width = { };
+          }
           {
             geometry-corner-radius =
               let
