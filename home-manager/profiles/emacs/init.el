@@ -133,8 +133,13 @@
   :config
   (counsel-projectile-mode))
 
-(use-package delight
+(use-package darkman
   :ensure t)
+
+(use-package delight
+  :ensure t
+  :config
+  (darkman-mode))
 
 (use-package eldoc
   :ensure t)
