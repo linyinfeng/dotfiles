@@ -9,7 +9,9 @@ let
   rawEmacsConfig = ./init.el;
   emacs = pkgs.emacsWithPackagesFromUsePackage {
     config = rawEmacsConfig;
-    package = pkgs.emacs;
+    package = pkgs.emacs.override {
+      withPgtk = true;
+    };
     alwaysEnsure = false;
     override =
       epkgs:

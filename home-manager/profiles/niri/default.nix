@@ -827,4 +827,27 @@ lib.mkMerge [
         };
     }
   )
+
+  # input dialog
+  {
+    programs.niri.settings.binds."Mod+Shift+Return".action.spawn = [ "input-dialog" ];
+    home.packages = [
+      (pkgs.writeShellApplication {
+        name = "input-dialog";
+        runtimeInputs = [
+          config.services.emacs.package
+          pkgs.wl-clipboard
+        ];
+        text = ''
+          file="$(mktemp -t input-dialog.XXXXXX)"
+          function cleanup {
+            rm -f "$file"
+          }
+          trap cleanup EXIT
+          emacsclient --create-frame "$file"
+          wl-copy --foreground <"$file"
+        '';
+      })
+    ];
+  }
 ]
