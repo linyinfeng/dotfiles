@@ -14,6 +14,7 @@ in
       # keep-sorted start
       amberol
       calibre
+      clapper
       element-desktop
       fractal
       gimp
@@ -30,7 +31,6 @@ in
       teamspeak_client
       transmission-remote-gtk
       virt-manager
-      vlc
       xournalpp
       zotero
       # keep-sorted end
