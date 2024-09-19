@@ -258,19 +258,6 @@ let
       };
       system.configurationRevision = self.rev or null;
     }
-
-    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341180
-    (
-      { modulesPath, ... }:
-      {
-        disabledModules = [
-          "${modulesPath}/services/system/userborn.nix"
-        ];
-        imports = [
-          "${inputs.nixpkgs-userborn-home-dir}/nixos/modules/services/system/userborn.nix"
-        ];
-      }
-    )
   ];
 
   commonHmModules = hmModules ++ [
@@ -362,6 +349,19 @@ let
   hostToplevels = lib.fold lib.recursiveUpdate { } (
     lib.mapAttrsToList getHostToplevel self.nixosConfigurations
   );
+
+  # deadnix: skip
+  mkReplaceModule =
+    nixpkgs: module:
+    { modulesPath, ... }:
+    {
+      disabledModules = [
+        "${modulesPath}/${module}"
+      ];
+      imports = [
+        "${nixpkgs}/nixos/modules/${module}"
+      ];
+    };
 in
 {
   passthru = {
