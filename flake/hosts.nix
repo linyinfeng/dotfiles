@@ -190,6 +190,7 @@ let
         awscli
         terraform
         shells
+        ok
       ];
       virtualization = [ ];
       multimediaDev =
