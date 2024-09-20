@@ -163,7 +163,11 @@ let
     name = "fw-tproxy-use";
     runtimeInputs = with pkgs; [ systemd ];
     text = ''
-      exec systemd-run --user --property=NFTSet="${cfg.tproxy.nftSet}" --pipe --pty --wait "$@"
+      exec systemd-run --user \
+        --property=NFTSet="${cfg.tproxy.nftSet}" \
+        --pipe --pty \
+        --same-dir \
+        --wait "$@"
     '';
   };
   tproxyCgroup = pkgs.writeShellApplication {
