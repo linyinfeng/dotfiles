@@ -123,6 +123,7 @@ locals {
     minio-console   = { on = "mtl0", proxy = true }
     static          = { on = "mtl0", proxy = true }
     http-test       = { on = "mtl0", proxy = true }
+    sicp-staging    = { on = "mtl0", proxy = true }
     minio           = { on = "mtl0", proxy = false }
     prebuilt-zip    = { on = "mtl0", proxy = false }
     "shanghai.derp" = { on = "shg0", proxy = false }

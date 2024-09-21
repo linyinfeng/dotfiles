@@ -43,6 +43,7 @@ in
       services.telegraf-http
       services.prebuilt-zip
       services.hledger-web
+      services.sicp-staging
       i18n.input-method
       virtualization.podman
       users.yinfeng

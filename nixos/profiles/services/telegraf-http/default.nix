@@ -123,6 +123,12 @@ let
         code = 302;
       }
     ];
+    sicp-staging = [
+      {
+        url = "https://sicp-staging.li7g.com/2024/oj/web/";
+        code = 200;
+      }
+    ];
   };
   mkServiceCfg =
     name: cnameMapping:

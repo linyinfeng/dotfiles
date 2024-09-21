@@ -158,6 +158,10 @@
       "on": "shg0",
       "proxy": false
     },
+    "sicp-staging": {
+      "on": "mtl0",
+      "proxy": true
+    },
     "smtp": {
       "on": "fsn0",
       "proxy": false
