@@ -44,6 +44,7 @@ in
       services.prebuilt-zip
       services.hledger-web
       i18n.input-method
+      virtualization.podman
       users.yinfeng
     ]);
 
