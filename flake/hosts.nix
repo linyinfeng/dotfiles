@@ -191,6 +191,7 @@ let
         terraform
         shells
         ok
+        vscode-server
       ];
       virtualization = [ ];
       multimediaDev =
@@ -262,6 +263,7 @@ let
   ];
 
   commonHmModules = hmModules ++ [
+    inputs.nixos-vscode-server.homeModules.default
     { lib.self = self.lib; }
   ];
 
