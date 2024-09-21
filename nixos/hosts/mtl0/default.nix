@@ -25,6 +25,7 @@ in
 {
   imports =
     suites.overseaServer
+    ++ suites.development
     ++ (with profiles; [
       programs.tg-send
       services.nginx
@@ -42,6 +43,8 @@ in
       services.telegraf-http
       services.prebuilt-zip
       services.hledger-web
+      i18n.input-method
+      users.yinfeng
     ]);
 
   config = lib.mkMerge [
@@ -143,6 +146,15 @@ in
         routes = [ { Gateway = "::"; } ];
       };
     })
+
+    # user
+    {
+      home-manager.users.yinfeng =
+        { suites, ... }:
+        {
+          imports = suites.nonGraphical;
+        };
+    }
 
     # stateVersion
     { system.stateVersion = "24.05"; }
