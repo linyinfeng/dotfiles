@@ -54,6 +54,7 @@ in
       git fetch --all
       git reset --hard origin/staging-yinfeng
       sed -i 's^https://sicp.pascal-lab.net/2024/oj/api^https://sicp-staging.li7g.com/${ojBase}/api^g' packages/web/src/config.ts
+      git apply "${./_patches/app-docker-disable-swappiness.patch}"
 
       # build app
       pushd packages/app
@@ -102,9 +103,6 @@ in
     serviceConfig = {
       User = config.users.users.sicp-staging.name;
       Group = config.users.groups.sicp-staging.name;
-      SupplementaryGroups = [
-        config.users.groups.podman.name # root access
-      ];
       StateDirectory = "sicp-staging";
       WorkingDirectory = "/var/lib/sicp-staging";
       LoadCredential = [
@@ -130,6 +128,9 @@ in
   users.users.sicp-staging = {
     isSystemUser = true;
     group = config.users.groups.sicp-staging.name;
+    extraGroups = [
+      config.users.groups.podman.name
+    ];
   };
   users.groups.sicp-staging = { };
   users.users.nginx.extraGroups = [ config.users.groups.sicp-staging.name ];
@@ -216,7 +217,7 @@ in
         secret = config.sops.placeholder."sicp_staging_jwt_secret";
       };
       docker = {
-        host = "unix:///run/docker.sock";
+        host = "unix:///run/podman/podman.sock";
         tls-verify = false;
       };
       s3 = {
