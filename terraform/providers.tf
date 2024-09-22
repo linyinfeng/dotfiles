@@ -34,6 +34,9 @@ terraform {
     google-beta = {
       source = "hashicorp/google-beta"
     }
+    gitlab = {
+      source = "gitlabhq/gitlab"
+    }
     null = {
       source = "hashicorp/null"
     }
