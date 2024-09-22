@@ -297,6 +297,9 @@ in
     {
       forceSSL = true;
       inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+      locations."/oj".extraConfig = ''
+        return 302 https://$host/${ojBase}/web/;
+      '';
       locations."= /${ojBase}/web".extraConfig = ''
         return 302 https://$host$request_uri/;
       '';
@@ -313,6 +316,12 @@ in
           add_header Cache-Control no-cache;
           expires 0;
           try_files /index.html =404;
+        '';
+      };
+      locations."/api/" = {
+        proxyPass = "http://127.0.0.1:${toString config.ports.sicp-staging}";
+        extraConfig = ''
+          rewrite /${ojBase}/api/(.*) /$1  break;
         '';
       };
       locations."/${ojBase}/api/" = {
