@@ -321,7 +321,7 @@ in
       locations."/api/" = {
         proxyPass = "http://127.0.0.1:${toString config.ports.sicp-staging}";
         extraConfig = ''
-          rewrite /${ojBase}/api/(.*) /$1  break;
+          rewrite /api/(.*) /$1  break;
         '';
       };
       locations."/${ojBase}/api/" = {
