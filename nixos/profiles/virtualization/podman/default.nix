@@ -9,6 +9,7 @@ lib.mkMerge [
     virtualisation.podman = {
       enable = true;
       dockerCompat = true;
+      dockerSocket.enable = true;
       autoPrune.enable = true;
       defaultNetwork.settings = {
         network_interface = "podman0";

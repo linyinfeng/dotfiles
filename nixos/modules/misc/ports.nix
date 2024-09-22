@@ -82,6 +82,10 @@
       jellyfin-https = 3341;
       iperf = 3350;
       typhon = 3360;
+      rabbitmq = 3370;
+      rabbitmq-management = 3371;
+      sicp-staging = 3390;
+      sicp-staging-redis = 3391;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;
@@ -99,6 +103,7 @@
       minecraft = 25565;
       minecraft-rcon = 25566;
       minecraft-map = 25567;
+      mongodb = 27017; # currently change is not supported in nixpkgs module
       teamspeak-voice = 9987;
       teamspeak-file-transfer = 30033;
       teamspeak-query = 10011;

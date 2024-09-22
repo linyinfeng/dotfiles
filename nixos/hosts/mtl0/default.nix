@@ -44,6 +44,8 @@ in
       services.prebuilt-zip
       services.hledger-web
       services.sicp-staging
+      services.rabbitmq
+      services.mongodb
       i18n.input-method
       virtualization.podman
       users.yinfeng

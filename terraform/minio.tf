@@ -157,3 +157,44 @@ output "minio_metrics_bearer_token" {
   value     = shell_sensitive_script.minio_metrics_generate_prometheus_config.output.bearerToken
   sensitive = true
 }
+
+# SICP staging
+
+resource "minio_s3_bucket" "sicp_staging" {
+  bucket = "sicp-staging"
+  acl    = "private"
+}
+
+resource "minio_iam_user" "sicp_staging" {
+  name = "sicp-staging"
+}
+
+output "minio_sicp_staging_key_id" {
+  value     = minio_iam_user.sicp_staging.id
+  sensitive = false
+}
+output "minio_sicp_staging_access_key" {
+  value     = minio_iam_user.sicp_staging.secret
+  sensitive = true
+}
+
+data "minio_iam_policy_document" "sicp_staging" {
+  statement {
+    actions = [
+      "s3:*",
+    ]
+    resources = [
+      "arn:aws:s3:::sicp-staging/*",
+    ]
+  }
+}
+
+resource "minio_iam_policy" "sicp_staging" {
+  name   = "sicp-staging"
+  policy = data.minio_iam_policy_document.sicp_staging.json
+}
+
+resource "minio_iam_user_policy_attachment" "sicp_staging" {
+  policy_name = minio_iam_policy.sicp_staging.name
+  user_name   = minio_iam_user.sicp_staging.name
+}

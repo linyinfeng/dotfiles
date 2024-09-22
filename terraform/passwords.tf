@@ -343,3 +343,58 @@ output "gnome_remote_desktop_password" {
   value     = random_password.gnome_remote_desktop.result
   sensitive = true
 }
+
+# SICP staging
+
+resource "random_password" "mongodb_admin" {
+  length  = 64
+  special = false
+}
+output "mongodb_admin_password" {
+  value     = random_password.mongodb_admin.result
+  sensitive = true
+}
+
+resource "random_password" "mongodb_sicp_staging" {
+  length  = 64
+  special = false
+}
+output "mongodb_sicp_staging_password" {
+  value     = random_password.mongodb_sicp_staging.result
+  sensitive = true
+}
+
+resource "random_password" "rabbitmq_sicp_staging" {
+  length  = 32
+  special = false
+}
+output "rabbitmq_sicp_staging_password" {
+  value     = random_password.rabbitmq_sicp_staging.result
+  sensitive = true
+}
+
+resource "random_password" "sicp_staging_jwt_secret" {
+  length  = 64
+  special = false
+}
+output "sicp_staging_jwt_secret" {
+  value     = random_password.sicp_staging_jwt_secret.result
+  sensitive = true
+}
+
+resource "random_password" "sicp_staging_admin" {
+  length  = 32
+  special = false
+}
+output "sicp_staging_admin_password" {
+  value     = random_password.sicp_staging_admin.result
+  sensitive = true
+}
+resource "random_password" "sicp_staging_redis" {
+  length  = 32
+  special = false
+}
+output "sicp_staging_redis_password" {
+  value     = random_password.sicp_staging_redis.result
+  sensitive = true
+}
