@@ -4,98 +4,14 @@
   ...
 }:
 let
-  njuGitUser = "yinfeng";
-  ojRepoName = "online-judge";
   ojBase = "2024/oj";
-  version = "staging";
-  buildTools =
-    let
-      python = pkgs.python3.withPackages (
-        p: with p; [
-          invoke
-        ]
-      );
-      java = pkgs.openjdk17;
-      gradle = pkgs.gradle.override {
-        inherit java;
-      };
-    in
-    [
-      python
-      java
-    ]
-    ++ (with pkgs; [
-      trunk-io
-      yarn
-      gradle
-      nodejs
-    ]);
 in
 {
-  systemd.services.sicp-staging-build = {
-    script = ''
-      export TMPDIR="$PWD/tmp"
-      mkdir --parents "$TMPDIR"
-      export HOME="$PWD/home"
-      mkdir --parents "$HOME"
-      export GRADLE_USER_HOME="$PWD/gradle"
-      mkdir --parents "$GRADLE_USER_HOME"
-
-      token="$(cat "$CREDENTIALS_DIRECTORY/token")"
-
-      # setup repository
-      if [ ! -d "${ojRepoName}" ]; then
-        git clone "https://${njuGitUser}:$token@git.nju.edu.cn/nju-sicp/online-judge.git" "${ojRepoName}"
-      fi
-      pushd "${ojRepoName}"
-      git remote set-url origin "https://${njuGitUser}:$token@git.nju.edu.cn/nju-sicp/online-judge.git"
-
-      # update repository
-      git fetch --all
-      git reset --hard origin/staging-yinfeng
-      sed -i 's^https://sicp.pascal-lab.net/2024/oj/api^https://sicp-staging.li7g.com/${ojBase}/api^g' packages/web/src/config.ts
-      git apply "${./_patches/app-docker-disable-swappiness.patch}"
-
-      # build app
-      pushd packages/app
-      sed -i "s^0.0.0^${version}^g" build.gradle
-      sed -i "s^http://localhost:5173^https://sicp-staging.li7g.com^g" src/main/java/cn/edu/nju/sicp/security/SecurityConfig.java
-      gradle --refresh-dependencies clean bootJar
-      popd
-
-      # build web
-      pushd packages/web
-      sed -i "s^0.0.0^${version}^g" src/config.ts
-      yarn
-      yarn build --base="/${ojBase}/web/"
-      popd
-
-      popd # from oj repository
-    '';
-    path =
-      (with pkgs; [
-        git
-      ])
-      ++ buildTools;
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      TimeoutStartSec = "5min";
-      User = config.users.users.sicp-staging.name;
-      Group = config.users.groups.sicp-staging.name;
-      StateDirectory = "sicp-staging";
-      WorkingDirectory = "/var/lib/sicp-staging";
-      LoadCredential = [
-        "token:${config.sops.secrets."nju-git/read-token".path}"
-      ];
-    };
-  };
-
   systemd.services.sicp-staging-app = {
     script = ''
       exec java --add-opens "java.base/java.io=ALL-UNNAMED" \
         -Dspring.profiles.active=prod -Dspring.config.location="$CREDENTIALS_DIRECTORY/application.yml" \
-        -jar "${ojRepoName}/packages/app/build/libs/app-${version}.jar"
+        -jar "app.jar"
     '';
     path = with pkgs; [
       openjdk
@@ -105,6 +21,7 @@ in
       Group = config.users.groups.sicp-staging.name;
       StateDirectory = "sicp-staging";
       WorkingDirectory = "/var/lib/sicp-staging";
+      ConditionPathExists = "/var/lib/sicp-staging/app.jar";
       LoadCredential = [
         "application.yml:${config.sops.templates."sicp-staging-application.yml".path}"
       ];
@@ -113,12 +30,10 @@ in
       config.sops.templates."sicp-staging-application.yml".content
     ];
     requires = [
-      "sicp-staging-build.service"
       "sicp-staging-mongodb-setup.service"
       "sicp-staging-rabbitmq-setup.service"
     ];
     after = [
-      "sicp-staging-build.service"
       "sicp-staging-mongodb-setup.service"
       "sicp-staging-rabbitmq-setup.service"
     ];
@@ -127,12 +42,25 @@ in
 
   users.users.sicp-staging = {
     isSystemUser = true;
+    shell = pkgs.bash;
     group = config.users.groups.sicp-staging.name;
     extraGroups = [
       config.users.groups.podman.name
     ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPFIcA9bW0fYc2i7aiGLaS3XaYnTCnqCCZtCKDaxG/4 sicp-staging-gitlab"
+    ];
   };
   users.groups.sicp-staging = { };
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (action.id == "org.freedesktop.systemd1.manage-units" &&
+          RegExp('sicp-staging-app\.service').test(action.lookup("unit")) === true &&
+          subject.isInGroup("sicp-staging")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
   users.users.nginx.extraGroups = [ config.users.groups.sicp-staging.name ];
 
   systemd.services.sicp-staging-mongodb-setup = {
@@ -297,7 +225,7 @@ in
 
   services.nginx.virtualHosts."sicp-staging.*" =
     let
-      webDist = "/var/lib/sicp-staging/online-judge/packages/web/dist/";
+      webDist = "/var/lib/sicp-staging/web/";
     in
     {
       forceSSL = true;
@@ -371,10 +299,6 @@ in
       "sicp-staging-app.service"
       "redis-sicp-staging.service"
     ];
-  };
-  sops.secrets."nju-git/read-token" = {
-    sopsFile = config.sops-file.host;
-    restartUnits = [ "sicp-staging-build.service" ];
   };
   sops.secrets."nju-git/sicp-staging-oauth2" = {
     sopsFile = config.sops-file.host;
