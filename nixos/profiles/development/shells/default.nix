@@ -1,5 +1,13 @@
 { pkgs, lib, ... }:
 lib.mkMerge [
+  # common
+  {
+    environment.shellAliases = {
+      # sl = service log
+      sl = "journalctl --unit";
+    };
+  }
+
   # fish
   {
     programs.fish.enable = true;

@@ -35,6 +35,7 @@ let
           system.common
           system.sysrq
           system.perlless
+          development.shells
           users.root
         ]);
 
@@ -64,7 +65,6 @@ let
         services.pipewire
       ];
       development = with profiles; [
-        development.shells
         development.documentation
         programs.adb
         programs.qrcp
