@@ -1,6 +1,6 @@
 locals {
   # currently use self-hosted influxdb
-  # influxdb_url is too expensive
+  # influxdb cloud is too expensive
   influxdb_url = "https://influxdb.li7g.com"
 }
 output "influxdb_url" {

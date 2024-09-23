@@ -344,8 +344,6 @@ output "gnome_remote_desktop_password" {
   sensitive = true
 }
 
-# SICP staging
-
 resource "random_password" "mongodb_admin" {
   length  = 64
   special = false
@@ -354,6 +352,18 @@ output "mongodb_admin_password" {
   value     = random_password.mongodb_admin.result
   sensitive = true
 }
+
+resource "random_password" "mongodb_monitor" {
+  length  = 64
+  special = false
+}
+output "mongodb_monitor_password" {
+  value     = random_password.mongodb_monitor.result
+  sensitive = true
+}
+
+
+# SICP staging
 
 resource "random_password" "mongodb_sicp_staging" {
   length  = 64

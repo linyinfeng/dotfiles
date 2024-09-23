@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
+  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+    (config.lib.telegraf.mkMainInfluxdbOutput "system")
+  ];
   services.telegraf.extraConfig = {
     inputs = {
       cpu = [

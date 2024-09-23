@@ -176,6 +176,9 @@ in
       }
     )
   ];
+  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+    (config.lib.telegraf.mkMainInfluxdbOutput "http")
+  ];
   services.telegraf.extraConfig = {
     inputs = {
       http_response = lib.lists.map (code: {

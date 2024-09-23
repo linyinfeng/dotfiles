@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  mainInfluxdb = bucket: {
+  mkMainInfluxdbOutput = bucket: {
     urls = [ config.lib.self.data.influxdb_url ];
     token = "$INFLUX_TOKEN";
     organization = "main-org";
@@ -23,12 +23,12 @@ in
         flush_jitter = "5s";
       };
       outputs.influxdb_v2 = [
-        (mainInfluxdb "system")
-        (mainInfluxdb "minio")
-        (mainInfluxdb "minecraft")
-        (mainInfluxdb "http")
+        # make using config.lib.telegraf.mkMainInfluxdbOutput
       ];
     };
+  };
+  lib.telegraf = {
+    inherit mkMainInfluxdbOutput;
   };
   sops.secrets."influxdb_token" = {
     terraformOutput.enable = true;

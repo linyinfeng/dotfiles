@@ -140,6 +140,9 @@ in
       mongodb_admin_password="$(cat "$CREDENTIALS_DIRECTORY/mongodb-admin-password")"
       mongo --username root --password "$mongodb_admin_password" admin "$CREDENTIALS_DIRECTORY/mongodb-init.js"
     '';
+    requires = [
+      "mongodb.service"
+    ];
     after = [
       "mongodb.service"
     ];
@@ -190,7 +193,8 @@ in
     if (db.getUser("sicp_staging") == null) {
       db.createUser({
         user: "sicp_staging",
-        pwd: "temporary"
+        pwd: "temporary",
+        roles: []
       });
     };
     db.updateUser("sicp_staging", {

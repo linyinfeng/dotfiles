@@ -47,6 +47,9 @@ in
   };
 
   # metrics
+  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+    (config.lib.telegraf.mkMainInfluxdbOutput "minio")
+  ];
   services.telegraf.extraConfig = {
     inputs.prometheus = [
       {
