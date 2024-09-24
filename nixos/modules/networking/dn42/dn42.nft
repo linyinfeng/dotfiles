@@ -22,6 +22,6 @@ set dn42-ip6 {
 
 chain filter {
   type filter hook forward priority filter; policy accept;
-  ip  saddr @dn42-ip4 ip  daddr != @dn42-ip4 counter reject with icmp   admin-prohibited;
-  ip6 saddr @dn42-ip6 ip6 daddr != @dn42-ip6 counter reject with icmpv6 admin-prohibited;
+  ip  saddr @dn42-ip4 iifname "mesh-*" ip  daddr != @dn42-ip4 counter reject with icmp   admin-prohibited;
+  ip6 saddr @dn42-ip6 iifname "mesh-*" ip6 daddr != @dn42-ip6 counter reject with icmpv6 admin-prohibited;
 }
