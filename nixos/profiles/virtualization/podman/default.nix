@@ -25,4 +25,7 @@ lib.mkMerge [
       distrobox
     ];
   }
+  {
+    virtualisation.docker.enable = false;
+  }
 ]

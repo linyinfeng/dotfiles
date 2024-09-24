@@ -46,6 +46,7 @@ in
       services.sicp-staging
       services.rabbitmq
       services.mongodb
+      services.gitlab-runner-sicp
       i18n.input-method
       virtualization.podman
       users.yinfeng
