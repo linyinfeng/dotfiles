@@ -16,7 +16,7 @@ resource "gitlab_user_runner" "sicp_online_judge_docker_runner" {
   project_id  = data.gitlab_project.sicp_online_judge.id
 
   description = "Runner support docker in docker"
-  tag_list    = ["docker"]
+  tag_list    = ["docker", "docker-in-docker"]
   untagged    = false
 }
 

@@ -9,7 +9,6 @@
         dockerVolumes = [
           "/run/podman/podman.sock:/var/run/docker.sock"
         ];
-        tagList = [ "docker" ];
       };
     };
   };
