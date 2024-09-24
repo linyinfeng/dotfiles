@@ -5,7 +5,7 @@
     services = {
       sicp-oj-docker = {
         authenticationTokenConfigFile = config.sops.templates."gitlab-runner-sicp-oj-docker-auth".path;
-        dockerImage = "alpine:stable";
+        dockerImage = "alpine";
         dockerVolumes = [
           "/run/podman/podman.sock:/var/run/docker.sock"
         ];
