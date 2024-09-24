@@ -1088,7 +1088,9 @@
         "nixos-hardware": [
           "nixos-hardware"
         ],
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "nixpkgs-riscv"
+        ]
       },
       "locked": {
         "lastModified": 1726502958,
@@ -1155,16 +1157,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1726440300,
-        "narHash": "sha256-m5nSCAiw+JFnJqnuTjwYwANeRiT9iaHUqoC/D4d5O3Y=",
-        "owner": "NickCao",
+        "lastModified": 1726937504,
+        "narHash": "sha256-bvGoiQBvponpZh8ClUcmJ6QnsNKw0EMrCQJARK3bI1c=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0d1afed5fef5f9fe303b4bd18ad7d960a432df29",
+        "rev": "9357f4f23713673f310988025d9dc261c20e70c6",
         "type": "github"
       },
       "original": {
-        "owner": "NickCao",
-        "ref": "riscv",
+        "owner": "nixos",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1181,6 +1183,22 @@
       "original": {
         "owner": "nixos",
         "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-riscv": {
+      "locked": {
+        "lastModified": 1727116473,
+        "narHash": "sha256-ekEZPI0KsnYRUZq3vY8veZell9KjaDwHOS9Lhxdj9T4=",
+        "owner": "nickcao",
+        "repo": "nixpkgs",
+        "rev": "ea2917760b93b1a232a23b0a4dabf80b824736fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nickcao",
+        "ref": "riscv",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1213,22 +1231,6 @@
       "original": {
         "owner": "nixos",
         "ref": "nixos-unstable-small",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1726937504,
-        "narHash": "sha256-bvGoiQBvponpZh8ClUcmJ6QnsNKw0EMrCQJARK3bI1c=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "9357f4f23713673f310988025d9dc261c20e70c6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1425,12 +1427,9 @@
         "nixos-riscv": "nixos-riscv",
         "nixos-vscode-server": "nixos-vscode-server",
         "nixos-wsl": "nixos-wsl",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nixpkgs-latest": "nixpkgs-latest",
-        "nixpkgs-riscv": [
-          "nixos-riscv",
-          "nixpkgs"
-        ],
+        "nixpkgs-riscv": "nixpkgs-riscv",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
         "nvfetcher": "nvfetcher",
