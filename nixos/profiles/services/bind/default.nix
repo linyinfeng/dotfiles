@@ -14,6 +14,8 @@ in
 {
   services.bind = {
     enable = true;
+    listenOn = [ ];
+    listenOnIpv6 = [ ];
     zones = { }; # not authority
     cacheNetworks = [
       data.dn42_v4_cidr
