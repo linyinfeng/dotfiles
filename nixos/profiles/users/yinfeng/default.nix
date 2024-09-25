@@ -22,6 +22,7 @@ in
     inherit uid;
     hashedPasswordFile = config.sops.secrets."user-password/${name}".path;
     isNormalUser = true;
+    autoSubUidGidRange = true;
     shell = pkgs.fish;
     home = homeDirectory;
     extraGroups =
