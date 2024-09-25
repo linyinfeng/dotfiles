@@ -221,6 +221,21 @@ in
         };
       };
     };
+    management = {
+      endpoints = {
+        web = {
+          allowed-origins = [
+            "https://sicp-staging.li7g.com"
+            "http://localhost:5173"
+            "http://localhost:3000"
+          ];
+          allowed-methods = "*";
+          allowed-headers = "*";
+          allowed-credentials = true;
+          max-age = "3600s";
+        };
+      };
+    };
   };
 
   services.nginx.virtualHosts."sicp-staging.*" =
