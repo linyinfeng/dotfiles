@@ -16,12 +16,14 @@ in
     path = with pkgs; [
       openjdk
     ];
+    unitConfig = {
+      ConditionPathExists = "/var/lib/sicp-staging/app.jar";
+    };
     serviceConfig = {
       User = config.users.users.sicp-staging.name;
       Group = config.users.groups.sicp-staging.name;
       StateDirectory = "sicp-staging";
       WorkingDirectory = "/var/lib/sicp-staging";
-      ConditionPathExists = "/var/lib/sicp-staging/app.jar";
       LoadCredential = [
         "application.yml:${config.sops.templates."sicp-staging-application.yml".path}"
       ];
