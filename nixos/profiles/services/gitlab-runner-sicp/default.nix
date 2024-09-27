@@ -4,6 +4,7 @@
     enable = true;
     services = {
       sicp-oj-docker = {
+        description = config.networking.hostName;
         authenticationTokenConfigFile = config.sops.templates."gitlab-runner-sicp-oj-docker-auth".path;
         dockerImage = "alpine";
         dockerVolumes = [
