@@ -162,10 +162,11 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=341520
-        inherit (unstable-small) waybar;
-      })
+      (
+        _final: _prev:
+        {
+        }
+      )
     ];
 in
 {

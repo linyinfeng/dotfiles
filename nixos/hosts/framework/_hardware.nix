@@ -1,6 +1,5 @@
 # https://github.com/NixOS/nixos-hardware/blob/master/framework/13-inch/12th-gen-intel/default.nix
 {
-  inputs,
   config,
   pkgs,
   lib,
@@ -8,15 +7,8 @@
 }:
 lib.mkMerge [
   {
-    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=335482
-    # boot.extraModulePackages = with config.boot.kernelPackages; [
-    #   framework-laptop-kmod
-    # ];
-    boot.extraModulePackages = [
-      (config.boot.kernelPackages.callPackage
-        "${inputs.nixpkgs-unstable-small}/pkgs/os-specific/linux/framework-laptop-kmod/default.nix"
-        { }
-      )
+    boot.extraModulePackages = with config.boot.kernelPackages; [
+      framework-laptop-kmod
     ];
   }
 
