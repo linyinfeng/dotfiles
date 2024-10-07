@@ -95,14 +95,33 @@
       };
 
       home-manager.users.yinfeng =
-        { suites, ... }:
+        { suites, profiles, ... }:
         {
-          imports = suites.full;
+          imports =
+            suites.full
+            ++ (with profiles; [
+              ardour
+            ]);
           programs.firefox.profiles.main.settings = {
             "media.ffmpeg.vaapi.enabled" = true;
             "media.navigator.mediadatadecoder_vpx_enabled" = true;
           };
         };
+      # for ardour
+      security.pam.loginLimits = [
+        {
+          domain = "yinfeng";
+          item = "memlock";
+          type = "-";
+          value = "unlimited"; # 1 GiB
+        }
+        {
+          domain = "yinfeng";
+          item = "rtprio";
+          type = "-";
+          value = "unlimited";
+        }
+      ];
 
       boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;
