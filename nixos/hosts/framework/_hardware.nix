@@ -10,6 +10,9 @@ lib.mkMerge [
     boot.extraModulePackages = with config.boot.kernelPackages; [
       framework-laptop-kmod
     ];
+    environment.systemPackages = with pkgs; [
+      fw-ectool
+    ];
   }
 
   {
