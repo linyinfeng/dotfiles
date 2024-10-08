@@ -74,6 +74,8 @@ in
       pv
       ripgrep
       rlwrap
+      s-tui
+      stress
       unar
       unrar
       unzip
