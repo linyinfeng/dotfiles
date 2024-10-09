@@ -9,7 +9,7 @@
     };
     settings = {
       hostname = "keycloak.li7g.com";
-      proxy = "edge";
+      proxy-headers = "xforwarded";
       http-host = "127.0.0.1";
       http-port = config.ports.keycloak;
     };
