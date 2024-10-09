@@ -11,8 +11,15 @@ let
       ) config.users.users
     );
   mkIdRangeFile = kindLetter: lib.concatStringsSep "\n" (entries kindLetter) + "\n";
+  commonSettings = {
+    mode = "0644"; # newuidmap open files using O_NOFOLLOW
+  };
 in
 {
-  environment.etc."subuid".text = mkIdRangeFile "U";
-  environment.etc."subgid".text = mkIdRangeFile "G";
+  environment.etc."subuid" = commonSettings // {
+    text = mkIdRangeFile "U";
+  };
+  environment.etc."subgid" = commonSettings // {
+    text = mkIdRangeFile "G";
+  };
 }
