@@ -5,7 +5,7 @@
   ...
 }:
 let
-  version = 29; # pinned
+  version = 30; # pinned
 
   cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
@@ -122,7 +122,7 @@ in
         onlyoffice
         memories
         previewgenerator
-        maps
+        # maps # TODO wait for support on nextcloud 30
         ;
     };
     notify_push = {
