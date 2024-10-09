@@ -13,7 +13,7 @@
 
   boot.initrd.systemd = {
     # enable = lib.mkForce false;
-    enableTpm2 = false;
+    tpm2.enable = false;
   };
 
   boot.kernelPatches = [
