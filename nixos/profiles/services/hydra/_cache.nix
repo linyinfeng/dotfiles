@@ -67,7 +67,7 @@ in
         echo "enter critical section"
 
         echo "canceling all unfinished multipart uploads..."
-        backblaze-b2 cancel-all-unfinished-large-files "${cacheBucketName}"
+        backblaze-b2 file large unfinished cancel "b2://${cacheBucketName}"
 
         echo "removing narinfo cache..."
         rm -rf /var/lib/cache-li7g-com/.cache
