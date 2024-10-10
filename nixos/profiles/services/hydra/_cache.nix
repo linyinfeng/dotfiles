@@ -94,8 +94,11 @@ in
       ];
     };
     environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
-    requiredBy = [ "hydra-update-gc-roots.service" ];
     after = [ "hydra-update-gc-roots.service" ];
+  };
+  systemd.timers."gc-cache-li7g-com" = {
+    timerConfig.OnCalendar = "02:00";
+    wantedBy = [ "timers.target" ];
   };
 
   sops.secrets."b2_cache_key_id" = {
