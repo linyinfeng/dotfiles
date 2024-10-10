@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   winVirtioIso = pkgs.runCommand "win-virtio-iso" { } ''
     mkdir -p "$out/share/win-virtio"
@@ -24,4 +24,9 @@ in
   # virtio win
   environment.systemPackages = [ winVirtioIso ];
   environment.pathsToLink = [ "/share/win-virtio" ];
+
+  networking.firewall.allowedUDPPorts = [
+    config.ports.dns
+    config.ports.dhcp-server
+  ];
 }

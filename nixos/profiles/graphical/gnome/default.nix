@@ -93,8 +93,8 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
     3389 # RDP
   ];
   networking.firewall.allowedUDPPorts = [
-    53 # DNS  server for hotsport
-    67 # DHCP server for hotsport
+    config.ports.dns # DNS  server for hotsport
+    config.ports.dhcp-server # DHCP server for hotsport
   ];
 
   environment.global-persistence.user = {

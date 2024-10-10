@@ -21,6 +21,8 @@
     ports = {
       ssh-honeypot = 22;
       dns = 53;
+      dhcp-server = 67;
+      dhcp-client = 68;
       http = 80;
       bgp = 179;
       https = 443;
