@@ -137,7 +137,6 @@
     cachix.inputs.nixpkgs.follows = "nixpkgs";
     cachix.inputs.devenv.follows = "blank";
     cachix.inputs.flake-compat.follows = "flake-compat";
-    cachix.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
 
     commit-notifier.url = "github:linyinfeng/commit-notifier";
     commit-notifier.inputs.crane.follows = "crane";
