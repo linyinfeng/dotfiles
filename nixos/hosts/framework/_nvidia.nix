@@ -57,6 +57,7 @@ in
     nvitop
     nvtopPackages.full
     vulkan-tools
+    cudatoolkit
   ];
   systemd.services.display-manager.environment = envVars;
   environment.sessionVariables = envVars;
