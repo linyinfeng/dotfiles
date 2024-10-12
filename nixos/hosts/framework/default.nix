@@ -101,6 +101,7 @@
             suites.full
             ++ (with profiles; [
               ardour
+              blender
             ]);
           programs.firefox.profiles.main.settings = {
             "media.ffmpeg.vaapi.enabled" = true;

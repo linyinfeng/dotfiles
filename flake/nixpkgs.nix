@@ -141,6 +141,9 @@ let
           ];
         });
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
+      blender = prev.blender.override {
+        cudaSupport = true;
+      };
     })
   ];
   alternativeChannels = nixpkgsArgs: {
