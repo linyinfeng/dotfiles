@@ -29,6 +29,12 @@
     pre-commit-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     pre-commit-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
 
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
+    git-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
+    git-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
+    git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
+
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.flake-compat.follows = "flake-compat";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
@@ -137,6 +143,7 @@
     cachix.inputs.nixpkgs.follows = "nixpkgs";
     cachix.inputs.devenv.follows = "blank";
     cachix.inputs.flake-compat.follows = "flake-compat";
+    cachix.inputs.git-hooks.follows = "git-hooks-nix";
 
     commit-notifier.url = "github:linyinfeng/commit-notifier";
     commit-notifier.inputs.crane.follows = "crane";
