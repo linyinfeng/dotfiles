@@ -408,3 +408,23 @@ output "sicp_staging_redis_password" {
   value     = random_password.sicp_staging_redis.result
   sensitive = true
 }
+resource "random_password" "sicp_tutorials" {
+  length  = 16
+  special = false
+}
+resource "random_password" "sicp_tutorials_salt" {
+  length  = 8
+  special = false
+}
+resource "htpasswd_password" "sicp_tutorials" {
+  password = random_password.sicp_tutorials.result
+  salt     = random_password.sicp_tutorials_salt.result
+}
+output "sicp_tutorials_password" {
+  value     = random_password.sicp_tutorials.result
+  sensitive = true
+}
+output "sicp_tutorials_hashed_password" {
+  value     = htpasswd_password.sicp_tutorials.sha512
+  sensitive = true
+}
