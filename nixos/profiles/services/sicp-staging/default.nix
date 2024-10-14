@@ -52,9 +52,12 @@ lib.mkMerge [
       extraGroups = [
         config.users.groups.podman.name
       ];
-      openssh.authorizedKeys.keys = config.users.users.root.openssh.authorizedKeys.keys ++ [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPFIcA9bW0fYc2i7aiGLaS3XaYnTCnqCCZtCKDaxG/4 sicp-staging-gitlab"
-      ];
+      openssh.authorizedKeys = {
+        keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPFIcA9bW0fYc2i7aiGLaS3XaYnTCnqCCZtCKDaxG/4 sicp-staging-gitlab"
+        ];
+        inherit (config.users.users.root.openssh.authorizedKeys) keyFiles;
+      };
     };
     users.groups.sicp-staging = { };
     security.polkit.extraConfig = ''
