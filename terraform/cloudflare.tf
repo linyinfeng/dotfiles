@@ -105,7 +105,6 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
 locals {
   service_cname_mappings = {
     portal        = { on = "hkg0", proxy = true }
-    ntfy          = { on = "hkg0", proxy = true }
     atuin         = { on = "hkg0", proxy = true }
     cache-overlay = { on = "hkg0", proxy = true }
     nuc-proxy     = { on = "hkg0", proxy = true }

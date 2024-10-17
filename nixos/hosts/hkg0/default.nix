@@ -17,7 +17,6 @@ in
       programs.tg-send
       services.nginx
       services.acme
-      services.ntfy
       services.portal-server
       services.atuin
       services.nuc-proxy
