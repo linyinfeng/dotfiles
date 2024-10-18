@@ -104,11 +104,12 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
 
 locals {
   service_cname_mappings = {
-    portal        = { on = "hkg0", proxy = true }
-    atuin         = { on = "hkg0", proxy = true }
-    cache-overlay = { on = "hkg0", proxy = true }
-    nuc-proxy     = { on = "hkg0", proxy = true }
-    hydra-proxy   = { on = "hkg0", proxy = true }
+    portal         = { on = "hkg0", proxy = true }
+    atuin          = { on = "hkg0", proxy = true }
+    cache-overlay  = { on = "hkg0", proxy = true }
+    nuc-proxy      = { on = "hkg0", proxy = true }
+    hydra-proxy    = { on = "hkg0", proxy = true }
+    sicp-tutorials = { on = "hkg0", proxy = true }
     # typhon-proxy    = { on = "hkg0", proxy = true }
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }

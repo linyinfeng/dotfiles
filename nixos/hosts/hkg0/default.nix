@@ -21,6 +21,7 @@ in
       services.atuin
       services.nuc-proxy
       services.cache-overlay
+      services.sicp-tutorials
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
