@@ -207,11 +207,15 @@
               windows = {
                 priority = 900;
                 size = "512G";
+                content = {
+                  type = "filesystem";
+                  format = "ntfs";
+                };
               };
-              reserved = {
-                priority = 1000;
-                size = "100%";
-              };
+              # reserved = {
+              #   priority = 1000;
+              #   size = "100%";
+              # };
             };
           };
         };
