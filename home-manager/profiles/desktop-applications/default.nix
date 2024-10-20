@@ -13,12 +13,12 @@ in
     [
       # keep-sorted start
       amberol
-      # calibre # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=348697
+      calibre
       clapper
       element-desktop
       fractal
       gimp
-      # gnuradio # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=348697
+      gnuradio
       gparted
       inkscape
       libreoffice-fresh

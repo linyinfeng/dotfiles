@@ -165,10 +165,11 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=348887
-        inherit (latest) cliphist;
-      })
+      (
+        _final: _prev:
+        {
+        }
+      )
     ];
 in
 {
