@@ -165,11 +165,10 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (
-        _final: _prev:
-        {
-        }
-      )
+      (final: _prev: {
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=349783
+        utillinux = final.util-linux;
+      })
     ];
 in
 {
