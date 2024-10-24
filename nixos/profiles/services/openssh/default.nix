@@ -59,7 +59,7 @@ in
       ''
       + lib.concatMapStringsSep "\n" (h: ''
         Host ${h}
-          HostName ${h}.ts.li7g.com
+          HostName ${h}.dn42.li7g.com
           Port ${toString config.ports.ssh}
         Host ${h}.dn42
           HostName ${h}.dn42.li7g.com
