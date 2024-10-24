@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   suites,
   profiles,
@@ -70,8 +69,6 @@ in
         efi.canTouchEfiVariables = true;
         systemd-boot.enable = true;
       };
-      # TODO broken with 6.7.1
-      boot.kernelPackages = pkgs.linuxPackages;
       hardware.enableRedistributableFirmware = true;
       services.fwupd.enable = true;
 
