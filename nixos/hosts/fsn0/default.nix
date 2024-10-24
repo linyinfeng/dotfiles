@@ -20,7 +20,6 @@
       services.bird-lg
       services.keycloak
       services.matrix
-      services.matrix-sliding-sync
       # my account is banned by openai
       # services.matrix-chatgpt-bot
       services.mastodon

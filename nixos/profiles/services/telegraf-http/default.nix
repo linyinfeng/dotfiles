@@ -93,12 +93,6 @@ let
         code = 302;
       }
     ];
-    matrix-syncv3 = [
-      {
-        url = "https://matrix-syncv3.li7g.com/_matrix/client/unstable/org.matrix.msc3575/sync";
-        code = 405;
-      }
-    ];
     hledger = [
       {
         url = "https://hledger.li7g.com";

@@ -131,7 +131,6 @@ locals {
     matrix-qq       = { on = "shg0", proxy = false }
     teamspeak       = { on = "shg0", proxy = false }
     matrix          = { on = "fsn0", proxy = true }
-    matrix-syncv3   = { on = "fsn0", proxy = true }
     synapse-admin   = { on = "fsn0", proxy = true }
     social          = { on = "fsn0", proxy = true }
     mastodon        = { on = "fsn0", proxy = true }

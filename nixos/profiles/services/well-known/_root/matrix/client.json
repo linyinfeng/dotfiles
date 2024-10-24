@@ -1,6 +1,3 @@
 {
-  "m.homeserver": { "base_url": "https://matrix.li7g.com" },
-  "org.matrix.msc3575.proxy": {
-    "url": "https://matrix-syncv3.li7g.com"
-  }
+  "m.homeserver": { "base_url": "https://matrix.li7g.com" }
 }

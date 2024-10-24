@@ -45,7 +45,6 @@
       nix-serve = 3080;
       matrix = 3090;
       matrix-manhole = 3091;
-      matrix-sliding-sync = 3092;
       mautrix-telegram-appservice = 3100;
       matrix-qq-appservice = 3101;
       minio = 3110;
