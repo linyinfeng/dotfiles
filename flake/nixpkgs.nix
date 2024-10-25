@@ -168,6 +168,7 @@ let
       (final: _prev: {
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=349783
         utillinux = final.util-linux;
+        inherit (latest) ccid;
       })
     ];
 in
