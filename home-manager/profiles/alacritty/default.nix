@@ -1,14 +1,25 @@
 { pkgs, lib, ... }:
 let
-  # an empty file used to trigger config hot reloading
-  touchFile = ".config/alacritty/touch.toml";
-  themeFile = ".config/alacritty/theme.toml";
+  toml = pkgs.formats.toml { };
+  themeFile = "theme.toml";
+  themeToml = toml.generate "theme.toml" {
+    general.import = [
+      "${pkgs.alacritty-theme}/github_light.toml"
+    ];
+  };
   darkmanSwitch = pkgs.writeShellApplication {
     name = "darkman-switch-alacritty";
+    runtimeInputs = with pkgs; [
+      toml-cli
+      moreutils
+    ];
     text = ''
       mode="$1"
-      ln --force --symbolic "${pkgs.alacritty-theme}/github_$mode.toml" "$HOME/${themeFile}"
-      touch "$HOME/${touchFile}"
+      pushd "$HOME/.config/alacritty"
+
+      toml set "${themeFile}" "general.import[0]" "${pkgs.alacritty-theme}/github_$mode.toml" | sponge "${themeFile}"
+
+      popd
     '';
   };
 in
@@ -22,16 +33,15 @@ in
           y = 3;
         };
       };
-      import = [
-        touchFile
+      general.import = [
         themeFile
       ];
     };
   };
   systemd.user.tmpfiles.rules = [
     # link theme if not exists
-    "L %h/${themeFile} - - - - ${pkgs.alacritty-theme}/github_light.toml"
-    "f %h/${touchFile} - - - -"
+    "C %h/.config/alacritty/${themeFile} - - - - ${themeToml}"
+    "z %h/.config/alacritty/${themeFile} 644 - - -"
   ];
   services.darkman = {
     lightModeScripts.alacritty = "${lib.getExe darkmanSwitch} light";
