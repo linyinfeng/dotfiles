@@ -79,7 +79,6 @@
     typhon.url = "github:typhon-ci/typhon";
     typhon.inputs.crane.follows = "crane";
     typhon.inputs.flake-compat.follows = "flake-compat";
-    typhon.inputs.flake-schemas.follows = "flake-schemas";
     typhon.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO use upstream
