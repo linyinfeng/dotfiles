@@ -131,15 +131,15 @@ let
       gnome-shell = (prev.gnome-shell.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/gnome-shell-preedit-fix.patch ];
       });
-      mutter =
-        assert (lib.versions.major prev.mutter.version == "46");
-        (prev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [
-            # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
-            ../patches/mutter-triple-buffering.patch
-            ../patches/mutter-text-input-v1.patch
-          ];
-        });
+      # mutter =
+      #   assert (lib.versions.major prev.mutter.version == "46");
+      #   (prev.mutter.override { stdenv = final.ccacheStdenv; }).overrideAttrs (old: {
+      #     patches = (old.patches or [ ]) ++ [
+      #       # git format-patch (git merge-base origin/gnome-$MV ubuntu/triple-buffering-$PV-$MV)..ubuntu/triple-buffering-$PV-$MV --stdout
+      #       ../patches/mutter-triple-buffering.patch
+      #       ../patches/mutter-text-input-v1.patch
+      #     ];
+      #   });
       linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
       blender = prev.blender.override {
         cudaSupport = true;
