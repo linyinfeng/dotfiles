@@ -91,7 +91,6 @@
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    emacs-overlay.inputs.flake-utils.follows = "flake-utils";
     emacs-overlay.inputs.nixpkgs-stable.follows = "blank";
 
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
