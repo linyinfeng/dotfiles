@@ -101,7 +101,8 @@
             suites.full
             ++ (with profiles; [
               ardour
-              blender
+              # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=353598
+              # blender
             ]);
           programs.firefox.profiles.main.settings = {
             "media.ffmpeg.vaapi.enabled" = true;
