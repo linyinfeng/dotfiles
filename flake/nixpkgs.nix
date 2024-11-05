@@ -167,6 +167,10 @@ let
     [
       (_final: _prev: {
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=353230
+        inherit (unstable-small) yubikey-manager;
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=351902
+        inherit (unstable-small) blender;
       })
     ];
 in
