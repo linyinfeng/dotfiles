@@ -170,7 +170,7 @@ let
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=353230
         inherit (unstable-small) yubikey-manager;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=353198
-        inherit (unstable-smalle) jellyfin-ffmpeg;
+        inherit (unstable-small) jellyfin-ffmpeg;
       })
     ];
 in
