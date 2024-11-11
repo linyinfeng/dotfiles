@@ -163,7 +163,6 @@
     niri-flake.inputs.nixpkgs.follows = "nixpkgs";
     niri-flake.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     niri-flake.inputs.niri-stable.follows = "blank";
-    niri-flake.inputs.flake-parts.follows = "flake-parts";
 
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
