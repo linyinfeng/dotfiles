@@ -5,5 +5,8 @@
   ...
 }:
 {
-  boot.binfmt.emulatedSystems = lib.remove pkgs.stdenv.hostPlatform.system config.lib.self.systems;
+  boot.binfmt = {
+    preferStaticEmulators = true;
+    emulatedSystems = lib.remove pkgs.stdenv.hostPlatform.system config.lib.self.systems;
+  };
 }
