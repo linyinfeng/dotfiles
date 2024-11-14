@@ -111,15 +111,15 @@ lib.mkMerge [
         }
         {
           profile = {
-            name = "docked-dorm-single";
+            name = "docked-dorm";
             outputs = [
               {
-                criteria = dormMonitor;
+                criteria = embedded;
                 position = "0,0";
               }
               {
-                criteria = embedded;
-                status = "disable";
+                criteria = dormMonitor;
+                position = "1536,0";
               }
             ];
           };
