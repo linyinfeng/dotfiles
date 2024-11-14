@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   simpleDeviceNames = [
-    "framework"
+    "owl"
     "xps8930"
     "nuc"
   ];

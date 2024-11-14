@@ -8,7 +8,7 @@ let
   yubikeyKeys = lib.attrValues yubikeys;
   github = "age143hpp7hqp4708z2dy868llsj8u9lc2jyq59ahnzusjvwg5g2u3cs3jaltg";
   hosts = {
-    framework = {
+    owl = {
       key = "age1qrrwcee244ak7ax9xwuxdttzsan24g655lpmvry3275j6v4n2pesjwyawu";
       owned = true;
     };
@@ -42,10 +42,6 @@ let
     };
     shg0 = {
       key = "age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf";
-      owned = true;
-    };
-    framework-wsl = {
-      key = "age188pg4utlvtj3adwqqy5kjmjala4arls5qkyeylry94233q6dhedsecean3";
       owned = true;
     };
     duo = {

@@ -99,7 +99,7 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
-    framework = {
+    owl = {
       records = {}
       ddns_records = {
         aaaa = {
@@ -131,13 +131,6 @@ locals {
       endpoints_v6 = []
     }
     enchilada = {
-      records      = {}
-      ddns_records = {}
-      host_indices = []
-      endpoints_v4 = []
-      endpoints_v6 = []
-    }
-    framework-wsl = {
       records      = {}
       ddns_records = {}
       host_indices = []

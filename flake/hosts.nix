@@ -380,14 +380,12 @@ in
 
   flake.nixosConfigurations = lib.mkMerge [
     (mkHost {
-      name = "framework";
+      name = "owl";
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
         common-pc
-        common-cpu-intel
+        common-cpu-amd
         common-pc-ssd
-        # disabled infavor of hosts/framework/hardware.nix
-        # framework-12th-gen-intel
       ];
     })
 
@@ -453,11 +451,6 @@ in
     })
 
     (mkHost {
-      name = "framework-wsl";
-      system = "x86_64-linux";
-    })
-
-    (mkHost {
       name = "duo";
       system = "riscv64-linux";
       extraModules = [
@@ -504,7 +497,6 @@ in
       "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
     };
     "riscv64-linux"."bootsd/duo" = self.nixosConfigurations.duo.config.system.build.bootsd;
-    "x86_64-linux"."linux/framework" =
-      self.nixosConfigurations.framework.config.boot.kernelPackages.kernel;
+    "x86_64-linux"."linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
   };
 }

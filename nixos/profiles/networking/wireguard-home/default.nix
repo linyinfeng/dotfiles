@@ -9,7 +9,7 @@ let
   inherit (config.networking) hostName;
   port = config.ports.wireguard;
   hosts = {
-    framework = {
+    owl = {
       ip = "192.168.2.2";
       inherit port;
     };

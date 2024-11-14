@@ -13,7 +13,6 @@
       boot.plymouth
       boot.secure-boot
       boot.lanzaboote-uki
-      # boot.kernel.intel
       nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
@@ -34,7 +33,6 @@
       programs.service-mail
       programs.tg-send
       hardware.backlight
-      # hardware.sr-iov
       users.yinfeng
     ])
     ++ [
@@ -52,12 +50,8 @@
       boot.loader.timeout = 10;
 
       # kernel tweaks
-      # boot.kernel.intel.type = "lts";
-      # TODO broken with auto-allocate-uids
       # boot.kernelModuleSigning.enable = true;
       # boot.kernelLockdown = true;
-
-      boot.kernelModules = [ "kvm-intel" ];
 
       hardware.enableRedistributableFirmware = true;
 
@@ -67,7 +61,7 @@
         enable = true;
         settings = {
           CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
+          CPU_ENERGY_PERF_POLICY_ON_AC = "default";
         };
       };
       services.logind.lidSwitchExternalPower = "ignore";

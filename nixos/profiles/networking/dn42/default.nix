@@ -34,8 +34,8 @@ let
     };
 
     "nuc".enable = false; # unmetered
+    "owl".enable = false; # mobile
     "xps8930".enable = false; # mobile
-    "framework".enable = false; # mobile
   };
   regionTable = {
     "lax0" = {
@@ -68,7 +68,7 @@ let
       country = 1156; # China
     };
     # mobile devices
-    "framework" = {
+    "owl" = {
       region = null;
       country = null;
     };
