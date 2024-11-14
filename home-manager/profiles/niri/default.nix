@@ -285,6 +285,21 @@ lib.mkMerge [
                   "toggle"
                 ];
               };
+              # brightness keys
+              "XF86MonBrightnessUp" = {
+                allow-when-locked = true;
+                action.spawn = [
+                  "lightctl"
+                  "up"
+                ];
+              };
+              "XF86MonBrightnessDown" = {
+                allow-when-locked = true;
+                action.spawn = [
+                  "lightctl"
+                  "down"
+                ];
+              };
               # quit windnow
               "Mod+Q".action.close-window = [ ];
               # first and last
