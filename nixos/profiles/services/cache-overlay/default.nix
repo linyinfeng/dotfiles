@@ -37,6 +37,7 @@ in
       proxy_set_header Host $pass_with_host;
       proxy_set_header X-Forwarded-Host $pass_with_host;
       proxy_set_header Authorization $pass_with_auth;
+      proxy_ssl_server_name on;
     '';
     locations."@fallback".extraConfig = ''
       rewrite /(.*) /${cacheBucketName}/$1 break;
