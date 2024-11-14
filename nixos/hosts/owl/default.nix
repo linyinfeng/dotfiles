@@ -28,7 +28,6 @@
       services.flatpak
       services.ssh-honeypot
       services.portal-client
-      services.fprintd
       graphical.graphical-powersave-target
       programs.service-mail
       programs.tg-send
