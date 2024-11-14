@@ -384,8 +384,10 @@ in
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
         common-pc
-        common-cpu-amd
         common-pc-ssd
+        common-cpu-amd
+        common-cpu-amd-pstate
+        common-gpu-amd
       ];
     })
 
