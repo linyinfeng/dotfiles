@@ -1,9 +1,8 @@
 { pkgs, lib, ... }:
 let
-  tag = "sdm845-6.11.0_rc2-r2";
-  sha256 = "sha256-v48UfKESS7SQhLmgsRT6b1IoEcjuhnXBANGUVYz7WSs=";
-  # version = lib.elemAt (lib.strings.match "sdm845-([0-9\\.]+)(-r[0-9]+)?" tag) 0;
-  version = "6.11.0-rc2";
+  tag = "sdm845-6.11";
+  sha256 = "sha256-8DzARRtTNrYFyQaZtDFaRJPhoaEJLXGim8mcfFYER9U=";
+  version = lib.elemAt (lib.strings.match "sdm845-([0-9\\.]+)(-r[0-9]+)?" tag) 0;
   major = lib.versions.major version;
   minor = lib.versions.minor version;
   structuredExtraConfig = { };
