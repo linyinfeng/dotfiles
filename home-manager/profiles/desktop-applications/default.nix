@@ -30,6 +30,7 @@ in
       teamspeak_client
       transmission-remote-gtk
       virt-manager
+      wechat-uos
       xournalpp
       zotero
       # keep-sorted end
