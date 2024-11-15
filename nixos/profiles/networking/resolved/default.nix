@@ -1,25 +1,26 @@
 { config, lib, ... }:
-let
-  dnsServers = [
-    "[${config.lib.self.data.dn42_anycast_dns_v6}]:${toString config.ports.dns-over-tls}#dns.li7g.com"
-  ];
-in
 lib.mkMerge [
   {
     services.resolved = {
       enable = true;
-      # At the time of September 2023, systemd upstream advise to disable DNSSEC by default as the current code is not
-      # robust enough to deal with “in the wild” non-compliant servers, which will usually give you a broken bad
-      # experience in addition of insecure.
-      # dnssec = "allow-downgrade";
-      dnssec = "false";
       llmnr = "true";
-      extraConfig = lib.mkIf config.networking.mesh.enable ''
-        DNS=${lib.concatStringsSep " " dnsServers}
-        # link specific servers may not support dns over tls
-        DNSOverTLS=opportunistic
-        Domains=~.
-      '';
+      dnssec = "allow-downgrade";
+      dnsovertls = "opportunistic";
+      fallbackDns = lib.mkMerge [
+        (lib.mkIf config.networking.mesh.enable [
+          "[${config.lib.self.data.dn42_anycast_dns_v6}]:${toString config.ports.dns-over-tls}#dns.li7g.com"
+        ])
+        [
+          "1.1.1.1#cloudflare-dns.com"
+          "8.8.8.8#dns.google"
+          "1.0.0.1#cloudflare-dns.com"
+          "8.8.4.4#dns.google"
+          "2606:4700:4700::1111#cloudflare-dns.com"
+          "2001:4860:4860::8888#dns.google"
+          "2606:4700:4700::1001#cloudflare-dns.com"
+          "2001:4860:4860::8844#dns.google"
+        ]
+      ];
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
   }
