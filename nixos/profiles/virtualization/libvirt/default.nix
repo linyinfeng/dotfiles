@@ -21,8 +21,10 @@ in
 
   environment.global-persistence.user.directories = [ ".config/libvirt" ];
 
-  # virtio win
-  environment.systemPackages = [ winVirtioIso ];
+  environment.systemPackages = [
+    pkgs.libguestfs-with-appliance
+    winVirtioIso
+  ];
   environment.pathsToLink = [ "/share/win-virtio" ];
 
   networking.firewall.allowedUDPPorts = [
