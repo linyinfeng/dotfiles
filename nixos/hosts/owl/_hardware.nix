@@ -115,7 +115,7 @@ lib.mkMerge [
             outputs = [
               {
                 criteria = embedded;
-                position = "0,0";
+                position = "0,192";
               }
               {
                 criteria = dormMonitor;
