@@ -788,6 +788,10 @@ lib.mkMerge [
 
   # kanshi
   {
+    home.packages = with pkgs; [
+      wdisplays
+      wlr-randr
+    ];
     services.kanshi = {
       enable = true;
       systemdTarget = "niri.service";
