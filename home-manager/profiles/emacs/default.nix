@@ -24,6 +24,15 @@ let
         {
           # currently nothing
           # inherit (lEpkgs) ;
+          # TODO broken on v4.0.4
+          emacsql = epkgs.emacsql.overrideAttrs (_old: {
+            src = pkgs.fetchFromGitHub {
+              owner = "magit";
+              repo = "emacsql";
+              rev = "v4.0.3";
+              hash = "sha256-MaL3t+2MhWOE6eLmt8m4ImpsKeNeUZ4S8zEoQVu51ZY=";
+            };
+          });
         }
       );
   };
