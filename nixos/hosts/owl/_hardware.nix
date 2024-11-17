@@ -61,6 +61,7 @@ lib.mkMerge [
           output = {
             criteria = embedded;
             scale = 2.0;
+            adaptiveSync = true;
           };
         }
         {
