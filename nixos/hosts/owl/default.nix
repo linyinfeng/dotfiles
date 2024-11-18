@@ -60,7 +60,9 @@
         enable = true;
         settings = {
           CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+          PLATFORM_PROFILE_ON_BAT = "low-power";
           CPU_ENERGY_PERF_POLICY_ON_AC = "default";
+          PLATFORM_PROFILE_ON_AC = "balanced";
         };
       };
       services.logind.lidSwitchExternalPower = "ignore";
