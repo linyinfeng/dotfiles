@@ -171,6 +171,8 @@ let
         inherit (unstable-small) mission-center;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357104
         inherit (unstable-small) vvenc;
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357555
+        inherit (unstable-small) libreoffice-fresh;
       })
     ];
 in
