@@ -167,12 +167,8 @@ let
     [
       (_final: _prev: {
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=356590
-        inherit (unstable-small) fcitx5-mozc;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357219
         inherit (unstable-small) mission-center;
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=355885
-        inherit (unstable-small) calibre;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357104
         inherit (unstable-small) vvenc;
       })
