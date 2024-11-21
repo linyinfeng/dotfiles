@@ -173,6 +173,8 @@ let
         inherit (unstable-small) mission-center;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=355885
         inherit (unstable-small) calibre;
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357104
+        inherit (unstable-small) vvenc;
       })
     ];
 in
