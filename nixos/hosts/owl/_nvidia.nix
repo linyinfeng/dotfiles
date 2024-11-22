@@ -6,8 +6,6 @@ let
       originalPackage
       // {
         open = originalPackage.open.overrideAttrs (old: {
-          # TODO wait for https://github.com/NixOS/nixpkgs/issues/357643
-          patches = [ ../../../patches/nvidia-drm-foop-flags.patch ];
           nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [
             config.boot.kernelModuleSigning.signModule
           ];
