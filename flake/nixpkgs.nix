@@ -147,6 +147,7 @@ let
     })
   ];
   alternativeChannels = nixpkgsArgs: {
+    unstable = import inputs.nixpkgs nixpkgsArgs;
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
     unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
     stable = import inputs.nixpkgs-stable nixpkgsArgs;
@@ -162,7 +163,12 @@ let
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
+      inherit (alternativeChannels nixpkgsArgs)
+        unstable
+        latest
+        unstable-small
+        stable
+        ;
     in
     [
       (_final: _prev: {
@@ -173,6 +179,8 @@ let
         inherit (unstable-small) vvenc;
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357555
         inherit (unstable-small) libreoffice-fresh;
+        # TODO not working with selected nix
+        inherit (unstable) nixd;
       })
     ];
 in
