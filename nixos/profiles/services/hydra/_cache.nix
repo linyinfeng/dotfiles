@@ -14,6 +14,7 @@ in
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
+      export AWS_EC2_METADATA_DISABLED=true
 
       root="$1"
       echo "root = $root"
@@ -51,7 +52,7 @@ in
     };
     environment = lib.mkMerge [
       { HOME = "/var/lib/cache-li7g-com"; }
-      (lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment)
+      # (lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment)
     ];
   };
   systemd.services."gc-cache-li7g-com" = {
