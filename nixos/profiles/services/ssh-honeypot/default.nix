@@ -25,19 +25,6 @@ in
       rsync --verbose --recursive --delete "${cowrieSrc}/" cowrie-src/
       chmod -R u+w cowrie-src
 
-      mkdir -p state share log honeyfs txtcmds
-      rsync --verbose --recursive cowrie-src/var/lib/cowrie/ state/
-      rsync --verbose --recursive cowrie-src/honeyfs/ honeyfs/
-      if [ -f share/cowrie/fs.pickle ]; then
-        echo "backup fs.pickle"
-        mv share/cowrie/fs.pickle share/cowrie/fs.pickle.bak
-      fi
-      rsync --verbose --recursive --delete cowrie-src/share/ share/
-      if [ -f share/cowrie/fs.pickle.bak ]; then
-        echo "restore fs.pickle"
-        mv share/cowrie/fs.pickle.bak share/cowrie/fs.pickle
-      fi
-
       rm -f cowrie-venv/bin/python*
       python3 -m venv cowrie-venv
       source cowrie-venv/bin/activate
@@ -64,11 +51,6 @@ in
     };
     environment = {
       COWRIE_SSH_LISTEN_ENDPOINTS = "tcp6:22:interface=\\:\\:";
-      COWRIE_HONEYPOT_STATE_PATH = "state";
-      COWRIE_HONEYPOT_SHARE_PATH = "share/cowrie";
-      COWRIE_HONEYPOT_LOG_PATH = "log";
-      COWRIE_HONEYPOT_CONTENTS_PATH = "honeyfs";
-      COWRIE_HONEYPOT_TXTCMDS_PATH = "txtcmds";
       COWRIE_HONEYPOT_HOSTNAME = config.networking.hostName;
       COWRIE_HONEYPOT_TIMEZONE = config.time.timeZone;
       COWRIE_HONEYPOT_AUTH_CLASS = "AuthRandom";
