@@ -110,5 +110,7 @@ in
     };
 
     environment.systemPackages = [ scripts ];
+
+    environment.global-persistence.directories = [ "/var/cache" ];
   };
 }
