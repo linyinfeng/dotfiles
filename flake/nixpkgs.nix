@@ -163,24 +163,13 @@ let
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs)
-        unstable
-        latest
-        unstable-small
-        stable
-        ;
+      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
       (_final: _prev: {
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357219
-        inherit (unstable-small) mission-center;
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357104
-        inherit (unstable-small) vvenc;
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=357555
-        inherit (unstable-small) libreoffice-fresh;
         # TODO not working with selected nix
-        inherit (unstable) nixd;
+        inherit (unstable-small) nixd;
       })
     ];
 in
