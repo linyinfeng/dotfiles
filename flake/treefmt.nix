@@ -14,6 +14,12 @@
       '';
     in
     lib.mkMerge [
+      {
+        treefmt = {
+          flakeFormatter = config.isDevSystem;
+          flakeCheck = config.isDevSystem;
+        };
+      }
       (lib.mkIf config.isDevSystem {
         treefmt = {
           projectRootFile = "flake.nix";

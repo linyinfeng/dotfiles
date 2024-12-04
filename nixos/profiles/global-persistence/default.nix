@@ -12,7 +12,4 @@
     ];
     user.directories = [ ".local/share/nix" ];
   };
-
-  # TODO wait for https://github.com/nix-community/impermanence/issues/229
-  systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 }

@@ -45,7 +45,7 @@ in
       bc
       binutils
       btop
-      # compsize # TODO wait for https://github.com/kilobyte/compsize/issues/52
+      compsize
       coreutils
       cryptsetup
       dosfstools
