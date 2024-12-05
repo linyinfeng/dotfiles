@@ -451,45 +451,6 @@ in
       name = "hkg0";
       system = "x86_64-linux";
     })
-
-    (mkHost {
-      name = "duo";
-      system = "riscv64-linux";
-      extraModules = [
-        (
-          {
-            config,
-            lib,
-            pkgs,
-            modulesPath,
-            ...
-          }:
-          let
-            originalModule = import "${inputs.nixos-riscv}/duo-256.nix" {
-              inherit
-                config
-                lib
-                pkgs
-                modulesPath
-                ;
-            };
-          in
-          lib.updateManyAttrsByPath [
-            {
-              path = [
-                "system"
-                "nssModules"
-              ];
-              update = _old: [ ];
-            }
-            {
-              path = [ "nixpkgs" ];
-              update = _old: { };
-            }
-          ] originalModule
-        )
-      ];
-    })
     # PLACEHOLDER new host
   ];
 
@@ -498,7 +459,6 @@ in
       "android-boot-image/enchilada" = self.nixosConfigurations.enchilada.config.system.build.bootImage;
       "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
     };
-    "riscv64-linux"."bootsd/duo" = self.nixosConfigurations.duo.config.system.build.bootsd;
     "x86_64-linux"."linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
   };
 }

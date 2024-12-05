@@ -44,10 +44,6 @@ let
       key = "age1wzm6xztn2m08qr74hg29nv2qlz8537apl4kcqakfyg3gc8l0mcgstrqjpf";
       owned = true;
     };
-    duo = {
-      key = "age1ll4vesj4g09t7954pd3v46nmthcv569xed9g9msadrlz8jhgkcdq6ks7s9";
-      owned = true;
-    };
     # PLACEHOLDER new host
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);
