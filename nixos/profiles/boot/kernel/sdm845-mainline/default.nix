@@ -5,7 +5,10 @@ let
   version = lib.elemAt (lib.strings.match "sdm845-([0-9\\.]+)(-r[0-9]+)?" tag) 0;
   major = lib.versions.major version;
   minor = lib.versions.minor version;
-  structuredExtraConfig = { };
+  inherit (lib.kernel) no;
+  structuredExtraConfig = {
+    TOUCHSCREEN_FTM4 = no;
+  };
 in
 {
   boot = {
