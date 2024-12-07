@@ -50,12 +50,13 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
           inherit (ownerOptions) user group;
         };
       };
-      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" = {
-        "L+" = {
-          argument = config.sops.templates."gnome-remote-desktop-credentials".path;
-          inherit (ownerOptions) user group;
+      "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/credentials.ini" =
+        {
+          "L+" = {
+            argument = config.sops.templates."gnome-remote-desktop-credentials".path;
+            inherit (ownerOptions) user group;
+          };
         };
-      };
       "${config.users.users.gnome-remote-desktop.home}/.local/share/gnome-remote-desktop/grd.conf" = {
         "L+" = {
           argument = toString (

@@ -43,9 +43,8 @@ lib.mkMerge [
             dwt = true; # disable touchpad while typing
             dwtp = true; # disable touchpad while the trackpoint is in use
           };
-          mouse =
-            {
-            };
+          mouse = {
+          };
           warp-mouse-to-focus = true;
           focus-follows-mouse = {
             enable = true;

@@ -641,12 +641,10 @@ with lib;
 
             jump filter
 
-            ${
-              lib.concatMapStringsSep "\n" (
-                level:
-                "meta l4proto { tcp, udp } socket cgroupv2 level ${toString level} @cgroups meta mark set ${toString cfg.tproxy.fwmark}"
-              ) (lib.range 1 cfg.tproxy.maxCgroupLevel)
-            }
+            ${lib.concatMapStringsSep "\n" (
+              level:
+              "meta l4proto { tcp, udp } socket cgroupv2 level ${toString level} @cgroups meta mark set ${toString cfg.tproxy.fwmark}"
+            ) (lib.range 1 cfg.tproxy.maxCgroupLevel)}
           }
 
           chain filter {

@@ -330,26 +330,22 @@ in
           }
           filter filter_mesh_kernel_v4 {
             if source = RTS_STATIC then reject;
-            ${
-              lib.concatMapStringsSep "\n  " (
-                cidr:
-                "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
-                  cfg.thisHost.cidrs.${cidr.name}.preferredAddress
-                };"
-              ) (lib.attrValues cfg.cidrsV4)
-            }
+            ${lib.concatMapStringsSep "\n  " (
+              cidr:
+              "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
+                cfg.thisHost.cidrs.${cidr.name}.preferredAddress
+              };"
+            ) (lib.attrValues cfg.cidrsV4)}
             accept;
           }
           filter filter_mesh_kernel_v6 {
             if source = RTS_STATIC then reject;
-            ${
-              lib.concatMapStringsSep "\n  " (
-                cidr:
-                "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
-                  cfg.thisHost.cidrs.${cidr.name}.preferredAddress
-                };"
-              ) (lib.attrValues cfg.cidrsV6)
-            }
+            ${lib.concatMapStringsSep "\n  " (
+              cidr:
+              "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
+                cfg.thisHost.cidrs.${cidr.name}.preferredAddress
+              };"
+            ) (lib.attrValues cfg.cidrsV6)}
             accept;
           }
           protocol kernel kernel_mesh_v4 {
@@ -384,16 +380,14 @@ in
               type tunnel;
               ${cfg.bird.babelInterfaceConfig}
             };
-            ${
-              lib.concatStringsSep "\n" (
-                lib.mapAttrsToList (pattern: ifCfg: ''
-                  interface "${pattern}" {
-                    type ${ifCfg.type};
-                    ${ifCfg.extraConfig}
-                  };
-                '') cfg.extraInterfaces
-              )
-            }
+            ${lib.concatStringsSep "\n" (
+              lib.mapAttrsToList (pattern: ifCfg: ''
+                interface "${pattern}" {
+                  type ${ifCfg.type};
+                  ${ifCfg.extraConfig}
+                };
+              '') cfg.extraInterfaces
+            )}
           }
         '';
         networking.firewall.allowedUDPPorts = [ config.ports.babel ];

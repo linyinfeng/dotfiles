@@ -22,9 +22,7 @@ in
       let
         source = pkgs.nur.repos.linyinfeng.sources."linux-intel-${cfg.type}";
         intelVersion = source.version;
-        version =
-          lib.elemAt (lib.strings.match "${cfg.type}-v([0-9\\.]+)-linux-([0-9]+T[0-9]+Z)" intelVersion)
-            0;
+        version = lib.elemAt (lib.strings.match "${cfg.type}-v([0-9\\.]+)-linux-([0-9]+T[0-9]+Z)" intelVersion) 0;
         major = lib.versions.major version;
         minor = lib.versions.minor version;
         linux_intel_fn =
