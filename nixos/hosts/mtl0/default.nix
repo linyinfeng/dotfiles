@@ -34,8 +34,7 @@ in
       services.minio
       services.vaultwarden
       services.gitweb
-      # TODO broken https://github.com/NixOS/nixpkgs/issues/262907#issuecomment-2018578833
-      # services.seafile
+      services.seafile
       services.commit-notifier
       services.pastebin
       services.http-test

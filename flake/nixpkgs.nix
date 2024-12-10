@@ -70,43 +70,6 @@ let
       lanzaboote = inputs.lanzaboote.overlays.default final prev;
     })
     (final: prev: {
-      # TODO broken with auto-allocate-uids
-      ccacheStdenv = final.stdenv;
-      # # ccache
-      # ccacheCacheDir = "/var/cache/ccache";
-      # ccacheLogDir = "/var/log/ccache";
-      # ccacheWrapper = prev.ccacheWrapper.override {
-      #   extraConfig = ''
-      #     export CCACHE_COMPRESS=1
-      #     export CCACHE_UMASK=007
-      #     if [ -d "${final.ccacheCacheDir}" ]; then
-      #       export CCACHE_DIR="${final.ccacheCacheDir}"
-      #     else
-      #       export CCACHE_DIR="/tmp/ccache"
-      #       mkdir -p "$CCACHE_DIR"
-      #       echo "ccacheWrapper: \"${final.ccacheCacheDir}\" is not a directory, cache in \"$CCACHE_DIR\"" >&2
-      #     fi
-      #     if [ -d "${final.ccacheLogDir}" ]; then
-      #       export CCACHE_LOGFILE="${final.ccacheLogDir}/ccache.log"
-      #     fi
-      #     if [ ! -w "$CCACHE_DIR" ]; then
-      #       echo "ccacheWrapper: '$CCACHE_DIR' is not accessible for user $(whoami)" >&2
-      #       exit 1
-      #     fi
-      #   '';
-      # };
-      # ccacheTest = final.ccacheStdenv.mkDerivation {
-      #   name = "test-ccache";
-      #   src = builtins.toFile "hello-world.c" ''
-      #     #include <stdio.h>
-      #     int main() { printf("hello, world\n"); }
-      #   '';
-      #   dontUnpack = true;
-      #   env.NIX_DEBUG = 1;
-      #   buildPhase = "cc $src -o hello";
-      #   installPhase = "install -D hello $out/bin/hello";
-      # };
-
       # adjustment
       nixVersions = prev.nixVersions // {
         selected = final.nixVersions.latest;
@@ -114,7 +77,6 @@ let
       nix = final.nixVersions.selected;
       gnuradio = prev.gnuradio.override {
         unwrapped = prev.gnuradio.unwrapped.override {
-          stdenv = final.ccacheStdenv;
           soapysdr = final.soapysdr-with-plugins;
         };
       };
@@ -128,7 +90,6 @@ let
       waydroid = prev.waydroid.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
       });
-      linuxManualConfig = prev.linuxManualConfig.override { stdenv = final.ccacheStdenv; };
       blender = prev.blender.override {
         cudaSupport = true;
       };
@@ -170,9 +131,7 @@ in
         nixpkgs = {
           config = {
             allowUnfree = true;
-            # TODO wait for mautrix-telegram update
-            # TODO wait for matrix-qq update
-            # TODO wait for logseq update
+            # TODO wait for mautrix-telegram, matrix-qq, and logseq update
             allowInsecurePredicate =
               p:
               (p.pname or null) == "olm"
@@ -182,7 +141,7 @@ in
                   "27"
                   "28"
                 ]
-              ); # for dependency of logseq
+              );
           };
           overlays =
             let
@@ -199,16 +158,6 @@ in
             (earlyFixes overlayNixpkgsArgs) ++ packages ++ (lateFixes overlayNixpkgsArgs);
         };
       }
-      (lib.mkIf (system == "riscv64-linux") {
-        # cross from x86_64-linux
-        nixpkgs.path = inputs.nixpkgs-riscv;
-        nixpkgs.localSystem = {
-          system = "x86_64-linux";
-        };
-        nixpkgs.crossSystem = {
-          inherit system;
-        };
-      })
       (lib.mkIf (system == "loongarch64-linux") {
         # cross from x86_64-linux
         nixpkgs.localSystem = {

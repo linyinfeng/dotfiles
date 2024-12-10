@@ -245,7 +245,6 @@ let
     inputs.ace-bot.nixosModules.ace-bot
     inputs.commit-notifier.nixosModules.commit-notifier
     inputs.angrr.nixosModules.angrr
-    inputs.typhon.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.niri-flake.nixosModules.niri
 
@@ -420,7 +419,7 @@ in
         (
           { ... }:
           {
-            # TODO mobile-nixos tests `config.nixpkgs.localSystem`
+            # mobile-nixos tests `config.nixpkgs.localSystem`
             nixpkgs.system = "aarch64-linux";
           }
         )

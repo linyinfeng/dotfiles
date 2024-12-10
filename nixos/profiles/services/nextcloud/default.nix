@@ -122,7 +122,7 @@ in
         onlyoffice
         memories
         previewgenerator
-        # maps # TODO wait for support on nextcloud 30
+        maps
         ;
     };
     notify_push = {

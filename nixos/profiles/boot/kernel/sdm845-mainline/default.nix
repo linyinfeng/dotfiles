@@ -17,15 +17,12 @@ in
         linux_sdm845_fn =
           {
             buildLinux,
-            ccacheStdenv,
             lib,
             ...
           }@args:
           buildLinux (
             args
             // {
-              # build with ccacheStdenv
-              stdenv = ccacheStdenv;
               inherit version;
               modDirVersion = "${lib.versions.pad 3 version}-sdm845";
               extraMeta.branch = lib.versions.majorMinor version;

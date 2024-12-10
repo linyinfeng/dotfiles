@@ -1106,29 +1106,6 @@
         "type": "github"
       }
     },
-    "nixos-riscv": {
-      "inputs": {
-        "nixos-hardware": [
-          "nixos-hardware"
-        ],
-        "nixpkgs": [
-          "nixpkgs-riscv"
-        ]
-      },
-      "locked": {
-        "lastModified": 1732291832,
-        "narHash": "sha256-7RXwqMWJ4s48rcqr2qkbbftGm1KVYOrKCTtg4Dz5jqY=",
-        "owner": "linyinfeng",
-        "repo": "nixos-riscv",
-        "rev": "6b074316936e6a074fe9044a1e102cb618cb3130",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "repo": "nixos-riscv",
-        "type": "github"
-      }
-    },
     "nixos-vscode-server": {
       "inputs": {
         "flake-utils": [
@@ -1448,7 +1425,6 @@
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
-        "nixos-riscv": "nixos-riscv",
         "nixos-vscode-server": "nixos-vscode-server",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
@@ -1465,7 +1441,6 @@
         "sops-nix": "sops-nix",
         "systems": "systems",
         "treefmt-nix": "treefmt-nix",
-        "typhon": "typhon",
         "weird-deployer": "weird-deployer"
       }
     },
@@ -1558,32 +1533,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "typhon": {
-      "inputs": {
-        "crane": [
-          "crane"
-        ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1730373693,
-        "narHash": "sha256-pDoaV+a3CBmvhYKD/m8k5soQ4kxwzvv2Kh/y7QHCGyU=",
-        "owner": "typhon-ci",
-        "repo": "typhon",
-        "rev": "e4f11b3d7c47c3a584fe565637bcc6e50f3735da",
-        "type": "github"
-      },
-      "original": {
-        "owner": "typhon-ci",
-        "repo": "typhon",
         "type": "github"
       }
     },

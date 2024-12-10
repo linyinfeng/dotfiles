@@ -313,28 +313,6 @@ output "atuin_password_yinfeng" {
   value     = random_password.atuin_yinfeng.result
   sensitive = true
 }
-resource "random_password" "typhon" {
-  length  = 32
-  special = false
-}
-resource "random_password" "typhon_salt" {
-  length  = 16
-  special = false
-}
-module "typhon_argon2" {
-  source   = "./modules/argon2"
-  password = random_password.typhon.result
-  salt     = random_password.typhon_salt.result
-}
-output "typhon_password" {
-  value     = random_password.typhon.result
-  sensitive = true
-}
-output "typhon_hashed_password" {
-  value     = module.typhon_argon2.hashed_password
-  sensitive = true
-}
-
 resource "random_password" "gnome_remote_desktop" {
   length  = 16
   special = false

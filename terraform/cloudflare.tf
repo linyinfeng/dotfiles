@@ -104,13 +104,12 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
 
 locals {
   service_cname_mappings = {
-    portal         = { on = "hkg0", proxy = true }
-    atuin          = { on = "hkg0", proxy = true }
-    cache-overlay  = { on = "hkg0", proxy = true }
-    nuc-proxy      = { on = "hkg0", proxy = true }
-    hydra-proxy    = { on = "hkg0", proxy = true }
-    sicp-tutorials = { on = "hkg0", proxy = true }
-    # typhon-proxy    = { on = "hkg0", proxy = true }
+    portal          = { on = "hkg0", proxy = true }
+    atuin           = { on = "hkg0", proxy = true }
+    cache-overlay   = { on = "hkg0", proxy = true }
+    nuc-proxy       = { on = "hkg0", proxy = true }
+    hydra-proxy     = { on = "hkg0", proxy = true }
+    sicp-tutorials  = { on = "hkg0", proxy = true }
     tar             = { on = "lax0", proxy = true }
     pgp-public-key  = { on = "lax0", proxy = true }
     oranc           = { on = "lax0", proxy = true }
@@ -140,11 +139,10 @@ locals {
     dn42            = { on = "fsn0", proxy = true }
     keycloak        = { on = "fsn0", proxy = true }
     hydra           = { on = "nuc", proxy = false }
-    # typhon          = { on = "nuc", proxy = false }
-    transmission = { on = "nuc", proxy = false }
-    jellyfin     = { on = "nuc", proxy = false }
-    nextcloud    = { on = "nuc", proxy = false }
-    mc           = { on = "nuc", proxy = false }
+    transmission    = { on = "nuc", proxy = false }
+    jellyfin        = { on = "nuc", proxy = false }
+    nextcloud       = { on = "nuc", proxy = false }
+    mc              = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {

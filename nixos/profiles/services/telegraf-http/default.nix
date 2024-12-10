@@ -56,12 +56,6 @@ let
         code = 200;
       }
     ];
-    # typhon = [
-    #   {
-    #     url = "https://typhon.ts.li7g.com";
-    #     code = 200;
-    #   }
-    # ];
     dst = [ ];
     smtp = [ ];
     teamspeak = [ ];
@@ -69,11 +63,10 @@ let
   };
   overrides = {
     box = [
-      # TODO broken https://github.com/NixOS/nixpkgs/issues/262907#issuecomment-2018578833
-      # {
-      #   url = "https://box.li7g.com/accounts/login/?next=/";
-      #   code = 200;
-      # }
+      {
+        url = "https://box.li7g.com/accounts/login/?next=/";
+        code = 200;
+      }
     ];
     tar = [
       {

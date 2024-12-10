@@ -28,15 +28,12 @@ in
         linux_intel_fn =
           {
             buildLinux,
-            ccacheStdenv,
             lib,
             ...
           }@args:
           buildLinux (
             args
             // {
-              # build with ccacheStdenv
-              stdenv = ccacheStdenv;
               inherit version;
               modDirVersion = lib.versions.pad 3 version;
               extraMeta.branch = lib.versions.majorMinor version;

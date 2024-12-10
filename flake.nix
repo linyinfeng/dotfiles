@@ -74,17 +74,6 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    typhon.url = "github:typhon-ci/typhon";
-    typhon.inputs.crane.follows = "crane";
-    typhon.inputs.flake-compat.follows = "flake-compat";
-    typhon.inputs.nixpkgs.follows = "nixpkgs";
-
-    # TODO use upstream
-    # nixos-riscv.url = "github:nickcao/nixos-riscv";
-    nixos-riscv.url = "github:linyinfeng/nixos-riscv";
-    nixos-riscv.inputs.nixpkgs.follows = "nixpkgs-riscv";
-    nixos-riscv.inputs.nixos-hardware.follows = "nixos-hardware";
-
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";

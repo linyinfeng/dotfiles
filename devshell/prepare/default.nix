@@ -12,12 +12,12 @@ let
       imports =
         suites.server
         ++ (with profiles; [
-          # TODO
+          # PLACEHOLDER
         ]);
 
       config = lib.mkMerge [
         {
-          # TODO
+          # PLACEHOLDER
         }
 
         # stateVersion

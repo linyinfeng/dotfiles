@@ -51,8 +51,6 @@ in
       services.smartd
       services.postgresql
       services.hydra
-      # TODO broken
-      # services.typhon
       programs.service-mail
       programs.tg-send
       users.yinfeng

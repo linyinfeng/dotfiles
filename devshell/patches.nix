@@ -4,7 +4,7 @@ let
     name = "update-patches";
     text = ''
       cd "$PRJ_ROOT/patches"
-      # TODO broken on newest commits
+      # currently nothing
     '';
   };
 in
