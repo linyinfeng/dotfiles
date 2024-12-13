@@ -18,6 +18,7 @@ in
       services.nginx
       services.acme
       services.portal-server
+      services.postgresql
       services.atuin
       services.nuc-proxy
       services.cache-overlay
@@ -86,6 +87,6 @@ in
     })
 
     # stateVersion
-    { system.stateVersion = "24.05"; }
+    { system.stateVersion = "24.11"; }
   ];
 }

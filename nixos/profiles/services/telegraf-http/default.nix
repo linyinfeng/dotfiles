@@ -63,10 +63,10 @@ let
   };
   overrides = {
     box = [
-      {
-        url = "https://box.li7g.com/accounts/login/?next=/";
-        code = 200;
-      }
+      # {
+      #   url = "https://box.li7g.com/accounts/login/?next=/";
+      #   code = 200;
+      # }
     ];
     tar = [
       {

@@ -46,8 +46,8 @@ let
     text = ''
       db="$1"
       sudo --user=postgres psql --dbname="$db" <<EOF
-      REINDEX DATABASE :DBNAME;
-      ALTER DATABASE :DBNAME REFRESH COLLATION VERSION;
+      REINDEX DATABASE :"DBNAME";
+      ALTER DATABASE :"DBNAME" REFRESH COLLATION VERSION;
       EOF
     '';
   };

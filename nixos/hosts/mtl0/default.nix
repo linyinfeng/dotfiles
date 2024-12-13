@@ -34,7 +34,7 @@ in
       services.minio
       services.vaultwarden
       services.gitweb
-      services.seafile
+      # services.seafile
       services.commit-notifier
       services.pastebin
       services.http-test
@@ -161,6 +161,6 @@ in
     }
 
     # stateVersion
-    { system.stateVersion = "24.05"; }
+    { system.stateVersion = "24.11"; }
   ];
 }
