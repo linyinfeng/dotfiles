@@ -37,6 +37,37 @@ let
         "$@"
     '';
   };
+  refreshPGCollationVersion = pkgs.writeShellApplication {
+    name = "refresh-pg-collation-version";
+    runtimeInputs = with pkgs; [
+      postgresql
+      "/run/wrappers"
+    ];
+    text = ''
+      db="$1"
+      sudo --user=postgres psql --dbname="$db" <<EOF
+      REINDEX DATABASE :DBNAME;
+      ALTER DATABASE :DBNAME REFRESH COLLATION VERSION;
+      EOF
+    '';
+  };
+  refreshPGCollationVersionAll = pkgs.writeShellApplication {
+    name = "refresh-pg-collation-version-all";
+    runtimeInputs = with pkgs; [
+      postgresql
+      "/run/wrappers"
+      refreshPGCollationVersion
+    ];
+    text = ''
+      mapfile -d $'\0' -t dbs < \
+        <(sudo --user=postgres psql --command='SELECT datname FROM pg_database' --no-align --tuples-only --field-separator-zero --record-separator-zero)
+      for db in "''${dbs[@]}"; do
+        echo "processing '$db'..."
+        refresh-pg-collation-version "$db" || true
+        echo
+      done
+    '';
+  };
 in
 {
   services.postgresql.enable = true;
@@ -66,5 +97,11 @@ in
     after = [ "postgresqlBackup.service" ];
   };
 
-  environment.systemPackages = lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ];
+  environment.systemPackages = lib.mkMerge [
+    [
+      refreshPGCollationVersion
+      refreshPGCollationVersionAll
+    ]
+    (lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ])
+  ];
 }
