@@ -19,7 +19,10 @@ lib.mkMerge [
         init.defaultBranch = "main";
         pull.rebase = false;
         pull.ff = "only";
-        credential.helper = "libsecret";
+        credential = {
+          helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+          credentialStore = "secretservice";
+        };
         commit.gpgSign = true;
 
         # fish git status
@@ -60,7 +63,10 @@ lib.mkMerge [
       };
     };
 
-    home.packages = with pkgs; [ github-cli ];
+    home.packages = with pkgs; [
+      github-cli
+      git-credential-manager
+    ];
 
     home.global-persistence.directories = [
       ".config/gh" # github-cli
