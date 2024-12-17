@@ -104,7 +104,6 @@ resource "cloudflare_record" "zip_prebuilt_wildcard" {
 
 locals {
   service_cname_mappings = {
-    portal          = { on = "hkg0", proxy = true }
     atuin           = { on = "hkg0", proxy = true }
     cache-overlay   = { on = "hkg0", proxy = true }
     nuc-proxy       = { on = "hkg0", proxy = true }
@@ -123,6 +122,7 @@ locals {
     static          = { on = "mtl0", proxy = true }
     http-test       = { on = "mtl0", proxy = true }
     sicp-staging    = { on = "mtl0", proxy = true }
+    portal          = { on = "hkg0", proxy = false }
     minio           = { on = "mtl0", proxy = false }
     prebuilt-zip    = { on = "mtl0", proxy = false }
     "shanghai.derp" = { on = "shg0", proxy = false }
