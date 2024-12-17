@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ pkgs, flake-lib, ... }:
 let
   common = builtins.readFile ../common.sh;
 
@@ -22,7 +22,7 @@ let
 
         # stateVersion
         {
-          system.stateVersion = "${self.lib.flakeStateVersion}";
+          system.stateVersion = "${flake-lib.flakeStateVersion}";
         }
       ];
     }
