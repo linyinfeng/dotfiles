@@ -60,6 +60,7 @@ let
     smtp = [ ];
     teamspeak = [ ];
     "shanghai.derp" = [ ];
+    portal = [ ];
   };
   overrides = {
     box = [
