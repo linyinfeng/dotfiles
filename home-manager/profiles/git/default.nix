@@ -22,6 +22,12 @@ lib.mkMerge [
         credential = {
           helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
           credentialStore = "secretservice";
+          # git-credential-manager specified configurations
+          # https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/autodetect.md
+          provider = "auto";
+          "https://github.com".provider = "github";
+          "https://gitlab.com".provider = "gitlab";
+          "https://git.nju.edu.cn".provider = "gitlab";
         };
         commit.gpgSign = true;
 
