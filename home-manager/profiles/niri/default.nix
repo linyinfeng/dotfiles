@@ -25,6 +25,36 @@ let
       darkman toggle
     '';
   };
+  volumeUp = [
+    "swayosd-client"
+    "--output-volume"
+    "raise"
+  ];
+  volumeDown = [
+    "swayosd-client"
+    "--output-volume"
+    "lower"
+  ];
+  volumeMute = [
+    "swayosd-client"
+    "--output-volume"
+    "mute-toggle"
+  ];
+  volumeMicMute = [
+    "swayosd-client"
+    "--input-volume"
+    "mute-toggle"
+  ];
+  lightUp = [
+    "swayosd-client"
+    "--brightness"
+    "raise"
+  ];
+  lightDown = [
+    "swayosd-client"
+    "--brightness"
+    "lower"
+  ];
 in
 lib.mkMerge [
   {
@@ -253,51 +283,31 @@ lib.mkMerge [
               # volume keys
               "XF86AudioRaiseVolume" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "volumectl"
-                  "up"
-                ];
+                action.spawn = volumeUp;
                 # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
               };
               "XF86AudioLowerVolume" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "volumectl"
-                  "down"
-                ];
+                action.spawn = volumeDown;
                 # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
               };
               "XF86AudioMute" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "volumectl"
-                  "toggle-mute"
-                ];
+                action.spawn = volumeMute;
                 # action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
               };
               "XF86AudioMicMute" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "wpctl"
-                  "set-mute"
-                  "@DEFAULT_AUDIO_SOURCE@"
-                  "toggle"
-                ];
+                action.spawn = volumeMicMute;
               };
               # brightness keys
               "XF86MonBrightnessUp" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "lightctl"
-                  "up"
-                ];
+                action.spawn = lightUp;
               };
               "XF86MonBrightnessDown" = {
                 allow-when-locked = true;
-                action.spawn = [
-                  "lightctl"
-                  "down"
-                ];
+                action.spawn = lightDown;
               };
               # quit windnow
               "Mod+Q".action.close-window = [ ];
@@ -351,7 +361,6 @@ lib.mkMerge [
     # tools
     home.packages = with pkgs; [
       pavucontrol
-      avizo
       (pkgs.writeShellApplication {
         name = "cliphist-fuzzel";
         runtimeInputs = with pkgs; [
@@ -425,9 +434,9 @@ lib.mkMerge [
               ];
             };
             on-click = "pavucontrol";
-            on-click-right = "volumectl toggle-mute";
-            on-scroll-up = "volumectl up";
-            on-scroll-down = "volumectl down";
+            on-click-right = lib.escapeShellArgs volumeMute;
+            on-scroll-up = lib.escapeShellArgs volumeUp;
+            on-scroll-down = lib.escapeShellArgs volumeDown;
           };
           "wireplumber" = {
             format = "{volume}% {icon}";
@@ -438,9 +447,9 @@ lib.mkMerge [
               "󰕾"
             ];
             on-click = "pavucontrol";
-            on-click-right = "volumectl toggle-mute";
-            on-scroll-up = "volumectl up";
-            on-scroll-down = "volumectl down";
+            on-click-right = lib.escapeShellArgs volumeMute;
+            on-scroll-up = lib.escapeShellArgs volumeUp;
+            on-scroll-down = lib.escapeShellArgs volumeDown;
           };
           "backlight" = {
             format = "{percent}% {icon}";
@@ -453,8 +462,8 @@ lib.mkMerge [
               "󰃟"
               "󰃠"
             ];
-            on-scroll-up = "lightctl up";
-            on-scroll-down = "lightctl down";
+            on-scroll-up = lib.escapeShellArgs lightUp;
+            on-scroll-down = lib.escapeShellArgs lightDown;
           };
           "battery" = {
             interval = 60;
@@ -601,6 +610,11 @@ lib.mkMerge [
     xdg.configFile."waybar/style-light.css".source = buildScss "waybar/light";
     xdg.configFile."waybar/style-dark.css".source = buildScss "waybar/dark";
     xdg.configFile."waybar/style.css".source = config.xdg.configFile."waybar/style-light.css".source;
+  }
+
+  # swayosd
+  {
+    services.swayosd.enable = true;
   }
 
   # xwayland
