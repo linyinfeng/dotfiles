@@ -63,6 +63,9 @@ in
         font-awesome
         sarasa-gothic
         # powerline-fonts # conflict with hack
+
+        corefonts
+        vistafonts
       ]
       ++ (
         if cfg.customFonts.enable then
