@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -48,9 +47,6 @@ let
   };
 in
 {
-  # TODO wait for https://github.com/NixOS/nixpkgs/issues/357643
-  boot.kernelPackages = lib.warn "workaround for https://github.com/NixOS/nixpkgs/issues/357643" pkgs.linuxPackages_6_11;
-
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = true;
