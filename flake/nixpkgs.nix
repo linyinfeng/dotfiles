@@ -119,6 +119,8 @@ let
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
         # TODO not working with selected nix
         inherit (unstable-small) nixd;
+        # TODO broken
+        inherit (stable) efitools;
       })
     ];
 in
