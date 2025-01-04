@@ -3,7 +3,7 @@ resource "shell_sensitive_script" "generate_dkim" {
     create = <<EOT
       set -e
 
-      TMP_DIR=$(mktemp -t --directory zerotier-dkim.XXXXXXXXXX)
+      TMP_DIR=$(mktemp -t --directory dkim.XXXXXXXXXX)
       cleanup() {
         rm -r "$TMP_DIR"
       }
