@@ -27,7 +27,6 @@ in
   imports =
     suites.workstation
     ++ (with profiles; [
-      nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
       security.tpm

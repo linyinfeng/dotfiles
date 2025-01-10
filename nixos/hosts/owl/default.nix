@@ -13,7 +13,6 @@
       boot.plymouth
       boot.secure-boot
       boot.lanzaboote-uki
-      nix.access-tokens
       nix.nixbuild
       nix.hydra-builder-server
       security.tpm

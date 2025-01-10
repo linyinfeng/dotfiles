@@ -18,6 +18,7 @@ let
         settings
         cache
         version
+        access-tokens
       ];
       base =
         suites.nixSettings

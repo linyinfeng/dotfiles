@@ -24,7 +24,6 @@ in
         (
           suites.phone
           ++ (with profiles; [
-            nix.access-tokens
             nix.nixbuild
             networking.behind-fw
             networking.fw-proxy

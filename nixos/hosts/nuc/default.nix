@@ -30,7 +30,6 @@ in
     ++ suites.virtualization
     ++ (with profiles; [
       boot.binfmt
-      nix.access-tokens
       nix.hydra-builder-server
       nix.hydra-builder-client
       nix.nixbuild
