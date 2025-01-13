@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 let
   minioPort = config.ports.minio;
   minioConsolePort = config.ports.minio-console;
@@ -7,8 +7,8 @@ in
 {
   services.minio = {
     enable = true;
-    # use self-maintained minio
-    package = pkgs.nur.repos.linyinfeng.minio-latest;
+    # # use self-maintained minio
+    # package = pkgs.nur.repos.linyinfeng.minio-latest;
     listenAddress = "127.0.0.1:${toString minioPort}";
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
