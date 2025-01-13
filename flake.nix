@@ -69,7 +69,7 @@
     nixos-generators.inputs.nixlib.follows = "nixpkgs";
     nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
 
-    impermanence.url = "github:nix-community/impermanence";
+    preservation.url = "github:nix-community/preservation";
 
     # home-manager modules
 

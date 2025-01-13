@@ -28,7 +28,7 @@ let
     };
   };
 
-  userCfg =
+  mkUserCfg =
     name:
     assert config.home-manager.users.${name}.home.global-persistence.enabled;
     {
@@ -37,7 +37,47 @@ let
         inherit (config.home-manager.users.${name}.home.global-persistence) home directories files;
       };
     };
-  usersCfg = lib.listToAttrs (map userCfg cfg.user.users);
+  usersCfg = lib.listToAttrs (map mkUserCfg cfg.user.users);
+
+  parentDir =
+    path:
+    let
+      components = lib.splitString "/" path;
+      front = lib.take (lib.length components - 1) components;
+    in
+    lib.concatStringsSep "/" front;
+
+  parentDirs = paths: parentNormalize (map parentDir paths);
+
+  parentNormalize = paths: lib.sort builtins.lessThan (lib.remove "" (lib.unique paths));
+
+  parentClosure =
+    paths:
+    let
+      iter = parentNormalize (paths ++ parentDirs paths);
+    in
+    if iter == paths then iter else parentClosure iter;
+
+  mkUserTmpFilesCfg =
+    name:
+    let
+      inherit (config.home-manager.users.${name}.home.global-persistence) home directories files;
+      userCfg = config.users.users.${name};
+      parents = parentClosure (parentDirs (directories ++ files));
+      parentsWithHome = map (p: "${home}/${p}") parents;
+    in
+    map (path: {
+      name = path;
+      value = {
+        d = {
+          user = userCfg.name;
+          inherit (userCfg) group;
+          mode = "0755";
+        };
+      };
+    }) parentsWithHome;
+
+  userTmpFilesCfg = lib.listToAttrs (lib.concatLists (map mkUserTmpFilesCfg cfg.user.users));
 in
 with lib;
 {
@@ -111,13 +151,13 @@ with lib;
   };
 
   config = mkIf (cfg.enable && cfg.root != null) {
-    environment.persistence.${cfg.root} = {
-      hideMounts = true;
+    preservation.enable = true;
+    preservation.preserveAt.${cfg.root} = {
       inherit (cfg) directories files;
       users = usersCfg;
     };
 
-    systemd.tmpfiles.settings."10-global-persistence" = {
+    systemd.tmpfiles.settings."10-preservation" = userTmpFilesCfg // {
       ${cfg.root} = {
         d = {
           user = "root";
@@ -131,5 +171,7 @@ with lib;
 
     # for user level persistence
     programs.fuse.userAllowOther = true;
+
+    passthru = { inherit userTmpFilesCfg; };
   };
 }

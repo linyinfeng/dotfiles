@@ -234,7 +234,7 @@ let
 
   commonNixosModules = nixosModules ++ [
     inputs.sops-nix.nixosModules.sops
-    inputs.impermanence.nixosModules.impermanence
+    inputs.preservation.nixosModules.preservation
     inputs.disko.nixosModules.disko
     inputs.flake-utils-plus.nixosModules.autoGenFromInputs
     inputs.linyinfeng.nixosModules.vlmcsd
