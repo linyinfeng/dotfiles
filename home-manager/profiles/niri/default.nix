@@ -348,6 +348,8 @@ lib.mkMerge [
               "Print".action.screenshot = [ ];
               "Ctrl+Print".action.screenshot-screen = [ ];
               "Alt+Print".action.screenshot-window = [ ];
+              # floating
+              "Mod+Slash".action.toggle-window-floating = [ ];
               # quit
               "Mod+Ctrl+E".action.quit = [ ];
             };
