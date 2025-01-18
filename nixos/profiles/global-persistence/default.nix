@@ -8,8 +8,14 @@
     ];
     files = [
       # systemd machine-id
-      "/etc/machine-id"
+      # https://nix-community.github.io/preservation/examples.html#compatibility-with-systemds-conditionfirstboot
+      {
+        file = "/etc/machine-id";
+        inInitrd = true;
+      }
     ];
     user.directories = [ ".local/share/nix" ];
   };
+
+  systemd.suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
 }

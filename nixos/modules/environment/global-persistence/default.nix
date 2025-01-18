@@ -98,7 +98,7 @@ with lib;
     };
 
     directories = mkOption {
-      type = with types; listOf str;
+      type = with types; listOf anything;
       default = [ ];
       description = ''
         Directories to bind mount to persistent storage.
@@ -106,7 +106,7 @@ with lib;
     };
 
     files = mkOption {
-      type = with types; listOf str;
+      type = with types; listOf anything;
       default = [ ];
       description = ''
         Files should be stored in persistent storage.
