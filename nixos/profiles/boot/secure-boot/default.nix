@@ -6,6 +6,31 @@
 }:
 let
   inherit (config.lib.self) data;
+  pkiBundle = pkgs.runCommand "secureboot-pki-bundle" { } ''
+    mkdir "$out"
+    ln --symbolic "${pkgs.writeText "GUID" data.secure_boot_signature_owner_guid}" "$out/GUID"
+    mkdir --parents "$out/keys/"{PK,KEK,db,custom}
+    ln --symbolic "${config.sops.secrets."secure_boot_pk_private_key_pkcs8".path}" "$out/keys/PK/PK.key"
+    ln --symbolic "${pkgs.writeText "PK.pem" data.secure_boot_pk_cert_pem}" "$out/keys/PK/PK.pem"
+    ln --symbolic "${
+      config.sops.secrets."secure_boot_kek_private_key_pkcs8".path
+    }" "$out/keys/KEK/KEK.key"
+    ln --symbolic "${pkgs.writeText "KEK.pem" data.secure_boot_kek_cert_pem}" "$out/keys/KEK/KEK.pem"
+    ln --symbolic "${config.sops.secrets."secure_boot_db_private_key_pkcs8".path}" "$out/keys/db/db.key"
+    ln --symbolic "${pkgs.writeText "db.pem" data.secure_boot_db_cert_pem}" "$out/keys/db/db.pem"
+    ln --symbolic "${
+      aggregateCustomCerts "KEK" [
+        # microsoft
+        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/KEK/Certificates"
+      ]
+    }" "$out/keys/custom/KEK"
+    ln --symbolic "${
+      aggregateCustomCerts "db" [
+        # microsoft
+        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/DB/Certificates"
+      ]
+    }" "$out/keys/custom/db"
+  '';
   aggregateCustomCerts =
     type: paths:
     let
@@ -144,24 +169,13 @@ in
     # sbctl
     {
       environment.systemPackages = with pkgs; [ sbctl ];
-      environment.etc."secureboot/GUID".text = data.secure_boot_signature_owner_guid;
-      environment.etc."secureboot/keys/PK/PK.key".source =
-        config.sops.secrets."secure_boot_pk_private_key_pkcs8".path;
-      environment.etc."secureboot/keys/PK/PK.pem".text = data.secure_boot_pk_cert_pem;
-      environment.etc."secureboot/keys/KEK/KEK.key".source =
-        config.sops.secrets."secure_boot_kek_private_key_pkcs8".path;
-      environment.etc."secureboot/keys/KEK/KEK.pem".text = data.secure_boot_kek_cert_pem;
-      environment.etc."secureboot/keys/db/db.key".source =
-        config.sops.secrets."secure_boot_db_private_key_pkcs8".path;
-      environment.etc."secureboot/keys/db/db.pem".text = data.secure_boot_db_cert_pem;
-      environment.etc."secureboot/keys/custom/KEK".source = aggregateCustomCerts "KEK" [
-        # microsoft
-        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/keystore/Kek"
-      ];
-      environment.etc."secureboot/keys/custom/db".source = aggregateCustomCerts "sb" [
-        # microsoft
-        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/keystore/Db"
-      ];
+      systemd.tmpfiles.settings."80-sbctl" = {
+        "/var/lib/sbctl" = {
+          "C+" = {
+            argument = "${pkiBundle}";
+          };
+        };
+      };
       sops.secrets."secure_boot_pk_private_key_pkcs8".terraformOutput.enable = true;
       sops.secrets."secure_boot_kek_private_key_pkcs8".terraformOutput.enable = true;
       sops.secrets."secure_boot_db_private_key_pkcs8".terraformOutput.enable = true;
