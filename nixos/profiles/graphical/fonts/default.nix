@@ -6,35 +6,6 @@
 }:
 let
   cfg = config.fonts;
-  inherit (config.lib.self) requireBigParallel;
-  iosevka-yinfeng = requireBigParallel (
-    pkgs.iosevka.override {
-      privateBuildPlan = {
-        family = "Iosevka Yinfeng";
-        spacing = "fontconfig-mono";
-        serifs = "slab";
-        ligations = {
-          inherits = "haskell";
-        };
-      };
-      set = "yinfeng";
-    }
-  );
-  iosevka-yinfeng-nf = pkgs.stdenv.mkDerivation {
-    name = "iosevka-yinfeng-nf";
-    src = iosevka-yinfeng;
-    nativeBuildInputs = with pkgs; [ nerd-font-patcher ];
-    enableParallelBuilding = true;
-    requiredSystemFeatures = [ "big-parallel" ];
-    unpackPhase = ''
-      mkdir -p fonts
-      cp -r $src/share/fonts/truetype/. ./fonts/
-      chmod u+w -R ./fonts
-    '';
-    postPatch = ''
-      cp ${./_nerd-font/Makefile} ./Makefile
-    '';
-  };
 in
 {
   options.fonts.customFonts = {
@@ -69,6 +40,7 @@ in
       ]
       ++ (
         if cfg.customFonts.enable then
+          with pkgs;
           [
             iosevka-yinfeng
             iosevka-yinfeng-nf
@@ -98,10 +70,6 @@ in
         ]
         ++ [ "Sarasa Mono Slab SC" ];
       emoji = [ "Noto Color Emoji" ];
-    };
-
-    passthru = {
-      inherit iosevka-yinfeng iosevka-yinfeng-nf;
     };
   };
 }

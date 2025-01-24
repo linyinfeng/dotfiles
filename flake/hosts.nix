@@ -459,6 +459,8 @@ in
       "android-boot-image/enchilada" = self.nixosConfigurations.enchilada.config.system.build.bootImage;
       "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
     };
-    "x86_64-linux"."linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
+    "x86_64-linux" = {
+      "linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
+    };
   };
 }

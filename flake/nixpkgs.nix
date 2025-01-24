@@ -2,9 +2,11 @@
   self,
   inputs,
   lib,
+  getSystem,
   ...
 }:
 let
+  inherit (self.lib) requireBigParallel;
   packages = [
     (
       final: _prev:
@@ -93,6 +95,34 @@ let
       blender = prev.blender.override {
         cudaSupport = true;
       };
+      iosevka-yinfeng = requireBigParallel (
+        final.iosevka.override {
+          privateBuildPlan = {
+            family = "Iosevka Yinfeng";
+            spacing = "fontconfig-mono";
+            serifs = "slab";
+            ligations = {
+              inherits = "haskell";
+            };
+          };
+          set = "yinfeng";
+        }
+      );
+      iosevka-yinfeng-nf = final.stdenv.mkDerivation {
+        name = "iosevka-yinfeng-nf";
+        src = final.iosevka-yinfeng;
+        nativeBuildInputs = with final; [ nerd-font-patcher ];
+        enableParallelBuilding = true;
+        requiredSystemFeatures = [ "big-parallel" ];
+        unpackPhase = ''
+          mkdir -p fonts
+          cp -r $src/share/fonts/truetype/. ./fonts/
+          chmod u+w -R ./fonts
+        '';
+        postPatch = ''
+          cp ${../nixos/profiles/graphical/fonts/_nerd-font/Makefile} ./Makefile
+        '';
+      };
     })
   ];
   alternativeChannels = nixpkgsArgs: {
@@ -177,4 +207,18 @@ in
         };
       })
     ];
+
+  # special checks
+  flake.checks = {
+    "x86_64-linux" =
+      let
+        inherit ((getSystem "x86_64-linux").allModuleArgs) pkgs;
+      in
+      {
+        "package/iosevka-yinfeng" = pkgs.iosevka-yinfeng;
+        "package/iosevka-yinfeng-nf" = pkgs.iosevka-yinfeng-nf;
+        "package/blender" = pkgs.blender;
+        "package/gnuradio" = pkgs.gnuradio;
+      };
+  };
 }
