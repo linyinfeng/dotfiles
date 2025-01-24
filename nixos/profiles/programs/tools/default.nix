@@ -49,7 +49,7 @@ in
       coreutils
       cryptsetup
       dosfstools
-      dstat
+      dtool
       efibootmgr
       efitools
       eza
