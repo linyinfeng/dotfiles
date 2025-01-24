@@ -46,13 +46,8 @@
         else
           git checkout -b "$target_branch"
         fi
-        if git show-ref --quiet refs/remotes/origin/"$target_branch"; then
-          git reset --hard "origin/$target_branch"
-          git merge --ff-only "$commit"
-        else
-          git reset --hard "$commit"
-        fi
-        git push origin "$target_branch" --verbose
+        git reset --hard "$commit"
+        git push origin "$target_branch" --force --verbose
 
         set +e
         ${config.programs.tg-send.wrapped} <<EOF
