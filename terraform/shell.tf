@@ -1,3 +1,3 @@
 provider "shell" {
-  interpreter = ["/usr/bin/env", "bash"]
+  interpreter = ["/usr/bin/env", "bash", "-c"]
 }
