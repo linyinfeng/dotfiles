@@ -22,7 +22,7 @@ in
   environment.global-persistence.user.directories = [ ".config/libvirt" ];
 
   environment.systemPackages = [
-    pkgs.libguestfs-with-appliance
+    # pkgs.libguestfs-with-appliance
     winVirtioIso
   ];
   environment.pathsToLink = [ "/share/win-virtio" ];
