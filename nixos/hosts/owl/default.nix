@@ -94,7 +94,7 @@
           imports =
             suites.full
             ++ (with profiles; [
-              ardour
+              music
               blender
             ]);
           programs.firefox.profiles.main.settings = {
