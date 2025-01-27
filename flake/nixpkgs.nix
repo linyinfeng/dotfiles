@@ -149,8 +149,6 @@ let
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
         # TODO not working with selected nix
         inherit (unstable-small) nixd;
-        # TODO wait for https://github.com/NixOS/nixpkgs/issues/376099
-        inherit (stable) ardour;
         # TODO wait for https://github.com/c0fec0de/anytree/issues/270
         # TODO wait for https://github.com/NixOS/nixpkgs/issues/375763
         python3Packages = prev.python3Packages.overrideScope (
