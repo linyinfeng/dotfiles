@@ -1,15 +1,11 @@
-{ pkgs, lib, ... }:
-let
-  inherit (pkgs) ardour;
-  ardourMajorVersion = lib.versions.major ardour.version;
-in
+{ pkgs, ... }:
 {
   home.packages = with pkgs; [
-    ardour
+    reaper
     musescore
   ];
   home.global-persistence.directories = [
-    ".config/ardour${toString ardourMajorVersion}"
+    ".config/REAPER"
     ".config/MuseScore"
     ".local/share/MuseScore"
   ];
