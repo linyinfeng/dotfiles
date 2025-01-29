@@ -48,8 +48,8 @@ in
       compsize
       coreutils
       cryptsetup
+      dool
       dosfstools
-      dtool
       efibootmgr
       efitools
       eza
