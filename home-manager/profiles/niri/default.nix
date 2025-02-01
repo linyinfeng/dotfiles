@@ -826,7 +826,7 @@ lib.mkMerge [
   {
     services.cliphist = {
       enable = true;
-      systemdTarget = "niri.service";
+      systemdTargets = [ "niri.service" ];
     };
     systemd.user.services.cliphist = {
       Unit = {
