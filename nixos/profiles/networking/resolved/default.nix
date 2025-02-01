@@ -9,13 +9,9 @@ lib.mkMerge [
     services.resolved = {
       enable = true;
       dnssec = "allow-downgrade";
+      dnsovertls = "opportunistic";
       llmnr = "true";
-      extraConfig = lib.mkIf config.networking.mesh.enable ''
-        DNS=${lib.concatStringsSep " " dnsServers}
-        # link specific servers may not support dns over tls
-        DNSOverTLS=opportunistic
-        Domains=~.
-      '';
+      fallbackDns = dnsServers;
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
   }
