@@ -61,6 +61,7 @@ let
     teamspeak = [ ];
     "shanghai.derp" = [ ];
     portal = [ ];
+    open-webui = [ ];
   };
   overrides = {
     box = [
