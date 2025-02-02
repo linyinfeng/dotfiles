@@ -18,7 +18,7 @@ variable "ddns_records" {
   }))
 }
 
-resource "cloudflare_record" "records" {
+resource "cloudflare_dns_record" "records" {
   name     = var.name
   for_each = var.records
   ttl      = 1 # default ttl
@@ -27,7 +27,7 @@ resource "cloudflare_record" "records" {
   content  = each.value.value
   zone_id  = var.cloudflare_zone_id
 }
-resource "cloudflare_record" "ddns_records" {
+resource "cloudflare_dns_record" "ddns_records" {
   name     = var.name
   for_each = var.ddns_records
   ttl      = 1 # default ttl
@@ -37,7 +37,7 @@ resource "cloudflare_record" "ddns_records" {
   zone_id  = var.cloudflare_zone_id
   lifecycle { ignore_changes = [content] }
 }
-resource "cloudflare_record" "zerotier" {
+resource "cloudflare_dns_record" "zerotier" {
   for_each = toset(flatten([for h in zerotier_member.host : [for a in h.ip_assignments : a if length(regexall("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", a)) > 0]]))
   name     = "${var.name}.zt"
   ttl      = 1 # default ttl
@@ -46,7 +46,7 @@ resource "cloudflare_record" "zerotier" {
   content  = each.value
   zone_id  = var.cloudflare_zone_id
 }
-resource "cloudflare_record" "enpoint_v4_only_records" {
+resource "cloudflare_dns_record" "enpoint_v4_only_records" {
   name     = "v4.${var.name}.endpoints"
   for_each = toset(var.endpoints_v4)
   ttl      = 1 # default ttl
@@ -55,7 +55,7 @@ resource "cloudflare_record" "enpoint_v4_only_records" {
   content  = each.value
   zone_id  = var.cloudflare_zone_id
 }
-resource "cloudflare_record" "enpoint_v4_records" {
+resource "cloudflare_dns_record" "enpoint_v4_records" {
   name     = "${var.name}.endpoints"
   for_each = toset(var.endpoints_v4)
   ttl      = 1 # default ttl
@@ -64,7 +64,7 @@ resource "cloudflare_record" "enpoint_v4_records" {
   content  = each.value
   zone_id  = var.cloudflare_zone_id
 }
-resource "cloudflare_record" "enpoint_v6_only_records" {
+resource "cloudflare_dns_record" "enpoint_v6_only_records" {
   name     = "v6.${var.name}.endpoints"
   for_each = toset(var.endpoints_v6)
   ttl      = 1 # default ttl
@@ -73,7 +73,7 @@ resource "cloudflare_record" "enpoint_v6_only_records" {
   content  = each.value
   zone_id  = var.cloudflare_zone_id
 }
-resource "cloudflare_record" "enpoint_v6_records" {
+resource "cloudflare_dns_record" "enpoint_v6_records" {
   name     = "${var.name}.endpoints"
   for_each = toset(var.endpoints_v6)
   ttl      = 1 # default ttl
@@ -83,7 +83,7 @@ resource "cloudflare_record" "enpoint_v6_records" {
   zone_id  = var.cloudflare_zone_id
 }
 
-resource "cloudflare_record" "dn42_v4_records" {
+resource "cloudflare_dns_record" "dn42_v4_records" {
   name     = "${var.name}.dn42"
   for_each = toset(local.dn42_addresses_v4)
   ttl      = 1 # default ttl
@@ -93,7 +93,7 @@ resource "cloudflare_record" "dn42_v4_records" {
   zone_id  = var.cloudflare_zone_id
 }
 
-resource "cloudflare_record" "dn42_v6_records" {
+resource "cloudflare_dns_record" "dn42_v6_records" {
   name     = "${var.name}.dn42"
   for_each = toset(local.dn42_addresses_v6)
   ttl      = 1 # default ttl

@@ -5,21 +5,31 @@ provider "cloudflare" {
 # -------------
 # DDNS and ACME token
 
-data "cloudflare_api_token_permission_groups" "all" {}
+data "cloudflare_api_token_permissions_groups_list" "all" {
+  account_id = local.cloudflare_main_account_id
+}
 
 resource "cloudflare_api_token" "dns" {
-  name = "dns"
-
-  policy {
+  name   = "dns"
+  status = "active"
+  policies = [{
+    effect = "allow"
+    # TODO cloudflare_api_token_permissions_groups_list not working
+    # permission_groups = [for group in data.cloudflare_api_token_permissions_groups_list.all.result : group if contains(["Zone Read", "Zone Settings Read", "DNS Write"], group.name) ]
+    # permission_groups = [
+    #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Read"],
+    #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Settings Read"],
+    #     data.cloudflare_api_token_permissions_groups_list.all.zone["DNS Write"],
+    #   ]
     permission_groups = [
-      data.cloudflare_api_token_permission_groups.all.zone["Zone Read"],
-      data.cloudflare_api_token_permission_groups.all.zone["Zone Settings Read"],
-      data.cloudflare_api_token_permission_groups.all.zone["DNS Write"],
+      { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
+      { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
+      { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
     ]
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
     }
-  }
+  }]
 }
 
 output "cloudflare_token" {
@@ -38,34 +48,36 @@ locals {
 # Zones
 
 resource "cloudflare_zone" "com_li7g" {
-  account_id = local.cloudflare_main_account_id
-  zone       = "li7g.com"
+  account = {
+    id = local.cloudflare_main_account_id
+  }
+  name = "li7g.com"
 }
 
 resource "cloudflare_zone" "zip_prebuilt" {
-  account_id = local.cloudflare_main_account_id
-  zone       = "prebuilt.zip"
+  account = {
+    id = local.cloudflare_main_account_id
+  }
+  name = "prebuilt.zip"
 }
 
-resource "cloudflare_zone_settings_override" "com_li7g" {
-  zone_id = cloudflare_zone.com_li7g.id
-  settings {
-    ssl = "strict"
-  }
+resource "cloudflare_zone_setting" "com_li7g" {
+  zone_id    = cloudflare_zone.com_li7g.id
+  setting_id = "ssl"
+  value      = "strict"
 }
 
-resource "cloudflare_zone_settings_override" "zip_prebuilt" {
-  zone_id = cloudflare_zone.zip_prebuilt.id
-  settings {
-    ssl = "strict"
-  }
+resource "cloudflare_zone_setting" "zip_prebuilt" {
+  zone_id    = cloudflare_zone.zip_prebuilt.id
+  setting_id = "ssl"
+  value      = "strict"
 }
 
 # ttl = 1 for automatic
 
 # CNAME records
 
-resource "cloudflare_record" "li7g_home" {
+resource "cloudflare_dns_record" "li7g_home" {
   name    = "home"
   proxied = false
   ttl     = 1
@@ -74,7 +86,7 @@ resource "cloudflare_record" "li7g_home" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g" {
+resource "cloudflare_dns_record" "li7g" {
   name    = "li7g.com"
   proxied = true
   ttl     = 1
@@ -83,7 +95,7 @@ resource "cloudflare_record" "li7g" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "zip_prebuilt" {
+resource "cloudflare_dns_record" "zip_prebuilt" {
   name    = "prebuilt.zip"
   proxied = true
   ttl     = 1
@@ -91,7 +103,7 @@ resource "cloudflare_record" "zip_prebuilt" {
   content = "prebuilt-zip.li7g.com"
   zone_id = cloudflare_zone.zip_prebuilt.id
 }
-resource "cloudflare_record" "zip_prebuilt_wildcard" {
+resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
   name = "*"
   # cluodflare's edge ssl certificate
   # only covers second level of the domain
@@ -150,7 +162,7 @@ output "service_cname_mappings" {
   sensitive = false
 }
 
-resource "cloudflare_record" "general_cname" {
+resource "cloudflare_dns_record" "general_cname" {
   for_each = local.service_cname_mappings
 
   name    = each.key
@@ -161,7 +173,7 @@ resource "cloudflare_record" "general_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "general_tailscale_cname" {
+resource "cloudflare_dns_record" "general_tailscale_cname" {
   for_each = local.service_cname_mappings
 
   name    = "${each.key}.ts"
@@ -172,7 +184,7 @@ resource "cloudflare_record" "general_tailscale_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "general_zerotier_cname" {
+resource "cloudflare_dns_record" "general_zerotier_cname" {
   for_each = local.service_cname_mappings
 
   name    = "${each.key}.zt"
@@ -183,7 +195,7 @@ resource "cloudflare_record" "general_zerotier_cname" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "general_dn42_cname" {
+resource "cloudflare_dns_record" "general_dn42_cname" {
   for_each = local.service_cname_mappings
 
   name    = "${each.key}.dn42"
@@ -196,7 +208,7 @@ resource "cloudflare_record" "general_dn42_cname" {
 
 # anycast record
 
-resource "cloudflare_record" "dns" {
+resource "cloudflare_dns_record" "dns" {
   name    = "dns"
   proxied = false
   ttl     = 1
@@ -207,7 +219,7 @@ resource "cloudflare_record" "dns" {
 
 # localhost record
 
-resource "cloudflare_record" "localhost_a" {
+resource "cloudflare_dns_record" "localhost_a" {
   name    = "localhost"
   proxied = false
   ttl     = 1
@@ -216,7 +228,7 @@ resource "cloudflare_record" "localhost_a" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "localhost_aaaa" {
+resource "cloudflare_dns_record" "localhost_aaaa" {
   name    = "localhost"
   proxied = false
   ttl     = 1
@@ -228,7 +240,7 @@ resource "cloudflare_record" "localhost_aaaa" {
 # ad-hoc ddns record
 
 # currently nothing
-# resource "cloudflare_record" "mc" {
+# resource "cloudflare_dns_record" "mc" {
 #   name    = "mc"
 #   proxied = false
 #   ttl     = 1
@@ -240,7 +252,7 @@ resource "cloudflare_record" "localhost_aaaa" {
 
 # smtp records for sending
 
-resource "cloudflare_record" "li7g_dkim" {
+resource "cloudflare_dns_record" "li7g_dkim" {
   name    = "default._domainkey"
   proxied = false
   ttl     = 1
@@ -249,7 +261,7 @@ resource "cloudflare_record" "li7g_dkim" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_dmarc" {
+resource "cloudflare_dns_record" "li7g_dmarc" {
   name    = "_dmarc"
   proxied = false
   ttl     = 1
@@ -258,7 +270,7 @@ resource "cloudflare_record" "li7g_dmarc" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_spf" {
+resource "cloudflare_dns_record" "li7g_spf" {
   name    = "li7g.com"
   proxied = false
   ttl     = 1
@@ -267,7 +279,7 @@ resource "cloudflare_record" "li7g_spf" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_record" "li7g_smtp_spf" {
+resource "cloudflare_dns_record" "li7g_smtp_spf" {
   name    = "smtp"
   proxied = false
   ttl     = 1
@@ -278,7 +290,7 @@ resource "cloudflare_record" "li7g_smtp_spf" {
 
 # github pages dns challange
 
-resource "cloudflare_record" "github_pages_challenge" {
+resource "cloudflare_dns_record" "github_pages_challenge" {
   name    = "_github-pages-challenge-linyinfeng"
   proxied = false
   ttl     = 1
@@ -289,7 +301,7 @@ resource "cloudflare_record" "github_pages_challenge" {
 
 # cache
 
-resource "cloudflare_record" "li7g_b2" {
+resource "cloudflare_dns_record" "li7g_b2" {
   name    = "b2"
   proxied = true
   ttl     = 1
@@ -297,7 +309,7 @@ resource "cloudflare_record" "li7g_b2" {
   content = module.b2_download_url.host
   zone_id = cloudflare_zone.com_li7g.id
 }
-resource "cloudflare_record" "li7g_cache" {
+resource "cloudflare_dns_record" "li7g_cache" {
   name    = "cache"
   proxied = true
   ttl     = 1
@@ -315,19 +327,19 @@ resource "cloudflare_ruleset" "li7g_http_request_transform" {
   zone_id     = cloudflare_zone.com_li7g.id
   phase       = "http_request_transform"
 
-  rules {
+  rules = [{
     enabled     = true
     description = "Rewrite cache path"
     expression  = "(http.host eq \"cache.li7g.com\")"
     action      = "rewrite"
-    action_parameters {
-      uri {
-        path {
+    action_parameters = {
+      uri = {
+        path = {
           expression = "concat(\"/file/${b2_bucket.cache.bucket_name}\", http.request.uri.path)"
         }
       }
     }
-  }
+  }]
 }
 
 resource "cloudflare_ruleset" "li7g_http_config_settings" {
@@ -337,10 +349,10 @@ resource "cloudflare_ruleset" "li7g_http_config_settings" {
   zone_id     = cloudflare_zone.com_li7g.id
   phase       = "http_config_settings"
 
-  rules {
+  rules = [{
     enabled = true
     action  = "set_config"
-    action_parameters {
+    action_parameters = {
       automatic_https_rewrites = false
       ssl                      = "off"
     }
@@ -348,7 +360,7 @@ resource "cloudflare_ruleset" "li7g_http_config_settings" {
       (starts_with(http.request.uri.path, "/.well-known/acme-challenge/"))
     EOT
     description = "Disable SSL for ACME challenge"
-  }
+  }]
 }
 
 resource "cloudflare_ruleset" "li7g_http_request_firewall_custom" {
@@ -358,7 +370,7 @@ resource "cloudflare_ruleset" "li7g_http_request_firewall_custom" {
   zone_id     = cloudflare_zone.com_li7g.id
   phase       = "http_request_firewall_custom"
 
-  rules {
+  rules = [{
     enabled     = true
     action      = "block"
     expression  = <<EOT
@@ -373,7 +385,7 @@ resource "cloudflare_ruleset" "li7g_http_request_firewall_custom" {
       )
     EOT
     description = "Block Traffic to some site from CN"
-  }
+  }]
 }
 
 resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
@@ -383,7 +395,7 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
   zone_id     = cloudflare_zone.com_li7g.id
   phase       = "http_request_cache_settings"
 
-  rules {
+  rules = [{
     enabled     = true
     action      = "set_cache_settings"
     expression  = <<EOT
@@ -394,58 +406,46 @@ resource "cloudflare_ruleset" "li7g_http_request_cache_settings" {
       )
     EOT
     description = "Set cache settings rule"
-    action_parameters {
+    action_parameters = {
       cache = true # cache everything
     }
-  }
+  }]
 }
 
 # Email routing
 
 resource "cloudflare_email_routing_settings" "li7g" {
   zone_id = cloudflare_zone.com_li7g.id
-  enabled = true
-}
-
-resource "cloudflare_email_routing_rule" "postmaster_li7g" {
-  zone_id = cloudflare_zone.com_li7g.id
-  name    = "postmaster"
-  enabled = true
-  matcher {
-    type  = "literal"
-    field = "to"
-    value = "postmaster@li7g.com"
-  }
-  action {
-    type  = "forward"
-    value = ["lin.yinfeng@outlook.com"]
-  }
 }
 
 resource "cloudflare_email_routing_rule" "admin_li7g" {
   zone_id = cloudflare_zone.com_li7g.id
   name    = "admin"
   enabled = true
-  matcher {
+  matchers = [{
     type  = "literal"
     field = "to"
     value = "admin@li7g.com"
-  }
-  action {
+    }, {
+    type  = "literal"
+    field = "to"
+    value = "postmaster@li7g.com"
+  }]
+  actions = [{
     type  = "forward"
     value = ["lin.yinfeng@outlook.com"]
-  }
+  }]
 }
 
 resource "cloudflare_email_routing_catch_all" "li7g" {
   zone_id = cloudflare_zone.com_li7g.id
   name    = "catch all"
   enabled = true
-  matcher {
+  matchers = [{
     type = "all"
-  }
-  action {
+  }]
+  actions = [{
     type  = "drop"
     value = []
-  }
+  }]
 }

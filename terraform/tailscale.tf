@@ -59,7 +59,7 @@ resource "tailscale_acl" "main" {
 data "tailscale_devices" "all" {
 }
 
-resource "cloudflare_record" "li7g_ts" {
+resource "cloudflare_dns_record" "li7g_ts" {
   for_each = {
     for device in data.tailscale_devices.all.devices :
     device.name =>
