@@ -170,6 +170,8 @@ in
         nixpkgs = {
           config = {
             allowUnfree = true;
+            # cudaSupport = true;
+            # rocmSupport = true;
             # TODO wait for mautrix-telegram, matrix-qq, and logseq update
             allowInsecurePredicate =
               p:

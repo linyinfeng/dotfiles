@@ -156,6 +156,7 @@ locals {
     jellyfin        = { on = "nuc", proxy = false }
     nextcloud       = { on = "nuc", proxy = false }
     mc              = { on = "nuc", proxy = false }
+    open-webui      = { on = "owl", proxy = false }
   }
 }
 output "service_cname_mappings" {

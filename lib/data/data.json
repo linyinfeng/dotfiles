@@ -127,6 +127,10 @@
       "on": "hkg0",
       "proxy": true
     },
+    "open-webui": {
+      "on": "owl",
+      "proxy": false
+    },
     "oranc": {
       "on": "lax0",
       "proxy": true

@@ -87,6 +87,8 @@
       rabbitmq-management = 3371;
       sicp-staging = 3390;
       sicp-staging-redis = 3391;
+      ollama = 3400;
+      open-webui = 3410;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

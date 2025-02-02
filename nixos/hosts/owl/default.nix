@@ -27,6 +27,8 @@
       services.flatpak
       services.ssh-honeypot
       services.portal-client
+      services.ollama
+      services.open-webui
       graphical.graphical-powersave-target
       programs.service-mail
       programs.tg-send
@@ -230,6 +232,20 @@
       ];
 
       system.nproc = 16;
+    }
+
+    # ollama
+    {
+      # slower than CPU
+      # services.ollama = {
+      #   acceleration = "rocm";
+      #   environmentVariables = {
+      #     ROC_ENABLE_PRE_VEGA = "1";
+      #     # TODO remove after ollama support gfx1103
+      #     # https://github.com/ROCm/ROCm/discussions/2631
+      #     HSA_OVERRIDE_GFX_VERSION="11.0.2";
+      #   };
+      # };
     }
 
     # enchilada usb network
