@@ -5,37 +5,38 @@ provider "cloudflare" {
 # -------------
 # DDNS and ACME token
 
-data "cloudflare_api_token_permissions_groups_list" "all" {
-  account_id = local.cloudflare_main_account_id
-}
+# TODO broken
 
-resource "cloudflare_api_token" "dns" {
-  name   = "dns"
-  status = "active"
-  policies = [{
-    effect = "allow"
-    # TODO cloudflare_api_token_permissions_groups_list not working
-    # permission_groups = [for group in data.cloudflare_api_token_permissions_groups_list.all.result : group if contains(["Zone Read", "Zone Settings Read", "DNS Write"], group.name) ]
-    # permission_groups = [
-    #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Read"],
-    #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Settings Read"],
-    #     data.cloudflare_api_token_permissions_groups_list.all.zone["DNS Write"],
-    #   ]
-    permission_groups = [
-      { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
-      { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
-      { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
-    ]
-    resources = {
-      "com.cloudflare.api.account.zone.*" = "*"
-    }
-  }]
-}
+# data "cloudflare_api_token_permissions_groups_list" "all" {
+#   account_id = local.cloudflare_main_account_id
+# }
 
-output "cloudflare_token" {
-  value     = cloudflare_api_token.dns.value
-  sensitive = true
-}
+# resource "cloudflare_api_token" "hosts" {
+#   name = "hosts"
+#   policies = [{
+#     effect = "allow"
+#     # TODO cloudflare_api_token_permissions_groups_list not working
+#     # permission_groups = [for group in data.cloudflare_api_token_permissions_groups_list.all.result : group if contains(["Zone Read", "Zone Settings Read", "DNS Write"], group.name) ]
+#     # permission_groups = [
+#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Read"],
+#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Settings Read"],
+#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["DNS Write"],
+#     #   ]
+#     permission_groups = [
+#       { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
+#       { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
+#       { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
+#     ]
+#     resources = {
+#       "com.cloudflare.api.account.zone.*" = "*"
+#     }
+#   }]
+# }
+
+# output "cloudflare_token" {
+#   value     = cloudflare_api_token.hosts.value
+#   sensitive = true
+# }
 
 # -------------
 # Account ID

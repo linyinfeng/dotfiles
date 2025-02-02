@@ -27,7 +27,7 @@ resource "acme_certificate" "li7g_com" {
   dns_challenge {
     provider = "cloudflare"
     config = {
-      CF_DNS_API_TOKEN = cloudflare_api_token.dns.value
+      CF_DNS_API_TOKEN = data.sops_file.terraform.data["cloudflare.api-token"]
     }
   }
 }

@@ -45,7 +45,8 @@ in
         };
       };
       sops.secrets."cloudflare_token" = {
-        terraformOutput.enable = true;
+        # terraformOutput.enable = true;
+        sopsFile = config.sops-file.get "common.yaml";
         restartUnits = [ ]; # no need to restart units
       };
       sops.templates.acme-credentials.content = ''
