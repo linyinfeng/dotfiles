@@ -67,14 +67,14 @@ in
         flock 200
         echo "enter critical section"
 
-        echo "canceling all unfinished multipart uploads..."
-        backblaze-b2 file large unfinished cancel "b2://${cacheBucketName}"
-
         echo "removing narinfo cache..."
         rm -rf /var/lib/cache-li7g-com/.cache
 
         echo "performing gc..."
         nix-gc-s3 "${cacheBucketName}" --endpoint "${cacheS3Url}" --roots "${hydraRootsDir}" --jobs 10
+
+        # echo "canceling all unfinished multipart uploads..."
+        # backblaze-b2 file large unfinished cancel "b2://${cacheBucketName}"
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     path = with pkgs; [
