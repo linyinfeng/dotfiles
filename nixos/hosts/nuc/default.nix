@@ -155,8 +155,8 @@ in
           ];
           ip_type = "IPv4";
           ip_urls = [
-            "https://api.ipify.org"
             "https://myip.biturl.top"
+            "https://ipecho.net/plain"
             "https://api-ipv4.ip.sb/ip"
           ];
         };

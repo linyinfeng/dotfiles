@@ -137,7 +137,12 @@ let
       # deadnix: skip
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
-    [ (_final: _prev: { }) ];
+    [
+      (_final: _prev: {
+        # maintained packages
+        inherit (latest) godns;
+      })
+    ];
   lateFixes =
     nixpkgsArgs:
     let

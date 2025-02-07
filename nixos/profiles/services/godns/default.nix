@@ -44,6 +44,7 @@ in
             provider = "Cloudflare";
             login_token = config.sops.placeholder."cloudflare_token";
             resolver = "8.8.8.8";
+            debug_info = true;
           } godnsCfg.settings
         );
       }
