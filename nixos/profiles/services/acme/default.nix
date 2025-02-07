@@ -45,6 +45,7 @@ in
         };
       };
       sops.secrets."cloudflare_token" = {
+        # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
         # terraformOutput.enable = true;
         sopsFile = config.sops-file.get "common.yaml";
         restartUnits = [ ]; # no need to restart units

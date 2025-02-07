@@ -11,29 +11,34 @@ data "cloudflare_api_token_permissions_groups_list" "all" {
   account_id = local.cloudflare_main_account_id
 }
 
-# locals {
-#   # permissions_groups_map = { for group in data.cloudflare_api_token_permissions_groups_list.all.result : group.name => group.id }
-# }
+locals {
+  # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
+  # permissions_groups_map = { for group in data.cloudflare_api_token_permissions_groups_list.all.result : group.name => group.id }
+}
 
-# resource "cloudflare_api_token" "hosts" {
-#   name = "hosts"
-#   policies = [{
-#     effect = "allow"
-#     permission_groups = [
-#         { id = local.permissions_groups_map["Zone Read"] },
-#         { id = local.permissions_groups_map["Zone Settings Read"] },
-#         { id = local.permissions_groups_map["DNS Write"] },
-#       ]
-#     resources = {
-#       "com.cloudflare.api.account.zone.*" = "*"
-#     }
-#   }]
-# }
+resource "cloudflare_api_token" "hosts" {
+  name = "hosts"
+  policies = [{
+    effect = "allow"
+    permission_groups = [
+      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
+      # { id = local.permissions_groups_map["Zone Read"] },
+      # { id = local.permissions_groups_map["Zone Settings Read"] },
+      # { id = local.permissions_groups_map["DNS Write"] },
+      { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
+      { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
+      { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
+    ]
+    resources = {
+      "com.cloudflare.api.account.zone.*" = "*"
+    }
+  }]
+}
 
-# output "cloudflare_token" {
-#   value     = cloudflare_api_token.hosts.value
-#   sensitive = true
-# }
+output "cloudflare_token" {
+  value     = cloudflare_api_token.hosts.value
+  sensitive = true
+}
 
 # -------------
 # Account ID
@@ -500,32 +505,35 @@ resource "terraform_data" "cache_custom_domain" {
   }
 }
 
-# resource "cloudflare_api_token" "cache" {
-#   name = "cache"
-#   policies = [{
-#     effect = "allow"
-#     permission_groups = [
-#       { id = "Workers R2 Storage Bucket Item Write" }
-#       ]
-#     resources = {
-#       "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}": "*"
-#     }
-#   }]
-# }
+resource "cloudflare_api_token" "cache" {
+  name = "cache"
+  policies = [{
+    effect = "allow"
+    permission_groups = [
+      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
+      # { id = local.permissions_groups_map["Workers R2 Storage Bucket Item Write" }
+      { id = "2efd5506f9c8494dacb1fa10a3e7d5b6" }
+    ]
+    resources = {
+      "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
+    }
+  }]
+}
 
-# output "r2_s3_api_url" {
-#   value = "https://${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
-#   sensitive = true
-# }
-# output "r2_cache_bucket_name" {
-#   value     = cloudflare_r2_bucket.cache.name
-#   sensitive = false
-# }
-# output "r2_cache_key_id" {
-#   value       = cloudflare_api_token.cache.id
-#   sensitive = false
-# }
+output "r2_s3_api_url" {
+  value     = "https://${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
+  sensitive = true
+}
+output "r2_cache_bucket_name" {
+  value     = cloudflare_r2_bucket.cache.name
+  sensitive = false
+}
+output "r2_cache_key_id" {
+  value     = cloudflare_api_token.cache.id
+  sensitive = false
+}
+# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
 # output "r2_cache_access_key" {
-#   value       = sha256(cloudflare_api_token.cache.value)
-#   sensitive   = true
+#   value     = sha256(cloudflare_api_token.cache.value)
+#   sensitive = true
 # }
