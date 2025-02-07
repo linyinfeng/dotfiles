@@ -19,6 +19,7 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   environment.systemPackages = with pkgs; [
     kooha
     dconf-editor
+    refine
     gnome-sound-recorder
     gnome-power-manager
     gnome-tweaks

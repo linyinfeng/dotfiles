@@ -65,7 +65,11 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
     };
     "org/gnome/mutter" = {
       edge-tiling = true;
-      # experimental-features = [ "scale-monitor-framebuffer" ];
+      experimental-features = [
+        "scale-monitor-framebuffer"
+        "variable-refresh-rate"
+        "xwayland-native-scaling"
+      ];
     };
     "org/gnome/desktop/interface" = {
       gtk-theme = "adw-gtk3";
