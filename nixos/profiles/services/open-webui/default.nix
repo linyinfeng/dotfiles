@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 
 {
   services.open-webui = {
@@ -6,7 +6,8 @@
     port = config.ports.open-webui;
     environment = {
       OLLAMA_BASE_URL = "http://127.0.0.1:${toString config.services.ollama.port}";
-    } // lib.optionalAttrs config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
+    };
+    # // lib.optionalAttrs config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   };
 
   services.nginx.virtualHosts."open-webui.*" = {
