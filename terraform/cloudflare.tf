@@ -7,26 +7,23 @@ provider "cloudflare" {
 
 # TODO broken
 
-# data "cloudflare_api_token_permissions_groups_list" "all" {
-#   account_id = local.cloudflare_main_account_id
+data "cloudflare_api_token_permissions_groups_list" "all" {
+  account_id = local.cloudflare_main_account_id
+}
+
+# locals {
+#   # permissions_groups_map = { for group in data.cloudflare_api_token_permissions_groups_list.all.result : group.name => group.id }
 # }
 
 # resource "cloudflare_api_token" "hosts" {
 #   name = "hosts"
 #   policies = [{
 #     effect = "allow"
-#     # TODO cloudflare_api_token_permissions_groups_list not working
-#     # permission_groups = [for group in data.cloudflare_api_token_permissions_groups_list.all.result : group if contains(["Zone Read", "Zone Settings Read", "DNS Write"], group.name) ]
-#     # permission_groups = [
-#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Read"],
-#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["Zone Settings Read"],
-#     #     data.cloudflare_api_token_permissions_groups_list.all.zone["DNS Write"],
-#     #   ]
 #     permission_groups = [
-#       { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
-#       { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
-#       { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
-#     ]
+#         { id = local.permissions_groups_map["Zone Read"] },
+#         { id = local.permissions_groups_map["Zone Settings Read"] },
+#         { id = local.permissions_groups_map["DNS Write"] },
+#       ]
 #     resources = {
 #       "com.cloudflare.api.account.zone.*" = "*"
 #     }
@@ -451,3 +448,84 @@ resource "cloudflare_email_routing_catch_all" "li7g" {
     value = []
   }]
 }
+
+# R2 Object storage
+
+resource "cloudflare_r2_bucket" "cache" {
+  account_id    = local.cloudflare_main_account_id
+  name          = "cache-li7g-com"
+  location      = "apac" # Asia Pacific
+  storage_class = "Standard"
+}
+
+# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/2537
+resource "terraform_data" "cache_custom_domain" {
+  lifecycle {
+    replace_triggered_by = [
+      cloudflare_r2_bucket.cache,
+    ]
+  }
+
+  input = {
+    bucket_name           = cloudflare_r2_bucket.cache.name
+    cloudflare_account_id = local.cloudflare_main_account_id
+    cloudflare_api_token  = data.sops_file.terraform.data["cloudflare.api-token"]
+    cloudflare_zone_id    = cloudflare_zone.com_li7g.id
+    r2_domain             = "cache-ng.li7g.com"
+  }
+
+  provisioner "local-exec" {
+    on_failure = fail
+    when       = create
+    command    = <<-EOT
+      curl --request POST \
+      --url https://api.cloudflare.com/client/v4/accounts/${self.input.cloudflare_account_id}/r2/buckets/${self.input.bucket_name}/domains/custom \
+      --header 'Authorization: Bearer ${self.input.cloudflare_api_token}' \
+      --header 'Content-Type: application/json' \
+      --header 'cf-r2-jurisdiction: ' \
+      --data '{"domain":"${self.input.r2_domain}","zoneId":"${self.input.cloudflare_zone_id}","enabled":true}'
+    EOT
+  }
+
+  provisioner "local-exec" {
+    on_failure = fail
+    when       = destroy
+    command    = <<-EOT
+      curl --request DELETE \
+      --url https://api.cloudflare.com/client/v4/accounts/${self.input.cloudflare_account_id}/r2/buckets/${self.input.bucket_name}/domains/custom/${self.input.r2_domain} \
+      --header 'Authorization: Bearer ${self.input.cloudflare_api_token}' \
+      --header 'Content-Type: application/json' \
+      --header 'cf-r2-jurisdiction: '
+    EOT
+  }
+}
+
+# resource "cloudflare_api_token" "cache" {
+#   name = "cache"
+#   policies = [{
+#     effect = "allow"
+#     permission_groups = [
+#       { id = "Workers R2 Storage Bucket Item Write" }
+#       ]
+#     resources = {
+#       "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}": "*"
+#     }
+#   }]
+# }
+
+# output "r2_s3_api_url" {
+#   value = "https://${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
+#   sensitive = true
+# }
+# output "r2_cache_bucket_name" {
+#   value     = cloudflare_r2_bucket.cache.name
+#   sensitive = false
+# }
+# output "r2_cache_key_id" {
+#   value       = cloudflare_api_token.cache.id
+#   sensitive = false
+# }
+# output "r2_cache_access_key" {
+#   value       = sha256(cloudflare_api_token.cache.value)
+#   sensitive   = true
+# }
