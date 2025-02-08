@@ -303,18 +303,10 @@ resource "cloudflare_dns_record" "github_pages_challenge" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-# cache
+# b2
 
 resource "cloudflare_dns_record" "li7g_b2" {
   name    = "b2"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  content = module.b2_download_url.host
-  zone_id = cloudflare_zone.com_li7g.id
-}
-resource "cloudflare_dns_record" "li7g_cache" {
-  name    = "cache"
   proxied = true
   ttl     = 1
   type    = "CNAME"
@@ -476,7 +468,7 @@ resource "terraform_data" "cache_custom_domain" {
     cloudflare_account_id = local.cloudflare_main_account_id
     cloudflare_api_token  = data.sops_file.terraform.data["cloudflare.api-token"]
     cloudflare_zone_id    = cloudflare_zone.com_li7g.id
-    r2_domain             = "cache-ng.li7g.com"
+    r2_domain             = "cache.li7g.com"
   }
 
   provisioner "local-exec" {
@@ -521,7 +513,7 @@ resource "cloudflare_api_token" "cache" {
 }
 
 output "r2_s3_api_url" {
-  value     = "https://${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
+  value     = "${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
   sensitive = true
 }
 output "r2_cache_bucket_name" {
@@ -537,3 +529,5 @@ output "r2_cache_key_id" {
 #   value     = sha256(cloudflare_api_token.cache.value)
 #   sensitive = true
 # }
+
+# TODO copy nix-cache-info

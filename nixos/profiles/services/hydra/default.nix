@@ -97,6 +97,46 @@ in
       nix.settings.trusted-users = [ "@hydra" ];
     }
 
+    # {
+    #   # store
+    #   services.hydra = {
+    #     extraConfig = ''
+    #       Include "${config.sops.templates."hydra-extra-config".path}"
+
+    #       store_uri = s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd&secret-key=${
+    #         config.sops.secrets."cache-li7g-com/key".path
+    #       }
+    #       server_store_uri = https://cache.li7g.com?local-nar-cache=${narCache}
+    #       binary_cache_public_uri = https://cache.li7g.com
+    #     '';
+    #   };
+    #   systemd.services.hydra-queue-runner.serviceConfig.environmentFile = [
+    #     config.sops.templates."hydra-queue-runner-env".path
+    #   ];
+    #   sops.templates."hydra-queue-runner-env".content = ''
+    #     export AWS_ACCESS_KEY_ID=${config.sops.placeholder."r2_cache_key_id"}
+    #     export AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."r2_cache_access_key"}
+    #     export AWS_EC2_METADATA_DISABLED=true
+    #   '';
+    #   systemd.tmpfiles.rules = [
+    #     "d /var/cache/hydra 0755 hydra hydra -  -"
+    #     "d ${narCache}      0775 hydra hydra 1d -"
+    #   ];
+    #   sops.secrets."r2_cache_key_id" = {
+    #     terraformOutput.enable = true;
+    #   };
+    #   sops.secrets."r2_cache_access_key" = {
+    #     # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
+    #     # terraformOutput.enable = true;
+    #     sopsFile = config.sops-file.get "common.yaml";
+    #   };
+    #   sops.secrets."cache-li7g-com/key" = {
+    #     sopsFile = config.sops-file.host;
+    #     group = "hydra";
+    #     mode = "440";
+    #   };
+    # }
+
     {
       # email notifications
       services.hydra.extraConfig = ''

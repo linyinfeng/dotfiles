@@ -5,8 +5,7 @@
   ...
 }:
 let
-  cacheS3Url = config.lib.self.data.b2_s3_api_url;
-  cacheBucketName = config.lib.self.data.b2_cache_bucket_name;
+  cacheBucketName = config.lib.self.data.r2_cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
 in
 {
@@ -44,8 +43,8 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
+        "cache-key-id:${config.sops.secrets."r2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."r2_cache_access_key".path}"
         "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
       ];
       CPUQuota = "200%"; # limit cpu usage for parallel-compression
@@ -57,10 +56,9 @@ in
   };
   systemd.services."gc-cache-li7g-com" = {
     script = ''
+      export ENDPOINT=$(cat "$CREDENTIALS_DIRECTORY/s3-endpoint")
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
-      export B2_APPLICATION_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
-      export B2_APPLICATION_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
 
       (
         echo "wait for lock"
@@ -71,17 +69,13 @@ in
         rm -rf /var/lib/cache-li7g-com/.cache
 
         echo "performing gc..."
-        nix-gc-s3 "${cacheBucketName}" --endpoint "${cacheS3Url}" --roots "${hydraRootsDir}" --jobs 10
-
-        # echo "canceling all unfinished multipart uploads..."
-        # backblaze-b2 file large unfinished cancel "b2://${cacheBucketName}"
+        nix-gc-s3 "${cacheBucketName}" --endpoint "https://$ENDPOINT" --roots "${hydraRootsDir}" --jobs 10
       ) 200>/var/lib/cache-li7g-com/lock
     '';
     path = with pkgs; [
       nix-gc-s3
       config.nix.package
       util-linux
-      backblaze-b2
     ];
     serviceConfig = {
       Restart = "on-failure";
@@ -90,8 +84,9 @@ in
       Type = "oneshot";
       StateDirectory = "cache-li7g-com";
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
+        "s3-endpoint:${config.sops.secrets."r2_s3_api_url".path}"
+        "cache-key-id:${config.sops.secrets."r2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."r2_cache_access_key".path}"
       ];
     };
     environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
@@ -102,11 +97,16 @@ in
     wantedBy = [ "timers.target" ];
   };
 
-  sops.secrets."b2_cache_key_id" = {
+  sops.secrets."r2_s3_api_url" = {
     terraformOutput.enable = true;
   };
-  sops.secrets."b2_cache_access_key" = {
+  sops.secrets."r2_cache_key_id" = {
     terraformOutput.enable = true;
+  };
+  sops.secrets."r2_cache_access_key" = {
+    # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
+    # terraformOutput.enable = true;
+    sopsFile = config.sops-file.get "common.yaml";
   };
   sops.secrets."cache-li7g-com/key" = {
     sopsFile = config.sops-file.host;

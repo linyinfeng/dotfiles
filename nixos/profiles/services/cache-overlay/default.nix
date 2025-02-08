@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 let
-  cacheS3Host = config.lib.self.data.b2_s3_api_host;
-  cacheBucketName = config.lib.self.data.b2_cache_bucket_name;
+  cacheBucketName = config.lib.self.data.r2_cache_bucket_name;
   sigv4ProxyPort = config.ports.sigv4-proxy;
   sigv4ProxyAddress = "http://localhost:${toString sigv4ProxyPort}";
 in
@@ -54,6 +53,7 @@ in
 
   systemd.services."cache-sigv4-proxy" = {
     script = ''
+      export UPSTREAM_ENDPOINT=$(cat "$CREDENTIALS_DIRECTORY/s3-endpoint")
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/cache-key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/cache-access-key")
       export AWS_CREDENTIALS="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY"
@@ -62,26 +62,31 @@ in
         --allowed-endpoint="cache-overlay.ts.li7g.com" \
         --listen-addr=":${toString sigv4ProxyPort}" \
         --allowed-source-subnet=127.0.0.1/8 \
-        --allowed-source-subnet=::1/128 \
-        --upstream-endpoint="${cacheS3Host}"
+        --allowed-source-subnet=::1/128
     '';
     serviceConfig = {
       DynamicUser = true;
       LoadCredential = [
-        "cache-key-id:${config.sops.secrets."b2_cache_key_id".path}"
-        "cache-access-key:${config.sops.secrets."b2_cache_access_key".path}"
+        "s3-endpoint:${config.sops.secrets."r2_s3_api_url".path}"
+        "cache-key-id:${config.sops.secrets."r2_cache_key_id".path}"
+        "cache-access-key:${config.sops.secrets."r2_cache_access_key".path}"
       ];
       Restart = "on-failure";
     };
     wantedBy = [ "multi-user.target" ];
   };
 
-  sops.secrets."b2_cache_key_id" = {
+  sops.secrets."r2_s3_api_url" = {
+    terraformOutput.enable = true;
+  };
+  sops.secrets."r2_cache_key_id" = {
     terraformOutput.enable = true;
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
-  sops.secrets."b2_cache_access_key" = {
-    terraformOutput.enable = true;
+  sops.secrets."r2_cache_access_key" = {
+    # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
+    # terraformOutput.enable = true;
+    sopsFile = config.sops-file.get "common.yaml";
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
 }
