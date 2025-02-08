@@ -233,6 +233,12 @@ in
           nix fmt
         '';
       }
+
+      {
+        category = "terraform";
+        package = pkgs.terraform;
+      }
+
       {
         category = "infrastructure";
         package = terraformWrapper;
