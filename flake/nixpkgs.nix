@@ -154,12 +154,21 @@ let
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
         # TODO not working with selected nix
         inherit (unstable-small) nixd;
-        # TODO wait for https://github.com/c0fec0de/anytree/issues/270
-        # TODO wait for https://github.com/NixOS/nixpkgs/issues/375763
         python3Packages = prev.python3Packages.overrideScope (
           _finalPy: prevPy: {
+            # TODO wait for https://github.com/c0fec0de/anytree/issues/270
+            # TODO wait for https://github.com/NixOS/nixpkgs/issues/375763
             anytree = prevPy.anytree.overrideAttrs (old: {
               patches = old.patches ++ [ ../patches/python-anytree-poetry-project-name-version.patch ];
+            });
+          }
+        );
+        python312Packages = prev.python312Packages.overrideScope (
+          finalPy: prevPy: {
+            # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=379820
+            inherit (latest.python312Packages) langfuse;
+            duckduckgo_search = prevPy.duckduckgo_search.overrideAttrs (_old: {
+              dependencies = with finalPy; [ primp ];
             });
           }
         );
