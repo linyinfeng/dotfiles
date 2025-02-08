@@ -1163,6 +1163,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-openusd": {
+      "locked": {
+        "lastModified": 1738936341,
+        "narHash": "sha256-9o4SnHhf5O3O/lgpY/VN4Fo7c8V3P20vDzGu6BcpNFk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "fb5865b24f35011a4571e4ecd1fda753b72ef105",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "pull/380003/head",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-riscv": {
       "locked": {
         "lastModified": 1738895259,
@@ -1416,6 +1432,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-latest": "nixpkgs-latest",
+        "nixpkgs-openusd": "nixpkgs-openusd",
         "nixpkgs-riscv": "nixpkgs-riscv",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",

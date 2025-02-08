@@ -163,6 +163,12 @@ let
             });
           }
         );
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380003
+        python311Packages = prev.python311Packages.overrideScope (
+          _finalPy: _prevPy: {
+            inherit ((import inputs.nixpkgs-openusd nixpkgsArgs).python311Packages) openusd;
+          }
+        );
       })
     ];
 in

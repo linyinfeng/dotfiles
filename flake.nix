@@ -287,6 +287,8 @@
     mobile-nixos.flake = false;
 
     # fixes
+    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380003
+    nixpkgs-openusd.url = "github:nixos/nixpkgs/pull/380003/head";
   };
 
   outputs =
