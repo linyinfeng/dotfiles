@@ -163,19 +163,10 @@ let
             });
           }
         );
-        python312Packages = prev.python312Packages.overrideScope (
-          finalPy: prevPy: {
-            # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=379820
-            inherit (latest.python312Packages) langfuse;
-            duckduckgo_search = prevPy.duckduckgo_search.overrideAttrs (_old: {
-              dependencies = with finalPy; [ primp ];
-            });
-          }
-        );
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380003
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380449
         python311Packages = prev.python311Packages.overrideScope (
           _finalPy: _prevPy: {
-            inherit ((import inputs.nixpkgs-openusd nixpkgsArgs).python311Packages) openusd;
+            inherit ((import inputs.nixpkgs-materialx nixpkgsArgs).python311Packages) materialx;
           }
         );
       })

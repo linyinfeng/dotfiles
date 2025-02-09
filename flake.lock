@@ -1163,18 +1163,18 @@
         "type": "github"
       }
     },
-    "nixpkgs-openusd": {
+    "nixpkgs-materialx": {
       "locked": {
-        "lastModified": 1738936341,
-        "narHash": "sha256-9o4SnHhf5O3O/lgpY/VN4Fo7c8V3P20vDzGu6BcpNFk=",
+        "lastModified": 1739039174,
+        "narHash": "sha256-O8kTG/feMGk9PCBNtV/H2zO2azd4sFae/n1pYVXDTvQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fb5865b24f35011a4571e4ecd1fda753b72ef105",
+        "rev": "00c386ebc854ea4299b8aa6504a18552130a7652",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "pull/380003/head",
+        "ref": "pull/380449/head",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1432,7 +1432,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-latest": "nixpkgs-latest",
-        "nixpkgs-openusd": "nixpkgs-openusd",
+        "nixpkgs-materialx": "nixpkgs-materialx",
         "nixpkgs-riscv": "nixpkgs-riscv",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
