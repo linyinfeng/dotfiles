@@ -153,7 +153,7 @@ let
       (_final: prev: {
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
         # TODO not working with selected nix
-        inherit (unstable-small) nixd;
+        inherit (stable) open-webui;
         python3Packages = prev.python3Packages.overrideScope (
           _finalPy: prevPy: {
             # TODO wait for https://github.com/c0fec0de/anytree/issues/270
