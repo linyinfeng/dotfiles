@@ -287,8 +287,6 @@
     mobile-nixos.flake = false;
 
     # fixes
-    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380449
-    nixpkgs-materialx.url = "github:nixos/nixpkgs/pull/380449/head";
   };
 
   outputs =

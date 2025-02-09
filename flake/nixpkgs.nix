@@ -166,7 +166,7 @@ let
         # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=380449
         python311Packages = prev.python311Packages.overrideScope (
           _finalPy: _prevPy: {
-            inherit ((import inputs.nixpkgs-materialx nixpkgsArgs).python311Packages) materialx;
+            inherit (latest.python311Packages) materialx;
           }
         );
       })
