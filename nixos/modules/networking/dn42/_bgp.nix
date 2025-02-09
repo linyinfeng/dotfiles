@@ -13,7 +13,7 @@ lib.mkIf cfg.enable (
   lib.mkMerge [
     # common bird configuration
     {
-      services.bird2.config = lib.mkOrder 150 ''
+      services.bird.config = lib.mkOrder 150 ''
         # dn42 bgp configurations
 
         ipv4 table dn42_bgp_v4 { }
@@ -265,7 +265,7 @@ lib.mkIf cfg.enable (
     # dn42 bgp collector
     (lib.mkIf bgpCfg.collector.dn42.enable {
       # https://dn42.eu/services/Route-Collector
-      services.bird2.config = lib.mkOrder 200 ''
+      services.bird.config = lib.mkOrder 200 ''
         # dn42 bgp route collector
         protocol bgp bgp_dn42_route_collector
         {
@@ -314,7 +314,7 @@ lib.mkIf cfg.enable (
 
     # internel bgp peers
     {
-      services.bird2.config =
+      services.bird.config =
         # multiprotocol bgp
         lib.mkOrder 200 (
           lib.concatMapStringsSep "\n" (hostCfg: ''
@@ -397,7 +397,7 @@ lib.mkIf cfg.enable (
           };
         }
       ) bgpCfg.peering.peers;
-      services.bird2.config = lib.mkOrder 250 (
+      services.bird.config = lib.mkOrder 250 (
         lib.concatMapStringsSep "\n" (
           peerCfg:
           let

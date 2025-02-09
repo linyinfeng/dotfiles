@@ -211,7 +211,7 @@ in
 
       # bird and device protocol
       {
-        services.bird2 = {
+        services.bird = {
           enable = true;
           config = lib.mkOrder 50 ''
             protocol device device_main { }
@@ -278,7 +278,7 @@ in
 
       # bird
       {
-        services.bird2.config = lib.mkOrder 100 ''
+        services.bird.config = lib.mkOrder 100 ''
           # babel configurations
 
           ipv4 table mesh_v4 { }

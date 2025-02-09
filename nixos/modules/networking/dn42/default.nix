@@ -358,7 +358,7 @@ in
   ];
   config = lib.mkIf cfg.enable {
     # basic bird2 configurations
-    services.bird2 = {
+    services.bird = {
       enable = true;
       config = lib.mkOrder 50 ''
         # dn42 common configurations
