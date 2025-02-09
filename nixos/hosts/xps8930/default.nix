@@ -151,8 +151,9 @@ in
     device = "/dev/disk/by-uuid/74C9-BFBC";
     fsType = "vfat";
     options = [
-      "dmask=077"
-      "fmask=177"
+      "gid=wheel"
+      "dmask=007"
+      "fmask=117"
     ];
   };
   fileSystems."/media/data" = btrfsSubvolData "@data" { };

@@ -131,8 +131,9 @@ in
         device = "/dev/disk/by-uuid/C9A4-3DE6";
         fsType = "vfat";
         options = [
-          "dmask=077"
-          "fmask=177"
+          "gid=wheel"
+          "dmask=007"
+          "fmask=117"
         ];
       };
       services.zswap.enable = true;

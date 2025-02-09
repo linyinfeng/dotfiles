@@ -31,9 +31,7 @@ let
         for file in shim mm; do
           target="${efiSysMountPoint}/${cfg.directory}/''${file}${cfg.archSuffix}.efi"
           echo "installing $target..."
-          install -D --mode=644 --owner=root --group=root \
-            "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" \
-            "$target"
+          cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
           echo "signing $target..."
           sign-efi-file "$target"
         done
@@ -49,9 +47,7 @@ let
         for file in shim mm fb; do
           target="${efiSysMountPoint}/EFI/BOOT/''${file}${cfg.archSuffix}.efi"
           echo "installing $target..."
-          install -D --mode=644 --owner=root --group=root \
-            "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" \
-            "$target"
+          cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
           echo "signing $target..."
           sign-efi-file "$target"
         done

@@ -155,8 +155,9 @@
                   format = "vfat";
                   mountpoint = "/boot";
                   mountOptions = [
-                    "dmask=077"
-                    "fmask=177"
+                    "gid=wheel"
+                    "dmask=007"
+                    "fmask=117"
                   ];
                 };
               };
