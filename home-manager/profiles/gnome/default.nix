@@ -15,6 +15,7 @@ let
     alphabetical-app-grid
     customize-ibus
     caffeine
+    custom-reboot
   ];
   gtkThemes = pkgs.symlinkJoin {
     name = "gtk-themes";
@@ -103,6 +104,10 @@ lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
       use-custom-font = true;
       custom-font = "sans 11";
       input-indicator-only-on-toggle = true;
+    };
+    "org/gnome/shell/extensions/customreboot" = {
+      use-systemd-boot = true;
+      use-efibootmgr = false;
     };
     "org/gnome/shell/extensions/kimpanel" = {
       font = "Sans 11";

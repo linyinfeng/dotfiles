@@ -123,6 +123,11 @@ let
           cp ${../nixos/profiles/graphical/fonts/_nerd-font/Makefile} ./Makefile
         '';
       };
+      gnomeExtensions = prev.gnomeExtensions // {
+        custom-reboot = prev.gnomeExtensions.custom-reboot.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ../patches/gnome-shell-extension-custom-reboot.patch ];
+        });
+      };
     })
   ];
   alternativeChannels = nixpkgsArgs: {

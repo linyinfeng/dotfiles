@@ -1,0 +1,113 @@
+commit a1366ef249b8e3837676c59347f3abe979d82e57
+Author: Lin Yinfeng <lin.yinfeng@outlook.com>
+Date:   Sun Feb 9 17:08:04 2025 +0800
+
+    Simply use bootctl and pkexec in PATH
+
+diff --git a/efibootmgr.js b/efibootmgr.js
+index f34cec0..f6164b2 100644
+--- a/efibootmgr.js
++++ b/efibootmgr.js
+@@ -44,12 +44,12 @@ export class EFIBootManager {
+ 
+   /**
+    * Set's the next boot option
+-   * @param {string} id 
++   * @param {string} id
+    * @returns True if the boot option was set, otherwise false
+    */
+   static async SetBootOption(id) {
+     if (!this.IsUseable()) return false;
+-    const [status, stdout, stderr] = await ExecCommand(['/usr/bin/pkexec', 'efibootmgr', '-n', id],);
++    const [status, stdout, stderr] = await ExecCommand(['pkexec', 'efibootmgr', '-n', id],);
+     if (status === 0) {
+         Log(`Set boot option to ${id}`);
+         return true;
+@@ -71,18 +71,12 @@ export class EFIBootManager {
+    * @returns A string containing the location of the binary, if none is found returns a blank string
+    */
+   static async GetBinary() {
+-    let paths = ["/usr/bin/efibootmgr", "/usr/sbin/efibootmgr"];
+-
+-    let file;
+-
+-    for (let i = 0; i < paths.length; i++) {
+-        file = Gio.file_new_for_path(paths[i]);
+-        if (file.query_exists(null)) {
+-            return paths[i];
+-        }
++    const [status, stdout, stderr] = await ExecCommand(['which', 'efibootmgr'],);
++    if (status === 0) {
++      return "efibootmgr";
++    } else {
++      return "";
+     }
+-
+-    return ""; 
+   }
+ 
+   /**
+@@ -94,8 +88,8 @@ export class EFIBootManager {
+ 
+   /**
+    * This boot loader cannot be quick rebooted
+-   */ 
++   */
+   static async QuickRebootEnabled() {
+     return false;
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/systemdBoot.js b/systemdBoot.js
+index 51d4e6e..b8f207b 100644
+--- a/systemdBoot.js
++++ b/systemdBoot.js
+@@ -63,12 +63,12 @@ export class SystemdBoot {
+ 
+   /**
+    * Set's the next boot option
+-   * @param {string} id 
++   * @param {string} id
+    * @returns True if the boot option was set, otherwise false
+    */
+    static async SetBootOption(id) {
+     if (!this.IsUseable()) return false;
+-    const [status, stdout, stderr] = await ExecCommand(['/usr/bin/pkexec', '/usr/bin/bootctl', 'set-oneshot', id],);
++    const [status, stdout, stderr] = await ExecCommand(['pkexec', 'bootctl', 'set-oneshot', id],);
+     if (status === 0) {
+         Log(`Set boot option to ${id}`);
+         return true;
+@@ -91,18 +91,12 @@ export class SystemdBoot {
+    * @returns A string containing the location of the binary, if none is found returns a blank string
+    */
+   static async GetBinary() {
+-    let paths = ["/usr/sbin/bootctl", "/usr/bin/bootctl"];
+-
+-    let file;
+-
+-    for (let i = 0; i < paths.length; i++) {
+-        file = Gio.file_new_for_path(paths[i]);
+-        if (file.query_exists(null)) {
+-            return paths[i];
+-        }
++    const [status, stdout, stderr] = await ExecCommand(['which', 'bootctl'],);
++    if (status === 0) {
++      return "bootctl";
++    } else {
++      return "";
+     }
+-
+-    return ""; 
+   }
+ 
+   /**
+@@ -114,7 +108,7 @@ export class SystemdBoot {
+ 
+   /**
+    * This boot loader cannot be quick rebooted
+-   */ 
++   */
+   static async QuickRebootEnabled() {
+     return false;
+   }
