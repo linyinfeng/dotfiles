@@ -316,28 +316,6 @@ resource "cloudflare_dns_record" "li7g_b2" {
 
 # Ruleset
 
-resource "cloudflare_ruleset" "li7g_http_request_transform" {
-  name        = "url-rewrite"
-  description = "URL Rewrite"
-  kind        = "zone"
-  zone_id     = cloudflare_zone.com_li7g.id
-  phase       = "http_request_transform"
-
-  rules = [{
-    enabled     = true
-    description = "Rewrite cache path"
-    expression  = "(http.host eq \"cache.li7g.com\")"
-    action      = "rewrite"
-    action_parameters = {
-      uri = {
-        path = {
-          expression = "concat(\"/file/${b2_bucket.cache.bucket_name}\", http.request.uri.path)"
-        }
-      }
-    }
-  }]
-}
-
 resource "cloudflare_ruleset" "li7g_http_config_settings" {
   name        = "acme-challenge"
   description = "Disable SSL for ACME challenge"
