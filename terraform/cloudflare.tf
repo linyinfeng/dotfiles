@@ -108,7 +108,7 @@ resource "cloudflare_dns_record" "zip_prebuilt" {
 }
 resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
   name = "*"
-  # cluodflare's edge ssl certificate
+  # cloudflare's edge ssl certificate
   # only covers second level of the domain
   proxied = false
   ttl     = 1
