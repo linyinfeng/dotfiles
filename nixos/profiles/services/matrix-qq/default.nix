@@ -31,7 +31,7 @@
       "postgresql.service"
     ];
     wantedBy = [ "multi-user.target" ];
-    restartTriggers = [ config.sops.templates."matrix-qq-config".file ];
+    restartTriggers = [ config.sops.templates."matrix-qq-config".content ];
   };
   sops.templates."matrix-qq-config" = {
     content = builtins.toJSON {
@@ -77,7 +77,7 @@
         uri = "postgres:///matrix-qq?host=/run/postgresql";
       };
       encryption = {
-        allow = true;
+        allow = false;
       };
 
     };
