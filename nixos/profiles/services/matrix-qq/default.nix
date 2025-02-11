@@ -1,18 +1,25 @@
 { config, pkgs, ... }:
 {
   systemd.services.matrix-qq = {
-    script = ''
-      # matrix-qq will write to config.yaml, always override it
-      cp "$CREDENTIALS_DIRECTORY/config" config.yaml
-
-      ${pkgs.nur.repos.linyinfeng.matrix-qq}/bin/matrix-qq \
-        --config=config.yaml
+    preStart = ''
+      rm --force example.yaml base.yaml mixin.yaml config.yaml
+      matrix-qq --generate-example-config --config=example.yaml
+      cp "$CREDENTIALS_DIRECTORY/mixin.yaml" mixin.yaml
+      yq eval --prettyPrint 'del(.bridge.permissions)' example.yaml >base.yaml
+      yq eval-all --prettyPrint 'select(fileIndex == 0) * select(fileIndex == 1)' base.yaml mixin.yaml >config.yaml
     '';
+    script = ''
+      matrix-qq --config=config.yaml
+    '';
+    path = with pkgs; [
+      nur.repos.linyinfeng.matrix-qq
+      yq-go
+    ];
     serviceConfig = {
       DynamicUser = true;
       StateDirectory = "matrix-qq";
       WorkingDirectory = "/var/lib/matrix-qq";
-      LoadCredential = [ "config:${config.sops.templates."matrix-qq-config".path}" ];
+      LoadCredential = [ "mixin.yaml:${config.sops.templates."matrix-qq-config".path}" ];
     };
     after = [
       "network-online.target"
@@ -28,6 +35,16 @@
   };
   sops.templates."matrix-qq-config" = {
     content = builtins.toJSON {
+      bridge = {
+        relay = {
+          enabled = true;
+        };
+        permissions = {
+          "*" = "relay";
+          "li7g.com" = "user";
+          "@yinfeng:li7g.com" = "admin";
+        };
+      };
       homeserver = {
         address = "https://matrix.ts.li7g.com";
         domain = "li7g.com";
@@ -35,27 +52,20 @@
       appservice = {
         id = "qq";
         address = "https://matrix-qq.ts.li7g.com";
-        database = {
-          uri = "postgres:///matrix-qq?host=/run/postgresql";
-        };
         hostname = "127.0.0.1";
         port = config.ports.matrix-qq-appservice;
-        provisioning.enabled = false;
         as_token = config.sops.placeholder."matrix_qq_appservice_as_token";
         hs_token = config.sops.placeholder."matrix_qq_appservice_hs_token";
+        username_template = "_qq_{{.}}";
       };
-      bridge = {
-        permissions = {
-          "*" = "user";
-          "@yinfeng:li7g.com" = "admin";
-        };
-        encryption = {
-          allow = true;
-        };
+      database = {
+        type = "postgres";
+        uri = "postgres:///matrix-qq?host=/run/postgresql";
       };
-      # QQ client protocol (1: AndroidPhone, 2: AndroidWatch, 3: MacOS, 4: QiDian, 5: IPad, 6: AndroidPad)
-      qq.protocol = 5;
-      logging.print_level = "debug";
+      encryption = {
+        allow = true;
+      };
+
     };
   };
 
