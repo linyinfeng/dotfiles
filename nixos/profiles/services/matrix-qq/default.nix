@@ -38,6 +38,20 @@
       bridge = {
         relay = {
           enabled = true;
+          message_formats = {
+            "m.text" = "{{ .Sender.DisambiguatedName }}: {{ .Message }}";
+            "m.notice" = "{{ .Sender.DisambiguatedName }}: {{ .Message }}";
+            "m.emote" = "* {{ .Sender.DisambiguatedName }} {{ .Message }}";
+            "m.file" = "{{ .Sender.DisambiguatedName }} sent a file{{ if .Caption }}: {{ .Caption }}{{ end }}";
+            "m.image" =
+              "{{ .Sender.DisambiguatedName }} sent an image{{ if .Caption }}: {{ .Caption }}{{ end }}";
+            "m.audio" =
+              "{{ .Sender.DisambiguatedName }} sent an audio file{{ if .Caption }}: {{ .Caption }}{{ end }}";
+            "m.video" =
+              "{{ .Sender.DisambiguatedName }} sent a video{{ if .Caption }}: {{ .Caption }}{{ end }}";
+            "m.location" =
+              "{{ .Sender.DisambiguatedName }} sent a location{{ if .Caption }}: {{ .Caption }}{{ end }}";
+          };
         };
         permissions = {
           "*" = "relay";
