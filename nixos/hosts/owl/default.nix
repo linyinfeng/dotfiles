@@ -37,8 +37,7 @@
     ])
     ++ [
       ./_hardware.nix
-      # TODO wait for https://github.com/NixOS/nixpkgs/issues/375730
-      # ./_nvidia.nix
+      ./_nvidia.nix
     ];
 
   config = lib.mkMerge [
