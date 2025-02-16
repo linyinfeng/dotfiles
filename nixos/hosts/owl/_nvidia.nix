@@ -57,11 +57,11 @@ in
   services.switcherooControl.enable = true;
   environment.systemPackages = with pkgs; [
     primeRun
-    intel-gpu-tools
     nvitop
     nvtopPackages.full
     vulkan-tools
     cudatoolkit
+    libva-utils
   ];
   systemd.services.display-manager.environment = envVars;
   environment.sessionVariables = envVars;

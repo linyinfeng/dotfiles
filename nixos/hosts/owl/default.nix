@@ -101,7 +101,6 @@
             ]);
           programs.firefox.profiles.main.settings = {
             "media.ffmpeg.vaapi.enabled" = true;
-            "media.navigator.mediadatadecoder_vpx_enabled" = true;
           };
         };
       # for ardour
