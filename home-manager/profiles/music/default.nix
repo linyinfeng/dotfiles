@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     reaper
+    lilypond
     musescore
   ];
   home.global-persistence.directories = [
