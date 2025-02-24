@@ -11,7 +11,9 @@
             --add-flags --password-store=gnome-libsecret
         '';
     });
-    extensions = with pkgs.vscode-extensions; [ ];
+    profiles.default = {
+      extensions = with pkgs.vscode-extensions; [ ];
+    };
   };
 
   home.global-persistence.directories = [
