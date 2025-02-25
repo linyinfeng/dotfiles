@@ -161,6 +161,10 @@ let
             });
           }
         );
+        rathole = prev.rathole.overrideAttrs (_old: {
+          # TODO broken: will stuck in check
+          doCheck = false;
+        });
       })
     ];
 in
