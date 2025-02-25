@@ -1,6 +1,8 @@
 { lib }:
 let
-  main = "7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F";
+  pgp = [
+    "7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F"
+  ];
   yubikeys = {
     # TODO https://github.com/mozilla/sops/issues/1103
     # yubikey5 = "age1yubikey1qda6pkn5cf75zrx6kx4wdx287dlege8eucuhnr9zjl94dzsg56afwtma6nz";
@@ -53,7 +55,7 @@ let
     path_regex = "secrets/(terraform/)?hosts/${host}(\.plain)?\.yaml$";
     key_groups = [
       {
-        pgp = [ main ];
+        inherit pgp;
         age = [
           github
           key
@@ -68,7 +70,7 @@ in
       path_regex = "terraform-inputs\.yaml$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ [ github ];
         }
       ];
@@ -77,7 +79,7 @@ in
       path_regex = "terraform-outputs\.yaml$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ [ github ];
         }
       ];
@@ -86,7 +88,7 @@ in
       path_regex = "terraform.(tfstate|plan)$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ [ github ];
         }
       ];
@@ -95,7 +97,7 @@ in
       path_regex = "secrets/hosts/mtl0-terraform\.yaml$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ [
             hosts.mtl0.key
             github
@@ -107,7 +109,7 @@ in
       path_regex = "secrets/(terraform/)?common\.yaml$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ ownedHostKeys ++ [ github ];
         }
       ];
@@ -116,7 +118,7 @@ in
       path_regex = "secrets/(terraform/)?infrastructure\.yaml$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ allHostKeys ++ [ github ];
         }
       ];
@@ -125,7 +127,7 @@ in
       path_regex = "^/tmp/encrypt.*$";
       key_groups = [
         {
-          pgp = [ main ];
+          inherit pgp;
           age = yubikeyKeys ++ [ github ];
         }
       ];
