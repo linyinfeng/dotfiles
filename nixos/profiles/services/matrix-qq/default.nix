@@ -57,6 +57,7 @@
           "*" = "relay";
           "li7g.com" = "user";
           "@yinfeng:li7g.com" = "admin";
+          "@nano:li7g.com" = "admin";
         };
       };
       homeserver = {
