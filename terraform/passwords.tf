@@ -187,15 +187,6 @@ output "fw_proxy_external_controller_secret" {
   sensitive = true
 }
 
-resource "random_password" "matrix_registration_shared_secret" {
-  length  = 32
-  special = false
-}
-output "matrix_registration_shared_secret" {
-  value     = random_password.matrix_registration_shared_secret.result
-  sensitive = true
-}
-
 resource "random_pet" "hledger_username" {
 }
 output "hledger_username" {
