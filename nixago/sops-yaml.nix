@@ -2,6 +2,8 @@
 let
   pgp = [
     "7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F"
+    "0x1D0FFC1902304AED!" # old subkey
+    "0x670D90CAD2B210B3!" # new subkey
   ];
   yubikeys = {
     # TODO https://github.com/mozilla/sops/issues/1103

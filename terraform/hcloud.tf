@@ -25,6 +25,9 @@ resource "hcloud_server" "fsn0" {
     ipv4 = hcloud_primary_ip.fsn0_ipv4.id
     ipv6 = hcloud_primary_ip.fsn0_ipv6.id
   }
+  lifecycle {
+    ignore_changes = [ssh_keys]
+  }
 }
 
 resource "hcloud_primary_ip" "fsn0_ipv4" {
