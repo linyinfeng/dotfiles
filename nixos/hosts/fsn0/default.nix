@@ -20,8 +20,7 @@
       services.bird-lg
       services.keycloak
       services.matrix
-      # my account is banned by openai
-      # services.matrix-chatgpt-bot
+      services.baibot
       services.mastodon
       services.maddy
       services.well-known
