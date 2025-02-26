@@ -5,7 +5,9 @@
     recursive = true;
   };
   home.activation.removeExistingFcitx5Profile = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-    rm -f "${config.xdg.configHome}/fcitx5/profile"
-    rm -f "${config.xdg.configHome}/fcitx5/config"
+    rm --recursive --force \
+      "${config.xdg.configHome}/fcitx5/profile" \
+      "${config.xdg.configHome}/fcitx5/config" \
+      "${config.xdg.configHome}/fcitx5/conf"
   '';
 }
