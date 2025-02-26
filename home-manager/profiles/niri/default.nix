@@ -96,7 +96,6 @@ lib.mkMerge [
           {
             gaps = 16.0;
             center-focused-column = "never";
-            empty-workspace-above-first = true;
             preset-column-widths = [
               { proportion = 1.0 / 3.0; }
               { proportion = 1.0 / 2.0; }
