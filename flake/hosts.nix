@@ -78,7 +78,10 @@ let
         virtualization.podman
         virtualization.wine
       ];
-      games = with profiles.graphical.game; [ steam ];
+      games = with profiles.graphical.game; [
+        steam
+        gamescope
+      ];
       monitoring = with profiles; [
         services.telegraf
         services.telegraf-system
