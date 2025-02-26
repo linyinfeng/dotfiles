@@ -85,31 +85,59 @@ lib.mkMerge [
             max-scroll-amount = "0%";
           };
         };
-        layout = {
-          gaps = 8;
-          center-focused-column = "never";
-          preset-column-widths = [
-            { proportion = 1.0 / 3.0; }
-            { proportion = 1.0 / 2.0; }
-            { proportion = 2.0 / 3.0; }
-          ];
-          default-column-width = {
-            proportion = 1.0 / 2.0;
+        layout =
+          let
+            # css named colors
+            # https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+            mainColor = "cornflowerblue";
+            inactiveColor = "gray";
+            shadowColor = "gray";
+          in
+          {
+            gaps = 16.0;
+            center-focused-column = "never";
+            empty-workspace-above-first = true;
+            preset-column-widths = [
+              { proportion = 1.0 / 3.0; }
+              { proportion = 1.0 / 2.0; }
+              { proportion = 2.0 / 3.0; }
+            ];
+            default-column-width = {
+              proportion = 1.0 / 2.0;
+            };
+            focus-ring = {
+              enable = true;
+              width = 4;
+              active.color = mainColor;
+              inactive.color = inactiveColor;
+            };
+            border = {
+              enable = false;
+              width = 4;
+              active.color = mainColor;
+              inactive.color = inactiveColor;
+            };
+            struts = { };
+            tab-indicator = {
+              active.color = "tomato";
+              inactive.color = inactiveColor;
+              width = 4;
+              corner-radius = 4;
+              gaps-between-tabs = 0;
+              length.total-proportion = 0.5;
+            };
+            shadow = {
+              enable = true;
+              color = shadowColor;
+              inactive-color = shadowColor;
+              draw-behind-window = true;
+              softness = 8;
+              offset = {
+                x = 0;
+                y = 0;
+              };
+            };
           };
-          focus-ring = {
-            enable = true;
-            width = 4;
-            active.color = "#7fc8ff";
-            inactive.color = "#505050";
-          };
-          border = {
-            enable = false;
-            width = 4;
-            active.color = "#ffc87f";
-            inactive.color = "#505050";
-          };
-          struts = { };
-        };
         cursor = {
           theme = "Adwaita";
         };
@@ -132,7 +160,7 @@ lib.mkMerge [
           {
             geometry-corner-radius =
               let
-                radius = 12.0;
+                radius = 8.0;
               in
               {
                 bottom-left = radius;
@@ -332,6 +360,7 @@ lib.mkMerge [
               "Mod+Period".action.expel-window-from-column = [ ];
               "Mod+BracketLeft".action.consume-or-expel-window-left = [ ];
               "Mod+BracketRight".action.consume-or-expel-window-right = [ ];
+              "Mod+T".action.toggle-column-tabbed-display = [ ];
               # preset size
               "Mod+R".action.switch-preset-column-width = [ ];
               "Mod+Shift+R".action.reset-window-height = [ ];
@@ -349,7 +378,8 @@ lib.mkMerge [
               "Ctrl+Print".action.screenshot-screen = [ ];
               "Alt+Print".action.screenshot-window = [ ];
               # floating
-              "Mod+Slash".action.toggle-window-floating = [ ];
+              "Mod+BackSlash".action.switch-focus-between-floating-and-tiling = [ ];
+              "Mod+Shift+BackSlash".action.toggle-window-floating = [ ];
               # quit
               "Mod+Ctrl+E".action.quit = [ ];
             };
