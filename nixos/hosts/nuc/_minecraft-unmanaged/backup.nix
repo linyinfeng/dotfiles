@@ -5,12 +5,11 @@ in
 {
   systemd.services.minecraft-backup = {
     script = ''
-      rm -rf "${backupDir}"
-      cp --recursive --reflink=always /var/lib/minecraft "${backupDir}"
+      btrfs subvolume delete "${backupDir}" || true
+      btrfs subvolume snapshot -r /var/lib/minecraft "${backupDir}"
     '';
     path = with pkgs; [
-      gnutar
-      zstd
+      btrfs-progs
     ];
     serviceConfig = {
       Type = "oneshot";
