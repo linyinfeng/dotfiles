@@ -171,7 +171,7 @@ in
       environment.systemPackages = with pkgs; [ sbctl ];
       systemd.tmpfiles.settings."80-sbctl" = {
         "/var/lib/sbctl" = {
-          "C+" = {
+          "L+" = {
             argument = "${pkiBundle}";
           };
         };
