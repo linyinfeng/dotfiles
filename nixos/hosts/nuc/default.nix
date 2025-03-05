@@ -169,7 +169,11 @@ in
             }
           ];
           ip_type = "IPv6";
-          ip_interface = "enp88s0";
+          ip_urls = [
+            "https://myip.biturl.top"
+            "https://ipecho.net/plain"
+            "https://api-ipv6.ip.sb/ip"
+          ];
         };
       };
     }
