@@ -4,8 +4,8 @@
   security.audit = {
     enable = true;
     rules = [
-      # log all commands executed
-      "-a exit,always -S execve"
+      # log all commands executed by normal users
+      "-a exit,always -F auid!=4294967295 -S execve"
     ];
   };
 }
