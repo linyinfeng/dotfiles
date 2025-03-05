@@ -56,7 +56,7 @@ in
       users.nianyi
     ])
     ++ [
-      ./_minecraft
+      ./_minecraft-unmanaged
       ./_steam
     ];
 
