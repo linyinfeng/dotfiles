@@ -11,9 +11,16 @@ in
       defaultText = ''lib.versionAtLeast config.boot.kernelPackages.kernel.version "6.6"'';
     };
   };
-  config = lib.mkIf cfg.enable {
-    system.etc.overlay.enable = lib.mkDefault true;
-    environment.etc."NIXOS".text = "";
-    services.userborn.enable = true;
-  };
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        system.etc.overlay.enable = lib.mkDefault true;
+        environment.etc."NIXOS".text = "";
+        services.userborn = {
+          enable = true;
+          passwordFilesLocation = "/var/lib/userborn";
+        };
+      }
+    ]
+  );
 }
