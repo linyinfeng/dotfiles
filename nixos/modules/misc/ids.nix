@@ -8,6 +8,9 @@
     # other users
     nixos = 1099;
 
+    # operation users
+    minecraft = 2000;
+
     # service users
     # nix-access-tokens = 400; # not using
     nixbuild = 401;

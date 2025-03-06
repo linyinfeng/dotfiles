@@ -23,6 +23,7 @@ in
   imports = [ ./backup.nix ];
   users.users.minecraft = {
     isNormalUser = true;
+    uid = config.ids.uids.minecraft;
     home = "/var/lib/minecraft";
     group = "minecraft";
     shell = pkgs.fish;
