@@ -24,6 +24,7 @@ in
   users.users.minecraft = {
     isNormalUser = true;
     uid = config.ids.uids.minecraft;
+    linger = true;
     home = "/var/lib/minecraft";
     group = "minecraft";
     shell = pkgs.fish;
