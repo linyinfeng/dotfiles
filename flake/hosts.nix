@@ -204,7 +204,6 @@ let
         ++ (with profiles; [
           xdg-dirs
           vscode
-          logseq
           alacritty
         ]);
       synchronize = with profiles; [

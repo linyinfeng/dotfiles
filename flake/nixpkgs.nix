@@ -179,7 +179,7 @@ in
             allowUnfree = true;
             # cudaSupport = true;
             # rocmSupport = true;
-            # TODO wait for mautrix-telegram, matrix-qq, and logseq update
+            # TODO wait for mautrix-telegram, matrix-qq
             allowInsecurePredicate =
               p:
               (p.pname or null) == "olm"
