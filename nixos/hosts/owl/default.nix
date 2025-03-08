@@ -78,7 +78,7 @@
         auto-login.enable = true;
       };
       services.godns = {
-        ipv6.settings = {
+        ipv4.settings = {
           domains = [
             {
               domain_name = "li7g.com";
@@ -86,7 +86,21 @@
             }
           ];
           ip_type = "IPv6";
-          ip_interface = "enp0s13f0u4u4u5";
+          ip_interface = "wlp4s0";
+        };
+        ipv6.settings = {
+          domains = [
+            {
+              domain_name = "li7g.com";
+              sub_domains = [ "nuc" ];
+            }
+          ];
+          ip_type = "IPv6";
+          ip_urls = [
+            "https://myip.biturl.top"
+            "https://ipecho.net/plain"
+            "https://api-ipv6.ip.sb/ip"
+          ];
         };
       };
 
