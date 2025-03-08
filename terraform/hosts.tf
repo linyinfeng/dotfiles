@@ -102,6 +102,11 @@ locals {
     owl = {
       records = {}
       ddns_records = {
+        a = {
+          proxied = false
+          type    = "A"
+          value   = "127.0.0.1"
+        }
         aaaa = {
           proxied = false
           type    = "AAAA"
