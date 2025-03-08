@@ -82,17 +82,17 @@
           domains = [
             {
               domain_name = "li7g.com";
-              sub_domains = [ "framework" ];
+              sub_domains = [ "owl" ];
             }
           ];
-          ip_type = "IPv6";
+          ip_type = "IPv4";
           ip_interface = "wlp4s0";
         };
         ipv6.settings = {
           domains = [
             {
               domain_name = "li7g.com";
-              sub_domains = [ "nuc" ];
+              sub_domains = [ "owl" ];
             }
           ];
           ip_type = "IPv6";
