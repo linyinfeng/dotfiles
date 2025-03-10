@@ -150,21 +150,7 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: prev: {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=
-        python3Packages = prev.python3Packages.overrideScope (
-          _finalPy: prevPy: {
-            # TODO wait for https://github.com/c0fec0de/anytree/issues/270
-            # TODO wait for https://github.com/NixOS/nixpkgs/issues/375763
-            anytree = prevPy.anytree.overrideAttrs (old: {
-              patches = old.patches ++ [ ../patches/python-anytree-poetry-project-name-version.patch ];
-            });
-          }
-        );
-        rathole = prev.rathole.overrideAttrs (_old: {
-          # TODO broken: will stuck in check
-          doCheck = false;
-        });
+      (_final: _prev: {
       })
     ];
 in
