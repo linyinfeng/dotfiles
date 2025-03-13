@@ -10,6 +10,9 @@ terraform {
     tencentcloud = {
       source = "tencentcloudstack/tencentcloud"
     }
+    alicloud = {
+      source = "aliyun/alicloud"
+    }
     zerotier = {
       source = "zerotier/zerotier"
     }
