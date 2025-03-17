@@ -34,25 +34,7 @@ resource "tailscale_acl" "main" {
         ports  = ["*:*"],
         users  = ["*"],
       }
-    ],
-    derpMap : {
-      regions : {
-        "900" : {
-          regionID : 900,
-          regionCode : "sha",
-          regionName : "Shanghai",
-          nodes : [
-            {
-              name : "900a",
-              regionID : 900,
-              hostName : "shanghai.derp.li7g.com",
-              ipv4 : data.sops_file.terraform.data["ip.shg0"],
-              derpPort : 8443,
-            },
-          ],
-        },
-      },
-    },
+    ]
   })
 }
 

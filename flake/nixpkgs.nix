@@ -85,10 +85,6 @@ let
       zerotierone = prev.zerotierone.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
       });
-      tailscale = prev.tailscale.overrideAttrs (old: {
-        subPackages = old.subPackages ++ [ "cmd/derper" ];
-      });
-      tailscale-derp = final.tailscale;
       waydroid = prev.waydroid.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
       });

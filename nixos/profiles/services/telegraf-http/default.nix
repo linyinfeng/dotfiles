@@ -59,7 +59,6 @@ let
     dst = [ ];
     smtp = [ ];
     teamspeak = [ ];
-    "shanghai.derp" = [ ];
     portal = [ ];
     open-webui = [ ];
   };
