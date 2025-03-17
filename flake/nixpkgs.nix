@@ -150,7 +150,11 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
+      (final: prev: {
+        # TODO wait for https://github.com/sodiboo/niri-flake/issues/921
+        niri-unstable = prev.niri-unstable.overrideAttrs (prev: {
+          buildInputs = prev.buildInputs ++ [ final.libgbm ];
+        });
       })
     ];
 in
