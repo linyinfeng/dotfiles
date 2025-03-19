@@ -141,8 +141,6 @@ locals {
     minio          = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     dst            = { on = "shg0", proxy = false }
-    matrix-qq      = { on = "shg0", proxy = false }
-    teamspeak      = { on = "shg0", proxy = false }
     matrix         = { on = "fsn0", proxy = true }
     synapse-admin  = { on = "fsn0", proxy = true }
     social         = { on = "fsn0", proxy = true }
@@ -157,6 +155,8 @@ locals {
     jellyfin       = { on = "nuc", proxy = false }
     nextcloud      = { on = "nuc", proxy = false }
     mc             = { on = "nuc", proxy = false }
+    matrix-qq      = { on = "nuc", proxy = false }
+    teamspeak      = { on = "nuc", proxy = false }
     open-webui     = { on = "owl", proxy = false }
   }
 }

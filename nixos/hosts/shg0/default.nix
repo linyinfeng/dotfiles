@@ -32,8 +32,6 @@ in
       services.nginx
       services.acme
       services.postgresql
-      services.matrix-qq
-      services.teamspeak
     ])
     ++ [
       (modulesPath + "/profiles/qemu-guest.nix")
