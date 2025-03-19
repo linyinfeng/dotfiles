@@ -20,6 +20,9 @@ resource "grafana_cloud_access_policy" "promtail" {
     type       = "org"
     identifier = grafana_cloud_stack.yinfeng.org_id
   }
+  conditions {
+    allowed_subnets = []
+  }
 }
 resource "grafana_cloud_access_policy_token" "promtail" {
   provider = grafana.cloud
