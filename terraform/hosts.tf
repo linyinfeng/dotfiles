@@ -49,19 +49,6 @@ locals {
       endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.lax0.v4"])]
       endpoints_v6 = [nonsensitive(data.sops_file.terraform.data["ip.lax0.v6"])]
     }
-    shg0 = {
-      records = {
-        a = {
-          proxied = false
-          type    = "A"
-          value   = nonsensitive(data.sops_file.terraform.data["ip.shg0"])
-        }
-      }
-      ddns_records = {}
-      host_indices = [5]
-      endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.shg0"])]
-      endpoints_v6 = []
-    }
     # waiting for setup
     hkg0 = {
       records = {

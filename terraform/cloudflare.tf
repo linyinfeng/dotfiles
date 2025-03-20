@@ -140,7 +140,6 @@ locals {
     portal         = { on = "hkg0", proxy = false }
     minio          = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
-    dst            = { on = "shg0", proxy = false }
     matrix         = { on = "fsn0", proxy = true }
     synapse-admin  = { on = "fsn0", proxy = true }
     social         = { on = "fsn0", proxy = true }

@@ -13,8 +13,8 @@ let
         null;
     ipsec.xfrmInterfaceId = 100000 + lib.elemAt hostData.host_indices 0;
   };
-  ipv4OnlyHosts = [ "shg0" ];
-  bandwidthLimitedHosts = [ "shg0" ];
+  ipv4OnlyHosts = [ ];
+  bandwidthLimitedHosts = [ ];
 in
 lib.mkMerge [
   { networking.mesh.enable = config.networking.hostsData.indexed; }

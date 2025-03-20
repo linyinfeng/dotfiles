@@ -56,7 +56,6 @@ let
         code = 200;
       }
     ];
-    dst = [ ];
     smtp = [ ];
     teamspeak = [ ];
     portal = [ ];

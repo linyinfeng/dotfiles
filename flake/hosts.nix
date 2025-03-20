@@ -440,11 +440,6 @@ in
     })
 
     (mkHost {
-      name = "shg0";
-      system = "x86_64-linux";
-    })
-
-    (mkHost {
       name = "fsn0";
       system = "aarch64-linux";
     })

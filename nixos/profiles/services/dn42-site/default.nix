@@ -31,14 +31,6 @@ let
         "United States"
       ];
     };
-    shg0 = {
-      comment = "not available for peering";
-      provider = "Tencent Cloud";
-      location = [
-        "Shanghai"
-        "China"
-      ];
-    };
     hkg0 = {
       comment = null;
       provider = "JuHost";

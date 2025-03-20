@@ -22,11 +22,6 @@ let
       enable = true;
       rate = "10M";
     };
-    "shg0" = {
-      # 1TB/month
-      enable = true;
-      rate = "10M";
-    };
     "hkg0" = {
       # 1TB/month
       enable = true;
@@ -49,10 +44,6 @@ let
     "mtl0" = {
       region = 42; # North America-E
       country = 1124; # Canada
-    };
-    "shg0" = {
-      region = 52; # Asia-E (JP,CN,KR,TW,HK)
-      country = 1156; # China
     };
     "hkg0" = {
       region = 52; # Asia-E (JP,CN,KR,TW,HK)

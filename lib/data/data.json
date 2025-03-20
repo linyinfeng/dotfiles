@@ -61,10 +61,6 @@
       "on": "fsn0",
       "proxy": true
     },
-    "dst": {
-      "on": "shg0",
-      "proxy": false
-    },
     "git": {
       "on": "mtl0",
       "proxy": true
@@ -320,24 +316,6 @@
       "wireguard_public_key": "DI/wbPefMt12vmwYaZ+ArfSuVwYkCvoUTVIjnfsZPik=",
       "zerotier_id": "cb6b1e6c7b",
       "zerotier_public_key": "cb6b1e6c7b:0:7c96a3a3a4514aed95658e34e03a34a69291ad46075ef5bb8d42914c3afa1b349d2daeae4b294486e309a5ef0ea18605b8b9af17b1b66b903d4381b70f83fc22"
-    },
-    "shg0": {
-      "b2_backup_key_id": "00462cd88e29986000000001e",
-      "dn42_addresses_v4": ["172.23.224.101"],
-      "dn42_addresses_v6": ["fd72:db83:badd:5::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:5::/64"],
-      "endpoints": ["124.221.234.140"],
-      "endpoints_v4": ["124.221.234.140"],
-      "endpoints_v6": [],
-      "host_indices": [5],
-      "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6jCCAXGgAwIBAgIRAMJfLuO+N4/lv8t2FjHDEDowCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwMzIwMDMw\nODA0WhcNMjUwNTE5MjMwODA0WjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1zaGcwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEWF7d8ZRoToMJ\np7q8Hjtz4T2XENl1bpzXunM6AzoYIbdaFYclFLai3h5Jx95bGEtuh+Raadw7LBcs\nEBnJdRJ5HR/Rdq/XuDtUuazDODmedDkwCtvLsmeFo+2zGpmWPr0mo2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDXNoZzAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDZwAwZAIwK1tIbapQ0xImGs+5BVbCgbrfyE5O9bRELegzczcqM0Z0+93r\n2BvgXftrLS/bKZMcAjBzk4jbmwiaxOT5XyLjTHxO1ssrdsLylsP/5+SAWwlHxltp\nIYfPfkxvv+XLgh9/9CU=\n-----END CERTIFICATE-----\n",
-      "minio_backup_key_id": "backup-shg0",
-      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPVsW2KjLeFM6xmLf1ounrYZLL+Ki0St+K9Z/lmO6GLV",
-      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCeIxwfZ8j3Kg2MGDYB9EYTt2V4OWewVvQtSmo3m8EOh3D3S6OHQOSZPkD1TS+9qjg0h1zauoUPLHfTzJHox+BbDkstfFIBuTLOOkq+tEopkWsoNBBTCB+iwEr8EJeLmHDm0ngyC9fEkuUSmc2p8HeYhP2r+4JPzupJRure6WzO/S2sVLu9QKWqDUnX+aFlYuAqGnvvxBpfkIWKYVzKct07DK+kvperpfJ88RCMkHGfaWirG/HJWuRllKxlZNuAIDUQxQ/VxVa+qbiSUvIMet6IrRgDj/0Pfmqp5J7Xcdly8mLE+SjEVYFZDTZ+eKXsALsNb/H4vpwGbmju5hno6zpiwRiDWVh6DboonXVXBFe42uKziNo8WidO+TwE8lOE1h2AUPiydS89t7euLOPP7ylV6Z8fK2OXNA6eLYIldD2cspPnNRU9a/MLyzK+Y211Q3MTDScsRxWJH5yd2XbWFmJ3n1NpRHVbXT3eyvHNWrGLTSn3BTpdkOhpWmEJHWr6BaxwrNuUyRqrJDkaqrA3onwCfPMSFgIGL+6nts3AWsUC9enwofmCjE3mbDwkwZ0l3tQB6rUevsaIukA0mBDvmaGCmQpCkmNNkpmkQqdhvDDGnAxdJ8SLTtXjnNknO34wID/RKQqrcXufgH9JNdn0PUwuixJ5Czjvaz+Tq1FEA47HBQ==",
-      "syncthing_device_id": "OWTQBUP-LNLTSBG-L3LX37G-Q5VWJW5-U5H3WGE-XTVDRUG-2YZPHPZ-SEOXAQU",
-      "wireguard_public_key": "v8w0d0Y1BbOfKEWIHG9FWBJMtEjkWP90FRMZO1fXY28=",
-      "zerotier_id": "5e1f73f0bb",
-      "zerotier_public_key": "5e1f73f0bb:0:dd8ca75a58a4769680071391acda47d2dd4c851a51bbaa886f82d1bb679a8806f044cdfa806ed7a6ed3435dc7b6d612232227c4289f602fd3b35a7749f19fa06"
     },
     "xps8930": {
       "b2_backup_key_id": "00462cd88e29986000000000c",
