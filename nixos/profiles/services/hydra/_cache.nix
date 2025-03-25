@@ -105,7 +105,6 @@ in
   };
   sops.secrets."r2_cache_access_key" = {
     terraformOutput.enable = true;
-    sopsFile = config.sops-file.get "common.yaml";
   };
   sops.secrets."cache-li7g-com/key" = {
     sopsFile = config.sops-file.host;
