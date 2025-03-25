@@ -103,21 +103,6 @@
             "media.ffmpeg.vaapi.enabled" = true;
           };
         };
-      # for ardour
-      security.pam.loginLimits = [
-        {
-          domain = "yinfeng";
-          item = "memlock";
-          type = "-";
-          value = "unlimited"; # 1 GiB
-        }
-        {
-          domain = "yinfeng";
-          item = "rtprio";
-          type = "-";
-          value = "unlimited";
-        }
-      ];
 
       boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;
