@@ -59,7 +59,6 @@ let
     smtp = [ ];
     teamspeak = [ ];
     portal = [ ];
-    open-webui = [ ];
   };
   overrides = {
     box = [
