@@ -85,7 +85,6 @@ in
   };
   sops.secrets."r2_cache_access_key" = {
     terraformOutput.enable = true;
-    sopsFile = config.sops-file.get "common.yaml";
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
 }
