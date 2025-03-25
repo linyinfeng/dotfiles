@@ -27,7 +27,6 @@ in
   imports =
     suites.workstation
     ++ (with profiles; [
-      nix.hydra-builder-server
       security.tpm
       networking.wireguard-home
       networking.behind-fw

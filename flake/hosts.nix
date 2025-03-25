@@ -118,6 +118,7 @@ let
           nix.nix-ld
           nix.nixbuild
           nix.hydra-builder-client
+          nix.hydra-builder-server
           nix.auto-gen
         ]);
       mobileWorkstation =
