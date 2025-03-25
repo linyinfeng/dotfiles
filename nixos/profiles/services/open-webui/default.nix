@@ -1,6 +1,7 @@
 { config, ... }:
 
 {
+  inherit (config.networking) hostName;
   services.open-webui = {
     enable = true;
     port = config.ports.open-webui;
@@ -10,10 +11,10 @@
     # // lib.optionalAttrs config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   };
 
-  services.nginx.virtualHosts."open-webui.*" = {
+  services.nginx.virtualHosts."${hostName}.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-    locations."/" = {
+    locations."/open-webui/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.open-webui.port}";
       proxyWebsockets = true;
       extraConfig = ''

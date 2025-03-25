@@ -156,7 +156,6 @@ locals {
     mc             = { on = "nuc", proxy = false }
     matrix-qq      = { on = "nuc", proxy = false }
     teamspeak      = { on = "nuc", proxy = false }
-    open-webui     = { on = "owl", proxy = false }
   }
 }
 output "service_cname_mappings" {
