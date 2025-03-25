@@ -99,6 +99,8 @@ let
           programs.tools
           programs.nix-index
           programs.solaar
+          programs.service-mail
+          programs.tg-send
           services.bluetooth
           services.auto-upgrade
           services.kde-connect
@@ -107,13 +109,25 @@ let
           services.iperf3
           services.angrr
           services.homed
+          services.portal-client
+          services.ssh-honeypot
+          services.flatpak
           security.hardware-keys
+          services.smartd
           hardware.rtl-sdr
           nix.nix-ld
+          nix.nixbuild
           nix.hydra-builder-client
           nix.auto-gen
         ]);
-      mobileWorkstation = suites.workstation;
+      mobileWorkstation =
+        suites.workstation
+        ++ (with profiles; [
+          networking.wireguard-home
+          networking.behind-fw
+          networking.fw-proxy
+          graphical.graphical-powersave-target
+        ]);
 
       server =
         (with suites; base ++ network ++ backup ++ monitoring)

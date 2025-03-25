@@ -27,19 +27,14 @@ in
   imports =
     suites.workstation
     ++ (with profiles; [
-      nix.nixbuild
       nix.hydra-builder-server
       security.tpm
       networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
       services.godns
-      services.smartd
       services.nginx
       services.acme
-      services.ssh-honeypot
-      services.flatpak
-      services.portal-client
       programs.service-mail
       programs.tg-send
       users.yinfeng
