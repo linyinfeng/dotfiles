@@ -32,8 +32,7 @@ in
   };
   config = {
     sops.secrets."cloudflare_token" = {
-      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
-      # terraformOutput.enable = true;
+      terraformOutput.enable = true;
       sopsFile = config.sops-file.get "common.yaml";
       restartUnits = lib.mapAttrsToList (_: godnsCfg: "${godnsCfg.fullName}.service") cfg;
     };

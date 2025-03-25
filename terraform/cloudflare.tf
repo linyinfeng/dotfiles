@@ -7,27 +7,28 @@ provider "cloudflare" {
 
 # TODO broken
 
-data "cloudflare_api_token_permissions_groups_list" "all" {
-  account_id = local.cloudflare_main_account_id
+data "cloudflare_api_token_permission_groups_list" "all" {
 }
 
 locals {
-  # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
-  # permissions_groups_map = { for group in data.cloudflare_api_token_permissions_groups_list.all.result : group.name => group.id }
+  used_permission_groups = [for group in data.cloudflare_api_token_permission_groups_list.all.result : group if contains([
+    "Zone Settings Read",
+    "Zone Read",
+    "DNS Write",
+    "Workers R2 Storage Bucket Item Write",
+  ], group.name)]
+  permissions_groups_map = { for group in local.used_permission_groups : group.name => group.id }
 }
 
 resource "cloudflare_api_token" "hosts" {
-  name = "hosts"
+  name   = "hosts"
+  status = "active"
   policies = [{
     effect = "allow"
     permission_groups = [
-      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
-      # { id = local.permissions_groups_map["Zone Read"] },
-      # { id = local.permissions_groups_map["Zone Settings Read"] },
-      # { id = local.permissions_groups_map["DNS Write"] },
-      { id = "517b21aee92c4d89936c976ba6e4be55" }, # Zone Settings Read
-      { id = "c8fed203ed3043cba015a93ad1616f1f" }, # Zone Read
-      { id = "4755a26eedb94da69e1066d98aa820be" }  # DNS Write
+      { id = local.permissions_groups_map["Zone Settings Read"] },
+      { id = local.permissions_groups_map["Zone Read"] },
+      { id = local.permissions_groups_map["DNS Write"] },
     ]
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
@@ -51,10 +52,10 @@ locals {
 # Zones
 
 resource "cloudflare_zone" "com_li7g" {
+  name = "li7g.com"
   account = {
     id = local.cloudflare_main_account_id
   }
-  name = "li7g.com"
 }
 
 resource "cloudflare_zone" "zip_prebuilt" {
@@ -67,12 +68,14 @@ resource "cloudflare_zone" "zip_prebuilt" {
 resource "cloudflare_zone_setting" "com_li7g" {
   zone_id    = cloudflare_zone.com_li7g.id
   setting_id = "ssl"
+  id         = "ssl"
   value      = "strict"
 }
 
 resource "cloudflare_zone_setting" "zip_prebuilt" {
   zone_id    = cloudflare_zone.zip_prebuilt.id
   setting_id = "ssl"
+  id         = "ssl"
   value      = "strict"
 }
 
@@ -81,7 +84,7 @@ resource "cloudflare_zone_setting" "zip_prebuilt" {
 # CNAME records
 
 resource "cloudflare_dns_record" "li7g_home" {
-  name    = "home"
+  name    = "home.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "CNAME"
@@ -107,7 +110,7 @@ resource "cloudflare_dns_record" "zip_prebuilt" {
   zone_id = cloudflare_zone.zip_prebuilt.id
 }
 resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
-  name = "*"
+  name = "*.${cloudflare_zone.zip_prebuilt.name}"
   # cloudflare's edge ssl certificate
   # only covers second level of the domain
   proxied = false
@@ -166,51 +169,51 @@ output "service_cname_mappings" {
 resource "cloudflare_dns_record" "general_cname" {
   for_each = local.service_cname_mappings
 
-  name    = each.key
+  name    = "${each.key}.${cloudflare_zone.com_li7g.name}"
   proxied = each.value.proxy
   ttl     = 1
   type    = "CNAME"
-  content = "${each.value.on}.li7g.com"
+  content = "${each.value.on}.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
 resource "cloudflare_dns_record" "general_tailscale_cname" {
   for_each = local.service_cname_mappings
 
-  name    = "${each.key}.ts"
+  name    = "${each.key}.ts.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  content = "${each.value.on}.ts.li7g.com"
+  content = "${each.value.on}.ts.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
 resource "cloudflare_dns_record" "general_zerotier_cname" {
   for_each = local.service_cname_mappings
 
-  name    = "${each.key}.zt"
+  name    = "${each.key}.zt.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  content = "${each.value.on}.zt.li7g.com"
+  content = "${each.value.on}.zt.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
 resource "cloudflare_dns_record" "general_dn42_cname" {
   for_each = local.service_cname_mappings
 
-  name    = "${each.key}.dn42"
+  name    = "${each.key}.dn42.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "CNAME"
-  content = "${each.value.on}.dn42.li7g.com"
+  content = "${each.value.on}.dn42.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
 # anycast record
 
 resource "cloudflare_dns_record" "dns" {
-  name    = "dns"
+  name    = "dns.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "AAAA"
@@ -221,7 +224,7 @@ resource "cloudflare_dns_record" "dns" {
 # localhost record
 
 resource "cloudflare_dns_record" "localhost_a" {
-  name    = "localhost"
+  name    = "localhost.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "A"
@@ -230,7 +233,7 @@ resource "cloudflare_dns_record" "localhost_a" {
 }
 
 resource "cloudflare_dns_record" "localhost_aaaa" {
-  name    = "localhost"
+  name    = "localhost.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "AAAA"
@@ -242,7 +245,7 @@ resource "cloudflare_dns_record" "localhost_aaaa" {
 
 # currently nothing
 # resource "cloudflare_dns_record" "mc" {
-#   name    = "mc"
+#   name    = "mc.${cloudflare_zone.com_li7g.name}"
 #   proxied = false
 #   ttl     = 1
 #   type    = "A"
@@ -254,7 +257,7 @@ resource "cloudflare_dns_record" "localhost_aaaa" {
 # smtp records for sending
 
 resource "cloudflare_dns_record" "li7g_dkim" {
-  name    = "default._domainkey"
+  name    = "default._domainkey.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "TXT"
@@ -263,7 +266,7 @@ resource "cloudflare_dns_record" "li7g_dkim" {
 }
 
 resource "cloudflare_dns_record" "li7g_dmarc" {
-  name    = "_dmarc"
+  name    = "_dmarc.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "TXT"
@@ -272,16 +275,16 @@ resource "cloudflare_dns_record" "li7g_dmarc" {
 }
 
 resource "cloudflare_dns_record" "li7g_spf" {
-  name    = "li7g.com"
+  name    = cloudflare_zone.com_li7g.name
   proxied = false
   ttl     = 1
   type    = "TXT"
-  content = "v=spf1 include:_spf.mx.cloudflare.net redirect=smtp.li7g.com"
+  content = "v=spf1 include:_spf.mx.cloudflare.net redirect=smtp.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
 resource "cloudflare_dns_record" "li7g_smtp_spf" {
-  name    = "smtp"
+  name    = "smtp.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "TXT"
@@ -292,7 +295,7 @@ resource "cloudflare_dns_record" "li7g_smtp_spf" {
 # github pages dns challange
 
 resource "cloudflare_dns_record" "github_pages_challenge" {
-  name    = "_github-pages-challenge-linyinfeng"
+  name    = "_github-pages-challenge-linyinfeng.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "TXT"
@@ -303,7 +306,7 @@ resource "cloudflare_dns_record" "github_pages_challenge" {
 # b2
 
 resource "cloudflare_dns_record" "li7g_b2" {
-  name    = "b2"
+  name    = "b2.${cloudflare_zone.com_li7g.name}"
   proxied = true
   ttl     = 1
   type    = "CNAME"
@@ -423,66 +426,35 @@ resource "cloudflare_email_routing_catch_all" "li7g" {
 
 # R2 Object storage
 
-resource "cloudflare_r2_bucket" "cache" {
-  account_id    = local.cloudflare_main_account_id
-  name          = "cache-li7g-com"
-  location      = "apac" # Asia Pacific
-  storage_class = "Standard"
-}
+# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
+# resource "cloudflare_r2_bucket" "cache" {
+#   account_id    = local.cloudflare_main_account_id
+#   name          = "cache-li7g-com"
+#   location      = "apac" # Asia Pacific
+#   storage_class = "Standard"
+# }
 
-# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/2537
-resource "terraform_data" "cache_custom_domain" {
-  lifecycle {
-    replace_triggered_by = [
-      cloudflare_r2_bucket.cache,
-    ]
-  }
-
-  input = {
-    bucket_name           = cloudflare_r2_bucket.cache.name
-    cloudflare_account_id = local.cloudflare_main_account_id
-    cloudflare_api_token  = data.sops_file.terraform.data["cloudflare.api-token"]
-    cloudflare_zone_id    = cloudflare_zone.com_li7g.id
-    r2_domain             = "cache.li7g.com"
-  }
-
-  provisioner "local-exec" {
-    on_failure = fail
-    when       = create
-    command    = <<-EOT
-      curl --request POST \
-      --url https://api.cloudflare.com/client/v4/accounts/${self.input.cloudflare_account_id}/r2/buckets/${self.input.bucket_name}/domains/custom \
-      --header 'Authorization: Bearer ${self.input.cloudflare_api_token}' \
-      --header 'Content-Type: application/json' \
-      --header 'cf-r2-jurisdiction: ' \
-      --data '{"domain":"${self.input.r2_domain}","zoneId":"${self.input.cloudflare_zone_id}","enabled":true}'
-    EOT
-  }
-
-  provisioner "local-exec" {
-    on_failure = fail
-    when       = destroy
-    command    = <<-EOT
-      curl --request DELETE \
-      --url https://api.cloudflare.com/client/v4/accounts/${self.input.cloudflare_account_id}/r2/buckets/${self.input.bucket_name}/domains/custom/${self.input.r2_domain} \
-      --header 'Authorization: Bearer ${self.input.cloudflare_api_token}' \
-      --header 'Content-Type: application/json' \
-      --header 'cf-r2-jurisdiction: '
-    EOT
-  }
-}
+# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
+# resource "cloudflare_r2_custom_domain" "example_r2_custom_domain" {
+#   account_id = local.cloudflare_main_account_id
+#   enabled = true
+#   bucket_name = cloudflare_r2_bucket.cache.name
+#   domain = "cache.${cloudflare_zone.com_li7g.name}"
+#   zone_id = cloudflare_zone.com_li7g.id
+# }
 
 resource "cloudflare_api_token" "cache" {
-  name = "cache"
+  name   = "cache"
+  status = "active"
   policies = [{
     effect = "allow"
     permission_groups = [
-      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5062
-      # { id = local.permissions_groups_map["Workers R2 Storage Bucket Item Write" }
-      { id = "2efd5506f9c8494dacb1fa10a3e7d5b6" }
+      { id = local.permissions_groups_map["Workers R2 Storage Bucket Item Write"] }
     ]
     resources = {
-      "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
+      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
+      # "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
+      "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_cache-li7g-com" : "*"
     }
   }]
 }
@@ -492,17 +464,19 @@ output "r2_s3_api_url" {
   sensitive = true
 }
 output "r2_cache_bucket_name" {
-  value     = cloudflare_r2_bucket.cache.name
+  # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
+  # value     = cloudflare_r2_bucket.cache.name
+  value     = "cache-li7g-com"
   sensitive = false
 }
 output "r2_cache_key_id" {
   value     = cloudflare_api_token.cache.id
   sensitive = false
 }
-# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
-# output "r2_cache_access_key" {
-#   value     = sha256(cloudflare_api_token.cache.value)
-#   sensitive = true
-# }
+
+output "r2_cache_access_key" {
+  value     = sha256(cloudflare_api_token.cache.value)
+  sensitive = true
+}
 
 # TODO copy nix-cache-info

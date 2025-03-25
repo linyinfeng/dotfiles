@@ -84,8 +84,7 @@ in
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };
   sops.secrets."r2_cache_access_key" = {
-    # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5045
-    # terraformOutput.enable = true;
+    terraformOutput.enable = true;
     sopsFile = config.sops-file.get "common.yaml";
     restartUnits = [ "cache-sigv4-proxy.service" ];
   };

@@ -50,7 +50,7 @@ resource "cloudflare_dns_record" "li7g_ts" {
     ][0]                                   # first ipv4 address
   }
 
-  name    = "${trimsuffix(each.key, ".${local.tailscale_account_suffix}")}.ts"
+  name    = "${trimsuffix(each.key, ".${local.tailscale_account_suffix}")}.ts.${cloudflare_zone.com_li7g.name}"
   proxied = false
   ttl     = 1
   type    = "A" # ipv4

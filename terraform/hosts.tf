@@ -153,18 +153,19 @@ module "hosts" {
     )
   }
 
-  name                = each.key
-  cloudflare_zone_id  = cloudflare_zone.com_li7g.id
-  records             = each.value.records
-  ddns_records        = each.value.ddns_records
-  zerotier_network_id = zerotier_network.main.id
-  host_indices        = each.value.host_indices
-  dn42_v4_cidr        = var.dn42_v4_cidr
-  dn42_v6_cidr        = var.dn42_v6_cidr
-  endpoints_v4        = each.value.endpoints_v4
-  endpoints_v6        = each.value.endpoints_v6
-  ca_cert_pem         = tls_self_signed_cert.ca.cert_pem
-  ca_private_key_pem  = tls_self_signed_cert.ca.private_key_pem
+  name                 = each.key
+  cloudflare_zone_id   = cloudflare_zone.com_li7g.id
+  cloudflare_zone_name = cloudflare_zone.com_li7g.name
+  records              = each.value.records
+  ddns_records         = each.value.ddns_records
+  zerotier_network_id  = zerotier_network.main.id
+  host_indices         = each.value.host_indices
+  dn42_v4_cidr         = var.dn42_v4_cidr
+  dn42_v6_cidr         = var.dn42_v6_cidr
+  endpoints_v4         = each.value.endpoints_v4
+  endpoints_v6         = each.value.endpoints_v6
+  ca_cert_pem          = tls_self_signed_cert.ca.cert_pem
+  ca_private_key_pem   = tls_self_signed_cert.ca.private_key_pem
 }
 
 output "hosts" {
