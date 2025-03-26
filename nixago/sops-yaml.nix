@@ -16,7 +16,7 @@ let
       owned = true;
     };
     parrot = {
-      key = "age1mzalm62wfmn96kp42sqzrlfmhmpktjgffhekqemr3aejlty885nq66cqtq";
+      key = "age1dunh0ajcw0um8l7cwu8k84dqux4krqneryx99dm9mwp4hkg42cdssfzmef";
       owned = true;
     };
     xps8930 = {
