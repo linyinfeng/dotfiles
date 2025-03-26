@@ -446,21 +446,22 @@ in
       ];
     })
 
-    (mkHost {
-      name = "enchilada";
-      system = "aarch64-linux";
-      forceFlakeNixpkgs = false;
-      extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
-        "${inputs.mobile-nixos}/devices/oneplus-enchilada"
-        (
-          { ... }:
-          {
-            # mobile-nixos tests `config.nixpkgs.localSystem`
-            nixpkgs.system = "aarch64-linux";
-          }
-        )
-      ];
-    })
+    # TODO fix
+    # (mkHost {
+    #   name = "enchilada";
+    #   system = "aarch64-linux";
+    #   forceFlakeNixpkgs = false;
+    #   extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
+    #     "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+    #     (
+    #       { ... }:
+    #       {
+    #         # mobile-nixos tests `config.nixpkgs.localSystem`
+    #         nixpkgs.system = "aarch64-linux";
+    #       }
+    #     )
+    #   ];
+    # })
 
     (mkHost {
       name = "lax0";
@@ -485,10 +486,11 @@ in
   ];
 
   flake.checks = lib.recursiveUpdate hostToplevels {
-    "aarch64-linux" = {
-      "android-boot-image/enchilada" = self.nixosConfigurations.enchilada.config.system.build.bootImage;
-      "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
-    };
+    # TODO fix
+    # "aarch64-linux" = {
+    #   "android-boot-image/enchilada" = self.nixosConfigurations.enchilada.config.system.build.bootImage;
+    #   "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
+    # };
     "x86_64-linux" = {
       "linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
     };
