@@ -63,16 +63,6 @@ in
         auto-login.enable = true;
       };
       services.godns = {
-        ipv4.settings = {
-          domains = [
-            {
-              domain_name = "li7g.com";
-              sub_domains = [ hostName ];
-            }
-          ];
-          ip_type = "IPv4";
-          ip_interface = "wlp166s0f0";
-        };
         ipv6.settings = {
           domains = [
             {
