@@ -48,7 +48,8 @@ in
       services.tlp = {
         enable = true;
         settings = {
-          # TODO
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
         };
       };
       services.logind.lidSwitchExternalPower = "ignore";
