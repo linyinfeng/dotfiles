@@ -122,6 +122,24 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
+    parrot = {
+      records = {}
+      ddns_records = {
+        a = {
+          proxied = false
+          type    = "A"
+          value   = "127.0.0.1"
+        }
+        aaaa = {
+          proxied = false
+          type    = "AAAA"
+          value   = "::1"
+        }
+      }
+      host_indices = [23]
+      endpoints_v4 = []
+      endpoints_v6 = []
+    }
     enchilada = {
       records      = {}
       ddns_records = {}

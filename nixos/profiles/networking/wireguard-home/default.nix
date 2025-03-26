@@ -17,6 +17,10 @@ let
       ip = "192.168.2.3";
       inherit port;
     };
+    parrot = {
+      ip = "192.168.2.4";
+      inherit port;
+    };
     enchilada = {
       ip = "192.168.2.101";
       inherit port;

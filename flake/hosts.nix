@@ -92,9 +92,11 @@ let
         (with suites; base ++ multimediaDev ++ virtualization ++ network ++ backup ++ monitoring)
         ++ (with profiles; [
           boot.binfmt
+          boot.plymouth
           system.types.workstation
           networking.network-manager
           networking.tools
+          networking.mobile-nixos-usb
           programs.tmux
           programs.tools
           programs.nix-index
@@ -212,6 +214,12 @@ let
         ok
         vscode-server
       ];
+      music = [
+        profiles.music
+      ];
+      design = with profiles; [
+        blender
+      ];
       virtualization = [ ];
       multimediaDev =
         suites.multimedia
@@ -232,7 +240,9 @@ let
         with suites;
         base ++ development ++ virtualization ++ synchronize ++ security ++ other;
 
-      full = with suites; base ++ multimediaDev ++ virtualization ++ synchronize ++ security ++ other;
+      full =
+        with suites;
+        base ++ multimediaDev ++ music ++ design ++ virtualization ++ synchronize ++ security ++ other;
 
       phone =
         (with suites; base)
@@ -405,6 +415,14 @@ in
         common-cpu-amd
         common-cpu-amd-pstate
         common-gpu-amd
+      ];
+    })
+
+    (mkHost {
+      name = "parrot";
+      system = "x86_64-linux";
+      extraModules = with inputs.nixos-hardware.nixosModules; [
+        framework-12th-gen-intel
       ];
     })
 

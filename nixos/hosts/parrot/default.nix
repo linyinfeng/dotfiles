@@ -48,15 +48,15 @@ in
       services.tlp = {
         enable = true;
         settings = {
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-          PLATFORM_PROFILE_ON_BAT = "low-power";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-          PLATFORM_PROFILE_ON_AC = "balanced";
+          # TODO
         };
       };
       services.logind.lidSwitchExternalPower = "ignore";
 
-      services.fwupd.enable = true;
+      services.fwupd = {
+        enable = true;
+        extraRemotes = [ "lvfs-testing" ];
+      };
 
       networking.campus-network = {
         enable = true;
@@ -71,7 +71,7 @@ in
             }
           ];
           ip_type = "IPv4";
-          ip_interface = "wlp4s0";
+          ip_interface = "wlp166s0f0";
         };
         ipv6.settings = {
           domains = [
@@ -137,7 +137,7 @@ in
               };
               crypt-root = {
                 priority = 100;
-                size = "1T";
+                size = "800G";
                 content = {
                   type = "luks";
                   name = "crypt-root";
@@ -176,14 +176,6 @@ in
                   };
                 };
               };
-              windows = {
-                priority = 900;
-                size = "512G";
-                content = {
-                  type = "filesystem";
-                  format = "ntfs";
-                };
-              };
               # reserved = {
               #   priority = 1000;
               #   size = "100%";
@@ -195,8 +187,6 @@ in
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
-
-      boot.supportedFilesystems = [ "ntfs" ];
 
       system.nproc = 16;
     }

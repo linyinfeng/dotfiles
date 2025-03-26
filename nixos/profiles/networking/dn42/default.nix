@@ -31,6 +31,7 @@ let
     "nuc".enable = false; # unmetered
     "owl".enable = false; # mobile
     "xps8930".enable = false; # mobile
+    "parrot".enable = false; # mobile
   };
   regionTable = {
     "lax0" = {
@@ -60,6 +61,10 @@ let
     };
     # mobile devices
     "owl" = {
+      region = null;
+      country = null;
+    };
+    "parrot" = {
       region = null;
       country = null;
     };

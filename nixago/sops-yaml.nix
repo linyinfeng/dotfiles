@@ -15,6 +15,10 @@ let
       key = "age1qrrwcee244ak7ax9xwuxdttzsan24g655lpmvry3275j6v4n2pesjwyawu";
       owned = true;
     };
+    parrot = {
+      key = "age1mzalm62wfmn96kp42sqzrlfmhmpktjgffhekqemr3aejlty885nq66cqtq";
+      owned = true;
+    };
     xps8930 = {
       key = "age1ynhrpsfdwxm3ryzn6uyvqng5hca2em983qm6d8jkkhyq6u0w8qpq3gxxh0";
       owned = true;

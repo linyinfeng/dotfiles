@@ -1,3 +1,4 @@
+# https://github.com/NixOS/nixos-hardware/blob/master/framework/13-inch/12th-gen-intel/default.nix
 {
   config,
   pkgs,
@@ -18,7 +19,7 @@ lib.mkMerge [
 
       [[output.backlight]]
       name = "eDP-1"
-      path = "/sys/class/backlight/amdgpu_bl1"
+      path = "/sys/class/backlight/intel_backlight"
       capturer = "wlroots"
     '';
     environment.global-persistence.user.directories = [ ".local/share/wluma" ];
@@ -30,8 +31,10 @@ lib.mkMerge [
       "thunderbolt"
       "nvme"
       "usb_storage"
-      "usbhid"
       "sd_mod"
+    ];
+    boot.kernelModules = [
+      "kvm-intel"
     ];
 
     systemd.services = lib.mkIf config.services.xserver.displayManager.gdm.enable {
