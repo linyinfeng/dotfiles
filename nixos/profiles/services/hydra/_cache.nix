@@ -24,7 +24,7 @@ in
         echo "enter critical section"
 
         nix store sign "$root" --recursive --key-file "$CREDENTIALS_DIRECTORY/signing-key"
-        echo "push cache to cahche.li7g.com for hydra gcroot: $root"
+        echo "push cache to cache.li7g.com for hydra gcroot: $root"
         # TODO set multipart-upload=true
         # currently this does not work on aws-s3-reverse-proxy
         nix copy --to "s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd" "$root" --verbose
