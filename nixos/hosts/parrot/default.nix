@@ -20,6 +20,7 @@ in
       services.godns
       services.nginx
       services.acme
+      services.fprintd
       hardware.backlight
       hardware.nvidia-egpu
       users.yinfeng
