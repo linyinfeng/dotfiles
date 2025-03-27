@@ -31,7 +31,7 @@
               ];
               text = ''
                 set -x
-                if ! atuin status; then
+                if [[ "$(atuin status)" =~ "not logged in" ]]; then
                   atuin login \
                     --username yinfeng \
                     --password "$(cat "${osConfig.sops.secrets."atuin_password_yinfeng".path}")" \
