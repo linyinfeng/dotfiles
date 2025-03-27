@@ -121,6 +121,7 @@ lib.mkMerge [
   {
     services.mautrix-telegram = {
       enable = true;
+      registerToSynapse = false; # manual registration for flexible deployment
       environmentFile = config.sops.templates."mautrix-telegram-config".path;
       serviceDependencies = [ "matrix-synapse.service" ];
       settings = {
