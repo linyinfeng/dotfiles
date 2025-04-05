@@ -857,14 +857,6 @@ lib.mkMerge [
       enable = true;
       systemdTargets = [ "niri.service" ];
     };
-    systemd.user.services.cliphist = {
-      Unit = {
-        ConditionEnvironment = [
-          "WAYLAND_DISPLAY"
-        ];
-        After = "niri.service";
-      };
-    };
   }
 
   # swaybg
