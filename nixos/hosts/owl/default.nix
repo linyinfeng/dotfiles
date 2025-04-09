@@ -71,7 +71,7 @@ in
             }
           ];
           ip_type = "IPv6";
-          ip_urls = [
+          ipv6_urls = [
             "https://myip.biturl.top"
             "https://ipecho.net/plain"
             "https://api-ipv6.ip.sb/ip"
