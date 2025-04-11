@@ -20,6 +20,7 @@
     hydra-builder-client = 405;
     # windows = 406;
     steam = 407;
+    cowrie = 408;
   };
   ids.gids = {
     # service groups
@@ -31,5 +32,6 @@
     hydra-builder-client = 405;
     windows = 406;
     steam = 407;
+    cowrie = 408;
   };
 }

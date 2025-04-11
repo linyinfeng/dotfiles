@@ -24,18 +24,24 @@ in
     script = ''
       rsync --verbose --recursive --delete "${cowrieSrc}/" cowrie-src/
       chmod -R u+w cowrie-src
+      mkdir -p cowrie-working
+      rsync --verbose --recursive "${cowrieSrc}/var/" cowrie-working/var/
+      chmod -R u+w cowrie-working
 
       rm -f cowrie-venv/bin/python*
-      python3 -m venv cowrie-venv
+      python -m venv cowrie-venv
+      # shellcheck source=/dev/null
       source cowrie-venv/bin/activate
-      pip install --no-cache-dir --upgrade pip wheel setuptools
-      pip install --no-cache-dir --upgrade cffi
-      pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements.txt
-      pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements-output.txt
+      python -m ensurepip --upgrade
+      python -m pip install --no-cache-dir --upgrade pip wheel setuptools
+      python -m pip install --no-cache-dir --upgrade cffi
+      python -m pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements.txt
+      python -m pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements-output.txt
 
-      export PYTHONPATH=cowrie-src/src
-      python3 -m compileall cowrie-src
-      python3 cowrie-venv/bin/twistd --umask=0022 --nodaemon --pidfile= --logfile=- cowrie
+      export PYTHONPATH="$PWD/cowrie-src/src"
+      python -m compileall cowrie-src cowrie-venv
+      cd cowrie-working
+      twistd --umask=0022 --nodaemon --pidfile= --logfile=- cowrie
     '';
     path = with pkgs; [
       python311
@@ -43,7 +49,8 @@ in
       rsync
     ];
     serviceConfig = {
-      DynamicUser = true;
+      User = "cowrie";
+      Group = "cowrie";
       StateDirectory = "cowrie";
       WorkingDirectory = "/var/lib/cowrie";
       EnvironmentFile = [ config.sops.templates."cowrie-extra-env".path ];
@@ -66,5 +73,17 @@ in
     COWRIE_OUTPUT_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram-bot/push"}
     COWRIE_OUTPUT_TELEGRAM_CHAT_ID=148111617
   '';
+  users.users.cowrie = {
+    uid = config.ids.uids.cowrie;
+    isSystemUser = true;
+    createHome = false;
+    home = "/var/lib/cowrie";
+    group = "cowrie";
+    # for debug
+    shell = pkgs.bash;
+  };
+  users.groups.cowrie = {
+    gid = config.ids.gids.cowrie;
+  };
   networking.firewall.allowedTCPPorts = [ port ];
 }
