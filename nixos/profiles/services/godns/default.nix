@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.services.godns;
+  cfg = config.services.godns-multi;
 
   godns = "${pkgs.godns}/bin/godns";
 
@@ -25,7 +25,7 @@ let
 in
 {
   options = {
-    services.godns = lib.mkOption {
+    services.godns-multi = lib.mkOption {
       default = { };
       type = with lib.types; attrsOf (submodule godnsOpts);
     };

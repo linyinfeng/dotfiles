@@ -62,7 +62,7 @@ in
         enable = true;
         auto-login.enable = true;
       };
-      services.godns = {
+      services.godns-multi = {
         ipv6.settings = {
           domains = [
             {

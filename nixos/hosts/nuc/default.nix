@@ -149,7 +149,7 @@ in
 
     # godns
     {
-      services.godns = {
+      services.godns-multi = {
         ipv4.settings = {
           domains = [
             {

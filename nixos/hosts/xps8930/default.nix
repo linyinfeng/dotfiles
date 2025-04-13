@@ -67,7 +67,7 @@ in
     enable = true;
     auto-login.enable = true;
   };
-  services.godns = {
+  services.godns-multi = {
     ipv4.settings = {
       domains = [
         {
