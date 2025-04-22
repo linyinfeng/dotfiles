@@ -12,6 +12,7 @@ in
     [
       reaper
       lilypond
+      frescobaldi
       musescore
     ]
     ++ audioPlugins;
