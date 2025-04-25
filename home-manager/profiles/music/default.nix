@@ -10,10 +10,17 @@ in
   home.packages =
     with pkgs;
     [
+      # DAW
       reaper
+
+      # sheet music
       lilypond
       frescobaldi
       musescore
+
+      # plugin support
+      yabridge
+      yabridgectl
     ]
     ++ audioPlugins;
   home.sessionVariables = {
@@ -24,5 +31,8 @@ in
     ".config/REAPER"
     ".config/MuseScore"
     ".local/share/MuseScore"
+    ".vst"
+    ".vst3"
+    ".clap"
   ];
 }
