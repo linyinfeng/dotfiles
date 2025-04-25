@@ -4,7 +4,6 @@
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
-      looking-glass-obs
     ];
   };
 
