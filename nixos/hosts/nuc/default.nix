@@ -51,7 +51,7 @@ in
       services.smartd
       services.postgresql
       services.hydra
-      services.matrix-qq
+      # services.matrix-qq
       services.teamspeak
       programs.service-mail
       programs.tg-send
