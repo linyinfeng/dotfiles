@@ -6,36 +6,69 @@
 }:
 let
   cfg = config.networking.campus-network;
-  scripts = pkgs.stdenvNoCC.mkDerivation rec {
+  scripts = pkgs.buildEnv {
     name = "campus-network-scripts";
-    buildCommand = ''
-      install -Dm755 $campusNetLogin  $out/bin/campus-net-login
-      install -Dm755 $campusNetLogout $out/bin/campus-net-logout
-      install -Dm755 $autoLogin       $out/bin/campus-net-auto-login
+    paths = [
+      campusNetLogin
+      campusNetLogout
+      autoLogin
+    ];
+  };
+  campusNetLogin = pkgs.writeShellApplication {
+    name = "campus-net-login";
+    runtimeInputs = with pkgs; [
+      curl
+    ];
+    text = ''
+      username=$(cat "${config.sops.secrets."campus-net/username".path}")
+      password=$(cat "${config.sops.secrets."campus-net/password".path}")
+
+      curl -X POST https://p.nju.edu.cn/api/portal/v1/login \
+        --json @- <<EOF
+        {
+          "username": "$username",
+          "password": "$password"
+        }
+      EOF
     '';
-    campusNetLogin = pkgs.substituteAll {
-      src = ./_scripts/login.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) curl;
-      usernameFile = config.sops.secrets."campus-net/username".path;
-      passwordFile = config.sops.secrets."campus-net/password".path;
-    };
-    campusNetLogout = pkgs.substituteAll {
-      src = ./_scripts/logout.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) curl;
-    };
-    autoLogin = pkgs.substituteAll {
-      src = ./_scripts/auto-login.sh;
-      isExecutable = true;
-      inherit (pkgs.stdenvNoCC) shell;
-      inherit (pkgs) curl;
-      inherit campusNetLogin;
-      intervalSec = cfg.auto-login.interval;
-      maxTimeSec = cfg.auto-login.testMaxTime;
-    };
+  };
+  campusNetLogout = pkgs.writeShellApplication {
+    name = "campus-net-logout";
+    runtimeInputs = with pkgs; [
+      curl
+    ];
+    text = ''
+      curl -X POST https://p.nju.edu.cn/api/portal/v1/logout --json "{}"
+    '';
+  };
+  autoLogin = pkgs.writeShellApplication {
+    name = "campus-net-auto-login";
+    runtimeInputs = with pkgs; [
+      curl
+      campusNetLogin
+    ];
+    text = ''
+      interval="${toString cfg.auto-login.interval}"
+      max_time="${toString cfg.auto-login.testMaxTime}"
+
+      function test_and_login {
+        echo -n "curl --ipv4 'http://captive.apple.com': "
+        if
+          curl --ipv4 http://captive.apple.com --silent --show-error --max-time "$max_time" |
+            grep Success >/dev/null
+        then
+          # do nothing
+          echo "already logged in"
+        else
+          echo "no internet, try login"
+          campus-net-login
+        fi
+      }
+      while true; do
+        test_and_login
+        sleep "$interval"
+      done
+    '';
   };
 in
 {

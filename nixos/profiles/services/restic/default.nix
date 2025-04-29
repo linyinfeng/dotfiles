@@ -30,15 +30,29 @@ let
   };
 
   mkScript =
-    cfg:
-    pkgs.substituteAll (
-      {
-        src = ./wrapper.sh;
-        isExecutable = true;
-        inherit (pkgs) restic;
-      }
-      // cfg
-    );
+    {
+      name,
+      repository,
+      environmentFile,
+      passwordFile,
+      ...
+    }:
+    pkgs.writeShellApplication {
+      name = "restic-${name}";
+      runtimeInputs = with pkgs; [
+        restic
+      ];
+      text = ''
+        set -o allexport
+        # shellcheck disable=SC1091
+        source "${environmentFile}"
+        set +o allexport
+        export RESTIC_PASSWORD_FILE="${passwordFile}"
+        export RESTIC_REPOSITORY="${repository}"
+
+        restic "$@"
+      '';
+    };
   mkServiceCfg =
     cfg:
     {
@@ -47,14 +61,12 @@ let
     }
     // cfg;
 
-  scripts = pkgs.stdenvNoCC.mkDerivation {
+  scripts = pkgs.buildEnv {
     name = "restic-scripts";
-    buildCommand = ''
-      install -Dm755 $resticB2    $out/bin/restic-b2
-      install -Dm755 $resticMinio $out/bin/restic-minio
-    '';
-    resticB2 = mkScript cfgB2;
-    resticMinio = mkScript cfgMinio;
+    paths = [
+      (mkScript (cfgB2 // { name = "b2"; }))
+      (mkScript (cfgMinio // { name = "minio"; }))
+    ];
   };
 in
 {

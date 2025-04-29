@@ -34,8 +34,7 @@ let
     paths = osConfig.i18n.inputMethod.rime.rimeDataPkgs;
   };
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
-  emacsConfig = pkgs.substituteAll {
-    src = rawEmacsConfig;
+  emacsConfig = pkgs.replaceVars rawEmacsConfig {
     inherit syncDir rimeShareDataDir;
     ledgerFile = config.home.sessionVariables."LEDGER_FILE";
   };
