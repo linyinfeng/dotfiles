@@ -32,24 +32,26 @@ let
         code = 403;
       }
     ];
-    matrix-qq = [
-      {
-        url = "https://matrix-qq.ts.li7g.com";
-        code = 404;
-      }
-    ];
+    # TODO broken
+    # matrix-qq = [
+    #   {
+    #     url = "https://matrix-qq.ts.li7g.com";
+    #     code = 404;
+    #   }
+    # ];
     nextcloud = [
       {
         url = "https://nextcloud.ts.li7g.com:8443/login";
         code = 200;
       }
     ];
-    mc = [
-      {
-        url = "https://mc.ts.li7g.com";
-        code = 200;
-      }
-    ];
+    # currently not hosted
+    # mc = [
+    #   {
+    #     url = "https://mc.ts.li7g.com";
+    #     code = 200;
+    #   }
+    # ];
     hydra = [
       {
         url = "https://hydra.ts.li7g.com";
