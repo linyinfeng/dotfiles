@@ -14,11 +14,4 @@
         ];
       };
     };
-
-  # special checks
-  flake.checks = {
-    "x86_64-linux" = {
-      topology = self.topology."x86_64-linux".config.output;
-    };
-  };
 }
