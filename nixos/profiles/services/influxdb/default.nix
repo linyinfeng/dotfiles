@@ -36,7 +36,7 @@ let
 
           password=$(cat "$CREDENTIALS_DIRECTORY/password")
 
-          echo "y" | "$influx" setup \
+          echo "y" | influx setup \
             --username "${username}" \
             --password "$password" \
             --token "$(cat "$CREDENTIALS_DIRECTORY/token")" \
@@ -51,16 +51,16 @@ let
         buckets=(${lib.concatMapStringsSep " " (s: "\"${s}\"") ensureBuckets})
         for bucket in "''${buckets[@]}"; do
           echo "ensure bucket '$bucket'"
-          if "$influx" bucket list --org "$org" \
+          if influx bucket list --org "${org}" \
             --token "$(cat "$CREDENTIALS_DIRECTORY/token")" \
             --name "$bucket"; then
             echo "bucket '$bucket' already exists"
           else
             echo "create bucket '$bucket'"
-            "$influx" bucket create \
+            influx bucket create \
               --token "$(cat "$CREDENTIALS_DIRECTORY/token")" \
               --name "$bucket" \
-              --retention "$retention"
+              --retention "${retention}"
           fi
         done
       '';
