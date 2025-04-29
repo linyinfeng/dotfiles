@@ -10,22 +10,17 @@ let
   mixedPort = cfg.ports.mixed;
   tproxyPort = cfg.ports.tproxy;
 
-  enableProxy = pkgs.writeShellApplication {
-    name = "enable-proxy";
-    text = ''
-      ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (
-        lib.attrsToList cfg.environmentCommandLine
-      )}
-    '';
-  };
-  disableProxy = pkgs.writeShellApplication {
-    name = "disable-proxy";
-    text = ''
-      ${lib.concatMapStringsSep "\n" (name: ''export ${name}=""'') (
-        lib.attrNames cfg.environmentCommandLine
-      )}
-    '';
-  };
+  mkProxyScript =
+    name: env:
+    pkgs.writeShellApplication {
+      inherit name;
+      text = ''
+        ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (lib.attrsToList env)}
+      '';
+    };
+  enableProxy = mkProxyScript "enable-proxy" cfg.environmentCommandLine;
+  enableContainerProxy = mkProxyScript "enable-container-proxy" cfg.environmentContainer;
+  disableProxy = mkProxyScript "disable-proxy" cfg.environmentDisable;
   updateFwProxyUrl = pkgs.writeShellApplication {
     name = "update-fw-proxy-url";
     runtimeInputs = with pkgs; [
@@ -243,6 +238,7 @@ let
     name = "fw-proxy-scripts";
     paths = [
       enableProxy
+      enableContainerProxy
       disableProxy
       updateFwProxyUrl
       updateFwProxy
@@ -413,7 +409,7 @@ with lib;
           no_proxy = cfg.noProxy;
         };
     };
-    environmentContainter = mkOption {
+    environmentContainer = mkOption {
       type = with types; attrsOf str;
       description = ''
         Proxy environment for containers.
@@ -427,6 +423,26 @@ with lib;
           HTTPS_PROXY = proxyUrl;
           http_proxy = proxyUrl;
           https_proxy = proxyUrl;
+          NO_PROXY = cfg.noProxy;
+          no_proxy = cfg.noProxy;
+        };
+    };
+    environmentDisable = mkOption {
+      type = with types; attrsOf str;
+      description = ''
+        Proxy environment for disabling proxy.
+      '';
+      default =
+        let
+          proxyUrl = "";
+        in
+        {
+          HTTP_PROXY = proxyUrl;
+          HTTPS_PROXY = proxyUrl;
+          ALL_PROXY = proxyUrl;
+          http_proxy = proxyUrl;
+          https_proxy = proxyUrl;
+          all_proxy = proxyUrl;
           NO_PROXY = cfg.noProxy;
           no_proxy = cfg.noProxy;
         };
