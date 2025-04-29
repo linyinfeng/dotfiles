@@ -240,6 +240,16 @@ in
       networking.firewall.allowedUDPPorts = with config.ports; [ https-alternative ];
     }
 
+    # topology
+    {
+      topology.self.interfaces.enp88s0 = {
+        network = "home";
+        physicalConnections = [
+          (config.lib.topology.mkConnection "home-room-switch" "lan2")
+        ];
+      };
+    }
+
     # stateVersion
     { system.stateVersion = "24.11"; }
   ];

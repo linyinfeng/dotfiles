@@ -10,7 +10,10 @@
         inherit pkgs;
         modules = [
           ../topology
-          { inherit (self) nixosConfigurations; }
+          {
+            inherit (self) nixosConfigurations;
+            _module.args = { inherit self; };
+          }
         ];
       };
     };

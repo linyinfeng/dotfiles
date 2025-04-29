@@ -111,7 +111,7 @@ in
             excludeBuildFromContext = 1
           </githubstatus>
           <runcommand>
-            command = "${hydraHook}"
+            command = "${lib.getExe hydraHook}"
           </runcommand>
         '';
       };

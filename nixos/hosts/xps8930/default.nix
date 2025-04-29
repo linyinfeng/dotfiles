@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   suites,
   profiles,
@@ -95,6 +96,14 @@ in
     {
       imports = suites.full;
     };
+
+  topology.self.interfaces.enp4s0 = {
+    network = "internet";
+    renderer.hidePhysicalConnections = config.topology.tidy;
+    physicalConnections = [
+      (config.lib.topology.mkConnection "internet" "*")
+    ];
+  };
 
   boot.tmp.useTmpfs = true;
   services.fstrim.enable = true;

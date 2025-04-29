@@ -9,7 +9,7 @@ let
 
   xfrmIfId = hostCfg: hostCfg.ipsec.xfrmInterfaceId;
   xfrmIfIdString = hostCfg: toString (xfrmIfId hostCfg);
-  xfrmIfName = name: _hostCfg: "${cfg.interfaces.namePrefix}-i${name}";
+  xfrmIfName = name: "${cfg.interfaces.namePrefix}-i${name}";
 
   hostPrefixLength =
     family:
@@ -445,9 +445,9 @@ in
         # mesh interfaces
         systemd.network.netdevs = lib.mapAttrs' (
           peerName: hostCfg:
-          lib.nameValuePair "70-${xfrmIfName peerName hostCfg}" {
+          lib.nameValuePair "70-${xfrmIfName peerName}" {
             netdevConfig = {
-              Name = xfrmIfName peerName hostCfg;
+              Name = xfrmIfName peerName;
               Kind = "xfrm";
             };
             xfrmConfig = {
@@ -457,10 +457,10 @@ in
           }
         ) cfg.peerHosts;
         systemd.network.networks = lib.mapAttrs' (
-          peerName: hostCfg:
-          lib.nameValuePair "70-${xfrmIfName peerName hostCfg}" {
+          peerName: _hostCfg:
+          lib.nameValuePair "70-${xfrmIfName peerName}" {
             matchConfig = {
-              Name = xfrmIfName peerName hostCfg;
+              Name = xfrmIfName peerName;
             };
             linkConfig = {
               Multicast = true;
@@ -469,6 +469,16 @@ in
             networkConfig = {
               IPv6AcceptRA = false;
             };
+          }
+        ) cfg.peerHosts;
+        topology.self.interfaces = lib.mapAttrs' (
+          peerName: _hostCfg:
+          lib.nameValuePair "${xfrmIfName peerName}" {
+            virtual = true;
+            renderer.hidePhysicalConnections = config.topology.tidy;
+            physicalConnections = [
+              (config.lib.topology.mkConnection peerName (xfrmIfName cfg.me))
+            ];
           }
         ) cfg.peerHosts;
 

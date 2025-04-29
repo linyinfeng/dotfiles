@@ -151,6 +151,26 @@ in
       };
     })
 
+    # topology
+    {
+      topology.self.interfaces = {
+        enX0 = {
+          network = "internet";
+          renderer.hidePhysicalConnections = config.topology.tidy;
+          physicalConnections = [
+            (config.lib.topology.mkConnection "internet" "*")
+          ];
+        };
+        he-ipv6 = {
+          network = "internet";
+          renderer.hidePhysicalConnections = config.topology.tidy;
+          physicalConnections = [
+            (config.lib.topology.mkConnection "internet" "*")
+          ];
+        };
+      };
+    }
+
     # user
     {
       home-manager.users.yinfeng =

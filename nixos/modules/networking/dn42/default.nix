@@ -400,6 +400,10 @@ in
           }) asCfg.thisHost.addressesV6;
       };
     };
+    topology.self.interfaces.${cfg.interfaces.dummy.name} = {
+      virtual = true;
+      network = "dn42";
+    };
 
     # other configurations
     passthru.dn42SupportedTunnelTypes = supportedTunnelTypes;

@@ -397,6 +397,13 @@ lib.mkIf cfg.enable (
           };
         }
       ) bgpCfg.peering.peers;
+      topology.self.interfaces = lib.mapAttrs' (
+        _peerName: peerCfg:
+        lib.nameValuePair peerCfg.tunnel.interface.name {
+          virtual = true;
+          network = "dn42";
+        }
+      ) bgpCfg.peering.peers;
       services.bird.config = lib.mkOrder 250 (
         lib.concatMapStringsSep "\n" (
           peerCfg:

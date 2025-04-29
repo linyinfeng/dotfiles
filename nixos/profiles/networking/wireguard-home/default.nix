@@ -76,4 +76,11 @@ in
   environment.systemPackages = with pkgs; [ wireguard-tools ];
   networking.firewall.allowedUDPPorts = [ hosts.${hostName}.port ];
   networking.networkmanager.unmanaged = [ interfaceName ];
+  topology.self.interfaces.${interfaceName} = {
+    virtual = true;
+    renderer.hidePhysicalConnections = config.topology.tidy;
+    physicalConnections = [
+      (config.lib.topology.mkConnection "home-router" "wireguard1")
+    ];
+  };
 }
