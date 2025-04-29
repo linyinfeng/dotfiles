@@ -71,6 +71,12 @@
 
     preservation.url = "github:nix-community/preservation";
 
+    nix-topology.url = "github:oddlama/nix-topology";
+    nix-topology.inputs.devshell.follows = "devshell";
+    nix-topology.inputs.flake-utils.follows = "flake-utils";
+    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+    nix-topology.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
+
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -339,6 +345,7 @@
           inputs.linyinfeng.flakeModules.nixpkgs
           inputs.linyinfeng.flakeModules.passthru
           inputs.linyinfeng.flakeModules.nixago
+          inputs.nix-topology.flakeModule
         ] ++ selfLib.buildModuleList ./flake;
       }
     );

@@ -275,6 +275,7 @@ let
     inputs.angrr.nixosModules.angrr
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.niri-flake.nixosModules.niri
+    inputs.nix-topology.nixosModules.default
 
     {
       lib = {

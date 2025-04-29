@@ -31,6 +31,7 @@ let
     inputs.emacs-overlay.overlay
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlays.default
+    inputs.nix-topology.overlays.default
     (
       _final: prev:
       let
