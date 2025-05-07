@@ -191,6 +191,7 @@
     lantian.inputs.nix-index-database.follows = "nix-index-database";
     lantian.inputs.treefmt-nix.follows = "treefmt-nix";
     lantian.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
+    lantian.inputs.devshell.follows = "devshell";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";
