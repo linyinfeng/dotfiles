@@ -712,9 +712,11 @@ lib.mkMerge [
   {
     services.mako = {
       enable = true;
-      borderRadius = 8;
-      borderSize = 2;
-      backgroundColor = "#000000FF";
+      settings = {
+        borderRadius = 8;
+        borderSize = 2;
+        backgroundColor = "#000000FF";
+      };
       criteria = {
         "urgency=low" = {
           border-color = "#66ffccff";
