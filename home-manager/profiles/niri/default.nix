@@ -715,16 +715,17 @@ lib.mkMerge [
       borderRadius = 8;
       borderSize = 2;
       backgroundColor = "#000000FF";
-      extraConfig = ''
-        [urgency=low]
-        border-color=#66ffccff
-
-        [urgency=normal]
-        border-color=#7fc8ffff
-
-        [urgency=critical]
-        border-color=#ff3300ff
-      '';
+      criteria = {
+        "urgency=low" = {
+          border-color = "#66ffccff";
+        };
+        "urgency=normal" = {
+          border-color = "#7fc8ffff";
+        };
+        "urgency=critical" = {
+          border-color = "#ff3300ff";
+        };
+      };
     };
   }
 
