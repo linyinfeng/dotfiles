@@ -86,9 +86,6 @@ let
       zerotierone = prev.zerotierone.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
       });
-      waydroid = prev.waydroid.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ../patches/waydroid-mount-nix-and-run-binfmt.patch ];
-      });
       blender = prev.blender.override {
         cudaSupport = true;
       };
