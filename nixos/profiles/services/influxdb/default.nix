@@ -77,7 +77,7 @@ in
   systemd.services.influxdb2-setup = {
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${config.system.build.influxdb2-setup-script}";
+      ExecStart = "${lib.getExe config.system.build.influxdb2-setup-script}";
       DynamicUser = true;
       LoadCredential = [
         "password:${config.sops.secrets."influxdb_password".path}"
