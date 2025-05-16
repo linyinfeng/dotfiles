@@ -503,10 +503,13 @@ with lib;
       systemd.services.fw-proxy = {
         script = ''
           external_controller_secret=$(cat "$CREDENTIALS_DIRECTORY/secret")
-          clash-meta -d "$STATE_DIRECTORY" -secret "$external_controller_secret"
+          mihomo -d "$STATE_DIRECTORY" -secret "$external_controller_secret"
         '';
         reload = "kill -HUP $MAINPID";
-        path = with pkgs; [ clash-meta ];
+        path = with pkgs; [ mihomo ];
+        environment = {
+          SKIP_SAFE_PATH_CHECK = "1";
+        };
         serviceConfig =
           let
             capabilities = [
