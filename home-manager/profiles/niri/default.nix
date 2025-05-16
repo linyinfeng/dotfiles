@@ -716,8 +716,6 @@ lib.mkMerge [
         borderRadius = 8;
         borderSize = 2;
         backgroundColor = "#000000FF";
-      };
-      criteria = {
         "urgency=low" = {
           border-color = "#66ffccff";
         };
