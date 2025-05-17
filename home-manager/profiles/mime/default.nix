@@ -31,10 +31,11 @@ let
     "x-xbitmap"
     "x-xpixmap"
     "x-pcx"
+    "x-icns"
     "svg+xml"
     "svg+xml-compressed"
     "vnd.wap.wbmp"
-    "x-icns"
+    "webp"
   ];
   archiveFormats = map (f: "application/${f}") [
     "x-tar"
@@ -196,8 +197,8 @@ in
       buildMap [ "chromium-browser.desktop" ] webFormats
       // buildMap [ "org.gnome.Loupe.desktop" ] imageFormats
       // buildMap [ "org.gnome.FileRoller.desktop" ] archiveFormats
-      // buildMap [ "io.bassi.Amberol.desktop" ] audioFormats
-      // buildMap [ "com.github.rafostar.Clapper.desktop" ] videoFormats
+      // buildMap [ "org.gnome.Decibels.desktop" ] audioFormats
+      // buildMap [ "org.gnome.Totem.desktop" ] videoFormats
       // buildMap [ "writer.desktop" ] wordFormats
       // buildMap [ "calc.desktop" ] excelFormats
       // buildMap [ "impress.desktop" ] pptFormats
