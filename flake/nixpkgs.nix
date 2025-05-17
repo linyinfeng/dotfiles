@@ -8,17 +8,6 @@
 let
   inherit (self.lib) requireBigParallel;
   packages = [
-    (
-      final: _prev:
-      let
-        mkEmptyPkg = name: final.runCommand name { } "touch $out";
-      in
-      {
-        # spacial packages
-        eval-only-check = mkEmptyPkg "eval-only-check";
-      }
-    )
-
     inputs.sops-nix.overlays.default
     inputs.nixos-cn.overlay
     inputs.linyinfeng.overlays.singleRepoNur

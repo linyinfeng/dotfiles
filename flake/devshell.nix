@@ -9,7 +9,6 @@ in
       self',
       system,
       lib,
-      pkgs,
       ...
     }:
     if lib.elem system flakeCfg.devSystems then
@@ -19,10 +18,10 @@ in
       }
     else
       {
-        checks."no-devshells" =
+        checks =
           assert lib.assertMsg (config.devshells == { }) ''
             system `${system}` is not a dev system but have non-empty devshells
           '';
-          pkgs.eval-only-check;
+          { };
       };
 }
