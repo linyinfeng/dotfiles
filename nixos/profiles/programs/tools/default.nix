@@ -76,6 +76,7 @@ in
       rlwrap
       s-tui
       stress
+      tokei
       unar
       unrar
       unzip
