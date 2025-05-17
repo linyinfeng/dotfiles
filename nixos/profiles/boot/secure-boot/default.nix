@@ -103,6 +103,7 @@ in
       };
     };
     boot.kernelLockdown = lib.mkEnableOption "kernel lockdown";
+    boot.kernelKeyring.uefiPatch = lib.mkEnableOption "kernel keyring UEFI integration";
   };
 
   config = lib.mkMerge [
@@ -122,21 +123,6 @@ in
           reboot-for-bitlocker = true;
         };
       };
-      boot.kernelPatches = [
-        {
-          name = "uefi-keyring";
-          patch = null;
-          extraStructuredConfig = with lib.kernel; {
-            INTEGRITY_MACHINE_KEYRING = yes;
-            INTEGRITY_PLATFORM_KEYRING = yes;
-            INTEGRITY_ASYMMETRIC_KEYS = yes;
-            INTEGRITY_SIGNATURE = yes;
-            SECONDARY_TRUSTED_KEYRING = yes;
-            SYSTEM_BLACKLIST_KEYRING = yes;
-            LOAD_UEFI_KEYS = yes;
-          };
-        }
-      ];
     }
     # shim
     {
@@ -204,6 +190,23 @@ in
           patch = null;
           extraStructuredConfig = with lib.kernel; {
             SECURITY_LOCKDOWN_LSM = lib.mkForce yes;
+          };
+        }
+      ];
+    })
+    (lib.mkIf config.boot.kernelKeyring.uefiPatch {
+      boot.kernelPatches = [
+        {
+          name = "uefi-keyring";
+          patch = null;
+          extraStructuredConfig = with lib.kernel; {
+            INTEGRITY_MACHINE_KEYRING = yes;
+            INTEGRITY_PLATFORM_KEYRING = yes;
+            INTEGRITY_ASYMMETRIC_KEYS = yes;
+            INTEGRITY_SIGNATURE = yes;
+            SECONDARY_TRUSTED_KEYRING = yes;
+            SYSTEM_BLACKLIST_KEYRING = yes;
+            LOAD_UEFI_KEYS = yes;
           };
         }
       ];
