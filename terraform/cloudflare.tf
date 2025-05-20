@@ -4,9 +4,6 @@ provider "cloudflare" {
 
 # -------------
 # DDNS and ACME token
-
-# TODO broken
-
 data "cloudflare_api_token_permission_groups_list" "all" {
 }
 
