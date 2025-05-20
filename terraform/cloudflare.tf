@@ -68,14 +68,12 @@ resource "cloudflare_zone" "zip_prebuilt" {
 resource "cloudflare_zone_setting" "com_li7g" {
   zone_id    = cloudflare_zone.com_li7g.id
   setting_id = "ssl"
-  id         = "ssl"
   value      = "strict"
 }
 
 resource "cloudflare_zone_setting" "zip_prebuilt" {
   zone_id    = cloudflare_zone.zip_prebuilt.id
   setting_id = "ssl"
-  id         = "ssl"
   value      = "strict"
 }
 
@@ -426,22 +424,20 @@ resource "cloudflare_email_routing_catch_all" "li7g" {
 
 # R2 Object storage
 
-# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
-# resource "cloudflare_r2_bucket" "cache" {
-#   account_id    = local.cloudflare_main_account_id
-#   name          = "cache-li7g-com"
-#   location      = "apac" # Asia Pacific
-#   storage_class = "Standard"
-# }
+resource "cloudflare_r2_bucket" "cache" {
+  account_id    = local.cloudflare_main_account_id
+  name          = "cache-li7g-com"
+  location      = "APAC" # Asia Pacific
+  storage_class = "Standard"
+}
 
-# TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
-# resource "cloudflare_r2_custom_domain" "example_r2_custom_domain" {
-#   account_id = local.cloudflare_main_account_id
-#   enabled = true
-#   bucket_name = cloudflare_r2_bucket.cache.name
-#   domain = "cache.${cloudflare_zone.com_li7g.name}"
-#   zone_id = cloudflare_zone.com_li7g.id
-# }
+resource "cloudflare_r2_custom_domain" "cache" {
+  account_id  = local.cloudflare_main_account_id
+  enabled     = true
+  bucket_name = cloudflare_r2_bucket.cache.name
+  domain      = "cache.${cloudflare_zone.com_li7g.name}"
+  zone_id     = cloudflare_zone.com_li7g.id
+}
 
 resource "cloudflare_api_token" "cache" {
   name   = "cache"
@@ -452,9 +448,7 @@ resource "cloudflare_api_token" "cache" {
       { id = local.permissions_groups_map["Workers R2 Storage Bucket Item Write"] }
     ]
     resources = {
-      # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
-      # "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
-      "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_cache-li7g-com" : "*"
+      "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
     }
   }]
 }
@@ -464,9 +458,7 @@ output "r2_s3_api_url" {
   sensitive = true
 }
 output "r2_cache_bucket_name" {
-  # TODO wait for https://github.com/cloudflare/terraform-provider-cloudflare/issues/5373
-  # value     = cloudflare_r2_bucket.cache.name
-  value     = "cache-li7g-com"
+  value     = cloudflare_r2_bucket.cache.name
   sensitive = false
 }
 output "r2_cache_key_id" {
