@@ -25,9 +25,8 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
     gnome-tweaks
   ];
 
-  # TODO wait for text-input-v1 support of mutter
-  #      or text-input-v3 support of chromium and electron applications
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  # TODO wait for text-input-v3 support of chromium and electron applications
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # disabled
   # install extensions declaratively with home-manager dconf options
