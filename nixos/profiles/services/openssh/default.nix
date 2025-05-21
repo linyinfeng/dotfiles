@@ -56,6 +56,10 @@ in
       ''
         ServerAliveInterval ${aliveInterval}
         ServerAliveCountMax ${aliveCountMax}
+        Host *
+          ControlPath ~/.ssh/control-master-%r@%h:%p
+          ControlMaster auto
+          ControlPersist 10m
       ''
       + lib.concatMapStringsSep "\n" (h: ''
         Host ${h}
