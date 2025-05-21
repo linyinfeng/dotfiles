@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  osConfig,
+  pkgs,
+  lib,
+  ...
+}:
 let
   themeFile = ".config/wezterm/theme.lua";
   darkmanSwitch = pkgs.writeShellApplication {
@@ -42,8 +47,35 @@ in
 
       config.color_scheme = scheme_for_appearance(get_appearance())
       config.font = wezterm.font('monospace')
+
       -- TODO wait for https://github.com/wez/wezterm/issues/5990
-      config.front_end = 'WebGpu'
+      -- config.front_end = 'WebGpu'
+
+      config.unix_domains = {
+        {
+          name = 'unix',
+        },
+      }
+      config.ssh_domains = {
+        ${lib.concatMapStringsSep "\n" (h: ''
+          {
+              name = "${h}",
+              remote_address = "${h}.dn42.li7g.com:${toString osConfig.ports.ssh}",
+              username = "root",
+            },
+            {
+              name = "${h}.dn42",
+              remote_address = "${h}.dn42.li7g.com:${toString osConfig.ports.ssh}",
+              username = "root",
+            },
+            {
+              name = "${h}.ts",
+              remote_address = "${h}.ts.li7g.com:${toString osConfig.ports.ssh}",
+              username = "root",
+            },
+        '') (lib.attrNames osConfig.networking.hostsData.indexedHosts)}
+      }
+
       return config
     '';
   };

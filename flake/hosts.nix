@@ -228,6 +228,7 @@ let
           xdg-dirs
           vscode
           alacritty
+          wezterm
         ]);
       synchronize = with profiles; [
         onedrive

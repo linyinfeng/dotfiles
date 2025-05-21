@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   aliveInterval = "15";
   aliveCountMax = "4";
@@ -90,4 +95,8 @@ in
   };
 
   environment.global-persistence.user.directories = [ ".ssh" ];
+
+  environment.systemPackages = with pkgs; [
+    wezterm # for wezterm remote connection
+  ];
 }
