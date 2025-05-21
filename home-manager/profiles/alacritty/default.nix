@@ -4,7 +4,7 @@ let
   themeFile = "theme.toml";
   themeToml = toml.generate "theme.toml" {
     general.import = [
-      "${pkgs.alacritty-theme}/github_light.toml"
+      "${pkgs.alacritty-theme}/share/alacritty-theme/github_light.toml"
     ];
   };
   darkmanSwitch = pkgs.writeShellApplication {
@@ -17,7 +17,7 @@ let
       mode="$1"
       pushd "$HOME/.config/alacritty"
 
-      toml set "${themeFile}" "general.import[0]" "${pkgs.alacritty-theme}/github_$mode.toml" | sponge "${themeFile}"
+      toml set "${themeFile}" "general.import[0]" "${pkgs.alacritty-theme}/share/alacritty-theme/github_$mode.toml" | sponge "${themeFile}"
 
       popd
     '';
