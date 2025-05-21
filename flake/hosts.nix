@@ -97,7 +97,7 @@ let
           networking.network-manager
           networking.tools
           networking.mobile-nixos-usb
-          programs.tmux
+          programs.terminal-multiplexing
           programs.tools
           programs.nix-index
           programs.solaar
@@ -139,7 +139,7 @@ let
           services.auto-upgrade
           services.bpftune
           services.iperf3
-          programs.tmux
+          programs.terminal-multiplexing
           networking.bbr
         ]);
       overseaServer = suites.server ++ (with profiles; [ services.bind ]);
@@ -213,6 +213,7 @@ let
         shells
         ok
         vscode-server
+        terminal-multiplexing
       ];
       music = [
         profiles.music

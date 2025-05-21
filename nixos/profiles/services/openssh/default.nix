@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -95,8 +94,4 @@ in
   };
 
   environment.global-persistence.user.directories = [ ".ssh" ];
-
-  environment.systemPackages = with pkgs; [
-    wezterm # for wezterm remote connection
-  ];
 }
