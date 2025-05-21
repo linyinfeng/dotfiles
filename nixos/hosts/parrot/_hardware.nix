@@ -64,27 +64,12 @@ lib.mkMerge [
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "eDP-1";
-        labMonitor = "Lenovo Group Limited P27h-20 U5HCT52K";
-        dormMonitor = "A/Vaux Electronics AVT GC551G2 Unknown"; # capture card
       in
       [
         {
           output = {
             criteria = embedded;
-            scale = 2.0;
-            adaptiveSync = true;
-          };
-        }
-        {
-          output = {
-            criteria = labMonitor;
-            scale = 1.0;
-          };
-        }
-        {
-          output = {
-            criteria = dormMonitor;
-            scale = 1.25;
+            scale = 1.75;
           };
         }
         {
@@ -92,47 +77,6 @@ lib.mkMerge [
             name = "undocked";
             outputs = [
               { criteria = embedded; }
-            ];
-          };
-        }
-        {
-          profile = {
-            name = "docked-lab";
-            outputs = [
-              {
-                criteria = labMonitor;
-                position = "0,0";
-              }
-              {
-                criteria = embedded;
-                position = "2560,580";
-              }
-            ];
-          };
-        }
-        {
-          profile = {
-            name = "docked-lab-single";
-            outputs = [
-              {
-                criteria = labMonitor;
-                position = "0,0";
-              }
-            ];
-          };
-        }
-        {
-          profile = {
-            name = "docked-dorm";
-            outputs = [
-              {
-                criteria = embedded;
-                position = "0,192";
-              }
-              {
-                criteria = dormMonitor;
-                position = "1536,0";
-              }
             ];
           };
         }
