@@ -207,13 +207,28 @@
     },
     "fsn0": {
       "b2_backup_key_id": "00462cd88e29986000000001b",
-      "dn42_addresses_v4": ["172.23.224.98"],
-      "dn42_addresses_v6": ["fd72:db83:badd:2::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:2::/64"],
-      "endpoints": ["128.140.81.159", "2a01:4f8:c012:4c96::1"],
-      "endpoints_v4": ["128.140.81.159"],
-      "endpoints_v6": ["2a01:4f8:c012:4c96::1"],
-      "host_indices": [2],
+      "dn42_addresses_v4": [
+        "172.23.224.98"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:2::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:2::/64"
+      ],
+      "endpoints": [
+        "128.140.81.159",
+        "2a01:4f8:c012:4c96::1"
+      ],
+      "endpoints_v4": [
+        "128.140.81.159"
+      ],
+      "endpoints_v6": [
+        "2a01:4f8:c012:4c96::1"
+      ],
+      "host_indices": [
+        2
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6jCCAXCgAwIBAgIQc4p4XsnTuc624KDO5+Di5zAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNTA1MjAwODAw\nMjVaFw0yNTA3MjAwNDAwMjVaMCoxEDAOBgNVBAoTB1lpbmZlbmcxFjAUBgNVBAMT\nDWZzbjAubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAT7diRbSn26IHw7\nmZIg3Iw0zPyWAdfA3AVqz2+Ouikb5YWSe03XUQF4L1l2P7wTRHavUyUTO3KbCPMR\np7P4X5CKF2BY05xPdL3SLw5LZVku4+SDfXzFdFHOrSmtfkZHcjSjYDBeMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwGAYDVR0RBBEwD4INZnNuMC5saTdnLmNvbTAKBggqhkjO\nPQQDAwNoADBlAjBgW277yOwmpvLWt+7HS4TXpqJ4poGLhB/4tMgczXE5ozRg2qZ7\nXlU+rv/fQUzjRjkCMQD05GTw1dl5lI7EqNS3jYRKlNlEtMUvE3I31QBUpP4FskxX\nEDrAucCRlYRWZVdGesk=\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-fsn0",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOQoe03BSIwEaqQwbDvMXhOsSs6Lltr4VxjyMb9/BfbA",
@@ -225,13 +240,28 @@
     },
     "hkg0": {
       "b2_backup_key_id": "00462cd88e299860000000022",
-      "dn42_addresses_v4": ["172.23.224.102"],
-      "dn42_addresses_v6": ["fd72:db83:badd:6::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:6::/64"],
-      "endpoints": ["154.9.247.62", "2404:8c80:85:1011:1:1:42cb:3d39"],
-      "endpoints_v4": ["154.9.247.62"],
-      "endpoints_v6": ["2404:8c80:85:1011:1:1:42cb:3d39"],
-      "host_indices": [6],
+      "dn42_addresses_v4": [
+        "172.23.224.102"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:6::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:6::/64"
+      ],
+      "endpoints": [
+        "154.9.247.62",
+        "2404:8c80:85:1011:1:1:42cb:3d39"
+      ],
+      "endpoints_v4": [
+        "154.9.247.62"
+      ],
+      "endpoints_v6": [
+        "2404:8c80:85:1011:1:1:42cb:3d39"
+      ],
+      "host_indices": [
+        6
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6zCCAXGgAwIBAgIRAJ0JwixHKNX1DxPvlUN9OHEwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwNTIwMDgw\nMDI1WhcNMjUwNzIwMDQwMDI1WjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1oa2cwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEfOibOW9CT7D2\n//vnqB9C+MwLJ5QYiFzXC6nKUcKp16eNHN4w+MQUUKhOw8gNKU/K8GfkJ6Am5whM\nOAJmYN5RtEOu+VUgnB8jOxt+sdEeT2Rsn+3IH1XbVDZGD4u+dXwYo2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDWhrZzAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDaAAwZQIxAIttOsay9IcqZTl/cYfAcQXAgGDaL1jrv50xKKi7MsXtDIn0\nGPfPWV4pTjYQCStf8QIwIabep42eZiTmUQbkVYNkOLuLOnmmW246wX2AeCYSIxw+\nxCleoHoVE+Xk+s28qIg9\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-hkg0",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJulgISO1TDg8h60Thrbni9x8uVvwZx1l/qcH1PxvsaK",
@@ -243,13 +273,28 @@
     },
     "lax0": {
       "b2_backup_key_id": "00462cd88e299860000000024",
-      "dn42_addresses_v4": ["172.23.224.100"],
-      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
-      "endpoints": ["142.171.74.114", "2607:f130:0:ea:ff:ff:b014:ada7"],
-      "endpoints_v4": ["142.171.74.114"],
-      "endpoints_v6": ["2607:f130:0:ea:ff:ff:b014:ada7"],
-      "host_indices": [4],
+      "dn42_addresses_v4": [
+        "172.23.224.100"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:4::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:4::/64"
+      ],
+      "endpoints": [
+        "142.171.74.114",
+        "2607:f130:0:ea:ff:ff:b014:ada7"
+      ],
+      "endpoints_v4": [
+        "142.171.74.114"
+      ],
+      "endpoints_v6": [
+        "2607:f130:0:ea:ff:ff:b014:ada7"
+      ],
+      "host_indices": [
+        4
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6jCCAXCgAwIBAgIQCl5aBbAsCxTNzCRFjMCqYjAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNTA1MjAwODAw\nMjVaFw0yNTA3MjAwNDAwMjVaMCoxEDAOBgNVBAoTB1lpbmZlbmcxFjAUBgNVBAMT\nDWxheDAubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR1gAbmQ1B5Xick\n/lcKCjG8YjGMprtX5DtOWNmunXiZXDyAoW7CoYdJbFqeNerU8zi/2wPLvnwsJgpv\nvOKK8pVn4t8q23nURqYm6Qk5uSpfY2mFaBjvkkg04U8GWKCTxOujYDBeMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwGAYDVR0RBBEwD4INbGF4MC5saTdnLmNvbTAKBggqhkjO\nPQQDAwNoADBlAjADAq/szeTB8pf5pwCW3ghWQfk9b6NrRYzMZqKVpTokU8Bmoe2e\n3HKAOx2WTI4mKJsCMQDVW+5WX9bkmslMDqVzJ1xD12fhlwc7cVeJE/TM+sQGMJ5M\nw6TcFrgBMqdFdK+4Y54=\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-lax0",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEXGChfhFA6WsIgWmTAENRQ/M/LqzvZVXmu+6tUA4vB",
@@ -261,13 +306,25 @@
     },
     "mtl0": {
       "b2_backup_key_id": "00462cd88e29986000000001d",
-      "dn42_addresses_v4": ["172.23.224.99"],
-      "dn42_addresses_v6": ["fd72:db83:badd:3::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:3::/64"],
-      "endpoints": ["207.90.192.101"],
-      "endpoints_v4": ["207.90.192.101"],
+      "dn42_addresses_v4": [
+        "172.23.224.99"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:3::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:3::/64"
+      ],
+      "endpoints": [
+        "207.90.192.101"
+      ],
+      "endpoints_v4": [
+        "207.90.192.101"
+      ],
       "endpoints_v6": [],
-      "host_indices": [3],
+      "host_indices": [
+        3
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6TCCAXCgAwIBAgIQD/cmDIVEpioDJlNf11fmgzAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNTA1MjAwODAw\nMjVaFw0yNTA3MjAwNDAwMjVaMCoxEDAOBgNVBAoTB1lpbmZlbmcxFjAUBgNVBAMT\nDW10bDAubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAASEqI1s/ZRztnnd\nAp8/dMdZsfSl33oVkabrXaJPxugRPOnSxy3kaUVA81/8EANFfNZKj3qFMZ5jHHHt\ngEgaWRbRKtiQ97sHYRcoYTRFAwCgyMfLEpTa9wkdeNKG3mXiNbmjYDBeMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwGAYDVR0RBBEwD4INbXRsMC5saTdnLmNvbTAKBggqhkjO\nPQQDAwNnADBkAjBRdwqkKDkiZPbbO8DraTAViOWwefUsqOE4qzxhqhnZ3x4zFANV\ne9Il2qcJzZZV6CsCMAS0S3bQ3Ey+J6G4drVED0TpxZloWudR7OQEcOLoAzcOybg1\nQEoZblTmxrLW6LkeUg==\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-mtl0",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEf9zb7Hv2E56Vs/3hyNvgffpq2SAidNRZYaSqZQkrCj",
@@ -279,13 +336,21 @@
     },
     "nuc": {
       "b2_backup_key_id": "00462cd88e29986000000000a",
-      "dn42_addresses_v4": ["172.23.224.103"],
-      "dn42_addresses_v6": ["fd72:db83:badd:7::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:7::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.103"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:7::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:7::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
-      "host_indices": [7],
+      "host_indices": [
+        7
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6TCCAW+gAwIBAgIRAPWKjgz5czip5ILBVayIKwIwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwNTIwMDgw\nMDI1WhcNMjUwNzIwMDQwMDI1WjApMRAwDgYDVQQKEwdZaW5mZW5nMRUwEwYDVQQD\nEwxudWMubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAAR81kvv9tH0GoN3\n3y8C3QmgrN3gOib/5Db7XpTmnPJPqu/KjQ4IDvDFqIgBti1ef4eZ+k7NrEUD7/dJ\nyqBxPmLn6XH48ZbWn0Fpr1kqIkCkPi00Y00VkuzGRj8LfjRPb7qjXzBdMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwFwYDVR0RBBAwDoIMbnVjLmxpN2cuY29tMAoGCCqGSM49\nBAMDA2gAMGUCMQDSy90rNYqzCFkT0xRKlszy7QErfctr9CTA+uvv1qDZZnvves+j\n9YwUvKk80ZaNN2YCMETT9O8DFFRCcFeq5S5Wzpz40+hBHkuEt4O+nDtjs4/kTBcQ\nJxwD0E/V5IlDNxiaLw==\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-nuc",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5zrNBGQWap7CS/q2MpCezdJoMaLO0PaZgn9L+6CkeF",
@@ -297,13 +362,21 @@
     },
     "owl": {
       "b2_backup_key_id": "00462cd88e299860000000028",
-      "dn42_addresses_v4": ["172.23.224.117"],
-      "dn42_addresses_v6": ["fd72:db83:badd:15::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:15::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.117"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:15::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:15::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
-      "host_indices": [21],
+      "host_indices": [
+        21
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6DCCAW+gAwIBAgIRAM/ZGlaNrE70/B2VBAudmncwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwNTIwMDgw\nMDI1WhcNMjUwNzIwMDQwMDI1WjApMRAwDgYDVQQKEwdZaW5mZW5nMRUwEwYDVQQD\nEwxvd2wubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATOEr/xo3e7hNuF\n/Rp7BDP58bjpyseVKmgfxcQrVzh9fQl0kFN3RKwIGAmOdUaisn3Y/SkEAXGDGaKs\nm4Kdi+hlkEtqMwJo0eBaFI0FJXX0WUw4HL84pQsBTRB8IMGivjKjXzBdMBMGA1Ud\nJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pFDP6q\noO7y80SCJNbwPAzKohwwFwYDVR0RBBAwDoIMb3dsLmxpN2cuY29tMAoGCCqGSM49\nBAMDA2cAMGQCMF+uEu8sUq5NhMIa0iP6d2ZKyK8V0LDh+/NiFEgD81j84XFLHhHP\nkEUfVfBYnwzQcwIwSJIlz2L834quHbF+jgt6NdCNMqKBCc4B1vtjfVNr9xRnW8hm\nZVXWZo3Gs/ept3O5\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-owl",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeUND6xkM+5ga9y+Xq4/WMUE25TAurnhzhX4rZkioa9",
@@ -315,13 +388,21 @@
     },
     "parrot": {
       "b2_backup_key_id": "00462cd88e299860000000029",
-      "dn42_addresses_v4": ["172.23.224.119"],
-      "dn42_addresses_v6": ["fd72:db83:badd:17::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:17::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.119"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:17::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:17::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
-      "host_indices": [23],
+      "host_indices": [
+        23
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB7jCCAXSgAwIBAgIQZM5Ahk4yolfU7Ju9u//gWjAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNTA0MjYwNzA0\nMjRaFw0yNTA2MjYwMzA0MjRaMCwxEDAOBgNVBAoTB1lpbmZlbmcxGDAWBgNVBAMT\nD3BhcnJvdC5saTdnLmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABD6WOtBE4IrP\nLnzYEoR52svF3CQWk8hZQWCPQtMhDysbT2YQ0KRacqJRs7tuezzePFIkte1fP+1A\nEupepmWqdvnZPkvonRdKLVZFbQFzgAERQvOeqeriBuqQIg7QcLHLhaNiMGAwEwYD\nVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQXukUM\n/qqg7vLzRIIk1vA8DMqiHDAaBgNVHREEEzARgg9wYXJyb3QubGk3Zy5jb20wCgYI\nKoZIzj0EAwMDaAAwZQIwL8ZtkVHUrKbNKnn9Zz8It5Bhu4uhzFybJgreeqYfzWFR\ntCX8WEzQY+8fvg7ktXmmAjEAzNDuB9Cdbw8p1bi8xoxjbPjKCnw2dHiT8OENV+pP\nuMWsXcRxYdC0OTQwNdOvKwQV\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-parrot",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJUqjz/yaZwQvGVbSvPqGGqqykLvy7nuEnDOoeRqpjve",
@@ -333,13 +414,21 @@
     },
     "xps8930": {
       "b2_backup_key_id": "00462cd88e29986000000000c",
-      "dn42_addresses_v4": ["172.23.224.118"],
-      "dn42_addresses_v6": ["fd72:db83:badd:16::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:16::/64"],
+      "dn42_addresses_v4": [
+        "172.23.224.118"
+      ],
+      "dn42_addresses_v6": [
+        "fd72:db83:badd:16::1"
+      ],
+      "dn42_v6_prefixes": [
+        "fd72:db83:badd:16::/64"
+      ],
       "endpoints": [],
       "endpoints_v4": [],
       "endpoints_v6": [],
-      "host_indices": [22],
+      "host_indices": [
+        22
+      ],
       "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB8TCCAXegAwIBAgIRAPtYiObMVH+DWy/WoZqHMCgwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwNTIwMDgw\nMDI1WhcNMjUwNzIwMDQwMDI1WjAtMRAwDgYDVQQKEwdZaW5mZW5nMRkwFwYDVQQD\nExB4cHM4OTMwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEx8fkG2wv\nS0MAB5vaMfCxVewB2/jU9eMilP6PQSX/NnvPR1yWb2RNazchv2H8yFoHQRj/08EG\nxHU2bRMBe8HMMY3aHBZBePAp0FuBWUhLi0p/NMjgafn3niFU8vdFO8XMo2MwYTAT\nBgNVHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6\nRQz+qqDu8vNEgiTW8DwMyqIcMBsGA1UdEQQUMBKCEHhwczg5MzAubGk3Zy5jb20w\nCgYIKoZIzj0EAwMDaAAwZQIxAMAWT8l+2IqNBx9nTGiKAYAqGVqeeOC/5rymTiev\n/A3WWI2+ktUoRxXlucTuuBYm8AIwIAPmgy5UV2Mxg8DVtqcXdWvNMO5lMArjKQnI\nZ36SXmIQU9brOwpWaQwpW6euZqvT\n-----END CERTIFICATE-----\n",
       "minio_backup_key_id": "backup-xps8930",
       "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINOfML7D2wdTUiD/opksT48IYJGtAF/AEjNeBiKesb4p",
