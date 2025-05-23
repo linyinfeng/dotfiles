@@ -69,7 +69,7 @@ lib.mkMerge [
         {
           output = {
             criteria = embedded;
-            scale = 1.75;
+            scale = 1.6;
           };
         }
         {
