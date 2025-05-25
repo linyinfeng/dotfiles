@@ -33,8 +33,7 @@
             shfmt.enable = true;
             shellcheck.enable = true;
             terraform.enable = true;
-            # TODO broken
-            # prettier.enable = true;
+            prettier.enable = true;
             stylua.enable = true;
             keep-sorted.enable = true;
           };
