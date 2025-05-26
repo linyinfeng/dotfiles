@@ -43,7 +43,8 @@ in
           with pkgs;
           [
             iosevka-yinfeng
-            iosevka-yinfeng-nf
+            # TODO broken
+            # iosevka-yinfeng-nf
           ]
         else
           [ pkgs.iosevka ]
