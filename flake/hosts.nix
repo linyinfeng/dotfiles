@@ -205,6 +205,7 @@ let
         development
         direnv
         emacs
+        ssh
         pssh
         tools
         tex
