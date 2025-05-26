@@ -365,6 +365,7 @@ lib.mkMerge [
               "Mod+Shift+R".action.reset-window-height = [ ];
               "Mod+M".action.maximize-column = [ ];
               "Mod+Shift+M".action.fullscreen-window = [ ];
+              "Mod+Ctrl+M".action.toggle-windowed-fullscreen = [ ];
               # center column
               "Mod+C".action.center-column = [ ];
               # manual size
