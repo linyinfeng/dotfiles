@@ -33,10 +33,11 @@ in
         jetbrains-mono
         font-awesome
         sarasa-gothic
-        # powerline-fonts # conflict with hack
 
         corefonts
         vistafonts
+
+        nerd-fonts.iosevka-term-slab
       ]
       ++ (
         if cfg.customFonts.enable then
@@ -67,7 +68,9 @@ in
       ];
       monospace =
         lib.optionals cfg.customFonts.enable [
-          "IosevkaYinfeng Nerd Font"
+          # TODO broken
+          # "IosevkaYinfeng Nerd Font"
+          "IosevkaTermSlab Nerd Font"
         ]
         ++ [ "Sarasa Mono Slab SC" ];
       emoji = [ "Noto Color Emoji" ];
