@@ -157,6 +157,14 @@ lib.mkMerge [
             default-column-width = { };
           }
           {
+            matches = [
+              {
+                title = "^Picture in picture$";
+              }
+            ];
+            open-floating = true;
+          }
+          {
             geometry-corner-radius =
               let
                 radius = 8.0;
