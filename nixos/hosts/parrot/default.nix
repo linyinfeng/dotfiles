@@ -22,9 +22,7 @@ in
       services.acme
       services.fprintd
       hardware.backlight
-      # TODO wait for https://github.com/NVIDIA/open-gpu-kernel-modules/issues/840
-      # TODO wait for https://github.com/NixOS/nixpkgs/issues/411829
-      # hardware.nvidia-egpu
+      hardware.nvidia-egpu
       users.yinfeng
     ])
     ++ [
