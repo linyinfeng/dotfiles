@@ -43,7 +43,7 @@ in
 
       hardware.enableRedistributableFirmware = true;
 
-      services.xserver.desktopManager.gnome.enable = true;
+      services.desktopManager.gnome.enable = true;
       services.power-profiles-daemon.enable = false;
       services.tlp = {
         enable = true;

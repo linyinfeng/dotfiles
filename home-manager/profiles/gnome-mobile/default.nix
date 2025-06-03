@@ -18,7 +18,7 @@ let
     type
     ;
 in
-lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
+lib.mkIf osConfig.services.desktopManager.gnome.enable {
   home.packages = extensionPkgs;
 
   dconf.settings = {

@@ -34,7 +34,7 @@ lib.mkMerge [
       "sd_mod"
     ];
 
-    systemd.services = lib.mkIf config.services.xserver.displayManager.gdm.enable {
+    systemd.services = lib.mkIf config.services.displayManager.gdm.enable {
       gdm-prepare = {
         script = ''
           mkdir -p .config

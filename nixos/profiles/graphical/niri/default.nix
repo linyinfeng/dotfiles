@@ -28,7 +28,7 @@ lib.mkMerge [
       session required pam_unix.so
     '';
   }
-  (lib.mkIf (!config.services.xserver.desktopManager.gnome.enable) {
+  (lib.mkIf (!config.services.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;
     environment.global-persistence.user.directories = [ ".local/share/keyrings" ];
   })

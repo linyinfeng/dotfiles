@@ -37,7 +37,7 @@ lib.mkMerge [
       "kvm-intel"
     ];
 
-    systemd.services = lib.mkIf config.services.xserver.displayManager.gdm.enable {
+    systemd.services = lib.mkIf config.services.displayManager.gdm.enable {
       gdm-prepare = {
         script = ''
           mkdir -p .config

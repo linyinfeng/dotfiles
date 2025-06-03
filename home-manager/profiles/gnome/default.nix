@@ -28,7 +28,7 @@ let
     ;
   longStatusBar = lib.elem "workstation" osConfig.system.types;
 in
-lib.mkIf osConfig.services.xserver.desktopManager.gnome.enable {
+lib.mkIf osConfig.services.desktopManager.gnome.enable {
   home.packages = extensionPkgs;
 
   programs.chromium.extensions = [

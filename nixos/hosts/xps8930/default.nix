@@ -53,7 +53,7 @@ in
   hardware.enableRedistributableFirmware = true;
   services.fwupd.enable = true;
 
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   virtualisation.kvmgt = {
     enable = true;

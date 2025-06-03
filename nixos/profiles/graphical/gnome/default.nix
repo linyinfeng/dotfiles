@@ -7,14 +7,11 @@
 let
   ini = pkgs.formats.ini { };
 in
-lib.mkIf config.services.xserver.desktopManager.gnome.enable {
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-  };
+lib.mkIf config.services.desktopManager.gnome.enable {
+  services.displayManager.gdm.enable = true;
 
   # prevent gdm auto suspend before login
-  services.xserver.displayManager.gdm.autoSuspend = false;
+  services.displayManager.gdm.autoSuspend = false;
 
   environment.systemPackages = with pkgs; [
     kooha
