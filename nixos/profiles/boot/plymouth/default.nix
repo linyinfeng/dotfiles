@@ -3,7 +3,7 @@
   boot.plymouth = {
     enable = true;
     theme = "bgrt"; # boot graphics resource table
-    font = "${pkgs.iosevka-yinfeng}/share/fonts/truetype/Iosevkayinfeng-Regular.ttf";
+    font = "${pkgs.nerd-fonts.iosevka-term-slab}/share/fonts/truetype/NerdFonts/IosevkaTermSlab/IosevkaTermSlabNerdFontMono-Regular.ttf";
   };
   boot.kernelParams = [ "quiet" ];
 }

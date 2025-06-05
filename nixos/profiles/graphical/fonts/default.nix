@@ -1,55 +1,33 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
-let
-  cfg = config.fonts;
-in
 {
-  options.fonts.customFonts = {
-    enable = lib.mkEnableOption "custom fonts";
-  };
   config = {
-    fonts.customFonts.enable = lib.mkDefault (lib.elem "workstation" config.system.types);
+    fonts.packages = with pkgs; [
+      noto-fonts-emoji
 
-    fonts.packages =
-      with pkgs;
-      [
-        noto-fonts-emoji
+      source-serif
+      source-han-serif
+      source-sans
+      source-han-sans
+      source-code-pro
 
-        source-serif
-        source-han-serif
-        source-sans
-        source-han-sans
-        source-code-pro
+      open-sans
+      liberation_ttf
+      wqy_zenhei
+      wqy_microhei
 
-        open-sans
-        liberation_ttf
-        wqy_zenhei
-        wqy_microhei
+      jetbrains-mono
+      font-awesome
+      sarasa-gothic
 
-        jetbrains-mono
-        font-awesome
-        sarasa-gothic
+      corefonts
+      vistafonts
 
-        corefonts
-        vistafonts
-
-        nerd-fonts.iosevka-term-slab
-      ]
-      ++ (
-        if cfg.customFonts.enable then
-          with pkgs;
-          [
-            iosevka-yinfeng
-            # TODO broken
-            # iosevka-yinfeng-nf
-          ]
-        else
-          [ pkgs.iosevka ]
-      );
+      nerd-fonts.iosevka-term-slab
+    ];
 
     fonts.fontconfig.defaultFonts = {
       sansSerif = [
@@ -66,13 +44,10 @@ in
         "Source Han Serif HW"
         "Source Han Serif K"
       ];
-      monospace =
-        lib.optionals cfg.customFonts.enable [
-          # TODO broken
-          # "IosevkaYinfeng Nerd Font"
-          "IosevkaTermSlab Nerd Font"
-        ]
-        ++ [ "Sarasa Mono Slab SC" ];
+      monospace = [
+        "IosevkaTermSlab Nerd Font Mono"
+        "Sarasa Mono Slab SC"
+      ];
       emoji = [ "Noto Color Emoji" ];
     };
   };
