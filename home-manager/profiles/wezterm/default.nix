@@ -48,9 +48,6 @@ in
       config.color_scheme = scheme_for_appearance(get_appearance())
       config.font = wezterm.font('monospace')
 
-      -- TODO wait for https://github.com/wez/wezterm/issues/5990
-      -- config.front_end = 'WebGpu'
-
       config.unix_domains = {
         {
           name = 'unix',

@@ -119,7 +119,6 @@ let
             --add-flags --password-store=gnome-libsecret
         '';
       };
-      # TODO currently not working
       qq = final.symlinkJoin {
         inherit (prev.qq) pname version meta;
         paths = [ prev.qq ];

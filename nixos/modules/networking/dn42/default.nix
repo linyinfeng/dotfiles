@@ -357,7 +357,7 @@ in
     ./_firewall.nix
   ];
   config = lib.mkIf cfg.enable {
-    # basic bird2 configurations
+    # basic bird configurations
     services.bird = {
       enable = true;
       config = lib.mkOrder 50 ''
