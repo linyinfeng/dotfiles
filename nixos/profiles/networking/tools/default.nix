@@ -4,6 +4,7 @@
     bandwhich.enable = true;
     traceroute.enable = true;
     mtr.enable = true;
+    trippy.enable = true;
     wireshark.enable = true;
   };
   environment.systemPackages = with pkgs; [
