@@ -16,6 +16,7 @@ lib.mkMerge [
         foreign-env
         done
         autopair-fish
+        async-prompt
       ])
       ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
         git
