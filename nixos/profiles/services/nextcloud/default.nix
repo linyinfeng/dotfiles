@@ -149,17 +149,6 @@ in
   services.restic.backups.minio.paths = [ cfg.home ];
 
   systemd.services.nextcloud-cron.path = with pkgs; [ perl ];
-  systemd.services.nextcloud-notify_push =
-    let
-      nextcloudUrl = "https://nextcloud.li7g.com:${toString config.ports.https-alternative}";
-    in
-    {
-      # add missing port
-      postStart = lib.mkForce "${cfg.occ}/bin/nextcloud-occ notify_push:setup ${nextcloudUrl}/push";
-      environment = {
-        NEXTCLOUD_URL = lib.mkForce nextcloudUrl;
-      };
-    };
   systemd.services.phpfpm-nextcloud.serviceConfig = {
     # allow access to VA-API device
     PrivateDevices = lib.mkForce false;
