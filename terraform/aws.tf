@@ -9,7 +9,7 @@ resource "aws_instance" "main" {
   count = 0 # disabled
 
   instance_type = "t3.micro"
-  ami           = data.aws_ami.nixos.id
+  ami           = data.aws_ami.nixos_x86_64.id
 
   subnet_id = aws_subnet.main_1.id
 
@@ -37,15 +37,21 @@ resource "aws_eip" "main" {
   domain   = "vpc"
 }
 
-data "aws_ami" "nixos" {
+locals {
+  nixos_state_version = jsondecode(file("${path.module}/../lib/state-version.json"))
+}
+
+data "aws_ami" "nixos_x86_64" {
+  owners      = ["427812963091"]
   most_recent = true
-  name_regex  = "^NixOS-.*"
-  # official account of nixos
-  owners = ["080433136561"]
 
   filter {
+    name   = "name"
+    values = ["nixos/${local.nixos_state_version}*"]
+  }
+  filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = ["x86_64"] # or "x86_64"
   }
 }
 
