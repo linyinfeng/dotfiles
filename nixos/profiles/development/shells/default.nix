@@ -13,14 +13,18 @@ lib.mkMerge [
     programs.fish.enable = true;
     environment.systemPackages =
       (with pkgs.fishPlugins; [
-        foreign-env
-        done
-        autopair-fish
+        # keep-sorted start
         async-prompt
+        autopair-fish
+        done
+        fish-you-should-use
+        foreign-env
+        forgit
+        plugin-git
+        puffer
+        # keep-sorted end
       ])
       ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
-        git
-        bang-bang
         replay
       ])
       ++ (with pkgs; [
