@@ -45,7 +45,7 @@
         "Source Han Serif K"
       ];
       monospace = [
-        "IosevkaTermSlab Nerd Font Mono"
+        "IosevkaTermSlab Nerd Font"
         "Sarasa Mono Slab SC"
       ];
       emoji = [ "Noto Color Emoji" ];
