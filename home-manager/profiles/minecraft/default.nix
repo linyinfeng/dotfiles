@@ -9,7 +9,7 @@ in
   home.packages = with pkgs; [
     # lunar-client
     # minecraft
-    prismlauncher
+    # prismlauncher
     mc-li7g-com
   ];
 

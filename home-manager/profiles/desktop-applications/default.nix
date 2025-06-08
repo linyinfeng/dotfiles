@@ -17,7 +17,7 @@ in
       clapper
       element-desktop
       gimp
-      gnuradio
+      # gnuradio # unused
       gparted
       inkscape
       libreoffice-fresh
