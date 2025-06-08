@@ -14,6 +14,7 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
+        system.switch.enableNg = true;
         system.etc.overlay.enable = lib.mkDefault true;
         environment.etc."NIXOS".text = "";
         services.userborn = {
