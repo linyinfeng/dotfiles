@@ -71,6 +71,7 @@ let
         programs.qrcp
         services.gnupg
         services.nixseparatedebuginfod
+        services.envfs
       ];
       multimediaDev = suites.multimedia ++ suites.development ++ (with profiles; [ development.ides ]);
       virtualization = with profiles; [
