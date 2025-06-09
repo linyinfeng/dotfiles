@@ -114,6 +114,7 @@ let
         # wait for https://github.com/microsoft/vscode/issues/187338
         postBuild = ''
           wrapProgram "$out/bin/code" \
+            --add-flags --ozone-platform-hint=auto \
             --add-flags --enable-wayland-ime \
             --add-flags --wayland-text-input-version=3 \
             --add-flags --password-store=gnome-libsecret
