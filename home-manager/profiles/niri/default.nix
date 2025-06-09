@@ -64,36 +64,47 @@ lib.mkMerge [
   {
     programs.niri = {
       inherit (osConfig.programs.niri) package;
-      settings = {
-        input = {
-          keyboard = {
-            xkb = {
-              layout = "us";
+      settings =
+        let
+          # css named colors
+          # https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+          mainColor = "cornflowerblue";
+          inactiveColor = "gray";
+          shadowColor = "#00000050";
+          shadow = {
+            enable = true;
+            color = shadowColor;
+            inactive-color = shadowColor;
+            draw-behind-window = true;
+            softness = 8;
+            offset = {
+              x = 0;
+              y = 0;
             };
           };
-          touchpad = {
-            tap = true;
-            natural-scroll = true;
-            dwt = true; # disable touchpad while typing
-            dwtp = true; # disable touchpad while the trackpoint is in use
+        in
+        {
+          input = {
+            keyboard = {
+              xkb = {
+                layout = "us";
+              };
+            };
+            touchpad = {
+              tap = true;
+              natural-scroll = true;
+              dwt = true; # disable touchpad while typing
+              dwtp = true; # disable touchpad while the trackpoint is in use
+            };
+            mouse = {
+            };
+            warp-mouse-to-focus = true;
+            focus-follows-mouse = {
+              enable = true;
+              max-scroll-amount = "0%";
+            };
           };
-          mouse = {
-          };
-          warp-mouse-to-focus = true;
-          focus-follows-mouse = {
-            enable = true;
-            max-scroll-amount = "0%";
-          };
-        };
-        layout =
-          let
-            # css named colors
-            # https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
-            mainColor = "cornflowerblue";
-            inactiveColor = "gray";
-            shadowColor = "gray";
-          in
-          {
+          layout = {
             gaps = 16.0;
             center-focused-column = "never";
             preset-column-widths = [
@@ -125,286 +136,286 @@ lib.mkMerge [
               gaps-between-tabs = 0;
               length.total-proportion = 0.5;
             };
-            shadow = {
-              enable = true;
-              color = shadowColor;
-              inactive-color = shadowColor;
-              draw-behind-window = true;
-              softness = 8;
-              offset = {
-                x = 0;
-                y = 0;
-              };
-            };
+            inherit shadow;
           };
-        cursor = {
-          theme = "Adwaita";
-        };
-        spawn-at-startup = [ ];
-        prefer-no-csd = true;
-        screenshot-path = "~/Data/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-        animations = {
-          enable = true;
-          # all default
-        };
-        window-rules = [
-          {
-            matches = [
-              {
-                app-id = "^org\.wezfurlong\.wezterm$";
-              }
-            ];
-            default-column-width = { };
-          }
-          {
-            matches = [
-              {
-                title = "^Picture in picture$";
-              }
-            ];
-            open-floating = true;
-          }
-          {
-            geometry-corner-radius =
-              let
-                radius = 8.0;
-              in
-              {
-                bottom-left = radius;
-                bottom-right = radius;
-                top-left = radius;
-                top-right = radius;
-              };
-            clip-to-geometry = true;
-          }
-        ];
-        binds =
-          let
-            modMove = "Shift";
-            modMonitor = "Ctrl";
-            keyUp = "P";
-            keyDown = "N";
-            keyLeft = "B";
-            keyRight = "F";
-            keyWorkspaceUp = "W";
-            keyWorkspaceDown = "S";
-            directions = {
-              left = {
-                keys = [
-                  "Left"
-                  keyLeft
-                  "WheelScrollLeft"
-                ];
-                windowTerm = "column";
-              };
-              down = {
-                keys = [
-                  "Down"
-                  keyDown
-                ];
-                windowTerm = "window";
-              };
-              up = {
-                keys = [
-                  "Up"
-                  keyUp
-                ];
-                windowTerm = "window";
-              };
-              right = {
-                keys = [
-                  "Right"
-                  keyRight
-                  "WheelScrollRight"
-                ];
-                windowTerm = "column";
-              };
-            };
-            workspaceDirections = {
-              up = {
-                keys = [
-                  "Page_Up"
-                  keyWorkspaceUp
-                  "WheelScrollUp"
-                ];
-              };
-              down = {
-                keys = [
-                  "Page_Down"
-                  keyWorkspaceDown
-                  "WheelScrollDown"
-                ];
-              };
-            };
-            workspaceIndices = lib.range 1 9;
-            isWheelKey = lib.hasPrefix "Wheel";
-            wheelCooldownMs = 100;
-
-            windowBindings = lib.mkMerge (
-              lib.concatLists (
-                lib.mapAttrsToList (
-                  direction: cfg:
-                  (lib.lists.map (
-                    key:
-                    let
-                      cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
-                    in
-                    {
-                      "Mod+${key}" = {
-                        action."focus-${cfg.windowTerm}-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                      "Mod+${modMove}+${key}" = {
-                        action."move-${cfg.windowTerm}-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                      "Mod+${modMonitor}+${key}" = {
-                        action."focus-monitor-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                      "Mod+${modMove}+${modMonitor}+${key}" = {
-                        action."move-column-to-monitor-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                    }
-                  ) cfg.keys)
-                ) directions
-              )
-            );
-            workspaceBindings = lib.mkMerge (
-              lib.concatLists (
-                lib.mapAttrsToList (
-                  direction: cfg:
-                  (lib.lists.map (
-                    key:
-                    let
-                      cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
-                    in
-                    {
-                      "Mod+${key}" = {
-                        action."focus-workspace-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                      "Mod+${modMove}+${key}" = {
-                        action."move-column-to-workspace-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                      "Mod+Ctrl+${key}" = {
-                        action."move-workspace-${direction}" = [ ];
-                        inherit cooldown-ms;
-                      };
-                    }
-                  ) cfg.keys)
-                ) workspaceDirections
-              )
-            );
-            indexedWorkspaceBindings = lib.mkMerge (
-              lib.map (index: {
-                "Mod+${toString index}" = {
-                  action.focus-workspace = [ index ];
-                };
-                "Mod+${modMove}+${toString index}" = {
-                  action.move-column-to-workspace = [ index ];
-                };
-              }) workspaceIndices
-            );
-            specialBindings = {
-              # show help
-              "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
-              # terminal, app launcher, screen locker, ...
-              "Mod+Return".action.spawn = [ "alacritty" ];
-              "Mod+D".action.spawn = [ "fuzzel" ];
-              "Mod+L".action.spawn = [
-                "loginctl"
-                "lock-session"
+          cursor = {
+            theme = "Adwaita";
+          };
+          spawn-at-startup = [ ];
+          prefer-no-csd = true;
+          screenshot-path = "~/Data/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+          animations = {
+            enable = true;
+            # all default
+          };
+          window-rules = [
+            {
+              matches = [
+                {
+                  app-id = "^org\.wezfurlong\.wezterm$";
+                }
               ];
-              "Mod+V".action.spawn = [ "cliphist-fuzzel" ];
-              # volume keys
-              "XF86AudioRaiseVolume" = {
-                allow-when-locked = true;
-                action.spawn = volumeUp;
-                # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
-              };
-              "XF86AudioLowerVolume" = {
-                allow-when-locked = true;
-                action.spawn = volumeDown;
-                # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
-              };
-              "XF86AudioMute" = {
-                allow-when-locked = true;
-                action.spawn = volumeMute;
-                # action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
-              };
-              "XF86AudioMicMute" = {
-                allow-when-locked = true;
-                action.spawn = volumeMicMute;
-              };
-              # brightness keys
-              "XF86MonBrightnessUp" = {
-                allow-when-locked = true;
-                action.spawn = lightUp;
-              };
-              "XF86MonBrightnessDown" = {
-                allow-when-locked = true;
-                action.spawn = lightDown;
-              };
-              "Caps_Lock" = {
-                allow-when-locked = true;
-                action.spawn = capsLock;
-                # TODO on release
-              };
-              # quit windnow
-              "Mod+Q".action.close-window = [ ];
-              # first and last
-              "Mod+A".action.focus-column-first = [ ];
-              "Mod+E".action.focus-column-last = [ ];
-              "Mod+${modMove}+A".action.move-column-to-first = [ ];
-              "Mod+${modMove}+E".action.move-column-to-last = [ ];
-              # previous workspace
-              "Mod+Tab".action.focus-workspace-previous = [ ];
-              # consume and expel
-              "Mod+Comma".action.consume-window-into-column = [ ];
-              "Mod+Period".action.expel-window-from-column = [ ];
-              "Mod+BracketLeft".action.consume-or-expel-window-left = [ ];
-              "Mod+BracketRight".action.consume-or-expel-window-right = [ ];
-              "Mod+T".action.toggle-column-tabbed-display = [ ];
-              # preset size
-              "Mod+R".action.switch-preset-column-width = [ ];
-              "Mod+Shift+R".action.reset-window-height = [ ];
-              "Mod+M".action.maximize-column = [ ];
-              "Mod+Shift+M".action.fullscreen-window = [ ];
-              "Mod+Ctrl+M".action.toggle-windowed-fullscreen = [ ];
-              # center column
-              "Mod+C".action.center-column = [ ];
-              # manual size
-              "Mod+Minus".action.set-column-width = [ "-10%" ];
-              "Mod+Equal".action.set-column-width = [ "+10%" ];
-              "Mod+Shift+Minus".action.set-window-height = [ "-10%" ];
-              "Mod+Shift+Equal".action.set-window-height = [ "+10%" ];
-              # screenshot
-              "Print".action.screenshot = [ ];
-              "Ctrl+Print".action.screenshot-screen = [ ];
-              "Alt+Print".action.screenshot-window = [ ];
-              # floating
-              "Mod+BackSlash".action.switch-focus-between-floating-and-tiling = [ ];
-              "Mod+Shift+BackSlash".action.toggle-window-floating = [ ];
-              # quit
-              "Mod+Ctrl+E".action.quit = [ ];
-            };
-          in
-          lib.mkMerge [
-            specialBindings
-            workspaceBindings
-            indexedWorkspaceBindings
-            windowBindings
+              default-column-width = { };
+            }
+            {
+              matches = [
+                {
+                  title = "^Picture in picture$";
+                }
+              ];
+              open-floating = true;
+            }
+            {
+              geometry-corner-radius =
+                let
+                  radius = 8.0;
+                in
+                {
+                  bottom-left = radius;
+                  bottom-right = radius;
+                  top-left = radius;
+                  top-right = radius;
+                };
+              clip-to-geometry = true;
+            }
           ];
-        environment = lib.mkMerge [
-          {
-            DISPLAY = ":1"; # xwayland-satellite
-          }
-          (lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.environment)
-        ];
-      };
+          layer-rules = [
+            {
+              matches = [
+                { namespace = "^waybar$"; }
+              ];
+              inherit shadow;
+            }
+          ];
+          binds =
+            let
+              modMove = "Shift";
+              modMonitor = "Ctrl";
+              keyUp = "P";
+              keyDown = "N";
+              keyLeft = "B";
+              keyRight = "F";
+              keyWorkspaceUp = "W";
+              keyWorkspaceDown = "S";
+              directions = {
+                left = {
+                  keys = [
+                    "Left"
+                    keyLeft
+                    "WheelScrollLeft"
+                  ];
+                  windowTerm = "column";
+                };
+                down = {
+                  keys = [
+                    "Down"
+                    keyDown
+                  ];
+                  windowTerm = "window";
+                };
+                up = {
+                  keys = [
+                    "Up"
+                    keyUp
+                  ];
+                  windowTerm = "window";
+                };
+                right = {
+                  keys = [
+                    "Right"
+                    keyRight
+                    "WheelScrollRight"
+                  ];
+                  windowTerm = "column";
+                };
+              };
+              workspaceDirections = {
+                up = {
+                  keys = [
+                    "Page_Up"
+                    keyWorkspaceUp
+                    "WheelScrollUp"
+                  ];
+                };
+                down = {
+                  keys = [
+                    "Page_Down"
+                    keyWorkspaceDown
+                    "WheelScrollDown"
+                  ];
+                };
+              };
+              workspaceIndices = lib.range 1 9;
+              isWheelKey = lib.hasPrefix "Wheel";
+              wheelCooldownMs = 100;
+
+              windowBindings = lib.mkMerge (
+                lib.concatLists (
+                  lib.mapAttrsToList (
+                    direction: cfg:
+                    (lib.lists.map (
+                      key:
+                      let
+                        cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
+                      in
+                      {
+                        "Mod+${key}" = {
+                          action."focus-${cfg.windowTerm}-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                        "Mod+${modMove}+${key}" = {
+                          action."move-${cfg.windowTerm}-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                        "Mod+${modMonitor}+${key}" = {
+                          action."focus-monitor-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                        "Mod+${modMove}+${modMonitor}+${key}" = {
+                          action."move-column-to-monitor-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                      }
+                    ) cfg.keys)
+                  ) directions
+                )
+              );
+              workspaceBindings = lib.mkMerge (
+                lib.concatLists (
+                  lib.mapAttrsToList (
+                    direction: cfg:
+                    (lib.lists.map (
+                      key:
+                      let
+                        cooldown-ms = lib.mkIf (isWheelKey key) wheelCooldownMs;
+                      in
+                      {
+                        "Mod+${key}" = {
+                          action."focus-workspace-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                        "Mod+${modMove}+${key}" = {
+                          action."move-column-to-workspace-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                        "Mod+Ctrl+${key}" = {
+                          action."move-workspace-${direction}" = [ ];
+                          inherit cooldown-ms;
+                        };
+                      }
+                    ) cfg.keys)
+                  ) workspaceDirections
+                )
+              );
+              indexedWorkspaceBindings = lib.mkMerge (
+                lib.map (index: {
+                  "Mod+${toString index}" = {
+                    action.focus-workspace = [ index ];
+                  };
+                  "Mod+${modMove}+${toString index}" = {
+                    action.move-column-to-workspace = [ index ];
+                  };
+                }) workspaceIndices
+              );
+              specialBindings = {
+                # show help
+                "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
+                # terminal, app launcher, screen locker, ...
+                "Mod+Return".action.spawn = [ "alacritty" ];
+                "Mod+D".action.spawn = [ "fuzzel" ];
+                "Mod+L".action.spawn = [
+                  "loginctl"
+                  "lock-session"
+                ];
+                "Mod+V".action.spawn = [ "cliphist-fuzzel" ];
+                # volume keys
+                "XF86AudioRaiseVolume" = {
+                  allow-when-locked = true;
+                  action.spawn = volumeUp;
+                  # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+";
+                };
+                "XF86AudioLowerVolume" = {
+                  allow-when-locked = true;
+                  action.spawn = volumeDown;
+                  # action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-";
+                };
+                "XF86AudioMute" = {
+                  allow-when-locked = true;
+                  action.spawn = volumeMute;
+                  # action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+                };
+                "XF86AudioMicMute" = {
+                  allow-when-locked = true;
+                  action.spawn = volumeMicMute;
+                };
+                # brightness keys
+                "XF86MonBrightnessUp" = {
+                  allow-when-locked = true;
+                  action.spawn = lightUp;
+                };
+                "XF86MonBrightnessDown" = {
+                  allow-when-locked = true;
+                  action.spawn = lightDown;
+                };
+                "Caps_Lock" = {
+                  allow-when-locked = true;
+                  action.spawn = capsLock;
+                  # TODO on release
+                };
+                # quit windnow
+                "Mod+Q".action.close-window = [ ];
+                # first and last
+                "Mod+A".action.focus-column-first = [ ];
+                "Mod+E".action.focus-column-last = [ ];
+                "Mod+${modMove}+A".action.move-column-to-first = [ ];
+                "Mod+${modMove}+E".action.move-column-to-last = [ ];
+                # previous workspace
+                "Mod+Tab".action.focus-workspace-previous = [ ];
+                # consume and expel
+                "Mod+Comma".action.consume-window-into-column = [ ];
+                "Mod+Period".action.expel-window-from-column = [ ];
+                "Mod+BracketLeft".action.consume-or-expel-window-left = [ ];
+                "Mod+BracketRight".action.consume-or-expel-window-right = [ ];
+                "Mod+T".action.toggle-column-tabbed-display = [ ];
+                # preset size
+                "Mod+R".action.switch-preset-column-width = [ ];
+                "Mod+Shift+R".action.reset-window-height = [ ];
+                "Mod+M".action.maximize-column = [ ];
+                "Mod+Shift+M".action.fullscreen-window = [ ];
+                "Mod+Ctrl+M".action.toggle-windowed-fullscreen = [ ];
+                # center column
+                "Mod+C".action.center-column = [ ];
+                # manual size
+                "Mod+Minus".action.set-column-width = [ "-10%" ];
+                "Mod+Equal".action.set-column-width = [ "+10%" ];
+                "Mod+Shift+Minus".action.set-window-height = [ "-10%" ];
+                "Mod+Shift+Equal".action.set-window-height = [ "+10%" ];
+                # screenshot
+                "Print".action.screenshot = [ ];
+                "Ctrl+Print".action.screenshot-screen = [ ];
+                "Alt+Print".action.screenshot-window = [ ];
+                # floating
+                "Mod+BackSlash".action.switch-focus-between-floating-and-tiling = [ ];
+                "Mod+Shift+BackSlash".action.toggle-window-floating = [ ];
+                # quit
+                "Mod+Ctrl+E".action.quit = [ ];
+              };
+            in
+            lib.mkMerge [
+              specialBindings
+              workspaceBindings
+              indexedWorkspaceBindings
+              windowBindings
+            ];
+          environment = lib.mkMerge [
+            {
+              DISPLAY = ":1"; # xwayland-satellite
+            }
+            (lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.environment)
+          ];
+          # TODO wait for next release
+          # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+        };
     };
 
     # tools
