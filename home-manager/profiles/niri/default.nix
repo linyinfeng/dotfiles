@@ -55,10 +55,6 @@ let
     "--brightness"
     "lower"
   ];
-  capsLock = [
-    "swayosd-client"
-    "--caps-lock"
-  ];
 in
 lib.mkMerge [
   {
@@ -356,11 +352,6 @@ lib.mkMerge [
                 "XF86MonBrightnessDown" = {
                   allow-when-locked = true;
                   action.spawn = lightDown;
-                };
-                "Caps_Lock" = {
-                  allow-when-locked = true;
-                  action.spawn = capsLock;
-                  # TODO on release
                 };
                 # quit windnow
                 "Mod+Q".action.close-window = [ ];

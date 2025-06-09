@@ -13,7 +13,12 @@ lib.mkMerge [
     niri-flake.cache.enable = false;
     environment.systemPackages = with pkgs; [
       swaylock
+      swayosd
     ];
+    systemd.packages = with pkgs; [ swayosd ];
+    systemd.services."swayosd-libinput-backend" = {
+      wantedBy = [ "graphical.target" ];
+    };
     security.pam.services.swaylock.text = ''
       account required pam_unix.so
 
