@@ -932,6 +932,17 @@ lib.mkMerge [
     }
   )
 
+  # wluma
+  {
+    services.wluma = {
+      enable = true;
+      systemd = {
+        enable = true;
+        target = "niri.service";
+      };
+    };
+  }
+
   # input dialog
   {
     programs.niri.settings.binds."Mod+Shift+Return".action.spawn = [ "input-dialog" ];

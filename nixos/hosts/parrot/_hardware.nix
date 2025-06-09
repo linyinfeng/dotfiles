@@ -20,7 +20,7 @@ lib.mkMerge [
       [[output.backlight]]
       name = "eDP-1"
       path = "/sys/class/backlight/intel_backlight"
-      capturer = "wlroots"
+      capturer = "wayland"
     '';
     environment.global-persistence.user.directories = [ ".local/share/wluma" ];
   }
