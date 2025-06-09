@@ -853,32 +853,6 @@
         "type": "github"
       }
     },
-    "nix-fast-build": {
-      "inputs": {
-        "flake-parts": [
-          "flake-parts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt-nix": [
-          "treefmt-nix"
-        ]
-      },
-      "locked": {
-        "lastModified": 1749399339,
-        "narHash": "sha256-agVRwgbNaKMVRZOqthP6buxa2PkTbJ3bxSC0jSOz6G4=",
-        "owner": "mic92",
-        "repo": "nix-fast-build",
-        "rev": "eb8c7bc1619c4e6b232173893e95cb5957e43e85",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mic92",
-        "repo": "nix-fast-build",
-        "type": "github"
-      }
-    },
     "nix-filter": {
       "locked": {
         "lastModified": 1731533336,
@@ -1434,7 +1408,6 @@
         "mobile-nixos": "mobile-nixos",
         "naersk": "naersk",
         "niri-flake": "niri-flake",
-        "nix-fast-build": "nix-fast-build",
         "nix-filter": "nix-filter",
         "nix-gc-s3": "nix-gc-s3",
         "nix-github-actions": "nix-github-actions",

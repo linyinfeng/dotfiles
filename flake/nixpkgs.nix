@@ -38,12 +38,6 @@ let
         system
         "nix-index-with-db"
       ])
-      // (self.lib.maybeAttrByPath "nix-fast-build" inputs [
-        "nix-fast-build"
-        "packages"
-        system
-        "default"
-      ])
       // (self.lib.maybeAttrByPath "lantian" inputs [
         "lantian"
         "packages"

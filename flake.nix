@@ -162,11 +162,6 @@
     nvfetcher.inputs.flake-utils.follows = "flake-utils";
     nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
-    nix-fast-build.url = "github:mic92/nix-fast-build";
-    nix-fast-build.inputs.nixpkgs.follows = "nixpkgs";
-    nix-fast-build.inputs.flake-parts.follows = "flake-parts";
-    nix-fast-build.inputs.treefmt-nix.follows = "treefmt-nix";
-
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
