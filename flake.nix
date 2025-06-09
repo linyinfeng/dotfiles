@@ -162,6 +162,11 @@
     nvfetcher.inputs.flake-utils.follows = "flake-utils";
     nvfetcher.inputs.flake-compat.follows = "flake-compat";
 
+    nix-alien.url = "github:thiagokokada/nix-alien";
+    nix-alien.inputs.flake-compat.follows = "flake-compat";
+    nix-alien.inputs.nix-index-database.follows = "nix-index-database";
+    nix-alien.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";

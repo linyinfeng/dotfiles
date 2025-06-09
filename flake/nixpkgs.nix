@@ -21,6 +21,7 @@ let
     inputs.flat-flake.overlays.default
     inputs.deploy-rs.overlays.default
     inputs.nix-topology.overlays.default
+    inputs.nix-alien.overlays.default
     (
       _final: prev:
       let

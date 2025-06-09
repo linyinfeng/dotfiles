@@ -853,6 +853,32 @@
         "type": "github"
       }
     },
+    "nix-alien": {
+      "inputs": {
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "nix-index-database": [
+          "nix-index-database"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1747908601,
+        "narHash": "sha256-cSzec5IT7Imx9g+Rhpt4GxrLiNF++V+guzYCnWUjhAI=",
+        "owner": "thiagokokada",
+        "repo": "nix-alien",
+        "rev": "798541edff98cfa895941abe35f3e056f319a193",
+        "type": "github"
+      },
+      "original": {
+        "owner": "thiagokokada",
+        "repo": "nix-alien",
+        "type": "github"
+      }
+    },
     "nix-filter": {
       "locked": {
         "lastModified": 1731533336,
@@ -1408,6 +1434,7 @@
         "mobile-nixos": "mobile-nixos",
         "naersk": "naersk",
         "niri-flake": "niri-flake",
+        "nix-alien": "nix-alien",
         "nix-filter": "nix-filter",
         "nix-gc-s3": "nix-gc-s3",
         "nix-github-actions": "nix-github-actions",

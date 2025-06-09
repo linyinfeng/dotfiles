@@ -71,7 +71,10 @@ let
         programs.qrcp
         services.gnupg
         services.nixseparatedebuginfod
+
         services.envfs
+        programs.nix-alien
+        nix.nix-ld
       ];
       multimediaDev = suites.multimedia ++ suites.development ++ (with profiles; [ development.ides ]);
       virtualization = with profiles; [
@@ -118,7 +121,6 @@ let
           security.hardware-keys
           services.smartd
           hardware.rtl-sdr
-          nix.nix-ld
           nix.nixbuild
           nix.hydra-builder-client
           nix.hydra-builder-server
