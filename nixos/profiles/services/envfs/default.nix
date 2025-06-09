@@ -1,6 +1,7 @@
 { ... }:
 {
   services.envfs.enable = true;
+  environment.variables.ENVFS_RESOLVE_ALWAYS = "1";
   fileSystems."/usr/bin".options = [
     "x-systemd.requires=modprobe@fuse.service"
     "x-systemd.after=modprobe@fuse.service"
