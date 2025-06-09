@@ -657,7 +657,7 @@ lib.mkMerge [
         }
       ];
     };
-    systemd.user.services.waybar.Unit.After = [ "niri.service" ];
+    systemd.user.services.waybar.Unit.After = [ "graphical-session.target" ];
     xdg.configFile."waybar/style-light.css".source = buildScss "waybar/light";
     xdg.configFile."waybar/style-dark.css".source = buildScss "waybar/dark";
     xdg.configFile."waybar/style.css".source = config.xdg.configFile."waybar/style-light.css".source;
@@ -666,6 +666,7 @@ lib.mkMerge [
   # swayosd
   {
     services.swayosd.enable = true;
+    systemd.user.services.swayosd.Install.WantedBy = lib.mkForce [ "niri.service" ];
   }
 
   # xwayland
@@ -847,7 +848,7 @@ lib.mkMerge [
         "XDG_SEAT"
         "WAYLAND_DISPLAY"
       ];
-      After = [ "niri.service" ];
+      After = [ "graphical-session.target" ];
     };
   }
 
