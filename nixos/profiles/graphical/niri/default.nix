@@ -32,6 +32,7 @@ lib.mkMerge [
       session required pam_env.so conffile=/etc/pam/environment readenv=0
       session required pam_unix.so
     '';
+    programs.wshowkeys.enable = true;
   }
   (lib.mkIf (!config.services.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;
