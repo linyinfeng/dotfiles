@@ -51,7 +51,7 @@ button {
 }
 
 .module {
-  padding: 0 10px;
+  padding: 0 8px;
 }
 
 #battery {
@@ -100,6 +100,30 @@ button {
 
 #custom-darkman {
   &.unknown {
+    color: $warn;
+  }
+}
+
+#idle_inhibitor {
+  &.activated {
+    color: $warn;
+  }
+}
+
+#privacy-item {
+  &.screenshare {
+    color: $warn;
+  }
+  &.audio-in {
+    color: $warn;
+  }
+  &.audio-out {
+    color: $good;
+  }
+}
+
+#systemd-failed-units {
+  &.degraded {
     color: $warn;
   }
 }

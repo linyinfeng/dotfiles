@@ -99,6 +99,7 @@ lib.mkMerge [
               enable = true;
               max-scroll-amount = "0%";
             };
+            workspace-auto-back-and-forth = true;
           };
           layout = {
             gaps = 16.0;
@@ -314,6 +315,8 @@ lib.mkMerge [
                 }) workspaceIndices
               );
               specialBindings = {
+                # overview
+                "Mod+O".action.toggle-overview = [ ];
                 # show help
                 "Mod+Shift+Slash".action.show-hotkey-overlay = [ ];
                 # terminal, app launcher, screen locker, ...
@@ -355,6 +358,7 @@ lib.mkMerge [
                 };
                 # quit windnow
                 "Mod+Q".action.close-window = [ ];
+                "Mod+MouseMiddle".action.close-window = [ ];
                 # first and last
                 "Mod+A".action.focus-column-first = [ ];
                 "Mod+E".action.focus-column-last = [ ];
@@ -443,13 +447,15 @@ lib.mkMerge [
           modules-center = [ "clock" ];
           modules-right = [
             "tray"
+            "privacy"
             "custom/fprintd"
+            "idle_inhibitor"
             "custom/darkman"
             "network"
             "backlight"
-            # "pulseaudio"
             "wireplumber"
             "battery"
+            "systemd-failed-units"
           ];
           "niri/workspaces" = {
             # "current-only" = true;
@@ -473,22 +479,6 @@ lib.mkMerge [
             tooltip-format-ethernet = "{ipaddr}/{cidr} 󰈀";
             on-click = "alacritty --command nmtui";
           };
-          "pulseaudio" = {
-            format = "{volume}% {icon}";
-            format-bluetooth = "{volume}% 󰂯{icon}";
-            format-muted = "󰖁";
-            format-icons = {
-              default = [
-                "󰕿"
-                "󰖀"
-                "󰕾"
-              ];
-            };
-            on-click = "pavucontrol";
-            on-click-right = lib.escapeShellArgs volumeMute;
-            on-scroll-up = lib.escapeShellArgs volumeUp;
-            on-scroll-down = lib.escapeShellArgs volumeDown;
-          };
           "wireplumber" = {
             format = "{volume}% {icon}";
             format-muted = "󰖁";
@@ -497,8 +487,8 @@ lib.mkMerge [
               "󰖀"
               "󰕾"
             ];
-            on-click = "pavucontrol";
-            on-click-right = lib.escapeShellArgs volumeMute;
+            on-click = lib.escapeShellArgs volumeMute;
+            on-click-right = "pavucontrol";
             on-scroll-up = lib.escapeShellArgs volumeUp;
             on-scroll-down = lib.escapeShellArgs volumeDown;
           };
@@ -539,10 +529,29 @@ lib.mkMerge [
             on-click = "gnome-power-statistics";
           };
           "clock" = {
-            format = "{:%Y-%m-%d %a. %H:%M}";
+            format = "{:%Y-%m-%d %a. %H:%M}  ";
+            tooltip-format = "<tt>{calendar}</tt>";
+            calendar = {
+              mode = "year";
+              mode-mon-col = 3;
+              weeks-pos = "right";
+              on-scroll = 1;
+              format = {
+                months = "<span color='#ffead3'><b>{}</b></span>";
+                days = "<span color='#ecc6d9'><b>{}</b></span>";
+                weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+                weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+                today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+              };
+            };
+            actions = {
+              on-click-right = "mode";
+              on-scroll-up = "shift_up";
+              on-scroll-down = "shift_down";
+            };
           };
           "tray" = {
-            spacing = 5;
+            spacing = 8;
           };
           "custom/fprintd" =
             let
@@ -654,6 +663,37 @@ lib.mkMerge [
                 }
               );
             };
+          "privacy" = {
+            icon-spacing = 8;
+            icon-size = 12;
+            modules = [
+              {
+                type = "screenshare";
+                tooltip = true;
+              }
+              {
+                type = "audio-in";
+                tooltip = true;
+              }
+              {
+                type = "audio-out";
+                tooltip = true;
+              }
+            ];
+          };
+          "idle_inhibitor" = {
+            format = "{icon}";
+            format-icons = {
+              "activated" = "";
+              "deactivated" = "";
+            };
+          };
+          "systemd-failed-units" = {
+            hide-on-ok = true;
+            format = "{nr_failed} ⚠";
+            system = true;
+            user = true;
+          };
         }
       ];
     };
