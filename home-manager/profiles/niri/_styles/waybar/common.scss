@@ -2,8 +2,15 @@
   padding: 0;
   margin: 0;
 
-  font-family: monospace;
+  // use the Propo version of nerd font
+  // see https://github.com/ryanoasis/nerd-fonts/discussions/1103
+  font-family: "IosevkaTermSlab Nerd Font Propo", monospace;
   font-size: 12px;
+}
+
+#clock,
+.modules-right {
+  font-weight: bold;
 }
 
 window#waybar {
@@ -23,9 +30,33 @@ button {
   box-shadow: inset 0 -3px transparent;
 
   &:hover {
-    text-shadow: inherit;
     background-image: none;
     background-color: $hover;
+    box-shadow: inset 0 -3px $text;
+  }
+}
+
+.modules-right {
+  #battery,
+  #network,
+  #wireplumber,
+  #custom-fprintd,
+  #custom-darkman,
+  #backlight,
+  #idle_inhibitor,
+  #privacy-item,
+  #systemd-failed-units {
+    padding: 0 6px;
+
+    &:hover {
+      background-image: none;
+      background-color: $hover;
+    }
+  }
+  #tray {
+    padding: 0 6px;
+  }
+  #tray > .active:hover {
     box-shadow: inset 0 -3px $text;
   }
 }
@@ -50,10 +81,6 @@ button {
   }
 }
 
-.module {
-  padding: 0 8px;
-}
-
 #battery {
   &.charging {
     color: $good;
@@ -65,12 +92,6 @@ button {
 
 #network {
   &.disabled {
-    color: $warn;
-  }
-}
-
-#pulseaudio {
-  &.muted {
     color: $warn;
   }
 }

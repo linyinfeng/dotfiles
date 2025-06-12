@@ -487,8 +487,8 @@ lib.mkMerge [
               "󰖀"
               "󰕾"
             ];
-            on-click = lib.escapeShellArgs volumeMute;
-            on-click-right = "pavucontrol";
+            on-click = "pavucontrol";
+            on-click-right = lib.escapeShellArgs volumeMute;
             on-scroll-up = lib.escapeShellArgs volumeUp;
             on-scroll-down = lib.escapeShellArgs volumeDown;
           };
@@ -551,7 +551,7 @@ lib.mkMerge [
             };
           };
           "tray" = {
-            spacing = 8;
+            spacing = 12;
           };
           "custom/fprintd" =
             let
