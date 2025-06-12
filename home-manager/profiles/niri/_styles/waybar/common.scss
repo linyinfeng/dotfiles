@@ -5,7 +5,7 @@
   // use the Propo version of nerd font
   // see https://github.com/ryanoasis/nerd-fonts/discussions/1103
   font-family: "IosevkaTermSlab Nerd Font Propo", monospace;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 #clock,
@@ -44,7 +44,6 @@ button {
   #custom-darkman,
   #backlight,
   #idle_inhibitor,
-  #privacy-item,
   #systemd-failed-units {
     padding: 0 6px;
 
@@ -53,10 +52,14 @@ button {
       background-color: $hover;
     }
   }
+  #privacy,
   #tray {
     padding: 0 6px;
   }
   #tray > .active:hover {
+    box-shadow: inset 0 -3px $text;
+  }
+  #privacy-item:hover {
     box-shadow: inset 0 -3px $text;
   }
 }

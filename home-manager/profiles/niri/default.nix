@@ -102,7 +102,7 @@ lib.mkMerge [
             workspace-auto-back-and-forth = true;
           };
           layout = {
-            gaps = 16.0;
+            gaps = 8.0;
             center-focused-column = "never";
             preset-column-widths = [
               { proportion = 1.0 / 3.0; }
@@ -114,23 +114,24 @@ lib.mkMerge [
             };
             focus-ring = {
               enable = true;
-              width = 4;
+              width = 2;
               active.color = mainColor;
               inactive.color = inactiveColor;
             };
             border = {
               enable = false;
-              width = 4;
+              width = 2;
               active.color = mainColor;
               inactive.color = inactiveColor;
             };
             struts = { };
             tab-indicator = {
-              active.color = "tomato";
+              place-within-column = true;
+              active.color = mainColor;
               inactive.color = inactiveColor;
-              width = 4;
-              corner-radius = 4;
-              gaps-between-tabs = 0;
+              width = 6;
+              corner-radius = 3;
+              gaps-between-tabs = 8;
               length.total-proportion = 0.5;
             };
             inherit shadow;
@@ -145,37 +146,50 @@ lib.mkMerge [
             enable = true;
             # all default
           };
-          window-rules = [
-            {
-              matches = [
-                {
-                  app-id = "^org\.wezfurlong\.wezterm$";
-                }
-              ];
-              default-column-width = { };
-            }
-            {
-              matches = [
-                {
-                  title = "^Picture in picture$";
-                }
-              ];
-              open-floating = true;
-            }
-            {
-              geometry-corner-radius =
-                let
-                  radius = 8.0;
-                in
-                {
-                  bottom-left = radius;
-                  bottom-right = radius;
-                  top-left = radius;
-                  top-right = radius;
+          window-rules =
+            let
+              windowCornerRadius = 8.0;
+            in
+            [
+              {
+                matches = [
+                  {
+                    app-id = "^org\.wezfurlong\.wezterm$";
+                  }
+                ];
+                default-column-width = { };
+              }
+              {
+                matches = [
+                  {
+                    title = "^Picture in picture$";
+                  }
+                ];
+                open-floating = true;
+              }
+              {
+                geometry-corner-radius = {
+                  bottom-left = windowCornerRadius;
+                  bottom-right = windowCornerRadius;
+                  top-left = windowCornerRadius;
+                  top-right = windowCornerRadius;
                 };
-              clip-to-geometry = true;
-            }
-          ];
+                clip-to-geometry = true;
+              }
+              {
+                matches = [
+                  {
+                    app-id = "^chromium-browser$";
+                  }
+                ];
+                geometry-corner-radius = {
+                  bottom-left = windowCornerRadius;
+                  bottom-right = windowCornerRadius;
+                  top-left = 16.0;
+                  top-right = 16.0;
+                };
+              }
+            ];
           layer-rules = [
             {
               matches = [
@@ -465,6 +479,7 @@ lib.mkMerge [
             format = "{name}";
           };
           "wlr/taskbar" = {
+            icon-size = 16;
             all-outputs = false;
             on-click = "activate";
             on-click-middle = "close";
@@ -552,6 +567,7 @@ lib.mkMerge [
           };
           "tray" = {
             spacing = 12;
+            icon-size = 16;
           };
           "custom/fprintd" =
             let
@@ -662,10 +678,25 @@ lib.mkMerge [
                   '';
                 }
               );
+              on-click-right =
+                let
+                  changeWlsunsetMode = pkgs.writeShellApplication {
+                    name = "change-wlsunset-mode";
+                    runtimeInputs = [
+                      config.programs.niri.package
+                      osConfig.systemd.package
+                    ];
+                    text = ''
+                      niri msg action do-screen-transition --delay-ms 100
+                      systemctl --user kill wlsunset.service --signal=USR1
+                    '';
+                  };
+                in
+                lib.getExe changeWlsunsetMode;
             };
           "privacy" = {
-            icon-spacing = 8;
-            icon-size = 12;
+            icon-spacing = 12;
+            icon-size = 16;
             modules = [
               {
                 type = "screenshare";
@@ -980,6 +1011,16 @@ lib.mkMerge [
         enable = true;
         target = "niri.service";
       };
+    };
+  }
+
+  # wlsunset
+  {
+    services.wlsunset = {
+      enable = true;
+      systemdTarget = "niri.service";
+      sunrise = "6:00";
+      sunset = "18:00";
     };
   }
 
