@@ -20,7 +20,6 @@ lib.mkMerge [
         fish-you-should-use
         foreign-env
         forgit
-        plugin-git
         puffer
         # keep-sorted end
       ])
