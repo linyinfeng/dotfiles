@@ -1,0 +1,404 @@
+From c8843f7d894f4084f23476f62c38d71745e25180 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
+ <martynas.maciulevicius@pm.me>
+Date: Sun, 9 Feb 2025 13:05:36 +0200
+Subject: [PATCH 1/4] Idempotent bar show/hide via configurable user kill
+ signals
+
+---
+ include/bar.hpp              |  8 ++++++
+ include/util/kill_signal.hpp | 26 +++++++++++++++++++
+ src/bar.cpp                  | 31 +++++++++++++++++++++++
+ src/main.cpp                 | 48 ++++++++++++++++++++++++++++--------
+ src/util/enum.cpp            |  1 +
+ 5 files changed, 104 insertions(+), 10 deletions(-)
+ create mode 100644 include/util/kill_signal.hpp
+
+diff --git a/include/bar.hpp b/include/bar.hpp
+index 9b407abf4..c2dc0ae10 100644
+--- a/include/bar.hpp
++++ b/include/bar.hpp
+@@ -14,6 +14,7 @@
+ 
+ #include "AModule.hpp"
+ #include "group.hpp"
++#include "util/kill_signal.hpp"
+ #include "xdg-output-unstable-v1-client-protocol.h"
+ 
+ namespace waybar {
+@@ -68,7 +69,11 @@ class Bar : public sigc::trackable {
+   void setMode(const std::string &mode);
+   void setVisible(bool value);
+   void toggle();
++  void show();
++  void hide();
+   void handleSignal(int);
++  util::KillSignalAction getOnSigusr1Action();
++  util::KillSignalAction getOnSigusr2Action();
+ 
+   struct waybar_output *output;
+   Json::Value config;
+@@ -118,6 +123,9 @@ class Bar : public sigc::trackable {
+   std::unique_ptr<BarIpcClient> _ipc_client;
+ #endif
+   std::vector<std::shared_ptr<waybar::AModule>> modules_all_;
++
++  waybar::util::KillSignalAction onSigusr1;
++  waybar::util::KillSignalAction onSigusr2;
+ };
+ 
+ }  // namespace waybar
+diff --git a/include/util/kill_signal.hpp b/include/util/kill_signal.hpp
+new file mode 100644
+index 000000000..26d156e96
+--- /dev/null
++++ b/include/util/kill_signal.hpp
+@@ -0,0 +1,26 @@
++#pragma once
++
++#include <json/value.h>
++
++#include <cstdint>
++
++namespace waybar::util {
++
++enum class KillSignalAction : std::uint8_t {
++  TOGGLE,
++  RELOAD,
++  SHOW,
++  HIDE,
++  NOOP,
++};
++const std::map<std::string, KillSignalAction> userKillSignalActions = {
++    {"TOGGLE", KillSignalAction::TOGGLE},
++    {"RELOAD", KillSignalAction::RELOAD},
++    {"SHOW", KillSignalAction::SHOW},
++    {"HIDE", KillSignalAction::HIDE},
++    {"NOOP", KillSignalAction::NOOP}};
++
++const KillSignalAction SIGNALACTION_DEFAULT_SIGUSR1 = KillSignalAction::TOGGLE;
++const KillSignalAction SIGNALACTION_DEFAULT_SIGUSR2 = KillSignalAction::RELOAD;
++
++};  // namespace waybar::util
+diff --git a/src/bar.cpp b/src/bar.cpp
+index b7737d362..9946ed953 100644
+--- a/src/bar.cpp
++++ b/src/bar.cpp
+@@ -8,6 +8,8 @@
+ #include "client.hpp"
+ #include "factory.hpp"
+ #include "group.hpp"
++#include "util/enum.hpp"
++#include "util/kill_signal.hpp"
+ 
+ #ifdef HAVE_SWAY
+ #include "modules/sway/bar.hpp"
+@@ -277,6 +279,30 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
+   }
+ #endif
+ 
++  waybar::util::EnumParser<util::KillSignalAction> m_signalActionEnumParser;
++  const auto& configSigusr1 = config["on_sigusr1"];
++  if (configSigusr1.isString()) {
++    auto strSigusr1 = configSigusr1.asString();
++    try {
++      onSigusr1 =
++          m_signalActionEnumParser.parseStringToEnum(strSigusr1, util::userKillSignalActions);
++    } catch (const std::invalid_argument& e) {
++      onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
++      spdlog::warn("Invalid string representation for on_sigusr1. Falling back to default mode.");
++    }
++  }
++  const auto& configSigusr2 = config["on_sigusr2"];
++  if (configSigusr2.isString()) {
++    auto strSigusr2 = configSigusr2.asString();
++    try {
++      onSigusr2 =
++          m_signalActionEnumParser.parseStringToEnum(strSigusr2, util::userKillSignalActions);
++    } catch (const std::invalid_argument& e) {
++      onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
++      spdlog::warn("Invalid string representation for on_sigusr2. Falling back to default mode.");
++    }
++  }
++
+   setupWidgets();
+   window.show_all();
+ 
+@@ -422,6 +448,8 @@ void waybar::Bar::setVisible(bool value) {
+ }
+ 
+ void waybar::Bar::toggle() { setVisible(!visible); }
++void waybar::Bar::show() { setVisible(true); }
++void waybar::Bar::hide() { setVisible(false); }
+ 
+ // Converting string to button code rn as to avoid doing it later
+ void waybar::Bar::setupAltFormatKeyForModule(const std::string& module_name) {
+@@ -479,6 +507,9 @@ void waybar::Bar::handleSignal(int signal) {
+   }
+ }
+ 
++waybar::util::KillSignalAction waybar::Bar::getOnSigusr1Action() { return this->onSigusr1; }
++waybar::util::KillSignalAction waybar::Bar::getOnSigusr2Action() { return this->onSigusr2; }
++
+ void waybar::Bar::getModules(const Factory& factory, const std::string& pos,
+                              waybar::Group* group = nullptr) {
+   auto module_list = group != nullptr ? config[pos]["modules"] : config[pos];
+diff --git a/src/main.cpp b/src/main.cpp
+index 045b2cd49..74a73badb 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -6,7 +6,9 @@
+ #include <list>
+ #include <mutex>
+ 
++#include "bar.hpp"
+ #include "client.hpp"
++#include "util/backend_common.hpp"
+ 
+ std::mutex reap_mtx;
+ std::list<pid_t> reap;
+@@ -70,21 +72,47 @@ void startSignalThread() {
+   }
+ }
+ 
++waybar::util::KillSignalAction getActionForBar(waybar::Bar* bar, int signal) {
++  switch (signal) {
++    case SIGUSR1:
++      return bar->getOnSigusr1Action();
++    case SIGUSR2:
++      return bar->getOnSigusr2Action();
++    default:
++      return waybar::util::KillSignalAction::NOOP;
++  }
++}
++
++void handleUserSignal(int signal) {
++  for (auto& bar : waybar::Client::inst()->bars) {
++    switch (getActionForBar(bar.get(), signal)) {
++      case waybar::util::KillSignalAction::HIDE:
++        bar->hide();
++        break;
++      case waybar::util::KillSignalAction::SHOW:
++        bar->show();
++        break;
++      case waybar::util::KillSignalAction::TOGGLE:
++        bar->toggle();
++        break;
++      case waybar::util::KillSignalAction::RELOAD:
++        spdlog::info("Reloading...");
++        reload = true;
++        waybar::Client::inst()->reset();
++        return;
++      case waybar::util::KillSignalAction::NOOP:
++        break;
++    }
++  }
++}
++
+ int main(int argc, char* argv[]) {
+   try {
+     auto* client = waybar::Client::inst();
+ 
+-    std::signal(SIGUSR1, [](int /*signal*/) {
+-      for (auto& bar : waybar::Client::inst()->bars) {
+-        bar->toggle();
+-      }
+-    });
++    std::signal(SIGUSR1, [](int /*signal*/) { handleUserSignal(SIGUSR1); });
+ 
+-    std::signal(SIGUSR2, [](int /*signal*/) {
+-      spdlog::info("Reloading...");
+-      reload = true;
+-      waybar::Client::inst()->reset();
+-    });
++    std::signal(SIGUSR2, [](int /*signal*/) { handleUserSignal(SIGUSR2); });
+ 
+     std::signal(SIGINT, [](int /*signal*/) {
+       spdlog::info("Quitting.");
+diff --git a/src/util/enum.cpp b/src/util/enum.cpp
+index dc3eae0ce..1e28d66ea 100644
+--- a/src/util/enum.cpp
++++ b/src/util/enum.cpp
+@@ -41,5 +41,6 @@ EnumType EnumParser<EnumType>::parseStringToEnum(const std::string& str,
+ // Explicit instantiations for specific EnumType types you intend to use
+ // Add explicit instantiations for all relevant EnumType types
+ template struct EnumParser<modules::hyprland::Workspaces::SortMethod>;
++template struct EnumParser<util::KillSignalAction>;
+ 
+ }  // namespace waybar::util
+
+From afa4f028cfd03112fa8af37b02e542cb7ffac9da Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
+ <martynas.maciulevicius@pm.me>
+Date: Sat, 22 Feb 2025 09:28:32 +0200
+Subject: [PATCH 2/4] Documentation for sigusr1 and sigusr2 config
+
+---
+ man/waybar.5.scd.in | 39 +++++++++++++++++++++++++++++++++++++--
+ src/bar.cpp         |  6 ++++--
+ 2 files changed, 41 insertions(+), 4 deletions(-)
+
+diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
+index 5bb62724f..062bbad69 100644
+--- a/man/waybar.5.scd.in
++++ b/man/waybar.5.scd.in
+@@ -151,6 +151,20 @@ The visual display elements for waybar use a CSS stylesheet, see *waybar-styles(
+ 	default: *false* ++
+ 	Option to enable reloading the css style if a modification is detected on the style sheet file or any imported css files.
+ 
++*on_sigusr1* ++
++	typeof: string ++
++	default: *toggle* ++
++	Action that is performed when receiving SIGUSR1 kill signal. ++
++	Possible values: *show*, *hide*, *toggle*, *reload*, *noop*. ++
++	Default value: *toggle*.
++
++*on_sigusr2* ++
++	typeof: string ++
++	default: *reload* ++
++	Action that is performed when receiving SIGUSR2 kill signal. ++
++	Possible values: *show*, *hide*, *toggle*, *reload*, *noop*. ++
++	Default value: *reload*.
++
+ # MODULE FORMAT
+ 
+ You can use PangoMarkupFormat (See https://developer.gnome.org/pango/stable/PangoMarkupFormat.html#PangoMarkupFormat).
+@@ -206,14 +220,35 @@ A minimal *config* file could look like this:
+ Waybar accepts the following signals:
+ 
+ *SIGUSR1*
+-	Toggles the bar visibility (hides if shown, shows if hidden)
++	By default toggles the bar visibility (hides if shown, shows if hidden)
+ *SIGUSR2*
+-	Reloads (resets) the bar
++	By default reloads (resets) the bar
+ *SIGINT*
+ 	Quits the bar
+ 
+ For example, to toggle the bar programmatically, you can invoke `killall -SIGUSR1 waybar`.
+ 
++## User signal configuration
++
++Config parameters `on_sigusr1` and `on_sigusr2` change what happens when bars receive
++`SIGUSR1` and `SIGUSR2` signals.
++
++This means that commands `killall -SIGUSR1 waybar` and `killall -SIGUSR2 waybar`
++can perform user-configured action.
++
++It also means that if an external script has the PID of the bar then it can
++perform more complex `show`/`hide`/`reload` logic for each instance of Waybar.
++One can find the PID e.g. by doing `pgrep -a waybar` which could then match
++by config name or other parameters.
++
++### Kill parameter meanings
++
++*show*    Switches state to visible (per bar).
++*hide*    Switches state to hidden (per bar).
++*toggle*  Switches state between visible and hidden (per bar).
++*reload*  Reloads whole waybar.
++*noop*    Does nothing when the kill signal is received.
++
+ # MULTI OUTPUT CONFIGURATION
+ 
+ ## Limit a configuration to some outputs
+diff --git a/src/bar.cpp b/src/bar.cpp
+index 9946ed953..d0e56dd5b 100644
+--- a/src/bar.cpp
++++ b/src/bar.cpp
+@@ -288,7 +288,8 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
+           m_signalActionEnumParser.parseStringToEnum(strSigusr1, util::userKillSignalActions);
+     } catch (const std::invalid_argument& e) {
+       onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
+-      spdlog::warn("Invalid string representation for on_sigusr1. Falling back to default mode.");
++      spdlog::warn(
++          "Invalid string representation for on_sigusr1. Falling back to default mode (toggle).");
+     }
+   }
+   const auto& configSigusr2 = config["on_sigusr2"];
+@@ -299,7 +300,8 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
+           m_signalActionEnumParser.parseStringToEnum(strSigusr2, util::userKillSignalActions);
+     } catch (const std::invalid_argument& e) {
+       onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
+-      spdlog::warn("Invalid string representation for on_sigusr2. Falling back to default mode.");
++      spdlog::warn(
++          "Invalid string representation for on_sigusr2. Falling back to default mode (reload).");
+     }
+   }
+ 
+
+From d107f40586d027943f2c46630da444c13dce55a9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
+ <martynas.maciulevicius@pm.me>
+Date: Sun, 2 Mar 2025 19:08:37 +0200
+Subject: [PATCH 3/4] Add more details on how 'reload' works in signals
+
+---
+ man/waybar.5.scd.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
+index 062bbad69..67bc176dc 100644
+--- a/man/waybar.5.scd.in
++++ b/man/waybar.5.scd.in
+@@ -246,7 +246,8 @@ by config name or other parameters.
+ *show*    Switches state to visible (per bar).
+ *hide*    Switches state to hidden (per bar).
+ *toggle*  Switches state between visible and hidden (per bar).
+-*reload*  Reloads whole waybar.
++*reload*  Reloads all waybars of current waybar process (basically equivalent to
++restarting with updated config which sets initial visibility values).
+ *noop*    Does nothing when the kill signal is received.
+ 
+ # MULTI OUTPUT CONFIGURATION
+
+From 89928e6f9b4747199a18c9dc7d3c7c5e565cb7a7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
+ <martynas.maciulevicius@pm.me>
+Date: Fri, 7 Mar 2025 07:45:11 +0200
+Subject: [PATCH 4/4] Fix initial null configuration; Fix doc compilation
+ errors
+
+---
+ include/bar.hpp     | 4 ++--
+ man/waybar.5.scd.in | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/bar.hpp b/include/bar.hpp
+index c2dc0ae10..9953b1f51 100644
+--- a/include/bar.hpp
++++ b/include/bar.hpp
+@@ -124,8 +124,8 @@ class Bar : public sigc::trackable {
+ #endif
+   std::vector<std::shared_ptr<waybar::AModule>> modules_all_;
+ 
+-  waybar::util::KillSignalAction onSigusr1;
+-  waybar::util::KillSignalAction onSigusr2;
++  waybar::util::KillSignalAction onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
++  waybar::util::KillSignalAction onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
+ };
+ 
+ }  // namespace waybar
+diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
+index 67bc176dc..d4ddd256f 100644
+--- a/man/waybar.5.scd.in
++++ b/man/waybar.5.scd.in
+@@ -230,8 +230,8 @@ For example, to toggle the bar programmatically, you can invoke `killall -SIGUSR
+ 
+ ## User signal configuration
+ 
+-Config parameters `on_sigusr1` and `on_sigusr2` change what happens when bars receive
+-`SIGUSR1` and `SIGUSR2` signals.
++Config parameters *on_sigusr1* and *on_sigusr2* change what happens when bars receive
++*SIGUSR1* and *SIGUSR2* signals.
+ 
+ This means that commands `killall -SIGUSR1 waybar` and `killall -SIGUSR2 waybar`
+ can perform user-configured action.
+@@ -241,7 +241,7 @@ perform more complex `show`/`hide`/`reload` logic for each instance of Waybar.
+ One can find the PID e.g. by doing `pgrep -a waybar` which could then match
+ by config name or other parameters.
+ 
+-### Kill parameter meanings
++## Kill parameter meanings
+ 
+ *show*    Switches state to visible (per bar).
+ *hide*    Switches state to hidden (per bar).

@@ -1,3 +1,5 @@
+$border-radius: 8px;
+
 * {
   padding: 0;
   margin: 0;
@@ -6,148 +8,207 @@
   // see https://github.com/ryanoasis/nerd-fonts/discussions/1103
   font-family: "IosevkaTermSlab Nerd Font Propo", monospace;
   font-size: 13px;
+
+  transition-property: all;
+  transition-duration: 0.25s;
 }
 
-#clock,
-.modules-right {
-  font-weight: bold;
-}
-
-window#waybar {
+window.bar-status#waybar {
   color: $text;
   background-color: $background;
 
-  transition-property: background-color;
-  transition-duration: 0.5s;
-}
-
-button {
-  color: $text;
-  border: none;
-  border-radius: 0;
-  background-image: none;
-
-  box-shadow: inset 0 -3px transparent;
-
-  &:hover {
-    background-image: none;
-    background-color: $hover;
-    box-shadow: inset 0 -3px $text;
+  #clock,
+  .modules-right {
+    font-weight: bold;
   }
-}
 
-.modules-right {
-  #battery,
-  #network,
-  #wireplumber,
-  #custom-fprintd,
-  #custom-darkman,
-  #backlight,
-  #idle_inhibitor,
-  #systemd-failed-units {
-    padding: 0 6px;
+  button {
+    color: $text;
+    border: none;
+    border-radius: 0;
+    background-image: none;
+
+    box-shadow: inset 0 -3px transparent;
 
     &:hover {
-      background-image: none;
       background-color: $hover;
+      box-shadow: inset 0 -3px $text;
     }
   }
-  #privacy,
+
+  .modules-left {
+    #custom-launcher {
+      padding: 0 6px;
+      &:hover {
+        background-color: $hover;
+      }
+    }
+  }
+
+  .modules-right {
+    > * {
+      padding: 0 6px;
+    }
+    #battery,
+    #network,
+    #wireplumber,
+    #custom-fprintd,
+    #custom-darkman,
+    #custom-osd,
+    #backlight,
+    #idle_inhibitor,
+    #systemd-failed-units {
+      padding: 0 6px;
+
+      &:hover {
+        background-image: none;
+        background-color: $hover;
+      }
+    }
+    #custom-separator {
+      padding: 0 6px;
+    }
+    #privacy,
+    #tray {
+      padding: 0 6px;
+    }
+    #tray > .active:hover {
+      box-shadow: inset 0 -3px $text;
+    }
+    #privacy-item:hover {
+      box-shadow: inset 0 -3px $text;
+    }
+  }
+
+  #workspaces button {
+    padding: 0 2px;
+
+    &.active {
+      box-shadow: inset 0 -3px $text;
+    }
+
+    &.urgent {
+      background-color: $warn;
+    }
+  }
+
+  #taskbar button {
+    padding: 0 2px;
+
+    &.active {
+      box-shadow: inset 0 -3px $text;
+    }
+  }
+
+  #battery {
+    &.charging {
+      color: $good;
+    }
+    &.critical:not(.charging) {
+      color: $warn;
+    }
+  }
+
+  #network {
+    &.disabled {
+      color: $warn;
+    }
+  }
+
+  #wireplumber {
+    &.muted {
+      color: $warn;
+    }
+  }
+
   #tray {
-    padding: 0 6px;
+    &.passive {
+      -gtk-icon-effect: dim;
+    }
+
+    &.needs-attention {
+      -gtk-icon-effect: highlight;
+      background-color: $warn;
+    }
   }
-  #tray > .active:hover {
-    box-shadow: inset 0 -3px $text;
+
+  #custom-separator {
+    color: $minor;
   }
-  #privacy-item:hover {
-    box-shadow: inset 0 -3px $text;
+
+  #custom-fprintd {
+    &.disabled {
+      color: $warn;
+    }
+  }
+
+  #custom-darkman {
+    &.unknown {
+      color: $warn;
+    }
+  }
+
+  #custom-osd {
+    &.shown {
+      color: $good;
+    }
+  }
+
+  #idle_inhibitor {
+    &.activated {
+      color: $warn;
+    }
+  }
+
+  #privacy-item {
+    &.screenshare {
+      color: $warn;
+    }
+    &.audio-in {
+      color: $warn;
+    }
+    &.audio-out {
+      color: $good;
+    }
+  }
+
+  #systemd-failed-units {
+    &.degraded {
+      color: $warn;
+    }
   }
 }
 
-#workspaces button {
-  padding: 0 2px;
+window.bar-tasks#waybar {
+  color: $text;
+  background-color: transparentize($background, 0.25);
 
-  &.active {
-    box-shadow: inset 0 -3px $text;
-  }
+  .niri-taskbar {
+    $icon-size: 32px;
+    $padding: 4px;
+    min-height: $icon-size + $padding * 2;
+    button {
+      padding: $padding;
+      border: none;
+      border-radius: 0;
+      background-color: transparent;
+      background-image: none;
 
-  &.urgent {
-    background-color: $warn;
-  }
-}
+      box-shadow: inset 0 -4px transparent;
 
-#taskbar button {
-  padding: 0 2px;
+      &.focused {
+        box-shadow: inset 0 -4px $text;
+      }
 
-  &.active {
-    box-shadow: inset 0 -3px $text;
-  }
-}
+      &.urgent,
+      &.focused.urgent {
+        box-shadow: inset 0 -4px $warn;
+      }
 
-#battery {
-  &.charging {
-    color: $good;
-  }
-  &.critical:not(.charging) {
-    color: $warn;
-  }
-}
-
-#network {
-  &.disabled {
-    color: $warn;
-  }
-}
-
-#wireplumber {
-  &.muted {
-    color: $warn;
-  }
-}
-
-#tray {
-  &.passive {
-    -gtk-icon-effect: dim;
-  }
-
-  &.needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: $warn;
-  }
-}
-
-#custom-fprintd {
-  &.disabled {
-    color: $warn;
-  }
-}
-
-#custom-darkman {
-  &.unknown {
-    color: $warn;
-  }
-}
-
-#idle_inhibitor {
-  &.activated {
-    color: $warn;
-  }
-}
-
-#privacy-item {
-  &.screenshare {
-    color: $warn;
-  }
-  &.audio-in {
-    color: $warn;
-  }
-  &.audio-out {
-    color: $good;
-  }
-}
-
-#systemd-failed-units {
-  &.degraded {
-    color: $warn;
+      &:hover {
+        background-color: $hover;
+        box-shadow: inset 0 -4px $text;
+      }
+    }
   }
 }

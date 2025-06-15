@@ -6,7 +6,7 @@
   ...
 }:
 let
-
+  json = pkgs.formats.json { };
   buildScss =
     path:
     pkgs.runCommand "${lib.replaceStrings [ "/" ] [ "-" ] path}.css" {
@@ -78,6 +78,7 @@ lib.mkMerge [
               y = 0;
             };
           };
+          windowCornerRadius = 8.0;
         in
         {
           input = {
@@ -146,50 +147,46 @@ lib.mkMerge [
             enable = true;
             # all default
           };
-          window-rules =
-            let
-              windowCornerRadius = 8.0;
-            in
-            [
-              {
-                matches = [
-                  {
-                    app-id = "^org\.wezfurlong\.wezterm$";
-                  }
-                ];
-                default-column-width = { };
-              }
-              {
-                matches = [
-                  {
-                    title = "^Picture in picture$";
-                  }
-                ];
-                open-floating = true;
-              }
-              {
-                geometry-corner-radius = {
-                  bottom-left = windowCornerRadius;
-                  bottom-right = windowCornerRadius;
-                  top-left = windowCornerRadius;
-                  top-right = windowCornerRadius;
-                };
-                clip-to-geometry = true;
-              }
-              {
-                matches = [
-                  {
-                    app-id = "^chromium-browser$";
-                  }
-                ];
-                geometry-corner-radius = {
-                  bottom-left = windowCornerRadius;
-                  bottom-right = windowCornerRadius;
-                  top-left = 16.0;
-                  top-right = 16.0;
-                };
-              }
-            ];
+          window-rules = [
+            {
+              matches = [
+                {
+                  app-id = "^org\.wezfurlong\.wezterm$";
+                }
+              ];
+              default-column-width = { };
+            }
+            {
+              matches = [
+                {
+                  title = "^Picture in picture$";
+                }
+              ];
+              open-floating = true;
+            }
+            {
+              geometry-corner-radius = {
+                bottom-left = windowCornerRadius;
+                bottom-right = windowCornerRadius;
+                top-left = windowCornerRadius;
+                top-right = windowCornerRadius;
+              };
+              clip-to-geometry = true;
+            }
+            {
+              matches = [
+                {
+                  app-id = "^chromium-browser$";
+                }
+              ];
+              geometry-corner-radius = {
+                bottom-left = windowCornerRadius;
+                bottom-right = windowCornerRadius;
+                top-left = 16.0;
+                top-right = 16.0;
+              };
+            }
+          ];
           layer-rules = [
             {
               matches = [
@@ -442,7 +439,7 @@ lib.mkMerge [
     ];
   }
 
-  # bar
+  # waybar
   {
     programs.waybar = {
       enable = true;
@@ -452,24 +449,35 @@ lib.mkMerge [
       };
       settings = [
         {
+          id = "status";
+          name = "bar-status";
+
           layer = "top";
           position = "top";
           modules-left = [
+            "custom/launcher"
             "niri/workspaces"
             "wlr/taskbar"
           ];
           modules-center = [ "clock" ];
           modules-right = [
             "tray"
+            "custom/separator"
+
             "privacy"
             "custom/fprintd"
             "idle_inhibitor"
+
             "custom/darkman"
-            "network"
             "backlight"
+
+            "network"
             "wireplumber"
             "battery"
+
             "systemd-failed-units"
+
+            "custom/osd"
           ];
           "niri/workspaces" = {
             # "current-only" = true;
@@ -485,8 +493,8 @@ lib.mkMerge [
             on-click-middle = "close";
           };
           "network" = {
-            format = "{ifname}";
-            format-wifi = "{essid} 󰖩";
+            format = "󰛳";
+            format-wifi = "󰖩";
             format-ethernet = "󰈀";
             format-disconnected = ""; # an empty format will hide the module.
             tooltip-format = "{ifname} via {gwaddr}";
@@ -495,7 +503,8 @@ lib.mkMerge [
             on-click = "alacritty --command nmtui";
           };
           "wireplumber" = {
-            format = "{volume}% {icon}";
+            format = "{icon}";
+            tooltip-format = "{volume}% {icon}";
             format-muted = "󰖁";
             format-icons = [
               "󰕿"
@@ -508,7 +517,8 @@ lib.mkMerge [
             on-scroll-down = lib.escapeShellArgs volumeDown;
           };
           "backlight" = {
-            format = "{percent}% {icon}";
+            format = "{icon}";
+            tooltip-format = "{percent}% {icon}";
             format-icons = [
               "󰃚"
               "󰃛"
@@ -527,7 +537,8 @@ lib.mkMerge [
               warning = 30;
               critical = 15;
             };
-            format = "{capacity}% {icon}";
+            format = "{icon}";
+            tooltip-format = "{capacity}%";
             format-icons = [
               "󰂎"
               "󰁺"
@@ -544,10 +555,10 @@ lib.mkMerge [
             on-click = "gnome-power-statistics";
           };
           "clock" = {
-            format = "{:%Y-%m-%d %a. %H:%M}  ";
-            tooltip-format = "<tt>{calendar}</tt>";
+            format = "{:%H:%M}";
+            tooltip-format = "<tt>{:%Y-%m-%d %a. %H:%M} \n{calendar}</tt>";
             calendar = {
-              mode = "year";
+              mode = "month";
               mode-mon-col = 3;
               weeks-pos = "right";
               on-scroll = 1;
@@ -568,6 +579,17 @@ lib.mkMerge [
           "tray" = {
             spacing = 12;
             icon-size = 16;
+          };
+          "custom/launcher" = {
+            format = "󰍜";
+            inverval = "once";
+            tooltip-format = "Launcher";
+            on-click = "fuzzel";
+          };
+          "custom/separator" = {
+            format = "|";
+            interval = "once";
+            tooltip = false;
           };
           "custom/fprintd" =
             let
@@ -668,7 +690,7 @@ lib.mkMerge [
               inherit signal;
               on-click = lib.getExe (
                 pkgs.writeShellApplication {
-                  name = "toggle-fprintd";
+                  name = "toggle-darkman";
                   runtimeInputs = [
                     pkgs.procps
                   ];
@@ -693,6 +715,64 @@ lib.mkMerge [
                   };
                 in
                 lib.getExe changeWlsunsetMode;
+            };
+          "custom/osd" =
+            let
+              signal = 12;
+            in
+            {
+              exec = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-osd";
+                  text = ''
+                    wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
+                    state="$(cat "$wvkbd_state_file")"
+                    if [ "$state" = "shown" ]; then
+                      echo '{"text": "Shown", "alt": "osd-shown", "class": "shown"}'
+                    elif [ "$state" = "hidden" ]; then
+                      echo '{"text": "Hidden", "alt": "osd-hidden", "class": "hidden"}'
+                    else
+                      echo '{"text": "Unknown", "alt": "osd-unknown", "class": "unknown"}'
+                    fi
+                  '';
+                }
+              );
+              exec-if = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "waybar-wvkbd-if";
+                  text = ''
+                    wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
+                    [ -f "$wvkbd_state_file" ]
+                  '';
+                }
+              );
+              return-type = "json";
+              format = "{icon}";
+              interval = 3;
+              format-icons = {
+                "osd-shown" = "󰌌";
+                "osd-hidden" = "󰌐";
+              };
+              inherit signal;
+              on-click = lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "toggle-wvkbd";
+                  runtimeInputs = [
+                    osConfig.systemd.package
+                    pkgs.procps
+                  ];
+                  text = ''
+                    wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
+                    state="$(cat "$wvkbd_state_file")"
+                    if [ "$state" = "shown" ]; then
+                      systemctl --user kill --kill-whom=main --signal=USR1 wvkbd.service
+                    elif [ "$state" = "hidden" ]; then
+                      systemctl --user kill --kill-whom=main --signal=USR2 wvkbd.service
+                    fi
+                    pkill "-SIGRTMIN+${toString signal}" waybar
+                  '';
+                }
+              );
             };
           "privacy" = {
             icon-spacing = 12;
@@ -732,6 +812,103 @@ lib.mkMerge [
     xdg.configFile."waybar/style-light.css".source = buildScss "waybar/light";
     xdg.configFile."waybar/style-dark.css".source = buildScss "waybar/dark";
     xdg.configFile."waybar/style.css".source = config.xdg.configFile."waybar/style-light.css".source;
+    home.packages = with pkgs; [
+      nerdfix
+    ];
+  }
+
+  # waybar in overview
+  (
+    let
+      # TODO wait for https://github.com/Alexays/Waybar/issues/3928
+      package = pkgs.waybar-idempotent-signals;
+      waybarConfig = [
+        {
+          id = "tasks";
+          name = "bar-tasks";
+          layer = "top";
+          position = "bottom";
+          exclusive = false;
+          start_hidden = true;
+          on_sigusr2 = "show";
+          on_sigusr1 = "hide";
+          modules-center = [ "cffi/niri-taskbar" ];
+          "cffi/niri-taskbar" = {
+            module_path = "${pkgs.nur.repos.linyinfeng.niri-taskbar}/lib/libniri_taskbar.so";
+          };
+        }
+      ];
+      configFile = json.generate "waybar-overview-config.json" waybarConfig;
+    in
+    {
+      systemd.user.services.waybar-overview = {
+        Unit = {
+          After = [ "niri.service" ];
+          ConditionEnvironment = [ "WAYLAND_DISPLAY" ];
+          PartOf = [ "graphical-session.target" ];
+          X-Restart-Triggers = [
+            "${configFile}"
+          ];
+        };
+        Service = {
+          ExecStart = "${lib.getExe package} --config ${configFile}";
+          Restart = "on-failure";
+        };
+        Install = {
+          WantedBy = [ "niri.service" ];
+        };
+      };
+    }
+  )
+
+  # overview watcher
+  {
+    systemd.user.services.niri-overview-watcher = {
+      Unit = {
+        After = [
+          "niri.service"
+          "waybar-overview.service"
+        ];
+        ConditionEnvironment = [ "WAYLAND_DISPLAY" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = lib.getExe (
+          pkgs.writeShellApplication {
+            name = "niri-overview-watcher";
+            runtimeInputs = [
+              config.programs.niri.package
+              pkgs.jq
+              osConfig.systemd.package
+            ];
+            text = ''
+              function overview_events {
+                niri msg --json event-stream |\
+                  stdbuf -o0 jq '.OverviewOpenedOrClosed.is_open | select (. != null)'
+              }
+              function handle_events {
+                while read -r line; do
+                  if [ "$line" = "true" ]; then
+                    echo "overview open..."
+                    systemctl --user kill --signal=USR2 waybar-overview.service || true
+                  elif [ "$line" = "false" ]; then
+                    echo "overview close..."
+                    systemctl --user kill --signal=USR1 waybar-overview.service || true
+                  else
+                    echo "unknown overview open state event: $line"
+                  fi
+                done
+              }
+              overview_events | handle_events
+            '';
+          }
+        );
+        Restart = "on-failure";
+      };
+      Install = {
+        WantedBy = [ "niri.service" ];
+      };
+    };
   }
 
   # swayosd
@@ -778,6 +955,12 @@ lib.mkMerge [
     programs.fuzzel = {
       enable = true;
       settings = {
+        main = {
+          # close when lose focus
+          keyboard-focus = "on-demand";
+          no-exit-on-keyboard-focus-loss = false;
+          icon-theme = "Adwaita";
+        };
         colors = {
           background = "282a36ff";
           text = "f8f8f2ff";
@@ -1021,6 +1204,82 @@ lib.mkMerge [
       systemdTarget = "niri.service";
       sunrise = "6:00";
       sunset = "18:00";
+    };
+  }
+
+  # osd
+  {
+    systemd.user.services.wvkbd = {
+      Unit = {
+        Description = "On-screen keyboard for wlroots";
+        ConditionEnvironment = [
+          "WAYLAND_DISPLAY"
+        ];
+        After = [ "niri.service" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart =
+          let
+            wvkbdDeamon = pkgs.writeShellApplication {
+              name = "wvkbd-daemon";
+              runtimeInputs = with pkgs; [
+                wvkbd
+                clickclack
+                config.programs.niri.package
+              ];
+              text = ''
+                cd "$RUNTIME_DIRECTORY"
+                rm --force pressed
+                mkfifo pressed
+                wvkbd-mobintl --hidden -o >pressed &
+                wvkbd_pid="$!"
+                clickclack -V <pressed &
+                clickclack_pid="$!"
+
+                state_file="$RUNTIME_DIRECTORY/state"
+                new_state_file="$RUNTIME_DIRECTORY/state.new"
+                echo "hidden" >"$state_file"
+                # transition_delay_ms=50
+
+                function hide_keyboard {
+                  echo "hide keyboard..."
+                  echo "hidden" >"$new_state_file"
+                  # niri msg action do-screen-transition --delay-ms "$transition_delay_ms"
+                  kill -USR1 "$wvkbd_pid"
+                  mv --force "$new_state_file" "$state_file"
+                  echo "keyboard hidden"
+                }
+                function show_keyboard {
+                  echo "show keyboard..."
+                  echo "shown" >"$new_state_file"
+                  # niri msg action do-screen-transition --delay-ms "$transition_delay_ms"
+                  kill -USR2 "$wvkbd_pid"
+                  mv --force "$new_state_file" "$state_file"
+                  echo "keyboard shown"
+                }
+
+                trap "hide_keyboard" SIGUSR1
+                trap "show_keyboard" SIGUSR2
+
+                # https://stackoverflow.com/questions/55866583/wait-exits-after-trap
+                function loop_wait {
+                  while wait "$1"; [ "$?" -ge 128 ]; do
+                    echo 'finished wait'
+                  done
+                }
+                loop_wait "$wvkbd_pid"
+                loop_wait "$clickclack_pid"
+              '';
+            };
+          in
+          lib.getExe wvkbdDeamon;
+        Restart = "on-failure";
+        RuntimeDirectory = "wvkbd";
+      };
+      Install = {
+        WantedBy = lib.mkForce [ "niri.service" ];
+      };
     };
   }
 

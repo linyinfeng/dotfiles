@@ -73,6 +73,10 @@ let
       blender = prev.blender.override {
         cudaSupport = true;
       };
+      # TODO wait for https://github.com/Alexays/Waybar/issues/3928
+      waybar-idempotent-signals = prev.waybar.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/waybar-3930.patch ];
+      });
       iosevka-yinfeng = requireBigParallel (
         final.iosevka.override {
           privateBuildPlan = {
