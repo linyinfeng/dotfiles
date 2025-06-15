@@ -121,6 +121,7 @@ let
           security.hardware-keys
           services.smartd
           hardware.rtl-sdr
+          hardware.tablet
           nix.nixbuild
           nix.hydra-builder-client
           nix.hydra-builder-server
@@ -202,6 +203,7 @@ let
         obs-studio
         minecraft
         desktop-applications
+        tablet
       ];
       development = with profiles; [
         git
