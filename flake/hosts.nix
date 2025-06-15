@@ -203,7 +203,6 @@ let
         obs-studio
         minecraft
         desktop-applications
-        tablet
       ];
       development = with profiles; [
         git

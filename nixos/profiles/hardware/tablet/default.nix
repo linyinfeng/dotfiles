@@ -1,4 +1,7 @@
 { ... }:
 {
-  hardware.opentabletdriver.enable = true;
+  hardware.opentabletdriver = {
+    enable = true;
+    daemon.enable = true;
+  };
 }
