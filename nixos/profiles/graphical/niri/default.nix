@@ -6,11 +6,7 @@
 }:
 lib.mkMerge [
   {
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
-    niri-flake.cache.enable = false;
+    programs.niri.enable = true;
     environment.systemPackages = with pkgs; [
       swaylock
       swayosd
@@ -32,6 +28,19 @@ lib.mkMerge [
       session required pam_env.so conffile=/etc/pam/environment readenv=0
       session required pam_unix.so
     '';
+    systemd.user.services.niri-flake-polkit = {
+      description = "PolicyKit Authentication Agent provided by niri-flake";
+      wantedBy = [ "niri.service" ];
+      after = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
     programs.wshowkeys.enable = true;
   }
   (lib.mkIf (!config.services.desktopManager.gnome.enable) {

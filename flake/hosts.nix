@@ -155,7 +155,7 @@ let
           networking.bbr
         ]);
 
-      phone =
+      mobile =
         (with suites; base ++ network)
         ++ (with profiles; [
           system.types.phone
@@ -251,10 +251,12 @@ let
         with suites;
         base ++ multimediaDev ++ music ++ design ++ virtualization ++ synchronize ++ security ++ other;
 
-      phone =
+      mobile =
         (with suites; base)
         ++ (with profiles; [
           gnome
+          niri
+          darkman
           dconf-proxy
           chromium
           fcitx5
@@ -281,7 +283,6 @@ let
     inputs.commit-notifier.nixosModules.commit-notifier
     inputs.angrr.nixosModules.angrr
     inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.niri-flake.nixosModules.niri
     inputs.nix-topology.nixosModules.default
 
     {
@@ -299,6 +300,7 @@ let
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
+    inputs.niri-flake.homeModules.niri
     { lib.self = self.lib; }
   ];
 
@@ -379,7 +381,7 @@ let
   getHostToplevel =
     name: cfg:
     let
-      inherit (cfg.pkgs.stdenv.hostPlatform) system;
+      inherit (cfg.pkgs.stdenv.buildPlatform) system;
     in
     {
       "${system}"."nixos/${name}" = cfg.config.system.build.toplevel;
@@ -451,6 +453,19 @@ in
         common-pc
         common-cpu-intel
         common-pc-ssd
+      ];
+    })
+
+    (mkHost {
+      name = "sparrow";
+      system = "aarch64-linux";
+      # cross compilation from x86_64-linux
+      # forceFlakeNixpkgs = false;
+      extraModules = [
+        inputs.kukui-nixos.nixosModules.default
+        "${inputs.kukui-nixos}/profiles/disko.nix"
+        # cross compilation from x86_64-linux
+        # { nixpkgs.buildPlatform = "x86_64-linux"; }
       ];
     })
 

@@ -47,6 +47,10 @@ let
       key = "age1r0m4u6wpegaxxs6dlknkgwxd637p88wjvljladv9l7l7v60kgf2q7p3jcp";
       owned = true;
     };
+    sparrow = {
+      key = "age1ylnctxz36rpe95huc9v92pvu5zrk5td6rne9md52q7x4ceppkq7sm2pzph";
+      owned = true;
+    };
     # PLACEHOLDER new host
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);

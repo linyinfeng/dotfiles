@@ -77,6 +77,15 @@
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
 
+    kukui-nixos.url = "github:linyinfeng/kukui-nixos";
+    kukui-nixos.inputs.nixpkgs.follows = "nixpkgs";
+    kukui-nixos.inputs.conf2nix.follows = "conf2nix";
+    kukui-nixos.inputs.crane.follows = "crane";
+    kukui-nixos.inputs.disko.follows = "disko";
+    kukui-nixos.inputs.flake-compat.follows = "flake-compat";
+    kukui-nixos.inputs.flake-parts.follows = "flake-parts";
+    kukui-nixos.inputs.treefmt-nix.follows = "treefmt-nix";
+
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -283,6 +292,10 @@
 
     weird-deployer.url = "github:linyinfeng/weird-deployer";
 
+    conf2nix.url = "github:linyinfeng/conf2nix";
+    conf2nix.inputs.nixpkgs.follows = "nixpkgs";
+    conf2nix.inputs.flake-parts.follows = "flake-parts";
+
     # compatibility layer
 
     flake-compat.url = "github:edolstra/flake-compat";
@@ -321,6 +334,18 @@
             [
               "niri-flake"
               "xwayland-satellite-stable"
+            ]
+            [
+              "kukui-nixos"
+              "kernel-config-options"
+            ]
+            [
+              "kukui-nixos"
+              "kernel-extra-patches"
+            ]
+            [
+              "kukui-nixos"
+              "mt81xx-kernel"
             ]
           ];
         };

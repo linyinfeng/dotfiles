@@ -22,7 +22,7 @@ in
         [ profiles.users.root ]
       else
         (
-          suites.phone
+          suites.mobile
           ++ (with profiles; [
             nix.nixbuild
             networking.behind-fw
@@ -127,7 +127,7 @@ in
           home-manager.users.yinfeng =
             { suites, lib, ... }:
             {
-              imports = suites.phone;
+              imports = suites.mobile;
 
               dconf.settings = {
                 "sm/puri/phoc" = {

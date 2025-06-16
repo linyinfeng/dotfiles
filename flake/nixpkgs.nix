@@ -22,6 +22,7 @@ let
     inputs.deploy-rs.overlays.default
     inputs.nix-topology.overlays.default
     inputs.nix-alien.overlays.default
+    inputs.kukui-nixos.overlays.default
     (
       _final: prev:
       let

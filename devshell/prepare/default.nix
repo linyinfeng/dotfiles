@@ -42,10 +42,10 @@ let
 
       tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
 
-      message "craeting host directory..."
+      message "creating host directory..."
       mkdir --parents "nixos/hosts/$host"
 
-      message "craeting default.nix..."
+      message "creating default.nix..."
       cp "${hostDefaultNixTemplate}" "nixos/hosts/$host/default.nix"
 
       message "creating host in nix file..."

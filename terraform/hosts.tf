@@ -137,6 +137,13 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
+    sparrow = {
+      records      = {}
+      ddns_records = {}
+      host_indices = []
+      endpoints_v4 = []
+      endpoints_v6 = []
+    }
     # PLACEHOLDER new host
   }
 }
