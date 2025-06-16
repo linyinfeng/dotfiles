@@ -158,6 +158,7 @@ let
       mobile =
         (with suites; base ++ network)
         ++ (with profiles; [
+          boot.plymouth
           system.types.phone
           graphical.fonts
           i18n.input-method

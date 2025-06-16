@@ -49,5 +49,7 @@
     }
   ];
 
+  boot.blacklistedKernelModules = [ "onboard_usb_dev" ];
+
   boot.initrd.systemd.tpm2.enable = false;
 }

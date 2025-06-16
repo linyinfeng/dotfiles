@@ -9,6 +9,12 @@
   imports =
     suites.mobile
     ++ (with profiles; [
+      graphical.gnome
+      graphical.niri
+      services.acme
+      services.nginx
+      networking.behind-fw
+      networking.fw-proxy
       virtualization.waydroid
       hardware.backlight
       users.yinfeng
@@ -92,7 +98,11 @@
                   "@swap" = {
                     mountpoint = "/swap";
                     inherit mountOptions;
-                    swap.swapfile.size = "8G";
+                    swap.swapfile = {
+                      size = "8G";
+                      # make sure swapfile is correctly created then comment
+                      options = [ "nofail" ];
+                    };
                   };
                 };
             };
