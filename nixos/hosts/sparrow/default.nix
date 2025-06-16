@@ -17,6 +17,7 @@
       networking.fw-proxy
       virtualization.waydroid
       hardware.backlight
+      hardware.tablet
       users.yinfeng
     ])
     ++ [
@@ -37,6 +38,7 @@
         };
       };
 
+      services.tailscale.enable = true;
       networking.campus-network = {
         enable = true;
         auto-login.enable = true;
@@ -45,7 +47,12 @@
         { suites, ... }:
         {
           imports = suites.mobile;
+          # TODO wait for https://github.com/sodiboo/niri-flake/issues/978
+          # programs.niri.config.input.mod-key = "Alt";
         };
+
+      # faster build
+      documentation.man.generateCaches = false;
 
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;

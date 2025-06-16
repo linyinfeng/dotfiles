@@ -27,11 +27,9 @@ in
       praat
       qq
       tdesktop
-      teamspeak_client
       transmission-remote-gtk
       virt-manager
       virt-viewer
-      wechat-uos
       xournalpp
       zeal
       zotero

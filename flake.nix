@@ -340,15 +340,7 @@
             ]
             [
               "kukui-nixos"
-              "kernel-config-options"
-            ]
-            [
-              "kukui-nixos"
-              "kernel-extra-patches"
-            ]
-            [
-              "kukui-nixos"
-              "mt81xx-kernel"
+              "pmaports"
             ]
           ];
         };

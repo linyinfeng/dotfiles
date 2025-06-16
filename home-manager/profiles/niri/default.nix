@@ -95,7 +95,7 @@ lib.mkMerge [
             };
             mouse = {
             };
-            warp-mouse-to-focus = true;
+            warp-mouse-to-focus.enable = true;
             focus-follows-mouse = {
               enable = true;
               max-scroll-amount = "0%";
@@ -958,7 +958,7 @@ lib.mkMerge [
         main = {
           # close when lose focus
           keyboard-focus = "on-demand";
-          no-exit-on-keyboard-focus-loss = false;
+          exit-on-keyboard-focus-loss = true;
           icon-theme = "Adwaita";
         };
         colors = {

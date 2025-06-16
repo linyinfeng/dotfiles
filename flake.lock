@@ -566,38 +566,6 @@
         "type": "github"
       }
     },
-    "kernel-config-options": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1742722360,
-        "narHash": "sha256-663xN2W8xusdip3eQUoP7otCRqx+cg+Ny8Hdlwz33k8=",
-        "owner": "hexdump0815",
-        "repo": "kernel-config-options",
-        "rev": "66ac080b6416ebb370530715acce9310263700ec",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hexdump0815",
-        "repo": "kernel-config-options",
-        "type": "github"
-      }
-    },
-    "kernel-extra-patches": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1747427556,
-        "narHash": "sha256-3AAu6Wdj/A6DLZgJEIpvdRGdzJqiJxfvQ2FOZ5a5K2w=",
-        "owner": "hexdump0815",
-        "repo": "kernel-extra-patches",
-        "rev": "5d540f8cb39dce9f177e40b875141fcda8633d35",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hexdump0815",
-        "repo": "kernel-extra-patches",
-        "type": "github"
-      }
-    },
     "kukui-nixos": {
       "inputs": {
         "conf2nix": [
@@ -615,22 +583,20 @@
         "flake-parts": [
           "flake-parts"
         ],
-        "kernel-config-options": "kernel-config-options",
-        "kernel-extra-patches": "kernel-extra-patches",
-        "mt81xx-kernel": "mt81xx-kernel",
         "nixpkgs": [
           "nixpkgs"
         ],
+        "pmaports": "pmaports",
         "treefmt-nix": [
           "treefmt-nix"
         ]
       },
       "locked": {
-        "lastModified": 1750079736,
-        "narHash": "sha256-VBbbWWawed25NNpr1W9V1E9skM0NvuYdW/qYMaI+Jjk=",
+        "lastModified": 1750089681,
+        "narHash": "sha256-8PftAkLLyqo5p3kYI4LTz6pFOtqJNM/nv3JFy7x3T00=",
         "owner": "linyinfeng",
         "repo": "kukui-nixos",
-        "rev": "c319c374336a825bcd864b916d115629c1247d0a",
+        "rev": "f9f475dd959b16ede53d0423e449d38df71d0fd6",
         "type": "github"
       },
       "original": {
@@ -890,22 +856,6 @@
         "owner": "linyinfeng",
         "ref": "development",
         "repo": "mobile-nixos",
-        "type": "github"
-      }
-    },
-    "mt81xx-kernel": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1747898114,
-        "narHash": "sha256-a3lwNwPYOGnW6MDpeAnA2o0RMrmG12m3evGdWMvYue4=",
-        "owner": "hexdump0815",
-        "repo": "linux-mainline-mediatek-mt81xx-kernel",
-        "rev": "a1662da2fbef3b3f00f42835f7162d2d0d852541",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hexdump0815",
-        "repo": "linux-mainline-mediatek-mt81xx-kernel",
         "type": "github"
       }
     },
@@ -1446,6 +1396,24 @@
         "owner": "linyinfeng",
         "repo": "pastebin",
         "type": "github"
+      }
+    },
+    "pmaports": {
+      "flake": false,
+      "locked": {
+        "host": "gitlab.postmarketos.org",
+        "lastModified": 1750088773,
+        "narHash": "sha256-FqDK7FRHZoeSWJAeQ+3op+I6WeQAAVO1otz64cSA1Qw=",
+        "owner": "postmarketOS",
+        "repo": "pmaports",
+        "rev": "4a1b36849b6d896eac8bbe6854c5a66593296788",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "gitlab.postmarketos.org",
+        "owner": "postmarketOS",
+        "repo": "pmaports",
+        "type": "gitlab"
       }
     },
     "poetry2nix": {

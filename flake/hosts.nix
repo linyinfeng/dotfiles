@@ -253,18 +253,32 @@ let
         base ++ multimediaDev ++ music ++ design ++ virtualization ++ synchronize ++ security ++ other;
 
       mobile =
-        (with suites; base)
+        with suites;
+        base
+        ++ security
+        ++ other
         ++ (with profiles; [
+          # multimedia
           gnome
           niri
           darkman
           dconf-proxy
           chromium
-          fcitx5
           rime
+          fcitx5
+          mime
+
+          # development
+          git
           development
           direnv
+          ssh
           shells
+
+          # multimediaDev
+          xdg-dirs
+          vscode
+          alacritty
         ]);
     }
   );

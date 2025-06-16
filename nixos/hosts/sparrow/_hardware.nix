@@ -49,7 +49,44 @@
     }
   ];
 
+  # when using usb drive as root
+  # after switching root, loading this module causes root filesystem disconnection
   boot.blacklistedKernelModules = [ "onboard_usb_dev" ];
-
   boot.initrd.systemd.tpm2.enable = false;
+
+  home-manager.users.yinfeng.services.kanshi.settings =
+    let
+      embedded = "DSI-1";
+    in
+    [
+      {
+        output = {
+          criteria = embedded;
+          scale = 1.75;
+          transform = "90";
+        };
+      }
+      {
+        profile = {
+          name = "mobile";
+          outputs = [
+            { criteria = embedded; }
+          ];
+        };
+      }
+    ];
+
+  # needed for window manager to manage display brightness
+  environment.systemPackages = with pkgs; [ wluma ];
+  environment.etc."xdg/wluma/config.toml".text = ''
+    [als.iio]
+    path = "/sys/bus/iio/devices"
+    thresholds = { 0 = "night", 20 = "dark", 80 = "dim", 250 = "normal", 500 = "bright", 800 = "outdoors" }
+
+    [[output.backlight]]
+    name = "DSI-1"
+    path = "/sys/class/backlight/backlight_lcd0"
+    capturer = "wayland"
+  '';
+  environment.global-persistence.user.directories = [ ".local/share/wluma" ];
 }
