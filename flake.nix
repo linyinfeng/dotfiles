@@ -295,6 +295,9 @@
     conf2nix.url = "github:linyinfeng/conf2nix";
     conf2nix.inputs.nixpkgs.follows = "nixpkgs";
     conf2nix.inputs.flake-parts.follows = "flake-parts";
+    conf2nix.inputs.crane.follows = "crane";
+    conf2nix.inputs.flake-compat.follows = "flake-compat";
+    conf2nix.inputs.treefmt-nix.follows = "treefmt-nix";
 
     # compatibility layer
 
