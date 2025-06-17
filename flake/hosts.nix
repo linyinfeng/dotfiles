@@ -165,11 +165,13 @@ let
           programs.tools
           programs.nix-index
           development.shells
+          services.flatpak
           services.gnupg
           services.pipewire
           services.kde-connect
           services.printing
           services.bluetooth
+          security.hardware-keys
           networking.network-manager
         ]);
 
