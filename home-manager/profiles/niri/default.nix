@@ -455,6 +455,7 @@ lib.mkMerge [
           layer = "top";
           position = "top";
           modules-left = [
+            "custom/overview"
             "custom/launcher"
             "niri/workspaces"
             "wlr/taskbar"
@@ -579,6 +580,12 @@ lib.mkMerge [
           "tray" = {
             spacing = 12;
             icon-size = 16;
+          };
+          "custom/overview" = {
+            format = "󰮔";
+            inverval = "once";
+            tooltip-format = "Overview";
+            on-click = "niri msg action toggle-overview";
           };
           "custom/launcher" = {
             format = "󰍜";
@@ -956,9 +963,6 @@ lib.mkMerge [
       enable = true;
       settings = {
         main = {
-          # close when lose focus
-          keyboard-focus = "on-demand";
-          exit-on-keyboard-focus-loss = true;
           icon-theme = "Adwaita";
         };
         colors = {

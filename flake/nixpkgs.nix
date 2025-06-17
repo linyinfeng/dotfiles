@@ -130,6 +130,11 @@ let
             --add-flags --wayland-text-input-version=3
         '';
       };
+      wluma = prev.wluma.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          ../patches/0001-als-iio-add-cros-ec-light.patch
+        ];
+      });
     })
   ];
   alternativeChannels = nixpkgsArgs: {

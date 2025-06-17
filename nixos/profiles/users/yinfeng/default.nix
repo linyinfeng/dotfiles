@@ -43,8 +43,9 @@ in
         wheel.name
         keys.name
       ]
-      ++ groupNameIfPresent "adbusers"
+      ++ groupNameIfPresent "audio"
       ++ groupNameIfPresent "video"
+      ++ groupNameIfPresent "adbusers"
       ++ groupNameIfPresent "libvirtd"
       ++ groupNameIfPresent "transmission"
       ++ groupNameIfPresent "networkmanager"

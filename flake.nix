@@ -344,7 +344,7 @@
             ]
             [
               "kukui-nixos"
-              "alsa-ucm-conf-cros"
+              "nixpkgs-alsa-ucm-conf"
             ]
           ];
         };

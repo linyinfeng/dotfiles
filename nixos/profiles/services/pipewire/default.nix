@@ -11,7 +11,7 @@
     jack.enable = lib.mkDefault true;
     alsa.enable = lib.mkDefault true;
   };
-  services.pulseaudio.enable = false;
+  services.pulseaudio.enable = lib.mkDefault false;
 
   environment.systemPackages = with pkgs; [
     helvum

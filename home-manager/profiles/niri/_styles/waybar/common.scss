@@ -37,6 +37,7 @@ window.bar-status#waybar {
   }
 
   .modules-left {
+    #custom-overview,
     #custom-launcher {
       padding: 0 6px;
       &:hover {

@@ -27,17 +27,7 @@
 
   config = lib.mkMerge [
     {
-      hardware.enableRedistributableFirmware = true;
-
       services.desktopManager.gnome.enable = true;
-      services.power-profiles-daemon.enable = false;
-      services.tlp = {
-        enable = true;
-        settings = {
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
-        };
-      };
 
       services.tailscale.enable = true;
       networking.campus-network = {

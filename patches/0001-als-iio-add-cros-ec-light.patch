@@ -1,0 +1,13 @@
+diff --git a/src/als/iio.rs b/src/als/iio.rs
+index 6bf31ff..f6048e6 100644
+--- a/src/als/iio.rs
++++ b/src/als/iio.rs
+@@ -33,7 +33,7 @@ impl Als {
+             .and_then(|dir| {
+                 dir.filter_map(|e| e.ok())
+                     .find(|e| {
+-                        ["als", "acpi-als", "apds9960"].contains(
++                        ["als", "acpi-als", "apds9960", "cros-ec-light"].contains(
+                             &fs::read_to_string(e.path().join("name"))
+                                 .unwrap_or_default()
+                                 .trim(),

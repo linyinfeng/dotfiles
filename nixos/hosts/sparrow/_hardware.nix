@@ -1,16 +1,20 @@
 { pkgs, ... }:
 {
+  hardware.enableAllFirmware = true;
   hardware.deviceTree.filter = "mt8183-kukui-krane*.dtb";
 
-  # https://github.com/velvet-os/velvet-os.github.io/blob/main/chromebooks/systems/kukui/krane.md
+  services.pipewire = {
+    audio.enable = false;
+    pulse.enable = false;
+    alsa.enable = false;
+  };
+  services.pulseaudio.enable = true;
 
+  # https://wiki.postmarketos.org/wiki/Lenovo_IdeaPad_Duet_Chromebook_(google-krane)
   environment.etc."libinput/local-overrides.quirks".text = ''
-    [Google Chromebook Krane Trackpad]
+    [Touchpad pressure override]
     MatchUdevType=touchpad
     MatchName=Google Inc. Hammer
-    MatchBus=usb
-    MatchDeviceTree=*krane*
-    ModelChromebook=1
     AttrPressureRange=20:10
 
     [Google Chromebook Krane Stylus Digitizer]
@@ -19,21 +23,6 @@
     MatchBus=i2c
     ModelChromebook=1
     AttrPressureRange=1100:1000
-  '';
-  environment.etc."libwacom/google-krane.tablet".text = ''
-    [Device]
-    Name=hid-over-i2c 27C6:0E30 Stylus
-    ModelName=
-    DeviceMatch=i2c:27c6:0e30
-    Class=ISDV4
-    Width=5.35433
-    Height=8.54331
-    IntegratedIn=Display;System
-    Styli=@generic-no-eraser
-
-    [Features]
-    Stylus=true
-    Touch=false
   '';
 
   systemd.package = pkgs.systemd.override {
