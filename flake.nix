@@ -342,6 +342,10 @@
               "kukui-nixos"
               "pmaports"
             ]
+            [
+              "kukui-nixos"
+              "alsa-ucm-conf-cros"
+            ]
           ];
         };
         systems = [

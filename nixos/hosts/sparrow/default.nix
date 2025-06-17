@@ -18,6 +18,7 @@
       virtualization.waydroid
       hardware.backlight
       hardware.tablet
+      nix.hydra-builder-client
       users.yinfeng
     ])
     ++ [
@@ -43,6 +44,7 @@
         enable = true;
         auto-login.enable = true;
       };
+      systemd.network.wait-online.enable = false; # wifi are managed by nm
       home-manager.users.yinfeng =
         { suites, ... }:
         {
@@ -74,8 +76,8 @@
         };
       };
       kukui.disko = {
-        # device = "/dev/mmcblk0";
-        device = "/dev/sda";
+        diskName = "main";
+        device = "/dev/mmcblk0";
         partitions = {
           root = {
             priority = 3;
@@ -105,11 +107,7 @@
                   "@swap" = {
                     mountpoint = "/swap";
                     inherit mountOptions;
-                    swap.swapfile = {
-                      size = "8G";
-                      # make sure swapfile is correctly created then comment
-                      options = [ "nofail" ];
-                    };
+                    swap.swapfile.size = "8G";
                   };
                 };
             };

@@ -38,6 +38,22 @@
         "type": "github"
       }
     },
+    "alsa-ucm-conf-cros": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1747506801,
+        "narHash": "sha256-Nrmh3zoY5gnAkALaM0S0AQv/qZwqY6xQ5w1vt1AIGTI=",
+        "owner": "WeirdTreeThing",
+        "repo": "alsa-ucm-conf-cros",
+        "rev": "8eb9716a8a4d9cfcb1360a1325c7fe00f90fac6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "WeirdTreeThing",
+        "repo": "alsa-ucm-conf-cros",
+        "type": "github"
+      }
+    },
     "angrr": {
       "inputs": {
         "crane": [
@@ -568,6 +584,7 @@
     },
     "kukui-nixos": {
       "inputs": {
+        "alsa-ucm-conf-cros": "alsa-ucm-conf-cros",
         "conf2nix": [
           "conf2nix"
         ],
@@ -592,11 +609,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1750089681,
-        "narHash": "sha256-8PftAkLLyqo5p3kYI4LTz6pFOtqJNM/nv3JFy7x3T00=",
+        "lastModified": 1750153652,
+        "narHash": "sha256-6Ek1jR4tEopUIk/jjFpO32LyZM06jJhRUO2svU/nHnE=",
         "owner": "linyinfeng",
         "repo": "kukui-nixos",
-        "rev": "f9f475dd959b16ede53d0423e449d38df71d0fd6",
+        "rev": "1eec8dc720ef2a0542eae1bdb9ca3a3602659c05",
         "type": "github"
       },
       "original": {
@@ -1402,11 +1419,11 @@
       "flake": false,
       "locked": {
         "host": "gitlab.postmarketos.org",
-        "lastModified": 1750088773,
-        "narHash": "sha256-FqDK7FRHZoeSWJAeQ+3op+I6WeQAAVO1otz64cSA1Qw=",
+        "lastModified": 1750082276,
+        "narHash": "sha256-fvj2DtsatAHac2Nhe6031iA2yxzmU9MHP7moJPnSUN0=",
         "owner": "postmarketOS",
         "repo": "pmaports",
-        "rev": "4a1b36849b6d896eac8bbe6854c5a66593296788",
+        "rev": "bce020ea3625cda8ed65fb10a2b397144b58d5d9",
         "type": "gitlab"
       },
       "original": {

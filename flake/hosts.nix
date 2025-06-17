@@ -484,6 +484,23 @@ in
       ];
     })
 
+    # {
+    #   sparrow-installer = inputs.kukui-nixos.nixosConfigurations.installer.extendModules {
+    #     modules = [
+    #       {
+    #         environment.etc."system-to-install/source".source = "${self}";
+    #         environment.etc."system-to-install/toplevel".source = self.nixosConfigurations.sparrow.config.system.build.toplevel;
+    #         environment.etc."system-to-install/scripts/destroy-format-mount".source = self.nixosConfigurations.sparrow.config.system.build.destroyFormatMount;
+    #         environment.etc."system-to-install/scripts/mount".source = self.nixosConfigurations.sparrow.config.system.build.mount;
+    #         kukui.disko = {
+    #           diskName = "installer";
+    #           device = "/dev/sda"; # usb drive
+    #         };
+    #       }
+    #     ];
+    #   };
+    # }
+
     # TODO fix
     # (mkHost {
     #   name = "enchilada";

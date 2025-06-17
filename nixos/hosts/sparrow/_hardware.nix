@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   # https://github.com/velvet-os/velvet-os.github.io/blob/main/chromebooks/systems/kukui/krane.md
 
@@ -37,17 +37,6 @@
   systemd.package = pkgs.systemd.override {
     withEfi = false;
   };
-
-  boot.kernelPatches = [
-    {
-      name = "kukui-extra-options";
-      patch = null;
-      extraStructuredConfig = {
-        # required by envfs
-        EROFS_FS = lib.kernel.yes;
-      };
-    }
-  ];
 
   # when using usb drive as root
   # after switching root, loading this module causes root filesystem disconnection
