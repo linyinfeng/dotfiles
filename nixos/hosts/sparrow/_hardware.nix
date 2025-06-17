@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  hardware.deviceTree.filter = "mt8183-kukui-krane*.dtb";
+
   # https://github.com/velvet-os/velvet-os.github.io/blob/main/chromebooks/systems/kukui/krane.md
 
   environment.etc."libinput/local-overrides.quirks".text = ''
