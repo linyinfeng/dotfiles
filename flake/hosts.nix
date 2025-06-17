@@ -479,27 +479,30 @@ in
       extraModules = [
         inputs.kukui-nixos.nixosModules.default
         "${inputs.kukui-nixos}/profiles/disko.nix"
-        # cross compilation from x86_64-linux
-        # { nixpkgs.buildPlatform = "x86_64-linux"; }
+        (
+          { ... }:
+          {
+            passthru.sparrow-installer = inputs.kukui-nixos.nixosConfigurations.installer.extendModules {
+              modules = [
+                {
+                  environment.etc."system-to-install/source".source = "${self}";
+                  environment.etc."system-to-install/toplevel".source =
+                    self.nixosConfigurations.sparrow.config.system.build.toplevel;
+                  environment.etc."system-to-install/scripts/destroy-format-mount".source =
+                    self.nixosConfigurations.sparrow.config.system.build.destroyFormatMount;
+                  environment.etc."system-to-install/scripts/mount".source =
+                    self.nixosConfigurations.sparrow.config.system.build.mount;
+                  kukui.disko = {
+                    diskName = "installer";
+                    device = "/dev/sda"; # usb drive
+                  };
+                }
+              ];
+            };
+          }
+        )
       ];
     })
-
-    # {
-    #   sparrow-installer = inputs.kukui-nixos.nixosConfigurations.installer.extendModules {
-    #     modules = [
-    #       {
-    #         environment.etc."system-to-install/source".source = "${self}";
-    #         environment.etc."system-to-install/toplevel".source = self.nixosConfigurations.sparrow.config.system.build.toplevel;
-    #         environment.etc."system-to-install/scripts/destroy-format-mount".source = self.nixosConfigurations.sparrow.config.system.build.destroyFormatMount;
-    #         environment.etc."system-to-install/scripts/mount".source = self.nixosConfigurations.sparrow.config.system.build.mount;
-    #         kukui.disko = {
-    #           diskName = "installer";
-    #           device = "/dev/sda"; # usb drive
-    #         };
-    #       }
-    #     ];
-    #   };
-    # }
 
     # TODO fix
     # (mkHost {
