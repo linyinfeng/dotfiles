@@ -1,12 +1,4 @@
-{ pkgs, ... }:
-let
-  disabledGnomeKeyringSsh = pkgs.runCommand "gnome-keyring-ssh.desktop" { } ''
-    cp "${pkgs.gnome-keyring}/etc/xdg/autostart/gnome-keyring-ssh.desktop" tmp.desktop
-    chmod 644 tmp.desktop
-    echo "Hidden=true" >> tmp.desktop
-    cp tmp.desktop $out
-  '';
-in
+{ ... }:
 {
   programs.gpg = {
     enable = true;
@@ -19,7 +11,4 @@ in
       disable-ccid = true;
     };
   };
-
-  # disable GNOME Keyring SSH agent
-  xdg.configFile."autostart/gnome-keyring-ssh.desktop".source = disabledGnomeKeyringSsh;
 }
