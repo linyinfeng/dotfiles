@@ -162,7 +162,11 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
+      (_final: prev: {
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=418518
+        waydroid = prev.waydroid.override {
+          python3Packages = prev.python312Packages;
+        };
       })
     ];
 in
