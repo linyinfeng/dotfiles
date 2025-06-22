@@ -33,7 +33,6 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
 
   programs.chromium.extensions = [
     "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
-    "jfnifeihccihocjbfcfhicmmgpjicaec" # GSConnect
   ];
 
   # remove initial setup dialog
