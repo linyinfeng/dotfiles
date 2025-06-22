@@ -3,13 +3,6 @@
   hardware.enableAllFirmware = true;
   hardware.deviceTree.filter = "mt8183-kukui-krane*.dtb";
 
-  services.pipewire = {
-    audio.enable = false;
-    pulse.enable = false;
-    alsa.enable = false;
-  };
-  services.pulseaudio.enable = true;
-
   # https://wiki.postmarketos.org/wiki/Lenovo_IdeaPad_Duet_Chromebook_(google-krane)
   environment.etc."libinput/local-overrides.quirks".text = ''
     [Touchpad pressure override]
