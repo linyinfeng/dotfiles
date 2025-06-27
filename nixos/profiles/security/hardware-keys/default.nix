@@ -15,6 +15,8 @@
     pcsctools
   ];
 
+  services.gnome.gcr-ssh-agent.enable = false;
+
   # disabled
   security.pam.u2f = {
     enable = false;
