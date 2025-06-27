@@ -23,20 +23,7 @@ in
       "localnets"
       "localhost"
     ];
-    # TODO DOT forwarders not supported in bind stable yet
-    # forwarders = [];
-    forwarders = [
-      # cloudflare public dns
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-      # google public dns
-      "8.8.8.8"
-      "8.8.4.4"
-      "2001:4860:4860::8888"
-      "2001:4860:4860::8844"
-    ];
+    forwarders = [ ];
     extraOptions = ''
       listen-on    port ${toString dotPort} tls local { any; };
       listen-on-v6 port ${toString dotPort} tls local { any; };
@@ -44,20 +31,18 @@ in
 
       dnssec-validation auto;
 
-      # DOT forwarders not supported in bind stable yet
-      # TODO wait for bind 9.20
-      # forwarders port 853 tls cloudflare {
-      #   1.1.1.1;
-      #   1.0.0.1;
-      #   2606:4700:4700::1111;
-      #   2606:4700:4700::1001;
-      # };
-      # forwarders port 853 tls google {
-      #   8.8.8.8;
-      #   8.8.4.4;
-      #   2001:4860:4860::8888;
-      #   2001:4860:4860::8844;
-      # };
+      forwarders port 853 tls cloudflare {
+        1.1.1.1;
+        1.0.0.1;
+        2606:4700:4700::1111;
+        2606:4700:4700::1001;
+      };
+      forwarders port 853 tls google {
+        8.8.8.8;
+        8.8.4.4;
+        2001:4860:4860::8888;
+        2001:4860:4860::8844;
+      };
     '';
     extraConfig = ''
       http local {
