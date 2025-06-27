@@ -1,8 +1,8 @@
-From 3b8a229b7a07457aacbd3baab35a8e2fc79902b1 Mon Sep 17 00:00:00 2001
+From aaea81421776eb3b5a97317948a42bd6e0c09290 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
  <martynas.maciulevicius@pm.me>
 Date: Sun, 9 Feb 2025 13:05:36 +0200
-Subject: [PATCH 1/5] Idempotent bar show/hide via configurable user kill
+Subject: [PATCH 1/6] Idempotent bar show/hide via configurable user kill
  signals
 
 ---
@@ -240,11 +240,11 @@ index dc3eae0ce..1e28d66ea 100644
  
  }  // namespace waybar::util
 
-From a3f1273c506e259879b7f48a098e2237c804412d Mon Sep 17 00:00:00 2001
+From 3c7a9bf43214c1e544fe3bd851a4f91a7ac579b7 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
  <martynas.maciulevicius@pm.me>
 Date: Sat, 22 Feb 2025 09:28:32 +0200
-Subject: [PATCH 2/5] Documentation for sigusr1 and sigusr2 config
+Subject: [PATCH 2/6] Documentation for sigusr1 and sigusr2 config
 
 ---
  man/waybar.5.scd.in | 39 +++++++++++++++++++++++++++++++++++++--
@@ -339,11 +339,11 @@ index 5ca2ec044..6e6e76df7 100644
    }
  
 
-From def5c2a2e9c8c224aa38e2c88fc01b0bea50d512 Mon Sep 17 00:00:00 2001
+From 125b59e23bc5b8520ad903829afaa13a50d01ffd Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
  <martynas.maciulevicius@pm.me>
 Date: Sun, 2 Mar 2025 19:08:37 +0200
-Subject: [PATCH 3/5] Add more details on how 'reload' works in signals
+Subject: [PATCH 3/6] Add more details on how 'reload' works in signals
 
 ---
  man/waybar.5.scd.in | 3 ++-
@@ -364,11 +364,11 @@ index 002cb50b7..1fca6321d 100644
  
  # MULTI OUTPUT CONFIGURATION
 
-From 9ba07bc3ba4cf3b23fd643c1d0cadce6e8bf08d8 Mon Sep 17 00:00:00 2001
+From 7463be9b6a3777220377632cafb0447adb0f35cd Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
  <martynas.maciulevicius@pm.me>
 Date: Fri, 7 Mar 2025 07:45:11 +0200
-Subject: [PATCH 4/5] Fix initial null configuration; Fix doc compilation
+Subject: [PATCH 4/6] Fix initial null configuration; Fix doc compilation
  errors
 
 ---
@@ -416,11 +416,11 @@ index 1fca6321d..a2212f047 100644
  *show*    Switches state to visible (per bar).
  *hide*    Switches state to hidden (per bar).
 
-From c8b5e2b5d69f28168f03a1abcc9cbb134e648e95 Mon Sep 17 00:00:00 2001
+From b7ff47fb053fb04c4e3bba4b235084dfded3d171 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
  <martynas.maciulevicius@pm.me>
 Date: Thu, 26 Jun 2025 18:41:23 +0300
-Subject: [PATCH 5/5] User kill signal config keys: Use underscore instead of
+Subject: [PATCH 5/6] User kill signal config keys: Use underscore instead of
  dash
 
 ---
@@ -493,3 +493,26 @@ index 6e6e76df7..bb91aa010 100644
      }
    }
  
+
+From c8dc3e702402a936654d600b30727522eac8cb2c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
+ <martynas.maciulevicius@pm.me>
+Date: Thu, 26 Jun 2025 21:20:18 +0300
+Subject: [PATCH 6/6] Remove unused import
+
+---
+ src/main.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/main.cpp b/src/main.cpp
+index 7ac948b44..021f8e1ac 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -10,7 +10,6 @@
+ #include "bar.hpp"
+ #include "client.hpp"
+ #include "util/SafeSignal.hpp"
+-#include "util/backend_common.hpp"
+ 
+ std::mutex reap_mtx;
+ std::list<pid_t> reap;
