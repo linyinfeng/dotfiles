@@ -113,6 +113,9 @@ in
       delink
       tmpTest
     ];
+  environment.shellAliases = {
+    nom-hydra = ''nom build --builders @/etc/nix-build-machines/hydra-builder/machines'';
+  };
   passthru = {
     inherit delink tmpTest;
   };
