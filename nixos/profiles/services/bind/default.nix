@@ -23,26 +23,22 @@ in
       "localnets"
       "localhost"
     ];
-    forwarders = [ ];
+    forwarders = [
+      "1.1.1.1 port 853 tls cloudflare"
+      "1.0.0.1 port 853 tls cloudflare"
+      "2606:4700:4700::1111 port 853 tls cloudflare"
+      "2606:4700:4700::1001 port 853 tls cloudflare"
+      "8.8.8.8 port 853 tls google"
+      "8.8.4.4 port 853 tls google"
+      "2001:4860:4860::8888 port 853 tls google"
+      "2001:4860:4860::8844 port 853 tls google"
+    ];
     extraOptions = ''
       listen-on    port ${toString dotPort} tls local { any; };
       listen-on-v6 port ${toString dotPort} tls local { any; };
       listen-on-v6 port ${toString config.ports.bind-http} tls none http local { any; };
 
       dnssec-validation auto;
-
-      forwarders port 853 tls cloudflare {
-        1.1.1.1;
-        1.0.0.1;
-        2606:4700:4700::1111;
-        2606:4700:4700::1001;
-      };
-      forwarders port 853 tls google {
-        8.8.8.8;
-        8.8.4.4;
-        2001:4860:4860::8888;
-        2001:4860:4860::8844;
-      };
     '';
     extraConfig = ''
       http local {
