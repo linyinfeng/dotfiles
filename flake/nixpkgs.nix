@@ -56,6 +56,7 @@ let
       # scoped overlays
       mc-config-nuc = inputs.mc-config-nuc.overlays.default final prev;
       lanzaboote = inputs.lanzaboote.overlays.default final prev;
+      mobile-nixos = import "${inputs.mobile-nixos}/overlay/overlay.nix" final prev;
     })
     (final: prev: {
       # adjustment

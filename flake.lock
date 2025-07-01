@@ -587,7 +587,9 @@
           "nixpkgs"
         ],
         "nixpkgs-alsa-ucm-conf": "nixpkgs-alsa-ucm-conf",
-        "pmaports": "pmaports",
+        "pmaports": [
+          "pmaports"
+        ],
         "treefmt-nix": [
           "treefmt-nix"
         ]
@@ -1419,11 +1421,11 @@
       "flake": false,
       "locked": {
         "host": "gitlab.postmarketos.org",
-        "lastModified": 1750285320,
-        "narHash": "sha256-1jk3SCCCcNNzpdNzAvDjxJw8hWPFPQ/28EG5+CW6Cmw=",
+        "lastModified": 1751235922,
+        "narHash": "sha256-vDc+Ncp4UsnCAeo3RBFQZoxTW+tiqHbLHrjRAk69XLw=",
         "owner": "postmarketOS",
         "repo": "pmaports",
-        "rev": "a9fe11c77fa654480335b940d9347fb223ed2b9d",
+        "rev": "b636909bed9f5dfa4f0e8b35415c03bea03a9b0f",
         "type": "gitlab"
       },
       "original": {
@@ -1563,6 +1565,7 @@
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",
+        "pmaports": "pmaports",
         "poetry2nix": "poetry2nix",
         "pre-commit-hooks-nix": "pre-commit-hooks-nix",
         "preservation": "preservation",

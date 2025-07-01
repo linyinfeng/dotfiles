@@ -3,6 +3,7 @@
   config,
   pkgs,
   lib,
+  profiles,
   ...
 }:
 
@@ -40,10 +41,31 @@ let
       imageGz
     ];
   };
+
+  setupRndis = pkgs.writeShellApplication {
+    name = "setup-rndis";
+    runtimeInputs = with pkgs; [
+      gt
+    ];
+    text = ''
+      gt load g1.scheme g1
+      gt enable g1 a600000.usb
+    '';
+  };
+  hideSplash = pkgs.writeShellApplication {
+    name = "hide-splash";
+    runtimeInputs = with pkgs; [
+      plymouth
+    ];
+    text = ''
+      plymouth hide-splash
+    '';
+  };
 in
 {
-  boot.initrd.kernelModules = [
-    "msm" # so that firmwares reqiured by msm will be included in initrd
+  boot.consoleLogLevel = 6;
+  imports = with profiles; [
+    boot.android.boot-img
   ];
   nixpkgs.overlays = [
     (_final: _prev: {
@@ -51,14 +73,50 @@ in
       compressFirmwareZstd = lib.id;
     })
   ];
-  boot.initrd.systemd.contents = {
-    "/lib".source = lib.mkForce "${modulesClosureExtended}/lib";
-  };
+
   boot.initrd.systemd.services.initrd-nixos-activation = {
     serviceConfig = {
       StandardOutput = "journal+console";
     };
   };
+
+  boot.initrd.systemd.contents = {
+    "/lib".source = lib.mkForce "${modulesClosureExtended}/lib";
+
+    "/etc/gt/gt.conf".text = ''
+      lookup-path=["/etc/gt/templates"]
+    '';
+    "/etc/gt/templates/g1.scheme".source = ./_gadget/g1.scheme;
+  };
+  boot.initrd.systemd.storePaths = [
+    pkgs.gt
+    setupRndis
+  ];
+  boot.initrd.systemd.services.setup-rndis = {
+    script = lib.getExe setupRndis;
+    serviceConfig = {
+      StandardOutput = "journal+console";
+    };
+    wantedBy = [ "initrd.target" ];
+  };
+  boot.initrd.network.ssh.enable = true;
+  boot.initrd.systemd.network.networks."50-usb0" = {
+    matchConfig = {
+      Name = "usb0";
+    };
+    address = [ "172.16.42.1/24" ];
+  };
+
+  boot.initrd.systemd.services.plymouth-hide-splash = {
+    script = lib.getExe hideSplash;
+    after = [ "plymouth-start.service" ];
+    wantedBy = [ "plymouth-start.service" ];
+  };
+  # boot.initrd.systemd.services.initrd-nixos-activation = {
+  #   serviceConfig = {
+  #     StandardOutput = "journal+console";
+  #   };
+  # };
   # use nixpkgs initrd
   mobile.boot.stage-1.enable = lib.mkForce false;
   boot.initrd.systemd.managerEnvironment = {
@@ -69,7 +127,7 @@ in
       ++ [
         # initrd can not contain toplevel so that we can not use "init=${toplevel}/init" here
         # evaluation will be infinite recursion since initrd will be included in toplevel
-        "init=/run/current-system/systemd/lib/systemd/systemd"
+        "init=/nix/var/nix/profiles/system/init"
       ]
     );
   };

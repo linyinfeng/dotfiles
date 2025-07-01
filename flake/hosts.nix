@@ -27,7 +27,6 @@ let
           boot.systemd-initrd
           services.openssh
           services.dbus
-          services.oom-killer
           security.polkit
           security.rtkit
           security.sudo-rs
@@ -476,8 +475,6 @@ in
     (mkHost {
       name = "sparrow";
       system = "aarch64-linux";
-      # cross compilation from x86_64-linux
-      # forceFlakeNixpkgs = false;
       extraModules = [
         inputs.kukui-nixos.nixosModules.default
         "${inputs.kukui-nixos}/profiles/disko.nix"
@@ -506,22 +503,21 @@ in
       ];
     })
 
-    # TODO fix
-    # (mkHost {
-    #   name = "enchilada";
-    #   system = "aarch64-linux";
-    #   forceFlakeNixpkgs = false;
-    #   extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
-    #     "${inputs.mobile-nixos}/devices/oneplus-enchilada"
-    #     (
-    #       { ... }:
-    #       {
-    #         # mobile-nixos tests `config.nixpkgs.localSystem`
-    #         nixpkgs.system = "aarch64-linux";
-    #       }
-    #     )
-    #   ];
-    # })
+    (mkHost {
+      name = "enchilada";
+      system = "aarch64-linux";
+      forceFlakeNixpkgs = false;
+      extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
+        "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+        (
+          { ... }:
+          {
+            # mobile-nixos tests `config.nixpkgs.localSystem`
+            nixpkgs.system = "aarch64-linux";
+          }
+        )
+      ];
+    })
 
     (mkHost {
       name = "lax0";

@@ -9,7 +9,7 @@ in
     "gt/gt.conf".text = ''
       lookup-path=["/etc/gt/templates"]
     '';
-    "/etc/gt/templates/g1.scheme".source = ./g1.scheme;
+    "gt/templates/g1.scheme".source = ./g1.scheme;
   };
   systemd.targets.gt = {
     description = "Hardware activated USB gadget";

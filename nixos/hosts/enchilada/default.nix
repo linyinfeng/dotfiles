@@ -7,7 +7,7 @@
   ...
 }:
 let
-  minimal = true;
+  minimal = false;
 in
 {
   imports =
@@ -16,10 +16,14 @@ in
       ./_boot.nix
       ./_kernel.nix
       ./_gadget
+      ./_hardware.nix
     ]
     ++ (
       if minimal then
-        [ profiles.users.root ]
+        [
+          profiles.users.root
+          profiles.boot.plymouth
+        ]
       else
         (
           suites.mobile
@@ -70,25 +74,9 @@ in
       };
     }
 
+    # faster build
     {
-      mobile.boot.defaultConsole = null;
-      systemd.services.write-dmesg = {
-        script = ''
-          unbuffer dmesg --decode --follow | tee --append /dmesg
-        '';
-        unitConfig = {
-          DefaultDependencies = false;
-        };
-        serviceConfig = {
-          StandardOutput = "journal+console";
-        };
-        path = with pkgs; [
-          util-linux
-          expect
-        ];
-        before = [ "sysinit.target" ];
-        wantedBy = [ "sysinit.target" ];
-      };
+      documentation.man.generateCaches = false;
     }
 
     (lib.mkIf (!minimal) (
@@ -103,7 +91,7 @@ in
               outputs."DSI-1".scale = 3;
             };
           };
-          services.gnome.core-utilities.enable = true;
+          services.gnome.core-apps.enable = true;
 
           programs.calls.enable = true;
           programs.feedbackd.enable = true;

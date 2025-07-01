@@ -85,6 +85,7 @@
     kukui-nixos.inputs.flake-compat.follows = "flake-compat";
     kukui-nixos.inputs.flake-parts.follows = "flake-parts";
     kukui-nixos.inputs.treefmt-nix.follows = "treefmt-nix";
+    kukui-nixos.inputs.pmaports.follows = "pmaports";
 
     # home-manager modules
 
@@ -309,6 +310,9 @@
     mobile-nixos.url = "github:linyinfeng/mobile-nixos/development";
     mobile-nixos.flake = false;
 
+    pmaports.url = "gitlab:postmarketOS/pmaports?host=gitlab.postmarketos.org";
+    pmaports.flake = false;
+
     # fixes
   };
 
@@ -337,10 +341,6 @@
             [
               "niri-flake"
               "xwayland-satellite-stable"
-            ]
-            [
-              "kukui-nixos"
-              "pmaports"
             ]
             [
               "kukui-nixos"
