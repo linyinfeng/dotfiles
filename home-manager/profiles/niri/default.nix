@@ -837,8 +837,8 @@ lib.mkMerge [
           position = "bottom";
           exclusive = false;
           start_hidden = true;
-          on_sigusr2 = "show";
-          on_sigusr1 = "hide";
+          on-sigusr2 = "show";
+          on-sigusr1 = "hide";
           modules-center = [ "cffi/niri-taskbar" ];
           "cffi/niri-taskbar" = {
             module_path = "${pkgs.nur.repos.linyinfeng.niri-taskbar}/lib/libniri_taskbar.so";
