@@ -35,6 +35,7 @@ let
           system.common
           system.sysrq
           system.perlless
+          system.oomd
           development.shells
           users.root
         ]);
