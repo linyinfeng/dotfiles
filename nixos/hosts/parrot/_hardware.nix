@@ -64,6 +64,7 @@ lib.mkMerge [
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "eDP-1";
+        dormMonitor = "SKYDATA S.P.A. 24X1Q Unknown";
       in
       [
         {
@@ -73,10 +74,31 @@ lib.mkMerge [
           };
         }
         {
+          output = {
+            criteria = dormMonitor;
+            scale = 1.25;
+          };
+        }
+        {
           profile = {
             name = "undocked";
             outputs = [
               { criteria = embedded; }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-dorm";
+            outputs = [
+              {
+                criteria = embedded;
+                position = "0,293";
+              }
+              {
+                criteria = dormMonitor;
+                position = "1289,0";
+              }
             ];
           };
         }
