@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 let
@@ -23,6 +22,7 @@ in
       libreoffice-fresh
       meld
       mission-center
+      moonlight-qt
       picard
       praat
       qq
@@ -93,13 +93,13 @@ in
 
       ".config/calibre"
       ".config/Element"
-      # ".config/SchildiChat"
       ".config/icalingua"
       ".config/QQ"
       ".config/unity3d" # unity3d game saves
       ".config/transmission-remote-gtk"
       ".config/MusicBrainz" # picard configs
       ".config/inkscape"
+      ".config/Moonlight Game Streaming Project"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
