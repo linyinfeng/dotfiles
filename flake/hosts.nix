@@ -120,6 +120,7 @@ let
           services.flatpak
           security.hardware-keys
           services.smartd
+          services.sunshine
           hardware.rtl-sdr
           hardware.tablet
           nix.nixbuild
