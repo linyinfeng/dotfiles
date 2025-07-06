@@ -107,6 +107,7 @@ let
           programs.solaar
           programs.service-mail
           programs.tg-send
+          programs.localsend
           services.bluetooth
           services.auto-upgrade
           services.kde-connect
@@ -164,6 +165,7 @@ let
           i18n.input-method
           programs.tools
           programs.nix-index
+          programs.localsend
           development.shells
           services.flatpak
           services.gnupg
