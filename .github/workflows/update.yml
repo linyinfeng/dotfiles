@@ -45,15 +45,15 @@ jobs:
             git add --all
             git commit --message "terraform-init -upgrade"
           fi
-      - name: Patches update
+      - name: Patches and config update
         run: |
           set -e
-          nix develop --command update-patches
+          nix develop --command update-data
           if [ -z "$(git status --porcelain)" ]; then
             echo "repository is clean, skip commit"
           else
             git add --all
-            git commit --message "update-patches"
+            git commit --message "update-data"
           fi
       - name: Nix flake update
         run: |
