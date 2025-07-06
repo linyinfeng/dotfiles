@@ -8,11 +8,13 @@ lib.mkMerge [
   {
     networking.networkmanager = {
       enable = true;
-      enableStrongSwan = true;
       logLevel = "INFO";
       connectionConfig = {
         "connection.mdns" = 2;
       };
+      plugins = with pkgs; [
+        networkmanager-strongswan
+      ];
     };
 
     environment.global-persistence.directories = [ "/etc/NetworkManager/system-connections" ];
