@@ -3,7 +3,7 @@
   imports = [
     ./terraform.nix
     ./boot-sd.nix
-    ./data.nix
+    ./patches.nix
     ./enchilada.nix
     ./prepare
   ];
