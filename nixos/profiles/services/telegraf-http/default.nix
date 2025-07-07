@@ -61,6 +61,7 @@ let
     smtp = [ ];
     teamspeak = [ ];
     portal = [ ];
+    subscription = [ ];
   };
   overrides = {
     box = [
