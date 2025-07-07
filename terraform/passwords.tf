@@ -397,3 +397,11 @@ output "sicp_tutorials_hashed_password" {
   value     = htpasswd_password.sicp_tutorials.sha512
   sensitive = true
 }
+resource "random_password" "fw_proxy_subscription" {
+  length  = 64
+  special = false
+}
+output "fw_proxy_subscription_password" {
+  value     = random_password.fw_proxy_subscription.result
+  sensitive = true
+}

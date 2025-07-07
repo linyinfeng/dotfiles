@@ -12,6 +12,8 @@ terraform/moon
 .terraform
 prepare-host-notice*
 
+__pycache__
+
 *.qcow2
 
 # nixago: ignore-linked-files

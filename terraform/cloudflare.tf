@@ -154,6 +154,7 @@ locals {
     mc             = { on = "nuc", proxy = false }
     matrix-qq      = { on = "nuc", proxy = false }
     teamspeak      = { on = "nuc", proxy = false }
+    subscription   = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {

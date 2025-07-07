@@ -51,6 +51,7 @@ in
       services.smartd
       services.postgresql
       services.hydra
+      services.fw-proxy-subscription
       # services.matrix-qq
       services.teamspeak
       programs.service-mail

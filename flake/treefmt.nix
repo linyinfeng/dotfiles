@@ -36,6 +36,7 @@
             prettier.enable = true;
             stylua.enable = true;
             keep-sorted.enable = true;
+            black.enable = true;
           };
           settings.formatter = {
             shfmt = {
