@@ -12,6 +12,7 @@ lib.mkMerge [
       connectionConfig = {
         "connection.mdns" = 2;
       };
+      wifi.backend = "iwd";
       plugins = with pkgs; [
         networkmanager-strongswan
       ];
