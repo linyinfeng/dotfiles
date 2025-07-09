@@ -35,6 +35,7 @@ in
       services.godns
       services.nginx
       services.acme
+      services.fwupd
       programs.service-mail
       programs.tg-send
       users.yinfeng
@@ -51,7 +52,6 @@ in
   # kernel chooses wrong hidpi font for this machine
   boot.kernelParams = [ "fbcon=font:VGA8x16" ];
   hardware.enableRedistributableFirmware = true;
-  services.fwupd.enable = true;
 
   services.desktopManager.gnome.enable = true;
 

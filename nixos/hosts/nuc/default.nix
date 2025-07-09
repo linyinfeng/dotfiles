@@ -52,6 +52,7 @@ in
       services.postgresql
       services.hydra
       services.fw-proxy-subscription
+      services.fwupd
       # services.matrix-qq
       services.teamspeak
       programs.service-mail
@@ -71,7 +72,6 @@ in
         systemd-boot.enable = true;
       };
       hardware.enableRedistributableFirmware = true;
-      services.fwupd.enable = true;
 
       services.thermald.enable = true;
 

@@ -21,6 +21,7 @@ in
       services.nginx
       services.acme
       services.fprintd
+      services.fwupd
       hardware.backlight
       hardware.nvidia-egpu
       users.yinfeng
@@ -55,10 +56,7 @@ in
       };
       services.logind.lidSwitchExternalPower = "ignore";
 
-      services.fwupd = {
-        enable = true;
-        extraRemotes = [ "lvfs-testing" ];
-      };
+      services.fwupd.extraRemotes = [ "lvfs-testing" ];
 
       networking.campus-network = {
         enable = true;

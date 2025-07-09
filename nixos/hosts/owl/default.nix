@@ -20,6 +20,7 @@ in
       services.godns
       services.nginx
       services.acme
+      services.fwupd
       hardware.backlight
       hardware.nvidia-egpu
       users.yinfeng
@@ -55,8 +56,6 @@ in
         };
       };
       services.logind.lidSwitchExternalPower = "ignore";
-
-      services.fwupd.enable = true;
 
       networking.campus-network = {
         enable = true;
