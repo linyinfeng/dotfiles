@@ -17,6 +17,7 @@ let
         echo ${cfg.compressor}              | tee /sys/module/zswap/parameters/compressor
         echo ${cfg.zpool}                   | tee /sys/module/zswap/parameters/zpool
         echo ${toString cfg.maxPoolPercent} | tee /sys/module/zswap/parameters/max_pool_percent
+        echo ${cfg.shrinkerEnabled} | tee /sys/module/zswap/parameters/shrinker_enabled
 
         echo Y | tee /sys/module/zswap/parameters/enabled
         grep -r . /sys/module/zswap/parameters
@@ -44,11 +45,20 @@ in
     };
     zpool = lib.mkOption {
       type = with lib.types; str;
-      default = "zbud";
+      default = "zsmalloc";
     };
     maxPoolPercent = lib.mkOption {
       type = with lib.types; int;
       default = 20;
+    };
+    shrinkerEnabled = lib.mkOption {
+      type =
+        with lib.types;
+        enum [
+          "N"
+          "Y"
+        ];
+      default = "Y";
     };
   };
 
