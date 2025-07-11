@@ -37,7 +37,12 @@
       ];
       diskio = [ { tags.output_bucket = "system"; } ];
       mem = [ { tags.output_bucket = "system"; } ];
-      net = [ { tags.output_bucket = "system"; } ];
+      net = [
+        {
+          tags.output_bucket = "system";
+          ignore_protocol_stats = true;
+        }
+      ];
       processes = [ { tags.output_bucket = "system"; } ];
       swap = [ { tags.output_bucket = "system"; } ];
       system = [ { tags.output_bucket = "system"; } ];
