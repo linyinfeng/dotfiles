@@ -65,7 +65,7 @@ let
         fi
       }
       while true; do
-        test_and_login
+        test_and_login || true # always continue
         sleep "$interval"
       done
     '';
