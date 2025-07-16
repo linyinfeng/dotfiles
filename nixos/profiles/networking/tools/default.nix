@@ -10,7 +10,7 @@
   environment.systemPackages = with pkgs; [
     # keep-sorted start
     aria2
-    axel
+    # axel # TODO wait for https://github.com/NixOS/nixpkgs/issues/425275
     curl
     dnsutils
     ethtool

@@ -158,11 +158,14 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: prev: {
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=418518
-        waydroid = prev.waydroid.override {
-          python3Packages = prev.python312Packages;
-        };
+      (_final: _prev: {
+        inherit (unstable-small)
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=425337
+          strongswan
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=425144
+          gimp
+          ;
+        inherit (stable) extractpdfmark;
       })
     ];
 in
