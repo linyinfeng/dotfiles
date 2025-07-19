@@ -62,7 +62,8 @@ let
             v4 = [ hostCfg.preferredAddressV4 ];
             v6 = [
               config.networking.dn42.bgp.peering.defaults.linkAddresses.v6.local
-            ] ++ [ hostCfg.preferredAddressV6 ];
+            ]
+            ++ [ hostCfg.preferredAddressV6 ];
           };
         };
         traffic_control = config.passthru.dn42TrafficControlTable.${name}.enable;

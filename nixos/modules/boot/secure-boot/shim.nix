@@ -17,63 +17,62 @@ let
       glibc
       singEfiFile
     ];
-    text =
-      ''
-        esp_device=$(df --portability "${efiSysMountPoint}" | awk 'END{print $1}')
-        if [[ $esp_device =~ ^(.+)p([0-9]+)$ ]]; then
-          disk="''${BASH_REMATCH[1]}"
-          part="''${BASH_REMATCH[2]}"
-        else
-          echo "unable to parse ESP device path $esp_device" >&2
-          exit 1
-        fi
+    text = ''
+      esp_device=$(df --portability "${efiSysMountPoint}" | awk 'END{print $1}')
+      if [[ $esp_device =~ ^(.+)p([0-9]+)$ ]]; then
+        disk="''${BASH_REMATCH[1]}"
+        part="''${BASH_REMATCH[2]}"
+      else
+        echo "unable to parse ESP device path $esp_device" >&2
+        exit 1
+      fi
 
-        for file in shim mm; do
-          target="${efiSysMountPoint}/${cfg.directory}/''${file}${cfg.archSuffix}.efi"
-          echo "installing $target..."
-          cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
-          echo "signing $target..."
-          sign-efi-file "$target"
-        done
+      for file in shim mm; do
+        target="${efiSysMountPoint}/${cfg.directory}/''${file}${cfg.archSuffix}.efi"
+        echo "installing $target..."
+        cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
+        echo "signing $target..."
+        sign-efi-file "$target"
+      done
 
-        # https://github.com/rhboot/shim/blob/main/README.fallback
-        boot_csv_file="${efiSysMountPoint}/${cfg.directory}/BOOT.CSV"
-        echo "creating $boot_csv_file..."
-        iconv --to-code=UCS-2 --output="$boot_csv_file" <<EOF
-        shim${cfg.archSuffix}.efi,${cfg.fallback.label},${cfg.fallback.loaderData},${lib.concatStringsSep "," cfg.fallback.comments}
-        EOF
-      ''
-      + lib.optionalString cfg.removable.enable ''
-        for file in shim mm fb; do
-          target="${efiSysMountPoint}/EFI/BOOT/''${file}${cfg.archSuffix}.efi"
-          echo "installing $target..."
-          cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
-          echo "signing $target..."
-          sign-efi-file "$target"
-        done
-        mv --verbose \
-           "${efiSysMountPoint}/EFI/BOOT/shim${cfg.archSuffix}.efi" \
-           "${efiSysMountPoint}/EFI/BOOT/BOOT${lib.toUpper cfg.archSuffix}.efi"
-      ''
-      + lib.optionalString cfg.bootEntry.install ''
-        echo "cleaning boot entry..."
-        efibootmgr --quiet --delete-bootnum --label "${cfg.bootEntry.label}" || true
-        echo "creating boot entry..."
-        efibootmgr --quiet --create --label "${cfg.bootEntry.label}" \
-          --disk "$disk" --part "$part" --loader '\${
-            lib.replaceStrings [ "/" ] [ "\\" ] cfg.directory
-          }\shim${cfg.archSuffix}.efi'
-      ''
-      + lib.optionalString cfg.mokManager.addEntry ''
-        echo "creating MokManager boot entry..."
-        mkdir --parents "${efiSysMountPoint}/loader/entries"
-        cat >"${efiSysMountPoint}/loader/entries/mok-manager.conf" <<EOF
-        title MokManager
-        version ${cfg.package.version}
-        sort-key mokmanager
-        efi /${cfg.directory}/mm${cfg.archSuffix}.efi
-        EOF
-      '';
+      # https://github.com/rhboot/shim/blob/main/README.fallback
+      boot_csv_file="${efiSysMountPoint}/${cfg.directory}/BOOT.CSV"
+      echo "creating $boot_csv_file..."
+      iconv --to-code=UCS-2 --output="$boot_csv_file" <<EOF
+      shim${cfg.archSuffix}.efi,${cfg.fallback.label},${cfg.fallback.loaderData},${lib.concatStringsSep "," cfg.fallback.comments}
+      EOF
+    ''
+    + lib.optionalString cfg.removable.enable ''
+      for file in shim mm fb; do
+        target="${efiSysMountPoint}/EFI/BOOT/''${file}${cfg.archSuffix}.efi"
+        echo "installing $target..."
+        cp "${cfg.package}/share/shim/''${file}${cfg.archSuffix}.efi" "$target"
+        echo "signing $target..."
+        sign-efi-file "$target"
+      done
+      mv --verbose \
+         "${efiSysMountPoint}/EFI/BOOT/shim${cfg.archSuffix}.efi" \
+         "${efiSysMountPoint}/EFI/BOOT/BOOT${lib.toUpper cfg.archSuffix}.efi"
+    ''
+    + lib.optionalString cfg.bootEntry.install ''
+      echo "cleaning boot entry..."
+      efibootmgr --quiet --delete-bootnum --label "${cfg.bootEntry.label}" || true
+      echo "creating boot entry..."
+      efibootmgr --quiet --create --label "${cfg.bootEntry.label}" \
+        --disk "$disk" --part "$part" --loader '\${
+          lib.replaceStrings [ "/" ] [ "\\" ] cfg.directory
+        }\shim${cfg.archSuffix}.efi'
+    ''
+    + lib.optionalString cfg.mokManager.addEntry ''
+      echo "creating MokManager boot entry..."
+      mkdir --parents "${efiSysMountPoint}/loader/entries"
+      cat >"${efiSysMountPoint}/loader/entries/mok-manager.conf" <<EOF
+      title MokManager
+      version ${cfg.package.version}
+      sort-key mokmanager
+      efi /${cfg.directory}/mm${cfg.archSuffix}.efi
+      EOF
+    '';
   };
   singEfiFile = pkgs.writeShellApplication {
     name = "sign-efi-file";

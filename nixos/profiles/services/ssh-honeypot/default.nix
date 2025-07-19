@@ -63,7 +63,8 @@ in
       COWRIE_HONEYPOT_AUTH_CLASS = "AuthRandom";
       COWRIE_SHELL_KERNEL_VERSION = "5.10.0-20-amd64";
       COWRIE_SHELL_KERNEL_BUILD_STRING = "#1 SMP Debian 5.10.158-2 (2022-12-13)";
-    } // lib.optionalAttrs config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
+    }
+    // lib.optionalAttrs config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
     after = [ "network-online.target" ];
     requires = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];

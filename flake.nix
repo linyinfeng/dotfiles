@@ -371,7 +371,8 @@
           inputs.linyinfeng.flakeModules.passthru
           inputs.linyinfeng.flakeModules.nixago
           inputs.nix-topology.flakeModule
-        ] ++ selfLib.buildModuleList ./flake;
+        ]
+        ++ selfLib.buildModuleList ./flake;
       }
     );
 }

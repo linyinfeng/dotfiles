@@ -15,13 +15,11 @@ let
           ];
           # signature will be stripped
           dontStrip = true;
-          postBuild =
-            (old.postBuild or "")
-            + ''
-              for module in kernel-open/*.ko; do
-                sign-module "$module"
-              done
-            '';
+          postBuild = (old.postBuild or "") + ''
+            for module in kernel-open/*.ko; do
+              sign-module "$module"
+            done
+          '';
         });
       }
     else

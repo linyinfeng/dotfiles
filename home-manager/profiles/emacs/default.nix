@@ -44,15 +44,16 @@ in
     inherit emacs;
   };
 
-  home.packages =
-    [ emacs ]
-    ++ (with pkgs; [
-      ispell
-      sqlite # org-roam
-      graphviz # org-roam
-      poppler_utils # pdf-tools
-      ripgrep # rg
-    ]);
+  home.packages = [
+    emacs
+  ]
+  ++ (with pkgs; [
+    ispell
+    sqlite # org-roam
+    graphviz # org-roam
+    poppler_utils # pdf-tools
+    ripgrep # rg
+  ]);
   home.file = {
     ".emacs.d/var/orgs/templates".source = ./_org-roam/templates;
     ".emacs.d/rime" = {

@@ -45,11 +45,9 @@
             ];
             # signature will be stripped
             dontStrip = true;
-            postBuild =
-              (old.postBuild or "")
-              + ''
-                sign-module kvmfr.ko
-              '';
+            postBuild = (old.postBuild or "") + ''
+              sign-module kvmfr.ko
+            '';
           }))
         else
           kvmfr

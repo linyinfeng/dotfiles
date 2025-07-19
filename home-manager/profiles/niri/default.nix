@@ -474,11 +474,9 @@ lib.mkMerge [
 
             "network"
             "wireplumber"
-            "battery"
-
-            "systemd-failed-units"
-
             "custom/osd"
+            "systemd-failed-units"
+            "battery"
           ];
           "niri/workspaces" = {
             # "current-only" = true;
@@ -538,8 +536,9 @@ lib.mkMerge [
               warning = 30;
               critical = 15;
             };
-            format = "{icon}";
-            tooltip-format = "{capacity}%";
+            format = "{icon} {capacity}%";
+            format-discharging = "{icon} {capacity}% ({power:.1f}W)";
+            tooltip-format = "{timeTo}";
             format-icons = [
               "󰂎"
               "󰁺"
@@ -861,9 +860,10 @@ lib.mkMerge [
           ExecStart = "${lib.getExe package} --config ${configFile}";
           Restart = "on-failure";
         };
-        Install = {
-          WantedBy = [ "niri.service" ];
-        };
+        # disabled
+        # Install = {
+        #   WantedBy = [ "niri.service" ];
+        # };
       };
     }
   )

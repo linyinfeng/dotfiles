@@ -11,29 +11,30 @@ let
       h:
       lib.nameValuePair h {
         id = config.lib.self.data.hosts.${h}.syncthing_device_id;
-        addresses =
-          [ "dynamic" ]
-          ++ lib.flatten (
-            lib.lists.map
-              (
-                middle:
-                lib.lists.map
-                  (
-                    protocol: "${protocol}://${h}.${middle}li7g.com:${toString config.ports.syncthing-transfer-yinfeng}"
-                  )
-                  [
-                    "tcp"
-                    "tcp6"
-                    "udp"
-                    "udp6"
-                  ]
-              )
-              [
-                ""
-                "ts."
-                "zt."
-              ]
-          );
+        addresses = [
+          "dynamic"
+        ]
+        ++ lib.flatten (
+          lib.lists.map
+            (
+              middle:
+              lib.lists.map
+                (
+                  protocol: "${protocol}://${h}.${middle}li7g.com:${toString config.ports.syncthing-transfer-yinfeng}"
+                )
+                [
+                  "tcp"
+                  "tcp6"
+                  "udp"
+                  "udp6"
+                ]
+            )
+            [
+              ""
+              "ts."
+              "zt."
+            ]
+        );
       }
     ) simpleDeviceNames
   );

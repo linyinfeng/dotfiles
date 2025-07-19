@@ -23,11 +23,10 @@ in
   };
   security.acme.certs."prebuilt-zip" = {
     domain = "prebuilt.zip";
-    extraDomainNames =
-      [
-        "*.prebuilt.zip"
-      ]
-      ++ lib.lists.map (n: "*.${toString n}.prebuilt.zip") (lib.range 0 9)
-      ++ explicitRickRolls;
+    extraDomainNames = [
+      "*.prebuilt.zip"
+    ]
+    ++ lib.lists.map (n: "*.${toString n}.prebuilt.zip") (lib.range 0 9)
+    ++ explicitRickRolls;
   };
 }

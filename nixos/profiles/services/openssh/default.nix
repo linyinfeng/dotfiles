@@ -56,22 +56,21 @@ in
   programs.ssh.knownHosts = knownHosts;
 
   programs.ssh = {
-    extraConfig =
-      ''
-        ServerAliveInterval ${aliveInterval}
-        ServerAliveCountMax ${aliveCountMax}
-      ''
-      + lib.concatMapStringsSep "\n" (h: ''
-        Host ${h}
-          HostName ${h}.dn42.li7g.com
-          Port ${toString config.ports.ssh}
-        Host ${h}.dn42
-          HostName ${h}.dn42.li7g.com
-          Port ${toString config.ports.ssh}
-        Host ${h}.ts
-          HostName ${h}.ts.li7g.com
-          Port ${toString config.ports.ssh}
-      '') (lib.attrNames config.networking.hostsData.indexedHosts);
+    extraConfig = ''
+      ServerAliveInterval ${aliveInterval}
+      ServerAliveCountMax ${aliveCountMax}
+    ''
+    + lib.concatMapStringsSep "\n" (h: ''
+      Host ${h}
+        HostName ${h}.dn42.li7g.com
+        Port ${toString config.ports.ssh}
+      Host ${h}.dn42
+        HostName ${h}.dn42.li7g.com
+        Port ${toString config.ports.ssh}
+      Host ${h}.ts
+        HostName ${h}.ts.li7g.com
+        Port ${toString config.ports.ssh}
+    '') (lib.attrNames config.networking.hostsData.indexedHosts);
   };
 
   sops.secrets."ssh_host_rsa_key" = {
