@@ -1,4 +1,3 @@
-# https://github.com/NixOS/nixos-hardware/blob/master/framework/13-inch/12th-gen-intel/default.nix
 {
   config,
   pkgs,
@@ -19,7 +18,7 @@ lib.mkMerge [
 
       [[output.backlight]]
       name = "eDP-1"
-      path = "/sys/class/backlight/intel_backlight"
+      path = "/sys/class/backlight/amdgpu_bl1"
       capturer = "wayland"
     '';
     environment.global-persistence.user.directories = [ ".local/share/wluma" ];
@@ -31,10 +30,8 @@ lib.mkMerge [
       "thunderbolt"
       "nvme"
       "usb_storage"
+      "usbhid"
       "sd_mod"
-    ];
-    boot.kernelModules = [
-      "kvm-intel"
     ];
 
     systemd.services = lib.mkIf config.services.displayManager.gdm.enable {
@@ -64,13 +61,21 @@ lib.mkMerge [
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "eDP-1";
+        labMonitor = "Lenovo Group Limited P27h-20 U5HCT52K";
         dormMonitor = "SKYDATA S.P.A. 24X1Q Unknown";
       in
       [
         {
           output = {
             criteria = embedded;
-            scale = 1.75;
+            scale = 2.0;
+            adaptiveSync = true;
+          };
+        }
+        {
+          output = {
+            criteria = labMonitor;
+            scale = 1.0;
           };
         }
         {
@@ -89,15 +94,41 @@ lib.mkMerge [
         }
         {
           profile = {
+            name = "docked-lab";
+            outputs = [
+              {
+                criteria = labMonitor;
+                position = "0,0";
+              }
+              {
+                criteria = embedded;
+                position = "2560,580";
+              }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-lab-single";
+            outputs = [
+              {
+                criteria = labMonitor;
+                position = "0,0";
+              }
+            ];
+          };
+        }
+        {
+          profile = {
             name = "docked-dorm";
             outputs = [
               {
                 criteria = embedded;
-                position = "0,293";
+                position = "0,192";
               }
               {
                 criteria = dormMonitor;
-                position = "1289,0";
+                position = "1536,0";
               }
             ];
           };
