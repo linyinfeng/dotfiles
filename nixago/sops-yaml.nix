@@ -11,10 +11,6 @@ let
   yubikeyKeys = lib.attrValues yubikeys;
   github = "age143hpp7hqp4708z2dy868llsj8u9lc2jyq59ahnzusjvwg5g2u3cs3jaltg";
   hosts = {
-    owl = {
-      key = "age1qrrwcee244ak7ax9xwuxdttzsan24g655lpmvry3275j6v4n2pesjwyawu";
-      owned = true;
-    };
     parrot = {
       key = "age1dunh0ajcw0um8l7cwu8k84dqux4krqneryx99dm9mwp4hkg42cdssfzmef";
       owned = true;

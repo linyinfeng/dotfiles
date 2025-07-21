@@ -20,12 +20,10 @@ in
   environment.etc."${dir}/machines-workstation".text = ''
     hydra-builder@nuc     ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
     hydra-builder@xps8930 ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
-    hydra-builder@owl     ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
 
     hydra-builder@fsn0    aarch64-linux ${keyFile} 2 100 benchmark,big-parallel
     hydra-builder@nuc     aarch64-linux ${keyFile} 8 50
     hydra-builder@xps8930 aarch64-linux ${keyFile} 8 50
-    hydra-builder@owl     aarch64-linux ${keyFile} 8 50
   '';
   sops.secrets."hydra_builder_private_key" = {
     terraformOutput.enable = true;

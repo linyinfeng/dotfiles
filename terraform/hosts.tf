@@ -86,7 +86,7 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
-    owl = {
+    parrot = {
       records = {}
       ddns_records = {
         aaaa = {
@@ -114,19 +114,6 @@ locals {
         }
       }
       host_indices = [22]
-      endpoints_v4 = []
-      endpoints_v6 = []
-    }
-    parrot = {
-      records = {}
-      ddns_records = {
-        aaaa = {
-          proxied = false
-          type    = "AAAA"
-          value   = "::1"
-        }
-      }
-      host_indices = [23]
       endpoints_v4 = []
       endpoints_v6 = []
     }

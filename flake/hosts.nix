@@ -436,22 +436,13 @@ in
 
   flake.nixosConfigurations = lib.mkMerge [
     (mkHost {
-      name = "owl";
+      name = "parrot";
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
         common-pc
         common-pc-ssd
         common-cpu-amd
         common-cpu-amd-pstate
-        common-gpu-amd
-      ];
-    })
-
-    (mkHost {
-      name = "parrot";
-      system = "x86_64-linux";
-      extraModules = with inputs.nixos-hardware.nixosModules; [
-        framework-12th-gen-intel
       ];
     })
 
@@ -551,7 +542,7 @@ in
     #   "linux/enchilada" = self.nixosConfigurations.enchilada.config.boot.kernelPackages.kernel;
     # };
     "x86_64-linux" = {
-      "linux/owl" = self.nixosConfigurations.owl.config.boot.kernelPackages.kernel;
+      "linux/parrot" = self.nixosConfigurations.parrot.config.boot.kernelPackages.kernel;
     };
   };
 }

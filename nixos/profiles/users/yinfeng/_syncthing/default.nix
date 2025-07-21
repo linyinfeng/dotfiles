@@ -1,7 +1,6 @@
 { config, lib, ... }:
 let
   simpleDeviceNames = [
-    "owl"
     "parrot"
     "xps8930"
     "nuc"

@@ -9,16 +9,12 @@ let
   inherit (config.networking) hostName;
   port = config.ports.wireguard;
   hosts = {
-    owl = {
+    parrot = {
       ip = "192.168.2.2";
       inherit port;
     };
     xps8930 = {
       ip = "192.168.2.3";
-      inherit port;
-    };
-    parrot = {
-      ip = "192.168.2.4";
       inherit port;
     };
     enchilada = {
