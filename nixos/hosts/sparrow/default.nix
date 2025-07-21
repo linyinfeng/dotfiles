@@ -39,8 +39,6 @@
         { suites, ... }:
         {
           imports = suites.mobile;
-          # TODO wait for https://github.com/sodiboo/niri-flake/issues/978
-          # programs.niri.config.input.mod-key = "Alt";
         };
 
       # faster build

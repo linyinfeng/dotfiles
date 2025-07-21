@@ -159,13 +159,6 @@ let
     in
     [
       (_final: _prev: {
-        inherit (unstable-small)
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=425337
-          strongswan
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=425144
-          gimp
-          ;
-        inherit (stable) extractpdfmark;
       })
     ];
 in
