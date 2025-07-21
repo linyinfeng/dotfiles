@@ -158,7 +158,12 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
+      (_final: prev: {
+        nix-alien = prev.nix-alien.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [
+            ../patches/nix-alien-nix-locate-top-level.patch
+          ];
+        });
       })
     ];
 in

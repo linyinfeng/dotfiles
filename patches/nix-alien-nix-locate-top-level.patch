@@ -1,0 +1,14 @@
+diff --git a/nix_alien/libs.py b/nix_alien/libs.py
+index 0cf0dd9..f434667 100644
+--- a/nix_alien/libs.py
++++ b/nix_alien/libs.py
+@@ -25,7 +25,6 @@ def find_lib_candidates(basename: str) -> list[str]:
+             "--minimal",
+             "--at-root",
+             "--whole-name",
+-            "--top-level",
+             os.path.join("/lib", basename),
+         ],
+         check=True,
+--
+2.50.0
