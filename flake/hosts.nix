@@ -443,6 +443,7 @@ in
         common-pc-ssd
         common-cpu-amd
         common-cpu-amd-pstate
+        common-gpu-amd
       ];
     })
 
