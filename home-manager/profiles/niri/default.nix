@@ -413,14 +413,13 @@ lib.mkMerge [
               indexedWorkspaceBindings
               windowBindings
             ];
+          xwayland-satellite = {
+            enable = true;
+            path = lib.getExe pkgs.xwayland-satellite;
+          };
           environment = lib.mkMerge [
-            {
-              DISPLAY = ":1"; # xwayland-satellite
-            }
             (lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.environment)
           ];
-          # TODO wait for next release
-          # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
         };
     };
 
@@ -922,39 +921,6 @@ lib.mkMerge [
   {
     services.swayosd.enable = true;
     systemd.user.services.swayosd.Install.WantedBy = lib.mkForce [ "niri.service" ];
-  }
-
-  # xwayland
-  {
-    systemd.user.services.xwayland-satellite = {
-      Unit = {
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
-        Requisite = [ "graphical-session.target" ];
-        OnFailure = [ "xwayland-satellite-failure-report.service" ];
-      };
-      Install = {
-        WantedBy = [ "niri.service" ];
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${lib.getExe pkgs.xwayland-satellite} :1";
-        NotifyAccess = "all";
-        StandardOutput = "journal";
-        Restart = "on-failure";
-      };
-    };
-    systemd.user.services.xwayland-satellite-failure-report = {
-      Service = {
-        Type = "oneshot";
-        ExecStart = lib.escapeShellArgs [
-          (lib.getExe pkgs.libnotify)
-          "--urgency=critical"
-          "xwayland-satellite"
-          "Crashed and restarting..."
-        ];
-      };
-    };
   }
 
   # fuzzel
