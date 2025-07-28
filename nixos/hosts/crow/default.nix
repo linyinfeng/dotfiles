@@ -87,48 +87,56 @@ in
             type = "gpt";
             partitions = {
               bios = {
+                priority = 0;
                 size = "1M";
                 type = "EF02"; # grub MBR
+              };
+              ESP = {
+                priority = 1;
+                size = "1G";
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [
+                    "gid=wheel"
+                    "dmask=007"
+                    "fmask=117"
+                  ];
+                };
               };
               crypt-root = {
                 priority = 100;
                 size = "100%";
                 content = {
-                  type = "luks";
-                  name = "crypt-root";
-                  settings = {
-                    allowDiscards = true;
-                    bypassWorkqueues = true;
-                  };
-                  content = {
-                    type = "btrfs";
-                    subvolumes =
-                      let
-                        mountOptions = [
-                          "compress=zstd"
-                          "x-gvfs-hide"
-                        ];
-                      in
-                      {
-                        "@persist" = {
-                          mountpoint = "/persist";
-                          inherit mountOptions;
-                        };
-                        "@var-log" = {
-                          mountpoint = "/var/log";
-                          inherit mountOptions;
-                        };
-                        "@nix" = {
-                          mountpoint = "/nix";
-                          inherit mountOptions;
-                        };
-                        "@swap" = {
-                          mountpoint = "/swap";
-                          inherit mountOptions;
-                          swap.swapfile.size = "32G";
-                        };
+                  type = "btrfs";
+                  subvolumes =
+                    let
+                      mountOptions = [
+                        "compress=zstd"
+                        "x-gvfs-hide"
+                      ];
+                    in
+                    {
+                      "@persist" = {
+                        mountpoint = "/persist";
+                        inherit mountOptions;
                       };
-                  };
+                      "@var-log" = {
+                        mountpoint = "/var/log";
+                        inherit mountOptions;
+                      };
+                      "@nix" = {
+                        mountpoint = "/nix";
+                        inherit mountOptions;
+                      };
+                      "@swap" = {
+                        mountpoint = "/swap";
+                        inherit mountOptions;
+                        swap.swapfile.size = "32G";
+                      };
+                    };
                 };
               };
             };
