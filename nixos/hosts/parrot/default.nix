@@ -46,16 +46,7 @@ in
       hardware.enableRedistributableFirmware = true;
 
       services.desktopManager.gnome.enable = true;
-      services.power-profiles-daemon.enable = false;
-      services.tlp = {
-        enable = true;
-        settings = {
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-          PLATFORM_PROFILE_ON_BAT = "low-power";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-          PLATFORM_PROFILE_ON_AC = "balanced";
-        };
-      };
+      services.power-profiles-daemon.enable = true;
       services.logind.lidSwitchExternalPower = "ignore";
 
       networking.campus-network = {
