@@ -31,6 +31,7 @@ in
             nix.nixbuild
             networking.behind-fw
             networking.fw-proxy
+            networking.wireguard-home
             services.flatpak
             services.nginx
             services.acme

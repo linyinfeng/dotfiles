@@ -191,6 +191,24 @@
     }
   },
   "hosts": {
+    "crow": {
+      "b2_backup_key_id": "00462cd88e29986000000002b",
+      "dn42_addresses_v4": [],
+      "dn42_addresses_v6": [],
+      "dn42_v6_prefixes": [],
+      "endpoints": [],
+      "endpoints_v4": [],
+      "endpoints_v6": [],
+      "host_indices": [],
+      "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6jCCAXGgAwIBAgIRAPwZJiel5v6u3W5NpCxz+jQwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUwNzI4MDM0\nMTM4WhcNMjUwOTI2MjM0MTM4WjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1jcm93LmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAE8TxYe5pautVx\nlobbSTgwCqM+TyAgYKI5eTgnaJBwPWMdsNfuZpRKQAl+YqO3pGgbScf6g1sAH89b\nmB3RSW+jiqepbC/euXvi+aA4fEATxmKK0FkqzcOT8qLrOJA8V9a3o2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDWNyb3cubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDZwAwZAIwGXbD4x8Qhb+cMGT3eZYsKfES9qzZdMafuEPoDqjSMM+OLwDb\nROOZUjeoRxWIMkPrAjBV6Dw6yIDtArB8gUDiutf9uCR5dqVrH3S5CbFuDJhK38Wc\niTys80ErafgyefMOVLY=\n-----END CERTIFICATE-----\n",
+      "minio_backup_key_id": "backup-crow",
+      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+dOMdBFcSNXwgULEsR2H6889xur2cXbEafaxCJ8x1M",
+      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDkpZsIPLrLESd/EO+pP2hOF3kCZaMMY+URWSgg7ZXMFBEMBl3WJoh1WLG6zWR847eiaozm/v8Q0kvuPUWV25Y+ebm8ISiiNjNDlxB0gMm1RtHcjGnUDcSB6IHAulauqgnTp1vzGQYtxl/bbSAY3FauDRRSDAzsxO2RvLGmbR0f6sbGPpGGAnipzcUy36SuZjF/ixHuXiPfDA080IM/AQ/rHTsuIW8AZtEjihvuG3t6KZMZPQsiK/hkmlrcLdOJCnnJG18u0qlgw23UeygKu7caUgtd/n26NvSnlxL/IgLUTFlS8ngbvNuh6/t1erHtsmgbv1z4PUj2fQypu4dMm+UtmEao1CTQZDEKpxuxL95lM8PLE8jolUw3jIddOr27hP0jmMHDnNkz1aqCp08M6h6cEm/9KFI4szuaPjfwYHPLrWvnqZG3Ge/gd0OMa3aQV3WX++bvAV9A2tFhbWJu6f3ksaJj9Emx473c4BprMCz7ocjUDN5pgmZ97TaMLGSNEgYoktvhsFblz9INtDQ8uiqBi/qhkyXgtroEFdoM8Yjw948pRO/Glxv2Gh4iRbrL1lYhz8jaR70b6yA6f+Za0hLdtIV5a6pe4WmT9fs+fvNjfrh97s35AtaziN6BSzpaQHqad6jIhV3j90M4mJblmKqNMXV6uY6Atk9XZtUrrQV3jQ==",
+      "syncthing_device_id": "QALFSER-PZPUCDA-ZJK4TTJ-A3XDLP5-V6RJX4M-7JRLBGR-7KT4SMJ-MI6KNAN",
+      "wireguard_public_key": "rpJBCaIDW+LvWCk+xMnBuK0edgSqreQ4JjAdX+kx5Vc=",
+      "zerotier_id": "e65d7f1de4",
+      "zerotier_public_key": "e65d7f1de4:0:77ab6a05c23f4c30be052a70fba881b4d65efc4e6b284c1711b2a9d62215935709b45b9f2667770ad63129faa6a7fb29ae1878bdc07cd8b346086a2bb7076137"
+    },
     "enchilada": {
       "b2_backup_key_id": "00462cd88e299860000000023",
       "dn42_addresses_v4": [],

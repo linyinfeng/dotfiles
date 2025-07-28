@@ -131,7 +131,6 @@ let
       mobileWorkstation =
         suites.workstation
         ++ (with profiles; [
-          networking.wireguard-home
           networking.behind-fw
           networking.fw-proxy
           graphical.graphical-powersave-target
@@ -459,6 +458,16 @@ in
 
     (mkHost {
       name = "nuc";
+      system = "x86_64-linux";
+      extraModules = with inputs.nixos-hardware.nixosModules; [
+        common-pc
+        common-cpu-intel
+        common-pc-ssd
+      ];
+    })
+
+    (mkHost {
+      name = "crow";
       system = "x86_64-linux";
       extraModules = with inputs.nixos-hardware.nixosModules; [
         common-pc

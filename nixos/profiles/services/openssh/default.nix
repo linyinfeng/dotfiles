@@ -4,6 +4,7 @@
   ...
 }:
 let
+  inherit (config.lib.self) data;
   aliveInterval = "15";
   aliveCountMax = "4";
   knownHosts = lib.listToAttrs (
@@ -70,7 +71,7 @@ in
       Host ${h}.ts
         HostName ${h}.ts.li7g.com
         Port ${toString config.ports.ssh}
-    '') (lib.attrNames config.networking.hostsData.indexedHosts);
+    '') (lib.attrNames data.hosts);
   };
 
   sops.secrets."ssh_host_rsa_key" = {

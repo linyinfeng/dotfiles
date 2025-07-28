@@ -11,19 +11,12 @@ in
 {
   imports =
     suites.mobileWorkstation
-    ++ suites.games
     ++ (with profiles; [
-      boot.secure-boot
-      boot.lanzaboote-uki
-      security.tpm
-      virtualization.waydroid
       services.godns
       services.nginx
       services.acme
       services.fwupd
-      networking.wireguard-home
       hardware.backlight
-      hardware.nvidia-egpu
       users.yinfeng
     ])
     ++ [
@@ -39,29 +32,12 @@ in
       };
       boot.loader.timeout = 10;
 
-      # kernel tweaks
-      # boot.kernelModuleSigning.enable = true;
-      # boot.kernelLockdown = true;
-
       hardware.enableRedistributableFirmware = true;
 
       services.desktopManager.gnome.enable = true;
-      services.power-profiles-daemon.enable = false;
-      services.tlp = {
-        enable = true;
-        settings = {
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-          PLATFORM_PROFILE_ON_BAT = "low-power";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-          PLATFORM_PROFILE_ON_AC = "balanced";
-        };
-      };
+      services.power-profiles-daemon.enable = true;
       services.logind.lidSwitchExternalPower = "ignore";
 
-      networking.campus-network = {
-        enable = true;
-        auto-login.enable = true;
-      };
       services.godns-multi = {
         ipv6.settings = {
           domains = [
@@ -106,28 +82,17 @@ in
         };
         disk.main = {
           type = "disk";
-          device = "/dev/nvme0n1";
+          device = "/dev/sda";
           content = {
             type = "gpt";
             partitions = {
-              ESP = {
-                priority = 0;
-                size = "1G";
-                type = "EF00";
-                content = {
-                  type = "filesystem";
-                  format = "vfat";
-                  mountpoint = "/boot";
-                  mountOptions = [
-                    "gid=wheel"
-                    "dmask=007"
-                    "fmask=117"
-                  ];
-                };
+              bios = {
+                size = "1M";
+                type = "EF02"; # grub MBR
               };
               crypt-root = {
                 priority = 100;
-                size = "1T";
+                size = "100%";
                 content = {
                   type = "luks";
                   name = "crypt-root";
@@ -166,18 +131,6 @@ in
                   };
                 };
               };
-              windows = {
-                priority = 900;
-                size = "512G";
-                content = {
-                  type = "filesystem";
-                  format = "ntfs";
-                };
-              };
-              # reserved = {
-              #   priority = 1000;
-              #   size = "100%";
-              # };
             };
           };
         };
@@ -186,9 +139,7 @@ in
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
 
-      boot.supportedFilesystems = [ "ntfs" ];
-
-      system.nproc = 16;
+      system.nproc = 2;
     }
 
     # stateVersion
