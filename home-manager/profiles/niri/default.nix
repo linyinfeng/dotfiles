@@ -415,7 +415,7 @@ lib.mkMerge [
             ];
           xwayland-satellite = {
             enable = true;
-            path = lib.getExe pkgs.xwayland-satellite;
+            path = lib.getExe pkgs.xwayland-satellite-unstable;
           };
           environment = lib.mkMerge [
             (lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.environment)
@@ -425,6 +425,7 @@ lib.mkMerge [
 
     # tools
     home.packages = with pkgs; [
+      xwayland-satellite-unstable
       pavucontrol
       (pkgs.writeShellApplication {
         name = "cliphist-fuzzel";

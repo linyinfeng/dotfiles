@@ -23,6 +23,7 @@ let
     inputs.nix-topology.overlays.default
     inputs.nix-alien.overlays.default
     inputs.kukui-nixos.overlays.default
+    inputs.niri-flake.overlays.niri
     (
       _final: prev:
       let
@@ -44,12 +45,6 @@ let
         "lantian"
         "packages"
         system
-      ])
-      // (self.lib.maybeAttrByPath "niri-unstable" inputs [
-        "niri-flake"
-        "packages"
-        system
-        "niri-unstable"
       ])
     )
     (final: prev: {
