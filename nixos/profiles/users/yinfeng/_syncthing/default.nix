@@ -38,11 +38,15 @@ let
     ) simpleDeviceNames
   );
   devices = lib.recursiveUpdate simpleDevices {
-    shiba = {
-      id = "OZQC5GU-QO2YSFI-KPMAGHM-OAJTG5C-WRZBIWU-NEJKNLE-NDZHIAS-JEUIZAS";
+    dada = {
+      id = "ZCA5WPO-BRXOCBR-2AY6AJZ-YJL3TUA-NKNPFQS-BEQNERP-MLX52IO-BQMXBQB";
     };
     sailfish = {
       id = "DSMHUX5-L6QYCT2-QDQ435X-YSCBIUI-YAVNAMT-RG3NHU7-DKSOG75-RTDQ2QI";
+    };
+    # TODO remove
+    shiba = {
+      id = "OZQC5GU-QO2YSFI-KPMAGHM-OAJTG5C-WRZBIWU-NEJKNLE-NDZHIAS-JEUIZAS";
     };
   };
   inherit (config.networking) hostName;
