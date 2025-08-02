@@ -36,6 +36,7 @@ let
           system.sysrq
           system.perlless
           system.oomd
+          system.panic
           development.shells
           users.root
         ]);
