@@ -24,6 +24,9 @@ lib.mkMerge [
       podman-compose
       distrobox
     ];
+    environment.global-persistence.user.directories = [
+      ".local/share/containers"
+    ];
   }
   {
     virtualisation.docker.enable = false;
