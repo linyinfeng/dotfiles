@@ -62,6 +62,7 @@ let
     teamspeak = [ ];
     portal = [ ];
     subscription = [ ];
+    rathole-ad-hoc = [ ];
   };
   overrides = {
     box = [

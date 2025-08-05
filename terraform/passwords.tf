@@ -238,12 +238,24 @@ output "syncv3_secret" {
   value     = shell_sensitive_script.syncv3_secret.output.secret
   sensitive = true
 }
-resource "random_password" "rathole_minecraft_token" {
+resource "random_password" "rathole_ad_hoc_token" {
   length  = 32
   special = false
 }
-output "rathole_minecraft_token" {
-  value     = random_password.rathole_minecraft_token.result
+resource "random_password" "rathole_salt" {
+  length  = 8
+  special = false
+}
+resource "htpasswd_password" "rathole" {
+  password = random_password.rathole_ad_hoc_token.result
+  salt     = random_password.rathole_salt.result
+}
+output "rathole_ad_hoc_token" {
+  value     = random_password.rathole_ad_hoc_token.result
+  sensitive = true
+}
+output "rathole_hashed_password" {
+  value     = htpasswd_password.rathole.sha512
   sensitive = true
 }
 resource "random_password" "nextcloud_admin_password" {

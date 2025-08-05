@@ -76,6 +76,7 @@
       portal-socks = 3280;
       portal-internal = 3281;
       rathole = 3290;
+      rathole-ad-hoc = 3291;
       ntfy = 3300;
       atuin = 3310;
       vlmcsd = 3330;
