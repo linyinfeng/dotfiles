@@ -17,7 +17,7 @@
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".proxyPass = "http://127.0.0.1:${toString config.ports.localtunnel-request}";
   };
-  services.nginx.virtualHosts."*.lt.li7g.com" = {
+  services.nginx.virtualHosts."*.lt.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/".proxyPass = "http://127.0.0.1:${toString config.ports.localtunnel-endpoint}";
