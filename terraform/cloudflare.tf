@@ -13,6 +13,7 @@ locals {
     "Zone Read",
     "DNS Write",
     "Workers R2 Storage Bucket Item Write",
+    "Workers KV Storage Read"
   ], group.name)]
   permissions_groups_map = { for group in local.used_permission_groups : group.name => group.id }
 }
@@ -136,6 +137,7 @@ locals {
     http-test      = { on = "mtl0", proxy = true }
     sicp-staging   = { on = "mtl0", proxy = true }
     portal         = { on = "hkg0", proxy = false }
+    lt             = { on = "hkg0", proxy = false }
     minio          = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     matrix         = { on = "fsn0", proxy = true }
@@ -470,3 +472,34 @@ output "r2_cache_access_key" {
 }
 
 # TODO copy nix-cache-info
+
+# localtunnel
+resource "cloudflare_dns_record" "localtunnel_wildcard" {
+  name    = "*.lt.${cloudflare_zone.com_li7g.name}"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  content = "hkg0.${cloudflare_zone.com_li7g.name}"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
+resource "cloudflare_workers_kv_namespace" "localtunnel" {
+  account_id = local.cloudflare_main_account_id
+  title      = "localtunnel-auth"
+}
+
+resource "cloudflare_api_token" "localtunnel" {
+  name   = "localtunnel"
+  status = "active"
+  policies = [{
+    effect = "allow"
+    permission_groups = [
+      { id = local.permissions_groups_map["Workers KV Storage Read"] }
+    ]
+    resources = {
+      "com.cloudflare.api.account.${local.cloudflare_main_account_id}" : "*" # TODO: narrowing resources
+    }
+  }]
+}
+
+# TODO wait rlt's support of cloudflare api token

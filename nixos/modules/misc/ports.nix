@@ -90,6 +90,8 @@
       ollama = 3400;
       open-webui = 3410;
       fw-proxy-subscription = 3420;
+      localtunnel-endpoint = 3430;
+      localtunnel-request = 3431;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;
