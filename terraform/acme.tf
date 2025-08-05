@@ -22,7 +22,6 @@ resource "acme_certificate" "li7g_com" {
     "*.zt.li7g.com",
     "*.dn42.li7g.com",
     "*.endpoints.li7g.com",
-    "*.lt.li7g.com", # localtunnel
   ]
 
   dns_challenge {

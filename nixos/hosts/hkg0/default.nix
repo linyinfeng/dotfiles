@@ -23,7 +23,6 @@ in
       services.nuc-proxy
       services.cache-overlay
       services.sicp-tutorials
-      services.localtunnel
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
