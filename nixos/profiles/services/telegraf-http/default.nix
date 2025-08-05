@@ -62,6 +62,7 @@ let
     teamspeak = [ ];
     portal = [ ];
     subscription = [ ];
+    lt = [ ];
   };
   overrides = {
     box = [
