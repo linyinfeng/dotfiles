@@ -120,8 +120,9 @@ let
           services.portal-client
           services.ssh-honeypot
           services.flatpak
-          security.hardware-keys
           services.smartd
+          audio.midi
+          security.hardware-keys
           hardware.rtl-sdr
           hardware.tablet
           nix.nixbuild
