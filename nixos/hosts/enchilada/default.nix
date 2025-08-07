@@ -93,6 +93,7 @@ in
             };
           };
           services.gnome.core-apps.enable = true;
+          i18n.inputMethod.type = "ibus";
 
           programs.calls.enable = true;
           programs.feedbackd.enable = true;

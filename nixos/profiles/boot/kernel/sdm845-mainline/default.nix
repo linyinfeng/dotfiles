@@ -11,15 +11,14 @@ let
   version = lib.elemAt (lib.strings.match "sdm845-([0-9\\.]+(-rc[0-9]+)?)(-[a-zA-Z0-9\\-]+)?" tag) 0;
   major = lib.versions.major version;
   minor = lib.versions.minor version;
-  inherit (lib.kernel) yes module;
+  inherit (lib.kernel) yes;
   structuredExtraConfig =
     inputs.kukui-nixos.lib.adjustStandaloneConfig (import ./_config.nix { inherit lib; })
     // {
       # for envfs
       EROFS_FS = yes;
-      NET_9P = module;
-      CONFIG_NET_9P_VIRTIO = module;
-      "9P_FS" = module;
+      # NET_9P = module;
+      # "9P_FS" = module;
       # other
       RUST = yes;
     };

@@ -36,10 +36,15 @@
       };
       systemd.network.wait-online.enable = false; # wifi are managed by nm
       home-manager.users.yinfeng =
-        { suites, ... }:
+        { suites, profiles, ... }:
         {
-          imports = suites.mobile;
+          imports =
+            suites.mobile
+            ++ (with profiles; [
+              gnome
+            ]);
         };
+      i18n.inputMethod.type = "ibus";
 
       # faster build
       documentation.man.generateCaches = false;

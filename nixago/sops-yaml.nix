@@ -20,7 +20,7 @@ let
       owned = true;
     };
     enchilada = {
-      key = "age1mgwhc7t6evqujf59khxaqqzdq4r3d6drl7yknkknyxx2kvdnzulstmn7u7";
+      key = "age1y6rknxt06p8pjzyn5s3g9ljq87k706675eurcyqxmqgnujka9sxs4922mj";
       owned = true;
     };
     nuc = {

@@ -263,14 +263,9 @@ let
         ++ security
         ++ other
         ++ (with profiles; [
-          # multimedia
-          gnome
-          niri
-          darkman
           dconf-proxy
           chromium
           rime
-          fcitx5
           mime
 
           # development
@@ -282,8 +277,6 @@ let
 
           # multimediaDev
           xdg-dirs
-          vscode
-          alacritty
         ]);
     }
   );
