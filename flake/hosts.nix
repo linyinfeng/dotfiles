@@ -82,6 +82,7 @@ let
         virtualization.libvirt
         virtualization.podman
         virtualization.wine
+        virtualization.incus
       ];
       games = with profiles.graphical.game; [
         steam
