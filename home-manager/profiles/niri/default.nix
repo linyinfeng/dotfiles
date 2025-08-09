@@ -159,6 +159,16 @@ lib.mkMerge [
             {
               matches = [
                 {
+                  app-id = "^Waydroid$";
+                }
+              ];
+              default-column-width = {
+                proportion = 1.0;
+              };
+            }
+            {
+              matches = [
+                {
                   title = "^Picture in picture$";
                 }
               ];
