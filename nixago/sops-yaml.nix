@@ -47,10 +47,6 @@ let
       key = "age1ylnctxz36rpe95huc9v92pvu5zrk5td6rne9md52q7x4ceppkq7sm2pzph";
       owned = true;
     };
-    crow = {
-      key = "age1wsu5rjes8geyn4w5vd00rejlpesvvht073gsmp9dq8jr469t0f3qzenxj7";
-      owned = true;
-    };
     # PLACEHOLDER new host
   };
   ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);
