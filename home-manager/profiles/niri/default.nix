@@ -836,8 +836,7 @@ lib.mkMerge [
   # waybar in overview
   (
     let
-      # TODO wait for https://github.com/Alexays/Waybar/issues/3928
-      package = pkgs.waybar-idempotent-signals;
+      package = pkgs.waybar;
       waybarConfig = [
         {
           id = "tasks";
