@@ -3,7 +3,8 @@
   stylix = {
     enable = true;
     autoEnable = true;
-    image = "${pkgs.nixos-artwork.wallpapers.catppuccin-latte}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-latte.png";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-light.yaml";
+    image = "${pkgs.nixos-artwork.wallpapers.nineish}/share/backgrounds/nixos/nix-wallpaper-nineish.png";
     polarity = "light";
     fonts = {
       serif = {
@@ -25,8 +26,15 @@
       light = "Papirus-Light";
       dark = "Papirus-Dark";
     };
-    targets = {
-      qt.enable = false;
-    };
   };
+  environment.systemPackages = with pkgs; [
+    papirus-icon-theme
+  ];
+  home-manager.sharedModules = [
+    {
+      stylix.targets = {
+        vscode.enable = false;
+      };
+    }
+  ];
 }

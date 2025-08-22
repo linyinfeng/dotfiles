@@ -345,6 +345,30 @@
           allowed = [
             # keep-sorted start block=yes
             [
+              "dank-material-shell"
+              "quickshell"
+            ]
+            [
+              "fenix"
+              "rust-analyzer-src"
+            ]
+            [
+              "kukui-nixos"
+              "nixpkgs-alsa-ucm-conf"
+            ]
+            [
+              "niri-flake"
+              "niri-unstable"
+            ]
+            [
+              "niri-flake"
+              "xwayland-satellite-stable"
+            ]
+            [
+              "niri-flake"
+              "xwayland-satellite-unstable"
+            ]
+            [
               "stylix"
               "base16"
               "fromYaml"
@@ -392,30 +416,6 @@
             [
               "stylix"
               "tinted-zed"
-            ]
-            [
-              "dank-material-shell"
-              "quickshell"
-            ]
-            [
-              "fenix"
-              "rust-analyzer-src"
-            ]
-            [
-              "kukui-nixos"
-              "nixpkgs-alsa-ucm-conf"
-            ]
-            [
-              "niri-flake"
-              "niri-unstable"
-            ]
-            [
-              "niri-flake"
-              "xwayland-satellite-stable"
-            ]
-            [
-              "niri-flake"
-              "xwayland-satellite-unstable"
             ]
             # keep-sorted end
           ];
