@@ -62,6 +62,7 @@ let
         graphical.kde
         graphical.niri
         graphical.fonts
+        graphical.stylix
         i18n.input-method
         services.gnome-keyring
         services.pipewire
@@ -299,6 +300,7 @@ let
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nix-topology.nixosModules.default
     inputs.niri-flake.nixosModules.niri
+    inputs.stylix.nixosModules.stylix
 
     {
       lib = {
@@ -338,7 +340,7 @@ let
       nixpkgs ? inputs.nixpkgs,
       home-manager ? inputs.home-manager,
       system,
-      forceFlakeNixpkgs ? true,
+      forceFlakeNixpkgs ? false,
       extraModules ? [ ],
     }:
     {
@@ -368,6 +370,7 @@ let
                 {
                   # crossOverlays has not been suppored by nixos module
                   nixpkgs = {
+                    inherit system;
                     inherit ((getSystem system).nixpkgs) config overlays;
                   };
                 }

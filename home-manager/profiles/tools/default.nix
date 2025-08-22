@@ -1,12 +1,7 @@
 { pkgs, ... }:
 {
-  # manage bat config
-  programs.bat = {
-    enable = true;
-    config = {
-      theme = "ansi";
-    };
-  };
+  programs.bat.enable = true;
+  programs.btop.enable = true;
 
   home.packages = with pkgs; [
     # keep-sorted start

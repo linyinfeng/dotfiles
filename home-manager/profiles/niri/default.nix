@@ -478,23 +478,95 @@ lib.mkMerge [
       brightnessctl
     ];
 
-    gtk = {
-      enable = true;
-      # required by dank-material-shell
-      theme = {
-        name = "Colloid";
-        package = pkgs.colloid-gtk-theme;
-      };
-    };
-    qt = {
-      enable = true;
-      platformTheme.name = "gtk3";
-    };
-
     home.global-persistence.directories = [
       ".config/DankMaterialShell"
       ".local/state/DankMaterialSmhell"
     ];
+  }
+
+  # swayidle
+  {
+    # TODO add swayidle-locked back
+    # systemd.user.services.swayidle-locked = {
+    #   Unit = {
+    #     ConditionEnvironment = [
+    #       "WAYLAND_DISPLAY"
+    #       "XDG_SEAT"
+    #     ];
+    #     PartOf = [ "graphical-session.target" ];
+    #     BindsTo = [ "swaylock.service" ];
+    #     After = [
+    #       "swaylock.service"
+    #       "graphical-session.target"
+    #     ];
+    #   };
+    #   Service = {
+    #     ExecStart = lib.getExe (
+    #       pkgs.writeShellApplication {
+    #         name = "swayidle-locked";
+    #         runtimeInputs = [
+    #           config.programs.niri.package
+    #           config.services.swayidle.package
+    #         ];
+    #         text = ''
+    #           exec swayidle -d -w -S "$XDG_SEAT" timeout 10 "niri msg action power-off-monitors"
+    #         '';
+    #       }
+    #     );
+    #   };
+    # };
+
+    services.swayidle =
+      let
+        qsLock = lib.escapeShellArgs [
+          "${config.programs.quickshell.package}/bin/qs"
+          "--config"
+          "DankMaterialShell"
+          "ipc"
+          "call"
+          "lock"
+          "lock"
+        ];
+      in
+      {
+        enable = true;
+        systemdTarget = "niri.service";
+        extraArgs = [
+          "-d" # debug output
+          "-w" # wait for command
+          "-S"
+          "$XDG_SEAT"
+          "idlehint"
+          "60"
+        ]; # enable debug output
+        events = [
+          {
+            event = "before-sleep";
+            command = qsLock;
+          }
+          {
+            event = "lock";
+            command = qsLock;
+          }
+          {
+            event = "unlock";
+            command = qsLock;
+          }
+        ];
+        timeouts = [
+          {
+            timeout = 300;
+            command = qsLock;
+          }
+        ];
+      };
+    systemd.user.services.swayidle.Unit = {
+      ConditionEnvironment = lib.mkForce [
+        "XDG_SEAT"
+        "WAYLAND_DISPLAY"
+      ];
+      After = [ "graphical-session.target" ];
+    };
   }
 
   # kanshi

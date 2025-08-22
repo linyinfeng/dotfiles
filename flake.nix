@@ -87,6 +87,12 @@
     kukui-nixos.inputs.treefmt-nix.follows = "treefmt-nix";
     kukui-nixos.inputs.pmaports.follows = "pmaports";
 
+    stylix.url = "github:nix-community/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.flake-parts.follows = "flake-parts";
+    stylix.inputs.nur.follows = "nur";
+    stylix.inputs.systems.follows = "systems";
+
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
@@ -184,6 +190,10 @@
     dgop.inputs.nixpkgs.follows = "nixpkgs";
 
     # combined flakes
+
+    nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
+    nur.inputs.flake-parts.follows = "flake-parts";
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
     linyinfeng.inputs.flake-parts.follows = "flake-parts";
@@ -334,6 +344,55 @@
         flatFlake.config = {
           allowed = [
             # keep-sorted start block=yes
+            [
+              "stylix"
+              "base16"
+              "fromYaml"
+            ]
+            [
+              "stylix"
+              "base16"
+            ]
+            [
+              "stylix"
+              "base16-fish"
+            ]
+            [
+              "stylix"
+              "base16-helix"
+            ]
+            [
+              "stylix"
+              "base16-vim"
+            ]
+            [
+              "stylix"
+              "firefox-gnome-theme"
+            ]
+            [
+              "stylix"
+              "gnome-shell"
+            ]
+            [
+              "stylix"
+              "tinted-foot"
+            ]
+            [
+              "stylix"
+              "tinted-kitty"
+            ]
+            [
+              "stylix"
+              "tinted-schemes"
+            ]
+            [
+              "stylix"
+              "tinted-tmux"
+            ]
+            [
+              "stylix"
+              "tinted-zed"
+            ]
             [
               "dank-material-shell"
               "quickshell"
