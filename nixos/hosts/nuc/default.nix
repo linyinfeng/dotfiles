@@ -78,7 +78,7 @@ in
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
-      systemd.watchdog.runtimeTime = "60s";
+      systemd.settings.Manager.RuntimeWatchdogSec = "60s";
 
       services.fstrim.enable = true;
       services.btrfs.autoScrub = {
