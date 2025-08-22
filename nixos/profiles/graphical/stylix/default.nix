@@ -4,7 +4,7 @@
     enable = true;
     autoEnable = true;
     image = "${pkgs.nixos-artwork.wallpapers.catppuccin-latte}/share/backgrounds/nixos/nixos-wallpaper-catppuccin-latte.png";
-    polarity = "either";
+    polarity = "light";
     fonts = {
       serif = {
         name = "serif";
@@ -24,6 +24,9 @@
       package = pkgs.papirus-icon-theme;
       light = "Papirus-Light";
       dark = "Papirus-Dark";
+    };
+    targets = {
+      qt.enable = false;
     };
   };
 }

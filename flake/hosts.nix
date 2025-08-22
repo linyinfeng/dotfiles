@@ -31,6 +31,7 @@ let
           security.rtkit
           security.sudo-rs
           global-persistence
+          graphical.stylix
           system.constant
           system.common
           system.sysrq
@@ -62,7 +63,6 @@ let
         graphical.kde
         graphical.niri
         graphical.fonts
-        graphical.stylix
         i18n.input-method
         services.gnome-keyring
         services.pipewire
