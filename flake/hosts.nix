@@ -315,6 +315,7 @@ let
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
     inputs.niri-flake.homeModules.niri
+    inputs.dank-material-shell.homeModules.dankMaterialShell
     { lib.self = self.lib; }
   ];
 

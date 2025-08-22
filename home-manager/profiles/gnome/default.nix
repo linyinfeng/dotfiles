@@ -16,10 +16,6 @@ let
     customize-ibus
     caffeine
   ];
-  gtkThemes = pkgs.symlinkJoin {
-    name = "gtk-themes";
-    paths = with pkgs; [ adw-gtk3 ];
-  };
   inherit (lib.hm.gvariant)
     mkArray
     mkTuple
@@ -37,9 +33,6 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
 
   # remove initial setup dialog
   home.file.".config/gnome-initial-setup-done".text = "yes";
-
-  # themes
-  home.file.".local/share/themes".source = "${gtkThemes}/share/themes";
 
   dconf.settings = {
     # Do not sleep when ac power connected
@@ -70,7 +63,6 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
       ];
     };
     "org/gnome/desktop/interface" = {
-      gtk-theme = "adw-gtk3";
       clock-show-weekday = longStatusBar;
       show-battery-percentage = longStatusBar;
       locate-pointer = true;

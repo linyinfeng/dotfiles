@@ -46,6 +46,12 @@ let
         "packages"
         system
       ])
+      // (self.lib.maybeAttrByPath "dgop" inputs [
+        "dgop"
+        "packages"
+        system
+        "dgop"
+      ])
     )
     (final: prev: {
       # scoped overlays

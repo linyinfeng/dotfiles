@@ -177,6 +177,12 @@
     nix-alien.inputs.nix-index-database.follows = "nix-index-database";
     nix-alien.inputs.nixpkgs.follows = "nixpkgs";
 
+    dank-material-shell.url = "github:AvengeMedia/DankMaterialShell";
+    dank-material-shell.inputs.nixpkgs.follows = "nixpkgs";
+
+    dgop.url = "github:AvengeMedia/dgop";
+    dgop.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
@@ -327,9 +333,18 @@
       {
         flatFlake.config = {
           allowed = [
+            # keep-sorted start block=yes
+            [
+              "dank-material-shell"
+              "quickshell"
+            ]
             [
               "fenix"
               "rust-analyzer-src"
+            ]
+            [
+              "kukui-nixos"
+              "nixpkgs-alsa-ucm-conf"
             ]
             [
               "niri-flake"
@@ -337,16 +352,13 @@
             ]
             [
               "niri-flake"
-              "xwayland-satellite-unstable"
-            ]
-            [
-              "niri-flake"
               "xwayland-satellite-stable"
             ]
             [
-              "kukui-nixos"
-              "nixpkgs-alsa-ucm-conf"
+              "niri-flake"
+              "xwayland-satellite-unstable"
             ]
+            # keep-sorted end
           ];
         };
         systems = [

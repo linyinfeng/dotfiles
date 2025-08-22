@@ -1,18 +1,17 @@
 {
-  config,
   pkgs,
   ...
 }:
 {
   config = {
     fonts.packages = with pkgs; [
-      noto-fonts-emoji
-
       source-serif
       source-han-serif
       source-sans
       source-han-sans
       source-code-pro
+
+      inter
 
       open-sans
       liberation_ttf
@@ -27,6 +26,9 @@
       vistafonts
 
       nerd-fonts.iosevka-term-slab
+
+      noto-fonts-emoji
+      material-design-icons
     ];
 
     fonts.fontconfig.defaultFonts = {

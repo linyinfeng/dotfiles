@@ -241,6 +241,27 @@
         "type": "github"
       }
     },
+    "dank-material-shell": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "quickshell": "quickshell"
+      },
+      "locked": {
+        "lastModified": 1755833162,
+        "narHash": "sha256-DIohIoYlTo0HOKUnsqzow8mAAWTUlfOdlztWWwykzL8=",
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "rev": "9e88960963b416ae8dedbcdc5149b615bf44bfc9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "type": "github"
+      }
+    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": [
@@ -284,6 +305,26 @@
       "original": {
         "owner": "numtide",
         "repo": "devshell",
+        "type": "github"
+      }
+    },
+    "dgop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1755788716,
+        "narHash": "sha256-X3KOc9dCfRgp5tXkUDD7wFWC4SGh2k8+Rt63D+LdDBY=",
+        "owner": "AvengeMedia",
+        "repo": "dgop",
+        "rev": "f236d01acba6a51bba4b4cf0f8296746321d5681",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dgop",
         "type": "github"
       }
     },
@@ -1511,6 +1552,27 @@
         "type": "github"
       }
     },
+    "quickshell": {
+      "inputs": {
+        "nixpkgs": [
+          "dank-material-shell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753595452,
+        "narHash": "sha256-vqkSDvh7hWhPvNjMjEDV4KbSCv2jyl2Arh73ZXe274k=",
+        "ref": "refs/heads/master",
+        "rev": "a5431dd02dc23d9ef1680e67777fed00fe5f7cda",
+        "revCount": 665,
+        "type": "git",
+        "url": "https://git.outfoxxed.me/quickshell/quickshell"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.outfoxxed.me/quickshell/quickshell"
+      }
+    },
     "root": {
       "inputs": {
         "ace-bot": "ace-bot",
@@ -1521,8 +1583,10 @@
         "conf2nix": "conf2nix",
         "crane": "crane",
         "crate2nix": "crate2nix",
+        "dank-material-shell": "dank-material-shell",
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
+        "dgop": "dgop",
         "disko": "disko",
         "emacs-overlay": "emacs-overlay",
         "fenix": "fenix",
