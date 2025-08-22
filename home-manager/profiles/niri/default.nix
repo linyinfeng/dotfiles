@@ -477,9 +477,6 @@ lib.mkMerge [
       gammastep
       brightnessctl
     ];
-    systemd.user.services.niri-flake-polkit.serviceConfig = {
-      ExecStart = lib.mkForce "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
-    };
 
     gtk = {
       enable = true;

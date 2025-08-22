@@ -298,6 +298,7 @@ let
     inputs.angrr.nixosModules.angrr
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nix-topology.nixosModules.default
+    inputs.niri-flake.nixosModules.niri
 
     {
       lib = {
@@ -314,7 +315,6 @@ let
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
-    inputs.niri-flake.homeModules.niri
     inputs.dank-material-shell.homeModules.dankMaterialShell
     { lib.self = self.lib; }
   ];
