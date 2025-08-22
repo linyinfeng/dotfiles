@@ -126,6 +126,7 @@ let
           audio.midi
           security.hardware-keys
           hardware.rtl-sdr
+          hardware.nfc-nci
           hardware.tablet
           nix.nixbuild
           nix.hydra-builder-client
