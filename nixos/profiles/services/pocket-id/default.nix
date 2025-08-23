@@ -20,6 +20,8 @@ in
       SMTP_USER = "id@li7g.com";
       SMTP_FROM = "id@li7g.com";
       EMAIL_LOGIN_NOTIFICATION_ENABLED = true;
+      EMAIL_API_KEY_EXPIRATION_ENABLED = true;
+      EMAILS_VERIFIED = true;
     };
     environmentFile = config.sops.templates."pocket-id-env".path;
   };
