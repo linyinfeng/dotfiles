@@ -31,7 +31,6 @@ let
           security.rtkit
           security.sudo-rs
           global-persistence
-          graphical.stylix
           system.constant
           system.common
           system.sysrq
@@ -299,8 +298,6 @@ let
     inputs.angrr.nixosModules.angrr
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nix-topology.nixosModules.default
-    inputs.niri-flake.nixosModules.niri
-    inputs.stylix.nixosModules.stylix
 
     {
       lib = {
@@ -317,7 +314,7 @@ let
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
-    inputs.dank-material-shell.homeModules.dankMaterialShell
+    inputs.niri-flake.homeModules.niri
     { lib.self = self.lib; }
   ];
 
@@ -340,7 +337,7 @@ let
       nixpkgs ? inputs.nixpkgs,
       home-manager ? inputs.home-manager,
       system,
-      forceFlakeNixpkgs ? false,
+      forceFlakeNixpkgs ? true,
       extraModules ? [ ],
     }:
     {
@@ -370,7 +367,6 @@ let
                 {
                   # crossOverlays has not been suppored by nixos module
                   nixpkgs = {
-                    inherit system;
                     inherit ((getSystem system).nixpkgs) config overlays;
                   };
                 }

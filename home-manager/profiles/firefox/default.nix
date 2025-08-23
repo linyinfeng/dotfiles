@@ -17,7 +17,6 @@
       };
     };
   };
-  stylix.targets.firefox.profileNames = [ "main" ];
 
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";

@@ -16,6 +16,10 @@ let
     customize-ibus
     caffeine
   ];
+  gtkThemes = pkgs.symlinkJoin {
+    name = "gtk-themes";
+    paths = with pkgs; [ adw-gtk3 ];
+  };
   inherit (lib.hm.gvariant)
     mkArray
     mkTuple
@@ -33,6 +37,9 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
 
   # remove initial setup dialog
   home.file.".config/gnome-initial-setup-done".text = "yes";
+
+  # themes
+  home.file.".local/share/themes".source = "${gtkThemes}/share/themes";
 
   dconf.settings = {
     # Do not sleep when ac power connected
@@ -63,9 +70,11 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
       ];
     };
     "org/gnome/desktop/interface" = {
+      gtk-theme = "adw-gtk3";
       clock-show-weekday = longStatusBar;
       show-battery-percentage = longStatusBar;
       locate-pointer = true;
+      monospace-font-name = "Monospace 10";
     };
     "org/gnome/desktop/input-sources" = {
       sources =
@@ -140,12 +149,28 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
     "ca/desrt/dconf-editor" = {
       show-warning = false;
     };
+    "org/gnome/desktop/background" = {
+      picture-uri = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
+      picture-uri-dark = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/symbolic-d.png";
+      primary-color = "#26a269";
+      secondary-color = "#000000";
+      color-shading-type = "solid";
+      picture-options = "zoom";
+    };
     "org/gnome/desktop/screensaver" = {
       picture-uri = "file://${pkgs.gnome-backgrounds}/share/backgrounds/gnome/symbolic-l.png";
       primary-color = "#26a269";
       secondary-color = "#000000";
       color-shading-type = "solid";
       picture-options = "zoom";
+    };
+  };
+
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
     };
   };
 
