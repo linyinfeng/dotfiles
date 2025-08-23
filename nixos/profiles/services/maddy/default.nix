@@ -149,6 +149,7 @@
       "mastodon@li7g.com"
       "keycloak@li7g.com"
       "nextcloud@li7g.com"
+      "id@li7g.com"
     ];
     sops.secrets."mail_password" = {
       terraformOutput.enable = true;

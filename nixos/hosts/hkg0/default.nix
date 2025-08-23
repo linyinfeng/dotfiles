@@ -24,6 +24,7 @@ in
       services.cache-overlay
       services.sicp-tutorials
       services.rathole
+      services.pocket-id
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 

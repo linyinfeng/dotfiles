@@ -81,6 +81,10 @@
       "on": "hkg0",
       "proxy": true
     },
+    "id": {
+      "on": "hkg0",
+      "proxy": true
+    },
     "influxdb": {
       "on": "fsn0",
       "proxy": true

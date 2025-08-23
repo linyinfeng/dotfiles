@@ -122,7 +122,9 @@ locals {
     nuc-proxy      = { on = "hkg0", proxy = true }
     hydra-proxy    = { on = "hkg0", proxy = true }
     sicp-tutorials = { on = "hkg0", proxy = true }
+    id             = { on = "hkg0", proxy = true }
     rathole-ad-hoc = { on = "hkg0", proxy = false }
+    portal         = { on = "hkg0", proxy = false }
     tar            = { on = "lax0", proxy = true }
     pgp-public-key = { on = "lax0", proxy = true }
     oranc          = { on = "lax0", proxy = true }
@@ -136,7 +138,6 @@ locals {
     static         = { on = "mtl0", proxy = true }
     http-test      = { on = "mtl0", proxy = true }
     sicp-staging   = { on = "mtl0", proxy = true }
-    portal         = { on = "hkg0", proxy = false }
     minio          = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     matrix         = { on = "fsn0", proxy = true }

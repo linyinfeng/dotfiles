@@ -91,6 +91,7 @@
       ollama = 3400;
       open-webui = 3410;
       fw-proxy-subscription = 3420;
+      pocket-id = 3430;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;
