@@ -149,6 +149,15 @@ lib.mkMerge [
           };
           window-rules = [
             {
+              geometry-corner-radius = {
+                bottom-left = windowCornerRadius;
+                bottom-right = windowCornerRadius;
+                top-left = windowCornerRadius;
+                top-right = windowCornerRadius;
+              };
+              clip-to-geometry = true;
+            }
+            {
               matches = [
                 {
                   app-id = "^org\.wezfurlong\.wezterm$";
@@ -160,6 +169,9 @@ lib.mkMerge [
               matches = [
                 {
                   app-id = "^Waydroid$";
+                }
+                {
+                  app-id = "^com.moonlight_stream.Moonlight$";
                 }
               ];
               default-column-width = {
@@ -173,15 +185,6 @@ lib.mkMerge [
                 }
               ];
               open-floating = true;
-            }
-            {
-              geometry-corner-radius = {
-                bottom-left = windowCornerRadius;
-                bottom-right = windowCornerRadius;
-                top-left = windowCornerRadius;
-                top-right = windowCornerRadius;
-              };
-              clip-to-geometry = true;
             }
             {
               matches = [
