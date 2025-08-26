@@ -200,7 +200,7 @@ in
           };
           priority = lib.mkOption { type = lib.types.int; };
         };
-        gortr = {
+        stayrtr = {
           port = lib.mkOption { type = lib.types.port; };
           metricPort = lib.mkOption { type = lib.types.port; };
         };

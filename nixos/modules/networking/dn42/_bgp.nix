@@ -24,10 +24,10 @@ lib.mkIf cfg.enable (
         protocol rpki rtr_dn42 {
           roa4 { table dn42_roa_v4; };
           roa6 { table dn42_roa_v6; };
-          remote "localhost";
-          port ${toString config.ports.gortr};
-          refresh 600;
-          retry 60;
+          remote "localhost" port ${toString bgpCfg.stayrtr.port};
+          retry keep 90;
+          refresh keep 900;
+          expire keep 172800;
         }
 
         function dn42_is_self_net_v4() {
@@ -293,16 +293,15 @@ lib.mkIf cfg.enable (
       '';
     })
 
-    # local gortr server
+    # local stayrtr server
     {
-      systemd.services.gortr-dn42 = {
+      systemd.services.stayrtr-dn42 = {
         script = ''
-          ${pkgs.gortr}/bin/gortr \
-            -cache "https://dn42.burble.com/roa/dn42_roa_46.json" \
-            -verify=false \
+          ${pkgs.stayrtr}/bin/stayrtr \
+            -cache="https://dn42.burble.com/roa/dn42_roa_46.json" \
             -checktime=false \
-            -bind :${toString bgpCfg.gortr.port} \
-            -metrics.addr :${toString bgpCfg.gortr.metricPort} \
+            -bind :${toString bgpCfg.stayrtr.port} \
+            -metrics.addr :${toString bgpCfg.stayrtr.metricPort} \
             -rtr.retry 10
         '';
         serviceConfig = {

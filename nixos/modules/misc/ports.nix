@@ -67,8 +67,8 @@
       syncthing-yinfeng = 3211;
       syncthing-discovery = 3220;
       syncthing-transfer = 3230;
-      gortr = 3240;
-      gortr-metric = 3241;
+      stayrtr = 3240;
+      stayrtr-metrics = 3241;
       bird-lg-proxy = 3250;
       bird-lg-frontend = 3251;
       keycloak = 3260;

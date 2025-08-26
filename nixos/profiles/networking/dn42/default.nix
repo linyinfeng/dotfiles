@@ -86,9 +86,9 @@ lib.mkIf meshCfg.enable {
   networking.dn42 = {
     enable = true;
     bgp = {
-      gortr = {
-        port = config.ports.gortr;
-        metricPort = config.ports.gortr-metric;
+      stayrtr = {
+        port = config.ports.stayrtr;
+        metricPort = config.ports.stayrtr-metrics;
       };
       collector.dn42.enable = dn42Cfg.bgp.peering.peers != { };
       peering = {
