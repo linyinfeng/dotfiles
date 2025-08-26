@@ -173,7 +173,7 @@ in
           _file = ./default.nix;
           name = "moduel-signing";
           patch = null;
-          extraStructuredConfig = with lib.kernel; {
+          structuredExtraConfig = with lib.kernel; {
             MODULE_SIG = lib.mkForce yes;
             MODULE_SIG_SHA512 = yes;
             MODULE_SIG_HASH = freeform "sha512";
@@ -188,7 +188,7 @@ in
         {
           name = "lockdown";
           patch = null;
-          extraStructuredConfig = with lib.kernel; {
+          structuredExtraConfig = with lib.kernel; {
             SECURITY_LOCKDOWN_LSM = lib.mkForce yes;
           };
         }
@@ -199,7 +199,7 @@ in
         {
           name = "uefi-keyring";
           patch = null;
-          extraStructuredConfig = with lib.kernel; {
+          structuredExtraConfig = with lib.kernel; {
             INTEGRITY_MACHINE_KEYRING = yes;
             INTEGRITY_PLATFORM_KEYRING = yes;
             INTEGRITY_ASYMMETRIC_KEYS = yes;

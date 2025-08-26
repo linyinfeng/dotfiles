@@ -3,6 +3,7 @@
   suites,
   profiles,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -40,8 +41,7 @@ in
       boot.loader.timeout = 10;
 
       # kernel tweaks
-      # boot.kernelModuleSigning.enable = true;
-      # boot.kernelLockdown = true;
+      boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
       hardware.enableRedistributableFirmware = true;
 
