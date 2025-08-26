@@ -371,16 +371,20 @@ lib.mkIf cfg.enable (
             Name = peerCfg.tunnel.interface.name;
           };
           addresses =
-            lib.lists.map (address: {
-              Address = "${address}/32";
-              Peer = "${peerCfg.linkAddresses.v4.peer}/32";
-              Scope = "link";
-            }) asCfg.thisHost.addressesV4
-            ++ lib.lists.map (address: {
-              Address = "${address}/128";
-              Peer = "${peerCfg.linkAddresses.v6.peer}/128";
-              Scope = "link";
-            }) asCfg.thisHost.addressesV6
+            lib.optionals (peerCfg.linkAddresses.v4.peer != null) (
+              lib.lists.map (address: {
+                Address = "${address}/32";
+                Peer = "${peerCfg.linkAddresses.v4.peer}/32";
+                Scope = "link";
+              }) asCfg.thisHost.addressesV4
+            )
+            ++ lib.optionals (peerCfg.linkAddresses.v6.peer != null) (
+              lib.lists.map (address: {
+                Address = "${address}/128";
+                Peer = "${peerCfg.linkAddresses.v6.peer}/128";
+                Scope = "link";
+              }) asCfg.thisHost.addressesV6
+            )
             ++ [
               {
                 Address = "${peerCfg.linkAddresses.v6.linkLocal}/64";

@@ -11,7 +11,7 @@ let
       s = toString n;
       length = lib.strings.stringLength s;
     in
-    if length < 4 then lib.lists.replicate (4 - length) "0" ++ [ s ] else s;
+    if length < 4 then lib.concatStrings (lib.lists.replicate (4 - length) "0" ++ [ s ]) else s;
 
   # https://dn42.eu/howto/Bird-communities
   dn42RegionType =
@@ -133,11 +133,11 @@ let
         linkAddresses = {
           v4 = {
             bgpNeighbor = lib.mkOption { type = with lib.types; nullOr str; };
-            peer = lib.mkOption { type = with lib.types; str; };
+            peer = lib.mkOption { type = with lib.types; nullOr str; };
           };
           v6 = {
             bgpNeighbor = lib.mkOption { type = with lib.types; nullOr str; };
-            peer = lib.mkOption { type = with lib.types; str; };
+            peer = lib.mkOption { type = with lib.types; nullOr str; };
             linkLocal = lib.mkOption {
               type = lib.types.str;
               default = bgpCfg.peering.defaults.linkAddresses.v6.local;
