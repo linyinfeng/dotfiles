@@ -1,5 +1,5 @@
 { config, lib, ... }:
-lib.mkIf config.services.xserver.desktopManager.plasma5.enable {
+lib.mkIf config.services.desktopManager.plasma6.enable {
   services.xserver = {
     enable = true;
     displayManager.sddm.enable = true;
