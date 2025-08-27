@@ -12,7 +12,6 @@ in
 {
   imports =
     suites.mobileWorkstation
-    ++ suites.games
     ++ (with profiles; [
       boot.secure-boot
       boot.lanzaboote-uki
