@@ -138,6 +138,14 @@ output "hydra_builder_public_key" {
   value     = data.tls_public_key.hydra_builder.public_key_openssh
   sensitive = false
 }
+resource "random_password" "hydra_webhook_github" {
+  length  = 32
+  special = false
+}
+output "hydra_webhook_github_secret" {
+  value     = random_password.hydra_webhook_github.result
+  sensitive = true
+}
 resource "random_password" "code_server" {
   length  = 32
   special = false

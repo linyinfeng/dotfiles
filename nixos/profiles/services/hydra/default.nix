@@ -222,5 +222,20 @@ in
         };
       };
     }
+
+    # webhook
+    {
+      sops.templates."hydra-extra-config".content = ''
+        <webhooks>
+          <github>
+            secret = ${config.sops.placeholder."hydra_webhook_github_secret"}
+          </github>
+        </webhooks>
+      '';
+      sops.secrets."hydra_webhook_github_secret" = {
+        terraformOutput.enable = true;
+        restartUnits = [ "hydra.service" ];
+      };
+    }
   ];
 }
