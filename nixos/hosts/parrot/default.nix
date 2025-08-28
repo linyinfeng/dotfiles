@@ -46,7 +46,7 @@ in
 
       services.desktopManager.gnome.enable = true;
       services.power-profiles-daemon.enable = true;
-      services.logind.lidSwitchExternalPower = "ignore";
+      services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 
       networking.campus-network = {
         enable = true;
