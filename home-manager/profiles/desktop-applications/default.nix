@@ -31,7 +31,6 @@ in
       virt-manager
       virt-viewer
       xournalpp
-      zeal
       zotero
       # keep-sorted end
     ]
@@ -104,7 +103,6 @@ in
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
-      ".local/share/Zeal"
 
       "Zotero"
     ];

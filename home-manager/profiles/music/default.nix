@@ -16,7 +16,7 @@ in
 
       # sheet music
       lilypond
-      frescobaldi
+      # frescobaldi # TODO insecure with qtwebengine
       musescore
 
       # plugin support
