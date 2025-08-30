@@ -5,8 +5,15 @@
     telegram = {
       enable = true;
       managerChatId = "148111617";
+      tokenFile = config.sops.secrets."telegram-bot/ace-bot/token".path;
     };
-    tokenFile = config.sops.secrets."telegram-bot/ace-bot/token".path;
+    matrix = {
+      enable = true;
+      homeServerUrl = "https://matrix.li7g.com";
+      userName = "ace";
+      passwordFile = config.sops.secrets."matrix-bot/ace-bot/password".path;
+      managerRoom = "!iLQcTjTFWOXhjNKMfV:li7g.com";
+    };
     extraModules = [
       (
         { pkgs, ... }:
@@ -26,6 +33,9 @@
     };
   };
   sops.secrets."telegram-bot/ace-bot/token" = {
+    sopsFile = config.sops-file.host;
+  };
+  sops.secrets."matrix-bot/ace-bot/password" = {
     sopsFile = config.sops-file.host;
   };
   services.nginx.additionalModules = with pkgs.nginxModules; [ fancyindex ];
