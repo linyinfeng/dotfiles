@@ -15,8 +15,10 @@ resource "gitlab_user_runner" "sicp_online_judge_docker_runner" {
   runner_type = "project_type"
   project_id  = data.gitlab_project.sicp_online_judge.id
 
+  description = "sicp online judge runner from li7g.com"
+
   tag_list = ["docker", "docker-in-docker"]
-  untagged = false
+  untagged = true
 }
 
 output "gitlab_sicp_oj_docker_runner_token" {
