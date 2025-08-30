@@ -5,9 +5,6 @@
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.ports.pastebin}";
-      extraConfig = ''
-        add_header Cache-Control "public, no-cache";
-      '';
     };
     extraConfig = ''
       client_max_body_size 25M;
