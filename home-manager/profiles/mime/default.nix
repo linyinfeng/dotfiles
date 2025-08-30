@@ -203,7 +203,8 @@ in
       // buildMap [ "calc.desktop" ] excelFormats
       // buildMap [ "impress.desktop" ] pptFormats
       // {
-        "text/plain" = "org.gnome.TextEditor.desktop";
+        "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
+        "text/plain" = [ "org.gnome.TextEditor.desktop" ];
         "application/pdf" = [ "org.gnome.Papers.desktop" ];
         "x-scheme-handler/mailto" = [ "org.gnome.Geary.desktop" ];
       };
