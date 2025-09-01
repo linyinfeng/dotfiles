@@ -210,6 +210,10 @@ with lib;
     preservation.preserveAt.${cfg.root} = {
       inherit (cfg) directories files;
       users = usersCfg;
+      commonMountOptions = [
+        "x-gvfs-hide"
+        "x-gdu.hide"
+      ];
     };
 
     systemd.tmpfiles.settings."10-preservation" = userTmpFilesCfg // {

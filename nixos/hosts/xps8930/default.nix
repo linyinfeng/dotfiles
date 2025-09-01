@@ -15,7 +15,6 @@ let
         options = [
           "subvol=${subvol}"
           "compress=zstd"
-          "x-gvfs-hide"
         ];
       }
       extraConfig

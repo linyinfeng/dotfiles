@@ -131,7 +131,6 @@ in
                       let
                         mountOptions = [
                           "compress=zstd"
-                          "x-gvfs-hide"
                         ];
                       in
                       {

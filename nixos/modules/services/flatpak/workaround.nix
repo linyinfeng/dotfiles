@@ -12,7 +12,6 @@ let
     options = [
       "ro"
       "resolve-symlinks"
-      "x-gvfs-hide"
     ];
   };
   aggregatedFonts = pkgs.buildEnv {
