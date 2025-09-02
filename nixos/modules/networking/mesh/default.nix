@@ -199,7 +199,7 @@ in
       # network management tools and compatibility issues
       {
         systemd.network.enable = true;
-        netwokring.routerBasics.enable = true;
+        networking.routerBasics.enable = true;
         networking.networkmanager.unmanaged = [ cfg.interfaces.dummy.name ];
         services.strongswan-swanctl.strongswan.extraConfig = lib.mkIf config.networking.fw-proxy.tproxy.enable ''
           charon {

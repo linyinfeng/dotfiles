@@ -558,7 +558,7 @@ with lib;
     })
 
     (mkIf cfg.tproxy.enable {
-      netwokring.routerBasics.enable = true;
+      networking.routerBasics.enable = true;
       systemd.network.config.routeTables = {
         fw-tproxy = cfg.tproxy.routingTable;
       };

@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.netwokring.routerBasics;
+  cfg = config.networking.routerBasics;
 in
 {
-  options.netwokring.routerBasics.enable = lib.mkEnableOption "router basics";
+  options.networking.routerBasics.enable = lib.mkEnableOption "router basics";
   config = lib.mkIf cfg.enable {
     boot.kernel.sysctl = {
       "net.ipv6.conf.default.forwarding" = 1;
