@@ -207,6 +207,10 @@ lib.mkMerge [
               ];
               inherit shadow;
             }
+            {
+              matches = [ { namespace = "^notifications$"; } ];
+              block-out-from = "screencast";
+            }
           ];
           binds =
             let
