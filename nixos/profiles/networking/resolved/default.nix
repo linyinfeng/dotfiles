@@ -11,7 +11,7 @@ lib.mkMerge [
       llmnr = "true";
       # dns.li7g.com supports DNSSEC and DoT property
       dnssec = "true";
-      dnsovertls = "true";
+      dnsovertls = "opportunistic";
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
   }
