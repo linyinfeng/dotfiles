@@ -475,7 +475,8 @@ lib.mkMerge [
             "custom/overview"
             "custom/launcher"
             "niri/workspaces"
-            "wlr/taskbar"
+            "cffi/niri-taskbar"
+            # "wlr/taskbar"
           ];
           modules-center = [ "clock" ];
           modules-right = [
@@ -507,6 +508,9 @@ lib.mkMerge [
             all-outputs = false;
             on-click = "activate";
             on-click-middle = "close";
+          };
+          "cffi/niri-taskbar" = {
+            module_path = "${pkgs.nur.repos.linyinfeng.niri-taskbar}/lib/libniri_taskbar.so";
           };
           "network" = {
             format = "󰛳";
