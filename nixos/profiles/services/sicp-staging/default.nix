@@ -342,7 +342,7 @@ lib.mkMerge [
         '';
       };
     };
-    systemd.services.nginx.restartTriggers = [ config.sops.templates."hledger-auth-file".file ];
+    systemd.services.nginx.restartTriggers = [ config.sops.templates."sicp-tutorials-auth-file".file ];
     sops.templates."sicp-tutorials-auth-file" = {
       content = ''
         sicp:${config.sops.placeholder."sicp_tutorials_hashed_password"}
