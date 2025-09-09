@@ -9,8 +9,7 @@ lib.mkMerge [
     services.resolved = {
       enable = true;
       llmnr = "true";
-      # dns.li7g.com supports DNSSEC and DoT property
-      dnssec = "true";
+      dnssec = "allow-downgrade";
       dnsovertls = "opportunistic";
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
