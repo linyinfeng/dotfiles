@@ -111,7 +111,6 @@
 
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";
-    angrr.inputs.crane.follows = "crane";
     angrr.inputs.flake-compat.follows = "flake-compat";
     angrr.inputs.flake-parts.follows = "flake-parts";
     angrr.inputs.treefmt-nix.follows = "treefmt-nix";
