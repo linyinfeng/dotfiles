@@ -149,8 +149,12 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: _prev: {
-
+      (_final: prev: {
+        # TODO remove
+        tailscale = prev.tailscale.overrideAttrs (_: {
+          doCheck = false;
+        });
+        inherit (import inputs.nixpkgs-sd-switch nixpkgsArgs) sd-switch;
       })
     ];
 in
