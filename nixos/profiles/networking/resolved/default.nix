@@ -9,7 +9,7 @@ lib.mkMerge [
     services.resolved = {
       enable = true;
       llmnr = "true";
-      dnssec = "allow-downgrade";
+      # dnssec = "allow-downgrade";
       dnsovertls = "opportunistic";
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
