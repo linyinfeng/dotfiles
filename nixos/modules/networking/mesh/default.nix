@@ -284,12 +284,12 @@ in
           ipv4 table mesh_v4 { }
           ipv6 table mesh_v6 { }
 
-          function mesh_is_valid_network_v4() {
+          function mesh_is_valid_network_v4() -> bool {
             return net ~ [
               ${lib.concatMapStringsSep ",\n    " (c: "${c.prefix}+") (lib.attrValues cfg.cidrsV4)}
             ];
           }
-          function mesh_is_valid_network_v6() {
+          function mesh_is_valid_network_v6() -> bool {
             return net ~ [
               ${lib.concatMapStringsSep ",\n    " (c: "${c.prefix}+") (lib.attrValues cfg.cidrsV6)}
             ];
@@ -329,7 +329,6 @@ in
             };
           }
           filter filter_mesh_kernel_v4 {
-            if source = RTS_STATIC then reject;
             ${lib.concatMapStringsSep "\n  " (
               cidr:
               "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
@@ -339,7 +338,6 @@ in
             accept;
           }
           filter filter_mesh_kernel_v6 {
-            if source = RTS_STATIC then reject;
             ${lib.concatMapStringsSep "\n  " (
               cidr:
               "if net ~ [ ${cidr.prefix}+ ] then krt_prefsrc = ${
@@ -388,6 +386,26 @@ in
                 };
               '') cfg.extraInterfaces
             )}
+          }
+          protocol static static_mesh_v4 {
+            ${lib.concatMapStringsSep "  " (cidrCfg: ''
+              route ${cidrCfg.prefix} unreachable;
+            '') (lib.attrValues cfg.cidrsV4)}
+            ipv4 {
+              table mesh_v4;
+              import all;
+              export none;
+            };
+          }
+          protocol static static_mesh_v6 {
+            ${lib.concatMapStringsSep "  " (cidrCfg: ''
+              route ${cidrCfg.prefix} unreachable;
+            '') (lib.attrValues cfg.cidrsV6)}
+            ipv6 {
+              table mesh_v6;
+              import all;
+              export none;
+            };
           }
         '';
         networking.firewall.allowedUDPPorts = [ config.ports.babel ];

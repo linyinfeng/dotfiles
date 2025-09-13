@@ -30,15 +30,15 @@ lib.mkIf cfg.enable (
           expire keep 172800;
         }
 
-        function dn42_is_self_net_v4() {
+        function dn42_is_self_net_v4() -> bool {
           return net ~ DN42OWNNETSETv4;
         }
 
-        function dn42_is_self_net_v6() {
+        function dn42_is_self_net_v6() -> bool {
           return net ~ DN42OWNNETSETv6;
         }
 
-        function dn42_is_valid_network_v4() {
+        function dn42_is_valid_network_v4() -> bool {
           return net ~ [
             172.20.0.0/14{21,29}, # dn42
             172.20.0.0/24{28,32}, # dn42 Anycast
@@ -51,7 +51,7 @@ lib.mkIf cfg.enable (
             10.0.0.0/8{15,24}     # Freifunk.net
           ];
         }
-        function dn42_is_valid_network_v6() {
+        function dn42_is_valid_network_v6() -> bool {
           return net ~ [
             fd00::/8{44,64} # ULA address space as per RFC 4193
           ];
@@ -62,28 +62,28 @@ lib.mkIf cfg.enable (
         #   for latency pick max(received_route.latency, link_latency)
         #   for encryption and bandwidth pick min between received BGP community and peer link
 
-        function dn42_update_latency(int link_latency) {
+        function dn42_update_latency(int link_latency) -> pair {
           pair set latency_set = [(64511, 1..9)];
           pair new_latency = add(filter(bgp_community, latency_set), (64511, link_latency)).max;
           bgp_community = add(delete(bgp_community, latency_set), new_latency);
           return new_latency;
         }
 
-        function dn42_update_bandwidth(int link_bandwidth) {
+        function dn42_update_bandwidth(int link_bandwidth) -> pair {
           pair set bandwidth_set = [(64511, 21..29)];
           pair new_bandwidth = add(filter(bgp_community, bandwidth_set), (64511, link_bandwidth)).min;
           bgp_community = add(delete(bgp_community, bandwidth_set), new_bandwidth);
           return new_bandwidth;
         }
 
-        function dn42_update_crypto(int link_crypto) {
+        function dn42_update_crypto(int link_crypto) -> pair {
           pair set crypto_set = [(64511, 31..34)];
           pair new_crypto = add(filter(bgp_community, crypto_set), (64511, link_crypto)).min;
           bgp_community = add(delete(bgp_community, crypto_set), new_crypto);
           return new_crypto;
         }
 
-        function dn42_update_communities(int link_latency; int link_bandwidth; int link_crypto)
+        function dn42_update_communities(int link_latency; int link_bandwidth; int link_crypto) -> bool
         {
           pair dn42_latency = dn42_update_latency(link_latency);
           pair dn42_bandwidth = dn42_update_bandwidth(link_bandwidth);
@@ -103,7 +103,7 @@ lib.mkIf cfg.enable (
           else
             ""
         }
-        function dn42_add_region_country_communities()
+        function dn42_add_region_country_communities() -> bool
         {
           ${if bgpCfg.community.dn42.region != null then "bgp_community.add((64511, DN42_REGION));" else ""}
           ${
