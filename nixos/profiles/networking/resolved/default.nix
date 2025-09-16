@@ -11,13 +11,13 @@ lib.mkMerge [
       llmnr = "true";
       # dnssec = "allow-downgrade";
       dnsovertls = "opportunistic";
+      fallbackDns = dnsServers;
+      domains = [ "li7g.com" ];
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
   }
   (lib.mkIf config.services.avahi.enable {
     services.resolved.extraConfig = ''
-      DNS=${lib.concatStringsSep " " dnsServers}
-      Domains=~. li7g.com
       MulticastDNS=resolve
     '';
   })
