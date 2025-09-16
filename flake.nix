@@ -314,8 +314,6 @@
     pmaports.flake = false;
 
     # fixes
-
-    nixpkgs-sd-switch.url = "github:nixos/nixpkgs/pull/442482/head";
   };
 
   outputs =

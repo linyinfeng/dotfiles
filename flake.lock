@@ -1301,22 +1301,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-sd-switch": {
-      "locked": {
-        "lastModified": 1757712331,
-        "narHash": "sha256-c6QlANYrOpgifToGjo47ygSuxpOslRwN7GZ+OLwpVN0=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ede83dc17a58d6e846a0125c87dd18dc3abfe2a5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "pull/442482/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1757810152,
@@ -1576,7 +1560,6 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-latest": "nixpkgs-latest",
         "nixpkgs-riscv": "nixpkgs-riscv",
-        "nixpkgs-sd-switch": "nixpkgs-sd-switch",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
         "nvfetcher": "nvfetcher",

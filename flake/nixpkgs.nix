@@ -154,7 +154,6 @@ let
         tailscale = prev.tailscale.overrideAttrs (_: {
           doCheck = false;
         });
-        inherit (import inputs.nixpkgs-sd-switch nixpkgsArgs) sd-switch;
       })
     ];
 in
