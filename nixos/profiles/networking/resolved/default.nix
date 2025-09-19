@@ -10,7 +10,7 @@ lib.mkMerge [
       enable = true;
       llmnr = "true";
       # dnssec = "allow-downgrade";
-      dnsovertls = "opportunistic";
+      # dnsovertls = "opportunistic";
       fallbackDns = dnsServers;
       domains = [ "li7g.com" ];
     };
