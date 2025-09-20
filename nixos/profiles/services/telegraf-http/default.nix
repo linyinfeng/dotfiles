@@ -119,6 +119,12 @@ let
         code = 200;
       }
     ];
+    sicp-tutorials = [
+      {
+        url = "https://sicp-tutorials.li7g.com";
+        code = 401;
+      }
+    ];
   };
   mkServiceCfg =
     name: cnameMapping:
