@@ -142,7 +142,7 @@
     cachix.inputs.flake-compat.follows = "flake-compat";
     cachix.inputs.git-hooks.follows = "git-hooks-nix";
 
-    commit-notifier.url = "github:linyinfeng/commit-notifier/commit-notifier-ng";
+    commit-notifier.url = "github:linyinfeng/commit-notifier";
     commit-notifier.inputs.crane.follows = "crane";
     commit-notifier.inputs.flake-parts.follows = "flake-parts";
     commit-notifier.inputs.flake-utils.follows = "flake-utils";
