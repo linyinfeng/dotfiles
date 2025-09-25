@@ -70,6 +70,7 @@ let
         development.documentation
         programs.adb
         programs.qrcp
+        programs.direnv
         services.gnupg
         services.nixseparatedebuginfod
 
@@ -213,7 +214,6 @@ let
       development = with profiles; [
         git
         development
-        direnv
         emacs
         ssh
         pssh
@@ -271,7 +271,6 @@ let
           # development
           git
           development
-          direnv
           ssh
           shells
 
@@ -281,36 +280,38 @@ let
     }
   );
 
-  commonNixosModules = nixosModules ++ [
-    inputs.sops-nix.nixosModules.sops
-    inputs.preservation.nixosModules.preservation
-    inputs.disko.nixosModules.disko
-    inputs.flake-utils-plus.nixosModules.autoGenFromInputs
-    inputs.linyinfeng.nixosModules.vlmcsd
-    inputs.linyinfeng.nixosModules.tprofile
-    inputs.linyinfeng.nixosModules.tg-send
-    inputs.linyinfeng.nixosModules.dot-tar
-    inputs.linyinfeng.nixosModules.matrix-media-repo
-    inputs.oranc.nixosModules.oranc
-    inputs.ace-bot.nixosModules.ace-bot
-    inputs.commit-notifier.nixosModules.commit-notifier
-    inputs.angrr.nixosModules.angrr
-    inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.nix-topology.nixosModules.default
-    inputs.niri-flake.nixosModules.niri
+  commonNixosModules =
+    nixosModules
+    ++ [
+      inputs.sops-nix.nixosModules.sops
+      inputs.preservation.nixosModules.preservation
+      inputs.disko.nixosModules.disko
+      inputs.flake-utils-plus.nixosModules.autoGenFromInputs
+      inputs.linyinfeng.nixosModules.vlmcsd
+      inputs.linyinfeng.nixosModules.tprofile
+      inputs.linyinfeng.nixosModules.tg-send
+      inputs.linyinfeng.nixosModules.dot-tar
+      inputs.linyinfeng.nixosModules.matrix-media-repo
+      inputs.oranc.nixosModules.oranc
+      inputs.ace-bot.nixosModules.ace-bot
+      inputs.commit-notifier.nixosModules.commit-notifier
+      inputs.lanzaboote.nixosModules.lanzaboote
+      inputs.nix-topology.nixosModules.default
+      inputs.niri-flake.nixosModules.niri
 
-    {
-      lib = {
-        self = self.lib;
-        nur = inputs.linyinfeng.lib;
-      };
-      home-manager = {
-        sharedModules = commonHmModules;
-        extraSpecialArgs = hmSpecialArgs;
-      };
-      system.configurationRevision = self.rev or null;
-    }
-  ];
+      {
+        lib = {
+          self = self.lib;
+          nur = inputs.linyinfeng.lib;
+        };
+        home-manager = {
+          sharedModules = commonHmModules;
+          extraSpecialArgs = hmSpecialArgs;
+        };
+        system.configurationRevision = self.rev or null;
+      }
+    ]
+    ++ lib.optional config.testingFlags.angrr inputs.angrr.nixosModules.angrr;
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default

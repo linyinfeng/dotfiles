@@ -1,4 +1,5 @@
 {
+  config,
   self,
   inputs,
   lib,
@@ -15,7 +16,6 @@ let
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
     inputs.commit-notifier.overlays.default
-    inputs.angrr.overlays.default
     inputs.pastebin.overlays.default
     inputs.emacs-overlay.overlay
     inputs.flat-flake.overlays.default
@@ -123,7 +123,9 @@ let
         '';
       };
     })
-  ];
+  ]
+  ++ lib.optional config.testingFlags.angrr inputs.angrr.overlays.default;
+
   alternativeChannels = nixpkgsArgs: {
     unstable = import inputs.nixpkgs nixpkgsArgs;
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
