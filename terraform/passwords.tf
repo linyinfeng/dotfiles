@@ -417,6 +417,18 @@ output "sicp_tutorials_hashed_password" {
   value     = htpasswd_password.sicp_tutorials.sha512
   sensitive = true
 }
+
+# SICP wiki
+
+resource "random_password" "sicp_wiki_admin" {
+  length  = 32
+  special = false
+}
+output "sicp_wiki_admin_password" {
+  value     = random_password.sicp_wiki_admin.result
+  sensitive = true
+}
+
 resource "random_password" "fw_proxy_subscription" {
   length  = 64
   special = false
