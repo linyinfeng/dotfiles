@@ -25,7 +25,6 @@ in
       services.sicp-tutorials
       services.rathole
       services.pocket-id
-      services.sicp-wiki
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 

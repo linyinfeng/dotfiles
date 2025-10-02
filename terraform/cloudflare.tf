@@ -125,7 +125,6 @@ locals {
     id             = { on = "hkg0", proxy = true }
     rathole-ad-hoc = { on = "hkg0", proxy = false }
     portal         = { on = "hkg0", proxy = false }
-    sicp-wiki      = { on = "hkg0", proxy = false }
     tar            = { on = "lax0", proxy = true }
     pgp-public-key = { on = "lax0", proxy = true }
     oranc          = { on = "lax0", proxy = true }
