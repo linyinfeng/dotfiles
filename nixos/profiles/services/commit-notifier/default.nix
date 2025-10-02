@@ -9,6 +9,7 @@
       github = config.sops.secrets."nano/github-token".path;
     };
   };
+  systemd.services.commit-notifier.serviceConfig.LimitNOFILE = 65535;
   sops.secrets."telegram-bot/commit-notifier" = {
     sopsFile = config.sops-file.host;
     restartUnits = [ "commit-notifier.service" ];
