@@ -20,6 +20,6 @@ in
   services.nginx.virtualHosts."bird-lg.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-    locations."/".proxyPass = "http://${config.services.bird-lg.frontend.listenAddress}";
+    locations."/".proxyPass = "http://${config.services.bird-lg.frontend.listenAddresses}";
   };
 }
