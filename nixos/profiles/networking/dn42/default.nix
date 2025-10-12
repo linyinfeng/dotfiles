@@ -128,7 +128,7 @@ lib.mkIf meshCfg.enable {
   # bird-lg proxy
   services.bird-lg.proxy = {
     enable = true;
-    listenAddress = "[::]:${toString config.ports.bird-lg-proxy}";
+    listenAddresses = "[::]:${toString config.ports.bird-lg-proxy}";
   };
   # tailscale as control plane
   networking.firewall.interfaces.${config.services.tailscale.interfaceName}.allowedTCPPorts = [

@@ -7,7 +7,7 @@ in
 {
   services.bird-lg.frontend = {
     enable = true;
-    listenAddress = "127.0.0.1:${toString config.ports.bird-lg-frontend}";
+    listenAddresses = "127.0.0.1:${toString config.ports.bird-lg-frontend}";
     netSpecificMode = "dn42";
     domain = "ts.li7g.com";
     proxyPort = config.ports.bird-lg-proxy;
