@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -a /etc/INITIALIZED ]; then
+if [ -e /etc/INITIALIZED ]; then
   echo "already initialized"
   exit 0
 fi
