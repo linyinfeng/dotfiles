@@ -74,25 +74,5 @@
         bandwidth = 22; # 1Mbps <= . < 10Mbps
       };
     };
-    "tyo0.ny4.dev" = {
-      remoteAutonomousSystem.dn42LowerNumber = 21; # 0021
-      tunnel.type = "wireguard";
-      wireguard.remotePublicKey = "KW+H2qK9aDiqoLwvmtLjJ6Sbndbcn4vnJpjT/xz89BE=";
-      endpoint = {
-        address = "tyo0.ny4.dev";
-        port = 20128;
-      };
-      linkAddresses = rec {
-        v4.bgpNeighbor = null; # no v4
-        v6.bgpNeighbor = v6.peer;
-        v4.peer = null; # no v4
-        v6.peer = "fd00:5d5b:797c::1";
-      };
-      bgp.community.dn42 = {
-        enable = true;
-        latency = 4; # rtt min/avg/max/mdev = 48.746/48.911/49.266/0.149 ms
-        bandwidth = 23; # 10Mbps <= . < 100Mbps
-      };
-    };
   };
 }
