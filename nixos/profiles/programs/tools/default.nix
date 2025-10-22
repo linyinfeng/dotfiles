@@ -113,9 +113,15 @@ in
       delink
       tmpTest
     ];
-  environment.shellAliases = {
-    nom-hydra = ''nom build --builders @/etc/nix-build-machines/hydra-builder/machines'';
-  };
+  programs.fish.interactiveShellInit = ''
+    function nom --description 'nom wrapper'
+      nix $argv --log-format internal-json &| command nom --json
+    end
+
+    function nom-hydra --description 'nom wrapper on hydra builders'
+      nom --builders @/etc/nix-build-machines/hydra-builder/machines $argv
+    end
+  '';
   passthru = {
     inherit delink tmpTest;
   };
