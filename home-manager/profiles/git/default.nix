@@ -15,7 +15,7 @@ lib.mkMerge [
       package = pkgs.gitFull;
       lfs.enable = true;
 
-      extraConfig = {
+      settings = {
         init.defaultBranch = "main";
         pull.rebase = false;
         pull.ff = "only";
@@ -48,21 +48,20 @@ lib.mkMerge [
 
   # delta
   {
-    programs.git = {
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          light = true;
-          line-numbers = true;
-          hyperlinks = true;
-          hyperlinks-file-link-format = "file-line-column://{path}:{line}";
-        };
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        navigate = true;
+        light = true;
+        line-numbers = true;
+        hyperlinks = true;
+        hyperlinks-file-link-format = "file-line-column://{path}:{line}";
       };
-      extraConfig = {
-        merge.conflictstyle = "diff3";
-        diff.colorMoved = "default";
-      };
+    };
+    programs.git.settings = {
+      merge.conflictstyle = "diff3";
+      diff.colorMoved = "default";
     };
     home.packages = [ fileLineColumnHandler ];
     xdg.desktopEntries = {

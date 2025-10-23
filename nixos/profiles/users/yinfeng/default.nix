@@ -82,9 +82,9 @@ in
     # git and gpg
     {
       home-manager.users.${name} = {
-        programs.git = {
-          userName = "Lin Yinfeng";
-          userEmail = "lin.yinfeng@outlook.com";
+        programs.git.settings = {
+          user.name = "Lin Yinfeng";
+          user.email = "lin.yinfeng@outlook.com";
           # do not sign by default
           # signing.signByDefault = true;
         };

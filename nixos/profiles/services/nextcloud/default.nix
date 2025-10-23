@@ -118,7 +118,6 @@ in
     secretFile = config.sops.templates."nextcloud-secret-config".path;
     extraApps = {
       inherit (apps)
-        notify_push
         onlyoffice
         memories
         previewgenerator
