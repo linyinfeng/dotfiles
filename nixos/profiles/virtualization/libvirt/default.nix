@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 let
-  winVirtioIso = pkgs.runCommand "win-virtio-iso" { } ''
-    mkdir -p "$out/share/win-virtio"
-    ln -s ${pkgs.win-virtio.src} "$out/share/win-virtio/win-virtio.iso"
+  virtioWinIso = pkgs.runCommand "virtio-win-iso" { } ''
+    mkdir -p "$out/share/virtio-win"
+    ln -s ${pkgs.virtio-win.src} "$out/share/virtio-win/virtio-win.iso"
   '';
 in
 {
@@ -19,9 +19,9 @@ in
 
   environment.systemPackages = [
     # pkgs.libguestfs-with-appliance
-    winVirtioIso
+    virtioWinIso
   ];
-  environment.pathsToLink = [ "/share/win-virtio" ];
+  environment.pathsToLink = [ "/share/virtio-win" ];
 
   networking.firewall.allowedUDPPorts = [
     config.ports.dns
