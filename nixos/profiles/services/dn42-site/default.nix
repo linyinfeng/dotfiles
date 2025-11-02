@@ -87,7 +87,7 @@ let
     };
     hosts = lib.mapAttrs mkHostInfo (lib.filterAttrs filterHost asCfg.hosts);
   };
-  siteRoot = pkgs.runCommandNoCC "dn42-site-root" { } ''
+  siteRoot = pkgs.runCommand "dn42-site-root" { } ''
     mkdir -p $out
     cp "${json.generate "info.json" info}" $out/info.json
   '';

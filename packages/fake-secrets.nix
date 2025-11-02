@@ -1,10 +1,10 @@
 {
-  runCommandNoCC,
+  runCommand,
   jq,
   fd,
   make-fake-secrets,
 }:
-runCommandNoCC "fake-secrets"
+runCommand "fake-secrets"
   {
     nativeBuildInputs = [
       jq
