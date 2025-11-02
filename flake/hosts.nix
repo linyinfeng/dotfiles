@@ -359,13 +359,15 @@ let
               if forceFlakeNixpkgs then
                 {
                   imports = [ nixpkgs.nixosModules.readOnlyPkgs ];
+                  # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=456076
+                  disabledModules = [ "hardware/facter/system.nix" ];
                   nixpkgs = {
                     inherit ((getSystem system).allModuleArgs) pkgs;
                   };
                 }
               else
                 {
-                  # crossOverlays has not been suppored by nixos module
+                  # crossOverlays has not been supported by nixos module
                   nixpkgs = {
                     inherit ((getSystem system).nixpkgs) config overlays;
                   };
@@ -493,21 +495,22 @@ in
       ];
     })
 
-    (mkHost {
-      name = "enchilada";
-      system = "aarch64-linux";
-      forceFlakeNixpkgs = false;
-      extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
-        "${inputs.mobile-nixos}/devices/oneplus-enchilada"
-        (
-          { ... }:
-          {
-            # mobile-nixos tests `config.nixpkgs.localSystem`
-            nixpkgs.system = "aarch64-linux";
-          }
-        )
-      ];
-    })
+    # TODO broken
+    # (mkHost {
+    #   name = "enchilada";
+    #   system = "aarch64-linux";
+    #   forceFlakeNixpkgs = false;
+    #   extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
+    #     "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+    #     (
+    #       { ... }:
+    #       {
+    #         # mobile-nixos tests `config.nixpkgs.localSystem`
+    #         nixpkgs.system = "aarch64-linux";
+    #       }
+    #     )
+    #   ];
+    # })
 
     (mkHost {
       name = "lax0";
