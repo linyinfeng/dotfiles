@@ -5,7 +5,7 @@
 {
   config = {
     fonts.packages = with pkgs; [
-      noto-fonts-emoji
+      noto-fonts-color-emoji
 
       source-serif
       source-han-serif
@@ -23,7 +23,7 @@
       sarasa-gothic
 
       corefonts
-      vistafonts
+      vista-fonts
 
       nerd-fonts.iosevka-term-slab
     ];

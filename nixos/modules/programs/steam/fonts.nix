@@ -5,7 +5,7 @@ let
     paths = with pkgs; [
       source-han-serif
       source-han-sans
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       wqy_zenhei
       wqy_microhei
     ];
