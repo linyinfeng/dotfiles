@@ -26,7 +26,7 @@ in
       picard
       praat
       qq
-      tdesktop
+      telegram-desktop
       transmission-remote-gtk
       virt-manager
       virt-viewer
