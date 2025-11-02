@@ -12,7 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     yubikey-manager
-    pcsctools
+    pcsc-tools
   ];
 
   services.gnome.gcr-ssh-agent.enable = false;
