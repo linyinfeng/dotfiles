@@ -51,7 +51,7 @@ in
     ispell
     sqlite # org-roam
     graphviz # org-roam
-    poppler_utils # pdf-tools
+    poppler-utils # pdf-tools
     ripgrep # rg
   ]);
   home.file = {
