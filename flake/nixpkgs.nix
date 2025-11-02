@@ -68,7 +68,7 @@ let
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
       });
       blender = prev.blender.override {
-        cudaSupport = true;
+        # cudaSupport = true; # TODO broken
       };
       iosevka-yinfeng = requireBigParallel (
         final.iosevka.override {
