@@ -23,6 +23,9 @@
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
           environment.systemPackages = with pkgs; [ nix-index-with-db ];
+
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=456076
+          disabledModules = [ "hardware/facter/system.nix" ];
         }
       )
     ];
