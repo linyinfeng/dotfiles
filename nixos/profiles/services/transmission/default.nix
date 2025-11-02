@@ -1,10 +1,11 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   rpcPort = config.ports.transmission-rpc;
 in
 {
   services.transmission = {
     enable = true;
+    package = pkgs.transmission_4;
     openFirewall = true;
     credentialsFile = config.sops.templates."transmission-credentials".path;
     settings = {
