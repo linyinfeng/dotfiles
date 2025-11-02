@@ -23,7 +23,6 @@ in
       services.fwupd
       networking.wireguard-home
       hardware.backlight
-      hardware.nvidia-egpu
       users.yinfeng
     ])
     ++ [
