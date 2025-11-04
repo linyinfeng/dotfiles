@@ -46,6 +46,12 @@ let
         "packages"
         system
       ])
+      // (self.lib.maybeAttrByPath "hydra" inputs [
+        "hydra"
+        "packages"
+        system
+        "hydra"
+      ])
     )
     (final: prev: {
       # scoped overlays
