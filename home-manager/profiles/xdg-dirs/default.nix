@@ -1,6 +1,6 @@
-{ ... }:
+{ config, ... }:
 let
-  prefix = "$HOME/Data";
+  prefix = "${config.home.homeDirectory}/Data";
 in
 {
   xdg.enable = true;

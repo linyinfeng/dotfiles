@@ -315,6 +315,7 @@ let
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
+    inputs.noctalia.homeModules.default
     { lib.self = self.lib; }
   ];
 
