@@ -38,7 +38,7 @@
   "secure_boot_signature_owner_guid": "b2530c84-f3d3-400b-b401-0cfd3de074ca",
   "service_cname_mappings": {
     "ace-bot": {
-      "on": "lax0",
+      "on": "hkg0",
       "proxy": true
     },
     "atuin": {
@@ -130,7 +130,7 @@
       "proxy": true
     },
     "oranc": {
-      "on": "lax0",
+      "on": "hkg0",
       "proxy": true
     },
     "pb": {
@@ -138,7 +138,7 @@
       "proxy": true
     },
     "pgp-public-key": {
-      "on": "lax0",
+      "on": "hkg0",
       "proxy": true
     },
     "portal": {
@@ -182,7 +182,7 @@
       "proxy": true
     },
     "tar": {
-      "on": "lax0",
+      "on": "hkg0",
       "proxy": true
     },
     "teamspeak": {
