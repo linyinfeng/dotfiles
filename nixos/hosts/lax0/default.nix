@@ -17,11 +17,6 @@ in
       programs.tg-send
       services.nginx
       services.acme
-      services.ace-bot
-      services.pgp-public-key-web
-      services.oranc
-      services.dot-tar
-      services.dotfiles-update-trigger
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 

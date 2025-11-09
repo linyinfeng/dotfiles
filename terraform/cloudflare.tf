@@ -125,10 +125,10 @@ locals {
     id             = { on = "hkg0", proxy = true }
     rathole-ad-hoc = { on = "hkg0", proxy = false }
     portal         = { on = "hkg0", proxy = false }
-    tar            = { on = "lax0", proxy = true }
-    pgp-public-key = { on = "lax0", proxy = true }
-    oranc          = { on = "lax0", proxy = true }
-    ace-bot        = { on = "lax0", proxy = true }
+    tar            = { on = "hkg0", proxy = true }
+    pgp-public-key = { on = "hkg0", proxy = true }
+    oranc          = { on = "hkg0", proxy = true }
+    ace-bot        = { on = "hkg0", proxy = true }
     hledger        = { on = "mtl0", proxy = true }
     vault          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
