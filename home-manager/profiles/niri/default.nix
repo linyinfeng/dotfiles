@@ -25,7 +25,7 @@ let
   noctaliaIpc =
     cmd:
     [
-      "noctalia-shell"
+      (lib.getExe config.programs.noctalia-shell.package)
       "ipc"
       "call"
     ]
@@ -471,7 +471,9 @@ lib.mkMerge [
           fontFixed = "Monospace";
         };
         appLauncher = {
-          useApp2Unit = true;
+          useApp2Unit = false;
+          customLaunchPrefixEnabled = true;
+          customLaunchPrefix = "niri msg action spawn --";
           terminalCommand = "alacritty --command";
           position = "top_center";
         };
@@ -639,7 +641,6 @@ lib.mkMerge [
 
     home.packages = with pkgs; [
       mpv
-      app2unit
     ];
   }
 
@@ -676,6 +677,33 @@ lib.mkMerge [
       ];
     }
   )
+
+  # swayidle
+  {
+    services.swayidle = {
+      enable = true;
+      events = [
+        {
+          event = "before-sleep";
+          command = lib.escapeShellArgs lockScreen;
+        }
+        {
+          event = "lock";
+          command = lib.escapeShellArgs lockScreen;
+        }
+      ];
+      timeouts = [
+        {
+          timeout = 300;
+          command = lib.escapeShellArgs lockScreen;
+        }
+        {
+          timeout = 330;
+          command = "${lib.getExe config.programs.niri.package} msg action power-off-monitors";
+        }
+      ];
+    };
+  }
 
   # kanshi
   {
