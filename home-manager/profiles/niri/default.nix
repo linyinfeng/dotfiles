@@ -472,6 +472,7 @@ lib.mkMerge [
         };
         appLauncher = {
           terminalCommand = "alacritty --command";
+          position = "top_center";
         };
         audio = {
           volumeStep = 1;
@@ -499,7 +500,6 @@ lib.mkMerge [
               }
               {
                 id = "Workspace";
-                hideUnoccupied = true;
               }
               {
                 id = "Taskbar";
