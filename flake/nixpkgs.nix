@@ -128,6 +128,11 @@ let
             --add-flags --wayland-text-input-version=3
         '';
       };
+      hydra = prev.hydra.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          ../patches/hydra-show-trace.patch
+        ];
+      });
     })
   ]
   ++ lib.optional config.testingFlags.angrr inputs.angrr.overlays.default;

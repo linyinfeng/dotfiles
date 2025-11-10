@@ -1,0 +1,12 @@
+diff --git a/src/script/hydra-eval-jobset b/src/script/hydra-eval-jobset
+index eeea742f..d8f82cff 100755
+--- a/src/script/hydra-eval-jobset
++++ b/src/script/hydra-eval-jobset
+@@ -391,6 +391,7 @@ sub evalJobs {
+     push @cmd, ("--option", "allow-import-from-derivation", "false") if ($config->{allow_import_from_derivation} // "false") ne "true";
+     push @cmd, ("--workers", $config->{evaluator_workers} // 1);
+     push @cmd, ("--max-memory-size", $config->{evaluator_max_memory_size} // 4096);
++    push @cmd, "--show-trace";
+ 
+     if (defined $ENV{'HYDRA_DEBUG'}) {
+         sub escape {
