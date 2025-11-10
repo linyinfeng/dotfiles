@@ -471,6 +471,7 @@ lib.mkMerge [
           fontFixed = "Monospace";
         };
         appLauncher = {
+          useApp2Unit = true;
           terminalCommand = "alacritty --command";
           position = "top_center";
         };
@@ -506,12 +507,6 @@ lib.mkMerge [
                 onlyActiveWorkspaces = true;
                 onlySameOutput = true;
               }
-              {
-                id = "MediaMini";
-                showAlbumArt = true;
-                showVisualizer = true;
-                visualizerType = "mirrored";
-              }
             ];
             right = [
               {
@@ -531,6 +526,12 @@ lib.mkMerge [
               }
               {
                 id = "Volume";
+              }
+              {
+                id = "MediaMini";
+                showAlbumArt = true;
+                showVisualizer = true;
+                visualizerType = "mirrored";
               }
               { id = "KeepAwake"; }
               { id = "DarkMode"; }
@@ -638,8 +639,43 @@ lib.mkMerge [
 
     home.packages = with pkgs; [
       mpv
+      app2unit
     ];
   }
+
+  # nirius
+  (
+    let
+      inherit (pkgs) nirius;
+    in
+    {
+      systemd.user.services.niriusd = {
+        Unit = {
+          After = [ config.wayland.systemd.target ];
+          PartOf = [ config.wayland.systemd.target ];
+          Requires = [ config.wayland.systemd.target ];
+          ConditionEnvironment = [ "WAYLAND_DISPLAY" ];
+        };
+        Service = {
+          ExecStart = lib.getExe' nirius "niriusd";
+          Type = "simple";
+          Restart = "on-failure";
+        };
+        Install = {
+          WantedBy = [ config.wayland.systemd.target ];
+        };
+      };
+      programs.niri.settings.binds = {
+        "Mod+Ctrl+BackSlash".action.spawn = [
+          "nirius"
+          "toggle-follow-mode"
+        ];
+      };
+      home.packages = [
+        nirius
+      ];
+    }
+  )
 
   # kanshi
   {
@@ -649,7 +685,6 @@ lib.mkMerge [
     ];
     services.kanshi = {
       enable = true;
-      systemdTarget = "niri.service";
     };
   }
 
@@ -658,10 +693,7 @@ lib.mkMerge [
     services.wluma = {
       # noctalia notification for brightness change is annoying
       enable = false;
-      systemd = {
-        enable = true;
-        target = "niri.service";
-      };
+      systemd.enable = true;
     };
   }
 ]
