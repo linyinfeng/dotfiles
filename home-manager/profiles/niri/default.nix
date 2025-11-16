@@ -464,7 +464,7 @@ lib.mkMerge [
       enable = true;
       systemd.enable = true;
       settings = {
-        settingsVersion = 20;
+        settingsVersion = 23;
         setupCompleted = true;
         ui = {
           fontDefault = "Sans Serif";
@@ -516,7 +516,7 @@ lib.mkMerge [
                 blacklist = [ ];
                 colorizeIcons = false;
                 drawerEnabled = true;
-                favorites = [
+                pinned = [
                   "Fcitx"
                 ];
               }
