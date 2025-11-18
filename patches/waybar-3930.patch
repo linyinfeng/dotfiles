@@ -1,518 +1,83 @@
-From aaea81421776eb3b5a97317948a42bd6e0c09290 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Sun, 9 Feb 2025 13:05:36 +0200
-Subject: [PATCH 1/6] Idempotent bar show/hide via configurable user kill
- signals
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; connect-src 'self'; form-action 'self'; img-src 'self' data:; script-src 'self'; style-src 'unsafe-inline'">
+    <meta content="origin" name="referrer">
+    <title>Too many requests &middot; GitHub</title>
+    <meta name="viewport" content="width=device-width">
+    <style type="text/css" media="screen">
+      body {
+        background-color: #f6f8fa;
+        color: #24292e;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+      }
 
----
- include/bar.hpp              |  8 ++++++
- include/util/kill_signal.hpp | 26 ++++++++++++++++++
- src/bar.cpp                  | 31 ++++++++++++++++++++++
- src/main.cpp                 | 51 ++++++++++++++++++++++++++++++------
- src/util/enum.cpp            |  1 +
- 5 files changed, 109 insertions(+), 8 deletions(-)
- create mode 100644 include/util/kill_signal.hpp
+      .container { margin: 50px auto; max-width: 600px; text-align: center; padding: 0 24px; }
 
-diff --git a/include/bar.hpp b/include/bar.hpp
-index 9b407abf4..c2dc0ae10 100644
---- a/include/bar.hpp
-+++ b/include/bar.hpp
-@@ -14,6 +14,7 @@
- 
- #include "AModule.hpp"
- #include "group.hpp"
-+#include "util/kill_signal.hpp"
- #include "xdg-output-unstable-v1-client-protocol.h"
- 
- namespace waybar {
-@@ -68,7 +69,11 @@ class Bar : public sigc::trackable {
-   void setMode(const std::string &mode);
-   void setVisible(bool value);
-   void toggle();
-+  void show();
-+  void hide();
-   void handleSignal(int);
-+  util::KillSignalAction getOnSigusr1Action();
-+  util::KillSignalAction getOnSigusr2Action();
- 
-   struct waybar_output *output;
-   Json::Value config;
-@@ -118,6 +123,9 @@ class Bar : public sigc::trackable {
-   std::unique_ptr<BarIpcClient> _ipc_client;
- #endif
-   std::vector<std::shared_ptr<waybar::AModule>> modules_all_;
-+
-+  waybar::util::KillSignalAction onSigusr1;
-+  waybar::util::KillSignalAction onSigusr2;
- };
- 
- }  // namespace waybar
-diff --git a/include/util/kill_signal.hpp b/include/util/kill_signal.hpp
-new file mode 100644
-index 000000000..26d156e96
---- /dev/null
-+++ b/include/util/kill_signal.hpp
-@@ -0,0 +1,26 @@
-+#pragma once
-+
-+#include <json/value.h>
-+
-+#include <cstdint>
-+
-+namespace waybar::util {
-+
-+enum class KillSignalAction : std::uint8_t {
-+  TOGGLE,
-+  RELOAD,
-+  SHOW,
-+  HIDE,
-+  NOOP,
-+};
-+const std::map<std::string, KillSignalAction> userKillSignalActions = {
-+    {"TOGGLE", KillSignalAction::TOGGLE},
-+    {"RELOAD", KillSignalAction::RELOAD},
-+    {"SHOW", KillSignalAction::SHOW},
-+    {"HIDE", KillSignalAction::HIDE},
-+    {"NOOP", KillSignalAction::NOOP}};
-+
-+const KillSignalAction SIGNALACTION_DEFAULT_SIGUSR1 = KillSignalAction::TOGGLE;
-+const KillSignalAction SIGNALACTION_DEFAULT_SIGUSR2 = KillSignalAction::RELOAD;
-+
-+};  // namespace waybar::util
-diff --git a/src/bar.cpp b/src/bar.cpp
-index 3c3ab6906..5ca2ec044 100644
---- a/src/bar.cpp
-+++ b/src/bar.cpp
-@@ -8,6 +8,8 @@
- #include "client.hpp"
- #include "factory.hpp"
- #include "group.hpp"
-+#include "util/enum.hpp"
-+#include "util/kill_signal.hpp"
- 
- #ifdef HAVE_SWAY
- #include "modules/sway/bar.hpp"
-@@ -277,6 +279,30 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
-   }
- #endif
- 
-+  waybar::util::EnumParser<util::KillSignalAction> m_signalActionEnumParser;
-+  const auto& configSigusr1 = config["on_sigusr1"];
-+  if (configSigusr1.isString()) {
-+    auto strSigusr1 = configSigusr1.asString();
-+    try {
-+      onSigusr1 =
-+          m_signalActionEnumParser.parseStringToEnum(strSigusr1, util::userKillSignalActions);
-+    } catch (const std::invalid_argument& e) {
-+      onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
-+      spdlog::warn("Invalid string representation for on_sigusr1. Falling back to default mode.");
-+    }
-+  }
-+  const auto& configSigusr2 = config["on_sigusr2"];
-+  if (configSigusr2.isString()) {
-+    auto strSigusr2 = configSigusr2.asString();
-+    try {
-+      onSigusr2 =
-+          m_signalActionEnumParser.parseStringToEnum(strSigusr2, util::userKillSignalActions);
-+    } catch (const std::invalid_argument& e) {
-+      onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
-+      spdlog::warn("Invalid string representation for on_sigusr2. Falling back to default mode.");
-+    }
-+  }
-+
-   setupWidgets();
-   window.show_all();
- 
-@@ -422,6 +448,8 @@ void waybar::Bar::setVisible(bool value) {
- }
- 
- void waybar::Bar::toggle() { setVisible(!visible); }
-+void waybar::Bar::show() { setVisible(true); }
-+void waybar::Bar::hide() { setVisible(false); }
- 
- // Converting string to button code rn as to avoid doing it later
- void waybar::Bar::setupAltFormatKeyForModule(const std::string& module_name) {
-@@ -479,6 +507,9 @@ void waybar::Bar::handleSignal(int signal) {
-   }
- }
- 
-+waybar::util::KillSignalAction waybar::Bar::getOnSigusr1Action() { return this->onSigusr1; }
-+waybar::util::KillSignalAction waybar::Bar::getOnSigusr2Action() { return this->onSigusr2; }
-+
- void waybar::Bar::getModules(const Factory& factory, const std::string& pos,
-                              waybar::Group* group = nullptr) {
-   auto module_list = group != nullptr ? config[pos]["modules"] : config[pos];
-diff --git a/src/main.cpp b/src/main.cpp
-index 6e7650a96..7ac948b44 100644
---- a/src/main.cpp
-+++ b/src/main.cpp
-@@ -7,8 +7,10 @@
- #include <list>
- #include <mutex>
- 
-+#include "bar.hpp"
- #include "client.hpp"
- #include "util/SafeSignal.hpp"
-+#include "util/backend_common.hpp"
- 
- std::mutex reap_mtx;
- std::list<pid_t> reap;
-@@ -71,6 +73,45 @@ static void catchSignals(waybar::SafeSignal<int>& signal_handler) {
-   }
- }
- 
-+waybar::util::KillSignalAction getActionForBar(waybar::Bar* bar, int signal) {
-+  switch (signal) {
-+    case SIGUSR1:
-+      return bar->getOnSigusr1Action();
-+    case SIGUSR2:
-+      return bar->getOnSigusr2Action();
-+    default:
-+      return waybar::util::KillSignalAction::NOOP;
-+  }
-+}
-+
-+void handleUserSignal(int signal, bool& reload) {
-+  int i = 0;
-+  for (auto& bar : waybar::Client::inst()->bars) {
-+    switch (getActionForBar(bar.get(), signal)) {
-+      case waybar::util::KillSignalAction::HIDE:
-+        spdlog::debug("Visibility 'hide' for bar ", i);
-+        bar->hide();
-+        break;
-+      case waybar::util::KillSignalAction::SHOW:
-+        spdlog::debug("Visibility 'show' for bar ", i);
-+        bar->show();
-+        break;
-+      case waybar::util::KillSignalAction::TOGGLE:
-+        spdlog::debug("Visibility 'toggle' for bar ", i);
-+        bar->toggle();
-+        break;
-+      case waybar::util::KillSignalAction::RELOAD:
-+        spdlog::info("Reloading...");
-+        reload = true;
-+        waybar::Client::inst()->reset();
-+        return;
-+      case waybar::util::KillSignalAction::NOOP:
-+        break;
-+    }
-+    i++;
-+  }
-+}
-+
- // Must be called on the main thread.
- //
- // If this signal should restart or close the bar, this function will write
-@@ -80,21 +121,15 @@ static void handleSignalMainThread(int signum, bool& reload) {
-     for (auto& bar : waybar::Client::inst()->bars) {
-       bar->handleSignal(signum);
-     }
--
-     return;
-   }
- 
-   switch (signum) {
-     case SIGUSR1:
--      spdlog::debug("Visibility toggled");
--      for (auto& bar : waybar::Client::inst()->bars) {
--        bar->toggle();
--      }
-+      handleUserSignal(SIGUSR1, reload);
-       break;
-     case SIGUSR2:
--      spdlog::info("Reloading...");
--      reload = true;
--      waybar::Client::inst()->reset();
-+      handleUserSignal(SIGUSR2, reload);
-       break;
-     case SIGINT:
-       spdlog::info("Quitting.");
-diff --git a/src/util/enum.cpp b/src/util/enum.cpp
-index dc3eae0ce..1e28d66ea 100644
---- a/src/util/enum.cpp
-+++ b/src/util/enum.cpp
-@@ -41,5 +41,6 @@ EnumType EnumParser<EnumType>::parseStringToEnum(const std::string& str,
- // Explicit instantiations for specific EnumType types you intend to use
- // Add explicit instantiations for all relevant EnumType types
- template struct EnumParser<modules::hyprland::Workspaces::SortMethod>;
-+template struct EnumParser<util::KillSignalAction>;
- 
- }  // namespace waybar::util
+      a { color: #0366d6; text-decoration: none; }
+      a:hover { text-decoration: underline; }
 
-From 3c7a9bf43214c1e544fe3bd851a4f91a7ac579b7 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Sat, 22 Feb 2025 09:28:32 +0200
-Subject: [PATCH 2/6] Documentation for sigusr1 and sigusr2 config
+      h1 { line-height: 60px; font-size: 48px; font-weight: 300; margin: 0px; text-shadow: 0 1px 0 #fff; }
+      p { color: rgba(0, 0, 0, 0.5); margin: 20px 0 40px; }
 
----
- man/waybar.5.scd.in | 39 +++++++++++++++++++++++++++++++++++++--
- src/bar.cpp         |  6 ++++--
- 2 files changed, 41 insertions(+), 4 deletions(-)
+      ul { list-style: none; margin: 25px 0; padding: 0; }
+      li { display: table-cell; font-weight: bold; width: 1%; }
 
-diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
-index 6ca0aa997..002cb50b7 100644
---- a/man/waybar.5.scd.in
-+++ b/man/waybar.5.scd.in
-@@ -151,6 +151,20 @@ The visual display elements for waybar use a CSS stylesheet, see *waybar-styles(
- 	default: *false* ++
- 	Option to enable reloading the css style if a modification is detected on the style sheet file or any imported css files.
- 
-+*on_sigusr1* ++
-+	typeof: string ++
-+	default: *toggle* ++
-+	Action that is performed when receiving SIGUSR1 kill signal. ++
-+	Possible values: *show*, *hide*, *toggle*, *reload*, *noop*. ++
-+	Default value: *toggle*.
-+
-+*on_sigusr2* ++
-+	typeof: string ++
-+	default: *reload* ++
-+	Action that is performed when receiving SIGUSR2 kill signal. ++
-+	Possible values: *show*, *hide*, *toggle*, *reload*, *noop*. ++
-+	Default value: *reload*.
-+
- # MODULE FORMAT
- 
- You can use PangoMarkupFormat (See https://developer.gnome.org/pango/stable/PangoMarkupFormat.html#PangoMarkupFormat).
-@@ -206,14 +220,35 @@ A minimal *config* file could look like this:
- Waybar accepts the following signals:
- 
- *SIGUSR1*
--	Toggles the bar visibility (hides if shown, shows if hidden)
-+	By default toggles the bar visibility (hides if shown, shows if hidden)
- *SIGUSR2*
--	Reloads (resets) the bar
-+	By default reloads (resets) the bar
- *SIGINT*
- 	Quits the bar
- 
- For example, to toggle the bar programmatically, you can invoke `killall -SIGUSR1 waybar`.
- 
-+## User signal configuration
-+
-+Config parameters `on_sigusr1` and `on_sigusr2` change what happens when bars receive
-+`SIGUSR1` and `SIGUSR2` signals.
-+
-+This means that commands `killall -SIGUSR1 waybar` and `killall -SIGUSR2 waybar`
-+can perform user-configured action.
-+
-+It also means that if an external script has the PID of the bar then it can
-+perform more complex `show`/`hide`/`reload` logic for each instance of Waybar.
-+One can find the PID e.g. by doing `pgrep -a waybar` which could then match
-+by config name or other parameters.
-+
-+### Kill parameter meanings
-+
-+*show*    Switches state to visible (per bar).
-+*hide*    Switches state to hidden (per bar).
-+*toggle*  Switches state between visible and hidden (per bar).
-+*reload*  Reloads whole waybar.
-+*noop*    Does nothing when the kill signal is received.
-+
- # MULTI OUTPUT CONFIGURATION
- 
- ## Limit a configuration to some outputs
-diff --git a/src/bar.cpp b/src/bar.cpp
-index 5ca2ec044..6e6e76df7 100644
---- a/src/bar.cpp
-+++ b/src/bar.cpp
-@@ -288,7 +288,8 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
-           m_signalActionEnumParser.parseStringToEnum(strSigusr1, util::userKillSignalActions);
-     } catch (const std::invalid_argument& e) {
-       onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
--      spdlog::warn("Invalid string representation for on_sigusr1. Falling back to default mode.");
-+      spdlog::warn(
-+          "Invalid string representation for on_sigusr1. Falling back to default mode (toggle).");
-     }
-   }
-   const auto& configSigusr2 = config["on_sigusr2"];
-@@ -299,7 +300,8 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
-           m_signalActionEnumParser.parseStringToEnum(strSigusr2, util::userKillSignalActions);
-     } catch (const std::invalid_argument& e) {
-       onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
--      spdlog::warn("Invalid string representation for on_sigusr2. Falling back to default mode.");
-+      spdlog::warn(
-+          "Invalid string representation for on_sigusr2. Falling back to default mode (reload).");
-     }
-   }
- 
+      .logo { display: inline-block; margin-top: 35px; }
+      .logo-img-2x { display: none; }
+      @media
+      only screen and (-webkit-min-device-pixel-ratio: 2),
+      only screen and (   min--moz-device-pixel-ratio: 2),
+      only screen and (     -o-min-device-pixel-ratio: 2/1),
+      only screen and (        min-device-pixel-ratio: 2),
+      only screen and (                min-resolution: 192dpi),
+      only screen and (                min-resolution: 2dppx) {
+        .logo-img-1x { display: none; }
+        .logo-img-2x { display: inline-block; }
+      }
 
-From 125b59e23bc5b8520ad903829afaa13a50d01ffd Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Sun, 2 Mar 2025 19:08:37 +0200
-Subject: [PATCH 3/6] Add more details on how 'reload' works in signals
+      #suggestions {
+        margin-top: 35px;
+        color: #ccc;
+      }
+      #suggestions a {
+        color: #666666;
+        font-weight: 200;
+        font-size: 14px;
+        margin: 0 10px;
+      }
 
----
- man/waybar.5.scd.in | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+    </style>
+  </head>
+  <body>
 
-diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
-index 002cb50b7..1fca6321d 100644
---- a/man/waybar.5.scd.in
-+++ b/man/waybar.5.scd.in
-@@ -246,7 +246,8 @@ by config name or other parameters.
- *show*    Switches state to visible (per bar).
- *hide*    Switches state to hidden (per bar).
- *toggle*  Switches state between visible and hidden (per bar).
--*reload*  Reloads whole waybar.
-+*reload*  Reloads all waybars of current waybar process (basically equivalent to
-+restarting with updated config which sets initial visibility values).
- *noop*    Does nothing when the kill signal is received.
- 
- # MULTI OUTPUT CONFIGURATION
+    <div class="container">
 
-From 7463be9b6a3777220377632cafb0447adb0f35cd Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Fri, 7 Mar 2025 07:45:11 +0200
-Subject: [PATCH 4/6] Fix initial null configuration; Fix doc compilation
- errors
+      <h1>Too many requests</h1>
+      <p>You have exceeded a secondary rate limit.<br><br>
+        Please wait a few minutes before you try again;<br>
+        in some cases this may take up to an hour.<br>
+        Signing in may provide a higher rate limit if you are not already signed in.<br><br>
+        For more on scraping GitHub and how it may affect your rights, please review our <a href="https://docs.github.com/en/site-policy/github-terms/github-terms-of-service">Terms of Service</a>.
+      </p>
 
----
- include/bar.hpp     | 4 ++--
- man/waybar.5.scd.in | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+      <div id="suggestions">
+        <a href="https://support.github.com/contact">Contact Support</a> &mdash;
+        <a href="https://githubstatus.com">GitHub Status</a> &mdash;
+        <a href="https://twitter.com/githubstatus">@githubstatus</a>
+      </div>
 
-diff --git a/include/bar.hpp b/include/bar.hpp
-index c2dc0ae10..9953b1f51 100644
---- a/include/bar.hpp
-+++ b/include/bar.hpp
-@@ -124,8 +124,8 @@ class Bar : public sigc::trackable {
- #endif
-   std::vector<std::shared_ptr<waybar::AModule>> modules_all_;
- 
--  waybar::util::KillSignalAction onSigusr1;
--  waybar::util::KillSignalAction onSigusr2;
-+  waybar::util::KillSignalAction onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
-+  waybar::util::KillSignalAction onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
- };
- 
- }  // namespace waybar
-diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
-index 1fca6321d..a2212f047 100644
---- a/man/waybar.5.scd.in
-+++ b/man/waybar.5.scd.in
-@@ -230,8 +230,8 @@ For example, to toggle the bar programmatically, you can invoke `killall -SIGUSR
- 
- ## User signal configuration
- 
--Config parameters `on_sigusr1` and `on_sigusr2` change what happens when bars receive
--`SIGUSR1` and `SIGUSR2` signals.
-+Config parameters *on_sigusr1* and *on_sigusr2* change what happens when bars receive
-+*SIGUSR1* and *SIGUSR2* signals.
- 
- This means that commands `killall -SIGUSR1 waybar` and `killall -SIGUSR2 waybar`
- can perform user-configured action.
-@@ -241,7 +241,7 @@ perform more complex `show`/`hide`/`reload` logic for each instance of Waybar.
- One can find the PID e.g. by doing `pgrep -a waybar` which could then match
- by config name or other parameters.
- 
--### Kill parameter meanings
-+## Kill parameter meanings
- 
- *show*    Switches state to visible (per bar).
- *hide*    Switches state to hidden (per bar).
+      <a href="/" class="logo logo-img-1x">
+        <img width="32" height="32" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFMTZCRDY3REIzRjAxMUUyQUQzREIxQzRENUFFNUM5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFMTZCRDY3RUIzRjAxMUUyQUQzREIxQzRENUFFNUM5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUxNkJENjdCQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUxNkJENjdDQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+SM9MCAAAA+5JREFUeNrEV11Ik1EY3s4+ddOp29Q5b0opCgKFsoKoi5Kg6CIhuwi6zLJLoYLopq4qsKKgi4i6CYIoU/q5iDAKs6syoS76IRWtyJ+p7cdt7sf1PGOD+e0c3dygAx/67ZzzPM95/877GYdHRg3ZjMXFxepQKNS6sLCwJxqNNuFpiMfjVs4ZjUa/pmmjeD6VlJS8NpvNT4QQ7mxwjSsJiEQim/1+/9lgMHgIr5ohuxG1WCw9Vqv1clFR0dCqBODElV6v90ogEDjGdYbVjXhpaendioqK07CIR7ZAqE49PT09BPL2PMgTByQGsYiZlQD4uMXtdr+JxWINhgINYhGT2MsKgMrm2dnZXgRXhaHAg5jEJodUAHxux4LudHJE9RdEdA+i3Juz7bGHe4mhE9FNrgwBCLirMFV9Okh5eflFh8PR5nK5nDabrR2BNJlKO0T35+Li4n4+/J+/JQCxhmu5h3uJoXNHPbmWZAHMshWB8l5/ipqammaAf0zPDDx1ONV3vurdidqwAQL+pEc8sLcAe1CCvQ3YHxIW8Pl85xSWNC1hADDIv0rIE/o4J0k3kww4xSlwIhcq3EFFOm7KN/hUGOQkt0CFa5WpNJlMvxBEz/IVQAxg/ZRZl9wiHA63yDYieM7DnLP5CiAGsC7I5sgtYKJGWe2A8seFqgFJrJjEPY1Cn3pJ8/9W1e5VWsFDTEmFrBcoDhZJEQkXuhICMyKpjhahqN21hRYATKfUOlDmkygrR4o4C0VOLGJKrOITKB4jijzdXygBKixyC5TDQdnk/Pz8qRw6oOWGlsTKGOQW6OH6FBWsyePxdOXLTgxiyebILZCjz+GLgMIKnXNzc49YMlcRdHXcSwxFVgTInQhC9G33UhNoJLuqq6t345p9y3eUy8OTk5PjAHuI9uo4b07FBaOhsu0A4Unc+T1TU1Nj3KsSSE5yJ65jqF2DDd8QqWYmAZrIM2VlZTdnZmb6AbpdV9V6ec9znf5Q7HjYumdRE0JOp3MjitO4SFa+cZz8Umqe3TCbSLvdfkR/kWDdNQl5InuTcysOcpFT35ZrbBxx4p3JAHlZVVW1D/634VRt+FvLBgK/v5LV9WS+10xMTEwtRw7XvqOL+e2Q8V3AYIOIAXQ26/heWVnZCVfcyKHg2CBgTpmPmjYM8l24GyaUHyaIh7XwfR9ErE8qHoDfn2LTNAVC0HX6MFcBIP8Bi+6F6cdW/DICkANRfx99fEYFQ7Nph5i/uQiA214gno7K+guhaiKg9gC62+M8eR7XsBsYJ4ilam60Fb7r7uAj8wFyuwM1oIOWgfmDy6RXEEQzJMPe23DXrVS7rtyD3Df8z/FPgAEAzWU5Ku59ZAUAAAAASUVORK5CYII=">
+      </a>
 
-From b7ff47fb053fb04c4e3bba4b235084dfded3d171 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Thu, 26 Jun 2025 18:41:23 +0300
-Subject: [PATCH 5/6] User kill signal config keys: Use underscore instead of
- dash
-
----
- man/waybar.5.scd.in | 6 +++---
- src/bar.cpp         | 8 ++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/man/waybar.5.scd.in b/man/waybar.5.scd.in
-index a2212f047..566f7dc59 100644
---- a/man/waybar.5.scd.in
-+++ b/man/waybar.5.scd.in
-@@ -151,14 +151,14 @@ The visual display elements for waybar use a CSS stylesheet, see *waybar-styles(
- 	default: *false* ++
- 	Option to enable reloading the css style if a modification is detected on the style sheet file or any imported css files.
- 
--*on_sigusr1* ++
-+*on-sigusr1* ++
- 	typeof: string ++
- 	default: *toggle* ++
- 	Action that is performed when receiving SIGUSR1 kill signal. ++
- 	Possible values: *show*, *hide*, *toggle*, *reload*, *noop*. ++
- 	Default value: *toggle*.
- 
--*on_sigusr2* ++
-+*on-sigusr2* ++
- 	typeof: string ++
- 	default: *reload* ++
- 	Action that is performed when receiving SIGUSR2 kill signal. ++
-@@ -230,7 +230,7 @@ For example, to toggle the bar programmatically, you can invoke `killall -SIGUSR
- 
- ## User signal configuration
- 
--Config parameters *on_sigusr1* and *on_sigusr2* change what happens when bars receive
-+Config parameters *on-sigusr1* and *on-sigusr2* change what happens when bars receive
- *SIGUSR1* and *SIGUSR2* signals.
- 
- This means that commands `killall -SIGUSR1 waybar` and `killall -SIGUSR2 waybar`
-diff --git a/src/bar.cpp b/src/bar.cpp
-index 6e6e76df7..bb91aa010 100644
---- a/src/bar.cpp
-+++ b/src/bar.cpp
-@@ -280,7 +280,7 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
- #endif
- 
-   waybar::util::EnumParser<util::KillSignalAction> m_signalActionEnumParser;
--  const auto& configSigusr1 = config["on_sigusr1"];
-+  const auto& configSigusr1 = config["on-sigusr1"];
-   if (configSigusr1.isString()) {
-     auto strSigusr1 = configSigusr1.asString();
-     try {
-@@ -289,10 +289,10 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
-     } catch (const std::invalid_argument& e) {
-       onSigusr1 = util::SIGNALACTION_DEFAULT_SIGUSR1;
-       spdlog::warn(
--          "Invalid string representation for on_sigusr1. Falling back to default mode (toggle).");
-+          "Invalid string representation for on-sigusr1. Falling back to default mode (toggle).");
-     }
-   }
--  const auto& configSigusr2 = config["on_sigusr2"];
-+  const auto& configSigusr2 = config["on-sigusr2"];
-   if (configSigusr2.isString()) {
-     auto strSigusr2 = configSigusr2.asString();
-     try {
-@@ -301,7 +301,7 @@ waybar::Bar::Bar(struct waybar_output* w_output, const Json::Value& w_config)
-     } catch (const std::invalid_argument& e) {
-       onSigusr2 = util::SIGNALACTION_DEFAULT_SIGUSR2;
-       spdlog::warn(
--          "Invalid string representation for on_sigusr2. Falling back to default mode (reload).");
-+          "Invalid string representation for on-sigusr2. Falling back to default mode (reload).");
-     }
-   }
- 
-
-From c8dc3e702402a936654d600b30727522eac8cb2c Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Martynas=20Maciulevi=C4=8Dius?=
- <martynas.maciulevicius@pm.me>
-Date: Thu, 26 Jun 2025 21:20:18 +0300
-Subject: [PATCH 6/6] Remove unused import
-
----
- src/main.cpp | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/src/main.cpp b/src/main.cpp
-index 7ac948b44..021f8e1ac 100644
---- a/src/main.cpp
-+++ b/src/main.cpp
-@@ -10,7 +10,6 @@
- #include "bar.hpp"
- #include "client.hpp"
- #include "util/SafeSignal.hpp"
--#include "util/backend_common.hpp"
- 
- std::mutex reap_mtx;
- std::list<pid_t> reap;
+      <a href="/" class="logo logo-img-2x">
+        <img width="32" height="32" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpEQUM1QkUxRUI0MUMxMUUyQUQzREIxQzRENUFFNUM5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpEQUM1QkUxRkI0MUMxMUUyQUQzREIxQzRENUFFNUM5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkUxNkJENjdGQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkUxNkJENjgwQjNGMDExRTJBRDNEQjFDNEQ1QUU1Qzk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hfPRaQAAB6lJREFUeNrsW2mM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">
+      </a>
+    </div>
+  </body>
+</html>
