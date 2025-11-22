@@ -26,12 +26,16 @@
       vista-fonts
 
       nerd-fonts.iosevka-term-slab
+
+      nur.repos.linyinfeng.plangothic.otc
     ];
 
     fonts.fontconfig.defaultFonts = {
       sansSerif = [
         "Source Sans 3"
         "Source Han Sans SC"
+        "Plangothic P1"
+        "Plangothic P2"
         "Source Han Sans TC"
         "Source Han Sans HW"
         "Source Han Sans K"
