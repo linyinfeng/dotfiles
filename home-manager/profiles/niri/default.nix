@@ -6,26 +6,10 @@
   ...
 }:
 let
-  toggleDarkMode = pkgs.writeShellApplication {
-    name = "noctalia-toggle-dark-mode";
-    runtimeInputs = [
-      config.programs.niri.package
-      config.services.darkman.package
-    ];
-    text = ''
-      if [ "$1" = "true" ]; then
-        mode="dark"
-      else
-        mode="light"
-      fi
-      niri msg action do-screen-transition --delay-ms 500
-      darkman set "$mode"
-    '';
-  };
   noctaliaIpc =
     cmd:
     [
-      (lib.getExe config.programs.noctalia-shell.package)
+      "noctalia-shell"
       "ipc"
       "call"
     ]
@@ -149,7 +133,7 @@ lib.mkMerge [
           };
           spawn-at-startup = [ ];
           prefer-no-csd = true;
-          screenshot-path = "~/Data/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
+          screenshot-path = "${config.xdg.userDirs.pictures}/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
           animations = {
             enable = true;
             # all default
@@ -445,7 +429,7 @@ lib.mkMerge [
     # tools
     home.packages = with pkgs; [
       xwayland-satellite-unstable
-      pavucontrol
+      pwvucontrol
       (pkgs.writeShellApplication {
         name = "cliphist-fuzzel";
         runtimeInputs = with pkgs; [
@@ -459,191 +443,95 @@ lib.mkMerge [
   }
 
   # noctalia
-  {
-    programs.noctalia-shell = {
-      enable = true;
-      systemd.enable = true;
-      settings = {
-        settingsVersion = 23;
-        setupCompleted = true;
-        ui = {
-          fontDefault = "Sans Serif";
-          fontFixed = "Monospace";
-        };
-        appLauncher = {
-          useApp2Unit = false;
-          customLaunchPrefixEnabled = true;
-          customLaunchPrefix = "niri msg action spawn --";
-          terminalCommand = "alacritty --command";
-          position = "top_center";
-        };
-        audio = {
-          volumeStep = 1;
-        };
-        colorSchemes = {
-          darkMode = false;
-          useWallpaperColors = true;
-        };
-        bar = {
-          widgets = {
-            center = [
-              {
-                id = "Clock";
-              }
-              {
-                id = "NotificationHistory";
-                hideWhenZero = true;
-                showUnreadBadge = true;
-              }
-            ];
-            left = [
-              {
-                id = "ControlCenter";
-                useDistroLogo = true;
-              }
-              {
-                id = "Workspace";
-              }
-              {
-                id = "Taskbar";
-                onlyActiveWorkspaces = true;
-                onlySameOutput = true;
-              }
-            ];
-            right = [
-              {
-                id = "Tray";
-                blacklist = [ ];
-                colorizeIcons = false;
-                drawerEnabled = true;
-                pinned = [
-                  "Fcitx"
-                ];
-              }
-              {
-                id = "WiFi";
-              }
-              {
-                id = "Bluetooth";
-              }
-              {
-                id = "Volume";
-              }
-              {
-                id = "MediaMini";
-                showAlbumArt = true;
-                showVisualizer = true;
-                visualizerType = "mirrored";
-              }
-              { id = "KeepAwake"; }
-              { id = "DarkMode"; }
-              {
-                id = "Brightness";
-              }
-              {
-                id = "Battery";
-                warningThreshold = 30;
-              }
-            ];
-          };
-        };
-        brightness = {
-          brightnessStep = 1;
-          enableDdcSupport = true;
-          enforceMinimum = true;
-        };
-        controlCenter = {
-          cards = [
-            {
-              enabled = true;
-              id = "profile-card";
-            }
-            {
-              enabled = true;
-              id = "shortcuts-card";
-            }
-            {
-              enabled = true;
-              id = "audio-card";
-            }
-            {
-              enabled = true;
-              id = "weather-card";
-            }
-            {
-              enabled = true;
-              id = "media-sysmon-card";
-            }
-          ];
-          shortcuts = {
-            left = [
-              { id = "WiFi"; }
-              { id = "Bluetooth"; }
-              { id = "ScreenRecorder"; }
-              { id = "WallpaperSelector"; }
-            ];
-            right = [
-              { id = "Notifications"; }
-              { id = "PowerProfile"; }
-              { id = "KeepAwake"; }
-              { id = "NightLight"; }
-            ];
-          };
-        };
-        dock = {
-          enabled = true;
-          displayMode = "auto_hide";
-        };
-        general = {
-          avatarImage = "${config.home.homeDirectory}/.face";
-        };
-        hooks = {
-          enabled = true;
-          darkModeChange = "${lib.getExe toggleDarkMode} $1";
-          wallpaperChange = "";
-        };
-        location = {
-          weatherEnabled = true;
-          name = "Nanjing";
-        };
-        network = {
-          wifiEnabled = true;
-        };
-        audio = {
-          visualizerType = "mirrored";
-          preferredPlayer = "mpv";
-        };
-        nightLight = {
-          enabled = true;
-          autoSchedule = true;
-          dayTemp = "6500";
-          nightTemp = "4000";
-        };
-        notifications = {
-          enabled = true;
-          location = "top";
-        };
-        osd = {
-          enabled = true;
-          location = "top_right";
-          autoHideMs = 1000;
-        };
-        screenRecorder = {
-          directory = "${config.xdg.userDirs.videos}/Recordings";
-        };
+  (
+    let
+      toggleDarkMode = pkgs.writeShellApplication {
+        name = "noctalia-toggle-dark-mode";
+        runtimeInputs = [
+          config.programs.niri.package
+          config.services.darkman.package
+        ];
+        text = ''
+          if [ "$1" = "true" ]; then
+            mode="dark"
+          else
+            mode="light"
+          fi
+          niri msg action do-screen-transition --delay-ms 500
+          darkman set "$mode"
+        '';
+      };
+      defaultWallpaper = pkgs.fetchurl {
+        url = "https://i.imgur.com/RjK9cTr.png";
+        hash = "sha256-ZciNE8e3G3/qSxvmN/qUd3Qd2zngD3B8/kl5iZ/r8ss=";
+      };
+      specialSettings = {
+        general.avatarImage = "${config.home.homeDirectory}/.face";
+        hooks.darkModeChange = "${lib.getExe toggleDarkMode} $1";
+        screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";
         wallpaper = {
+          defaultWallpaper = "${defaultWallpaper}";
           directory = "${config.xdg.userDirs.pictures}/Wallpapers";
-          recursiveSearch = true;
         };
       };
-    };
-    xdg.configFile."noctalia/settings.json".force = true;
+      syncSettings = pkgs.writeShellApplication {
+        name = "noctalia-sync-settings";
+        runtimeInputs = with pkgs; [
+          jq
+        ];
+        text = ''
+          if [ "$PRJ_ROOT" != "$NH_FLAKE" ]; then
+            echo "Error: not in nh flake directory"
+            exit 1
+          fi
+          path="home-manager/profiles/niri/noctalia-base-settings.json"
+          full_path="$PRJ_ROOT/home-manager/profiles/niri/noctalia-base-settings.json"
+          echo "writing to '$full_path'..."
+          jq 'del(
+            ${lib.concatMapAttrsStringSep ",\n  " (name: _value: ".${name}") (
+              osConfig.lib.self.flattenTree {
+                separator = ".";
+                mapper = x: "\"${x}\"";
+              } specialSettings
+            )}
+          )' ~/.config/noctalia/gui-settings.json >"$full_path"
+          nix fmt
 
-    home.packages = with pkgs; [
-      mpv
-      matugen # TODO remove this workaround
-    ];
-  }
+          echo "git diff..."
+          git diff -- "$path"
+
+          echo "checking leak path..."
+          jq 'pick(.. | select(type == "string" and contains("/")))' "$full_path"
+        '';
+      };
+    in
+    {
+      programs.noctalia-shell = {
+        enable = true;
+        systemd.enable = true;
+        settings = lib.recursiveUpdate (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json)) specialSettings;
+      };
+      systemd.user.services.emacs =
+        let
+          inherit (osConfig.networking) fw-proxy;
+        in
+        {
+          Service.Environment = lib.mkIf fw-proxy.enable fw-proxy.stringEnvironment;
+        };
+      xdg.configFile."noctalia/settings.json".force = true;
+
+      passthru.noctalia = {
+        inherit syncSettings;
+      };
+
+      home.packages = with pkgs; [
+        mpv
+        matugen # TODO remove this workaround
+
+        syncSettings
+      ];
+    }
+  )
 
   # nirius
   (
