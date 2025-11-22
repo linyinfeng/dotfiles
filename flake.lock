@@ -1578,26 +1578,6 @@
         "type": "github"
       }
     },
-    "quickshell": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1763629934,
-        "narHash": "sha256-jWz10RbNAyylJbH4cUTLS/CsDjkd8gxfT8OsIgQIgEg=",
-        "owner": "outfoxxed",
-        "repo": "quickshell",
-        "rev": "ed036d514b0fdbce03158a0b331305be166f4555",
-        "type": "github"
-      },
-      "original": {
-        "owner": "outfoxxed",
-        "repo": "quickshell",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "ace-bot": "ace-bot",
@@ -1661,7 +1641,6 @@
         "poetry2nix": "poetry2nix",
         "pre-commit-hooks-nix": "pre-commit-hooks-nix",
         "preservation": "preservation",
-        "quickshell": "quickshell",
         "rust-overlay": "rust-overlay",
         "sops-nix": "sops-nix",
         "systems": "systems",

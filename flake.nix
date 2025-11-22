@@ -209,8 +209,6 @@
 
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia.inputs.quickshell.follows = "quickshell";
-    noctalia.inputs.systems.follows = "systems";
 
     # libraries
 
@@ -305,9 +303,6 @@
     conf2nix.inputs.crane.follows = "crane";
     conf2nix.inputs.flake-compat.follows = "flake-compat";
     conf2nix.inputs.treefmt-nix.follows = "treefmt-nix";
-
-    quickshell.url = "github:outfoxxed/quickshell";
-    quickshell.inputs.nixpkgs.follows = "nixpkgs";
 
     # compatibility layer
 
