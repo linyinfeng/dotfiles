@@ -104,30 +104,6 @@ let
           cp ${../nixos/profiles/graphical/fonts/_nerd-font/Makefile} ./Makefile
         '';
       };
-      vscode = final.symlinkJoin {
-        inherit (prev.vscode) pname version meta;
-        paths = [ prev.vscode ];
-        buildInputs = [ final.makeWrapper ];
-        # TODO remove --password-store=gnome-libsecret
-        # wait for https://github.com/microsoft/vscode/issues/187338
-        postBuild = ''
-          wrapProgram "$out/bin/code" \
-            --add-flags --ozone-platform-hint=auto \
-            --add-flags --enable-wayland-ime \
-            --add-flags --wayland-text-input-version=3 \
-            --add-flags --password-store=gnome-libsecret
-        '';
-      };
-      qq = final.symlinkJoin {
-        inherit (prev.qq) pname version meta;
-        paths = [ prev.qq ];
-        buildInputs = [ final.makeWrapper ];
-        postBuild = ''
-          wrapProgram "$out/bin/qq" \
-            --add-flags --enable-wayland-ime \
-            --add-flags --wayland-text-input-version=3
-        '';
-      };
       hydra = prev.hydra.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [
           ../patches/hydra-show-trace.patch

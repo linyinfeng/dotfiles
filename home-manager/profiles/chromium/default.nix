@@ -6,13 +6,6 @@
       # web features
       "--enable-experimental-web-platform-features"
 
-      # wayland
-      "--ozone-platform-hint=auto"
-
-      # input method
-      "--enable-wayland-ime"
-      "--wayland-text-input-version=3"
-
       # video acceleration
       "--enable-features=AcceleratedVideoDecodeLinuxGL"
     ];

@@ -20,8 +20,7 @@ lib.mkIf config.services.desktopManager.gnome.enable {
     papers
   ];
 
-  # TODO wait for text-input-v3 support of qq
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   networking.firewall.allowedTCPPorts = [
     3389 # RDP
