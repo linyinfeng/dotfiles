@@ -105,7 +105,6 @@ let
           networking.mobile-nixos-usb
           programs.terminal-multiplexing
           programs.tools
-          programs.nix-index
           programs.solaar
           programs.service-mail
           programs.tg-send
@@ -166,7 +165,6 @@ let
           graphical.fonts
           i18n.input-method
           programs.tools
-          programs.nix-index
           programs.localsend
           development.shells
           services.flatpak
