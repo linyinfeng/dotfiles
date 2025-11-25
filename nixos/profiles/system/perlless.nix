@@ -5,8 +5,7 @@ let
 in
 {
   options = {
-    system.perlless.enable = lib.mkOption {
-      type = lib.types.bool;
+    system.perlless.enable = lib.mkEnableOption "perlless activation" // {
       default = lib.versionAtLeast config.boot.kernelPackages.kernel.version "6.6";
       defaultText = ''lib.versionAtLeast config.boot.kernelPackages.kernel.version "6.6"'';
     };
