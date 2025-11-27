@@ -8,7 +8,8 @@
     "position": "top_center",
     "sortByMostUsed": true,
     "terminalCommand": "alacritty --command",
-    "useApp2Unit": false
+    "useApp2Unit": false,
+    "viewMode": "list"
   },
   "audio": {
     "cavaFrameRate": 60,
@@ -99,6 +100,7 @@
           "scrollingMode": "hover",
           "showAlbumArt": true,
           "showArtistFirst": true,
+          "showProgressRing": true,
           "showVisualizer": true,
           "useFixedWidth": false,
           "visualizerType": "mirrored"
@@ -222,6 +224,7 @@
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
     "shadowOffsetY": 3,
+    "showHibernateOnLockScreen": false,
     "showScreenCorners": false
   },
   "hooks": {
@@ -268,6 +271,7 @@
     "autoHideMs": 1000,
     "backgroundOpacity": 1,
     "enabled": true,
+    "enabledTypes": [],
     "location": "top_right",
     "monitors": [],
     "overlayLayer": true
@@ -320,8 +324,7 @@
     ],
     "showHeader": true
   },
-  "settingsVersion": 23,
-  "setupCompleted": true,
+  "settingsVersion": 25,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuWarningThreshold": 80,
@@ -337,6 +340,7 @@
   },
   "templates": {
     "alacritty": false,
+    "cava": false,
     "code": false,
     "discord": false,
     "enableUserTemplates": false,
@@ -349,6 +353,7 @@
     "pywalfox": false,
     "qt": false,
     "spicetify": false,
+    "telegram": false,
     "vicinae": false,
     "walker": false,
     "wezterm": false
