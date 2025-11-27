@@ -27,9 +27,9 @@ resource "cloudflare_api_token" "hosts" {
       { id = local.permissions_groups_map["Zone Read"] },
       { id = local.permissions_groups_map["DNS Write"] },
     ]
-    resources = {
+    resources = jsonencode({
       "com.cloudflare.api.account.zone.*" = "*"
-    }
+    })
   }]
 }
 
@@ -447,9 +447,9 @@ resource "cloudflare_api_token" "cache" {
     permission_groups = [
       { id = local.permissions_groups_map["Workers R2 Storage Bucket Item Write"] }
     ]
-    resources = {
+    resources = jsonencode({
       "com.cloudflare.edge.r2.bucket.${local.cloudflare_main_account_id}_default_${cloudflare_r2_bucket.cache.name}" : "*"
-    }
+    })
   }]
 }
 
