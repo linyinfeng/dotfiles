@@ -109,6 +109,17 @@ let
           ../patches/hydra-show-trace.patch
         ];
       });
+      vscode = final.symlinkJoin {
+        inherit (prev.vscode) pname version meta;
+        paths = [ prev.vscode ];
+        buildInputs = [ final.makeWrapper ];
+        # TODO remove --password-store=gnome-libsecret
+        # wait for https://github.com/microsoft/vscode/issues/187338
+        postBuild = ''
+          wrapProgram "$out/bin/code" \
+            --add-flags --password-store=gnome-libsecret
+        '';
+      };
     })
   ]
   ++ lib.optional config.testingFlags.angrr inputs.angrr.overlays.default;
