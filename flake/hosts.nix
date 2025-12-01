@@ -402,7 +402,7 @@ let
     {
       "${system}"."nixos/${name}" = cfg.config.system.build.toplevel;
     };
-  hostToplevels = lib.fold lib.recursiveUpdate { } (
+  hostToplevels = lib.foldr lib.recursiveUpdate { } (
     lib.mapAttrsToList getHostToplevel self.nixosConfigurations
   );
 

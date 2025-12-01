@@ -12,7 +12,7 @@ let
   );
 in
 {
-  networking.hosts = lib.fold (
+  networking.hosts = lib.foldr (
     entry: m: m // { ${entry.ip} = (m.${entry.ip} or [ ]) ++ [ entry.hostName ]; }
   ) { } hostList;
   passthru.hostList = hostList;
