@@ -35,7 +35,7 @@ let
           system.common
           system.sysrq
           system.perlless
-          # system.bashless
+          system.nixos-init
           system.oomd
           system.panic
           development.shells
