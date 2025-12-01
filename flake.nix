@@ -125,7 +125,6 @@
 
     oranc.url = "github:linyinfeng/oranc";
     oranc.inputs.crane.follows = "crane";
-    oranc.inputs.flake-compat.follows = "flake-compat";
     oranc.inputs.flake-parts.follows = "flake-parts";
     oranc.inputs.nixpkgs.follows = "nixpkgs";
     oranc.inputs.treefmt-nix.follows = "treefmt-nix";
