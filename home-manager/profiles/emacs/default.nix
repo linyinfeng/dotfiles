@@ -19,7 +19,7 @@ let
       // (
         let
           # deadnix: skip
-          lEpkgs = pkgs.nur.repos.linyinfeng.emacsPackages.override { emacsPackagesTopLevel = epkgs; };
+          lEpkgs = pkgs.linyinfeng.emacsPackages.override { emacsPackagesTopLevel = epkgs; };
         in
         {
           # currently nothing

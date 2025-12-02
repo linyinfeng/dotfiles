@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   # canokey
-  services.udev.packages = [ pkgs.nur.repos.linyinfeng.canokey-udev-rules ];
+  services.udev.packages = [ pkgs.linyinfeng.canokey-udev-rules ];
 
   services.pcscd = {
     enable = true;

@@ -180,6 +180,9 @@
 
     # combined flakes
 
+    nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
+
     linyinfeng.url = "github:linyinfeng/nur-packages";
     linyinfeng.inputs.flake-parts.follows = "flake-parts";
     linyinfeng.inputs.flake-utils.follows = "flake-utils";
@@ -193,14 +196,6 @@
     nixos-cn.url = "github:nixos-cn/flakes";
     nixos-cn.inputs.nixpkgs.follows = "nixpkgs";
     nixos-cn.inputs.flake-utils.follows = "flake-utils";
-
-    lantian.url = "github:xddxdd/nur-packages";
-    lantian.inputs.nixpkgs.follows = "nixpkgs";
-    lantian.inputs.flake-parts.follows = "flake-parts";
-    lantian.inputs.nix-index-database.follows = "nix-index-database";
-    lantian.inputs.treefmt-nix.follows = "treefmt-nix";
-    lantian.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
-    lantian.inputs.devshell.follows = "devshell";
 
     nixos-wsl.url = "github:nix-community/nixos-wsl";
     nixos-wsl.inputs.flake-compat.follows = "flake-compat";

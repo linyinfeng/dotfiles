@@ -79,7 +79,7 @@ lib.mkMerge [
   # hardware video acceleration
   {
     hardware.graphics.extraPackages = [
-      pkgs.nur.repos.linyinfeng.libva-v4l2
+      pkgs.linyinfeng.libva-v4l2
     ];
     environment.systemPackages = with pkgs; [ libva-utils ];
     environment.sessionVariables = {

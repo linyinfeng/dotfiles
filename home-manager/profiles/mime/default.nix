@@ -194,7 +194,7 @@ in
   xdg.mimeApps = {
     enable = true;
     defaultApplications =
-      buildMap [ "chromium-browser.desktop" ] webFormats
+      buildMap [ "firefox.desktop" ] webFormats
       // buildMap [ "org.gnome.Loupe.desktop" ] imageFormats
       // buildMap [ "org.gnome.FileRoller.desktop" ] archiveFormats
       // buildMap [ "org.gnome.Decibels.desktop" ] audioFormats

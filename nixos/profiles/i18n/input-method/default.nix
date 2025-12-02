@@ -12,7 +12,7 @@ in
     i18n.inputMethod.rime.rimeDataPkgs = lib.mkOption {
       type = with lib.types; listOf package;
       default = with pkgs; [ rime-data ];
-      apply = pkgs.nur.repos.linyinfeng.rimePackages.withRimeDeps;
+      apply = pkgs.linyinfeng.rimePackages.withRimeDeps;
     };
   };
   config = {
@@ -27,7 +27,7 @@ in
         (fcitx5-rime.override { inherit (cfg.rime) rimeDataPkgs; })
         fcitx5-mozc
       ];
-      rime.rimeDataPkgs = with pkgs.nur.repos.linyinfeng.rimePackages; [ rime-ice ];
+      rime.rimeDataPkgs = with pkgs.linyinfeng.rimePackages; [ rime-ice ];
     };
     environment.global-persistence.user.directories = [
       ".config/ibus"

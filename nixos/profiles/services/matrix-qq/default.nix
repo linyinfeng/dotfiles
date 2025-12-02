@@ -12,7 +12,7 @@
       matrix-qq --config=config.yaml
     '';
     path = with pkgs; [
-      nur.repos.linyinfeng.matrix-qq
+      linyinfeng.matrix-qq
       yq-go
     ];
     serviceConfig = {

@@ -7,7 +7,7 @@
 let
   port = config.ports.ssh-honeypot;
   cowrieSrc = pkgs.stdenv.mkDerivation {
-    inherit (pkgs.nur.repos.linyinfeng.sources.cowrie) pname version src;
+    inherit (pkgs.linyinfeng.sources.cowrie) pname version src;
     patches = [ ./cowrie-telegram-output-requests.patch ];
     installPhase = ''
       cp -r . $out

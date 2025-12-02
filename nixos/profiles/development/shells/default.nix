@@ -23,7 +23,7 @@ lib.mkMerge [
         puffer
         # keep-sorted end
       ])
-      ++ (with pkgs.nur.repos.linyinfeng.fishPlugins; [
+      ++ (with pkgs.linyinfeng.fishPlugins; [
         replay
       ])
       ++ (with pkgs; [

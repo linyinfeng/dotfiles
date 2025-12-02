@@ -13,8 +13,8 @@
     ffmpeg
     ghostscript
     imagemagick
+    linyinfeng.mstickereditor
     minio-client
-    nur.repos.linyinfeng.mstickereditor
     wl-clipboard
     xdg-ninja
     # keep-sorted end

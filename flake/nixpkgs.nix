@@ -11,7 +11,8 @@ let
   packages = [
     inputs.sops-nix.overlays.default
     inputs.nixos-cn.overlay
-    inputs.linyinfeng.overlays.singleRepoNur
+    inputs.linyinfeng.overlays.default
+    inputs.nur.overlays.default
     inputs.nix-gc-s3.overlays.default
     inputs.oranc.overlays.default
     inputs.ace-bot.overlays.default
@@ -40,11 +41,6 @@ let
         "packages"
         system
         "nix-index-with-db"
-      ])
-      // (self.lib.maybeAttrByPath "lantian" inputs [
-        "lantian"
-        "packages"
-        system
       ])
       // (self.lib.maybeAttrByPath "hydra" inputs [
         "hydra"

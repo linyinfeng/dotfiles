@@ -6,7 +6,7 @@
 {
   systemd.services."baibot" = {
     script = ''
-      ${pkgs.nur.repos.linyinfeng.baibot}/bin/baibot
+      ${pkgs.linyinfeng.baibot}/bin/baibot
     '';
     serviceConfig = {
       DynamicUser = true;
@@ -16,7 +16,7 @@
     };
     environment = {
       # simply use the default configuration file
-      BAIBOT_CONFIG_FILE_PATH = "${pkgs.nur.repos.linyinfeng.sources.baibot.src}/etc/app/config.yml.dist";
+      BAIBOT_CONFIG_FILE_PATH = "${pkgs.linyinfeng.sources.baibot.src}/etc/app/config.yml.dist";
       # override default config
       BAIBOT_HOMESERVER_SERVER_NAME = "li7g.com";
       BAIBOT_HOMESERVER_URL = "https://matrix.ts.li7g.com";

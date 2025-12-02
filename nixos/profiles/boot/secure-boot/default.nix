@@ -21,13 +21,13 @@ let
     ln --symbolic "${
       aggregateCustomCerts "KEK" [
         # microsoft
-        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/KEK/Certificates"
+        "${pkgs.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/KEK/Certificates"
       ]
     }" "$out/keys/custom/KEK"
     ln --symbolic "${
       aggregateCustomCerts "db" [
         # microsoft
-        "${pkgs.nur.repos.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/DB/Certificates"
+        "${pkgs.linyinfeng.sources.secureboot_objects.src}/PreSignedObjects/DB/Certificates"
       ]
     }" "$out/keys/custom/db"
   '';

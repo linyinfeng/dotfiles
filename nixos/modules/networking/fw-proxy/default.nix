@@ -479,7 +479,7 @@ with lib;
         tproxy-port = cfg.ports.tproxy;
         mixed-port = cfg.ports.mixed;
         external-controller = "127.0.0.1:${toString cfg.ports.controller}";
-        external-ui = "${pkgs.nur.repos.linyinfeng.yacd}";
+        external-ui = "${pkgs.linyinfeng.yacd}";
         allow-lan = lib.mkDefault true;
         global-client-fingerprint = lib.mkDefault "random";
         ipv6 = lib.mkDefault true;

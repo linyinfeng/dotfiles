@@ -27,7 +27,7 @@
 
       nerd-fonts.iosevka-term-slab
 
-      nur.repos.linyinfeng.plangothic.otc
+      linyinfeng.plangothic.otc
     ];
 
     fonts.fontconfig.defaultFonts = {
