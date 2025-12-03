@@ -8,10 +8,12 @@
         isDefault = true;
         settings = {
           "sidebar.verticalTabs" = true;
+          "browser.search.openintab" = true;
         };
         extensions = {
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
             auto-tab-discard
+            tab-session-manager
           ];
         };
       };
