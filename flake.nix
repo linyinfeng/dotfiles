@@ -183,6 +183,7 @@
 
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
+    nur.inputs.flake-parts.follows = "flake-parts";
 
     linyinfeng.url = "github:linyinfeng/nur-packages";
     linyinfeng.inputs.flake-parts.follows = "flake-parts";
