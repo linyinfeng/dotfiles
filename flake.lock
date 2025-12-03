@@ -46,6 +46,9 @@
         "flake-parts": [
           "flake-parts"
         ],
+        "nix-darwin": [
+          "blank"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -54,11 +57,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764346757,
-        "narHash": "sha256-PmgZsMcTkF6gstNZJJ/Jto+mEO2044/8UtJxVOM24mc=",
+        "lastModified": 1764771310,
+        "narHash": "sha256-51+CPEIVAhbxp4jqccexbkCE6NvDjHJN07WROKXF/CI=",
         "owner": "linyinfeng",
         "repo": "angrr",
-        "rev": "4e3566d8f3dc7fba579a15d7bdeb7b79e7ec0481",
+        "rev": "d37ec0e9c0737e8ad4b9debf997a1d366b45dfe5",
         "type": "github"
       },
       "original": {

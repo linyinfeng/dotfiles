@@ -117,6 +117,7 @@
     angrr.inputs.flake-compat.follows = "flake-compat";
     angrr.inputs.flake-parts.follows = "flake-parts";
     angrr.inputs.treefmt-nix.follows = "treefmt-nix";
+    angrr.inputs.nix-darwin.follows = "blank";
 
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
