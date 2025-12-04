@@ -9,6 +9,7 @@
         settings = {
           "sidebar.verticalTabs" = true;
           "browser.search.openintab" = true;
+          "browser.urlbar.openintab" = true;
         };
         extensions = {
           packages = with pkgs.nur.repos.rycee.firefox-addons; [
