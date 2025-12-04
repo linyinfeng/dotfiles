@@ -500,7 +500,7 @@ lib.mkMerge [
           echo "git diff..."
           git diff -- "$path"
 
-          echo "checking leak path..."
+          echo "checking path leaking..."
           jq 'pick(.. | select(type == "string" and contains("/")))' "$full_path"
         '';
       };
