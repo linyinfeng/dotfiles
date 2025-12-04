@@ -83,7 +83,7 @@
           "showDiskUsage": false,
           "showMemoryAsPercent": true,
           "showMemoryUsage": true,
-          "showNetworkStats": true,
+          "showNetworkStats": false,
           "usePrimaryColor": false
         },
         {
@@ -112,7 +112,7 @@
           "maxWidth": 145,
           "scrollingMode": "hover",
           "showAlbumArt": true,
-          "showArtistFirst": true,
+          "showArtistFirst": false,
           "showProgressRing": true,
           "showVisualizer": true,
           "useFixedWidth": false,
@@ -399,7 +399,7 @@
     "gtk": false,
     "kcolorscheme": false,
     "kitty": false,
-    "niri": false,
+    "niri": true,
     "pywalfox": false,
     "qt": false,
     "spicetify": false,
