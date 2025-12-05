@@ -571,16 +571,10 @@ lib.mkMerge [
   {
     services.swayidle = {
       enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = lib.escapeShellArgs lockScreen;
-        }
-        {
-          event = "lock";
-          command = lib.escapeShellArgs lockScreen;
-        }
-      ];
+      events = {
+        before-sleep = lib.escapeShellArgs lockScreen;
+        lock = lib.escapeShellArgs lockScreen;
+      };
       timeouts = [
         {
           timeout = 300;
