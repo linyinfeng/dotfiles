@@ -162,7 +162,7 @@ in
   services.zswap.enable = true;
   swapDevices = [ { device = "/swap/swapfile"; } ];
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 
   system.nproc = 8;
 }
