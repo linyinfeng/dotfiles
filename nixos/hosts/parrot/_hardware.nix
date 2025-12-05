@@ -63,6 +63,7 @@ lib.mkMerge [
         embedded = "eDP-1";
         labMonitor = "Lenovo Group Limited P27h-20 U5HCT52K";
         dormMonitor = "SKYDATA S.P.A. 24X1Q Unknown";
+        captureCard = "A/Vaux Electronics AVT GC551G2 Unknown";
       in
       [
         {
@@ -82,6 +83,13 @@ lib.mkMerge [
           output = {
             criteria = dormMonitor;
             scale = 1.25;
+          };
+        }
+        {
+          output = {
+            criteria = captureCard;
+            scale = 1440.0 / 1080.0;
+            mode = "2560x1440@59.951Hz";
           };
         }
         {
@@ -129,6 +137,21 @@ lib.mkMerge [
               {
                 criteria = dormMonitor;
                 position = "1536,0";
+              }
+            ];
+          };
+        }
+        {
+          profile = {
+            name = "docked-capture-card";
+            outputs = [
+              {
+                criteria = embedded;
+                position = "0,192";
+              }
+              {
+                criteria = captureCard;
+                position = "1536,70";
               }
             ];
           };
