@@ -253,24 +253,6 @@
       "zerotier_id": "53e94e5bdb",
       "zerotier_public_key": "53e94e5bdb:0:8ff19e9783f9f8e9379c6d6556b3ec8418c2161cc4fded60dcd3e8c43dc8f36862cbf9acdadaa089142d4c8d11a0a3513fbb53c5559c89f5880ccd68c4d436d9"
     },
-    "lax0": {
-      "b2_backup_key_id": "00462cd88e299860000000024",
-      "dn42_addresses_v4": ["172.23.224.100"],
-      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
-      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
-      "endpoints": ["142.171.74.114", "2607:f130:0:ea:ff:ff:b014:ada7"],
-      "endpoints_v4": ["142.171.74.114"],
-      "endpoints_v6": ["2607:f130:0:ea:ff:ff:b014:ada7"],
-      "host_indices": [4],
-      "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6zCCAXGgAwIBAgIRAL4jKI7Bt/l2EW7xLt9PG6IwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjUxMjA0MTMy\nNDIwWhcNMjYwMjAzMDkyNDIwWjAqMRAwDgYDVQQKEwdZaW5mZW5nMRYwFAYDVQQD\nEw1sYXgwLmxpN2cuY29tMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEdYAG5kNQeV4n\nJP5XCgoxvGIxjKa7V+Q7TljZrp14mVw8gKFuwqGHSWxanjXq1PM4v9sDy758LCYK\nb7ziivKVZ+LfKtt51EamJukJObkqX2NphWgY75JINOFPBligk8Tro2AwXjATBgNV\nHSUEDDAKBggrBgEFBQcDATAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFBe6RQz+\nqqDu8vNEgiTW8DwMyqIcMBgGA1UdEQQRMA+CDWxheDAubGk3Zy5jb20wCgYIKoZI\nzj0EAwMDaAAwZQIxAIjvxrDxT0H9MQTnvKYyayYIKVhDQTC+15XWfHNmuNpvtFCK\nlmFok5+iEl281PHWlwIwYzHVYkHNCB29g6Y8XzF87qsZaCXGGgszuX3tlw5HyOpm\nVNhmDeXIuuMYJf3ZT8cs\n-----END CERTIFICATE-----\n",
-      "minio_backup_key_id": "backup-lax0",
-      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJEXGChfhFA6WsIgWmTAENRQ/M/LqzvZVXmu+6tUA4vB",
-      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqqFLqUnZpCs9vb/ANs6B8ugie6Smqm132goF2bUguiYc/qT8zNRyDU17WMCiEVmbGtTegN2mqoJH3N75x/HwGpW1SmdN8W6Fm4DDF6wbWnwg8kzdC7YnFqgzLvZBFBPTXD1bcIgE+0m7dDthqE1jWeE+2MI3bo4slZYjE8VLmMNt5qgNbjiZfSAASvJT0PpYt9wknMQAeFszBYDZvdVNhHm5mds8L1LaaNmW7Rqn8LbMoKeriNBObXThvHVyKM6i67iZ1w+XJocDmdOI+W3ak14yO5mXI3GAJewonxDcb/YeMaeFFlSukEcpXkqC75eBPr4CYYA0Ev4n2FQVGyLH6zGPu4wUgVB1jHCmWFQ5TpBvkCbT+hITflcweFQYdgNbIYPZhqC8g9UiC76LX3Rqu7Qvr5F13iuYDkfp6quGDCNaddpvdMoDkiWEla1/E12Jh5h18BK0pXIqYwEM2VXdjjebMTyQoJmOuLelyKta1XXJJ+0EKtuMBGvbfc47JjsfZRzNB9ZRWFr9deIHoIOjlJadvj3Pdocl+q/9jfM/EG+Mca4fOogv+JsvrvNi+1Y9usmlejUp11e6sIGmk7Wu+gE5OLqSkwlZhUBNn4d4teEzuhelny1LBuc0+Ovg8+471br9pzQDPPY0eJh82PfxZ/07oGxZolRJ7YLz/Amu7Gw==",
-      "syncthing_device_id": "NQFCULA-5WLN5YY-UPTNI5K-GL2BYVB-QN63KVQ-QSKOUOQ-DX34LLE-UVVSSAV",
-      "wireguard_public_key": "XyhE6wSaTxno2UlOzr67vUCPcWgV+wVbxrHdKxr7Ong=",
-      "zerotier_id": "36b22edc3d",
-      "zerotier_public_key": "36b22edc3d:0:c46f4f0fba66b5a7c8dfb2e10261d71b81a321b07ee69ef537616f2f582032030b8b3f5cc2d091536c298f4bb18f32bbca7967a31a1e8ccced2d77e49d8db9fd"
-    },
     "mtl0": {
       "b2_backup_key_id": "00462cd88e29986000000001d",
       "dn42_addresses_v4": ["172.23.224.99"],

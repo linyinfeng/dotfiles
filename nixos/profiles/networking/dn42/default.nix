@@ -17,11 +17,6 @@ let
     # Hetzner 20 TB/month
     "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
-    "lax0" = {
-      # 2.4TB/month
-      enable = true;
-      rate = "10M";
-    };
     "hkg0" = {
       # 1TB/month
       enable = true;
@@ -33,10 +28,6 @@ let
     "parrot".enable = false; # mobile
   };
   regionTable = {
-    "lax0" = {
-      region = 44; # North America-W
-      country = 1840; # United States of America
-    };
     "fsn0" = {
       region = 41; # Europe
       country = 1276; # Germany

@@ -23,14 +23,6 @@ let
         "Canada"
       ];
     };
-    lax0 = {
-      comment = null;
-      provider = "RackNerd";
-      location = [
-        "Los Angeles"
-        "United States"
-      ];
-    };
     hkg0 = {
       comment = null;
       provider = "JuHost";
