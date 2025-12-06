@@ -530,6 +530,8 @@ lib.mkMerge [
 
         syncSettings
       ];
+
+      xdg.configFile."alacritty/alacritty.toml".force = true; # allow noctalia to manage alacritty theme
     }
   )
 
