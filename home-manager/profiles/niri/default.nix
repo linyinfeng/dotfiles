@@ -296,8 +296,8 @@ in
             "Mod+Shift+Slash { show-hotkey-overlay; }"
             # terminal, app launcher, screen locker, ...
             "Mod+Return { ${spawn [ "alacritty" ]}; }"
-            "Mod+D { ${spawn launcherToggle}; }"
-            "Mod+L { ${spawn lockScreen}; }"
+            "Mod+D hotkey-overlay-title=\"Toggle launcher\" { ${spawn launcherToggle}; }"
+            "Mod+L hotkey-overlay-title=\"Lock screen\" { ${spawn lockScreen}; }"
             # volume keys
             "XF86AudioRaiseVolume allow-when-locked=true { ${spawn volumeUp}; }"
             "XF86AudioLowerVolume allow-when-locked=true { ${spawn volumeDown}; }"
@@ -336,12 +336,16 @@ in
             "Mod+Shift+Minus { set-window-height \"-10%\"; }"
             "Mod+Shift+Equal { set-window-height \"+10%\"; }"
             # screenshot
-            "Print { screenshot; }"
-            "Ctrl+Print { screenshot-screen; }"
+            "Print { screenshot show-pointer=false; }"
+            "Ctrl+Print { screenshot-screen show-pointer=false; }"
             "Alt+Print { screenshot-window; }"
+            "Ctrl+Shift+Print { screenshot-screen show-pointer=false write-to-disk=false; }"
+            "Alt+Shift+Print { screenshot-window write-to-disk=false; }"
             # floating
             "Mod+BackSlash { switch-focus-between-floating-and-tiling; }"
             "Mod+Shift+BackSlash { toggle-window-floating; }"
+            # inhibit
+            "Mod+Escape { toggle-keyboard-shortcuts-inhibit; }"
             # quit
             "Mod+Ctrl+E { quit; }"
           ];
@@ -481,7 +485,7 @@ in
           nirius
         ];
         programs.niri.binds = [
-          "Mod+Ctrl+BackSpace { ${
+          "Mod+Ctrl+BackSpace hotkey-overlay-title=\"Toggle follow mode\" { ${
             spawn [
               "nirius"
               "toggle-follow-mode"
