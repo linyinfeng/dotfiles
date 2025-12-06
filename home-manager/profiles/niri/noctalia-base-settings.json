@@ -132,6 +132,8 @@
           "deviceNativePath": "",
           "displayMode": "onhover",
           "id": "Battery",
+          "showNoctaliaPerformance": true,
+          "showPowerProfiles": true,
           "warningThreshold": 30
         }
       ]
@@ -396,14 +398,14 @@
     "foot": false,
     "fuzzel": false,
     "ghostty": false,
-    "gtk": false,
-    "kcolorscheme": false,
+    "gtk": true,
+    "kcolorscheme": true,
     "kitty": false,
     "niri": true,
     "pywalfox": false,
-    "qt": false,
+    "qt": true,
     "spicetify": false,
-    "telegram": false,
+    "telegram": true,
     "vicinae": false,
     "walker": false,
     "wezterm": false
@@ -425,7 +427,7 @@
     "fillMode": "crop",
     "hideWallpaperFilenames": false,
     "monitorDirectories": [],
-    "overviewEnabled": false,
+    "overviewEnabled": true,
     "panelPosition": "follow_bar",
     "randomEnabled": false,
     "randomIntervalSec": 300,

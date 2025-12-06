@@ -24,7 +24,6 @@ let
     inputs.nix-topology.overlays.default
     inputs.nix-alien.overlays.default
     inputs.kukui-nixos.overlays.default
-    inputs.niri-flake.overlays.niri
     (
       _final: prev:
       let

@@ -1,19 +1,13 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
 lib.mkMerge [
   {
-    programs.niri = {
-      enable = true;
-      package = pkgs.niri-unstable;
-    };
-    systemd.user.services.niri-flake-polkit.serviceConfig = {
-      ExecStart = lib.mkForce "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
-    };
-    programs.wshowkeys.enable = true;
+    programs.niri.enable = true;
+    security.soteria.enable = true;
+    systemd.user.services.polkit-soteria.wantedBy = [ "niri.service" ];
   }
   (lib.mkIf (!config.services.desktopManager.gnome.enable) {
     services.gnome.gnome-keyring.enable = true;

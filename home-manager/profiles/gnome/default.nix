@@ -173,11 +173,6 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
       package = pkgs.papirus-icon-theme;
     };
   };
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk3"; # use gtk icon theme
-    style.name = "adwaita";
-  };
 
   home.activation.allowGdmReadFace = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.acl}/bin/setfacl --modify=group:gdm:--x "$HOME"

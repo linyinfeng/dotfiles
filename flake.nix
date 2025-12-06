@@ -158,11 +158,6 @@
     mc-config-nuc.inputs.mc-config.follows = "mc-config";
     mc-config-nuc.inputs.treefmt-nix.follows = "treefmt-nix";
 
-    niri-flake.url = "github:sodiboo/niri-flake";
-    niri-flake.inputs.nixpkgs.follows = "nixpkgs";
-    niri-flake.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
-    niri-flake.inputs.niri-stable.follows = "blank";
-
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 

@@ -296,7 +296,6 @@ let
       inputs.commit-notifier.nixosModules.commit-notifier
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nix-topology.nixosModules.default
-      inputs.niri-flake.nixosModules.niri
 
       {
         lib = {
