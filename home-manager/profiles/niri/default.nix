@@ -607,4 +607,23 @@ lib.mkMerge [
       systemd.enable = true;
     };
   }
+
+  # wl-mirror
+  {
+    home.packages =
+      let
+        inherit (pkgs) wl-mirror;
+        mirror = pkgs.writeShellApplication {
+          name = "mirror";
+          runtimeInputs = [ wl-mirror ];
+          text = ''
+            wl-mirror --backend screencopy-dmabuf --fullscreen-output "$2" "$1"
+          '';
+        };
+      in
+      [
+        wl-mirror
+        mirror
+      ];
+  }
 ]
