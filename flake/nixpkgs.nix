@@ -42,12 +42,6 @@ let
         system
         "nix-index-with-db"
       ])
-      // (self.lib.maybeAttrByPath "hydra" inputs [
-        "hydra"
-        "packages"
-        system
-        "hydra"
-      ])
     )
     (final: prev: {
       # scoped overlays
@@ -100,11 +94,6 @@ let
           cp ${../nixos/profiles/graphical/fonts/_nerd-font/Makefile} ./Makefile
         '';
       };
-      hydra = prev.hydra.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          ../patches/hydra-show-trace.patch
-        ];
-      });
       vscode = final.symlinkJoin {
         inherit (prev.vscode) pname version meta;
         paths = [ prev.vscode ];

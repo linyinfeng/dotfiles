@@ -566,28 +566,6 @@
         "type": "github"
       }
     },
-    "hydra": {
-      "inputs": {
-        "nix": "nix",
-        "nix-eval-jobs": "nix-eval-jobs",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1764105837,
-        "narHash": "sha256-odn4JAamENIUa+KfWCDi1BxM02TOmvhxyEdFLZrV+/4=",
-        "owner": "nixos",
-        "repo": "hydra",
-        "rev": "34ff66a460c21ee69d840c8c896d067405ba4a3e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "hydra",
-        "type": "github"
-      }
-    },
     "kukui-nixos": {
       "inputs": {
         "conf2nix": [
@@ -911,23 +889,6 @@
         "type": "github"
       }
     },
-    "nix": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1760573252,
-        "narHash": "sha256-mcvNeNdJP5R7huOc8Neg0qZESx/0DMg8Fq6lsdx0x8U=",
-        "owner": "NixOS",
-        "repo": "nix",
-        "rev": "3c39583e5512729f9c5a44c3b03b6467a2acd963",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "2.32-maintenance",
-        "repo": "nix",
-        "type": "github"
-      }
-    },
     "nix-alien": {
       "inputs": {
         "flake-compat": [
@@ -951,23 +912,6 @@
       "original": {
         "owner": "thiagokokada",
         "repo": "nix-alien",
-        "type": "github"
-      }
-    },
-    "nix-eval-jobs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1760478325,
-        "narHash": "sha256-hA+NOH8KDcsuvH7vJqSwk74PyZP3MtvI/l+CggZcnTc=",
-        "owner": "nix-community",
-        "repo": "nix-eval-jobs",
-        "rev": "daa42f9e9c84aeff1e325dd50fda321f53dfd02c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "ref": "v2.32.1",
-        "repo": "nix-eval-jobs",
         "type": "github"
       }
     },
@@ -1591,7 +1535,6 @@
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
         "home-manager": "home-manager",
-        "hydra": "hydra",
         "kukui-nixos": "kukui-nixos",
         "lanzaboote": "lanzaboote",
         "linyinfeng": "linyinfeng",
