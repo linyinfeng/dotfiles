@@ -171,6 +171,9 @@
     nix-alien.inputs.nix-index-database.follows = "nix-index-database";
     nix-alien.inputs.nixpkgs.follows = "nixpkgs";
 
+    hexecute.url = "github:ThatOtherAndrew/Hexecute";
+    hexecute.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     nur.url = "github:nix-community/NUR";
