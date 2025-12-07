@@ -95,8 +95,11 @@ in
             focus-follows-mouse max-scroll-amount="0%"
             workspace-auto-back-and-forth
           }
+
           screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
           prefer-no-csd
+
           layout {
             gaps 8
             struts {
@@ -131,10 +134,26 @@ in
             }
             center-focused-column "never"
           }
+
           cursor {
             xcursor-theme "Adwaita"
             xcursor-size 24
           }
+
+          recent-windows {
+            highlight {
+              padding 30
+              corner-radius ${toString windowCornerRadius}
+            }
+
+            binds {
+              Alt+Tab         { next-window; }
+              Alt+Shift+Tab   { previous-window; }
+              Alt+grave       { next-window     filter="app-id"; }
+              Alt+Shift+grave { previous-window filter="app-id"; }
+            }
+          }
+
           environment {
             ${lib.optionalString osConfig.networking.fw-proxy.enable (
               lib.concatMapAttrsStringSep "\n  " (
@@ -142,40 +161,61 @@ in
               ) osConfig.networking.fw-proxy.environment
             )}
           }
+
           binds {
             ${lib.concatStringsSep "\n  " config.programs.niri.binds}
           }
+
+          switch-events {
+            tablet-mode-on  { spawn "sh" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true"; }
+            tablet-mode-off { spawn "sh" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false"; }
+          }
+
           window-rule {
             geometry-corner-radius ${toString windowCornerRadius}
             clip-to-geometry true
           }
           window-rule {
+            match app-id="^Alacritty$"
+            opacity 0.9
+          }
+          window-rule {
             match app-id="^org.wezfurlong.wezterm$"
-            default-column-width
+            default-column-width { }
           }
           window-rule {
-            match app-id="^Waydroid$"
-            match app-id="^com.moonlight_stream.Moonlight$"
-            default-column-width { proportion 1.0; }
-          }
-          window-rule {
-              match title="^Picture in picture$"
-              open-floating true
+            match title="^Picture in picture$"
+            match title="^Picture-in-Picture$"
+            open-floating true
+            default-floating-position x=32 y=32 relative-to="bottom-right"
           }
           window-rule {
             match app-id="^chromium-browser$"
             geometry-corner-radius 16 16 ${toString windowCornerRadius} ${toString windowCornerRadius}
+          }
+          window-rule {
+            match app-id="^code$"
+            match app-id="^Waydroid$"
+            match app-id="^com.moonlight_stream.Moonlight$"
+            open-maximized-to-edges true
+            default-column-width { proportion 1.0; }
+          }
+          window-rule {
+            match app-id="^QQ$"
+            match app-id="^org.telegram.desktop$"
+            block-out-from "screencast"
           }
           layer-rule {
             match namespace="^waybar$"
             ${shadow}
           }
           layer-rule {
+            match namespace="^noctalia-notifications-"
             match namespace="^notifications$"
             block-out-from "screencast"
           }
           layer-rule {
-            match namespace="^noctalia-overview*"
+            match namespace="^noctalia-overview-"
             place-within-backdrop true
           }
           xwayland-satellite {
@@ -295,16 +335,16 @@ in
             # show help
             "Mod+Shift+Slash { show-hotkey-overlay; }"
             # terminal, app launcher, screen locker, ...
-            "Mod+Return { ${spawn [ "alacritty" ]}; }"
-            "Mod+D hotkey-overlay-title=\"Toggle launcher\" { ${spawn launcherToggle}; }"
-            "Mod+L hotkey-overlay-title=\"Lock screen\" { ${spawn lockScreen}; }"
+            "Mod+Return repeat=false { ${spawn [ "alacritty" ]}; }"
+            "Mod+D hotkey-overlay-title=\"Toggle launcher\" repeat=false { ${spawn launcherToggle}; }"
+            "Mod+L hotkey-overlay-title=\"Lock screen\"     { ${spawn lockScreen}; }"
             # volume keys
             "XF86AudioRaiseVolume allow-when-locked=true { ${spawn volumeUp}; }"
             "XF86AudioLowerVolume allow-when-locked=true { ${spawn volumeDown}; }"
-            "XF86AudioMute allow-when-locked=true { ${spawn volumeMute}; }"
-            "XF86AudioMicMute allow-when-locked=true { ${spawn volumeMicMute}; }"
+            "XF86AudioMute        allow-when-locked=true { ${spawn volumeMute}; }"
+            "XF86AudioMicMute     allow-when-locked=true { ${spawn volumeMicMute}; }"
             # brightness keys
-            "XF86MonBrightnessUp allow-when-locked=true { ${spawn lightUp}; }"
+            "XF86MonBrightnessUp   allow-when-locked=true { ${spawn lightUp}; }"
             "XF86MonBrightnessDown allow-when-locked=true { ${spawn lightDown}; }"
             # quit window
             "Mod+Q { close-window; }"
@@ -314,12 +354,10 @@ in
             "Mod+E { focus-column-last; }"
             "Mod+${modMove}+A { move-column-to-first; }"
             "Mod+${modMove}+E { move-column-to-last; }"
-            # previous workspace
-            "Mod+Tab { focus-workspace-previous; }"
             # consume and expel
-            "Mod+Comma { consume-window-into-column; }"
+            "Mod+Comma  { consume-window-into-column; }"
             "Mod+Period { expel-window-from-column; }"
-            "Mod+BracketLeft { consume-or-expel-window-left; }"
+            "Mod+BracketLeft  { consume-or-expel-window-left; }"
             "Mod+BracketRight { consume-or-expel-window-right; }"
             "Mod+T { toggle-column-tabbed-display; }"
             # preset size
@@ -327,22 +365,22 @@ in
             "Mod+Shift+R { reset-window-height; }"
             "Mod+M { maximize-column; }"
             "Mod+Shift+M { fullscreen-window; }"
-            "Mod+Ctrl+M { toggle-windowed-fullscreen; }"
+            "Mod+Ctrl+M { maximize-window-to-edges; }"
             # center column
             "Mod+C { center-column; }"
             # manual size
-            "Mod+Minus { set-column-width \"-10%\"; }"
-            "Mod+Equal { set-column-width \"+10%\"; }"
+            "Mod+Minus       { set-column-width \"-10%\"; }"
+            "Mod+Equal       { set-column-width \"+10%\"; }"
             "Mod+Shift+Minus { set-window-height \"-10%\"; }"
             "Mod+Shift+Equal { set-window-height \"+10%\"; }"
             # screenshot
-            "Print { screenshot show-pointer=false; }"
-            "Ctrl+Print { screenshot-screen show-pointer=false; }"
-            "Alt+Print { screenshot-window; }"
+            "Print            { screenshot show-pointer=false; }"
+            "Ctrl+Print       { screenshot-screen show-pointer=false; }"
             "Ctrl+Shift+Print { screenshot-screen show-pointer=false write-to-disk=false; }"
-            "Alt+Shift+Print { screenshot-window write-to-disk=false; }"
+            "Alt+Print        { screenshot-window; }"
+            "Alt+Shift+Print  { screenshot-window write-to-disk=false; }"
             # floating
-            "Mod+BackSlash { switch-focus-between-floating-and-tiling; }"
+            "Mod+BackSlash       { switch-focus-between-floating-and-tiling; }"
             "Mod+Shift+BackSlash { toggle-window-floating; }"
             # inhibit
             "Mod+Escape { toggle-keyboard-shortcuts-inhibit; }"
@@ -485,7 +523,7 @@ in
           nirius
         ];
         programs.niri.binds = [
-          "Mod+Ctrl+BackSpace hotkey-overlay-title=\"Toggle follow mode\" { ${
+          "Mod+Ctrl+BackSpace hotkey-overlay-title=\"Toggle follow mode\" repeat=false { ${
             spawn [
               "nirius"
               "toggle-follow-mode"
