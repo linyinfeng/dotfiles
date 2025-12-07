@@ -15,7 +15,6 @@ let
       case "$action" in
       up)
         echo ${cfg.compressor}              | tee /sys/module/zswap/parameters/compressor
-        echo ${cfg.zpool}                   | tee /sys/module/zswap/parameters/zpool
         echo ${toString cfg.maxPoolPercent} | tee /sys/module/zswap/parameters/max_pool_percent
         echo ${cfg.shrinkerEnabled} | tee /sys/module/zswap/parameters/shrinker_enabled
 
@@ -42,10 +41,6 @@ in
     compressor = lib.mkOption {
       type = with lib.types; str;
       default = "zstd";
-    };
-    zpool = lib.mkOption {
-      type = with lib.types; str;
-      default = "zsmalloc";
     };
     maxPoolPercent = lib.mkOption {
       type = with lib.types; int;
