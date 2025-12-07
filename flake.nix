@@ -229,13 +229,6 @@
     crate2nix.inputs.cachix.follows = "cachix";
     crate2nix.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
 
-    naersk.url = "github:nix-community/naersk";
-    naersk.inputs.nixpkgs.follows = "nixpkgs";
-    naersk.inputs.fenix.follows = "fenix";
-
-    fenix.url = "github:nix-community/fenix";
-    fenix.inputs.nixpkgs.follows = "nixpkgs";
-
     gitignore-nix.url = "github:hercules-ci/gitignore.nix";
     gitignore-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -321,22 +314,6 @@
       {
         flatFlake.config = {
           allowed = [
-            [
-              "fenix"
-              "rust-analyzer-src"
-            ]
-            [
-              "niri-flake"
-              "niri-unstable"
-            ]
-            [
-              "niri-flake"
-              "xwayland-satellite-unstable"
-            ]
-            [
-              "niri-flake"
-              "xwayland-satellite-stable"
-            ]
             [
               "kukui-nixos"
               "nixpkgs-alsa-ucm-conf"
