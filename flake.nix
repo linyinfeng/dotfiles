@@ -174,6 +174,9 @@
     hexecute.url = "github:ThatOtherAndrew/Hexecute";
     hexecute.inputs.nixpkgs.follows = "nixpkgs";
 
+    run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
+    run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     nur.url = "github:nix-community/NUR";

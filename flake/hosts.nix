@@ -29,7 +29,7 @@ let
           services.dbus
           security.polkit
           security.rtkit
-          security.sudo-rs
+          security.run0-sudo-shim
           global-persistence
           system.constant
           system.common
@@ -296,6 +296,7 @@ let
       inputs.commit-notifier.nixosModules.commit-notifier
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nix-topology.nixosModules.default
+      inputs.run0-sudo-shim.nixosModules.default
 
       {
         lib = {
