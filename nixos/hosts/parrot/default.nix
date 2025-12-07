@@ -3,7 +3,6 @@
   suites,
   profiles,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -37,9 +36,6 @@ in
         configurationLimit = 10;
       };
       boot.loader.timeout = 10;
-
-      # kernel tweaks
-      boot.kernelPackages = pkgs.linuxPackages_xanmod;
 
       hardware.enableRedistributableFirmware = true;
 
