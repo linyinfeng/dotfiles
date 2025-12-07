@@ -160,7 +160,7 @@ in
     #     extraConfig = ''
     #       Include "${config.sops.templates."hydra-extra-config".path}"
 
-    #       store_uri = s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd&secret-key=${
+    #       store_uri = s3://${cacheBucketName}?endpoint=cache-overlay.li7g.com&parallel-compression=true&compression=zstd&secret-key=${
     #         config.sops.secrets."cache-li7g-com/key".path
     #       }
     #       server_store_uri = https://cache.li7g.com?local-nar-cache=${narCache}
