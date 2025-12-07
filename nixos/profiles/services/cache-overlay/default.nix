@@ -59,7 +59,7 @@ in
       export AWS_CREDENTIALS="$AWS_ACCESS_KEY_ID,$AWS_SECRET_ACCESS_KEY"
 
       ${pkgs.linyinfeng.aws-s3-reverse-proxy}/bin/aws-s3-reverse-proxy \
-        --allowed-endpoint="cache-overlay.li7g.com" \
+        --allowed-endpoint="cache-overlay.ts.li7g.com" \
         --listen-addr=":${toString sigv4ProxyPort}" \
         --allowed-source-subnet=127.0.0.1/8 \
         --allowed-source-subnet=::1/128
