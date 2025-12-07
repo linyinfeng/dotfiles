@@ -2,6 +2,7 @@
 {
   services.nginx.upstreams."nuc".servers = {
     "nuc.ts.li7g.com:${toString config.ports.https}" = { };
+    "nuc.dn42.li7g.com:${toString config.ports.https}" = { };
     "nuc.li7g.com:${toString config.ports.https-alternative}" = {
       backup = true;
     };
