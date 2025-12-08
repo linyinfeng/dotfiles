@@ -194,9 +194,8 @@ in
             geometry-corner-radius 16 16 ${toString windowCornerRadius} ${toString windowCornerRadius}
           }
           window-rule {
-            match app-id="^code$"
-            match app-id="^Waydroid$"
-            match app-id="^com.moonlight_stream.Moonlight$"
+            match is-floating=false app-id="^Waydroid$"
+            match is-floating=false app-id="^com.moonlight_stream.Moonlight$"
             open-maximized-to-edges true
             default-column-width { proportion 1.0; }
           }
