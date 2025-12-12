@@ -41,17 +41,6 @@ let
       imageGz
     ];
   };
-
-  setupRndis = pkgs.writeShellApplication {
-    name = "setup-rndis";
-    runtimeInputs = with pkgs; [
-      gt
-    ];
-    text = ''
-      gt load g1.scheme g1
-      gt enable g1 a600000.usb
-    '';
-  };
   hideSplash = pkgs.writeShellApplication {
     name = "hide-splash";
     runtimeInputs = with pkgs; [
@@ -82,42 +71,12 @@ in
 
   boot.initrd.systemd.contents = {
     "/lib".source = lib.mkForce "${modulesClosureExtended}/lib";
-
-    "/etc/gt/gt.conf".text = ''
-      lookup-path=["/etc/gt/templates"]
-    '';
-    "/etc/gt/templates/g1.scheme".source = ./_gadget/g1.scheme;
   };
-  boot.initrd.systemd.storePaths = [
-    pkgs.gt
-    setupRndis
-  ];
-  boot.initrd.systemd.services.setup-rndis = {
-    script = lib.getExe setupRndis;
-    serviceConfig = {
-      StandardOutput = "journal+console";
-    };
-    wantedBy = [ "initrd.target" ];
-  };
-  boot.initrd.network.ssh.enable = true;
-  boot.initrd.systemd.network.networks."50-usb0" = {
-    matchConfig = {
-      Name = "usb0";
-    };
-    address = [ "172.16.42.1/24" ];
-  };
-
   boot.initrd.systemd.services.plymouth-hide-splash = {
     script = lib.getExe hideSplash;
     after = [ "plymouth-start.service" ];
     wantedBy = [ "plymouth-start.service" ];
   };
-  # boot.initrd.systemd.services.initrd-nixos-activation = {
-  #   serviceConfig = {
-  #     StandardOutput = "journal+console";
-  #   };
-  # };
-  # use nixpkgs initrd
   mobile.boot.stage-1.enable = lib.mkForce false;
   boot.initrd.systemd.managerEnvironment = {
     # bootloader will append extra android kernel cmdline to our cmdline

@@ -4,7 +4,6 @@
     ./terraform.nix
     ./boot-sd.nix
     ./patches.nix
-    ./kernel-config.nix
     ./enchilada.nix
     ./prepare
   ];

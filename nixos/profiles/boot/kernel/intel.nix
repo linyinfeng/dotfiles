@@ -47,7 +47,7 @@ in
           ) pkgs."linuxPackages_${major}_${minor}".kernel.kernelPatches;
         };
       in
-      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
+      lib.recurseIntoAttrs (pkgs.linuxPackagesFor linux_intel);
     kernelPatches = [
       # currently nothing
     ];

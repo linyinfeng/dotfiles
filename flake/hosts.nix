@@ -494,22 +494,21 @@ in
       ];
     })
 
-    # TODO broken
-    # (mkHost {
-    #   name = "enchilada";
-    #   system = "aarch64-linux";
-    #   forceFlakeNixpkgs = false;
-    #   extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
-    #     "${inputs.mobile-nixos}/devices/oneplus-enchilada"
-    #     (
-    #       { ... }:
-    #       {
-    #         # mobile-nixos tests `config.nixpkgs.localSystem`
-    #         nixpkgs.system = "aarch64-linux";
-    #       }
-    #     )
-    #   ];
-    # })
+    (mkHost {
+      name = "enchilada";
+      system = "aarch64-linux";
+      forceFlakeNixpkgs = false;
+      extraModules = import "${inputs.mobile-nixos}/modules/module-list.nix" ++ [
+        "${inputs.mobile-nixos}/devices/oneplus-enchilada"
+        (
+          { ... }:
+          {
+            # mobile-nixos tests `config.nixpkgs.localSystem`
+            nixpkgs.system = "aarch64-linux";
+          }
+        )
+      ];
+    })
 
     (mkHost {
       name = "mtl0";

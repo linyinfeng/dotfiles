@@ -15,7 +15,6 @@ in
     ++ [
       ./_boot.nix
       ./_kernel.nix
-      ./_gadget
       ./_hardware.nix
     ]
     ++ (
@@ -52,28 +51,6 @@ in
       networking.useNetworkd = true;
       system.nproc = 8;
     })
-
-    # usb network
-    {
-      # manual rndis setup
-      systemd.services.setup-rndis = {
-        script = ''
-          eza --tree /sys/class/udc
-          gt enable "g1" "a600000.usb"
-        '';
-        path = with pkgs; [
-          eza
-          gt
-        ];
-        wantedBy = [ "gt.target" ];
-      };
-      systemd.network.networks."50-usb0" = {
-        matchConfig = {
-          Name = "usb0";
-        };
-        address = [ "172.16.42.1/24" ];
-      };
-    }
 
     # faster build
     {

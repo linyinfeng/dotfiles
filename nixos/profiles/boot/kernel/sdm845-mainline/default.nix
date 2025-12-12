@@ -1,92 +1,59 @@
 {
   inputs,
-  config,
   pkgs,
   lib,
   ...
 }:
 let
-  tag = "sdm845-6.16-rc2-4";
-  hash = "sha256-Nu7BwSl40Ytm7nCzyctNed7nqwq7NcVVxHLF3KFMKC4=";
-  version = lib.elemAt (lib.strings.match "sdm845-([0-9\\.]+(-rc[0-9]+)?)(-[a-zA-Z0-9\\-]+)?" tag) 0;
-  major = lib.versions.major version;
-  minor = lib.versions.minor version;
+  tag = "sdm845-6.16.7-r0";
+  hash = "sha256-XYlXuzapuesiTpvquuz0b6yPyAqEdK9lMdglST+EZhk=";
+  version = "6.16.7";
   inherit (lib.kernel) yes;
-  structuredExtraConfig =
-    inputs.kukui-nixos.lib.adjustStandaloneConfig (import ./_config.nix { inherit lib; })
-    // {
-      # for envfs
-      EROFS_FS = yes;
-      # NET_9P = module;
-      # "9P_FS" = module;
-      # other
-      RUST = yes;
+  structuredExtraConfig = {
+    EROFS_FS = yes;
+  };
+  patchedSrc = pkgs.stdenv.mkDerivation {
+    name = "linux-sdm845-patched-src";
+    inherit version;
+    src = pkgs.fetchFromGitLab {
+      owner = "sdm845-mainline";
+      repo = "linux";
+      rev = tag;
+      inherit hash;
     };
+    postPatch = ''
+      cp "${inputs.pmaports}/device/community/linux-postmarketos-qcom-sdm845/config-postmarketos-qcom-sdm845.aarch64"  arch/arm64/configs/pmos_sdm845_defconfig
+    '';
+    dontBuild = true;
+    dontConfigure = true;
+    dontFixup = true;
+    installPhase = ''
+      runHook preInstall
+      mkdir --parents $out
+      cp --recursive . $out
+      runHook postInstall
+    '';
+  };
 in
 {
-  #
-  passthru.kernel = {
-    conf2nix = inputs.conf2nix.lib.conf2nix {
-      configFile = "${inputs.pmaports}/device/community/linux-postmarketos-qcom-sdm845/config-postmarketos-qcom-sdm845.aarch64";
-      inherit (config.boot.kernelPackages) kernel;
-      preset = "standalone";
-    };
-  };
   boot = {
     kernelPackages =
       let
-        linux_sdm845_fn =
-          {
-            buildLinux,
-            lib,
-            ...
-          }@args:
-          buildLinux (
-            args
-            // {
-              inherit version;
-              modDirVersion = "${lib.versions.pad 3 version}-sdm845";
-              extraMeta.branch = lib.versions.majorMinor version;
-              src = pkgs.fetchFromGitLab {
-                owner = "sdm845-mainline";
-                repo = "linux";
-                rev = tag;
-                inherit hash;
-              };
-              defconfig = "defconfig sdm845.config";
-              enableCommonConfig = false;
-              autoModules = false;
-              inherit structuredExtraConfig;
-
-              # ../configs/config.nix should fully explained the platform
-              # clear hostPlatform.linux-kernel.extraConfig
-              stdenv =
-                let
-                  originalPlatform = pkgs.stdenv.hostPlatform;
-                  hostPlatform =
-                    assert pkgs.stdenv.hostPlatform.isAarch64;
-                    originalPlatform
-                    // {
-                      linux-kernel = originalPlatform.linux-kernel // {
-                        extraConfig = "";
-                      };
-                    };
-                in
-                pkgs.stdenv // { inherit hostPlatform; };
-            }
-            // (args.argsOverride or { })
-          );
-        linux_sdm845' = pkgs.callPackage linux_sdm845_fn {
-          kernelPatches = lib.filter (p: !(lib.elem p.name [ ])) (
-            pkgs."linuxPackages_${major}_${minor}".kernel.kernelPatches or [ ]
-          );
+        linux_sdm845 = pkgs.buildLinux {
+          inherit version;
+          modDirVersion = "${lib.versions.pad 3 version}-sdm845";
+          extraMeta.branch = lib.versions.majorMinor version;
+          src = patchedSrc;
+          defconfig = "pmos_sdm845_defconfig";
+          autoModules = false;
+          enableCommonConfig = false;
+          inherit structuredExtraConfig;
+          kernelPatches = with pkgs.kernelPatches; [
+            bridge_stp_helper
+            request_key_helper
+          ];
         };
-        linux_sdm845 = linux_sdm845'.overrideAttrs (_old: {
-        });
       in
-      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_sdm845);
-    kernelPatches = [
-      # currently nothing
-    ];
+      lib.recurseIntoAttrs (pkgs.linuxPackagesFor linux_sdm845);
   };
 }
