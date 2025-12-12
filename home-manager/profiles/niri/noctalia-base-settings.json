@@ -62,7 +62,7 @@
         },
         {
           "hideMode": "alwaysExpanded",
-          "icon": "apps",
+          "icon": "rocket",
           "id": "CustomButton",
           "leftClickExec": "noctalia-shell ipc call launcher toggle",
           "leftClickUpdateText": true,
@@ -118,10 +118,13 @@
         },
         {
           "characterCount": 2,
+          "colorizeIcons": false,
           "followFocusedScreen": false,
           "hideUnoccupied": false,
           "id": "Workspace",
-          "labelMode": "index"
+          "labelMode": "index",
+          "showApplications": false,
+          "showLabelsOnlyWhenOccupied": true
         },
         {
           "colorizeIcons": false,
@@ -137,17 +140,6 @@
         }
       ],
       "right": [
-        {
-          "diskPath": "/",
-          "id": "SystemMonitor",
-          "showCpuTemp": true,
-          "showCpuUsage": true,
-          "showDiskUsage": false,
-          "showMemoryAsPercent": true,
-          "showMemoryUsage": true,
-          "showNetworkStats": false,
-          "usePrimaryColor": false
-        },
         {
           "blacklist": [],
           "colorizeIcons": false,
@@ -166,25 +158,6 @@
         {
           "displayMode": "onhover",
           "id": "Volume"
-        },
-        {
-          "hideMode": "hidden",
-          "hideWhenIdle": false,
-          "id": "MediaMini",
-          "maxWidth": 145,
-          "scrollingMode": "hover",
-          "showAlbumArt": true,
-          "showArtistFirst": false,
-          "showProgressRing": true,
-          "showVisualizer": true,
-          "useFixedWidth": false,
-          "visualizerType": "mirrored"
-        },
-        {
-          "id": "KeepAwake"
-        },
-        {
-          "id": "DarkMode"
         },
         {
           "displayMode": "onhover",
@@ -259,7 +232,7 @@
         "id": "audio-card"
       },
       {
-        "enabled": true,
+        "enabled": false,
         "id": "weather-card"
       },
       {
@@ -271,30 +244,24 @@
     "shortcuts": {
       "left": [
         {
-          "id": "WiFi"
-        },
-        {
-          "id": "Bluetooth"
-        },
-        {
           "id": "ScreenRecorder"
         },
         {
           "id": "WallpaperSelector"
-        }
-      ],
-      "right": [
-        {
-          "id": "Notifications"
         },
         {
           "id": "PowerProfile"
-        },
+        }
+      ],
+      "right": [
         {
           "id": "KeepAwake"
         },
         {
           "id": "NightLight"
+        },
+        {
+          "id": "DarkMode"
         }
       ]
     }
@@ -388,8 +355,8 @@
     "autoHideMs": 1000,
     "backgroundOpacity": 1,
     "enabled": true,
-    "enabledTypes": [],
-    "location": "top_right",
+    "enabledTypes": [0, 1, 2, 3],
+    "location": "right",
     "monitors": [],
     "overlayLayer": true
   },
@@ -410,38 +377,44 @@
     "powerOptions": [
       {
         "action": "lock",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       },
       {
         "action": "suspend",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       },
       {
         "action": "hibernate",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       },
       {
         "action": "reboot",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       },
       {
         "action": "logout",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       },
       {
         "action": "shutdown",
+        "command": "",
         "countdownEnabled": true,
         "enabled": true
       }
     ],
     "showHeader": true
   },
-  "settingsVersion": 27,
+  "settingsVersion": 28,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -489,7 +462,7 @@
     "fontFixedScale": 1,
     "panelBackgroundOpacity": 1,
     "panelsAttachedToBar": true,
-    "settingsPanelMode": "centered",
+    "settingsPanelMode": "attached",
     "tooltipsEnabled": true
   },
   "wallpaper": {
