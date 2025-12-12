@@ -57,6 +57,7 @@ in
       file
       gptfdisk
       jq
+      jujutsu
       keyutils
       libtree
       lm_sensors

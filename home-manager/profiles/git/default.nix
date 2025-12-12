@@ -46,11 +46,17 @@ lib.mkMerge [
     ];
   }
 
+  # jujutsu
+  {
+    programs.jujutsu.enable = true;
+  }
+
   # delta
   {
     programs.delta = {
       enable = true;
       enableGitIntegration = true;
+      enableJujutsuIntegration = true;
       options = {
         navigate = true;
         light = true;
