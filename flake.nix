@@ -13,7 +13,6 @@
     nixpkgs-latest.url = "github:nixos/nixpkgs/master";
     nixpkgs-unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-riscv.url = "github:nickcao/nixpkgs/riscv";
 
     # flake modules
 
@@ -317,17 +316,12 @@
       {
         flatFlake.config = {
           allowed = [
-            [
-              "kukui-nixos"
-              "nixpkgs-alsa-ucm-conf"
-            ]
           ];
         };
         systems = [
           "x86_64-linux"
           "aarch64-linux"
           # unused
-          # "riscv64-linux"
           # "loongarch64-linux"
         ];
         devSystems = [

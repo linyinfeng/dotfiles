@@ -603,7 +603,6 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "nixpkgs-alsa-ucm-conf": "nixpkgs-alsa-ucm-conf",
         "pmaports": [
           "pmaports"
         ],
@@ -612,11 +611,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762089815,
-        "narHash": "sha256-iQQfxGYfPLQZAcEWXM+XtPNLXhj1P3z2BYKdn4LcjqU=",
+        "lastModified": 1765513188,
+        "narHash": "sha256-bZL0Pz6X0Wq8kinQM5XXBWRFSIntn2jSYm05RCC10yI=",
         "owner": "linyinfeng",
         "repo": "kukui-nixos",
-        "rev": "7e424646c2cdec7ae2f6ba333406caf31fafbf83",
+        "rev": "18c94bb9571b53127358024c7802f6c285f16a5c",
         "type": "github"
       },
       "original": {
@@ -1185,22 +1184,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-alsa-ucm-conf": {
-      "locked": {
-        "lastModified": 1752861948,
-        "narHash": "sha256-UXabHzxFtGQK6HYSEoKTYNVMcxEZ1RDrAkjBnwIrky0=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "23f824ccf6bfb7090f7bd8ead00d041612a709fa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "pull/414818/head",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-latest": {
       "locked": {
         "lastModified": 1765248689,
@@ -1213,22 +1196,6 @@
       "original": {
         "owner": "nixos",
         "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-riscv": {
-      "locked": {
-        "lastModified": 1756518683,
-        "narHash": "sha256-2MQPUhU10FFIiz/H9cb8ZRmLeTsOLzO0D01Pd1x5GOg=",
-        "owner": "nickcao",
-        "repo": "nixpkgs",
-        "rev": "40c419c82f5f927c907d2ff051fabb7e8dbce188",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nickcao",
-        "ref": "riscv",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1528,7 +1495,6 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-latest": "nixpkgs-latest",
-        "nixpkgs-riscv": "nixpkgs-riscv",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
         "noctalia": "noctalia",
