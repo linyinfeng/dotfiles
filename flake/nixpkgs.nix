@@ -130,6 +130,8 @@ let
       (_final: _prev: {
         # maintained packages
         inherit (latest) godns;
+        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=469697
+        inherit (unstable-small) fcitx5-mozc mozc;
       })
     ];
   lateFixes =
@@ -139,11 +141,7 @@ let
       inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
     in
     [
-      (_final: prev: {
-        # TODO remove
-        tailscale = prev.tailscale.overrideAttrs (_: {
-          doCheck = false;
-        });
+      (_final: _prev: {
       })
     ];
 in
