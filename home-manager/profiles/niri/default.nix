@@ -473,7 +473,7 @@ in
           systemd.enable = true;
           settings = lib.recursiveUpdate (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json)) specialSettings;
         };
-        systemd.user.services.emacs =
+        systemd.user.services.noctalia-shell =
           let
             inherit (osConfig.networking) fw-proxy;
           in
