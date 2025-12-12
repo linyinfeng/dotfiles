@@ -42,7 +42,10 @@
             suites.mobile
             ++ (with profiles; [
               gnome
+              niri
+              alacritty
             ]);
+          programs.niri.default-column-proportion = 1.0; # open everything in full width
         };
       i18n.inputMethod.type = "fcitx5";
 

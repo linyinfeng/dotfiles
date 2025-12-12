@@ -201,7 +201,6 @@ let
         niri
         darkman
         dconf-proxy
-        chromium
         firefox
         rime
         fcitx5
@@ -263,7 +262,7 @@ let
         ++ other
         ++ (with profiles; [
           dconf-proxy
-          chromium
+          firefox
           rime
           mime
 

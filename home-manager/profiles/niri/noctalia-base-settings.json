@@ -5,11 +5,12 @@
     "enableClipPreview": true,
     "enableClipboardHistory": true,
     "pinnedExecs": [],
-    "position": "top_center",
+    "position": "top_left",
+    "showCategories": true,
     "sortByMostUsed": true,
     "terminalCommand": "alacritty --command",
     "useApp2Unit": false,
-    "viewMode": "list"
+    "viewMode": "grid"
   },
   "audio": {
     "cavaFrameRate": 60,
@@ -60,6 +61,62 @@
           "useDistroLogo": true
         },
         {
+          "hideMode": "alwaysExpanded",
+          "icon": "apps",
+          "id": "CustomButton",
+          "leftClickExec": "noctalia-shell ipc call launcher toggle",
+          "leftClickUpdateText": true,
+          "maxTextLength": {
+            "horizontal": 10,
+            "vertical": 10
+          },
+          "middleClickExec": "",
+          "middleClickUpdateText": false,
+          "parseJson": false,
+          "rightClickExec": "",
+          "rightClickUpdateText": false,
+          "showIcon": true,
+          "textCollapse": "",
+          "textCommand": "",
+          "textIntervalMs": 3000,
+          "textStream": false,
+          "wheelDownExec": "",
+          "wheelDownUpdateText": false,
+          "wheelExec": "",
+          "wheelMode": "unified",
+          "wheelUpExec": "",
+          "wheelUpUpdateText": false,
+          "wheelUpdateText": false
+        },
+        {
+          "hideMode": "alwaysExpanded",
+          "icon": "keyboard",
+          "id": "CustomButton",
+          "leftClickExec": "wvkbd-toggle",
+          "leftClickUpdateText": false,
+          "maxTextLength": {
+            "horizontal": 10,
+            "vertical": 10
+          },
+          "middleClickExec": "",
+          "middleClickUpdateText": false,
+          "parseJson": false,
+          "rightClickExec": "",
+          "rightClickUpdateText": false,
+          "showIcon": true,
+          "textCollapse": "",
+          "textCommand": "",
+          "textIntervalMs": 3000,
+          "textStream": false,
+          "wheelDownExec": "",
+          "wheelDownUpdateText": false,
+          "wheelExec": "",
+          "wheelMode": "unified",
+          "wheelUpExec": "",
+          "wheelUpUpdateText": false,
+          "wheelUpdateText": false
+        },
+        {
           "characterCount": 2,
           "followFocusedScreen": false,
           "hideUnoccupied": false,
@@ -70,8 +127,13 @@
           "colorizeIcons": false,
           "hideMode": "hidden",
           "id": "Taskbar",
+          "maxTaskbarWidth": 40,
           "onlyActiveWorkspaces": true,
-          "onlySameOutput": true
+          "onlySameOutput": true,
+          "showPinnedApps": true,
+          "showTitle": false,
+          "smartWidth": true,
+          "titleWidth": 120
         }
       ],
       "right": [
@@ -172,9 +234,6 @@
       }
     ]
   },
-  "changelog": {
-    "lastSeenVersion": ""
-  },
   "colorSchemes": {
     "darkMode": false,
     "generateTemplatesForPredefined": true,
@@ -243,12 +302,15 @@
   "dock": {
     "backgroundOpacity": 1,
     "colorizeIcons": false,
+    "deadOpacity": 0.6,
     "displayMode": "auto_hide",
     "enabled": true,
     "floatingRatio": 1,
+    "inactiveIndicators": false,
     "monitors": [],
     "onlySameOutput": true,
     "pinnedApps": [],
+    "pinnedStatic": false,
     "size": 1
   },
   "general": {
@@ -270,7 +332,8 @@
     "shadowOffsetX": 2,
     "shadowOffsetY": 3,
     "showHibernateOnLockScreen": false,
-    "showScreenCorners": false
+    "showScreenCorners": false,
+    "showSessionButtonsOnLockScreen": true
   },
   "hooks": {
     "enabled": true,
@@ -310,7 +373,16 @@
     "monitors": [],
     "normalUrgencyDuration": 8,
     "overlayLayer": true,
-    "respectExpireTimeout": true
+    "respectExpireTimeout": true,
+    "sounds": {
+      "criticalSoundFile": "",
+      "enabled": false,
+      "excludedApps": "discord,firefox,chrome,chromium,edge",
+      "lowSoundFile": "",
+      "normalSoundFile": "",
+      "separateSounds": false,
+      "volume": 0.5
+    }
   },
   "osd": {
     "autoHideMs": 1000,
@@ -369,7 +441,7 @@
     ],
     "showHeader": true
   },
-  "settingsVersion": 26,
+  "settingsVersion": 27,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -417,7 +489,7 @@
     "fontFixedScale": 1,
     "panelBackgroundOpacity": 1,
     "panelsAttachedToBar": true,
-    "settingsPanelAttachToBar": false,
+    "settingsPanelMode": "centered",
     "tooltipsEnabled": true
   },
   "wallpaper": {

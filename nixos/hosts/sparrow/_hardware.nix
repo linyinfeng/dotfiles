@@ -38,7 +38,6 @@ lib.mkMerge [
 
   # display
   {
-
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "DSI-1";
@@ -48,7 +47,6 @@ lib.mkMerge [
           output = {
             criteria = embedded;
             scale = 1.75;
-            transform = "90";
           };
         }
         {

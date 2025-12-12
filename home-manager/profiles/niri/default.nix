@@ -6,6 +6,7 @@
   ...
 }:
 let
+  cfg = config.programs.niri;
   noctaliaIpc =
     cmd:
     [
@@ -49,9 +50,16 @@ let
   spawn = command: ''spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}'';
 in
 {
-  options.programs.niri.binds = lib.mkOption {
-    type = with lib.types; listOf str;
-    default = [ ];
+  options.programs.niri = {
+    default-column-proportion = lib.mkOption {
+      type = lib.types.float;
+      default = 0.5;
+      description = "Default proportion of new columns.";
+    };
+    binds = lib.mkOption {
+      type = with lib.types; listOf str;
+      default = [ ];
+    };
   };
   config = lib.mkMerge [
     {
@@ -126,7 +134,7 @@ in
               active-color "${mainColor}"
               inactive-color "${inactiveColor}"
             }
-            default-column-width { proportion 0.5; }
+            default-column-width { proportion ${toString cfg.default-column-proportion}; }
             preset-column-widths {
               proportion 0.333333
               proportion 0.5
@@ -163,7 +171,7 @@ in
           }
 
           binds {
-            ${lib.concatStringsSep "\n  " config.programs.niri.binds}
+            ${lib.concatStringsSep "\n  " cfg.binds}
           }
 
           switch-events {
@@ -593,7 +601,7 @@ in
     }
 
     # hexexcute
-    {
+    (lib.mkIf (pkgs ? hexecute) {
       home.packages = with pkgs; [
         hexecute
       ];
@@ -607,6 +615,105 @@ in
       home.global-persistence.directories = [
         ".config/hexecute"
       ];
-    }
+    })
+
+    # osd
+    (
+      let
+        wvkbd = pkgs.wvkbd.overrideAttrs (oldAttrs: {
+          makeFlags = (oldAttrs.makeFlags or [ ]) ++ [
+            "LAYOUT=deskintl"
+          ];
+        });
+        wvkbdToggle = pkgs.writeShellApplication {
+          name = "wvkbd-toggle";
+          runtimeInputs = [
+            osConfig.systemd.package
+            pkgs.procps
+          ];
+          text = ''
+            wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
+            state="$(cat "$wvkbd_state_file")"
+            if [ "$state" = "shown" ]; then
+              systemctl --user kill --kill-whom=main --signal=USR1 wvkbd.service
+            elif [ "$state" = "hidden" ]; then
+              systemctl --user kill --kill-whom=main --signal=USR2 wvkbd.service
+            fi
+          '';
+        };
+      in
+      {
+        home.packages = [ wvkbdToggle ];
+        systemd.user.services.wvkbd = {
+          Unit = {
+            Description = "On-screen keyboard for wlroots";
+            ConditionEnvironment = [
+              "WAYLAND_DISPLAY"
+            ];
+            After = [ "niri.service" ];
+            PartOf = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart =
+              let
+                wvkbdDeamon = pkgs.writeShellApplication {
+                  name = "wvkbd-daemon";
+                  runtimeInputs = [
+                    wvkbd
+                    pkgs.clickclack
+                  ];
+                  text = ''
+                    cd "$RUNTIME_DIRECTORY"
+                    rm --force pressed
+                    mkfifo pressed
+                    wvkbd-deskintl --hidden -o >pressed &
+                    wvkbd_pid="$!"
+                    clickclack -V <pressed &
+                    clickclack_pid="$!"
+
+                    state_file="$RUNTIME_DIRECTORY/state"
+                    new_state_file="$RUNTIME_DIRECTORY/state.new"
+                    echo "hidden" >"$state_file"
+                    # transition_delay_ms=50
+
+                    function hide_keyboard {
+                      echo "hide keyboard..."
+                      echo "hidden" >"$new_state_file"
+                      kill -USR1 "$wvkbd_pid"
+                      mv --force "$new_state_file" "$state_file"
+                      echo "keyboard hidden"
+                    }
+                    function show_keyboard {
+                      echo "show keyboard..."
+                      echo "shown" >"$new_state_file"
+                      kill -USR2 "$wvkbd_pid"
+                      mv --force "$new_state_file" "$state_file"
+                      echo "keyboard shown"
+                    }
+
+                    trap "hide_keyboard" SIGUSR1
+                    trap "show_keyboard" SIGUSR2
+
+                    # https://stackoverflow.com/questions/55866583/wait-exits-after-trap
+                    function loop_wait {
+                      while wait "$1"; [ "$?" -ge 128 ]; do
+                        echo 'finished wait'
+                      done
+                    }
+                    loop_wait "$wvkbd_pid"
+                    loop_wait "$clickclack_pid"
+                  '';
+                };
+              in
+              lib.getExe wvkbdDeamon;
+            Restart = "on-failure";
+            RuntimeDirectory = "wvkbd";
+          };
+          Install = {
+            WantedBy = lib.mkForce [ "niri.service" ];
+          };
+        };
+      }
+    )
   ];
 }
