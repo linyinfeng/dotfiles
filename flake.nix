@@ -175,6 +175,10 @@
 
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+    run0-sudo-shim.inputs.flake-utils.follows = "flake-utils";
+    run0-sudo-shim.inputs.rust-overlay.follows = "rust-overlay";
+    run0-sudo-shim.inputs.treefmt-nix.follows = "treefmt-nix";
+    run0-sudo-shim.inputs.nix-github-actions.follows = "nix-github-actions";
 
     # combined flakes
 
