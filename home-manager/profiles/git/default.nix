@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   fileLineColumnHandler = pkgs.writeShellScriptBin "file-line-column-handler" ''
     set -e
@@ -48,7 +53,14 @@ lib.mkMerge [
 
   # jujutsu
   {
-    programs.jujutsu.enable = true;
+    programs.jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          inherit (config.programs.git.settings.user) email name;
+        };
+      };
+    };
   }
 
   # delta
