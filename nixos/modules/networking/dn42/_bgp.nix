@@ -270,9 +270,10 @@ lib.mkIf cfg.enable (
         protocol bgp bgp_dn42_route_collector
         {
           local as DN42OWNAS;
-          neighbor fd42:4242:2601:ac12::1 as 4242422602;
+          neighbor fd42:d42:d42:179::1 as 4242422602;
 
           multihop;
+
           ipv4 {
             add paths tx;
             import none;
