@@ -434,7 +434,7 @@
     "warningColor": ""
   },
   "templates": {
-    "alacritty": true,
+    "alacritty": false,
     "cava": false,
     "code": false,
     "discord": false,
@@ -443,17 +443,18 @@
     "foot": false,
     "fuzzel": false,
     "ghostty": false,
-    "gtk": true,
-    "kcolorscheme": true,
+    "gtk": false,
+    "kcolorscheme": false,
     "kitty": false,
     "niri": true,
     "pywalfox": false,
-    "qt": true,
+    "qt": false,
     "spicetify": false,
     "telegram": true,
     "vicinae": false,
     "walker": false,
-    "wezterm": false
+    "wezterm": false,
+    "yazi": false
   },
   "ui": {
     "fontDefault": "Sans Serif",
