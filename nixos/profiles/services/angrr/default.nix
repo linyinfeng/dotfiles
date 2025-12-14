@@ -1,4 +1,7 @@
-{ ... }:
+{ config, ... }:
+let
+  isSimpleServer = config.system.types == [ "server" ];
+in
 {
   services.angrr = {
     enable = true;
@@ -17,8 +20,8 @@
       profile-policies = {
         system = {
           profile-paths = [ "/nix/var/nix/profiles/system" ];
-          keep-since = "14d"; # do not keep based on time
-          keep-latest-n = 5; # keep latest
+          keep-since = if isSimpleServer then "0" else "14d";
+          keep-latest-n = if isSimpleServer then 0 else 5;
           keep-current-system = true;
           keep-booted-system = true;
         };
@@ -29,8 +32,6 @@
           ];
           keep-since = "1d";
           keep-latest-n = 1;
-          keep-booted-system = false;
-          keep-current-system = false;
         };
       };
     };
