@@ -34,6 +34,13 @@ in
           keep-latest-n = 1;
         };
       };
+      touch = {
+        project-globs = [
+          "!.git"
+          "!.jj"
+        ];
+      };
     };
   };
+  environment.variables.ANGRR_DIRENV_LOG = "warn";
 }
