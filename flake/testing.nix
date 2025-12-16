@@ -2,10 +2,12 @@
 {
   options.testingFlags = {
     angrr = lib.mkEnableOption "angrr testing";
+    angrrNixpkgs = lib.mkEnableOption "angrr nixpkgs testing";
   };
   config = {
     testingFlags = {
-      angrr = true;
+      angrr = false;
+      angrrNixpkgs = true;
     };
   };
 }

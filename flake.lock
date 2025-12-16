@@ -1145,6 +1145,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-angrr": {
+      "locked": {
+        "lastModified": 1765877530,
+        "narHash": "sha256-NzoEB2cXJWtDhQCtLplubVfUSPiAfShDAJf0TImvTrE=",
+        "owner": "linyinfeng",
+        "repo": "nixpkgs",
+        "rev": "bf03cab0c4eb6d1196b55cf181d2ac22106c931c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "ref": "angrr",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-latest": {
       "locked": {
         "lastModified": 1765816413,
@@ -1455,6 +1471,7 @@
         "nixos-vscode-server": "nixos-vscode-server",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-angrr": "nixpkgs-angrr",
         "nixpkgs-latest": "nixpkgs-latest",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",

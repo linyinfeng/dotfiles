@@ -309,7 +309,14 @@ let
         system.configurationRevision = self.rev or null;
       }
     ]
-    ++ lib.optional config.testingFlags.angrr inputs.angrr.nixosModules.angrr;
+    ++ lib.optional config.testingFlags.angrr inputs.angrr.nixosModules.angrr
+    ++ lib.optional config.testingFlags.angrrNixpkgs (
+      { modulesPath, ... }:
+      {
+        disabledModules = [ "${modulesPath}/services/misc/angrr.nix" ];
+        imports = [ "${inputs.nixpkgs-angrr}/nixos/modules/services/misc/angrr.nix" ];
+      }
+    );
 
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default

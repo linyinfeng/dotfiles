@@ -119,20 +119,30 @@ let
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
     unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
     stable = import inputs.nixpkgs-stable nixpkgsArgs;
+    angrr = import inputs.nixpkgs-angrr nixpkgsArgs;
   };
   earlyFixes =
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
+      inherit (alternativeChannels nixpkgsArgs)
+        latest
+        unstable-small
+        stable
+        angrr
+        ;
     in
     [
-      (_final: _prev: {
-        # maintained packages
-        inherit (latest) godns;
-        # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=469697
-        inherit (unstable-small) fcitx5-mozc mozc;
-      })
+      (
+        _final: _prev:
+        {
+          # maintained packages
+          inherit (latest) godns;
+        }
+        // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
+          inherit (angrr) angrr;
+        })
+      )
     ];
   lateFixes =
     nixpkgsArgs:

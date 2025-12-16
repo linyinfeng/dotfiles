@@ -108,12 +108,14 @@
     nix-gc-s3.inputs.blank.follows = "blank";
     nix-gc-s3.inputs.systems.follows = "systems";
 
+    # for angrr test on real environment
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";
     angrr.inputs.flake-compat.follows = "flake-compat";
     angrr.inputs.flake-parts.follows = "flake-parts";
     angrr.inputs.treefmt-nix.follows = "treefmt-nix";
     angrr.inputs.nix-darwin.follows = "blank";
+    nixpkgs-angrr.url = "github:linyinfeng/nixpkgs/angrr";
 
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
