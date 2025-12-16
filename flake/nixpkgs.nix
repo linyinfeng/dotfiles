@@ -125,22 +125,17 @@ let
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs)
-        latest
-        unstable-small
-        stable
-        angrr
-        ;
+      channels = alternativeChannels nixpkgsArgs;
     in
     [
       (
         _final: _prev:
         {
           # maintained packages
-          inherit (latest) godns;
+          inherit (channels.latest) godns;
         }
         // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
-          inherit (angrr) angrr;
+          inherit (channels.angrr) angrr;
         })
       )
     ];
@@ -148,7 +143,7 @@ let
     nixpkgsArgs:
     let
       # deadnix: skip
-      inherit (alternativeChannels nixpkgsArgs) latest unstable-small stable;
+      channels = alternativeChannels nixpkgsArgs;
     in
     [
       (_final: _prev: {
