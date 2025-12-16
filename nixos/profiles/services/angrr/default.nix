@@ -6,7 +6,7 @@ in
   services.angrr = {
     enable = true;
     logLevel = "debug";
-    config = {
+    settings = {
       temporary-root-policies = {
         direnv = {
           path-regex = "/\\.direnv/";
