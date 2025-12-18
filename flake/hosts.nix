@@ -63,6 +63,7 @@ let
         graphical.kde
         graphical.niri
         graphical.fonts
+        graphical.activate-linux
         i18n.input-method
         services.gnome-keyring
         services.pipewire

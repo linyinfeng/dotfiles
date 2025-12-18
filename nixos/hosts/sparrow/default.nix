@@ -11,6 +11,7 @@
     ++ (with profiles; [
       graphical.gnome
       graphical.niri
+      graphical.activate-linux
       services.acme
       services.nginx
       networking.behind-fw
