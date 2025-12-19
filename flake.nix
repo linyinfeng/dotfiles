@@ -111,6 +111,11 @@
     system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
     system76-scheduler-niri.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
+    nix-cachyos-kernel.inputs.nixpkgs.follows = "nixpkgs";
+    nix-cachyos-kernel.inputs.flake-parts.follows = "flake-parts";
+    nix-cachyos-kernel.inputs.flake-compat.follows = "flake-compat";
+
     # for angrr test on real environment
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";
@@ -325,6 +330,14 @@
       {
         flatFlake.config = {
           allowed = [
+            [
+              "nix-cachyos-kernel"
+              "cachyos-kernel"
+            ]
+            [
+              "nix-cachyos-kernel"
+              "cachyos-kernel-patches"
+            ]
           ];
         };
         systems = [

@@ -115,6 +115,38 @@
         "type": "github"
       }
     },
+    "cachyos-kernel": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766074386,
+        "narHash": "sha256-bZuOH1o/4IxRJWRAx8SfRLDk3uS2DJlZfUOU+aLf1AU=",
+        "owner": "CachyOS",
+        "repo": "linux-cachyos",
+        "rev": "9dc1058754e11653255e59a250ab5e4d7b269d0e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CachyOS",
+        "repo": "linux-cachyos",
+        "type": "github"
+      }
+    },
+    "cachyos-kernel-patches": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1766073845,
+        "narHash": "sha256-cJzmDK9bszh20zGT0kokmvVKqR0DV7ZbRgLBD6QiGGs=",
+        "owner": "CachyOS",
+        "repo": "kernel-patches",
+        "rev": "66405d0621ca0cd40ef205f6521d81d057f139fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "CachyOS",
+        "repo": "kernel-patches",
+        "type": "github"
+      }
+    },
     "commit-notifier": {
       "inputs": {
         "crane": [
@@ -845,6 +877,34 @@
         "type": "github"
       }
     },
+    "nix-cachyos-kernel": {
+      "inputs": {
+        "cachyos-kernel": "cachyos-kernel",
+        "cachyos-kernel-patches": "cachyos-kernel-patches",
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766107000,
+        "narHash": "sha256-tSUZhXJEFiXR0ulioAvaBMumCnJ5IeBtJlCXM7JYcHw=",
+        "owner": "xddxdd",
+        "repo": "nix-cachyos-kernel",
+        "rev": "8e6d8c370fe897606f8dab2cffddf472eb207b90",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xddxdd",
+        "repo": "nix-cachyos-kernel",
+        "type": "github"
+      }
+    },
     "nix-filter": {
       "locked": {
         "lastModified": 1757882181,
@@ -1458,6 +1518,7 @@
         "minecraft-nix": "minecraft-nix",
         "mobile-nixos": "mobile-nixos",
         "nix-alien": "nix-alien",
+        "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-filter": "nix-filter",
         "nix-gc-s3": "nix-gc-s3",
         "nix-github-actions": "nix-github-actions",

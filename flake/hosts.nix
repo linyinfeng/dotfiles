@@ -101,6 +101,7 @@ let
         ++ (with profiles; [
           boot.binfmt
           boot.plymouth
+          boot.kernel.cachyos
           system.types.workstation
           networking.network-manager
           networking.tools
