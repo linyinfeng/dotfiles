@@ -158,4 +158,18 @@ lib.mkMerge [
         }
       ];
   }
+
+  # powertop tweaks
+  {
+    services.udev.extraRules = ''
+      # disable USB auto suspend for Logitech, Inc. Unifying Receiver
+      ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c52b", TEST=="power/control", ATTR{power/control}="on"
+    '';
+    powerManagement.powertop = {
+      enable = true;
+      postStart = ''
+        ${lib.getExe' config.systemd.package "udevadm"} trigger -c bind -s usb -a idVendor=046d -a idProduct=c52b
+      '';
+    };
+  }
 ]
