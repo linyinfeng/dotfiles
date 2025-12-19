@@ -23,7 +23,6 @@
     "volumeStep": 1
   },
   "bar": {
-    "backgroundOpacity": 1,
     "capsuleOpacity": 1,
     "density": "default",
     "exclusive": true,
@@ -34,6 +33,8 @@
     "outerCorners": true,
     "position": "top",
     "showCapsule": true,
+    "showOutline": false,
+    "transparent": false,
     "widgets": {
       "center": [
         {
@@ -119,6 +120,7 @@
         {
           "characterCount": 2,
           "colorizeIcons": false,
+          "enableScrollWheel": true,
           "followFocusedScreen": false,
           "hideUnoccupied": false,
           "id": "Workspace",
@@ -144,6 +146,7 @@
           "blacklist": [],
           "colorizeIcons": false,
           "drawerEnabled": true,
+          "hidePassive": false,
           "id": "Tray",
           "pinned": ["Fcitx"]
         },
@@ -266,7 +269,26 @@
       ]
     }
   },
+  "desktopWidgets": {
+    "editMode": false,
+    "enabled": true,
+    "gridSnap": true,
+    "monitorWidgets": [
+      {
+        "name": "eDP-1",
+        "widgets": [
+          {
+            "id": "Weather",
+            "showBackground": true,
+            "x": 24,
+            "y": 72
+          }
+        ]
+      }
+    ]
+  },
   "dock": {
+    "animationSpeed": 1,
     "backgroundOpacity": 1,
     "colorizeIcons": false,
     "deadOpacity": 0.6,
@@ -304,6 +326,10 @@
   },
   "hooks": {
     "enabled": true,
+    "performanceModeDisabled": "",
+    "performanceModeEnabled": "",
+    "screenLock": "",
+    "screenUnlock": "",
     "wallpaperChange": ""
   },
   "location": {
@@ -373,6 +399,7 @@
   "sessionMenu": {
     "countdownDuration": 10000,
     "enableCountdown": true,
+    "largeButtonsStyle": false,
     "position": "center",
     "powerOptions": [
       {
@@ -414,7 +441,7 @@
     ],
     "showHeader": true
   },
-  "settingsVersion": 28,
+  "settingsVersion": 31,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -423,6 +450,10 @@
     "diskCriticalThreshold": 90,
     "diskPollingInterval": 3000,
     "diskWarningThreshold": 80,
+    "enableNvidiaGpu": false,
+    "gpuCriticalThreshold": 90,
+    "gpuPollingInterval": 3000,
+    "gpuWarningThreshold": 80,
     "memCriticalThreshold": 90,
     "memPollingInterval": 3000,
     "memWarningThreshold": 80,
@@ -446,6 +477,7 @@
     "gtk": false,
     "kcolorscheme": false,
     "kitty": false,
+    "mango": false,
     "niri": true,
     "pywalfox": false,
     "qt": false,
@@ -454,7 +486,8 @@
     "vicinae": false,
     "walker": false,
     "wezterm": false,
-    "yazi": false
+    "yazi": false,
+    "zed": false
   },
   "ui": {
     "fontDefault": "Sans Serif",
@@ -487,6 +520,7 @@
     "wallhavenOrder": "desc",
     "wallhavenPurity": "100",
     "wallhavenQuery": "",
+    "wallhavenRatios": "",
     "wallhavenResolutionHeight": "",
     "wallhavenResolutionMode": "atleast",
     "wallhavenResolutionWidth": "",

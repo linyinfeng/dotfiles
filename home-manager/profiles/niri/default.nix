@@ -650,7 +650,7 @@ in
             ConditionEnvironment = [
               "WAYLAND_DISPLAY"
             ];
-            After = [ "niri.service" ];
+            After = [ "graphical-session.target" ];
             PartOf = [ "graphical-session.target" ];
           };
           Service = {
@@ -710,7 +710,7 @@ in
             RuntimeDirectory = "wvkbd";
           };
           Install = {
-            WantedBy = lib.mkForce [ "niri.service" ];
+            WantedBy = [ config.wayland.systemd.target ];
           };
         };
       }
@@ -719,6 +719,24 @@ in
     # system76-niri-scheduler
     {
       services.system76-scheduler-niri.enable = true;
+    }
+
+    # polkit agent
+    {
+      systemd.user.services.niri-polkit-agent = {
+        Unit = {
+          Description = "PolicyKit Agent for Niri";
+          After = [ "graphical-session.target" ];
+          PartOf = [ "graphical-session.target" ];
+        };
+        Install = {
+          WantedBy = [ config.wayland.systemd.target ];
+        };
+        Service = {
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          # ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
+        };
+      };
     }
   ];
 }
