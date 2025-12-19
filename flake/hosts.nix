@@ -123,6 +123,7 @@ let
           services.ssh-honeypot
           services.flatpak
           services.smartd
+          services.system76-scheduler
           audio.midi
           security.hardware-keys
           hardware.rtl-sdr
@@ -176,6 +177,7 @@ let
           services.printing
           services.bluetooth
           security.hardware-keys
+          services.system76-scheduler
           networking.network-manager
         ]);
 
@@ -322,6 +324,7 @@ let
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
     inputs.noctalia.homeModules.default
+    inputs.system76-scheduler-niri.homeModules.default
     { lib.self = self.lib; }
   ];
 

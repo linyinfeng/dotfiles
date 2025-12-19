@@ -715,5 +715,10 @@ in
         };
       }
     )
+
+    # system76-niri-scheduler
+    {
+      services.system76-scheduler-niri.enable = true;
+    }
   ];
 }

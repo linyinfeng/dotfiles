@@ -108,6 +108,9 @@
     nix-gc-s3.inputs.blank.follows = "blank";
     nix-gc-s3.inputs.systems.follows = "systems";
 
+    system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
+    system76-scheduler-niri.inputs.nixpkgs.follows = "nixpkgs";
+
     # for angrr test on real environment
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";
