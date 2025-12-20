@@ -46,7 +46,14 @@
               niri
               alacritty
             ]);
-          programs.niri.default-column-proportion = 1.0; # open everything in full width
+          programs = {
+            niri = {
+              default-column-proportion = 1.0; # open everything in full width
+            };
+            noctalia.extraSettings = {
+              dock.enabled = false;
+            };
+          };
         };
       i18n.inputMethod.type = "fcitx5";
 
@@ -100,11 +107,6 @@
                     mountpoint = "/nix";
                     inherit mountOptions;
                   };
-                  "@swap" = {
-                    mountpoint = "/swap";
-                    inherit mountOptions;
-                    swap.swapfile.size = "8G";
-                  };
                 };
             };
           };
@@ -112,7 +114,8 @@
       };
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
-      services.zswap.enable = true;
+
+      zramSwap.enable = true;
 
       system.nproc = 8;
     }

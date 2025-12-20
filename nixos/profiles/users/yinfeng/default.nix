@@ -48,6 +48,7 @@ in
           ]
           ++ groupNameIfPresent "audio"
           ++ groupNameIfPresent "video"
+          ++ groupNameIfPresent "input"
           ++ groupNameIfPresent "adbusers"
           ++ groupNameIfPresent "libvirtd"
           ++ groupNameIfPresent "transmission"

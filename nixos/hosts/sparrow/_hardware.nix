@@ -85,4 +85,11 @@ lib.mkMerge [
       GST_VAAPI_ALL_DRIVERS = "1";
     };
   }
+
+  # touchscrren
+  {
+    services.udev.extraRules = ''
+      SUBSYSTEM=="input", ENV{ID_INPUT_TOUCHSCREEN}=="1", ENV{ID_PATH}=="platform-11007000.i2c", SYMLINK+="input/touchscreen"
+    '';
+  }
 ]

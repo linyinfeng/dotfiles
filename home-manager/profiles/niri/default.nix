@@ -50,15 +50,26 @@ let
   spawn = command: ''spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}'';
 in
 {
-  options.programs.niri = {
-    default-column-proportion = lib.mkOption {
-      type = lib.types.float;
-      default = 0.5;
-      description = "Default proportion of new columns.";
+  options.programs = {
+    niri = {
+      prefer-no-csd = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Prefer non-client-side-decorated windows.";
+      };
+      default-column-proportion = lib.mkOption {
+        type = lib.types.float;
+        default = 0.5;
+        description = "Default proportion of new columns.";
+      };
+      binds = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = [ ];
+      };
     };
-    binds = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
+    noctalia.extraSettings = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
     };
   };
   config = lib.mkMerge [
@@ -106,7 +117,7 @@ in
 
           screenshot-path "${config.xdg.userDirs.pictures}/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
-          prefer-no-csd
+          ${lib.optionalString cfg.prefer-no-csd "prefer-no-csd"}
 
           layout {
             gaps 8
@@ -139,6 +150,7 @@ in
               proportion 0.333333
               proportion 0.5
               proportion 0.666667
+              proportion 1.0
             }
             center-focused-column "never"
           }
@@ -392,7 +404,15 @@ in
             # inhibit
             "Mod+Escape { toggle-keyboard-shortcuts-inhibit; }"
             # quit
-            "Mod+Ctrl+E { quit; }"
+            "Mod+Ctrl+E { ${
+              spawn [
+                "noctalia-shell"
+                "ipc"
+                "call"
+                "sessionMenu"
+                "toggle"
+              ]
+            }; }"
           ];
         in
         lib.flatten [
@@ -471,7 +491,11 @@ in
         programs.noctalia-shell = {
           enable = true;
           systemd.enable = true;
-          settings = lib.recursiveUpdate (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json)) specialSettings;
+          settings = lib.foldr lib.recursiveUpdate { } [
+            (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json))
+            specialSettings
+            config.programs.noctalia.extraSettings
+          ];
         };
         systemd.user.services.noctalia-shell =
           let
@@ -601,9 +625,9 @@ in
     }
 
     # hexexcute
-    (lib.mkIf (pkgs ? hexecute) {
+    {
       home.packages = with pkgs; [
-        hexecute
+        linyinfeng.hexecute
       ];
       programs.niri.binds = [
         "Mod+X { ${
@@ -615,7 +639,7 @@ in
       home.global-persistence.directories = [
         ".config/hexecute"
       ];
-    })
+    }
 
     # osd
     (
@@ -737,6 +761,38 @@ in
           # ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
         };
       };
+    }
+
+    # touch
+    (
+      let
+        lisgd = pkgs.lisgd.override {
+          conf = ./lisgd-config.h;
+        };
+      in
+      {
+        systemd.user.services.lisgd = {
+          Unit = {
+            Description = "Libinput Synthetic Gesture Daemon";
+            After = [ "graphical-session.target" ];
+            PartOf = [ "graphical-session.target" ];
+            ConditionPathExists = [ "/dev/input/touchscreen" ];
+          };
+          Install = {
+            WantedBy = [ config.wayland.systemd.target ];
+          };
+          Service = {
+            ExecStart = "${lib.getExe lisgd} -v";
+          };
+        };
+      }
+    )
+
+    # fastfetch
+    {
+      home.packages = with pkgs; [
+        fastfetch
+      ];
     }
   ];
 }

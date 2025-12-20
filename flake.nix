@@ -180,9 +180,6 @@
     nix-alien.inputs.nix-index-database.follows = "nix-index-database";
     nix-alien.inputs.nixpkgs.follows = "nixpkgs";
 
-    hexecute.url = "github:ThatOtherAndrew/Hexecute";
-    hexecute.inputs.nixpkgs.follows = "nixpkgs";
-
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
     run0-sudo-shim.inputs.flake-utils.follows = "flake-utils";

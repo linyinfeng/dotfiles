@@ -557,26 +557,6 @@
         "type": "github"
       }
     },
-    "hexecute": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765826167,
-        "narHash": "sha256-iXQzLgZYzzD6b82Oa1nLvQKvUHrdOWgJi3awhW5YWrk=",
-        "owner": "ThatOtherAndrew",
-        "repo": "Hexecute",
-        "rev": "2105ee3f80a748bd4e270e8092fc12be4be927b6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ThatOtherAndrew",
-        "repo": "Hexecute",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -702,11 +682,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766062362,
-        "narHash": "sha256-4lPve85AlyhbTrTAsyGtAdgrU3aeYeSzDkq5ULzltXY=",
+        "lastModified": 1766176929,
+        "narHash": "sha256-/g73VBHnGTgmgWmvzmS9IiMXJ5uV2VJma6ZPFvBeC5k=",
         "owner": "linyinfeng",
         "repo": "nur-packages",
-        "rev": "d8237cc20d4a5b0cc0d22b1f3d3af676ce6885c3",
+        "rev": "7286e49f58d4effc7a0f7f45aaaaa439540c7e96",
         "type": "github"
       },
       "original": {
@@ -1507,7 +1487,6 @@
         "git-hooks-nix": "git-hooks-nix",
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
-        "hexecute": "hexecute",
         "home-manager": "home-manager",
         "kukui-nixos": "kukui-nixos",
         "lanzaboote": "lanzaboote",

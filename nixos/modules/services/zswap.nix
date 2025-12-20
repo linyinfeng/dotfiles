@@ -1,39 +1,10 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
   cfg = config.services.zswap;
-
-  zswapSetup = pkgs.writeShellApplication {
-    name = "zswap-setup";
-    text = ''
-      action="$1"
-
-      case "$action" in
-      up)
-        echo ${cfg.compressor}              | tee /sys/module/zswap/parameters/compressor
-        echo ${toString cfg.maxPoolPercent} | tee /sys/module/zswap/parameters/max_pool_percent
-        echo ${cfg.shrinkerEnabled} | tee /sys/module/zswap/parameters/shrinker_enabled
-
-        echo Y | tee /sys/module/zswap/parameters/enabled
-        grep -r . /sys/module/zswap/parameters
-        ;;
-
-      down)
-        echo N | tee /sys/module/zswap/parameters/enabled
-        grep -r . /sys/module/zswap/parameters
-        ;;
-
-      *)
-        grep -r . /sys/module/zswap/parameters
-        ;;
-
-      esac
-    '';
-  };
 in
 {
   options.services.zswap = {
@@ -64,14 +35,13 @@ in
         message = "zswap and zram based swap should not be enabled at the same time";
       }
     ];
-    systemd.services.zswap = {
-      serviceConfig = {
-        ExecStart = "${lib.getExe zswapSetup} up";
-        ExecStop = "${lib.getExe zswapSetup} down";
-        Type = "oneshot";
-        RemainAfterExit = true;
+    boot.kernel.sysfs = {
+      module.zswap.parameters = {
+        enabled = cfg.enable;
+        inherit (cfg) compressor;
+        max_pool_percent = cfg.maxPoolPercent;
+        shrinker_enabled = cfg.shrinkerEnabled;
       };
-      wantedBy = [ "multi-user.target" ];
     };
   };
 }

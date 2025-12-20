@@ -42,12 +42,6 @@ let
         system
         "nix-index-with-db"
       ])
-      // (self.lib.maybeAttrByPath "hexecute" inputs [
-        "hexecute"
-        "packages"
-        system
-        "hexecute"
-      ])
     )
     (final: prev: {
       # scoped overlays
