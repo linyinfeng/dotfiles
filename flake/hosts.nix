@@ -217,6 +217,7 @@ let
         git
         development
         emacs
+        helix
         ssh
         pssh
         tools

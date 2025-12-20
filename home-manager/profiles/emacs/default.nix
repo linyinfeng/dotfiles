@@ -76,9 +76,6 @@ in
     ecn = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
-  home.sessionVariables = {
-    EDITOR = "emacsclient";
-  };
   dconf.settings = lib.mkIf osConfig.programs.dconf.enable {
     "org/gnome/shell".favorite-apps = [ "emacsclient.desktop" ];
   };

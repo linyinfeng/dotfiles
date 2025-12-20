@@ -56,6 +56,7 @@ in
       fd
       file
       gptfdisk
+      helix
       jq
       jujutsu
       keyutils
