@@ -162,8 +162,11 @@ lib.mkMerge [
   # powertop tweaks
   {
     services.udev.extraRules = ''
-      # disable USB auto suspend for Logitech, Inc. Unifying Receiver
+      # disable USB auto suspend for mouses
+      # Logitech, Inc. Unifying Receiver
       ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c52b", TEST=="power/control", ATTR{power/control}="on"
+      # Compx ATK Mouse 8K Dongle
+      ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="373b", ATTR{idProduct}=="101b", TEST=="power/control", ATTR{power/control}="on"
     '';
     powerManagement.powertop = {
       enable = true;
