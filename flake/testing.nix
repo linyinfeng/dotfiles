@@ -7,7 +7,7 @@
   config = {
     testingFlags = {
       angrr = false;
-      angrrNixpkgs = true;
+      angrrNixpkgs = false;
     };
   };
 }
