@@ -26,6 +26,24 @@ let
       exec "$SHELL"
     '';
   };
+
+  nomWrapper = pkgs.writeShellApplication {
+    name = "nom";
+    runtimeInputs = with pkgs; [
+      nix-output-monitor
+    ];
+    text = ''
+      nix "$@" --log-format internal-json |& command nom --json
+    '';
+  };
+
+  nomHydra = pkgs.writeShellApplication {
+    name = "nom-hydra";
+    runtimeInputs = [ nomWrapper ];
+    text = ''
+      exec nom --builders "@/etc/nix-build-machines/hydra-builder/machines" "$@"
+    '';
+  };
 in
 {
   programs.htop = {
@@ -97,7 +115,6 @@ in
       nil
       nix-du
       nix-melt
-      nix-output-monitor
       nix-prefetch-github
       nix-prefetch-scripts
       nix-tree
@@ -114,16 +131,9 @@ in
       # custom tools
       delink
       tmpTest
+      nomWrapper
+      nomHydra
     ];
-  programs.fish.interactiveShellInit = ''
-    function nom --description 'nom wrapper'
-      nix $argv --log-format internal-json &| command nom --json
-    end
-
-    function nom-hydra --description 'nom wrapper on hydra builders'
-      nom --builders @/etc/nix-build-machines/hydra-builder/machines $argv
-    end
-  '';
   passthru = {
     inherit delink tmpTest;
   };
