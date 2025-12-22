@@ -4,20 +4,20 @@
     "customLaunchPrefixEnabled": true,
     "enableClipPreview": true,
     "enableClipboardHistory": true,
+    "iconMode": "tabler",
     "pinnedExecs": [],
     "position": "top_left",
     "showCategories": true,
     "sortByMostUsed": true,
     "terminalCommand": "alacritty --command",
     "useApp2Unit": false,
-    "viewMode": "grid"
+    "viewMode": "list"
   },
   "audio": {
     "cavaFrameRate": 60,
     "externalMixer": "pwvucontrol",
     "mprisBlacklist": [],
     "preferredPlayer": "mpv",
-    "visualizerQuality": "low",
     "visualizerType": "mirrored",
     "volumeOverdrive": false,
     "volumeStep": 1
@@ -131,6 +131,7 @@
         {
           "colorizeIcons": false,
           "hideMode": "hidden",
+          "iconScale": 1,
           "id": "Taskbar",
           "maxTaskbarWidth": 40,
           "onlyActiveWorkspaces": true,
