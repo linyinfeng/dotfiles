@@ -9,6 +9,7 @@
     ".cargo"
     ".cabal"
     ".wrangler"
+    ".elan"
 
     ".config/racket"
     ".local/share/racket"
