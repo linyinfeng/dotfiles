@@ -6,7 +6,7 @@
   };
   config = {
     testingFlags = {
-      angrr = false;
+      angrr = true;
       angrrNixpkgs = false;
     };
   };
