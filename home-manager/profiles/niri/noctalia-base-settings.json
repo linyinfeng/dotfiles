@@ -46,7 +46,7 @@
           "usePrimaryColor": true
         },
         {
-          "hideWhenZero": true,
+          "hideWhenZero": false,
           "id": "NotificationHistory",
           "showUnreadBadge": true
         }
@@ -170,6 +170,7 @@
         {
           "deviceNativePath": "",
           "displayMode": "onhover",
+          "hideIfNotDetected": true,
           "id": "Battery",
           "showNoctaliaPerformance": true,
           "showPowerProfiles": true,
@@ -271,7 +272,6 @@
     }
   },
   "desktopWidgets": {
-    "editMode": false,
     "enabled": true,
     "gridSnap": true,
     "monitorWidgets": [
@@ -442,7 +442,7 @@
     ],
     "showHeader": true
   },
-  "settingsVersion": 31,
+  "settingsVersion": 32,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -451,7 +451,7 @@
     "diskCriticalThreshold": 90,
     "diskPollingInterval": 3000,
     "diskWarningThreshold": 80,
-    "enableNvidiaGpu": false,
+    "enableDgpuMonitoring": false,
     "gpuCriticalThreshold": 90,
     "gpuPollingInterval": 3000,
     "gpuWarningThreshold": 80,
@@ -476,6 +476,8 @@
     "fuzzel": false,
     "ghostty": false,
     "gtk": false,
+    "helix": false,
+    "hyprland": false,
     "kcolorscheme": false,
     "kitty": false,
     "mango": false,
@@ -491,6 +493,8 @@
     "zed": false
   },
   "ui": {
+    "bluetoothDetailsViewMode": "grid",
+    "bluetoothHideUnnamedDevices": false,
     "fontDefault": "Sans Serif",
     "fontDefaultScale": 1,
     "fontFixed": "Monospace",
@@ -498,7 +502,8 @@
     "panelBackgroundOpacity": 1,
     "panelsAttachedToBar": true,
     "settingsPanelMode": "attached",
-    "tooltipsEnabled": true
+    "tooltipsEnabled": true,
+    "wifiDetailsViewMode": "grid"
   },
   "wallpaper": {
     "enableMultiMonitorDirectories": false,
