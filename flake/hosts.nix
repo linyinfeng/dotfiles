@@ -27,6 +27,7 @@ let
           boot.systemd-initrd
           services.openssh
           services.dbus
+          services.angrr
           security.polkit
           security.rtkit
           security.run0-sudo-shim
@@ -118,7 +119,6 @@ let
           services.printing
           services.snapper
           services.iperf3
-          services.angrr
           services.homed
           services.portal-client
           services.ssh-honeypot
