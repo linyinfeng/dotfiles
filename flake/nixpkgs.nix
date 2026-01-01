@@ -128,6 +128,9 @@ let
         {
           # maintained packages
           inherit (channels.latest) godns;
+
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=475624
+          inherit (channels.latest) efitools;
         }
         // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
           inherit (channels.angrr) angrr;
