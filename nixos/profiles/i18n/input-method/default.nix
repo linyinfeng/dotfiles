@@ -18,7 +18,7 @@ in
   config = {
     i18n.inputMethod = {
       enable = true;
-      type = lib.mkDefault "fcitx5";
+      type = lib.mkOverride 900 "fcitx5";
       ibus.engines = with pkgs.ibus-engines; [
         (rime.override { inherit (cfg.rime) rimeDataPkgs; })
         mozc
