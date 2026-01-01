@@ -42,7 +42,7 @@ in
       services.telegraf-http
       services.prebuilt-zip
       services.hledger-web
-      services.sicp-staging
+      # services.sicp-staging
       services.rabbitmq
       services.mongodb
       services.gitlab-runner-sicp
