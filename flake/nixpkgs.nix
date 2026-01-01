@@ -131,6 +131,8 @@ let
 
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=475624
           inherit (channels.latest) efitools;
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=475445
+          inherit (channels.latest) lrzsz;
         }
         // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
           inherit (channels.angrr) angrr;
