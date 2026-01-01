@@ -371,8 +371,6 @@ let
               if forceFlakeNixpkgs then
                 {
                   imports = [ nixpkgs.nixosModules.readOnlyPkgs ];
-                  # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=456076
-                  disabledModules = [ "hardware/facter/system.nix" ];
                   nixpkgs = {
                     inherit ((getSystem system).allModuleArgs) pkgs;
                   };
