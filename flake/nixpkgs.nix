@@ -133,6 +133,8 @@ let
           inherit (channels.latest) efitools;
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=475445
           inherit (channels.latest) lrzsz;
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=475393
+          inherit (channels.latest) gemini-cli;
         }
         // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
           inherit (channels.angrr) angrr;
