@@ -1,13 +1,18 @@
 {
   "appLauncher": {
+    "autoPasteClipboard": false,
+    "clipboardWrapText": true,
     "customLaunchPrefix": "niri msg action spawn --",
     "customLaunchPrefixEnabled": true,
     "enableClipPreview": true,
     "enableClipboardHistory": true,
     "iconMode": "tabler",
-    "pinnedExecs": [],
+    "ignoreMouseInput": false,
+    "pinnedApps": [],
     "position": "top_left",
+    "screenshotAnnotationTool": "",
     "showCategories": true,
+    "showIconBackground": false,
     "sortByMostUsed": true,
     "terminalCommand": "alacritty --command",
     "useApp2Unit": false,
@@ -23,18 +28,19 @@
     "volumeStep": 1
   },
   "bar": {
+    "backgroundOpacity": 0.93,
     "capsuleOpacity": 1,
     "density": "default",
     "exclusive": true,
     "floating": false,
-    "marginHorizontal": 0.25,
-    "marginVertical": 0.25,
+    "marginHorizontal": 5,
+    "marginVertical": 5,
     "monitors": [],
     "outerCorners": true,
     "position": "top",
     "showCapsule": true,
     "showOutline": false,
-    "transparent": false,
+    "useSeparateOpacity": false,
     "widgets": {
       "center": [
         {
@@ -42,6 +48,7 @@
           "formatHorizontal": "HH:mm ddd, MMM dd",
           "formatVertical": "HH mm - dd MM",
           "id": "Clock",
+          "tooltipFormat": "HH:mm ddd, MMM dd",
           "useCustomFont": false,
           "usePrimaryColor": true
         },
@@ -62,6 +69,8 @@
           "useDistroLogo": true
         },
         {
+          "colorizeSystemIcon": "none",
+          "enableColorization": false,
           "hideMode": "alwaysExpanded",
           "icon": "rocket",
           "id": "CustomButton",
@@ -90,6 +99,8 @@
           "wheelUpdateText": false
         },
         {
+          "colorizeSystemIcon": "none",
+          "enableColorization": false,
           "hideMode": "alwaysExpanded",
           "icon": "keyboard",
           "id": "CustomButton",
@@ -122,11 +133,14 @@
           "colorizeIcons": false,
           "enableScrollWheel": true,
           "followFocusedScreen": false,
+          "groupedBorderOpacity": 1,
           "hideUnoccupied": false,
+          "iconScale": 0.8,
           "id": "Workspace",
           "labelMode": "index",
           "showApplications": false,
-          "showLabelsOnlyWhenOccupied": true
+          "showLabelsOnlyWhenOccupied": true,
+          "unfocusedIconsOpacity": 1
         },
         {
           "colorizeIcons": false,
@@ -153,7 +167,7 @@
         },
         {
           "displayMode": "onhover",
-          "id": "WiFi"
+          "id": "Network"
         },
         {
           "displayMode": "onhover",
@@ -214,7 +228,6 @@
   },
   "colorSchemes": {
     "darkMode": false,
-    "generateTemplatesForPredefined": true,
     "manualSunrise": "06:30",
     "manualSunset": "18:30",
     "matugenSchemeType": "scheme-fruit-salad",
@@ -321,6 +334,7 @@
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
     "shadowOffsetY": 3,
+    "showChangelogOnStartup": true,
     "showHibernateOnLockScreen": false,
     "showScreenCorners": false,
     "showSessionButtonsOnLockScreen": true
@@ -336,6 +350,8 @@
   "location": {
     "analogClockInCalendar": false,
     "firstDayOfWeek": -1,
+    "hideWeatherCityName": false,
+    "hideWeatherTimezone": false,
     "name": "Nanjing",
     "showCalendarEvents": true,
     "showCalendarWeather": true,
@@ -346,6 +362,11 @@
     "weatherShowEffects": true
   },
   "network": {
+    "bluetoothDetailsViewMode": "grid",
+    "bluetoothHideUnnamedDevices": false,
+    "bluetoothRssiPollIntervalMs": 10000,
+    "bluetoothRssiPollingEnabled": false,
+    "wifiDetailsViewMode": "grid",
     "wifiEnabled": true
   },
   "nightLight": {
@@ -368,6 +389,11 @@
     "normalUrgencyDuration": 8,
     "overlayLayer": true,
     "respectExpireTimeout": true,
+    "saveToHistory": {
+      "critical": true,
+      "low": true,
+      "normal": true
+    },
     "sounds": {
       "criticalSoundFile": "",
       "enabled": false,
@@ -387,19 +413,10 @@
     "monitors": [],
     "overlayLayer": true
   },
-  "screenRecorder": {
-    "audioCodec": "opus",
-    "audioSource": "default_output",
-    "colorRange": "limited",
-    "frameRate": 60,
-    "quality": "very_high",
-    "showCursor": true,
-    "videoCodec": "h264",
-    "videoSource": "portal"
-  },
   "sessionMenu": {
     "countdownDuration": 10000,
     "enableCountdown": true,
+    "largeButtonsLayout": "grid",
     "largeButtonsStyle": false,
     "position": "center",
     "powerOptions": [
@@ -440,9 +457,10 @@
         "enabled": true
       }
     ],
-    "showHeader": true
+    "showHeader": true,
+    "showNumberLabels": true
   },
-  "settingsVersion": 32,
+  "settingsVersion": 39,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -452,9 +470,11 @@
     "diskPollingInterval": 3000,
     "diskWarningThreshold": 80,
     "enableDgpuMonitoring": false,
+    "externalMonitor": "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor",
     "gpuCriticalThreshold": 90,
     "gpuPollingInterval": 3000,
     "gpuWarningThreshold": 80,
+    "loadAvgPollingInterval": 3000,
     "memCriticalThreshold": 90,
     "memPollingInterval": 3000,
     "memWarningThreshold": 80,
@@ -490,15 +510,18 @@
     "walker": false,
     "wezterm": false,
     "yazi": false,
-    "zed": false
+    "zed": false,
+    "zenBrowser": false
   },
   "ui": {
     "bluetoothDetailsViewMode": "grid",
     "bluetoothHideUnnamedDevices": false,
+    "boxBorderEnabled": false,
     "fontDefault": "Sans Serif",
     "fontDefaultScale": 1,
     "fontFixed": "Monospace",
     "fontFixedScale": 1,
+    "networkPanelView": "wifi",
     "panelBackgroundOpacity": 1,
     "panelsAttachedToBar": true,
     "settingsPanelMode": "attached",
@@ -518,10 +541,13 @@
     "randomIntervalSec": 300,
     "recursiveSearch": true,
     "setWallpaperOnAllMonitors": true,
+    "solidColor": "#1a1a2e",
     "transitionDuration": 1500,
     "transitionEdgeSmoothness": 0.05,
     "transitionType": "random",
+    "useSolidColor": false,
     "useWallhaven": false,
+    "wallhavenApiKey": "",
     "wallhavenCategories": "111",
     "wallhavenOrder": "desc",
     "wallhavenPurity": "100",
@@ -530,6 +556,7 @@
     "wallhavenResolutionHeight": "",
     "wallhavenResolutionMode": "atleast",
     "wallhavenResolutionWidth": "",
-    "wallhavenSorting": "relevance"
+    "wallhavenSorting": "relevance",
+    "wallpaperChangeMode": "random"
   }
 }

@@ -48,6 +48,12 @@ let
     "lock"
   ];
   spawn = command: ''spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}'';
+  restoreWorking = pkgs.writeShellApplication {
+    name = "niri-restore-working";
+    text = ''
+      niri msg action spawn -- code ~/Source/gradualsafe
+    '';
+  };
 in
 {
   options.programs = {
@@ -246,6 +252,9 @@ in
             // allows notification actions and window activation from noctalia
             honor-xdg-activation-with-invalid-serial
           }
+
+          // working
+          spawn-at-startup "niri-restore-working"
 
           include "noctalia.kdl"
         '';
@@ -455,6 +464,7 @@ in
             defaultWallpaper = "${defaultWallpaper}";
             directory = "${config.xdg.userDirs.pictures}/Wallpapers";
           };
+          controlCenter.diskPath = if osConfig.environment.global-persistence.enable then "/persist" else "/";
         };
         syncSettings = pkgs.writeShellApplication {
           name = "noctalia-sync-settings";
@@ -522,6 +532,7 @@ in
           pwvucontrol
 
           syncSettings
+          restoreWorking
         ];
 
         xdg.configFile."alacritty/alacritty.toml".force = true; # allow noctalia to manage alacritty theme
