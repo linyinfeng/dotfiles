@@ -113,12 +113,12 @@ let
         code = 302;
       }
     ];
-    sicp-staging = [
-      {
-        url = "https://sicp-staging.li7g.com/2024/oj/web/";
-        code = 200;
-      }
-    ];
+    # sicp-staging = [
+    #   {
+    #     url = "https://sicp-staging.li7g.com/2024/oj/web/";
+    #     code = 200;
+    #   }
+    # ];
     sicp-tutorials = [
       {
         url = "https://sicp-tutorials.li7g.com";
