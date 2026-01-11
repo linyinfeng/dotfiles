@@ -209,11 +209,22 @@
           "id": "plugin:privacy-indicator"
         },
         {
-          "defaultSettings": {
-            "hideBackground": false,
-            "minimumThreshold": 10
-          },
-          "id": "plugin:catwalk"
+          "compactMode": false,
+          "compactShowAlbumArt": true,
+          "compactShowVisualizer": false,
+          "hideMode": "hidden",
+          "hideWhenIdle": false,
+          "id": "MediaMini",
+          "maxWidth": 145,
+          "panelShowAlbumArt": true,
+          "panelShowVisualizer": true,
+          "scrollingMode": "never",
+          "showAlbumArt": true,
+          "showArtistFirst": false,
+          "showProgressRing": true,
+          "showVisualizer": true,
+          "useFixedWidth": false,
+          "visualizerType": "mirrored"
         },
         {
           "blacklist": [],
@@ -251,12 +262,12 @@
         },
         {
           "customFont": "",
-          "formatHorizontal": "HH:mm ddd, MMM dd",
-          "formatVertical": "HH mm - dd MM",
+          "formatHorizontal": "HH:mm",
+          "formatVertical": "HH mm",
           "id": "Clock",
-          "tooltipFormat": "HH:mm ddd, MMM dd",
+          "tooltipFormat": "yyyy-MM-dd  HH:mm:ss t",
           "useCustomFont": false,
-          "usePrimaryColor": false
+          "usePrimaryColor": true
         }
       ]
     }
