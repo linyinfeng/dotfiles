@@ -73,6 +73,36 @@
           "wheelUpdateText": false
         },
         {
+          "colorizeSystemIcon": "none",
+          "enableColorization": false,
+          "hideMode": "alwaysExpanded",
+          "icon": "notebook",
+          "id": "CustomButton",
+          "leftClickExec": "niri msg action spawn -- firefox https://www.notion.so",
+          "leftClickUpdateText": false,
+          "maxTextLength": {
+            "horizontal": 10,
+            "vertical": 10
+          },
+          "middleClickExec": "",
+          "middleClickUpdateText": false,
+          "parseJson": false,
+          "rightClickExec": "",
+          "rightClickUpdateText": false,
+          "showIcon": true,
+          "textCollapse": "",
+          "textCommand": "",
+          "textIntervalMs": 3000,
+          "textStream": false,
+          "wheelDownExec": "",
+          "wheelDownUpdateText": false,
+          "wheelExec": "",
+          "wheelMode": "unified",
+          "wheelUpExec": "",
+          "wheelUpUpdateText": false,
+          "wheelUpdateText": false
+        },
+        {
           "defaultSettings": {
             "compactMode": false,
             "defaultDuration": 0
@@ -212,13 +242,13 @@
           "compactMode": false,
           "compactShowAlbumArt": true,
           "compactShowVisualizer": false,
-          "hideMode": "hidden",
+          "hideMode": "idle",
           "hideWhenIdle": false,
           "id": "MediaMini",
           "maxWidth": 145,
           "panelShowAlbumArt": true,
           "panelShowVisualizer": true,
-          "scrollingMode": "never",
+          "scrollingMode": "hover",
           "showAlbumArt": true,
           "showArtistFirst": false,
           "showProgressRing": true,
