@@ -71,10 +71,8 @@
     preservation.url = "github:nix-community/preservation";
 
     nix-topology.url = "github:oddlama/nix-topology";
-    nix-topology.inputs.devshell.follows = "devshell";
-    nix-topology.inputs.flake-utils.follows = "flake-utils";
+    nix-topology.inputs.flake-parts.follows = "flake-parts";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
-    nix-topology.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
 
     kukui-nixos.url = "github:linyinfeng/kukui-nixos";
     kukui-nixos.inputs.nixpkgs.follows = "nixpkgs";
