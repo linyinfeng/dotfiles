@@ -20,7 +20,6 @@
   },
   "audio": {
     "cavaFrameRate": 60,
-    "externalMixer": "pwvucontrol",
     "mprisBlacklist": [],
     "preferredPlayer": "mpv",
     "visualizerType": "mirrored",
@@ -74,13 +73,20 @@
           "wheelUpdateText": false
         },
         {
-          "customFont": "",
-          "formatHorizontal": "HH:mm ddd, MMM dd",
-          "formatVertical": "HH mm - dd MM",
-          "id": "Clock",
-          "tooltipFormat": "HH:mm ddd, MMM dd",
-          "useCustomFont": false,
-          "usePrimaryColor": true
+          "id": "plugin:timer"
+        },
+        {
+          "defaultSettings": {
+            "completedCount": 0,
+            "count": 0,
+            "showBackground": true,
+            "showCompleted": true,
+            "todos": []
+          },
+          "id": "plugin:todo"
+        },
+        {
+          "id": "plugin:simple-notes"
         },
         {
           "hideWhenZero": false,
@@ -188,6 +194,12 @@
       ],
       "right": [
         {
+          "id": "plugin:privacy-indicator"
+        },
+        {
+          "id": "plugin:catwalk"
+        },
+        {
           "blacklist": [],
           "colorizeIcons": false,
           "drawerEnabled": true,
@@ -205,7 +217,8 @@
         },
         {
           "displayMode": "onhover",
-          "id": "Volume"
+          "id": "Volume",
+          "middleClickCommand": "pwvucontrol || pavucontrol"
         },
         {
           "displayMode": "onhover",
@@ -219,6 +232,15 @@
           "showNoctaliaPerformance": true,
           "showPowerProfiles": true,
           "warningThreshold": 30
+        },
+        {
+          "customFont": "",
+          "formatHorizontal": "HH:mm ddd, MMM dd",
+          "formatVertical": "HH mm - dd MM",
+          "id": "Clock",
+          "tooltipFormat": "HH:mm ddd, MMM dd",
+          "useCustomFont": false,
+          "usePrimaryColor": false
         }
       ]
     }
@@ -292,7 +314,20 @@
     "shortcuts": {
       "left": [
         {
-          "id": "ScreenRecorder"
+          "defaultSettings": {
+            "audioCodec": "opus",
+            "audioSource": "default_output",
+            "colorRange": "limited",
+            "copyToClipboard": false,
+            "directory": "",
+            "filenamePattern": "recording_yyyyMMdd_HHmmss",
+            "frameRate": "60",
+            "quality": "very_high",
+            "showCursor": true,
+            "videoCodec": "h264",
+            "videoSource": "portal"
+          },
+          "id": "plugin:screen-recorder"
         },
         {
           "id": "WallpaperSelector"
@@ -344,6 +379,7 @@
     "onlySameOutput": true,
     "pinnedApps": [],
     "pinnedStatic": false,
+    "position": "bottom",
     "size": 1
   },
   "general": {

@@ -106,7 +106,9 @@
     nix-gc-s3.inputs.blank.follows = "blank";
     nix-gc-s3.inputs.systems.follows = "systems";
 
-    system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
+    # system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
+    # TODO wait for https://github.com/Kirottu/system76-scheduler-niri/pull/1
+    system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri/pull/1/head";
     system76-scheduler-niri.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";

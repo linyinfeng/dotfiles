@@ -51,7 +51,10 @@ let
   restoreWorking = pkgs.writeShellApplication {
     name = "niri-restore-working";
     text = ''
-      niri msg action spawn -- code ~/Source/gradualsafe
+      script="$HOME/Local/scripts/niri-restore-working.sh"
+      if [ -f "$script" ]; then
+        exec sh "$script"
+      fi
     '';
   };
 in
@@ -253,7 +256,7 @@ in
             honor-xdg-activation-with-invalid-serial
           }
 
-          // working
+          // restore working environment
           spawn-at-startup "niri-restore-working"
 
           include "noctalia.kdl"
@@ -530,12 +533,17 @@ in
           mpv
           matugen # TODO remove this workaround
           pwvucontrol
+          gpu-screen-recorder
 
           syncSettings
           restoreWorking
         ];
 
         xdg.configFile."alacritty/alacritty.toml".force = true; # allow noctalia to manage alacritty theme
+
+        home.global-persistence.directories = [
+          ".config/noctalia"
+        ];
       }
     )
 
