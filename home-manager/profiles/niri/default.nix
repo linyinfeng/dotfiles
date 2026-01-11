@@ -533,7 +533,6 @@ in
           mpv
           matugen # TODO remove this workaround
           pwvucontrol
-          gpu-screen-recorder
 
           syncSettings
           restoreWorking

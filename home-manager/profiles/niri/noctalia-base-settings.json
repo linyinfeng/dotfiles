@@ -73,6 +73,10 @@
           "wheelUpdateText": false
         },
         {
+          "defaultSettings": {
+            "compactMode": false,
+            "defaultDuration": 0
+          },
           "id": "plugin:timer"
         },
         {
@@ -86,6 +90,10 @@
           "id": "plugin:todo"
         },
         {
+          "defaultSettings": {
+            "notes": [],
+            "showCountInBar": true
+          },
           "id": "plugin:simple-notes"
         },
         {
@@ -194,9 +202,17 @@
       ],
       "right": [
         {
+          "defaultSettings": {
+            "hideInactive": false,
+            "removeMargins": false
+          },
           "id": "plugin:privacy-indicator"
         },
         {
+          "defaultSettings": {
+            "hideBackground": false,
+            "minimumThreshold": 10
+          },
           "id": "plugin:catwalk"
         },
         {
@@ -313,22 +329,6 @@
     "position": "close_to_bar_button",
     "shortcuts": {
       "left": [
-        {
-          "defaultSettings": {
-            "audioCodec": "opus",
-            "audioSource": "default_output",
-            "colorRange": "limited",
-            "copyToClipboard": false,
-            "directory": "",
-            "filenamePattern": "recording_yyyyMMdd_HHmmss",
-            "frameRate": "60",
-            "quality": "very_high",
-            "showCursor": true,
-            "videoCodec": "h264",
-            "videoSource": "portal"
-          },
-          "id": "plugin:screen-recorder"
-        },
         {
           "id": "WallpaperSelector"
         },
