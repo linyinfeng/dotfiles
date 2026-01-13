@@ -26,6 +26,7 @@ in
       picard
       praat
       qq
+      teamspeak6-client
       telegram-desktop
       transmission-remote-gtk
       virt-manager
@@ -99,6 +100,7 @@ in
       ".config/MusicBrainz" # picard configs
       ".config/inkscape"
       ".config/Moonlight Game Streaming Project"
+      ".config/TeamSpeak"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
