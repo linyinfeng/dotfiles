@@ -2,6 +2,7 @@
 let
   inherit (config.services.pocket-id) user;
   port = config.ports.pocket-id;
+  postgresDb = user;
 in
 {
   services.pocket-id = {
@@ -12,8 +13,7 @@ in
       TRUST_PROXY = true;
       HOST = "::1";
       PORT = port;
-      DB_PROVIDER = "postgres";
-      DB_CONNECTION_STRING = "host=/run/postgresql user=${user} database=${user}";
+      DB_CONNECTION_STRING = "postgres://${postgresDb}?host=/run/postgresql";
       SMTP_HOST = "smtp.li7g.com";
       SMTP_PORT = 587;
       SMTP_TLS = "starttls";
@@ -38,8 +38,13 @@ in
   # currently nothing
   sops.templates."pocket-id-env".content = ''
     SMTP_PASSWORD=${config.sops.placeholder."mail_password"}
+    ENCRYPTION_KEY=${config.sops.placeholder."pocket_id_encryption_key"}
   '';
   sops.secrets."mail_password" = {
+    terraformOutput.enable = true;
+    restartUnits = [ "pocket-id.service" ];
+  };
+  sops.secrets."pocket_id_encryption_key" = {
     terraformOutput.enable = true;
     restartUnits = [ "pocket-id.service" ];
   };

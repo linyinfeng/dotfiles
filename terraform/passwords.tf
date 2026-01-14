@@ -425,3 +425,11 @@ output "fw_proxy_subscription_password" {
   value     = random_password.fw_proxy_subscription.result
   sensitive = true
 }
+resource "random_password" "pocket_id_encryption_key" {
+  length  = 64
+  special = true
+}
+output "pocket_id_encryption_key" {
+  value     = random_password.pocket_id_encryption_key.result
+  sensitive = true
+}
