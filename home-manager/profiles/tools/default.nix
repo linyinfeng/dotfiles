@@ -7,6 +7,12 @@
       theme = "ansi";
     };
   };
+  programs.yazi = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
+  };
 
   home.packages = with pkgs; [
     # keep-sorted start
