@@ -61,8 +61,8 @@ resource "b2_bucket" "cache" {
   }
 }
 resource "b2_application_key" "cache" {
-  key_name  = "cache"
-  bucket_id = b2_bucket.cache.id
+  key_name   = "cache"
+  bucket_ids = [b2_bucket.cache.id]
   capabilities = [
     "deleteFiles",
     "listAllBucketNames",
@@ -123,8 +123,8 @@ resource "b2_bucket" "mastodon_media" {
   }
 }
 resource "b2_application_key" "mastodon_media" {
-  key_name  = "mastodon-media"
-  bucket_id = b2_bucket.mastodon_media.id
+  key_name   = "mastodon-media"
+  bucket_ids = [b2_bucket.mastodon_media.id]
   capabilities = [
     "deleteFiles",
     "listAllBucketNames",

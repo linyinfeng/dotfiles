@@ -16,7 +16,7 @@ data "hcloud_datacenters" "all" {
 resource "hcloud_server" "fsn0" {
   name               = "fsn0"
   server_type        = "cax31"
-  datacenter         = "fsn1-dc14"
+  location           = "fsn1"
   image              = "debian-11"
   delete_protection  = true
   rebuild_protection = true
@@ -33,7 +33,7 @@ resource "hcloud_server" "fsn0" {
 resource "hcloud_primary_ip" "fsn0_ipv4" {
   name              = "fsn0-v4"
   type              = "ipv4"
-  datacenter        = "fsn1-dc14"
+  location          = "fsn1"
   assignee_type     = "server"
   auto_delete       = false
   delete_protection = true
@@ -42,7 +42,7 @@ resource "hcloud_primary_ip" "fsn0_ipv4" {
 resource "hcloud_primary_ip" "fsn0_ipv6" {
   name              = "fsn0-v6"
   type              = "ipv6"
-  datacenter        = "fsn1-dc14"
+  location          = "fsn1"
   assignee_type     = "server"
   auto_delete       = false
   delete_protection = true

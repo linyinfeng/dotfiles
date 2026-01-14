@@ -11,8 +11,8 @@ resource "b2_bucket" "backup" {
 }
 
 resource "b2_application_key" "backup" {
-  key_name  = "backup-${var.name}"
-  bucket_id = b2_bucket.backup.id
+  key_name   = "backup-${var.name}"
+  bucket_ids = [b2_bucket.backup.id]
   capabilities = [
     "deleteFiles",
     "listAllBucketNames",
