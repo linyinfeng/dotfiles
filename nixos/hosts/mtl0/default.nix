@@ -98,16 +98,16 @@ in
 
     (lib.mkIf (!config.system.is-vm) {
       environment.etc."systemd/network/45-enX0.network".source = config.sops.templates."enX0".path;
-      sops.secrets."network/address" = {
-        sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
+      sops.secrets."mtl0_network_address" = {
+        predefined.enable = true;
         reloadUnits = [ "systemd-networkd.service" ];
       };
-      sops.secrets."network/subnet" = {
-        sopsFile = config.sops-file.host;
+      sops.secrets."mtl0_network_subnet" = {
+        predefined.enable = true;
         reloadUnits = [ "systemd-networkd.service" ];
       };
-      sops.secrets."network/gateway" = {
-        sopsFile = config.sops-file.host;
+      sops.secrets."mtl0_network_gateway" = {
+        predefined.enable = true;
         reloadUnits = [ "systemd-networkd.service" ];
       };
       sops.templates."enX0" = {
@@ -116,8 +116,10 @@ in
           Name=enX0
 
           [Network]
-          Address=${config.sops.placeholder."network/address"}/${config.sops.placeholder."network/subnet"}
-          Gateway=${config.sops.placeholder."network/gateway"}
+          Address=${config.sops.placeholder."mtl0_network_address"}/${
+            config.sops.placeholder."mtl0_network_subnet"
+          }
+          Gateway=${config.sops.placeholder."mtl0_network_gateway"}
           DNS=8.8.8.8 8.8.4.4
 
           Tunnel=he-ipv6
@@ -137,7 +139,7 @@ in
 
           [Tunnel]
           Remote=216.66.38.58
-          Local=${config.sops.placeholder."network/address"}
+          Local=${config.sops.placeholder."mtl0_network_address"}
           TTL=255
         '';
         owner = "systemd-network";

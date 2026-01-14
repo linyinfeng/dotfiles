@@ -61,8 +61,8 @@ in
     terraformOutput.enable = true;
     restartUnits = [ "fw-proxy-subscription.service" ];
   };
-  sops.secrets."fw-proxy/sing-box" = {
-    sopsFile = config.sops-file.get "common.yaml";
+  sops.secrets."fw_proxy_sing_box" = {
+    predefined.enable = true;
     restartUnits = [ "fw-proxy-subscription.service" ];
   };
 }

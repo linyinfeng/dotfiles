@@ -48,7 +48,7 @@ lib.mkMerge [
       };
       profiles = lib.listToAttrs (
         lib.lists.map (
-          p: lib.nameValuePair p { urlFile = config.sops.secrets."fw-proxy/${p}".path; }
+          p: lib.nameValuePair p { urlFile = config.sops.secrets."fw_proxy_${p}".path; }
         ) profiles
       );
       externalController = {
@@ -75,8 +75,8 @@ lib.mkMerge [
     sops.secrets = lib.listToAttrs (
       lib.lists.map (
         p:
-        lib.nameValuePair "fw-proxy/${p}" {
-          sopsFile = config.sops-file.get "common.yaml";
+        lib.nameValuePair "fw_proxy_${p}" {
+          predefined.enable = true;
           restartUnits = [ "fw-proxy-auto-update.service" ];
         }
       ) profiles

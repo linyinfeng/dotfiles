@@ -20,8 +20,8 @@ let
       curl
     ];
     text = ''
-      username=$(cat "${config.sops.secrets."campus-net/username".path}")
-      password=$(cat "${config.sops.secrets."campus-net/password".path}")
+      username=$(cat "${config.sops.secrets."campus_net_username".path}")
+      password=$(cat "${config.sops.secrets."campus_net_password".path}")
 
       curl -X POST https://p.nju.edu.cn/api/portal/v1/login \
         --json @- <<EOF
@@ -95,12 +95,12 @@ in
   config = lib.mkIf cfg.enable {
     passthru.campus-net-scripts = scripts;
     environment.systemPackages = [ scripts ];
-    sops.secrets."campus-net/username" = {
-      sopsFile = config.sops-file.get "common.yaml";
+    sops.secrets."campus_net_username" = {
+      predefined.enable = true;
       restartUnits = [ "campus-net-auto-login.service" ];
     };
-    sops.secrets."campus-net/password" = {
-      sopsFile = config.sops-file.get "common.yaml";
+    sops.secrets."campus_net_password" = {
+      predefined.enable = true;
       restartUnits = [ "campus-net-auto-login.service" ];
     };
 

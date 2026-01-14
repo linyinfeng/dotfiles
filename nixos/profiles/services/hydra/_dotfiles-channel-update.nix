@@ -72,12 +72,12 @@
       SupplementaryGroups = [ config.users.groups.tg-send.name ];
       StateDirectory = "dotfiles-channel-update";
       Restart = "on-failure";
-      LoadCredential = [ "github-token:${config.sops.secrets."nano/github-token".path}" ];
+      LoadCredential = [ "github-token:${config.sops.secrets."github_token_nano".path}" ];
     };
     environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   };
-  sops.secrets."nano/github-token" = {
-    sopsFile = config.sops-file.get "common.yaml";
+  sops.secrets."github_token_nano" = {
+    predefined.enable = true;
     restartUnits = [ "dotfiles-channel-update@.service" ];
   };
 

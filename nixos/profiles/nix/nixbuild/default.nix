@@ -29,8 +29,8 @@ in
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPIQCZc54poJ8vqawd8TraNryQeJnvH1eLpIDgbiqymM";
     };
   };
-  sops.secrets."nixbuild/id-ed25519" = {
-    sopsFile = config.sops-file.get "common.yaml";
+  sops.secrets."nixbuild_id_ed25519" = {
+    predefined.enable = true;
     mode = "440";
     owner = config.users.users.nixbuild.name;
     group = config.users.groups.nixbuild.name;
@@ -38,7 +38,7 @@ in
   programs.ssh.extraConfig = ''
     Host eu.nixbuild.net
       PubkeyAcceptedKeyTypes ssh-ed25519
-      IdentityFile ${config.sops.secrets."nixbuild/id-ed25519".path}
+      IdentityFile ${config.sops.secrets."nixbuild_id_ed25519".path}
       ${proxyCommand}
   '';
   users.users.nixbuild = {

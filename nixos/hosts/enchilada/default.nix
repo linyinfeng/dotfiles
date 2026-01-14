@@ -113,10 +113,10 @@ in
                 };
               };
             };
-          users.users.yinfeng.hashedPasswordFile = lib.mkForce config.sops.secrets."user-pin/yinfeng".path;
-          sops.secrets."user-pin/yinfeng" = {
+          users.users.yinfeng.hashedPasswordFile = lib.mkForce config.sops.secrets."user_pin_yinfeng".path;
+          sops.secrets."user_pin_yinfeng" = {
+            predefined.enable = true;
             neededForUsers = true;
-            sopsFile = config.sops-file.get "common.yaml";
           };
         }
 

@@ -17,7 +17,7 @@
           auto_sync = true;
           sync_frequency = "5m";
           sync_address = "https://atuin.ts.li7g.com";
-          key_path = osConfig.sops.secrets."yinfeng/atuin-key".path;
+          key_path = osConfig.sops.secrets."yinfeng_atuin_key".path;
         };
       };
       systemd.user.services.atuin-login = {
@@ -55,8 +55,8 @@
     owner = "yinfeng";
     inherit (config.users.users.yinfeng) group;
   };
-  sops.secrets."yinfeng/atuin-key" = {
-    sopsFile = config.sops-file.get "common.yaml";
+  sops.secrets."yinfeng_atuin_key" = {
+    predefined.enable = true;
     owner = "yinfeng";
     inherit (config.users.users.yinfeng) group;
   };

@@ -30,17 +30,17 @@
     wantedBy = [ "multi-user.target" ];
   };
   sops.templates."baibot-extra-env".content = ''
-    BAIBOT_USER_PASSWORD=${config.sops.placeholder."baibot/matrix-password"}
+    BAIBOT_USER_PASSWORD=${config.sops.placeholder."baibot_matrix_password"}
     BAIBOT_USER_ENCRYPTION_RECOVERY_PASSPHRASE=${
-      config.sops.placeholder."baibot/matrix-encryption-recovery-passphrase"
+      config.sops.placeholder."baibot_matrix_encryption_recovery_passphrase"
     }
   '';
-  sops.secrets."baibot/matrix-password" = {
-    sopsFile = config.sops-file.host;
+  sops.secrets."baibot_matrix_password" = {
+    predefined.enable = true;
     restartUnits = [ "baibot.service" ];
   };
-  sops.secrets."baibot/matrix-encryption-recovery-passphrase" = {
-    sopsFile = config.sops-file.host;
+  sops.secrets."baibot_matrix_encryption_recovery_passphrase" = {
+    predefined.enable = true;
     restartUnits = [ "baibot.service" ];
   };
 }

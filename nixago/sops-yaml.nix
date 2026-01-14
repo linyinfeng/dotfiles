@@ -45,11 +45,9 @@ let
     };
     # PLACEHOLDER new host
   };
-  ownedHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) (lib.filterAttrs (_: cfg: cfg.owned) hosts);
-  allHostKeys = lib.mapAttrsToList (_: cfg: cfg.key) hosts;
 
   mkHostCreationRule = host: key: {
-    path_regex = "secrets/(terraform/)?hosts/${host}(\.plain)?\.yaml$";
+    path_regex = "secrets/(terraform|predefined)/hosts/${host}(\.plain)?\.yaml$";
     key_groups = [
       {
         inherit pgp;
@@ -91,32 +89,11 @@ in
       ];
     }
     {
-      path_regex = "secrets/hosts/mtl0-terraform\.yaml$";
+      path_regex = "predefined\.yaml$";
       key_groups = [
         {
           inherit pgp;
-          age = yubikeyKeys ++ [
-            hosts.mtl0.key
-            github
-          ];
-        }
-      ];
-    }
-    {
-      path_regex = "secrets/(terraform/)?common\.yaml$";
-      key_groups = [
-        {
-          inherit pgp;
-          age = yubikeyKeys ++ ownedHostKeys ++ [ github ];
-        }
-      ];
-    }
-    {
-      path_regex = "secrets/(terraform/)?infrastructure\.yaml$";
-      key_groups = [
-        {
-          inherit pgp;
-          age = yubikeyKeys ++ allHostKeys ++ [ github ];
+          age = yubikeyKeys ++ [ github ];
         }
       ];
     }

@@ -45,7 +45,7 @@ in
       LoadCredential = [
         "cache-key-id:${config.sops.secrets."r2_cache_key_id".path}"
         "cache-access-key:${config.sops.secrets."r2_cache_access_key".path}"
-        "signing-key:${config.sops.secrets."cache-li7g-com/key".path}"
+        "signing-key:${config.sops.secrets."cache_li7g_com_key".path}"
       ];
       CPUQuota = "200%"; # limit cpu usage for parallel-compression
     };
@@ -106,7 +106,7 @@ in
   sops.secrets."r2_cache_access_key" = {
     terraformOutput.enable = true;
   };
-  sops.secrets."cache-li7g-com/key" = {
-    sopsFile = config.sops-file.host;
+  sops.secrets."cache_li7g_com_key" = {
+    predefined.enable = true;
   };
 }

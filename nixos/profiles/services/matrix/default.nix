@@ -94,7 +94,7 @@ lib.mkMerge [
           "+"
           + (pkgs.writeShellScript "matrix-synapse-fix-permissions" ''
             cp "${
-              config.sops.secrets."synapse/signing-key".path
+              config.sops.secrets."synapse_signing_key".path
             }" "${config.services.matrix-synapse.settings.signing_key_path}"
             chown matrix-synapse:matrix-synapse "${config.services.matrix-synapse.settings.signing_key_path}"
           '')
@@ -127,7 +127,7 @@ lib.mkMerge [
           idp_name = "Pocket ID";
           issuer = "https://id.li7g.com";
           client_id = "6ab75dbc-8cf9-45f5-8a2a-9425e45e58c7";
-          client_secret_path = config.sops.secrets."synapse/oidc/pocket-id".path;
+          client_secret_path = config.sops.secrets."synapse_oidc_pocket_id".path;
           scopes = [
             "openid"
             "profile"
@@ -141,8 +141,8 @@ lib.mkMerge [
         }
       ];
     };
-    sops.secrets."synapse/oidc/pocket-id" = {
-      sopsFile = config.sops-file.host;
+    sops.secrets."synapse_oidc_pocket_id" = {
+      predefined.enable = true;
       owner = config.users.users.matrix-synapse.name;
       restartUnits = [ "matrix-synapse.service" ];
     };
@@ -214,7 +214,7 @@ lib.mkMerge [
       MAUTRIX_TELEGRAM_APPSERVICE_HS_TOKEN=${
         config.sops.placeholder."mautrix_telegram_appservice_hs_token"
       }
-      MAUTRIX_TELEGRAM_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram-bot/matrix-bridge"}
+      MAUTRIX_TELEGRAM_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram_bot_matrix_bridge"}
     '';
 
     services.matrix-synapse.settings.app_service_config_files = [
@@ -269,8 +269,8 @@ lib.mkMerge [
         "mautrix-telegram.service"
       ];
     };
-    sops.secrets."telegram-bot/matrix-bridge" = {
-      sopsFile = config.sops-file.host;
+    sops.secrets."telegram_bot_matrix_bridge" = {
+      predefined.enable = true;
       restartUnits = [ "mautrix-telegram.service" ];
     };
 
@@ -334,8 +334,8 @@ lib.mkMerge [
 
   # secrets
   {
-    sops.secrets."synapse/signing-key" = {
-      sopsFile = config.sops-file.host;
+    sops.secrets."synapse_signing_key" = {
+      predefined.enable = true;
       owner = "matrix-synapse";
       restartUnits = [ "matrix-synapse.service" ];
     };

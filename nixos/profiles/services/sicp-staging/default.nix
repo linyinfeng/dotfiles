@@ -173,7 +173,7 @@ lib.mkMerge [
             redirectUri = "https://sicp-staging.li7g.com/${ojBase}/web/auth/callback";
             scope = "read_user";
             clientId = "824e65daa58165919d7e3137616a67818400e0610cad26a10db97234029fa508";
-            clientSecret = config.sops.placeholder."nju-git/sicp-staging-oauth2";
+            clientSecret = config.sops.placeholder."nju_git_sicp_staging_oauth2";
           };
         };
       };
@@ -325,8 +325,8 @@ lib.mkMerge [
         "redis-sicp-staging.service"
       ];
     };
-    sops.secrets."nju-git/sicp-staging-oauth2" = {
-      sopsFile = config.sops-file.host;
+    sops.secrets."nju_git_sicp_staging_oauth2" = {
+      predefined.enable = true;
       restartUnits = [ "sicp-staging-app.service" ];
     };
   }

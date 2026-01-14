@@ -14,7 +14,7 @@ in
       sunshine_name = hostName;
       address_family = "both";
       origin_web_ui_allowed = "pc"; # localhost only
-      credentials_file = config.sops.secrets."sunshine-credentials-file".path;
+      credentials_file = config.sops.secrets."sunshine_credentials_file".path;
     };
   };
   services.nginx.virtualHosts."${hostName}.*" = {
@@ -28,8 +28,8 @@ in
       '';
     };
   };
-  sops.secrets."sunshine-credentials-file" = {
-    sopsFile = config.sops-file.get "common.yaml";
+  sops.secrets."sunshine_credentials_file" = {
+    predefined.enable = true;
     # credentials are hashed, simply make it available to all users
     mode = "440";
     group = config.users.groups.users.name;

@@ -25,7 +25,7 @@
       DynamicUser = true;
       StateDirectory = "dotfiles-update-trigger";
       WorkingDirectory = "/var/lib/dotfiles-update-trigger";
-      LoadCredential = [ "token:${config.sops.secrets."dotfiles-workflow/github-token".path}" ];
+      LoadCredential = [ "token:${config.sops.secrets."github_token_dotfiles_workflow".path}" ];
     };
     wantedBy = [ "multi-user.service" ];
   };
@@ -39,8 +39,8 @@
     };
   };
 
-  sops.secrets."dotfiles-workflow/github-token" = {
-    sopsFile = config.sops-file.host;
+  sops.secrets."github_token_dotfiles_workflow" = {
+    predefined.enable = true;
     restartUnits = [ "dotfiles-update-trigger.service" ];
   };
 }

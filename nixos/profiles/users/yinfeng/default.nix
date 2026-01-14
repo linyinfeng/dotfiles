@@ -23,7 +23,7 @@ in
     {
       users.users.${name} = {
         inherit uid;
-        hashedPasswordFile = config.sops.secrets."user-password/${name}".path;
+        hashedPasswordFile = config.sops.secrets."user_password_${name}".path;
         isNormalUser = true;
         subUidRanges = [
           {
@@ -69,9 +69,9 @@ in
         openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
       };
 
-      sops.secrets."user-password/${name}" = {
+      sops.secrets."user_password_${name}" = {
+        predefined.enable = true;
         neededForUsers = true;
-        sopsFile = config.sops-file.get "common.yaml";
       };
 
       environment.global-persistence.user.users = [ name ];
@@ -103,12 +103,12 @@ in
       home-manager.users.yinfeng = {
         programs.gemini-cli.enable = true;
         programs.fish.interactiveShellInit = ''
-          export GEMINI_API_KEY="$(cat "${config.sops.secrets."gemini/api-key".path}")"
+          export GEMINI_API_KEY="$(cat "${config.sops.secrets."gemini_api_key".path}")"
         '';
         home.global-persistence.directories = [ ".gemini" ];
       };
-      sops.secrets."gemini/api-key" = {
-        sopsFile = config.sops-file.get "common.yaml";
+      sops.secrets."gemini_api_key" = {
+        predefined.enable = true;
         owner = "yinfeng";
       };
     }

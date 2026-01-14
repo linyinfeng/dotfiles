@@ -128,12 +128,12 @@ in
         mode = "440";
         content = ''
           <github_authorization>
-            linyinfeng = Bearer ${config.sops.placeholder."nano/github-token"}
-            littlenano = Bearer ${config.sops.placeholder."nano/github-token"}
+            linyinfeng = Bearer ${config.sops.placeholder."github_token_nano"}
+            littlenano = Bearer ${config.sops.placeholder."github_token_nano"}
           </github_authorization>
         '';
       };
-      nix.settings.secret-key-files = [ "${config.sops.secrets."cache-li7g-com/key".path}" ];
+      nix.settings.secret-key-files = [ "${config.sops.secrets."cache_li7g_com_key".path}" ];
       nix.settings.allowed-uris = [
         "github:"
         "gitlab:"
@@ -143,12 +143,12 @@ in
         "git+https://github.com/"
         "git+https://gitlab.freedesktop.org/"
       ];
-      sops.secrets."nano/github-token" = {
-        sopsFile = config.sops-file.get "common.yaml";
+      sops.secrets."github_token_nano" = {
+        predefined.enable = true;
         restartUnits = [ "hydra.service" ];
       };
-      sops.secrets."cache-li7g-com/key" = {
-        sopsFile = config.sops-file.host;
+      sops.secrets."cache_li7g_com_key" = {
+        predefined.enable = true;
         restartUnits = [ "nix-daemon.service" ];
       };
       nix.settings.trusted-users = [ "@hydra" ];
@@ -161,7 +161,7 @@ in
     #       Include "${config.sops.templates."hydra-extra-config".path}"
 
     #       store_uri = s3://${cacheBucketName}?endpoint=cache-overlay.ts.li7g.com&parallel-compression=true&compression=zstd&secret-key=${
-    #         config.sops.secrets."cache-li7g-com/key".path
+    #         config.sops.secrets."cache_li7g_com_key".path
     #       }
     #       server_store_uri = https://cache.li7g.com?local-nar-cache=${narCache}
     #       binary_cache_public_uri = https://cache.li7g.com
@@ -185,8 +185,8 @@ in
     #   sops.secrets."r2_cache_access_key" = {
     #     terraformOutput.enable = true;
     #   };
-    #   sops.secrets."cache-li7g-com/key" = {
-    #     sopsFile = config.sops-file.host;
+    #   sops.secrets."cache_li7g_com_key" = {
+    #     predefined.enable = true;
     #     group = "hydra";
     #     mode = "440";
     #   };

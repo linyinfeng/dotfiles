@@ -13,17 +13,17 @@ in
     consoleAddress = "127.0.0.1:${toString minioConsolePort}";
     rootCredentialsFile = config.sops.templates."minio-root-credentials".path;
   };
-  sops.secrets."minio/root/user" = {
-    sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
+  sops.secrets."minio_root_user" = {
+    predefined.enable = true;
     restartUnits = [ "minio.service" ];
   };
-  sops.secrets."minio/root/password" = {
-    sopsFile = config.sops-file.get "hosts/mtl0-terraform.yaml";
+  sops.secrets."minio_root_password" = {
+    predefined.enable = true;
     restartUnits = [ "minio.service" ];
   };
   sops.templates."minio-root-credentials".content = ''
-    MINIO_ROOT_USER=${config.sops.placeholder."minio/root/user"}
-    MINIO_ROOT_PASSWORD=${config.sops.placeholder."minio/root/password"}
+    MINIO_ROOT_USER=${config.sops.placeholder."minio_root_user"}
+    MINIO_ROOT_PASSWORD=${config.sops.placeholder."minio_root_password"}
   '';
   services.nginx.virtualHosts."minio.*" = {
     forceSSL = true;

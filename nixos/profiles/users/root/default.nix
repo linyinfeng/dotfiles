@@ -4,7 +4,7 @@ let
 in
 {
   users.users.root = {
-    hashedPasswordFile = config.sops.secrets."user-password/root".path;
+    hashedPasswordFile = config.sops.secrets."user_password_root".path;
     openssh.authorizedKeys.keyFiles = [
       _ssh/pgp.pub
       _ssh/juice.pub
@@ -22,8 +22,8 @@ in
       };
     };
 
-  sops.secrets."user-password/root" = {
+  sops.secrets."user_password_root" = {
+    predefined.enable = true;
     neededForUsers = true;
-    sopsFile = config.sops-file.get "common.yaml";
   };
 }

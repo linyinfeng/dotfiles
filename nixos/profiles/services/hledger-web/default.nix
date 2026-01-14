@@ -40,7 +40,7 @@ in
       User = config.users.users.hledger.name;
       Group = config.users.groups.hledger.name;
       WorkingDirectory = config.services.hledger-web.stateDir;
-      LoadCredential = [ "token:${config.sops.secrets."hledger/repo-token".path}" ];
+      LoadCredential = [ "token:${config.sops.secrets."github_token_hledger".path}" ];
     };
     before = [ "hledger-web.service" ];
     requiredBy = [ "hledger-web.service" ];
@@ -63,8 +63,8 @@ in
     '';
     owner = config.users.users.nginx.name;
   };
-  sops.secrets."hledger/repo-token" = {
-    sopsFile = config.sops-file.host;
+  sops.secrets."github_token_hledger" = {
+    predefined.enable = true;
     restartUnits = [ "hledger-web-fetch.service" ];
   };
   sops.secrets."hledger_username" = {
