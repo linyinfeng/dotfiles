@@ -36,7 +36,7 @@ in
     # -s (S/../.././01|L/../../6/02):
     #   short self-test every day between 1-2am
     #   extended self-test weekly on Saturdays between 2-3am
-    defaults.monitored = ''-a -n standby,12 -s (S/../.././01|L/../../6/02) -m ${mailAddress} -M exec ${smartdNotify}'';
+    defaults.monitored = "-a -n standby,12 -s (S/../.././01|L/../../6/02) -m ${mailAddress} -M exec ${smartdNotify}";
   };
   systemd.services.smartd.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   environment.systemPackages = with pkgs; [ smartmontools ];

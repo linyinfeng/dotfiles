@@ -47,7 +47,7 @@ let
     "lockScreen"
     "lock"
   ];
-  spawn = command: ''spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}'';
+  spawn = command: "spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}";
   restoreWorking = pkgs.writeShellApplication {
     name = "niri-restore-working";
     text = ''

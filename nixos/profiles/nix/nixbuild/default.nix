@@ -21,7 +21,7 @@ in
     eu.nixbuild.net aarch64-linux - 100 1 benchmark,big-parallel
   '';
   environment.shellAliases = {
-    nixbuild = ''nix --builders @/etc/nix-build-machines/nixbuild/machines'';
+    nixbuild = "nix --builders @/etc/nix-build-machines/nixbuild/machines";
   };
   services.openssh.knownHosts = {
     nixbuild = {

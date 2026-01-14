@@ -13,7 +13,7 @@ lib.mkMerge [
     };
     sops.templates."mongodb-init.js" = {
       # currently nothing
-      content = '''';
+      content = "";
       owner = config.services.mongodb.user;
     };
     sops.secrets."mongodb_admin_password" = {
