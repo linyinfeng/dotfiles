@@ -1,11 +1,20 @@
-{ ... }:
+{ lib, ... }:
 {
   programs.helix = {
     enable = true;
     defaultEditor = true;
     languages = { };
-    settings = {
-      theme = "base16_default";
-    };
+    settings = lib.mkMerge [
+      { theme = "base16_default"; }
+    ];
+  };
+  programs.alacritty.settings = {
+    keyboard.bindings = [
+      {
+        key = "[";
+        mods = "Control";
+        chars = "\\u001b";
+      }
+    ];
   };
 }
