@@ -71,7 +71,7 @@ in
   };
   sops.templates."cowrie-extra-env".content = ''
     COWRIE_OUTPUT_TELEGRAM_ENABLED=true
-    COWRIE_OUTPUT_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram-bot/push"}
+    COWRIE_OUTPUT_TELEGRAM_BOT_TOKEN=${config.sops.placeholder."telegram_bot_push"}
     COWRIE_OUTPUT_TELEGRAM_CHAT_ID=148111617
   '';
   users.users.cowrie = {

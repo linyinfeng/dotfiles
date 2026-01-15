@@ -55,7 +55,7 @@ in
   };
   sops.templates."fw-proxy-subscription-env".content = ''
     FW_PROXY_SUBSCRIPTION_SECRET=${config.sops.placeholder."fw_proxy_subscription_password"}
-    FW_PROXY_SUBSCRIPTION_UPSTREAM_URL=${config.sops.placeholder."fw-proxy/sing-box"}
+    FW_PROXY_SUBSCRIPTION_UPSTREAM_URL=${config.sops.placeholder."fw_proxy_sing_box"}
   '';
   sops.secrets."fw_proxy_subscription_password" = {
     terraformOutput.enable = true;
