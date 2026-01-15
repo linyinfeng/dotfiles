@@ -1,7 +1,7 @@
 provider "minio" {
   minio_server   = "minio.li7g.com"
-  minio_user     = data.sops_file.mtl0.data["minio.root.user"]
-  minio_password = data.sops_file.mtl0.data["minio.root.password"]
+  minio_user     = data.sops_file.predefined.data["minio_root_user"]
+  minio_password = data.sops_file.predefined.data["minio_root_password"]
   minio_ssl      = true
 }
 

@@ -23,12 +23,12 @@ locals {
         a = {
           proxied = true
           type    = "A"
-          value   = nonsensitive(data.sops_file.mtl0.data["network.address"])
+          value   = nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])
         }
       }
       ddns_records = {}
       host_indices = [3]
-      endpoints_v4 = [nonsensitive(data.sops_file.mtl0.data["network.address"])]
+      endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])]
       endpoints_v6 = []
     }
     # waiting for setup

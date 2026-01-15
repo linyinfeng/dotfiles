@@ -279,7 +279,7 @@ resource "grafana_contact_point" "telegram_push" {
   name = "Telegram Push"
 
   telegram {
-    token   = data.sops_file.common.data["telegram-bot.push"]
+    token   = data.sops_file.predefined.data["telegram_bot_push"]
     chat_id = 148111617
     message = "{{ template \"default.message\" . }}"
   }
