@@ -63,6 +63,7 @@ lib.mkMerge [
         embedded = "eDP-1";
         labMonitor = "Lenovo Group Limited P27h-20 U5HCT52K";
         dormMonitor = "SKYDATA S.P.A. 24X1Q Unknown";
+        portableMonitor = "ASEM S.p.A. ASM-125FC Unknown";
         captureCard = "A/Vaux Electronics AVT GC551G2 Unknown";
       in
       [
@@ -82,6 +83,12 @@ lib.mkMerge [
         {
           output = {
             criteria = dormMonitor;
+            scale = 1.25;
+          };
+        }
+        {
+          output = {
+            criteria = portableMonitor;
             scale = 1.25;
           };
         }
@@ -156,23 +163,54 @@ lib.mkMerge [
             ];
           };
         }
+        {
+          profile = {
+            name = "with-portable-monitor";
+            outputs = [
+              {
+                criteria = embedded;
+                position = "0,0";
+              }
+              {
+                criteria = portableMonitor;
+                position = "1536,96";
+              }
+            ];
+          };
+        }
       ];
   }
 
   # powertop tweaks
-  {
-    services.udev.extraRules = ''
-      # disable USB auto suspend for mouses
-      # Logitech, Inc. Unifying Receiver
-      ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c52b", TEST=="power/control", ATTR{power/control}="on"
-      # Compx ATK Mouse 8K Dongle
-      ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="373b", ATTR{idProduct}=="101b", TEST=="power/control", ATTR{power/control}="on"
-    '';
-    powerManagement.powertop = {
-      enable = true;
-      postStart = ''
-        ${lib.getExe' config.systemd.package "udevadm"} trigger -c bind -s usb -a idVendor=046d -a idProduct=c52b
-      '';
-    };
-  }
+  (
+    let
+      usbIds = {
+        "Logitech, Inc. Unifying Receiver" = "046d:c52b";
+        "Compx ATK Mouse 8K Dongle" = "373b:101b";
+        "Holtek Semiconductor, Inc. USB Keyboard" = "1a81:2039";
+      };
+      parseUsbId =
+        _name: id:
+        let
+          parsed = lib.splitString ":" id;
+        in
+        {
+          vendor = lib.elemAt parsed 0;
+          product = lib.elemAt parsed 1;
+        };
+      parsed = lib.mapAttrs parseUsbId usbIds;
+    in
+    {
+      services.udev.extraRules = lib.concatMapAttrsStringSep "\n" (name: id: ''
+        # Disable auto suspend for ${name}
+        ACTION=="bind", SUBSYSTEM=="usb", ATTR{idVendor}=="${id.vendor}", ATTR{idProduct}=="${id.product}", TEST=="power/control", ATTR{power/control}="on"
+      '') parsed;
+      powerManagement.powertop = {
+        enable = true;
+        postStart = lib.concatMapAttrsStringSep "\n" (_name: id: ''
+          ${lib.getExe' config.systemd.package "udevadm"} trigger -c bind -s usb -a idVendor=${id.vendor} -a idProduct=${id.product}
+        '') parsed;
+      };
+    }
+  )
 ]
