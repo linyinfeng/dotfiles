@@ -33,6 +33,9 @@ lib.mkMerge [
       "usbhid"
       "sd_mod"
     ];
+    boot.extraModprobeConfig = ''
+      options kvm-amd nested=1
+    '';
 
     systemd.services = lib.mkIf config.services.displayManager.gdm.enable {
       gdm-prepare = {
