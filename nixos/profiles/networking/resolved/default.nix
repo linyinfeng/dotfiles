@@ -8,17 +8,19 @@ lib.mkMerge [
   {
     services.resolved = {
       enable = true;
-      llmnr = "true";
-      # dnssec = "allow-downgrade";
-      # dnsovertls = "opportunistic";
-      fallbackDns = dnsServers;
-      domains = [ "li7g.com" ];
+      settings.Resolve = {
+        Domains = [ "li7g.com" ];
+        LLMNR = true;
+        FallbackDNS = dnsServers;
+        # DNSSEC = "allow-downgrade";
+        # DNSOverTLS = "opportunistic";
+      };
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
   }
   (lib.mkIf config.services.avahi.enable {
-    services.resolved.extraConfig = ''
-      MulticastDNS=resolve
-    '';
+    services.resolved.settings.Resolve = {
+      MulticastDNS = "resolve";
+    };
   })
 ]
