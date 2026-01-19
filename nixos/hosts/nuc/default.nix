@@ -106,6 +106,9 @@ in
         "sd_mod"
       ];
       boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModprobeConfig = ''
+        options kvm-intel nested=1
+      '';
       boot.initrd.luks.devices = {
         crypt-mobile = {
           device = "/dev/disk/by-uuid/b456f27c-b0a1-4b1e-8f2b-91f1826ae51c";
