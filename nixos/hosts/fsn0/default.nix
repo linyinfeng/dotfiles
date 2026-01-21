@@ -25,6 +25,7 @@
       services.mastodon
       services.maddy
       services.well-known
+      services.atticd
       nix.hydra-builder-server
     ])
     ++ [ "${modulesPath}/profiles/qemu-guest.nix" ];

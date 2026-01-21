@@ -21,7 +21,6 @@ in
       services.postgresql
       services.atuin
       services.nuc-proxy
-      services.cache-overlay
       services.sicp-tutorials
       services.rathole
       services.pocket-id

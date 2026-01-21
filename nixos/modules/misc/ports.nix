@@ -92,6 +92,7 @@
       open-webui = 3410;
       fw-proxy-subscription = 3420;
       pocket-id = 3430;
+      atticd = 3440;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

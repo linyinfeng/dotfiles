@@ -433,3 +433,21 @@ output "pocket_id_encryption_key" {
   value     = random_password.pocket_id_encryption_key.result
   sensitive = true
 }
+resource "shell_sensitive_script" "atticd_rs256_secret_base64" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+      secret=$(openssl genrsa -traditional 4096 | base64 -w0)
+      jq --null-input \
+        --arg secret "$secret" \
+        '{"secret": $secret}'
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+}
+output "atticd_rs256_secret_base64" {
+  value     = shell_sensitive_script.atticd_rs256_secret_base64.output.secret
+  sensitive = true
+}

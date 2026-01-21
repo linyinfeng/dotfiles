@@ -149,6 +149,7 @@ locals {
     bird-lg        = { on = "fsn0", proxy = true }
     dn42           = { on = "fsn0", proxy = true }
     keycloak       = { on = "fsn0", proxy = true }
+    atticd         = { on = "fsn0", proxy = true }
     hydra          = { on = "nuc", proxy = false }
     transmission   = { on = "nuc", proxy = false }
     jellyfin       = { on = "nuc", proxy = false }
@@ -312,6 +313,17 @@ resource "cloudflare_dns_record" "li7g_b2" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
+# atticd endpoint
+
+resource "cloudflare_dns_record" "li7g_atticd_api" {
+  name    = "atticd.endpoints.${cloudflare_zone.com_li7g.name}"
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  content = "fsn0.endpoints.${cloudflare_zone.com_li7g.name}"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 # Ruleset
 
 resource "cloudflare_ruleset" "li7g_http_config_settings" {
@@ -454,8 +466,8 @@ resource "cloudflare_api_token" "cache" {
 }
 
 output "r2_s3_api_url" {
-  value     = "${local.cloudflare_main_account_id}.r2.cloudflarestorage.com"
-  sensitive = true
+  value     = nonsensitive("${local.cloudflare_main_account_id}.r2.cloudflarestorage.com")
+  sensitive = false
 }
 output "r2_cache_bucket_name" {
   value     = cloudflare_r2_bucket.cache.name

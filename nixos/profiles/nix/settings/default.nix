@@ -44,9 +44,9 @@ lib.mkMerge [
   }
   {
     nix.settings = {
-      substituters = [ "https://cache.li7g.com" ];
+      substituters = [ "https://atticd.li7g.com" ];
       trusted-public-keys = [
-        "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
+        "dotfiles:MqrvIUvTvB+pkyLEhF9hdTrR90ozUS8E4B1ejDum660="
       ];
     };
   }
