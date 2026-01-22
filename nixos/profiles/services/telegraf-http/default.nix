@@ -58,6 +58,12 @@ let
         code = 200;
       }
     ];
+    cache-overlay = [
+      {
+        url = "https://cache-overlay.ts.li7g.com";
+        code = 200;
+      }
+    ];
     smtp = [ ];
     teamspeak = [ ];
     portal = [ ];
