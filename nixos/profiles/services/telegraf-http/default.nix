@@ -58,12 +58,6 @@ let
         code = 200;
       }
     ];
-    cache-overlay = [
-      {
-        url = "https://cache-overlay.ts.li7g.com/cache-li7g-com/zhl06z4lrfrkw5rp0hnjjfrgsclzvxpm.narinfo";
-        code = 200;
-      }
-    ];
     smtp = [ ];
     teamspeak = [ ];
     portal = [ ];
@@ -123,6 +117,12 @@ let
       {
         url = "https://sicp-tutorials.li7g.com";
         code = 401;
+      }
+    ];
+    cache-overlay = [
+      {
+        url = "https://cache-overlay.ts.li7g.com/cache-li7g-com/zhl06z4lrfrkw5rp0hnjjfrgsclzvxpm.narinfo";
+        code = 200;
       }
     ];
   };

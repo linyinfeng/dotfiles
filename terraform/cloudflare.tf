@@ -128,6 +128,7 @@ locals {
     pgp-public-key = { on = "hkg0", proxy = true }
     oranc          = { on = "hkg0", proxy = true }
     ace-bot        = { on = "hkg0", proxy = true }
+    cache-overlay  = { on = "hkg0", proxy = true }
     hledger        = { on = "mtl0", proxy = true }
     vault          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
@@ -156,7 +157,6 @@ locals {
     matrix-qq      = { on = "nuc", proxy = false }
     teamspeak      = { on = "nuc", proxy = false }
     subscription   = { on = "nuc", proxy = false }
-    cache-overlay  = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {

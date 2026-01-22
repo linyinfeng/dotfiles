@@ -55,7 +55,6 @@ in
       services.fwupd
       # services.matrix-qq
       services.teamspeak
-      services.cache-overlay
       programs.service-mail
       programs.tg-send
       users.yinfeng
