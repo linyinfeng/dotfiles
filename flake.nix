@@ -125,6 +125,12 @@
     angrr.inputs.nix-darwin.follows = "blank";
     nixpkgs-angrr.url = "github:linyinfeng/nixpkgs/angrr";
 
+    nix-cache-overlay.url = "github:linyinfeng/nix-cache-overlay";
+    nix-cache-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    nix-cache-overlay.inputs.flake-parts.follows = "flake-parts";
+    nix-cache-overlay.inputs.treefmt-nix.follows = "treefmt-nix";
+    nix-cache-overlay.inputs.crane.follows = "crane";
+
     pastebin.url = "github:linyinfeng/pastebin";
     pastebin.inputs.nixpkgs.follows = "nixpkgs";
     pastebin.inputs.flake-parts.follows = "flake-parts";

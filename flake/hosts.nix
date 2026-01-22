@@ -301,6 +301,7 @@ let
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.nix-topology.nixosModules.default
       inputs.run0-sudo-shim.nixosModules.default
+      inputs.nix-cache-overlay.nixosModules.default
 
       {
         lib = {

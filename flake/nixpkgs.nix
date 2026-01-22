@@ -25,6 +25,7 @@ let
     inputs.nix-alien.overlays.default
     inputs.kukui-nixos.overlays.default
     inputs.nix-cachyos-kernel.overlays.default
+    inputs.nix-cache-overlay.overlays.default
     (
       _final: prev:
       let

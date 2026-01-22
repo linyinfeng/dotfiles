@@ -451,3 +451,11 @@ output "atticd_rs256_secret_base64" {
   value     = shell_sensitive_script.atticd_rs256_secret_base64.output.secret
   sensitive = true
 }
+resource "random_password" "nix_cache_overlay_token" {
+  length  = 32
+  special = false
+}
+output "nix_cache_overlay_token" {
+  value     = random_password.nix_cache_overlay_token.result
+  sensitive = true
+}

@@ -42,10 +42,6 @@
       "on": "hkg0",
       "proxy": true
     },
-    "atticd": {
-      "on": "fsn0",
-      "proxy": true
-    },
     "atuin": {
       "on": "hkg0",
       "proxy": true
@@ -59,8 +55,8 @@
       "proxy": true
     },
     "cache-overlay": {
-      "on": "hkg0",
-      "proxy": true
+      "on": "nuc",
+      "proxy": false
     },
     "dn42": {
       "on": "fsn0",

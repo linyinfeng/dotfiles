@@ -857,6 +857,35 @@
         "type": "github"
       }
     },
+    "nix-cache-overlay": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769097025,
+        "narHash": "sha256-zAHqcK5tw6yasO+hpZTMpKQKTdqUPpYo4xhohs2tgvk=",
+        "owner": "linyinfeng",
+        "repo": "nix-cache-overlay",
+        "rev": "545d09d81e664a261598390c8d4f5b090f9df121",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "nix-cache-overlay",
+        "type": "github"
+      }
+    },
     "nix-cachyos-kernel": {
       "inputs": {
         "cachyos-kernel": "cachyos-kernel",
@@ -1491,6 +1520,7 @@
         "minecraft-nix": "minecraft-nix",
         "mobile-nixos": "mobile-nixos",
         "nix-alien": "nix-alien",
+        "nix-cache-overlay": "nix-cache-overlay",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-filter": "nix-filter",
         "nix-gc-s3": "nix-gc-s3",

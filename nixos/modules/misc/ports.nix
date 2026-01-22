@@ -93,6 +93,7 @@
       fw-proxy-subscription = 3420;
       pocket-id = 3430;
       atticd = 3440;
+      nix-cache-overlay = 3450;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

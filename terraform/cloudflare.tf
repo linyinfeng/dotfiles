@@ -118,7 +118,6 @@ resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
 locals {
   service_cname_mappings = {
     atuin          = { on = "hkg0", proxy = true }
-    cache-overlay  = { on = "hkg0", proxy = true }
     nuc-proxy      = { on = "hkg0", proxy = true }
     hydra-proxy    = { on = "hkg0", proxy = true }
     sicp-tutorials = { on = "hkg0", proxy = true }
@@ -149,7 +148,6 @@ locals {
     bird-lg        = { on = "fsn0", proxy = true }
     dn42           = { on = "fsn0", proxy = true }
     keycloak       = { on = "fsn0", proxy = true }
-    atticd         = { on = "fsn0", proxy = true }
     hydra          = { on = "nuc", proxy = false }
     transmission   = { on = "nuc", proxy = false }
     jellyfin       = { on = "nuc", proxy = false }
@@ -158,6 +156,7 @@ locals {
     matrix-qq      = { on = "nuc", proxy = false }
     teamspeak      = { on = "nuc", proxy = false }
     subscription   = { on = "nuc", proxy = false }
+    cache-overlay  = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {
@@ -310,17 +309,6 @@ resource "cloudflare_dns_record" "li7g_b2" {
   ttl     = 1
   type    = "CNAME"
   content = module.b2_download_url.host
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
-# atticd endpoint
-
-resource "cloudflare_dns_record" "li7g_atticd_api" {
-  name    = "atticd.endpoints.${cloudflare_zone.com_li7g.name}"
-  proxied = false
-  ttl     = 1
-  type    = "CNAME"
-  content = "fsn0.endpoints.${cloudflare_zone.com_li7g.name}"
   zone_id = cloudflare_zone.com_li7g.id
 }
 
