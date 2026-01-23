@@ -99,12 +99,10 @@
     nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
     nix-gc-s3.inputs.nixpkgs.follows = "nixpkgs";
     nix-gc-s3.inputs.flake-parts.follows = "flake-parts";
-    nix-gc-s3.inputs.flake-utils.follows = "flake-utils";
-    nix-gc-s3.inputs.poetry2nix.follows = "poetry2nix";
+    nix-gc-s3.inputs.uv2nix.follows = "uv2nix";
+    nix-gc-s3.inputs.pyproject-build-systems.follows = "pyproject-build-systems";
+    nix-gc-s3.inputs.pyproject-nix.follows = "pyproject-nix";
     nix-gc-s3.inputs.treefmt-nix.follows = "treefmt-nix";
-    nix-gc-s3.inputs.devshell.follows = "devshell";
-    nix-gc-s3.inputs.blank.follows = "blank";
-    nix-gc-s3.inputs.systems.follows = "systems";
 
     # system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
     # TODO wait for https://github.com/Kirottu/system76-scheduler-niri/pull/1
@@ -257,6 +255,18 @@
     poetry2nix.inputs.nix-github-actions.follows = "nix-github-actions";
     poetry2nix.inputs.systems.follows = "systems";
     poetry2nix.inputs.treefmt-nix.follows = "treefmt-nix";
+
+    pyproject-nix.url = "github:pyproject-nix/pyproject.nix";
+    pyproject-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    uv2nix.url = "github:pyproject-nix/uv2nix";
+    uv2nix.inputs.pyproject-nix.follows = "pyproject-nix";
+    uv2nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    pyproject-build-systems.url = "github:pyproject-nix/build-system-pkgs";
+    pyproject-build-systems.inputs.pyproject-nix.follows = "pyproject-nix";
+    pyproject-build-systems.inputs.uv2nix.follows = "uv2nix";
+    pyproject-build-systems.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
