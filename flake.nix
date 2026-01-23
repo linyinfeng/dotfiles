@@ -104,9 +104,7 @@
     nix-gc-s3.inputs.pyproject-nix.follows = "pyproject-nix";
     nix-gc-s3.inputs.treefmt-nix.follows = "treefmt-nix";
 
-    # system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
-    # TODO wait for https://github.com/Kirottu/system76-scheduler-niri/pull/1
-    system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri/pull/1/head";
+    system76-scheduler-niri.url = "github:Kirottu/system76-scheduler-niri";
     system76-scheduler-niri.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";

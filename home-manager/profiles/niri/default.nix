@@ -531,7 +531,7 @@ in
 
         home.packages = with pkgs; [
           mpv
-          matugen # TODO remove this workaround
+          matugen
           pwvucontrol
 
           syncSettings

@@ -470,5 +470,3 @@ output "r2_cache_access_key" {
   value     = sha256(cloudflare_api_token.cache.value)
   sensitive = true
 }
-
-# TODO copy nix-cache-info

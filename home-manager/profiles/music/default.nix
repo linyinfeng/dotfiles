@@ -20,8 +20,8 @@ in
       musescore
 
       # plugin support
-      # yabridge # TODO wait for fix
-      # yabridgectl
+      yabridge
+      yabridgectl
     ]
     ++ audioPlugins;
   home.sessionVariables = {
