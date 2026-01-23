@@ -7,7 +7,11 @@
 let
   cacheBucketName = config.lib.self.data.r2_cache_bucket_name;
   hydraRootsDir = config.services.hydra.gcRootsDir;
-  cacheOverlay = "https://cache-overlay.ts.li7g.com";
+  cacheOverlay =
+    if config.services.nix-cache-overlay.enable then
+      "http://[::1]:${toString config.ports.nix-cache-overlay}"
+    else
+      "https://cache-overlay.ts.li7g.com";
 in
 {
   systemd.services."copy-cache-li7g-com@" = {

@@ -142,9 +142,9 @@ let
       channels = alternativeChannels nixpkgsArgs;
     in
     [
-      (final: prev: {
+      (_final: _prev: {
         # TODO wait for https://github.com/NixOS/nixpkgs/issues/476278
-        hydra = prev.hydra.override { stdenv = final.gcc14Stdenv; };
+        inherit (channels.stable) hydra;
       })
     ];
 in
