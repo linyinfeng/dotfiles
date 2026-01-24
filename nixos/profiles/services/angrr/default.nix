@@ -20,8 +20,8 @@ in
       profile-policies = {
         system = {
           profile-paths = [ "/nix/var/nix/profiles/system" ];
-          keep-since = if isSimpleServer then "0" else "14d";
-          keep-latest-n = if isSimpleServer then 0 else 5;
+          keep-since = "0";
+          keep-latest-n = if isSimpleServer then 0 else 3;
           keep-current-system = true;
           keep-booted-system = true;
         };
