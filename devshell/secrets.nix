@@ -4,7 +4,10 @@ let
 
   encryptTo = pkgs.writeShellApplication {
     name = "encrypt-to";
-    runtimeInputs = with pkgs; [ sops ];
+    runtimeInputs = with pkgs; [
+      sops
+      prettier
+    ];
     text = ''
       ${common}
 
@@ -13,7 +16,7 @@ let
       type="$3"
       IFS=" " read -r -a formatter <<<"$4"
 
-      message "encryping '$plain_file' to '$target_file' (type: '$type', formatter: '''''${formatter[*]}')..."
+      messageVerbose "encryping '$plain_file' to '$target_file' (type: '$type', formatter: '''''${formatter[*]}')..."
 
       if [ -e "$target_file" ]; then
         tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
@@ -33,13 +36,15 @@ let
         "''${formatter[@]}" "$plain_file" >"$plain_formatted"
 
         if diff "$plain_formatted" "$target_plain_formatted" >/dev/null 2>&1; then
-          message "same, skipping..."
+          messageVerbose "same, skipping..."
           exit 0
         fi
       fi
 
       EDITOR="cp '$plain_file'" \
         sops --input-type "$type" --output-type "$type" "$target_file"
+
+      prettier --write "$target_file"
     '';
   };
 
@@ -47,101 +52,62 @@ let
     name = "extract-secrets";
     runtimeInputs = with pkgs; [
       sops
-      extractTerraformOutputs
-      extractPredefined
+      (mkExtractSecret "terraform")
+      (mkExtractSecret "predefined")
     ];
     text = ''
       ${common}
-      sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" 'extract-secrets-terraform-outputs {}'
+      sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" 'extract-secrets-terraform {}'
       sops exec-file "$SECRETS_DIR/predefined.yaml"        'extract-secrets-predefined {}'
     '';
   };
 
-  extractTerraformOutputs = pkgs.writeShellApplication {
-    name = "extract-secrets-terraform-outputs";
-    runtimeInputs = with pkgs; [
-      encryptTo
-      yq-go
-      sops
-      fd
-    ];
-    text = ''
-      ${common}
+  mkExtractSecret =
+    secretType:
+    pkgs.writeShellApplication {
+      name = "extract-secrets-${secretType}";
+      runtimeInputs = with pkgs; [
+        encryptTo
+        yq-go
+        sops
+        fd
+      ];
+      text = ''
+        ${common}
 
-      mkdir -p "$SECRETS_EXTRACT_DIR/terraform/hosts"
+        mkdir -p "$SECRETS_EXTRACT_DIR/${secretType}/hosts"
 
-      tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
-      function cleanup {
-        rm -r "$tmp_dir"
-      }
-      trap cleanup EXIT
+        tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
+        function cleanup {
+          rm -r "$tmp_dir"
+        }
+        trap cleanup EXIT
 
-      cp "$1" "$tmp_dir/input.yaml"
-      input_file="$tmp_dir/input.yaml"
+        cp "$1" "$tmp_dir/input.yaml"
+        input_file="$tmp_dir/input.yaml"
 
-      flake="$(realpath "$DOTFILES_DIR")"
-      mapfile -t hosts < <(nix eval "$flake"#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
-      for name in "''${hosts[@]}"; do
-        message "start extracting secrets for $name from terraform outputs..."
+        message "creating templates..."
+        flake="$(realpath "$DOTFILES_DIR")"
+        nix build "$flake#secrets-templates/${secretType}" --out-link "$tmp_dir/templates"
 
-        template_file="$tmp_dir/$name.yq"
-        plain_file="$tmp_dir/$name.plain.yaml"
-        target_file="$SECRETS_EXTRACT_DIR/terraform/hosts/$name.yaml"
+        message "getting host names..."
+        nix build "$flake#host-names" --out-link "$tmp_dir/host-names"
 
-        message "creating '$(basename "$template_file")'..."
-        nix eval "$flake"#nixosConfigurations."$name".config.sops.extractTemplates.terraformOutput --raw >"$template_file"
+        cat "$tmp_dir/host-names" | while read -r name; do
+          message "extracting '${secretType}/hosts/$name.yaml'..."
 
-        message "creating '$(basename "$plain_file")'..."
-        yq eval --from-file "$template_file" "$input_file" >"$plain_file"
+          template_file="$tmp_dir/templates/$name.yq"
+          plain_file="$tmp_dir/$name.plain.yaml"
+          target_file="$SECRETS_EXTRACT_DIR/${secretType}/hosts/$name.yaml"
 
-        message "creating '$(basename "$target_file")'..."
-        encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
-      done
-    '';
-  };
+          messageVerbose "creating '$(basename "$plain_file")'..."
+          yq eval --from-file "$template_file" "$input_file" >"$plain_file"
 
-  extractPredefined = pkgs.writeShellApplication {
-    name = "extract-secrets-predefined";
-    runtimeInputs = with pkgs; [
-      encryptTo
-      yq-go
-      sops
-      fd
-    ];
-    text = ''
-      ${common}
-
-      mkdir -p "$SECRETS_EXTRACT_DIR/predefined/hosts"
-
-      tmp_dir=$(mktemp -t --directory encrypt.XXXXXXXXXX)
-      function cleanup {
-        rm -r "$tmp_dir"
-      }
-      trap cleanup EXIT
-
-      cp "$1" "$tmp_dir/input.yaml"
-      input_file="$tmp_dir/input.yaml"
-
-      flake="$(realpath "$DOTFILES_DIR")"
-      mapfile -t hosts < <(nix eval "$flake"#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
-      for name in "''${hosts[@]}"; do
-        message "start extracting secrets for $name from predefined secrets..."
-
-        template_file="$tmp_dir/$name.yq"
-        plain_file="$tmp_dir/$name.plain.yaml"
-        target_file="$SECRETS_EXTRACT_DIR/predefined/hosts/$name.yaml"
-
-        message "creating '$(basename "$template_file")'..."
-        nix eval "$flake"#nixosConfigurations."$name".config.sops.extractTemplates.predefined --raw >"$template_file"
-
-        message "creating '$(basename "$plain_file")'..."
-        yq eval --from-file "$template_file" "$input_file" >"$plain_file"
-
-        message "creating '$(basename "$target_file")'..."
-        encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
-      done
-    '';
-  };
+          messageVerbose "creating '$(basename "$target_file")'..."
+          encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
+        done
+      '';
+    };
 in
 {
   devshells.default = {
@@ -149,16 +115,6 @@ in
       {
         category = "infrastructure";
         package = extractSecrets;
-      }
-
-      {
-        category = "infrastructure";
-        package = extractPredefined;
-      }
-
-      {
-        category = "infrastructure";
-        package = extractTerraformOutputs;
       }
     ];
   };

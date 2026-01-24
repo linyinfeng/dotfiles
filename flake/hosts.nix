@@ -540,6 +540,36 @@ in
     # PLACEHOLDER new host
   ];
 
+  perSystem =
+    { pkgs, ... }:
+    let
+      aggregateSecretsTemplates =
+        input:
+        pkgs.runCommand "aggregate-secrets-templates-${input}" { } ''
+          mkdir -p $out
+          ${lib.concatMapAttrsStringSep "\n" (
+            hostName: cfg:
+            let
+              secretTemplate = pkgs.writeTextFile {
+                name = "secret-template-${hostName}-${input}";
+                text = cfg.config.sops.extractTemplates.${input};
+              };
+            in
+            ''
+              cp "${secretTemplate}" "$out/${hostName}.yq"
+            ''
+          ) self.nixosConfigurations}
+        '';
+    in
+    {
+      packages."host-names" = pkgs.writeTextFile {
+        name = "host-names";
+        text = lib.concatStrings (lib.map (h: "${h}\n") (lib.attrNames self.nixosConfigurations));
+      };
+      packages."secrets-templates/terraform" = aggregateSecretsTemplates "terraformOutput";
+      packages."secrets-templates/predefined" = aggregateSecretsTemplates "predefined";
+    };
+
   flake.checks = lib.recursiveUpdate hostToplevels {
     # TODO fix
     # "aarch64-linux" = {
