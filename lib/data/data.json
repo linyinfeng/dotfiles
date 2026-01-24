@@ -55,8 +55,8 @@
       "proxy": true
     },
     "cache-overlay": {
-      "on": "hkg0",
-      "proxy": true
+      "on": "nuc",
+      "proxy": false
     },
     "dn42": {
       "on": "fsn0",

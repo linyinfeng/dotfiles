@@ -29,7 +29,6 @@ in
       services.oranc
       services.dot-tar
       services.dotfiles-update-trigger
-      services.cache-overlay
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
