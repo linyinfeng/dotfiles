@@ -43,6 +43,20 @@ let
     '';
   };
 
+  extractSecrets = pkgs.writeShellApplication {
+    name = "extract-secrets";
+    runtimeInputs = with pkgs; [
+      sops
+      extractTerraformOutputs
+      extractPredefined
+    ];
+    text = ''
+      ${common}
+      sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" 'extract-secrets-terraform-outputs {}'
+      sops exec-file "$SECRETS_DIR/predefined.yaml"        'extract-secrets-predefined {}'
+    '';
+  };
+
   extractTerraformOutputs = pkgs.writeShellApplication {
     name = "extract-secrets-terraform-outputs";
     runtimeInputs = with pkgs; [
@@ -62,6 +76,9 @@ let
       }
       trap cleanup EXIT
 
+      cp "$1" "$tmp_dir/input.yaml"
+      input_file="$tmp_dir/input.yaml"
+
       flake="$(realpath "$DOTFILES_DIR")"
       mapfile -t hosts < <(nix eval "$flake"#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
       for name in "''${hosts[@]}"; do
@@ -75,9 +92,7 @@ let
         nix eval "$flake"#nixosConfigurations."$name".config.sops.extractTemplates.terraformOutput --raw >"$template_file"
 
         message "creating '$(basename "$plain_file")'..."
-        sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
-          "yq eval --from-file '$template_file' {}" \
-          >"$plain_file"
+        yq eval --from-file "$template_file" "$input_file" >"$plain_file"
 
         message "creating '$(basename "$target_file")'..."
         encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
@@ -104,6 +119,9 @@ let
       }
       trap cleanup EXIT
 
+      cp "$1" "$tmp_dir/input.yaml"
+      input_file="$tmp_dir/input.yaml"
+
       flake="$(realpath "$DOTFILES_DIR")"
       mapfile -t hosts < <(nix eval "$flake"#nixosConfigurations --apply 'c: (builtins.concatStringsSep "\n" (builtins.attrNames c))' --raw)
       for name in "''${hosts[@]}"; do
@@ -117,9 +135,7 @@ let
         nix eval "$flake"#nixosConfigurations."$name".config.sops.extractTemplates.predefined --raw >"$template_file"
 
         message "creating '$(basename "$plain_file")'..."
-        sops exec-file "$SECRETS_DIR/predefined.yaml" \
-          "yq eval --from-file '$template_file' {}" \
-          >"$plain_file"
+        yq eval --from-file "$template_file" "$input_file" >"$plain_file"
 
         message "creating '$(basename "$target_file")'..."
         encrypt-to "$plain_file" "$target_file" yaml "yq --prettyPrint"
@@ -132,17 +148,7 @@ in
     commands = [
       {
         category = "infrastructure";
-        name = "extract-secrets";
-        command = ''
-          set -e
-
-          git -C "$SECRETS_DIR" pull
-
-          extract-secrets-predefined
-          extract-secrets-terraform-outputs
-
-          nix fmt
-        '';
+        package = extractSecrets;
       }
 
       {

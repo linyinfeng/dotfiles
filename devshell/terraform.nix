@@ -162,7 +162,7 @@ in
           terraform-update-outputs
           terraform-outputs-extract-data
 
-          extract-secrets-terraform-outputs
+          extract-secrets
 
           nix fmt
         '';
