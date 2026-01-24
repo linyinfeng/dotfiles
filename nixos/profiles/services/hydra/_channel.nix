@@ -102,13 +102,13 @@ let
     ];
     text = ''
       build_id=$(jq '.build' "$HYDRA_JSON")
-      flake_url=$(psql -t -U hydra -d hydra -c "
-            SELECT flake FROM jobsetevals
-            WHERE id = (SELECT eval FROM jobsetevalmembers
-                        WHERE build = $build_id
-                        LIMIT 1)
-            ORDER BY id DESC
-            LIMIT 1
+      flake_url=$(psql --tuples-only --username=hydra --dbname=hydra --command="
+          SELECT flake FROM jobsetevals
+          WHERE id = (SELECT eval FROM jobsetevalmembers
+                      WHERE build = $build_id
+                      LIMIT 1)
+          ORDER BY id DESC
+          LIMIT 1
         ")
       echo "$flake_url" | rg --only-matching '/(\w{40})(\?.*)?$' --replace '$1'
     '';
