@@ -18,12 +18,6 @@ let
       cat "$HYDRA_JSON" | jq
       echo "--- end event ---"
 
-      time=$(date --iso-8601=seconds)
-      mkdir -p "/tmp/hydra-events"
-      dump_file=$(mktemp "/tmp/hydra-events/$time-XXXXXX.json")
-      cp "$HYDRA_JSON" "$dump_file"
-      echo "event saved in: $dump_file"
-
       if [ "$(jq '.event == "buildFinished" and .buildStatus == 0' "$HYDRA_JSON")"  != "true" ]; then
         echo "not a successful buildFinished event, exit."
         exit 0
