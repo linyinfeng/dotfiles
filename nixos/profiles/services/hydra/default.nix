@@ -19,6 +19,11 @@ let
       dump_file=$(mktemp "/tmp/hydra-events/$time-XXXXXX.json")
       cp "$HYDRA_JSON" "$dump_file"
 
+      echo "event saved in: $dump_file"
+      echo "--- begin event ---"
+      cat "$dump_file"
+      echo "--- end   event ---"
+
       hit=$(jq '
         .project == "dotfiles" and
         (.jobset == "main" or .jobset == "staging") and
@@ -64,9 +69,9 @@ let
         else
           echo "job is not a nixos toplevel, or jobset is not main"
 
-          echo "copy out: $out"
           jq --raw-output '.products[].path' "$HYDRA_JSON" | (
             while read -r out; do
+              echo "copy to cache: $out"
               systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service" --no-block
             done
           )

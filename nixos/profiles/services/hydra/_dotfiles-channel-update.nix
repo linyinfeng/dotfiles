@@ -27,6 +27,7 @@
 
         jq --raw-output '.outs[]' "$update_file" | (
           while read -r out; do
+            echo "copy to cache: $out"
             systemctl start "copy-cache-li7g-com@$(systemd-escape "$out").service"
           done
         )
