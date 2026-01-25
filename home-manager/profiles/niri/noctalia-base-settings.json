@@ -32,6 +32,7 @@
     "density": "default",
     "exclusive": true,
     "floating": false,
+    "hideOnOverview": false,
     "marginHorizontal": 5,
     "marginVertical": 5,
     "monitors": [],
@@ -48,6 +49,7 @@
           "hideMode": "alwaysExpanded",
           "icon": "focus-centered",
           "id": "CustomButton",
+          "ipcIdentifier": "",
           "leftClickExec": "niri-restore-working",
           "leftClickUpdateText": false,
           "maxTextLength": {
@@ -78,6 +80,7 @@
           "hideMode": "alwaysExpanded",
           "icon": "notebook",
           "id": "CustomButton",
+          "ipcIdentifier": "",
           "leftClickExec": "niri msg action spawn -- firefox https://www.notion.so",
           "leftClickUpdateText": false,
           "maxTextLength": {
@@ -148,6 +151,7 @@
           "hideMode": "alwaysExpanded",
           "icon": "rocket",
           "id": "CustomButton",
+          "ipcIdentifier": "",
           "leftClickExec": "noctalia-shell ipc call launcher toggle",
           "leftClickUpdateText": true,
           "maxTextLength": {
@@ -178,6 +182,7 @@
           "hideMode": "alwaysExpanded",
           "icon": "keyboard",
           "id": "CustomButton",
+          "ipcIdentifier": "",
           "leftClickExec": "wvkbd-toggle",
           "leftClickUpdateText": false,
           "maxTextLength": {
@@ -444,7 +449,8 @@
     "showChangelogOnStartup": true,
     "showHibernateOnLockScreen": false,
     "showScreenCorners": false,
-    "showSessionButtonsOnLockScreen": true
+    "showSessionButtonsOnLockScreen": true,
+    "telemetryEnabled": true
   },
   "hooks": {
     "enabled": true,
@@ -452,6 +458,7 @@
     "performanceModeEnabled": "",
     "screenLock": "",
     "screenUnlock": "",
+    "session": "",
     "wallpaperChange": ""
   },
   "location": {
@@ -567,7 +574,7 @@
     "showHeader": true,
     "showNumberLabels": true
   },
-  "settingsVersion": 39,
+  "settingsVersion": 40,
   "systemMonitor": {
     "cpuCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
@@ -593,32 +600,17 @@
     "warningColor": ""
   },
   "templates": {
-    "alacritty": false,
-    "cava": false,
-    "code": false,
-    "discord": false,
-    "emacs": false,
-    "enableUserTemplates": false,
-    "foot": false,
-    "fuzzel": false,
-    "ghostty": false,
-    "gtk": false,
-    "helix": false,
-    "hyprland": false,
-    "kcolorscheme": false,
-    "kitty": false,
-    "mango": false,
-    "niri": true,
-    "pywalfox": false,
-    "qt": false,
-    "spicetify": false,
-    "telegram": true,
-    "vicinae": false,
-    "walker": false,
-    "wezterm": false,
-    "yazi": false,
-    "zed": false,
-    "zenBrowser": false
+    "activeTemplates": [
+      {
+        "enabled": true,
+        "id": "telegram"
+      },
+      {
+        "enabled": true,
+        "id": "niri"
+      }
+    ],
+    "enableUserTemplates": false
   },
   "ui": {
     "bluetoothDetailsViewMode": "grid",
