@@ -24,7 +24,7 @@ let
     inputs.nix-topology.overlays.default
     inputs.nix-alien.overlays.default
     inputs.kukui-nixos.overlays.default
-    inputs.nix-cachyos-kernel.overlays.default
+    inputs.nix-cachyos-kernel.overlays.pinned # but actually not pinned
     inputs.nix-cache-overlay.overlays.default
     (
       _final: prev:
