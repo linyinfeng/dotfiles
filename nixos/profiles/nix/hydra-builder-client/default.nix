@@ -2,7 +2,6 @@
 let
   dir = "nix-build-machines/hydra-builder";
   keyFile = config.sops.secrets."hydra_builder_private_key".path;
-  allSystems = lib.concatStringsSep "," config.lib.self.systems;
   nonAarch64Systems = lib.concatStringsSep "," (lib.remove "aarch64-linux" config.lib.self.systems);
 in
 {
@@ -14,8 +13,8 @@ in
   };
   # https://nixos.org/manual/nix/stable/advanced-topics/distributed-builds
   environment.etc."${dir}/machines".text = ''
-    hydra-builder@nuc  ${allSystems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
-    hydra-builder@fsn0 aarch64-linux ${keyFile} 2 200 benchmark,big-parallel
+    hydra-builder@nuc  x86_64-linux  ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@fsn0 aarch64-linux ${keyFile} 8 100 benchmark,big-parallel
   '';
   environment.etc."${dir}/machines-workstation".text = ''
     hydra-builder@nuc     ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel

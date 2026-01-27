@@ -2,7 +2,6 @@
   config,
   suites,
   profiles,
-  pkgs,
   lib,
   modulesPath,
   ...
@@ -175,10 +174,5 @@
 
     # stateVersion
     { system.stateVersion = "25.11"; }
-
-    # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=473068
-    {
-      security.polkit.package = lib.mkForce pkgs.polkit;
-    }
   ];
 }
