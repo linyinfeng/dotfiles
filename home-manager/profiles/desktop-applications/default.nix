@@ -12,6 +12,7 @@ in
     [
       # keep-sorted start
       amberol
+      bambu-studio
       calibre
       clapper
       element-desktop
@@ -105,6 +106,9 @@ in
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
+
+      ".config/BambuStudio"
+      ".local/share/bambu-studio"
 
       "Zotero"
     ];
