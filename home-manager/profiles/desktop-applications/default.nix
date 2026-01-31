@@ -19,6 +19,7 @@ in
       # gnuradio # unused
       gparted
       inkscape
+      kicad
       libreoffice-fresh
       meld
       mission-center
@@ -101,10 +102,12 @@ in
       ".config/inkscape"
       ".config/Moonlight Game Streaming Project"
       ".config/TeamSpeak"
+      ".config/kicad"
 
       ".local/share/Anki2"
       ".local/share/TelegramDesktop"
       ".local/share/geary"
+      ".local/share/kicad"
 
       "Zotero"
     ];
