@@ -70,6 +70,10 @@
       "on": "mtl0",
       "proxy": true
     },
+    "home-assistant": {
+      "on": "nuc",
+      "proxy": false
+    },
     "http-test": {
       "on": "mtl0",
       "proxy": true

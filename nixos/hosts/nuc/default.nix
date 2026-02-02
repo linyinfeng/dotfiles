@@ -64,6 +64,7 @@ in
     ++ [
       ./_minecraft-unmanaged
       ./_steam
+      ./_home-assistant
     ];
 
   config = lib.mkMerge [

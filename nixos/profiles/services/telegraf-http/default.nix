@@ -69,6 +69,7 @@ let
     portal = [ ];
     subscription = [ ];
     rathole-ad-hoc = [ ];
+    home-assistant = [ ];
   };
   overrides = {
     box = [

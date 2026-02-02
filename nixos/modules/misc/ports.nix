@@ -99,6 +99,7 @@
       babel = 6696;
       jellyfin-auto-discovery-2 = 7359;
       http-alternative = 8080;
+      home-assistant = 8123;
       https-alternative = 8443;
       zerotier = 9993;
       dn42-mesh-min = 19000;
