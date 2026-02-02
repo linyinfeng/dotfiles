@@ -545,7 +545,7 @@ in
     let
       aggregateSecretsTemplates =
         input:
-        pkgs.runCommand "aggregate-secrets-templates-${input}" { } ''
+        pkgs.runCommandLocal "aggregate-secrets-templates-${input}" { } ''
           mkdir -p $out
           ${lib.concatMapAttrsStringSep "\n" (
             hostName: cfg:
