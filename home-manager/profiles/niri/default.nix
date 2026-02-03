@@ -481,15 +481,23 @@ in
             fi
             path="home-manager/profiles/niri/noctalia-base-settings.json"
             full_path="$PRJ_ROOT/home-manager/profiles/niri/noctalia-base-settings.json"
+
+            tmp_dir=$(mktemp -t --directory noctalia-sync-settings.XXXXXXXXXX)
+            function cleanup {
+              rm -r "$tmp_dir"
+            }
+            trap cleanup EXIT
+            noctalia-shell ipc call state all >"$tmp_dir/current-settings.json"
+
             echo "writing to '$full_path'..."
-            jq 'del(
+            cat "$tmp_dir/current-settings.json" | jq '.settings | del(
               ${lib.concatMapAttrsStringSep ",\n  " (name: _value: ".${name}") (
                 osConfig.lib.self.flattenTree {
                   separator = ".";
                   mapper = x: "\"${x}\"";
                 } specialSettings
               )}
-            )' ~/.config/noctalia/gui-settings.json >"$full_path"
+            )' >"$full_path"
             nix fmt
 
             echo "git diff..."
