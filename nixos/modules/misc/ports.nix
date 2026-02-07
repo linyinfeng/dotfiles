@@ -74,7 +74,8 @@
       keycloak = 3260;
       qrcp = 3270;
       portal-socks = 3280;
-      portal-internal = 3281;
+      portal-http = 3281;
+      portal-internal = 3282;
       rathole = 3290;
       rathole-ad-hoc = 3291;
       ntfy = 3300;

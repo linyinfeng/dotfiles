@@ -24,9 +24,13 @@ in
         type = with lib.types; bool;
         default = false;
       };
-      port = lib.mkOption {
+      ports.http = lib.mkOption {
         type = with lib.types; int;
         default = 8080;
+      };
+      ports.socks = lib.mkOption {
+        type = with lib.types; int;
+        default = 1080;
       };
       extraV2rayConfig = lib.mkOption {
         type = with lib.types; attrs;
@@ -141,8 +145,13 @@ in
                 settings = {
                   udpEnabled = true;
                 };
-                inherit (cfg.client) port;
-                listen = "127.0.0.1";
+                port = cfg.client.ports.socks;
+                listen = "::1";
+              }
+              {
+                protocol = "http";
+                port = cfg.client.ports.http;
+                listen = "::1";
               }
             ];
             outbounds = [

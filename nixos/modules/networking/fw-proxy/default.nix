@@ -123,7 +123,7 @@ let
       ${cfg.configPreprocessing}
 
       echo "Build $filename..."
-      yq eval-all --prettyPrint 'select(fileIndex == 0) * select(fileIndex == 1)' "$raw_config" - <<EOF >"$dir/$filename"
+      yq eval-all --prettyPrint 'select(fileIndex == 0) *+ select(fileIndex == 1)' "$raw_config" - <<EOF >"$dir/$filename"
       ${builtins.toJSON cfg.mixinConfig}
       EOF
 

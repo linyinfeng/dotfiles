@@ -45,6 +45,19 @@ lib.mkMerge [
           level = "info";
           timestamp = false; # added by journald
         };
+        proxies =
+          if config.services.portal.client.enable then
+            [
+              {
+                name = "Portal";
+                type = "socks5";
+                server = "::1";
+                port = config.services.portal.client.ports.socks;
+                udp = true;
+              }
+            ]
+          else
+            [ ];
       };
       profiles = lib.listToAttrs (
         lib.lists.map (

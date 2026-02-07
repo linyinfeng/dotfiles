@@ -4,7 +4,8 @@
     host = "portal.li7g.com";
     client = {
       enable = true;
-      port = config.ports.portal-socks;
+      ports.socks = config.ports.portal-socks;
+      ports.http = config.ports.portal-http;
     };
   };
 }
