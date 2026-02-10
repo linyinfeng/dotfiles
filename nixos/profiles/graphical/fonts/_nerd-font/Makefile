@@ -2,6 +2,8 @@ FONT_FILES = $(shell ls ./fonts)
 FONTS = $(basename $(FONT_FILES))
 OUT_PATH = ${out}/share/fonts/truetype
 
+all: install
+
 .PHONY: all build install clean test
 
 build: $(foreach font,$(FONTS),patched/$(font)-nf.ttf)
