@@ -244,6 +244,7 @@ let
           vscode
           alacritty
           wezterm
+          android-studio
         ]);
       synchronize = with profiles; [
         onedrive
