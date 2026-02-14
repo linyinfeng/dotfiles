@@ -48,6 +48,7 @@ in
       services.gitlab-runner-sicp
       services.ollama
       services.open-webui
+      services.ace-bot
       i18n.input-method
       virtualization.podman
       users.yinfeng

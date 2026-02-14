@@ -2,6 +2,7 @@
 {
   services.ace-bot = {
     enable = true;
+    disk.size = "1GiB";
     telegram = {
       enable = true;
       managerChatId = "148111617";
@@ -22,7 +23,17 @@
             inherit (config.nix.registry) nixpkgs;
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
-          environment.systemPackages = with pkgs; [ nix-index-with-db ];
+          environment.systemPackages = with pkgs; [
+            nix-index-with-db
+            (pkgs.texliveBasic.withPackages (
+              ps: with ps; [
+                dvisvgm
+                pgf
+                amsfonts
+                xetex
+              ]
+            ))
+          ];
         }
       )
     ];

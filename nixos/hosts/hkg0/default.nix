@@ -24,7 +24,6 @@ in
       services.sicp-tutorials
       services.rathole
       services.pocket-id
-      services.ace-bot
       services.pgp-public-key-web
       services.oranc
       services.dot-tar
