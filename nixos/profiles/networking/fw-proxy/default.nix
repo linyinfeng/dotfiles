@@ -25,6 +25,9 @@ lib.mkMerge [
         controller = config.ports.clash-controller;
       };
       noProxyPattern = options.networking.fw-proxy.noProxyPattern.default ++ [
+        "ts.li7g.com"
+        "zt.li7g.com"
+        "dn42.li7g.com"
         "*.ts.li7g.com"
         "*.zt.li7g.com"
         "*.dn42.li7g.com"
