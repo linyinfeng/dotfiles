@@ -10,10 +10,12 @@ in
     isNormalUser = true;
     shell = pkgs.bash;
     home = homeDirectory;
+    group = name;
     extraGroups = with config.users.groups; [ users.name ];
 
     openssh.authorizedKeys.keyFiles = [ ./_ssh/id_rsa.pub ];
   };
+  users.groups.${name}.gid = uid; # use private group
 
   environment.global-persistence.user.users = [ name ];
   home-manager.users.${name} =

@@ -39,6 +39,7 @@ in
         ];
         shell = pkgs.fish;
         home = homeDirectory;
+        group = name; # private group
         extraGroups =
           with config.users.groups;
           [
@@ -68,6 +69,7 @@ in
 
         openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
       };
+      users.groups.${name}.gid = uid; # private group, same as uid
 
       sops.secrets."user_password_${name}" = {
         predefined.enable = true;
