@@ -139,6 +139,7 @@ locals {
     sicp-staging   = { on = "mtl0", proxy = true }
     minio          = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
+    open-webui     = { on = "mtl0", proxy = true }
     matrix         = { on = "fsn0", proxy = true }
     synapse-admin  = { on = "fsn0", proxy = true }
     social         = { on = "fsn0", proxy = true }

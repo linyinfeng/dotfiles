@@ -46,6 +46,8 @@ in
       services.rabbitmq
       services.mongodb
       services.gitlab-runner-sicp
+      services.ollama
+      services.open-webui
       i18n.input-method
       virtualization.podman
       users.yinfeng
