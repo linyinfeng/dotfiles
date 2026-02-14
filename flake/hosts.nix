@@ -102,7 +102,7 @@ let
         ++ (with profiles; [
           boot.binfmt
           boot.plymouth
-          boot.kernel.cachyos
+          # boot.kernel.cachyos
           system.types.workstation
           networking.network-manager
           networking.tools
