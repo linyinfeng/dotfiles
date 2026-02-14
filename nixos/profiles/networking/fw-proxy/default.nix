@@ -83,6 +83,7 @@ lib.mkMerge [
     };
 
     systemd.services.nix-daemon.environment = cfg.environment;
+    systemd.services.systemd-importd.environment = cfg.environment;
   }
   {
     sops.secrets = lib.listToAttrs (
