@@ -23,6 +23,9 @@
             inherit (config.nix.registry) nixpkgs;
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
+          fonts.packages = with pkgs; [
+            libertinus # for typst
+          ];
           environment.systemPackages = with pkgs; [
             fastfetch
             nix-index-with-db
