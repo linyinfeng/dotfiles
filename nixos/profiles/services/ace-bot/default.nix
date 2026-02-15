@@ -24,15 +24,17 @@
           };
           nix.nixPath = [ "nixpkgs=${pkgs.path}" ];
           environment.systemPackages = with pkgs; [
+            fastfetch
             nix-index-with-db
-            (pkgs.texliveBasic.withPackages (
-              ps: with ps; [
-                dvisvgm
-                pgf
-                amsfonts
-                xetex
-              ]
-            ))
+            typst
+            pkgs.texliveFull
+            # (pkgs.texliveBasic.withPackages (
+            #   ps: with ps; [
+            #     standalone
+            #     dvisvgm
+            #     xetex
+            #   ]
+            # ))
           ];
         }
       )
@@ -40,7 +42,7 @@
   };
   systemd.slices.ace-bot = {
     sliceConfig = {
-      CPUQuota = "100%";
+      CPUQuota = "200%";
     };
   };
   sops.secrets."telegram_bot_ace_bot" = {
