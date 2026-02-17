@@ -26,6 +26,7 @@ let
     inputs.kukui-nixos.overlays.default
     inputs.nix-cachyos-kernel.overlays.pinned # but actually not pinned
     inputs.nix-cache-overlay.overlays.default
+    inputs.hongbao-rpn.overlays.default
     (
       _final: prev:
       let

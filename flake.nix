@@ -112,6 +112,13 @@
     nix-cachyos-kernel.inputs.flake-parts.follows = "flake-parts";
     nix-cachyos-kernel.inputs.flake-compat.follows = "flake-compat";
 
+    # hongbao2026
+    hongbao-rpn.url = "github:linyinfeng/hongbao-rpn";
+    hongbao-rpn.inputs.nixpkgs.follows = "nixpkgs";
+    hongbao-rpn.inputs.flake-parts.follows = "flake-parts";
+    hongbao-rpn.inputs.treefmt-nix.follows = "treefmt-nix";
+    hongbao-rpn.inputs.crane.follows = "crane";
+
     # for angrr test on real environment
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";

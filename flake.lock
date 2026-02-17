@@ -577,6 +577,35 @@
         "type": "github"
       }
     },
+    "hongbao-rpn": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1771350501,
+        "narHash": "sha256-aBcTDSTHHiPGvcZUmmQjx8DiUiPJGWza5bZBE05UL/s=",
+        "owner": "linyinfeng",
+        "repo": "hongbao-rpn",
+        "rev": "6cb16f64b8903429117a0adf5f34bf426ef2e643",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "hongbao-rpn",
+        "type": "github"
+      }
+    },
     "kukui-nixos": {
       "inputs": {
         "conf2nix": [
@@ -1551,6 +1580,7 @@
         "gitignore-nix": "gitignore-nix",
         "haumea": "haumea",
         "home-manager": "home-manager",
+        "hongbao-rpn": "hongbao-rpn",
         "kukui-nixos": "kukui-nixos",
         "lanzaboote": "lanzaboote",
         "linyinfeng": "linyinfeng",

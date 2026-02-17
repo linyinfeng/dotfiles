@@ -127,6 +127,7 @@ locals {
     tar            = { on = "hkg0", proxy = true }
     pgp-public-key = { on = "hkg0", proxy = true }
     oranc          = { on = "hkg0", proxy = true }
+    hongbao2026    = { on = "hkg0", proxy = true }
     ace-bot        = { on = "mtl0", proxy = true }
     hledger        = { on = "mtl0", proxy = true }
     vault          = { on = "mtl0", proxy = true }

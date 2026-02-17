@@ -74,6 +74,10 @@
       "on": "nuc",
       "proxy": false
     },
+    "hongbao2026": {
+      "on": "hkg0",
+      "proxy": true
+    },
     "http-test": {
       "on": "mtl0",
       "proxy": true

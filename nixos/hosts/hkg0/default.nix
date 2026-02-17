@@ -28,6 +28,7 @@ in
       services.oranc
       services.dot-tar
       services.dotfiles-update-trigger
+      services.hongbao2026
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 

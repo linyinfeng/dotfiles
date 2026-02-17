@@ -459,3 +459,11 @@ output "nix_cache_overlay_token" {
   value     = random_password.nix_cache_overlay_token.result
   sensitive = true
 }
+resource "random_password" "hongbao2026_jwt_secret" {
+  length  = 64
+  special = false
+}
+output "hongbao2026_jwt_secret" {
+  value     = random_password.hongbao2026_jwt_secret.result
+  sensitive = true
+}
