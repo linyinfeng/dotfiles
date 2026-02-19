@@ -19,6 +19,9 @@ in
       frescobaldi
       musescore
 
+      # midi
+      timidity
+
       # plugin support
       # yabridge # TODO wait for https://github.com/NixOS/nixpkgs/issues/490049
       # yabridgectl
