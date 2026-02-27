@@ -18,7 +18,7 @@
       wqy_zenhei
       wqy_microhei
 
-      jetbrains-mono
+      # jetbrains-mono # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=493376
       font-awesome
       sarasa-gothic
 

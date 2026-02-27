@@ -12,6 +12,7 @@
     enableBashIntegration = true;
     enableZshIntegration = true;
     enableFishIntegration = true;
+    shellWrapperName = "y";
   };
 
   home.packages = with pkgs; [

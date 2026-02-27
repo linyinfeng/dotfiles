@@ -85,7 +85,7 @@ let
       virtualization = with profiles; [
         virtualization.libvirt
         virtualization.podman
-        virtualization.incus
+        # virtualization.incus # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=493404
       ];
       games = with profiles.graphical.game; [
         steam
