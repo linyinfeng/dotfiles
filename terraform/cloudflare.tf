@@ -132,7 +132,6 @@ locals {
     hledger        = { on = "mtl0", proxy = true }
     vault          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
-    git            = { on = "mtl0", proxy = true }
     box            = { on = "mtl0", proxy = true }
     minio-console  = { on = "mtl0", proxy = true }
     static         = { on = "mtl0", proxy = true }

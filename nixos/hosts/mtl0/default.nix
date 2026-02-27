@@ -33,7 +33,7 @@ in
       services.postgresql
       services.minio
       services.vaultwarden
-      services.gitweb
+      # services.gitweb
       # services.seafile
       services.commit-notifier
       services.pastebin
