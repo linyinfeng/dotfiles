@@ -175,7 +175,7 @@ jobs:
       - name: Terraform extract secrets
         if: always()
         run: |
-          nix develop ./dotfiles --command extract-secrets-terraform-outputs
+          nix develop ./dotfiles --command extract-secrets
       - name: Format
         if: always()
         run: |
