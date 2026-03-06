@@ -23,8 +23,8 @@ in
       timidity
 
       # plugin support
-      # yabridge # TODO wait for https://github.com/NixOS/nixpkgs/issues/490049
-      # yabridgectl
+      yabridge
+      yabridgectl
     ]
     ++ audioPlugins;
   home.sessionVariables = {

@@ -144,8 +144,6 @@ let
     in
     [
       (_final: _prev: {
-        # TODO wait for https://github.com/NixOS/nixpkgs/issues/476278
-        inherit (channels.stable) hydra;
       })
     ];
 in
