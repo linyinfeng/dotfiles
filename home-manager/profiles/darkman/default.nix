@@ -15,6 +15,10 @@ in
 {
   services.darkman = {
     enable = true;
+    settings = {
+      dbusserver = true;
+      portal = true;
+    };
     lightModeScripts = {
       gnome = "${lib.getExe switchGnome} light";
     };
