@@ -14,7 +14,7 @@
   services.pulseaudio.enable = lib.mkDefault false;
 
   environment.systemPackages = with pkgs; [
-    helvum
+    crosspipe
     easyeffects
   ];
   environment.global-persistence.user.directories = [
