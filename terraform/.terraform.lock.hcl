@@ -450,21 +450,21 @@ provider "registry.terraform.io/tencentcloudstack/tencentcloud" {
 }
 
 provider "registry.terraform.io/vancluever/acme" {
-  version = "2.45.1"
+  version = "2.46.0"
   hashes = [
-    "h1:aWpiCN6sgPjaJCQ0qf1UK69d+4eensDefbUxYs+oqIE=",
-    "zh:0159f7cf23df4ca94ba419ae43071d5e560e2750ce3da4025c3d4814aeb3d049",
-    "zh:214908521f95d948f4b84ada925bd41dd4f626ed92bc39b0216c47ff538aaf4a",
-    "zh:33181b7fddb208ee62c4c50baee35eb1341553f4b14483b2ddf57a168f36d183",
-    "zh:3cd6199a36d648e3c471593d34874a0ab8fa76ded1033f959a0fc78b739befba",
-    "zh:475e6395faad5c156ac48cd36e1ac62d26dc9c73f7bf61c844e93095e32aac4b",
-    "zh:4b25d48f9fff52b8b575aa365511eacfc9a34f7bde4dde347858551f295a69b8",
-    "zh:57647a8598f8fe171a075d60761c68e62aae436abe0610e22e3391d0a85532dd",
-    "zh:84967933ed856a52e3da354b61505eca683ce9dd1b46b54df98adf47b348808c",
-    "zh:9aa3fbfc50e715bbc5a5d8e0ecb9ee7ff47e4a1f980444db869ca47f4e8f47f6",
-    "zh:c65579595a9ce8d3bf42c45d1eac1dad80ca300ec9ef23f84cd793dbe9110e51",
-    "zh:d64acdc4dd7e1fae67ae1869143bf9878cf37c82c5bb431eca587d5450df298f",
-    "zh:e28eaf6910e2d4322f497b58e76d6af5c307dcf9cf01036af8f4ad380acaad98",
+    "h1:iU0RtbMkWxeqVZwm3P2CLQtEAadfPhEyymEJm8j/MjM=",
+    "zh:0a171879c5745143d68da3c3afc4ec81725bfcbb29e253ac81b0effbcb392f2a",
+    "zh:149fe8706ad99f448da3081aff5861b290890239967d47e033c7b80e17746cef",
+    "zh:237c1e81839b74de5393b9b46ad8e939e0fcca3741cda6b5bedc2b023cc852f6",
+    "zh:3779122a68e09d486f1a5040b73ef784d342f49ac557992af2370b5e1ad17137",
+    "zh:39fa8c065f3a8e34da79861e1fdb54332451df6432cbda9bc6eb6b9071ab5ccd",
+    "zh:45079d266127a119eb83788feae318d69f7648d9c19fc93b9bbd4c4e36b6bca1",
+    "zh:6e0039f639e7bad8a360adcd18bb9dd5dd2fddba95e559fa46e7c60cc9ab959f",
+    "zh:8d0701abc33d4bf2e00bb13e8ae209c564cf8f98c8bb5134b8101876abcc2302",
+    "zh:b4395fb3c05a426687ae7fa355937dd5a64c6f8f00e0b8cda00c5e17dbbd3694",
+    "zh:ca0a7a02262b26c7241fe0a5592575a8ee9c84839dd5762c584c501a8ca41007",
+    "zh:cbb38e5d88a023ee9f389ed16c80d6d6f2cdcc96b606d216377cc713283baddf",
+    "zh:ec8b51eff3a1c5ea2a4064c0504acc37f224039fcb16aa74508eccbbe73f5871",
   ]
 }
 
