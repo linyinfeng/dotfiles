@@ -25,6 +25,8 @@
       corefonts
       vista-fonts
 
+      newcomputermodern
+
       nerd-fonts.iosevka-term-slab
 
       linyinfeng.plangothic.otc
