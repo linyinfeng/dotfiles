@@ -1246,11 +1246,11 @@
     },
     "nixpkgs-latest": {
       "locked": {
-        "lastModified": 1774507335,
-        "narHash": "sha256-pTexELRBYKfSlM9yXkXcsWR5Uo5tIcKZpO3kWpvdEzs=",
+        "lastModified": 1774508948,
+        "narHash": "sha256-jsdVk6rke8UfpUGi8E14gMNU5e1TnY03MnmUJxoUzyo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6f2bd12ede90ea2fa32822647ce9f70cd42218f6",
+        "rev": "845fd0d8f12f89bc5ea26e0e4eb4552e01991bf0",
         "type": "github"
       },
       "original": {
@@ -1346,11 +1346,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774506888,
-        "narHash": "sha256-b1ZzZngeKPkgvvycb3nrz/z1zjr9lBJbMCqfQFS8XVs=",
+        "lastModified": 1774508357,
+        "narHash": "sha256-QBkeKP3oAUOXQC/7RgU0vQYa+sBV5mnY3kOeoh/HBuY=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "b4a8f347ccb0368b144a720b236e77bece3ee887",
+        "rev": "b0af6e17383b04a1a8cd738366a16c206988b015",
         "type": "github"
       },
       "original": {
@@ -1444,11 +1444,11 @@
       "flake": false,
       "locked": {
         "host": "gitlab.postmarketos.org",
-        "lastModified": 1774481852,
-        "narHash": "sha256-AIXA4Bv0TBcFSwtnNZk5HMGopXU8/6TXv7pdLn2kHBE=",
+        "lastModified": 1774508745,
+        "narHash": "sha256-UJH0fELCQsDx5BhLYed3i1nfG3SIaKJrVo5mv3BBFlo=",
         "owner": "postmarketOS",
         "repo": "pmaports",
-        "rev": "7d77c762fbe18a738b5bef822f495ad98a5a028d",
+        "rev": "f16ca169e0cd480604bb8b0c0cc9362c79ef9e71",
         "type": "gitlab"
       },
       "original": {
