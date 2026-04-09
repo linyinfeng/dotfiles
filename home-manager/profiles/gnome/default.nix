@@ -70,7 +70,6 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
       ];
     };
     "org/gnome/desktop/interface" = {
-      gtk-theme = "adw-gtk3";
       clock-show-weekday = longStatusBar;
       show-battery-percentage = longStatusBar;
       locate-pointer = true;
@@ -168,6 +167,8 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
 
   gtk = {
     enable = true;
+    theme.name = "adw-gtk3";
+    gtk4.theme = null;
     iconTheme = {
       name = "Papirus";
       package = pkgs.papirus-icon-theme;
