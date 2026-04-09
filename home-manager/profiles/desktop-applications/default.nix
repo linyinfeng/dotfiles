@@ -12,7 +12,7 @@ in
     [
       # keep-sorted start
       amberol
-      # calibre # TODO wait for https://github.com/NixOS/nixpkgs/issues/494339
+      calibre
       clapper
       element-desktop
       gimp
