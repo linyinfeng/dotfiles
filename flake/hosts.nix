@@ -94,7 +94,7 @@ let
       monitoring = with profiles; [
         services.telegraf
         services.telegraf-system
-        services.promtail
+        services.alloy
       ];
 
       workstation =

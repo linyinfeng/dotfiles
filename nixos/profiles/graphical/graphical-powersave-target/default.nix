@@ -6,7 +6,7 @@
     conflicts = [
       "cowrie.service"
       "telegraf.service"
-      "promtail.service"
+      "alloy.service"
       "tailscaled.service"
       "zerotierone.service"
       "container@syncthing-yinfeng.service"

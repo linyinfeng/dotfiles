@@ -8,12 +8,12 @@ resource "grafana_cloud_stack" "yinfeng" {
   slug        = "yinfeng"
   region_slug = "prod-us-east-0"
 }
-resource "grafana_cloud_access_policy" "promtail" {
+resource "grafana_cloud_access_policy" "logging" {
   provider = grafana.cloud
 
   region       = grafana_cloud_stack.yinfeng.region_slug
-  name         = "promtail"
-  display_name = "Promtail"
+  name         = "logging"
+  display_name = "logging"
 
   scopes = ["metrics:write", "logs:write", "traces:write"]
   realm {
@@ -21,13 +21,13 @@ resource "grafana_cloud_access_policy" "promtail" {
     identifier = grafana_cloud_stack.yinfeng.org_id
   }
 }
-resource "grafana_cloud_access_policy_token" "promtail" {
+resource "grafana_cloud_access_policy_token" "logging" {
   provider = grafana.cloud
 
   region           = grafana_cloud_stack.yinfeng.region_slug
-  access_policy_id = grafana_cloud_access_policy.promtail.policy_id
-  name             = "promtail"
-  display_name     = "Promtail Token"
+  access_policy_id = grafana_cloud_access_policy.logging.policy_id
+  name             = "Logging"
+  display_name     = "Logging Token"
 }
 output "loki_username" {
   value     = tostring(grafana_cloud_stack.yinfeng.logs_user_id)
@@ -38,7 +38,7 @@ output "loki_host" {
   sensitive = false
 }
 output "loki_password" {
-  value     = grafana_cloud_access_policy_token.promtail.token
+  value     = grafana_cloud_access_policy_token.logging.token
   sensitive = true
 }
 
