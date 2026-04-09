@@ -191,8 +191,6 @@
 
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
-    run0-sudo-shim.inputs.flake-utils.follows = "flake-utils";
-    run0-sudo-shim.inputs.rust-overlay.follows = "rust-overlay";
     run0-sudo-shim.inputs.treefmt-nix.follows = "treefmt-nix";
     run0-sudo-shim.inputs.nix-github-actions.follows = "nix-github-actions";
 
@@ -222,6 +220,11 @@
 
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
+    noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
+    noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
+    noctalia-qs.inputs.systems.follows = "systems";
+    noctalia-qs.inputs.treefmt-nix.follows = "treefmt-nix";
 
     # libraries
 
@@ -246,7 +249,6 @@
     crate2nix.inputs.flake-parts.follows = "flake-parts";
     crate2nix.inputs.flake-compat.follows = "flake-compat";
     crate2nix.inputs.devshell.follows = "devshell";
-    crate2nix.inputs.crate2nix_stable.follows = "blank";
     crate2nix.inputs.nix-test-runner.follows = "blank";
     crate2nix.inputs.cachix.follows = "cachix";
     crate2nix.inputs.pre-commit-hooks.follows = "pre-commit-hooks-nix";
