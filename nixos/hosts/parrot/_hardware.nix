@@ -141,12 +141,12 @@ lib.mkMerge [
             name = "docked-dorm";
             outputs = [
               {
-                criteria = embedded;
-                position = "0,192";
+                criteria = dormMonitor;
+                position = "0,0";
               }
               {
-                criteria = dormMonitor;
-                position = "1536,0";
+                criteria = embedded;
+                position = "2048,192";
               }
             ];
           };
