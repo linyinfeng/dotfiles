@@ -259,6 +259,8 @@ in
           // restore working environment
           spawn-at-startup "niri-restore-working"
 
+          // noctalia shell
+          spawn-at-startup "noctalia-shell"
           include "noctalia.kdl"
         '';
       systemd.user.tmpfiles.rules = [
@@ -511,20 +513,12 @@ in
       {
         programs.noctalia-shell = {
           enable = true;
-          systemd.enable = true;
           settings = lib.foldr lib.recursiveUpdate { } [
             (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json))
             specialSettings
             config.programs.noctalia.extraSettings
           ];
         };
-        systemd.user.services.noctalia-shell =
-          let
-            inherit (osConfig.networking) fw-proxy;
-          in
-          {
-            Service.Environment = lib.mkIf fw-proxy.enable fw-proxy.stringEnvironment;
-          };
         xdg.configFile."noctalia/settings.json".force = true;
         home.file.".cache/noctalia/wallpapers.json" = {
           text = builtins.toJSON {
