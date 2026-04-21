@@ -48,7 +48,7 @@ in
       services.gitlab-runner-sicp
       services.ollama
       services.open-webui
-      services.ace-bot
+      # services.ace-bot # TODO broken
       i18n.input-method
       virtualization.podman
       users.yinfeng
