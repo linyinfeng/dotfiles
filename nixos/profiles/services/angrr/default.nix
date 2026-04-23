@@ -22,7 +22,7 @@ in
           profile-paths = [ "/nix/var/nix/profiles/system" ];
           keep-since = "0";
           keep-latest-n = 0;
-          keep-n-per-bucket = lib.optional (!isSimpleServer) [
+          keep-n-per-bucket = lib.optionals (!isSimpleServer) [
             {
               bucket-window = "1 day";
               bucket-amount = 7;
