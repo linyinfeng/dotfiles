@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   isSimpleServer = config.system.types == [ "server" ];
 in
@@ -21,7 +21,17 @@ in
         system = {
           profile-paths = [ "/nix/var/nix/profiles/system" ];
           keep-since = "0";
-          keep-latest-n = if isSimpleServer then 0 else 3;
+          keep-latest-n = 0;
+          keep-n-per-bucket = lib.optional (!isSimpleServer) [
+            {
+              bucket-window = "1 day";
+              bucket-amount = 7;
+            }
+            {
+              bucket-window = "1 week";
+              bucket-amount = 4;
+            }
+          ];
           keep-current-system = true;
           keep-booted-system = true;
         };
