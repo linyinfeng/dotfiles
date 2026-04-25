@@ -584,27 +584,6 @@ in
       }
     )
 
-    # swayidle
-    {
-      services.swayidle = {
-        enable = true;
-        events = {
-          before-sleep = lib.escapeShellArgs lockScreen;
-          lock = lib.escapeShellArgs lockScreen;
-        };
-        timeouts = [
-          {
-            timeout = 300;
-            command = lib.escapeShellArgs lockScreen;
-          }
-          {
-            timeout = 330;
-            command = "${lib.getExe osConfig.programs.niri.package} msg action power-off-monitors";
-          }
-        ];
-      };
-    }
-
     # kanshi
     {
       home.packages = with pkgs; [
