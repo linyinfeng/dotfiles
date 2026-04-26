@@ -3,7 +3,7 @@ let
   audioPlugins = with pkgs; [
     # lv2
     neural-amp-modeler-lv2
-    sfizz
+    sfizz-ui
     # ladspa
   ];
 in
