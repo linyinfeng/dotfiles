@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  imports = [
+    ./_llm.nix
+  ];
   home.packages = with pkgs; [
     racket
   ];
