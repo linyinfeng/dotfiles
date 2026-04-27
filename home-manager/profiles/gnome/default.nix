@@ -31,10 +31,6 @@ in
 lib.mkIf osConfig.services.desktopManager.gnome.enable {
   home.packages = extensionPkgs;
 
-  programs.chromium.extensions = [
-    "gphhapmejobijbbhgpjhcjognlahblep" # GNOME Shell integration
-  ];
-
   # remove initial setup dialog
   home.file.".config/gnome-initial-setup-done".text = "yes";
 
@@ -55,7 +51,7 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
       favorite-apps = lib.mkBefore [
         "org.gnome.Console.desktop"
         "org.gnome.Nautilus.desktop"
-        "firefox.desktop"
+        "google-chrome.desktop"
         "gnome-system-monitor.desktop"
         "code.desktop"
       ];

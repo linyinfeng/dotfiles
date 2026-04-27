@@ -219,6 +219,7 @@ in
             default-floating-position x=32 y=32 relative-to="bottom-right"
           }
           window-rule {
+            match app-id="^google-chrome$"
             match app-id="^chromium-browser$"
             geometry-corner-radius 16 16 ${toString windowCornerRadius} ${toString windowCornerRadius}
           }

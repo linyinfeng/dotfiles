@@ -206,6 +206,7 @@ let
         darkman
         dconf-proxy
         firefox
+        google-chrome
         rime
         fcitx5
         mime
