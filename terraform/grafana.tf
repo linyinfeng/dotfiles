@@ -26,7 +26,7 @@ resource "grafana_cloud_access_policy_token" "logging" {
 
   region           = grafana_cloud_stack.yinfeng.region_slug
   access_policy_id = grafana_cloud_access_policy.logging.policy_id
-  name             = "Logging"
+  name             = "logging"
   display_name     = "Logging Token"
 }
 output "loki_username" {
