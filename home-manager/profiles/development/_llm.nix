@@ -4,6 +4,7 @@
     enable = true;
     enableMcpIntegration = true;
   };
+  programs.bun.enable = true;
   programs.gemini-cli = {
     enable = true;
     enableMcpIntegration = true;

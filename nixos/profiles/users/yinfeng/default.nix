@@ -102,25 +102,20 @@ in
 
     # claude-code
     {
-      home-manager.users.yinfeng.home.sessionVariables = {
-        CLAUDE_ENV_FILE = config.sops.templates."claude-code-env".path;
-      };
-      sops.templates."claude-code-env" = {
-        content = ''
-          ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
-          ANTHROPIC_AUTH_TOKEN=${config.sops.placeholder."deepseek_api_key"}
-          ANTHROPIC_MODEL=deepseek-v4-pro[1m]
-          ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]
-          ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-pro[1m]
-          ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
-          CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
-          CLAUDE_CODE_EFFORT_LEVEL=max
-        '';
-        owner = name;
-      };
+      home-manager.users.yinfeng.programs.fish.interactiveShellInit = ''
+        export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+        export ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."deepseek_api_key".path}")"
+        export ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
+        export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
+        export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
+        export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
+        export CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
+        export CLAUDE_CODE_EFFORT_LEVEL="max"
+      '';
       sops.secrets."deepseek_api_key" = {
         predefined.enable = true;
         restartUnits = [ ];
+        owner = name;
       };
     }
 
@@ -131,7 +126,8 @@ in
       '';
       sops.secrets."gemini_api_key" = {
         predefined.enable = true;
-        owner = "yinfeng";
+        restartUnits = [ ];
+        owner = name;
       };
     }
 
