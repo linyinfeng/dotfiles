@@ -41,7 +41,7 @@ in
         defaults = {
           email = "lin.yinfeng@outlook.com";
           dnsProvider = "cloudflare";
-          credentialsFile = config.sops.templates.acme-credentials.path;
+          environmentFile = config.sops.templates.acme-credentials.path;
         };
       };
       sops.secrets."cloudflare_token" = {
