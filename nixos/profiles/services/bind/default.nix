@@ -1,10 +1,15 @@
-{ config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   inherit (config.lib.self) data;
   dotPort = config.ports.dns-over-tls;
   dohEndpoint = "/dns-query";
   commonTlsCfg = ''
-    ciphers "${config.services.nginx.sslCiphers}";
+    ciphers "${lib.concatStringsSep ":" config.services.nginx.sslCiphers}";
     prefer-server-ciphers yes;
     ca-file "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
     dhparam-file "${config.sops.secrets."dhparam_pem".path}";
@@ -49,7 +54,7 @@ in
       tls local {
         cert-file "${config.security.acme.tfCerts."li7g_com".fullChain}";
         key-file  "${config.security.acme.tfCerts."li7g_com".key}";
-        ciphers "${config.services.nginx.sslCiphers}";
+        ciphers "${lib.concatStringsSep ":" config.services.nginx.sslCiphers}";
       };
       tls cloudflare {
         remote-hostname "one.one.one.one";
