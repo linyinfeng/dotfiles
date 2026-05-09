@@ -8,7 +8,7 @@ resource "garage_bucket" "backup" {
 resource "garage_key" "backup" {
   name = "backup-${var.name}"
 }
-output "garage_pastebin_key_id" {
+output "garage_backup_key_id" {
   value     = garage_key.backup.id
   sensitive = false
 }
