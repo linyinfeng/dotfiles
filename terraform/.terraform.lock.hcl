@@ -19,26 +19,6 @@ provider "registry.terraform.io/aliyun/alicloud" {
   ]
 }
 
-provider "registry.terraform.io/aminueza/minio" {
-  version = "3.34.0"
-  hashes = [
-    "h1:eP6UR0u7L9+YcmLc2ZWYeHVeE+waZ7AhLyCSh1oQUF4=",
-    "zh:032e7736efd62cdbc4e54bc55400c4e0ae0e6857ebfd42b8eebff787879295d8",
-    "zh:07a1df5195f76c99bdbbb51c72c5f6840f6420f8547dc3c9245b3e3707ed9c99",
-    "zh:37f5d2ab06b72418d130b6b227281056f5112c2e6f8f36869c00de7a963e0e5a",
-    "zh:39b2b4b3ce3229bf92fbebaa7dc2967053c2c7120a93d7c346c5e8f661225b73",
-    "zh:525bb15d3d8380695e0c2b34cf487d6e9ca419bd56defef7d30210ab749844ba",
-    "zh:70febade6688887fcea281917078a8cd80c75a94959b3c4809c903670a8949d8",
-    "zh:7767abec3fac30a2641e2871ea2eef43e062da1d5dd6ef2f52d91237f2136d34",
-    "zh:86f650edb73926c8f112710cb418ce864429abd7e1f0f6776538f89a298a7afe",
-    "zh:8d9b9b704007c04196d105b9ddbaef53e4dbdc9d62a3d93cd0b0ad1ee1a2d0bf",
-    "zh:ad3fc919acf5446fddfb0a6912e094c82f552a2b6d0333bb724d445b700a5cf3",
-    "zh:afd590c4d4005426fdae26b720d646121a207a67a25c81178f6daa35fe2b4e9b",
-    "zh:c5ad82a818a7ecb0291becab548df85591c413397e2524c2651308b7918d83c8",
-    "zh:fa46fc7592fa4ea7fba86556b0e432f5d6f1b34602857d65c1e7d9f2d3405905",
-  ]
-}
-
 provider "registry.terraform.io/backblaze/b2" {
   version = "0.12.1"
   hashes = [
