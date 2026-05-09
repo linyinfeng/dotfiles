@@ -144,6 +144,7 @@ let
     in
     [
       (_final: _prev: {
+        inherit (channels.stable) shim-unsigned; # TODO fix
       })
     ];
 in
