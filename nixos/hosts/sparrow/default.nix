@@ -58,7 +58,7 @@
       i18n.inputMethod.type = "fcitx5";
 
       # faster build
-      documentation.man.generateCaches = false;
+      documentation.man.cache.enable = false;
 
       services.fstrim.enable = true;
       environment.global-persistence.enable = true;

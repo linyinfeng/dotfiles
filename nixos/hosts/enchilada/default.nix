@@ -54,7 +54,7 @@ in
 
     # faster build
     {
-      documentation.man.generateCaches = false;
+      documentation.man.cache.enable = false;
     }
 
     (lib.mkIf (!minimal) (
