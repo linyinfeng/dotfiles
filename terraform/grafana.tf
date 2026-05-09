@@ -69,8 +69,8 @@ resource "grafana_dashboard" "http_response" {
   config_json = file("${path.module}/grafana/dashboards/http-response.json")
   folder      = grafana_folder.infrastructure.uid
 }
-resource "grafana_dashboard" "minio" {
-  config_json = file("${path.module}/grafana/dashboards/minio.json")
+resource "grafana_dashboard" "garage" {
+  config_json = file("${path.module}/grafana/dashboards/garage.json")
   folder      = grafana_folder.infrastructure.uid
 }
 resource "grafana_dashboard" "system" {

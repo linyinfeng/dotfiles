@@ -47,8 +47,10 @@
       matrix-manhole = 3091;
       mautrix-telegram-appservice = 3100;
       matrix-qq-appservice = 3101;
-      minio = 3110;
-      minio-console = 3111;
+      garage-rpc = 3110;
+      garage-s3 = 3111;
+      garage-web = 3112;
+      garage-admin = 3113;
       sigv4-proxy = 3120;
       dot-tar = 3130;
       proxy-http = 3140;

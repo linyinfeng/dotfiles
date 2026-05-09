@@ -145,7 +145,7 @@ in
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
     serverName = "nextcloud.*";
   };
-  services.restic.backups.minio.paths = [ cfg.home ];
+  services.restic.backups.garage.paths = [ cfg.home ];
 
   systemd.services.nextcloud-cron.path = with pkgs; [ perl ];
   systemd.services.phpfpm-nextcloud.serviceConfig = {

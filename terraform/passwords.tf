@@ -467,3 +467,37 @@ output "hongbao2026_jwt_secret" {
   value     = random_password.hongbao2026_jwt_secret.result
   sensitive = true
 }
+resource "shell_sensitive_script" "garage_rpc_secret" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+      secret=$(openssl rand -hex 32)
+      jq --null-input \
+        --arg secret "$secret" \
+        '{"secret": $secret}'
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
+}
+output "garage_rpc_secret" {
+  value     = shell_sensitive_script.garage_rpc_secret.output.secret
+  sensitive = true
+}
+resource "random_password" "garage_admin_token" {
+  length  = 64
+  special = false
+}
+output "garage_admin_token" {
+  value     = random_password.garage_admin_token.result
+  sensitive = true
+}
+resource "random_password" "garage_metrics_token" {
+  length  = 64
+  special = false
+}
+output "garage_metrics_token" {
+  value     = random_password.garage_metrics_token.result
+  sensitive = true
+}

@@ -1,7 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   programs.firefox = {
     enable = true;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     profiles = {
       main = {
         id = 0;
@@ -24,8 +25,7 @@
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = "1";
   };
-
   home.global-persistence = {
-    directories = [ ".mozilla" ];
+    directories = [ "${config.xdg.configHome}/mozilla/firefox" ];
   };
 }

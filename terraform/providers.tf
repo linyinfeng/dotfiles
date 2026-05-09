@@ -47,8 +47,8 @@ terraform {
     sops = {
       source = "carlpett/sops"
     }
-    minio = {
-      source = "aminueza/minio"
+    garage = {
+      source = "jkossis/garage"
     }
     shell = {
       source = "linyinfeng/shell"

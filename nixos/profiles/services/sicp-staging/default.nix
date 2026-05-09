@@ -161,10 +161,10 @@ lib.mkMerge [
           tls-verify = false;
         };
         s3 = {
-          endpoint = "https://minio.li7g.com";
-          access-key = config.sops.placeholder."minio_sicp_staging_key_id";
-          secret-key = config.sops.placeholder."minio_sicp_staging_access_key";
-          region = "us-east-1";
+          endpoint = "https://garage.li7g.com";
+          access-key = config.sops.placeholder."garage_sicp_staging_key_id";
+          secret-key = config.sops.placeholder."garage_sicp_staging_access_key";
+          region = "garage";
           bucket = "sicp-staging";
         };
         oauth2 = {
@@ -294,11 +294,11 @@ lib.mkMerge [
       terraformOutput.enable = true;
       restartUnits = [ "sicp-staging-app.service" ];
     };
-    sops.secrets."minio_sicp_staging_key_id" = {
+    sops.secrets."garage_sicp_staging_key_id" = {
       terraformOutput.enable = true;
       restartUnits = [ "sicp-staging-app.service" ];
     };
-    sops.secrets."minio_sicp_staging_access_key" = {
+    sops.secrets."garage_sicp_staging_access_key" = {
       terraformOutput.enable = true;
       restartUnits = [ "sicp-staging-app.service" ];
     };

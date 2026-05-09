@@ -26,12 +26,6 @@ let
         code = 200;
       }
     ];
-    minio = [
-      {
-        url = "https://minio.li7g.com";
-        code = 403;
-      }
-    ];
     matrix-qq = [
       # TODO broken
       # {
@@ -125,6 +119,15 @@ let
         url = "https://sicp-tutorials.li7g.com";
         code = 401;
       }
+    ];
+    s3 = [
+      {
+        url = "https://s3.li7g.com";
+        code = 403;
+      }
+    ];
+    s3-web = [ ];
+    garage-admin = [
     ];
   };
   mkServiceCfg =

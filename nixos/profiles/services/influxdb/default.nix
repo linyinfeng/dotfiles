@@ -19,7 +19,7 @@ let
         retention = "30d";
         ensureBuckets = [
           "system"
-          "minio"
+          "garage"
           "minecraft"
           "http"
         ];

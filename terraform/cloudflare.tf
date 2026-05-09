@@ -133,11 +133,12 @@ locals {
     vault          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
     box            = { on = "mtl0", proxy = true }
-    minio-console  = { on = "mtl0", proxy = true }
     static         = { on = "mtl0", proxy = true }
     http-test      = { on = "mtl0", proxy = true }
     sicp-staging   = { on = "mtl0", proxy = true }
-    minio          = { on = "mtl0", proxy = false }
+    s3             = { on = "mtl0", proxy = true }
+    s3-web         = { on = "mtl0", proxy = true }
+    garage-admin   = { on = "mtl0", proxy = true }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     open-webui     = { on = "mtl0", proxy = true }
     matrix         = { on = "fsn0", proxy = true }

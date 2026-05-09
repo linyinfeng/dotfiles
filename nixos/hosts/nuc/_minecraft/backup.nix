@@ -19,10 +19,10 @@ in
     };
   };
 
-  services.restic.backups.minio = {
+  services.restic.backups.garage = {
     paths = [ backupDir ];
   };
-  systemd.services."restic-backups-minio" = {
+  systemd.services."restic-backups-garage" = {
     requires = [ "minecraft-backup.service" ];
     after = [ "minecraft-backup.service" ];
   };

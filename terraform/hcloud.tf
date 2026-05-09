@@ -34,7 +34,6 @@ resource "hcloud_primary_ip" "fsn0_ipv4" {
   name              = "fsn0-v4"
   type              = "ipv4"
   location          = "fsn1"
-  assignee_type     = "server"
   auto_delete       = false
   delete_protection = true
 }
@@ -43,7 +42,6 @@ resource "hcloud_primary_ip" "fsn0_ipv6" {
   name              = "fsn0-v6"
   type              = "ipv6"
   location          = "fsn1"
-  assignee_type     = "server"
   auto_delete       = false
   delete_protection = true
 }

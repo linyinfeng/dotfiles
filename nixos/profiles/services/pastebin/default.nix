@@ -15,7 +15,7 @@
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
       ${pkgs.pastebin}/bin/pastebin \
-        --endpoint-host minio.li7g.com \
+        --endpoint-host s3.li7g.com \
         --bucket pastebin \
         --addressing-style path \
         --port "${toString config.ports.pastebin}"
@@ -23,17 +23,17 @@
     serviceConfig = {
       DynamicUser = true;
       LoadCredential = [
-        "key-id:${config.sops.secrets."minio_pastebin_key_id".path}"
-        "access-key:${config.sops.secrets."minio_pastebin_access_key".path}"
+        "key-id:${config.sops.secrets."garage_pastebin_key_id".path}"
+        "access-key:${config.sops.secrets."garage_pastebin_access_key".path}"
       ];
     };
     wantedBy = [ "multi-user.target" ];
   };
-  sops.secrets."minio_pastebin_key_id" = {
+  sops.secrets."garage_pastebin_key_id" = {
     terraformOutput.enable = true;
     restartUnits = [ "pastebin.service" ];
   };
-  sops.secrets."minio_pastebin_access_key" = {
+  sops.secrets."garage_pastebin_access_key" = {
     terraformOutput.enable = true;
     restartUnits = [ "pastebin.service" ];
   };

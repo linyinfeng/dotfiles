@@ -14,8 +14,8 @@ terraform {
     wireguard = {
       source = "OJFord/wireguard"
     }
-    minio = {
-      source = "aminueza/minio"
+    garage = {
+      source = "jkossis/garage"
     }
     shell = {
       source = "linyinfeng/shell"

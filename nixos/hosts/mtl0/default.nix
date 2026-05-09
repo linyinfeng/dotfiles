@@ -31,7 +31,7 @@ in
       services.nginx
       services.acme
       services.postgresql
-      services.minio
+      services.garage
       services.vaultwarden
       # services.gitweb
       # services.seafile

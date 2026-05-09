@@ -20,10 +20,6 @@
   "iperf_public_key": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArGOX8NpjhIj0jtwSR9uC\nlhUmopJrcgi96y/0fRHTqKfiJTWHa0Ly+m267KyfvGRsqq0u/eTLnkhaaj0esia1\nJ4u8kNt9n041aNjb1PlSa4VlQErw+Kj0wEe+TybWIeavSEGs+FeS5QhIfwoBYUKE\n7q997C9RYW3vu0yktIvKo5j9a6+CnyDZZs1SY3LIXiBqEPHQqiFoBks04AFm1Sjk\nfpvk7qsc6x0knQRtebIZooecqT2MPYMwsiqUC6Y8sraj7f2akq6LrDrzccL79Djl\npTnvtLxpp0by9w35BwiBND3fghl+3ciyg9cJFscg3KqTuUGqCO5c7Dw6bwz90qAr\nMFlLniOOQh+UECX9LmlYEE+QwmrCtcRKPQoscU283RB2Jw132GRXtPF7r72KbXSq\nc/iKyxi9mYDnV4yfZcuKXHe74cOoFFpbyOdT6vT5F426zc966Dkqj8PV6fS458kx\nS2Igbw5qYJGbPP2Syyeq/ZuGepW37KPHgXF/H+R/GT4M7FYpzTmmVnKfQDbHOX4s\nxf6yv01fpq7etBDOv4uO/PmeBJ1m0uLwRJInlcxxv2G99WCxMv5JrI/qQNcmP8lm\nA4xmGUOfrYEq7/cMththvoBRhCry1cnPD1bNZO3IgFCTuA9pyza7q7OkuGgAIwL/\nsN4mXJSdQbgULBC4c0U3J+cCAwEAAQ==\n-----END PUBLIC KEY-----\n",
   "loki_host": "logs-prod-006.grafana.net",
   "loki_username": "584508",
-  "minio_cache_test_key_id": "cache-test",
-  "minio_metrics_key_id": "metrics",
-  "minio_pastebin_key_id": "pastebin",
-  "minio_sicp_staging_key_id": "sicp-staging",
   "r2_cache_bucket_name": "cache-li7g-com",
   "r2_cache_key_id": "791a35c2f30f15ef02f6d8d8a4b213a8",
   "r2_s3_api_url": "4257ee8976af3fefced40d54be5d0713.r2.cloudflarestorage.com",
@@ -60,6 +56,10 @@
     },
     "dn42": {
       "on": "fsn0",
+      "proxy": true
+    },
+    "garage-admin": {
+      "on": "mtl0",
       "proxy": true
     },
     "hledger": {
@@ -118,14 +118,6 @@
       "on": "nuc",
       "proxy": false
     },
-    "minio": {
-      "on": "mtl0",
-      "proxy": false
-    },
-    "minio-console": {
-      "on": "mtl0",
-      "proxy": true
-    },
     "nextcloud": {
       "on": "nuc",
       "proxy": false
@@ -161,6 +153,14 @@
     "rathole-ad-hoc": {
       "on": "hkg0",
       "proxy": false
+    },
+    "s3": {
+      "on": "mtl0",
+      "proxy": true
+    },
+    "s3-web": {
+      "on": "mtl0",
+      "proxy": true
     },
     "sicp-staging": {
       "on": "mtl0",
