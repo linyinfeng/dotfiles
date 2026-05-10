@@ -649,16 +649,10 @@
         "crane": [
           "crane"
         ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-parts": [
-          "flake-parts"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ],
-        "pre-commit-hooks-nix": [
+        "pre-commit": [
           "pre-commit-hooks-nix"
         ],
         "rust-overlay": [
@@ -666,16 +660,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1756868735,
-        "narHash": "sha256-W8YdYEqETyEovTS6RweXQ0yRV2uQcfOmh+/oBHaU5tI=",
-        "owner": "linyinfeng",
+        "lastModified": 1777882242,
+        "narHash": "sha256-9Ynx+ort1aSwReiCfkbgMS3Q6y+MPcekDoUWx9N3a7A=",
+        "owner": "nix-community",
         "repo": "lanzaboote",
-        "rev": "23b8b5b3f0d09552bb928d72a8c3e8758b34461a",
+        "rev": "04723d4fd6bde2665fef3b25856aeebbd4013c16",
         "type": "github"
       },
       "original": {
-        "owner": "linyinfeng",
-        "ref": "uki",
+        "owner": "nix-community",
         "repo": "lanzaboote",
         "type": "github"
       }

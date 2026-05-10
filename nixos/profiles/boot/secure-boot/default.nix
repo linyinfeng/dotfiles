@@ -124,34 +124,34 @@ in
         };
       };
     }
-    # shim
-    {
-      boot.secureBoot.shim = {
-        enable = true;
-        loader = "systemd-boot${config.boot.secureBoot.shim.archSuffix}.efi";
-        directory = "EFI/systemd";
-        removable.enable = true;
-        bootEntry = {
-          install = true;
-          label = "Linux Boot Manager";
-        };
-        mokManager.addEntry = true;
-      };
-      # install-shim after lzbt
-      boot.lanzaboote.package = lib.mkForce (
-        pkgs.writeShellApplication {
-          name = "lzbt";
-          runtimeInputs = [
-            pkgs.lanzaboote.tool
-            config.system.build.installShim
-          ];
-          text = ''
-            lzbt "$@"
-            install-shim
-          '';
-        }
-      );
-    }
+    # # shim
+    # {
+    #   boot.secureBoot.shim = {
+    #     enable = true;
+    #     loader = "systemd-boot${config.boot.secureBoot.shim.archSuffix}.efi";
+    #     directory = "EFI/systemd";
+    #     removable.enable = true;
+    #     bootEntry = {
+    #       install = true;
+    #       label = "Linux Boot Manager";
+    #     };
+    #     mokManager.addEntry = true;
+    #   };
+    #   # install-shim after lzbt
+    #   boot.lanzaboote.package = lib.mkForce (
+    #     pkgs.writeShellApplication {
+    #       name = "lzbt";
+    #       runtimeInputs = [
+    #         pkgs.lanzaboote.tool
+    #         config.system.build.installShim
+    #       ];
+    #       text = ''
+    #         lzbt "$@"
+    #         install-shim
+    #       '';
+    #     }
+    #   );
+    # }
     # sbctl
     {
       environment.systemPackages = with pkgs; [ sbctl ];

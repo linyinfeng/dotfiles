@@ -14,7 +14,6 @@ in
     ++ suites.games
     ++ (with profiles; [
       boot.secure-boot
-      boot.lanzaboote-uki
       security.tpm
       virtualization.waydroid
       services.godns

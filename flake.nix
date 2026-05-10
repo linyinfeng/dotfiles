@@ -54,13 +54,11 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    lanzaboote.url = "github:linyinfeng/lanzaboote/uki";
+    lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.inputs.crane.follows = "crane";
     lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
-    lanzaboote.inputs.flake-compat.follows = "flake-compat";
-    lanzaboote.inputs.flake-parts.follows = "flake-parts";
-    lanzaboote.inputs.pre-commit-hooks-nix.follows = "pre-commit-hooks-nix";
+    lanzaboote.inputs.pre-commit.follows = "pre-commit-hooks-nix";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
