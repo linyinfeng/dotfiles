@@ -425,12 +425,22 @@ output "fw_proxy_subscription_password" {
   value     = random_password.fw_proxy_subscription.result
   sensitive = true
 }
-resource "random_password" "pocket_id_encryption_key" {
-  length  = 64
-  special = true
+resource "shell_sensitive_script" "pocket_id_encryption_key" {
+  lifecycle_commands {
+    create = <<EOT
+      set -e
+      secret=$(openssl rand -base64 32)
+      jq --null-input \
+        --arg secret "$secret" \
+        '{"secret": $secret}'
+    EOT
+    delete = <<EOT
+      # do nothing
+    EOT
+  }
 }
 output "pocket_id_encryption_key" {
-  value     = random_password.pocket_id_encryption_key.result
+  value     = shell_sensitive_script.pocket_id_encryption_key.output.secret
   sensitive = true
 }
 resource "shell_sensitive_script" "atticd_rs256_secret_base64" {
