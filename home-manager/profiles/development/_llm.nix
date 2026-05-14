@@ -15,4 +15,7 @@
     ".gemini"
     ".continue"
   ];
+  home.global-persistence.files = [
+    ".claude.json"
+  ];
 }
