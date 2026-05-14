@@ -161,7 +161,7 @@ lib.mkMerge [
           tls-verify = false;
         };
         s3 = {
-          endpoint = "https://garage.li7g.com";
+          endpoint = "https://s3.li7g.com";
           access-key = config.sops.placeholder."garage_sicp_staging_key_id";
           secret-key = config.sops.placeholder."garage_sicp_staging_access_key";
           region = "garage";

@@ -20,7 +20,7 @@ let
     ];
   };
   cfgGarage = {
-    repository = "s3:https://garage.li7g.com/backup-${hostName}";
+    repository = "s3:https://s3.li7g.com/backup-${hostName}";
     environmentFile = config.sops.templates."restic-garage-env".path;
     passwordFile = config.sops.secrets."restic_password".path;
     pruneOpts = [
