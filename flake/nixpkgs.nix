@@ -149,11 +149,8 @@ let
           if lib.versionAtLeast prev.nginx.version "1.30.1" then
             prev.nginx
           else
-            (import (fetchTarball {
-              name = "nixos-nginx-1.30.1-update";
-              url = "https://github.com/nixos/nixpkgs/archive/refs/pull/519893/head.tar.gz";
-              sha256 = "sha256:05q9fc1m98jqxzizr1s50ks2xkpwgizdd98gnzrvz0q46wa8jdhc";
-            }) nixpkgsArgs).nginx;
+            # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=519893
+            channels.latest.nginx;
       })
     ];
 in
