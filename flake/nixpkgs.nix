@@ -143,8 +143,17 @@ let
       channels = alternativeChannels nixpkgsArgs;
     in
     [
-      (_final: _prev: {
+      (_final: prev: {
         inherit (channels.stable) shim-unsigned; # TODO fix
+        nginx =
+          if lib.versionAtLeast prev.nginx.version "1.30.1" then
+            prev.nginx
+          else
+            (import (fetchTarball {
+              name = "nixos-nginx-1.30.1-update";
+              url = "https://github.com/nixos/nixpkgs/archive/refs/pull/519893/head.tar.gz";
+              sha256 = "sha256:05q9fc1m98jqxzizr1s50ks2xkpwgizdd98gnzrvz0q46wa8jdhc";
+            }) nixpkgsArgs).nginx;
       })
     ];
 in
