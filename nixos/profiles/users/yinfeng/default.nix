@@ -133,8 +133,8 @@ in
 
     # system administration
     {
-      environment.etc."nixos".source = "${homeDirectory}/Source/dotfiles";
-      programs.nh.flake = "${homeDirectory}/Source/dotfiles";
+      environment.etc."nixos".source = "${homeDirectory}/Projects/dotfiles";
+      programs.nh.flake = "${homeDirectory}/Projects/dotfiles";
     }
   ];
 
