@@ -187,7 +187,7 @@
           "iconPosition": "left",
           "id": "CustomButton",
           "ipcIdentifier": "",
-          "leftClickExec": "niri msg action spawn -- firefox https://www.notion.so",
+          "leftClickExec": "niri msg action spawn -- google-chrome https://www.notion.so",
           "leftClickUpdateText": false,
           "maxTextLength": {
             "horizontal": 10,
