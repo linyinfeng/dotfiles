@@ -17,6 +17,7 @@ in
     publicShare = "${prefix}/Public";
     templates = "${prefix}/Templates";
     videos = "${prefix}/Videos";
+    projects = "${config.home.homeDirectory}/Projects";
   };
 
   home.global-persistence.directories = [ "Data" ];
