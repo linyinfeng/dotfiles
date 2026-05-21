@@ -26,6 +26,6 @@
     MOZ_ENABLE_WAYLAND = "1";
   };
   home.global-persistence = {
-    directories = [ "${config.xdg.configHome}/mozilla/firefox" ];
+    directories = [ ".config/mozilla/firefox" ];
   };
 }
