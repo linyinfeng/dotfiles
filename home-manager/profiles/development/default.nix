@@ -17,7 +17,6 @@
     ".config/racket"
     ".local/share/racket"
 
-    "Source"
     "Local"
   ];
 }
