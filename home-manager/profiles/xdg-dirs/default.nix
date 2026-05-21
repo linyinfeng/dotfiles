@@ -20,5 +20,8 @@ in
     projects = "${config.home.homeDirectory}/Projects";
   };
 
-  home.global-persistence.directories = [ "Data" ];
+  home.global-persistence.directories = [
+    "Data"
+    "Projects"
+  ];
 }
