@@ -82,7 +82,7 @@ lib.mkMerge [
 
     networking.fw-proxy.auto-update = {
       enable = true;
-      service = "main";
+      service = "alternative";
     };
 
     systemd.services.nix-daemon.environment = cfg.environment;
