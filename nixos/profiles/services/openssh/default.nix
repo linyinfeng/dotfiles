@@ -74,7 +74,14 @@ in
     '') (lib.attrNames data.hosts)
     + ''
       Host ostrich
+        User Yinfeng
         HostName ostrich.ts.li7g.com
+        Port 2222
+
+      Host xps8930-ostrich
+        HostName xps8930.li7g.com
+        AddressFamily inet
+        ProxyJump ostrich
         Port 2222
     '';
   };
