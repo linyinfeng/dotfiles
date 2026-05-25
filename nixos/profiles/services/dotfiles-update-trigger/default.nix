@@ -9,13 +9,16 @@
       current_sha="$(
         curl "''${curl_args[@]}" https://api.github.com/repos/nixos/nixpkgs/branches/nixos-unstable | \
         jq '.commit.sha' --raw-output)"
-      if [ -f recorded-sha ] && [ "$(cat recorded-sha)" != "$current_sha" ]; then
+      if [ -f current-sha ]; then
+        cp current-sha old-sha
+        echo "$current_sha" >current-sha
+      fi
+      if ! diff current-sha old-sha; then
         echo "triggering update.yml..."
         curl "''${curl_args[@]}" \
           https://api.github.com/repos/linyinfeng/dotfiles/actions/workflows/update.yml/dispatches \
           --json '{ "ref": "main" }'
       fi
-      echo "$current_sha" >recorded-sha
     '';
     path = with pkgs; [
       curl
