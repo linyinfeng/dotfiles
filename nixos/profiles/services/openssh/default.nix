@@ -71,7 +71,12 @@ in
       Host ${h}.ts
         HostName ${h}.ts.li7g.com
         Port ${toString config.ports.ssh}
-    '') (lib.attrNames data.hosts);
+    '') (lib.attrNames data.hosts)
+    + ''
+      Host ostrich
+        HostName ostrich.ts.li7g.com
+        Port 2222
+    '';
   };
 
   sops.secrets."ssh_host_rsa_key" = {
