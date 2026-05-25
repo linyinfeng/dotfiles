@@ -15,7 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     crosspipe
-    easyeffects
+    # easyeffects # TODO broken in aarch64-linux
   ];
   environment.global-persistence.user.directories = [
     ".local/state/wireplumber"
