@@ -40,6 +40,10 @@ in
       users.yinfeng
     ]);
 
+  # campus network requirement
+  services.zerotierone.enable = lib.mkForce false;
+  services.tailscale.enable = lib.mkForce false;
+
   boot.loader = {
     efi.canTouchEfiVariables = true;
     systemd-boot = {
