@@ -24,7 +24,7 @@
           mcp-nixos
         ];
       in
-      lib.listToAttrs (lib.map (p: lib.nameValuePair p.name { command = lib.getExe p; }) simpleMcps)
+      lib.listToAttrs (lib.map (p: lib.nameValuePair p.pname { command = lib.getExe p; }) simpleMcps)
       // {
         # zotero-mcp = {
         #   command = lib.getExe' pkgs.uv "uvx";
