@@ -72,6 +72,7 @@ let
       development = with profiles; [
         development.documentation
         programs.adb
+        programs.probe-rs
         programs.qrcp
         programs.direnv
         services.gnupg
