@@ -125,6 +125,8 @@ in
             export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
             export CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
             export CLAUDE_CODE_EFFORT_LEVEL="max"
+            export -n all_proxy
+            export -n ALL_PROXY
             exec claude "$@"
           '';
         })
@@ -138,6 +140,8 @@ in
             export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro[1m]"
             export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro[1m]"
             export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro[1m]"
+            export -n all_proxy
+            export -n ALL_PROXY
             exec claude "$@"
           '';
         })

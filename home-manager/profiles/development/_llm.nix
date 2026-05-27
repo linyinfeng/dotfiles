@@ -21,17 +21,11 @@
           mcp-server-git
           mcp-server-time
           mcp-server-fetch
+          mcp-nixos
         ];
       in
       lib.listToAttrs (lib.map (p: lib.nameValuePair p.name { command = lib.getExe p; }) simpleMcps)
       // {
-        mcp-nixos = {
-          command = lib.getExe pkgs.mcp-nixos;
-          env = {
-            all_proxy = "";
-            ALL_PROXY = "";
-          };
-        };
         # zotero-mcp = {
         #   command = lib.getExe' pkgs.uv "uvx";
         #   args = [
