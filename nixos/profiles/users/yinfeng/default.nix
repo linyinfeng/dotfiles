@@ -112,6 +112,11 @@ in
         restartUnits = [ ];
         owner = name;
       };
+      sops.secrets."mimo_token_plan_api_key" = {
+        predefined.enable = true;
+        restartUnits = [ ];
+        owner = name;
+      };
       home-manager.users.yinfeng.home.packages = [
         (pkgs.writeShellApplication {
           name = "claude-deepseek";
@@ -133,8 +138,8 @@ in
         (pkgs.writeShellApplication {
           name = "claude-mimo";
           text = ''
-            export ANTHROPIC_BASE_URL="https://api.xiaomimimo.com/anthropic"
-            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_api_key".path}")"
+            export ANTHROPIC_BASE_URL="https://token-plan-cn.xiaomimimo.com/anthropic"
+            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_token_plan_api_key".path}")"
             export ANTHROPIC_AUTH_TOKEN
             export ANTHROPIC_MODEL="mimo-v2.5-pro[1m]"
             export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro[1m]"
