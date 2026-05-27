@@ -141,6 +141,21 @@ in
             export ANTHROPIC_BASE_URL="https://token-plan-cn.xiaomimimo.com/anthropic"
             ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_token_plan_api_key".path}")"
             export ANTHROPIC_AUTH_TOKEN
+            export ANTHROPIC_MODEL="mimo-v2.5-pro"
+            export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro"
+            export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro"
+            export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro"
+            export -n all_proxy
+            export -n ALL_PROXY
+            exec claude "$@"
+          '';
+        })
+        (pkgs.writeShellApplication {
+          name = "claude-mimo-1m";
+          text = ''
+            export ANTHROPIC_BASE_URL="https://token-plan-cn.xiaomimimo.com/anthropic"
+            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_token_plan_api_key".path}")"
+            export ANTHROPIC_AUTH_TOKEN
             export ANTHROPIC_MODEL="mimo-v2.5-pro[1m]"
             export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro[1m]"
             export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro[1m]"
