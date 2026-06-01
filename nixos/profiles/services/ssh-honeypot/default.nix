@@ -8,7 +8,7 @@ let
   port = config.ports.ssh-honeypot;
   cowrieSrc = pkgs.stdenv.mkDerivation {
     inherit (pkgs.linyinfeng.sources.cowrie) pname version src;
-    patches = [ ./cowrie-telegram-output-requests.patch ];
+    # patches = [ ./cowrie-telegram-output-requests.patch ];
     installPhase = ''
       cp -r . $out
     '';
@@ -37,9 +37,8 @@ in
       python -m pip install --no-cache-dir --upgrade cffi
       python -m pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements.txt
       python -m pip install --no-cache-dir --upgrade --requirement cowrie-src/requirements-output.txt
+      python -m pip install --no-cache-dir cowrie-src --editable # TODO currently not working
 
-      export PYTHONPATH="$PWD/cowrie-src/src"
-      python -m compileall cowrie-src cowrie-venv
       cd cowrie-working
       twistd --umask=0022 --nodaemon --pidfile= --logfile=- cowrie
     '';

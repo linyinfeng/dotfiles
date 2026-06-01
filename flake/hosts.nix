@@ -122,7 +122,7 @@ let
           services.iperf3
           services.homed
           services.portal-client
-          services.ssh-honeypot
+          # services.ssh-honeypot
           services.flatpak
           services.smartd
           services.system76-scheduler
