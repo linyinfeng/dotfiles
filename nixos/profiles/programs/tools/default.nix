@@ -44,6 +44,20 @@ let
       exec nom --builders "@/etc/nix-build-machines/hydra-builder/machines" "$@"
     '';
   };
+
+  json2nix = pkgs.writeShellApplication {
+    name = "json2nix";
+    runtimeInputs = with pkgs; [ jq ];
+    text = ''
+      tmp_file=$(mktemp -t json2nix.XXXXXX)
+      # function cleanup {
+      #   rm -r "$tmp_file"
+      # }
+      # trap cleanup EXIT
+      cat >"$tmp_file"
+      nix eval --expr "builtins.fromJSON (builtins.readFile $tmp_file)" --impure | nixfmt | bat --language=nix
+    '';
+  };
 in
 {
   programs.htop = {
@@ -129,10 +143,13 @@ in
     ]
     ++ [
       # custom tools
+      # keep-sorted start
       delink
-      tmpTest
-      nomWrapper
+      json2nix
       nomHydra
+      nomWrapper
+      tmpTest
+      # keep-sorted end
     ];
   passthru = {
     inherit delink tmpTest;
