@@ -100,7 +100,7 @@ in
       };
     }
 
-    # claude-code
+    # llm api keys
     {
       sops.secrets."deepseek_api_key" = {
         predefined.enable = true;
@@ -117,55 +117,6 @@ in
         restartUnits = [ ];
         owner = name;
       };
-      home-manager.users.yinfeng.home.packages = [
-        (pkgs.writeShellApplication {
-          name = "claude-deepseek";
-          text = ''
-            export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
-            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."deepseek_api_key".path}")"
-            export ANTHROPIC_AUTH_TOKEN
-            export ANTHROPIC_MODEL="deepseek-v4-pro[1m]"
-            export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
-            export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
-            export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash"
-            export CLAUDE_CODE_SUBAGENT_MODEL="deepseek-v4-flash"
-            export CLAUDE_CODE_EFFORT_LEVEL="max"
-            export -n all_proxy
-            export -n ALL_PROXY
-            exec claude "$@"
-          '';
-        })
-        (pkgs.writeShellApplication {
-          name = "claude-mimo";
-          text = ''
-            export ANTHROPIC_BASE_URL="https://token-plan-cn.xiaomimimo.com/anthropic"
-            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_token_plan_api_key".path}")"
-            export ANTHROPIC_AUTH_TOKEN
-            export ANTHROPIC_MODEL="mimo-v2.5-pro"
-            export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro"
-            export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro"
-            export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro"
-            export -n all_proxy
-            export -n ALL_PROXY
-            exec claude "$@"
-          '';
-        })
-        (pkgs.writeShellApplication {
-          name = "claude-mimo-1m";
-          text = ''
-            export ANTHROPIC_BASE_URL="https://token-plan-cn.xiaomimimo.com/anthropic"
-            ANTHROPIC_AUTH_TOKEN="$(cat "${config.sops.secrets."mimo_token_plan_api_key".path}")"
-            export ANTHROPIC_AUTH_TOKEN
-            export ANTHROPIC_MODEL="mimo-v2.5-pro[1m]"
-            export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro[1m]"
-            export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro[1m]"
-            export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro[1m]"
-            export -n all_proxy
-            export -n ALL_PROXY
-            exec claude "$@"
-          '';
-        })
-      ];
     }
 
     # gemini-cli
