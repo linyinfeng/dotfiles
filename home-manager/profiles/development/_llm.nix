@@ -101,6 +101,7 @@
     ".claude"
     ".gemini"
     ".continue"
+    ".codebuddy"
     ".config/reasonix"
     ".config/opencode"
     ".config/kilo"
