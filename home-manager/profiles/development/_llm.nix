@@ -103,6 +103,7 @@
     ".continue"
     ".config/reasonix"
     ".config/opencode"
+    ".config/kilo"
   ];
   home.global-persistence.files = [
     ".claude.json"
