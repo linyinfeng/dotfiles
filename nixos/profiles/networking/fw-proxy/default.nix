@@ -81,7 +81,7 @@ lib.mkMerge [
     };
 
     networking.fw-proxy.auto-update = {
-      enable = true;
+      enable = false;
       service = "alternative";
     };
 
