@@ -73,8 +73,8 @@
         export ANTHROPIC_AUTH_TOKEN
         export ANTHROPIC_MODEL="mimo-v2.5-pro"
         export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro"
-        export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro"
-        export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro"
+        export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5"
+        export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5"
         export -n all_proxy
         export -n ALL_PROXY
         exec claude "$@"
@@ -88,8 +88,8 @@
         export ANTHROPIC_AUTH_TOKEN
         export ANTHROPIC_MODEL="mimo-v2.5-pro[1m]"
         export ANTHROPIC_DEFAULT_OPUS_MODEL="mimo-v2.5-pro[1m]"
-        export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5-pro[1m]"
-        export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5-pro[1m]"
+        export ANTHROPIC_DEFAULT_SONNET_MODEL="mimo-v2.5[1m]"
+        export ANTHROPIC_DEFAULT_HAIKU_MODEL="mimo-v2.5[1m]"
         export -n all_proxy
         export -n ALL_PROXY
         exec claude "$@"
