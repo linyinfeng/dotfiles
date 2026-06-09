@@ -218,11 +218,6 @@
 
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia.inputs.noctalia-qs.follows = "noctalia-qs";
-    noctalia-qs.url = "github:noctalia-dev/noctalia-qs";
-    noctalia-qs.inputs.nixpkgs.follows = "nixpkgs";
-    noctalia-qs.inputs.systems.follows = "systems";
-    noctalia-qs.inputs.treefmt-nix.follows = "treefmt-nix";
 
     # libraries
 

@@ -512,7 +512,7 @@ in
         };
       in
       {
-        programs.noctalia-shell = {
+        programs.noctalia = {
           enable = true;
           settings = lib.foldr lib.recursiveUpdate { } [
             (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json))
@@ -520,7 +520,6 @@ in
             config.programs.noctalia.extraSettings
           ];
         };
-        xdg.configFile."noctalia/settings.json".force = true;
         home.file.".cache/noctalia/wallpapers.json" = {
           text = builtins.toJSON {
             defaultWallpaper = "${defaultWallpaper}";
