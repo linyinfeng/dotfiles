@@ -5,7 +5,6 @@
   ...
 }:
 {
-  home.packages = with pkgs; [ nono ];
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
@@ -48,6 +47,7 @@
   };
 
   home.packages = [
+    pkgs.nono
     pkgs.linyinfeng.deepseek-reasonix
     (pkgs.writeShellApplication {
       name = "claude-deepseek";
