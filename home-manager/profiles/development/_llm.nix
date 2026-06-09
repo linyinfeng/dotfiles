@@ -5,6 +5,7 @@
   ...
 }:
 {
+  home.packages = with pkgs; [ nono ];
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
