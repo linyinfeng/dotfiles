@@ -50,9 +50,6 @@
             niri = {
               default-column-proportion = 1.0; # open everything in full width
             };
-            noctalia.extraSettings = {
-              dock.enabled = false;
-            };
           };
         };
       i18n.inputMethod.type = "fcitx5";

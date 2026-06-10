@@ -197,6 +197,22 @@ in
             tablet-mode-off { spawn "sh" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false"; }
           }
 
+          // blur effects suggested by
+          // https://docs.noctalia.dev/v5/compositor-settings/niri/
+          window-rule {
+            background-effect {
+              blur true
+              xray false
+            }
+          }
+          layer-rule {
+            match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+            background-effect {
+              xray false
+              // blur false
+            }
+          }
+
           window-rule {
             geometry-corner-radius ${toString windowCornerRadius}
             clip-to-geometry true
@@ -242,6 +258,10 @@ in
           }
           layer-rule {
             match namespace="^noctalia-overview-"
+            place-within-backdrop true
+          }
+          layer-rule {
+            match namespace="^noctalia-backdrop$"
             place-within-backdrop true
           }
           xwayland-satellite {
@@ -456,7 +476,7 @@ in
           hooks.darkModeChange = "${lib.getExe toggleDarkMode} $1";
           screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";
           wallpaper = {
-            defaultWallpaper = "${defaultWallpaper}";
+            default.path = "${defaultWallpaper}";
             directory = "${config.xdg.userDirs.pictures}/Wallpapers";
           };
           controlCenter.diskPath = if osConfig.environment.global-persistence.enable then "/persist" else "/";
@@ -465,6 +485,7 @@ in
           name = "noctalia-sync-settings";
           runtimeInputs = with pkgs; [
             jq
+            toml2json
           ];
           text = ''
             if [ "$PRJ_ROOT" != "$NH_FLAKE" ]; then
@@ -479,10 +500,10 @@ in
               rm -r "$tmp_dir"
             }
             trap cleanup EXIT
-            noctalia msg state all >"$tmp_dir/current-settings.json"
+            noctalia config export | toml2json | jq >"$tmp_dir/current-settings.json"
 
             echo "writing to '$full_path'..."
-            cat "$tmp_dir/current-settings.json" | jq '.settings | del(
+            cat "$tmp_dir/current-settings.json" | jq 'del(
               ${lib.concatMapAttrsStringSep ",\n  " (name: _value: ".${name}") (
                 osConfig.lib.self.flattenTree {
                   separator = ".";
@@ -508,12 +529,6 @@ in
             specialSettings
             config.programs.noctalia.extraSettings
           ];
-        };
-        home.file.".cache/noctalia/wallpapers.json" = {
-          text = builtins.toJSON {
-            defaultWallpaper = "${defaultWallpaper}";
-          };
-          force = true;
         };
 
         passthru.noctalia = {
