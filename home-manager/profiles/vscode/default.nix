@@ -9,6 +9,7 @@
 
   home.global-persistence.directories = [
     ".vscode"
+    ".vscode-shared"
 
     ".config/Code"
   ];
