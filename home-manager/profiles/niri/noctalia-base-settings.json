@@ -76,8 +76,8 @@
     "useSeparateOpacity": false,
     "widgetSpacing": 6,
     "widgets": {
-      "capsule": false,
-      "center": ["notifications"],
+      "capsule": true,
+      "center": ["date", "clock", "notifications"],
       "end": [
         "media",
         "sysmon",
@@ -821,6 +821,9 @@
     "wallpaperChangeMode": "random"
   },
   "widget": {
+    "battery": {
+      "display_mode": "glyph"
+    },
     "bongocat": {
       "script": "scripts/bongocat.lua",
       "type": "scripted"
@@ -832,11 +835,8 @@
       "hide_when_no_media": true
     },
     "taskbar": {
-      "group_by_workspace": true,
+      "group_by_workspace": false,
       "only_active_workspace": true
-    },
-    "tray": {
-      "match_adjacent_spacing": true
     }
   }
 }
