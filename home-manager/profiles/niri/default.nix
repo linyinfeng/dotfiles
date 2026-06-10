@@ -10,42 +10,39 @@ let
   noctaliaIpc =
     cmd:
     [
-      "noctalia-shell"
-      "ipc"
-      "call"
+      "noctalia"
+      "msg"
     ]
     ++ cmd;
   launcherToggle = noctaliaIpc [
+    "panel-toggle"
     "launcher"
-    "toggle"
   ];
   volumeUp = noctaliaIpc [
-    "volume"
-    "increase"
+    "volume-up"
   ];
   volumeDown = noctaliaIpc [
-    "volume"
-    "decrease"
+    "volume-down"
   ];
   volumeMute = noctaliaIpc [
-    "volume"
-    "muteOutput"
+    "volume-mute"
   ];
   volumeMicMute = noctaliaIpc [
-    "volume"
-    "muteInput"
+    "mic-mute"
   ];
   lightUp = noctaliaIpc [
-    "brightness"
-    "increase"
+    "brightness-up"
   ];
   lightDown = noctaliaIpc [
-    "brightness"
-    "decrease"
+    "brightness-down"
   ];
   lockScreen = noctaliaIpc [
-    "lockScreen"
+    "session"
     "lock"
+  ];
+  sessionMenu = noctaliaIpc [
+    "panel-toggle"
+    "session"
   ];
   spawn = command: "spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}";
   restoreWorking = pkgs.writeShellApplication {
@@ -261,7 +258,7 @@ in
           spawn-at-startup "niri-restore-working"
 
           // noctalia shell
-          spawn-at-startup "noctalia-shell"
+          spawn-at-startup "noctalia"
           include "noctalia.kdl"
         '';
       systemd.user.tmpfiles.rules = [
@@ -419,15 +416,7 @@ in
             # inhibit
             "Mod+Escape { toggle-keyboard-shortcuts-inhibit; }"
             # quit
-            "Mod+Ctrl+E { ${
-              spawn [
-                "noctalia-shell"
-                "ipc"
-                "call"
-                "sessionMenu"
-                "toggle"
-              ]
-            }; }"
+            "Mod+Ctrl+E { ${spawn sessionMenu}; }"
           ];
         in
         lib.flatten [
@@ -490,7 +479,7 @@ in
               rm -r "$tmp_dir"
             }
             trap cleanup EXIT
-            noctalia-shell ipc call state all >"$tmp_dir/current-settings.json"
+            noctalia msg state all >"$tmp_dir/current-settings.json"
 
             echo "writing to '$full_path'..."
             cat "$tmp_dir/current-settings.json" | jq '.settings | del(
