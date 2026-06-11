@@ -123,7 +123,7 @@ locals {
     sicp-tutorials = { on = "hkg0", proxy = true }
     id             = { on = "hkg0", proxy = true }
     rathole-ad-hoc = { on = "hkg0", proxy = false }
-    portal         = { on = "hkg0", proxy = false }
+    portal         = { on = "hkg0", proxy = true }
     tar            = { on = "hkg0", proxy = true }
     pgp-public-key = { on = "hkg0", proxy = true }
     oranc          = { on = "hkg0", proxy = true }
