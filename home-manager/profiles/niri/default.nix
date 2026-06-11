@@ -473,7 +473,7 @@ in
         };
         specialSettings = {
           general.avatarImage = "${config.home.homeDirectory}/.face";
-          hooks.darkModeChange = "${lib.getExe toggleDarkMode} $1";
+          hooks.theme_mode_changed = "${lib.getExe toggleDarkMode} $1";
           screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";
           wallpaper = {
             default.path = "${defaultWallpaper}";
