@@ -61,7 +61,7 @@
     lanzaboote.inputs.pre-commit.follows = "pre-commit-hooks-nix";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    nixos-hardware.inputs.nixpkgs.follow = "nixpkgs";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-generators.url = "github:nix-community/nixos-generators";
     nixos-generators.inputs.nixlib.follows = "nixpkgs";
