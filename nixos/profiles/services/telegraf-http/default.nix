@@ -60,7 +60,6 @@ let
     ];
     smtp = [ ];
     teamspeak = [ ];
-    portal = [ ];
     subscription = [ ];
     rathole-ad-hoc = [ ];
     home-assistant = [ ];
@@ -102,6 +101,7 @@ let
         code = 200;
       }
     ];
+    portal = [ ];
     keycloak = [
       {
         url = "https://keycloak.li7g.com";
