@@ -68,40 +68,116 @@ let
       done
     '';
   };
-in
-{
-  services.postgresql.enable = true;
-
-  # backup postgresql database
-  services.postgresqlBackup = {
-    enable = true;
-    backupAll = true;
-    compression = "zstd";
-  };
-  environment.global-persistence.directories = [ config.services.postgresqlBackup.location ];
-  systemd.tmpfiles.settings."50-postgresql-backup" = {
-    ${config.services.postgresqlBackup.location} = {
-      z = {
-        user = "postgres";
-        group = "root";
-        mode = "0700";
+  backupDir = "/var/backup/postgresql";
+  barmanService =
+    cfg:
+    lib.recursiveUpdate {
+      serviceConfig = {
+        StateDirectory = "barman";
+        User = config.users.users.barman.name;
+        Group = config.users.groups.barman.name;
       };
+      path = with pkgs; [
+        barman
+        postgresql
+      ];
+      after = [ "postgresql.service" ];
+    } cfg;
+in
+lib.mkMerge [
+  {
+    services.postgresql.enable = true;
+
+    environment.systemPackages = lib.mkMerge [
+      [
+        refreshPGCollationVersion
+        refreshPGCollationVersionAll
+      ]
+      (lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ])
+    ];
+  }
+
+  {
+    users.users.barman = {
+      isSystemUser = true;
+      group = config.users.groups.barman.name;
     };
-  };
+    users.groups.barman = { };
+    services.postgresql.ensureUsers = [
+      {
+        name = "barman";
+        ensureClauses = {
+          superuser = true;
+        };
+      }
+    ];
+    services.postgresql = {
+      settings.wal_level = "replica";
+      authentication = ''
+        # allow local replication connection from barman
+        local replication barman trust
+      '';
+    };
+    systemd.tmpfiles.rules = [
+      "d '/var/lib/barman' 0700 barman barman - -"
+      "d '${backupDir}' 0700 barman barman - -"
+    ];
+    environment.systemPackages = with pkgs; [
+      barman
+    ];
+    environment.etc."barman.conf".text = ''
+      [barman]
+      barman_user = ${config.users.users.barman.name}
+      barman_home = /var/lib/barman
+      configuration_files_directory = /etc/barman.d
+    '';
+    environment.etc."barman.d/local.conf".text = ''
+      [local]
+      description = "Local barman backup server"
 
-  services.restic.backups.b2 = {
-    paths = [ config.services.postgresqlBackup.location ];
-  };
-  systemd.services."restic-backups-b2" = {
-    requires = [ "postgresqlBackup.service" ];
-    after = [ "postgresqlBackup.service" ];
-  };
+      backup_method = postgres
+      slot_name = barman
+      create_slot = auto
 
-  environment.systemPackages = lib.mkMerge [
-    [
-      refreshPGCollationVersion
-      refreshPGCollationVersionAll
-    ]
-    (lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ])
-  ];
-}
+      streaming_conninfo = user=barman dbname=postgres
+      conninfo = user=barman dbname=postgres
+
+      backup_directory = ${backupDir}
+      streaming_archiver = on
+
+      last_backup_maximum_age = 7 DAYS
+      retention_policy = RECOVERY WINDOW OF 7 DAYS
+      wal_retention_policy = main
+    '';
+    systemd.services.barman-receive-wal = barmanService {
+      script = ''
+        barman receive-wal --create-slot --if-not-exists local
+        exec barman receive-wal local
+      '';
+      wantedBy = [ "postgresql.service" ];
+    };
+    systemd.services.barman-cron = barmanService {
+      script = ''
+        exec barman cron
+      '';
+      requires = [ "barman-receive-wal.service" ];
+      after = [
+        "postgresql.service"
+        "barman-receive-wal.service"
+      ];
+    };
+    systemd.timers.barman-cron = {
+      timerConfig = {
+        OnCalendar = "hourly";
+      };
+      wantedBy = [ "postgresql.service" ];
+    };
+    services.restic.backups.b2 = {
+      paths = [ backupDir ];
+    };
+    systemd.services."restic-backups-b2" = {
+      requires = [ "barman-cron.service" ];
+      after = [ "barman-cron.service" ];
+    };
+  }
+]

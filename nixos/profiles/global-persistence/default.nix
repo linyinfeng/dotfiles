@@ -4,6 +4,7 @@
     directories = [
       # service state directory
       "/var/lib"
+      "/var/backup"
       "/var/db"
     ];
     files = [
