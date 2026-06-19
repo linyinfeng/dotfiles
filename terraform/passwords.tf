@@ -511,3 +511,27 @@ output "garage_metrics_token" {
   value     = random_password.garage_metrics_token.result
   sensitive = true
 }
+resource "random_password" "xray_id_yinfeng" {
+  length  = 30
+  special = false
+}
+output "xray_id_yinfeng" {
+  value     = random_password.xray_id_yinfeng.result
+  sensitive = true
+}
+resource "random_password" "xray_id_guest" {
+  length  = 30
+  special = false
+}
+output "xray_id_guest" {
+  value     = random_password.xray_id_guest.result
+  sensitive = true
+}
+resource "random_password" "xray_service_name" {
+  length  = 64
+  special = false
+}
+output "xray_service_name" {
+  value     = random_password.xray_service_name.result
+  sensitive = true
+}

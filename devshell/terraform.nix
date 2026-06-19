@@ -66,6 +66,7 @@ let
       yq-go
       efitools
       bind
+      xray
       encryptTo
     ];
     text = ''

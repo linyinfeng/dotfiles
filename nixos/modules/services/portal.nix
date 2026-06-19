@@ -13,11 +13,7 @@ in
     nginxVirtualHost = lib.mkOption { type = with lib.types; str; };
     logLevel = lib.mkOption {
       type = with lib.types; str;
-      default = "Info";
-    };
-    grpcServiceName = lib.mkOption {
-      type = with lib.types; str;
-      default = "63b13cf9fa5545ef912656fc769383dd";
+      default = "info";
     };
     client = {
       enable = lib.mkOption {
@@ -53,13 +49,13 @@ in
     (lib.mkIf (with cfg; server.enable || client.enable) {
       sops.secrets."portal_client_id" = {
         terraformOutput.enable = true;
-        restartUnits = [ "v2ray-portal.service" ];
+        restartUnits = [ "xray-portal.service" ];
       };
-      systemd.packages = [ pkgs.v2ray ];
-      systemd.services.v2ray-portal = {
+      systemd.packages = with pkgs; [ xray ];
+      systemd.services.xray-portal = {
         serviceConfig = {
-          ExecStart = [ "${pkgs.v2ray}/bin/v2ray run --config %d/config --format jsonv5" ];
-          LoadCredential = [ "config:${config.sops.templates.portal-v2ray.path}" ];
+          ExecStart = "${pkgs.xray}/bin/xray run --config %d/config.json";
+          LoadCredential = [ "config.json:${config.sops.templates.portal-xray.path}" ];
           DynamicUser = true;
           CapabilityBoundingSet = [
             "CAP_NET_ADMIN"
@@ -74,99 +70,238 @@ in
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
         requires = [ "network-online.target" ];
-        restartTriggers = [ config.sops.templates.portal-v2ray.content ];
+        restartTriggers = [ config.sops.templates.portal-xray.content ];
+      };
+      sops.secrets."xray_id_yinfeng" = {
+        terraformOutput.enable = true;
+        restartUnits = [
+          "xray-portal.service"
+        ];
+      };
+      sops.secrets."xray_id_guest" = {
+        terraformOutput.enable = true;
+        restartUnits = [
+          "xray-portal.service"
+        ];
+      };
+      sops.secrets."xray_service_name" = {
+        terraformOutput.enable = true;
+        restartUnits = [
+          "nginx.service"
+          "xray-portal.service"
+        ];
+      };
+      sops.secrets."xray_vless_encryption" = {
+        predefined.enable = true;
+        restartUnits = [
+          "xray-portal.service"
+        ];
+      };
+      sops.secrets."xray_vless_decryption" = {
+        predefined.enable = true;
+        restartUnits = [
+          "xray-portal.service"
+        ];
       };
     })
 
     (lib.mkIf cfg.server.enable {
-      services.nginx.virtualHosts.${cfg.nginxVirtualHost} = {
-        locations."/${cfg.grpcServiceName}/Tun".extraConfig = ''
-          # if the request method is not POST for this location, return 404
-          if ($request_method != "POST") {
-            return 404;
-          }
-
-          grpc_socket_keepalive on;
-          grpc_intercept_errors on;
-          grpc_pass grpc://127.0.0.1:${toString cfg.server.internalPort};
-
-          # show real IP in v2ray access.log
-          grpc_set_header X-Real-IP $remote_addr;
-          grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        '';
+      systemd.services.nginx.serviceConfig = {
+        StateDirectory = "nginx";
+        ExecStartPre = lib.mkBefore [
+          "${lib.getExe' pkgs.coreutils "cp"} %d/nginx-xray.conf %S/nginx/nginx-xray.conf"
+          "${lib.getExe' pkgs.coreutils "chmod"} 600 %S/nginx/nginx-xray.conf"
+        ];
+        LoadCredential = [
+          "nginx-xray.conf:${config.sops.templates.nginx-xray.path}"
+        ];
+        RestartTriggers = [ config.sops.templates.nginx-xray.content ];
       };
-
-      sops.templates.portal-v2ray.content = builtins.toJSON {
+      services.nginx.virtualHosts.${cfg.nginxVirtualHost}.extraConfig = ''
+        include /var/lib/nginx/nginx-xray.conf;
+      '';
+      sops.templates.nginx-xray.content = ''
+        location /${config.sops.placeholder."xray_service_name"} {
+          ${if cfg.logLevel == "debug" then "" else "access_log off;"}
+          proxy_pass http://[::1]:${toString config.ports.portal-internal};
+        }
+      '';
+      sops.templates.portal-xray.content = builtins.toJSON {
         log = {
-          access = {
-            type = "Console";
-            level = cfg.logLevel;
-          };
-          error = {
-            type = "Console";
-            level = cfg.logLevel;
-          };
+          loglevel = cfg.logLevel;
+        };
+        dns = {
+          servers = [
+            "https+local://1.1.1.1/dns-query"
+            "localhost"
+          ];
+        };
+        routing = {
+          domainStrategy = "IPIfNonMatch";
+          rules = [
+            {
+              ip = [ "geoip:private" ];
+              outboundTag = "block";
+            }
+            {
+              ip = [ "geoip:cn" ];
+              outboundTag = "block";
+            }
+            {
+              domain = [ "geosite:category-ads-all" ];
+              outboundTag = "block";
+            }
+          ];
         };
         inbounds = [
           {
-            protocol = "trojan";
+            tag = "portal";
+            protocol = "vless";
+            listen = "[::1]";
+            port = config.ports.portal-internal;
             settings = {
-              users = [ config.sops.placeholder."portal_client_id" ];
-              packetEncoding = "Packet"; # full cone
+              clients = [
+                {
+                  id = config.sops.placeholder."xray_id_yinfeng";
+                  email = "yinfeng@li7g.com";
+                  flow = "xtls-rprx-vision";
+                  level = 0;
+                }
+                {
+                  id = config.sops.placeholder."xray_id_guest";
+                  email = "guest@li7g.com";
+                  flow = "xtls-rprx-vision";
+                  level = 0;
+                }
+              ];
+              decryption = config.sops.placeholder."xray_vless_decryption";
             };
-            port = cfg.server.internalPort;
             streamSettings = {
-              transport = "grpc";
-              transportSettings.serviceName = cfg.grpcServiceName;
+              network = "xhttp";
+              security = "none";
+              xhttpSettings = {
+                mode = "auto";
+                path = "/${config.sops.placeholder."xray_service_name"}";
+              };
             };
           }
         ];
-        outbounds = [ { protocol = "freedom"; } ];
+        outbounds = [
+          {
+            tag = "direct";
+            protocol = "freedom";
+          }
+          {
+            tag = "block";
+            protocol = "blackhole";
+          }
+        ];
       };
     })
 
     (lib.mkIf cfg.client.enable {
-      sops.templates.portal-v2ray.content =
+      sops.templates.portal-xray.content =
         let
           basicConfig = {
             log = {
-              access = {
-                type = "Console";
-                level = cfg.logLevel;
-              };
-              error = {
-                type = "Console";
-                level = cfg.logLevel;
-              };
+              loglevel = cfg.logLevel;
+            };
+            dns = {
+              servers = [
+                {
+                  address = "1.1.1.1";
+                  domains = [ "geosite:geolocation-!cn" ];
+                }
+                {
+                  address = "223.5.5.5";
+                  domains = [ "geosite:cn" ];
+                  expectIPs = [ "geoip:cn" ];
+                }
+                {
+                  address = "114.114.114.114";
+                  domains = [ "geosite:cn" ];
+                }
+                "localhost"
+              ];
+            };
+            routing = {
+              domainStrategy = "IPIfNonMatch";
+              rules = [
+                {
+                  "domain" = [ "geosite:category-ads-all" ];
+                  "outboundTag" = "block";
+                }
+                {
+                  domain = [ "geosite:cn" ];
+                  outboundTag = "direct";
+                }
+                {
+                  domain = [ "geosite:geolocation-!cn" ];
+                  outboundTag = "proxy";
+                }
+                {
+                  ip = [ "223.5.5.5" ];
+                  outboundTag = "direct";
+                }
+                {
+                  ip = [
+                    "geoip:cn"
+                    "geoip:private"
+                  ];
+                  outboundTag = "direct";
+                }
+              ];
             };
             inbounds = [
               {
+                tag = "socks-in";
                 protocol = "socks";
+                listen = "[::1]";
+                port = config.ports.portal-socks;
                 settings = {
-                  udpEnabled = true;
+                  udp = true;
                 };
-                port = cfg.client.ports.socks;
-                listen = "::1";
               }
               {
+                tag = "http-in";
                 protocol = "http";
-                port = cfg.client.ports.http;
-                listen = "::1";
+                listen = "[::1]";
+                port = config.ports.portal-http;
               }
             ];
             outbounds = [
               {
-                protocol = "trojan";
+                tag = "proxy";
+                protocol = "vless";
                 settings = {
-                  address = cfg.host;
-                  port = config.ports.https;
-                  password = config.sops.placeholder."portal_client_id";
+                  address = "portal.li7g.com";
+                  port = 443;
+                  id = config.sops.placeholder."xray_id_yinfeng";
+                  flow = "xtls-rprx-vision";
+                  encryption = config.sops.placeholder."xray_vless_encryption";
+                  level = 0;
                 };
                 streamSettings = {
-                  transport = "grpc";
-                  transportSettings.serviceName = cfg.grpcServiceName;
+                  network = "xhttp";
                   security = "tls";
+                  tlsSettings = {
+                    serverName = "portal.li7g.com";
+                    allowInsecure = false;
+                    fingerprint = "chrome";
+                  };
+                  xhttpSettings = {
+                    mode = "auto";
+                    path = "/${config.sops.placeholder."xray_service_name"}";
+                  };
                 };
+              }
+              {
+                tag = "direct";
+                protocol = "freedom";
+              }
+              {
+                tag = "block";
+                protocol = "blackhole";
               }
             ];
           };
