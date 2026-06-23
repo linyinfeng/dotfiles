@@ -63,6 +63,7 @@ let
     subscription = [ ];
     rathole-ad-hoc = [ ];
     home-assistant = [ ];
+    portal = [ ];
   };
   overrides = {
     box = [
@@ -101,7 +102,6 @@ let
         code = 200;
       }
     ];
-    portal = [ ];
     keycloak = [
       {
         url = "https://keycloak.li7g.com";
