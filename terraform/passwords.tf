@@ -170,6 +170,22 @@ output "mautrix_telegram_appservice_hs_token" {
   value     = random_password.mautrix_telegram_appservice_hs_token.result
   sensitive = true
 }
+resource "random_password" "matrix_njulug_appservice_as_token" {
+  length  = 32
+  special = false
+}
+output "matrix_njulug_appservice_as_token" {
+  value     = random_password.matrix_njulug_appservice_as_token.result
+  sensitive = true
+}
+resource "random_password" "matrix_njulug_appservice_hs_token" {
+  length  = 32
+  special = false
+}
+output "matrix_njulug_appservice_hs_token" {
+  value     = random_password.matrix_njulug_appservice_hs_token.result
+  sensitive = true
+}
 resource "random_password" "matrix_qq_appservice_as_token" {
   length  = 32
   special = false

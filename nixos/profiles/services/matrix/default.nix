@@ -286,6 +286,48 @@ lib.mkMerge [
     };
   }
 
+  # njulug-bridge
+  {
+    #the njulug-bridge is hosted on another host
+
+    services.matrix-synapse.settings.app_service_config_files = [
+      config.sops.templates."matrix-njulug-bridge-registration".path
+    ];
+    systemd.services.matrix-synapse.restartTriggers = [
+      config.sops.templates."matrix-njulug-bridge-registration".file
+    ];
+    sops.templates."matrix-njulug-bridge-registration" = {
+      owner = "matrix-synapse";
+      content = builtins.toJSON {
+        id = "njulug-tri-bridge";
+        url = "https://tri-lug.chr.fan";
+        as_token = config.sops.placeholder."matrix_njulug_appservice_as_token";
+        hs_token = config.sops.placeholder."matrix_njulug_appservice_hs_token";
+        sender_localpart = "njulug-bridgebot";
+        namespaces = {
+          users = [
+            {
+              exclusive = true;
+              regex = "^@_njulug_.*:li7g\.com$";
+            }
+          ];
+        };
+        rate_limited = false;
+        de.sorunome.msc2409.push_ephemeral = true;
+        push_ephemeral = true;
+      };
+    };
+
+    sops.secrets."matrix_njulug_appservice_as_token" = {
+      terraformOutput.enable = true;
+      restartUnits = [ "matrix-synapse.service" ];
+    };
+    sops.secrets."matrix_njulug_appservice_hs_token" = {
+      terraformOutput.enable = true;
+      restartUnits = [ "matrix-synapse.service" ];
+    };
+  }
+
   # matrix-qq
   {
     # the matrix-qq service is hosted on another host
