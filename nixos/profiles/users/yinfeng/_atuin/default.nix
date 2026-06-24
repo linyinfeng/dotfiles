@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   home-manager.users.yinfeng =
     {
@@ -42,6 +42,7 @@
             };
           in
           {
+            Environment = lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.stringEnvironment;
             ExecStart = "${atuinLogin}/bin/atuin-login";
             Type = "oneshot";
             Restart = "on-failure";
