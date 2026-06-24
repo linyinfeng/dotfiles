@@ -2,7 +2,6 @@
 {
   programs.helix = {
     enable = true;
-    defaultEditor = true;
     languages = { };
     settings = lib.mkMerge [
       { theme = "base16_default"; }

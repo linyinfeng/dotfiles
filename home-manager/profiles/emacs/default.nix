@@ -71,6 +71,9 @@ in
     Service.Environment = lib.mkIf fw-proxy.enable fw-proxy.stringEnvironment;
   };
 
+  home.sessionVariables = {
+    EDITOR = "emacsclient";
+  };
   home.shellAliases = {
     en = "emacsclient --no-wait";
     ecn = "emacsclient --create-frame --no-wait";
