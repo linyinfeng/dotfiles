@@ -16,7 +16,7 @@
           enter_accept = true;
           auto_sync = true;
           sync_frequency = "5m";
-          sync_address = "https://atuin.ts.li7g.com";
+          sync_address = "https://atuin.li7g.com";
           key_path = osConfig.sops.secrets."yinfeng_atuin_key".path;
         };
       };
