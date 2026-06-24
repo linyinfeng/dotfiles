@@ -13,7 +13,7 @@
     enable = true;
     enableMcpIntegration = true;
   };
-  programs.gemini-cli = {
+  programs.antigravity-cli = {
     enable = true;
     enableMcpIntegration = true;
   };

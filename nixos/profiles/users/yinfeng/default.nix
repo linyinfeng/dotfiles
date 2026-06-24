@@ -119,7 +119,7 @@ in
       };
     }
 
-    # gemini-cli
+    # antigravity-cli
     {
       home-manager.users.yinfeng.programs.fish.interactiveShellInit = ''
         export GEMINI_API_KEY="$(cat "${config.sops.secrets."gemini_api_key".path}")"
