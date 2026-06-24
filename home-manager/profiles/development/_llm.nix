@@ -104,8 +104,11 @@
     ".continue"
     ".codebuddy"
     ".config/reasonix"
-    ".config/opencode"
     ".config/kilo"
+    ".config/opencode"
+    ".local/share/opencode"
+    ".config/mimocode"
+    ".local/share/mimocode"
   ];
   home.global-persistence.files = [
     ".claude.json"
