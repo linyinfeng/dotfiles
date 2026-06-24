@@ -1,6 +1,7 @@
 { lib, osConfig, ... }:
 {
   programs.fish.enable = true;
+  programs.nushell.enable = true;
   programs.skim.enable = true;
   programs.zoxide.enable = true;
 

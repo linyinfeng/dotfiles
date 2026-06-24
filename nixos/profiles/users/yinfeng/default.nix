@@ -37,7 +37,7 @@ in
             count = 65536;
           }
         ];
-        shell = pkgs.fish;
+        shell = pkgs.nushell;
         home = homeDirectory;
         group = name; # private group
         extraGroups =
