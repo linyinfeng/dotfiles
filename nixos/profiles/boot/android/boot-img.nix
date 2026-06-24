@@ -69,7 +69,6 @@ in
   };
   config = {
     boot.bootspec = {
-      enable = true;
       extensions.${bootspecNamespace} = {
         dtbs = config.hardware.deviceTree.package;
       };
