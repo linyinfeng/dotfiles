@@ -220,6 +220,13 @@
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
 
+    tsukkomi.url = "github:linyinfeng/tsukkomi";
+    tsukkomi.inputs.nixpkgs.follows = "nixpkgs";
+    tsukkomi.inputs.crane.follows = "crane";
+    tsukkomi.inputs.flake-parts.follows = "flake-parts";
+    tsukkomi.inputs.systems.follows = "systems";
+    tsukkomi.inputs.treefmt-nix.follows = "treefmt-nix";
+
     # libraries
 
     blank.url = "github:divnix/blank";

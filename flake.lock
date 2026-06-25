@@ -1621,6 +1621,7 @@
         "system76-scheduler-niri": "system76-scheduler-niri",
         "systems": "systems",
         "treefmt-nix": "treefmt-nix",
+        "tsukkomi": "tsukkomi",
         "uv2nix": "uv2nix",
         "weird-deployer": "weird-deployer"
       }
@@ -1743,6 +1744,38 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "tsukkomi": {
+      "inputs": {
+        "crane": [
+          "crane"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ],
+        "treefmt-nix": [
+          "treefmt-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1782412631,
+        "narHash": "sha256-/q8fZCLtjhcga2XTtWjhwz3nLpMfX5cDu8f/kce9fxc=",
+        "owner": "linyinfeng",
+        "repo": "tsukkomi",
+        "rev": "672c96e7550dc108a6abf30a8fb71c8b1ef2d431",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "repo": "tsukkomi",
         "type": "github"
       }
     },
