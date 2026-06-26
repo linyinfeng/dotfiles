@@ -1,10 +1,12 @@
 {
   config,
+  lib,
   ...
 }:
 {
   services.tsukkomi = {
     xiaomiMimoApiKeyFile = config.sops.secrets."tsukkomi_mimo_api_key".path;
+    deepseekApiKeyFile = config.sops.secrets."tsukkomi_deepseek_api_key".path;
     extraArgs = [ ];
     matrix = {
       enable = true;
@@ -27,6 +29,15 @@
       ];
       extraArgs = [ ];
     };
+  };
+  systemd.services.tsukkomi-telegram.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
+  systemd.services.tsukkomi-matrix.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
+  sops.secrets."tsukkomi_deepseek_api_key" = {
+    predefined.enable = true;
+    restartUnits = [
+      "tsukkomi-matrix.service"
+      "tsukkomi-telegram.service"
+    ];
   };
   sops.secrets."tsukkomi_mimo_api_key" = {
     predefined.enable = true;

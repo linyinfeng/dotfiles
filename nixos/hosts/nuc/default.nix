@@ -53,6 +53,7 @@ in
       services.hydra
       services.fw-proxy-subscription
       services.fwupd
+      services.tsukkomi
       # services.matrix-qq
       services.teamspeak
       services.cache-overlay

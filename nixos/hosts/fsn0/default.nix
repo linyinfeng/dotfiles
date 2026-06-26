@@ -20,7 +20,6 @@
       services.bird-lg
       services.keycloak
       services.matrix
-      services.tsukkomi
       # services.baibot # TODO broken
       services.mastodon
       services.maddy
