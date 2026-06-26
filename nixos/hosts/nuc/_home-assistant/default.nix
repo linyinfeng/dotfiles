@@ -51,6 +51,8 @@
       avahi-publish --address --no-reverse homeassistant.local 192.168.0.2
     '';
     path = [ config.services.avahi.package ];
+    requires = [ "avahi-daemon.socket" ];
+    after = [ "avahi-daemon.socket" ];
     wantedBy = [ "multi-user.target" ];
   };
   sops.templates."home-assistant-secrets" = {
