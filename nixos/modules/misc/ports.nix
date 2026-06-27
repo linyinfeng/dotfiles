@@ -98,6 +98,7 @@
       atticd = 3440;
       nix-cache-overlay = 3450;
       hongbao2026 = 3460;
+      opencode-web = 3470;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

@@ -1,4 +1,5 @@
 {
+  profiles,
   config,
   pkgs,
   lib,
@@ -16,6 +17,7 @@ in
   imports = [
     ./_syncthing
     ./_atuin
+    profiles.development.llm-keys
   ];
 
   config = lib.mkMerge [
@@ -46,6 +48,7 @@ in
             users.name
             wheel.name
             keys.name
+            llm.name
           ]
           ++ groupNameIfPresent "audio"
           ++ groupNameIfPresent "video"
@@ -97,30 +100,6 @@ in
             trust = "ultimate";
           }
         ];
-      };
-    }
-
-    # llm api keys
-    {
-      sops.secrets."deepseek_api_key" = {
-        predefined.enable = true;
-        restartUnits = [ ];
-        owner = name;
-      };
-      sops.secrets."mimo_api_key" = {
-        predefined.enable = true;
-        restartUnits = [ ];
-        owner = name;
-      };
-      sops.secrets."mimo_token_plan_api_key" = {
-        predefined.enable = true;
-        restartUnits = [ ];
-        owner = name;
-      };
-      sops.secrets."mineru_api_key" = {
-        predefined.enable = true;
-        restartUnits = [ ];
-        owner = name;
       };
     }
 

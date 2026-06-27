@@ -6,7 +6,7 @@
     nianyi = 1001;
 
     # other users
-    nixos = 1099;
+    agent = 1099;
 
     # operation users
     minecraft = 2000;

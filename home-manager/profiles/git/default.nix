@@ -25,12 +25,19 @@ lib.mkMerge [
         pull.rebase = false;
         pull.ff = "only";
         credential = {
-          helper = "${pkgs.git-credential-manager}/bin/git-credential-manager";
+          helper = [ "${lib.getExe pkgs.git-credential-manager}" ];
           credentialStore = "secretservice";
           # git-credential-manager specified configurations
           # https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/autodetect.md
           provider = "auto";
-          "https://github.com".provider = "github";
+          "https://github.com".helper = [
+            ""
+            "${lib.getExe pkgs.gh} auth git-credential"
+          ];
+          "https://gist.github.com".helper = [
+            ""
+            "${lib.getExe pkgs.gh} auth git-credential"
+          ];
           "https://gitlab.com".provider = "gitlab";
           "https://git.nju.edu.cn".provider = "gitlab";
         };

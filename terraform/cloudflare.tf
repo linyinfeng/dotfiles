@@ -160,6 +160,7 @@ locals {
     subscription   = { on = "nuc", proxy = false }
     cache-overlay  = { on = "nuc", proxy = false }
     home-assistant = { on = "nuc", proxy = false }
+    opencode       = { on = "nuc", proxy = false }
   }
 }
 output "service_cname_mappings" {

@@ -55,7 +55,7 @@ let
       # }
       # trap cleanup EXIT
       cat >"$tmp_file"
-      nix eval --expr "builtins.fromJSON (builtins.readFile $tmp_file)" --impure | nixfmt | bat --language=nix
+      nix eval --expr "builtins.fromJSON (builtins.readFile $tmp_file)" --impure | nixfmt - | bat --language=nix
     '';
   };
 in

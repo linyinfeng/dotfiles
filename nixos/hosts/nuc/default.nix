@@ -60,7 +60,7 @@ in
       programs.service-mail
       programs.tg-send
       users.yinfeng
-      users.nianyi
+      users.agent
     ])
     ++ [
       ./_minecraft-unmanaged

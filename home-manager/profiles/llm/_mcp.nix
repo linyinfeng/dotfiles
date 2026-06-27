@@ -5,10 +5,17 @@
   ...
 }:
 let
-  mineruMcp = pkgs.writeShellScriptBin "mineru-open-mcp-wrapped" ''
-    export MINERU_API_TOKEN="$(cat "${osConfig.sops.secrets."mineru_api_key".path}")"
-    exec ${lib.getExe' pkgs.uv "uvx"} mineru-open-mcp "$@"
-  '';
+  mineruMcp = pkgs.writeShellApplication {
+    name = "mineru-open-mcp";
+    runtimeInputs = with pkgs; [
+      uv
+    ];
+    text = ''
+      MINERU_API_TOKEN="$(cat "${osConfig.sops.secrets."mineru_api_key".path}")"
+      export MINERU_API_TOKEN
+      exec uvx mineru-open-mcp "$@"
+    '';
+  };
 in
 {
   programs.mcp = {
@@ -17,12 +24,13 @@ in
       let
         simpleMcps = with pkgs; [
           mcp-nixos
+          mineruMcp
         ];
       in
       lib.listToAttrs (
         lib.map (
           p:
-          lib.nameValuePair p.pname {
+          lib.nameValuePair (p.pname or p.name) {
             command = lib.getExe p;
             env = {
               # some python MCP does not support SOCKS 5 proxies
@@ -33,14 +41,7 @@ in
         ) simpleMcps
       )
       // {
-        mineru = {
-          command = lib.getExe mineruMcp;
-          env = {
-            "MINERU_DEFAULT_MODEL" = "vlm";
-            "ALL_PROXY" = "";
-            "all_proxy" = "";
-          };
-        };
+        # nothing
       };
   };
 }
