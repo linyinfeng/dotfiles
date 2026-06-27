@@ -64,6 +64,7 @@ let
     rathole-ad-hoc = [ ];
     home-assistant = [ ];
     portal = [ ];
+    opencode = [ ];
   };
   overrides = {
     box = [
