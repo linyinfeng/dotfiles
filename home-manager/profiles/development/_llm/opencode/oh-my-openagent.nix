@@ -40,7 +40,9 @@ in
   xdg.configFile."opencode/oh-my-openagent.json" = {
     source = jsonFormat.generate "oh-my-openagent.json" {
       "$schema" =
-        "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-openencode.schema.json";
+        "https://github.com/code-yeongyu/oh-my-openagent/raw/refs/heads/dev/assets/oh-my-opencode.schema.json";
+      model_fallback = true;
+      runtime_fallback = true;
       agents = {
         sisyphus = orchestrator;
         oracle = hardTask;
