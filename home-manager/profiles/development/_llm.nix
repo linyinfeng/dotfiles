@@ -12,6 +12,13 @@
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
+    extraPackages = with pkgs; [
+      python3
+      uv
+      nodejs
+      bun
+      pnpm
+    ];
   };
   programs.antigravity-cli = {
     enable = true;
