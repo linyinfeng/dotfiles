@@ -349,6 +349,7 @@
         selfLib = import ./lib { inherit inputs lib; };
       in
       {
+        debug = true; # for nixd
         flatFlake.config = {
           allowed = [
             [

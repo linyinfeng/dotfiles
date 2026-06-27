@@ -1,5 +1,4 @@
 {
-  self,
   pkgs,
   lib,
   ...
@@ -15,8 +14,10 @@
           command = [ (lib.getExe pkgs.nixfmt) ];
         };
         options = {
-          nixos.expr = ''(builtins.getFlake "${self}").lib.nixd.nixosOptions'';
-          home-manager.expr = ''(builtins.getFlake "${self}").lib.nixd.homeManagerOptions'';
+          nixos.expr = ''(builtins.getFlake "self").lib.nixd.nixosOptions'';
+          home-manager.expr = ''(builtins.getFlake "self").lib.nixd.homeManagerOptions'';
+          flake-parts.expr = ''(builtins.getFlake "self").debug.options'';
+          flake-parts-per-system.expr = ''(builtins.getFlake "self").currentSystem.options'';
         };
       };
     };

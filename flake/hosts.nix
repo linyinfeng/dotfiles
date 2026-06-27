@@ -32,7 +32,6 @@ let
           security.rtkit
           security.run0-sudo-shim
           global-persistence
-          system.constant
           system.common
           system.sysrq
           system.perlless
