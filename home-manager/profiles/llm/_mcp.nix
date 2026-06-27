@@ -2,6 +2,7 @@
   pkgs,
   lib,
   osConfig,
+  config,
   ...
 }:
 let
@@ -10,6 +11,10 @@ let
     runtimeInputs = with pkgs; [
       uv
     ];
+    runtimeEnv = {
+      OUTPUT_DIR = "${config.xdg.userDirs.documents}/MinerU";
+      ENABLE_LOG = "true";
+    };
     text = ''
       MINERU_API_TOKEN="$(cat "${osConfig.sops.secrets."mineru_api_key".path}")"
       export MINERU_API_TOKEN

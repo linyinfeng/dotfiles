@@ -52,6 +52,7 @@ in
           git
           llm
           vscode-server
+          xdg-dirs
         ]);
 
       programs.git = {
