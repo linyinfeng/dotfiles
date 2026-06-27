@@ -371,9 +371,10 @@
           "x86_64-linux"
           "aarch64-linux"
         ];
-        flake.lib = selfLib // {
+        flake.libs = {
           inherit (config) systems;
-        };
+        }
+        // selfLib;
         imports = [
           inputs.flat-flake.flakeModules.flatFlake
           inputs.flake-parts.flakeModules.easyOverlay

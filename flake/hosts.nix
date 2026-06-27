@@ -584,4 +584,34 @@ in
       "linux/parrot" = self.nixosConfigurations.parrot.config.boot.kernelPackages.kernel;
     };
   };
+
+  flake.libs.nixd =
+    let
+      dummySystem = "x86_64-linux";
+      dummyPkgs = (getSystem dummySystem).allModuleArgs.pkgs;
+    in
+    {
+      nixpkgs = dummyPkgs;
+      nixosOptions =
+        (mkHost {
+          name = "nixd";
+          configurationName = null;
+          system = dummySystem;
+        }).nixd.options;
+      homeManagerOptions =
+        (inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = dummyPkgs;
+          extraSpecialArgs = hmSpecialArgs // {
+            osConfig = {
+              system.stateVersion = self.lib.flakeStateVersion;
+            };
+          };
+          modules = commonHmModules ++ [
+            {
+              home.username = "nixd";
+              home.homeDirectory = "/home/nixd";
+            }
+          ];
+        }).options;
+    };
 }

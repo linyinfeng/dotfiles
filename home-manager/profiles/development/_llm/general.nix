@@ -1,7 +1,6 @@
 {
   osConfig,
   pkgs,
-  lib,
   ...
 }:
 {
@@ -9,50 +8,10 @@
     enable = true;
     enableMcpIntegration = true;
   };
-  programs.opencode = {
-    enable = true;
-    enableMcpIntegration = true;
-    extraPackages = with pkgs; [
-      python3
-      uv
-      nodejs
-      bun
-      pnpm
-    ];
-  };
   programs.antigravity-cli = {
     enable = true;
     enableMcpIntegration = true;
   };
-  programs.mcp = {
-    enable = true;
-    servers =
-      let
-        simpleMcps = with pkgs; [
-          mcp-nixos
-          mcp-server-git
-          mcp-server-time
-          mcp-server-fetch
-          mcp-nixos
-        ];
-      in
-      lib.listToAttrs (lib.map (p: lib.nameValuePair p.pname { command = lib.getExe p; }) simpleMcps)
-      // {
-        # zotero-mcp = {
-        #   command = lib.getExe' pkgs.uv "uvx";
-        #   args = [
-        #     "--from"
-        #     "zotero-mcp-server"
-        #     "zotero-mcp"
-        #   ];
-        #   env = {
-        #     "ZOTERO_LOCAL" = "true";
-        #     "LD_LIBRARY_PATH" = lib.makeLibraryPath pkgs.pythonManylinuxPackages.manylinux1;
-        #   };
-        # };
-      };
-  };
-
   home.packages = [
     pkgs.nono
     pkgs.linyinfeng.deepseek-reasonix
@@ -112,8 +71,6 @@
     ".codebuddy"
     ".config/reasonix"
     ".config/kilo"
-    ".config/opencode"
-    ".local/share/opencode"
     ".config/mimocode"
     ".local/share/mimocode"
   ];

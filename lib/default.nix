@@ -1,5 +1,5 @@
 { inputs, lib }:
-lib.makeExtensible (self: {
+lib.fix (self: {
   data = lib.importJSON ./data/data.json;
   flakeStateVersion = lib.importJSON ./state-version.json;
   buildModuleList = import ./build-module-list.nix { inherit self lib; };
