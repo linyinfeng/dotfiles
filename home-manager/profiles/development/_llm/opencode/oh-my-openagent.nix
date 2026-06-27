@@ -42,7 +42,19 @@ in
       "$schema" =
         "https://github.com/code-yeongyu/oh-my-openagent/raw/refs/heads/dev/assets/oh-my-opencode.schema.json";
       model_fallback = true;
-      runtime_fallback = true;
+      runtime_fallback = {
+        enabled = true;
+        retry_on_errors = [
+          429
+          500
+          502
+          503
+          504
+        ];
+        max_fallback_attempts = 5;
+        cooldown_seconds = 60;
+        notify_on_fallback = true;
+      };
       agents = {
         sisyphus = orchestrator;
         oracle = hardTask;
