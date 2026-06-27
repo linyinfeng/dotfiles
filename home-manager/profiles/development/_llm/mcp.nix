@@ -36,22 +36,11 @@ in
         mineru = {
           command = lib.getExe mineruMcp;
           env = {
+            "MINERU_DEFAULT_MODEL" = "vlm";
             "ALL_PROXY" = "";
             "all_proxy" = "";
           };
         };
-        # zotero-mcp = {
-        #   command = lib.getExe' pkgs.uv "uvx";
-        #   args = [
-        #     "--from"
-        #     "zotero-mcp-server"
-        #     "zotero-mcp"
-        #   ];
-        #   env = {
-        #     "ZOTERO_LOCAL" = "true";
-        #     "LD_LIBRARY_PATH" = lib.makeLibraryPath pkgs.pythonManylinuxPackages.manylinux1;
-        #   };
-        # };
       };
   };
 }

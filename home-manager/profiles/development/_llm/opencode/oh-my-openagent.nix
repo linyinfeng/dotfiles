@@ -2,39 +2,43 @@
 let
   jsonFormat = pkgs.formats.json { };
 
+  orchestratorModels = [
+    "opencode-go/kimi-k2.6"
+    "opencode-go/glm-5.2"
+    "opencode-go/deepseek-v4-pro"
+    "xiaomi-token-plan-cn/mimo-v2.5-pro"
+  ]
+  ++ normalTaskModels;
+
+  hardTaskModels = [
+    "opencode-go/glm-5.2"
+    "opencode-go/kimi-k2.6"
+    "opencode-go/deepseek-v4-pro"
+    "xiaomi-token-plan-cn/mimo-v2.5-pro"
+  ]
+  ++ normalTaskModels;
+
+  normalTaskModels = [
+    "opencode-go/deepseek-v4-flash"
+    "opencode/deepseek-v4-flash-free"
+    "xiaomi-token-plan-cn/mimo-v2.5"
+  ];
+
+  visionModels = [
+    "opencode-go/mimo-v2.5"
+    "opencode/mimo-v2.5-free"
+    "xiaomi-token-plan-cn/mimo-v2.5"
+  ];
+
   mkAgent = models: {
     model = builtins.head models;
     fallback_models = map (m: { model = m; }) (builtins.tail models);
   };
 
-  orchestrator = mkAgent [
-    "opencode-go/kimi-k2.6"
-    "opencode-go/glm-5.2"
-    "xiaomi-token-plan-cn/mimo-v2.5-pro"
-    "opencode-go/deepseek-v4-pro"
-    "opencode/deepseek-v4-pro"
-  ];
-
-  hardTask = mkAgent [
-    "opencode-go/glm-5.2"
-    "opencode-go/kimi-k2.6"
-    "xiaomi-token-plan-cn/mimo-v2.5-pro"
-    "opencode-go/deepseek-v4-pro"
-    "opencode/deepseek-v4-pro"
-  ];
-
-  normalTask = mkAgent [
-    "opencode-go/deepseek-v4-flash"
-    "opencode/deepseek-v4-flash-free"
-    "xiaomi-token-plan-cn/mimo-v2.5"
-    "deepseek/deepseek-v4-flash"
-  ];
-
-  vision = mkAgent [
-    "opencode-go/mimo-v2.5"
-    "opencode/mimo-v2.5-free"
-    "xiaomi-token-plan-cn/mimo-v2.5"
-  ];
+  orchestrator = mkAgent orchestratorModels;
+  hardTask = mkAgent hardTaskModels;
+  normalTask = mkAgent normalTaskModels;
+  vision = mkAgent visionModels;
 in
 {
   xdg.configFile."opencode/oh-my-openagent.json" = {
