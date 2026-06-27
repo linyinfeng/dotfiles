@@ -77,9 +77,16 @@ lib.mkMerge [
         hyperlinks-file-link-format = "file-line-column://{path}:{line}";
       };
     };
-    programs.git.settings = {
-      merge.conflictstyle = "diff3";
-      diff.colorMoved = "default";
+    programs.git = {
+      settings = {
+        merge.conflictstyle = "diff3";
+        diff.colorMoved = "default";
+      };
+      ignores = [
+        "/result*"
+        "/.envrc"
+        "/.direnv"
+      ];
     };
     home.packages = [ fileLineColumnHandler ];
     xdg.desktopEntries = {

@@ -65,4 +65,8 @@ in
       };
     };
   };
+  programs.git.ignores = [
+    "/.codegraph"
+    "/.omo"
+  ];
 }

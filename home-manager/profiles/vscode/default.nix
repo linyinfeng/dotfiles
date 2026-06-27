@@ -7,6 +7,10 @@
     };
   };
 
+  programs.git.ignores = [
+    "/.vscode"
+  ];
+
   home.global-persistence.directories = [
     ".vscode"
     ".vscode-shared"
