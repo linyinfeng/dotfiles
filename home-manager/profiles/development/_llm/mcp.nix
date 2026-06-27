@@ -1,4 +1,15 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  osConfig,
+  ...
+}:
+let
+  mineruMcp = pkgs.writeShellScriptBin "mineru-open-mcp-wrapped" ''
+    export MINERU_API_TOKEN="$(cat "${osConfig.sops.secrets."mineru_api_key".path}")"
+    exec ${lib.getExe' pkgs.uv "uvx"} mineru-open-mcp "$@"
+  '';
+in
 {
   programs.mcp = {
     enable = true;
@@ -22,6 +33,13 @@
         ) simpleMcps
       )
       // {
+        mineru = {
+          command = lib.getExe mineruMcp;
+          env = {
+            "ALL_PROXY" = "";
+            "all_proxy" = "";
+          };
+        };
         # zotero-mcp = {
         #   command = lib.getExe' pkgs.uv "uvx";
         #   args = [

@@ -117,6 +117,11 @@ in
         restartUnits = [ ];
         owner = name;
       };
+      sops.secrets."mineru_api_key" = {
+        predefined.enable = true;
+        restartUnits = [ ];
+        owner = name;
+      };
     }
 
     # antigravity-cli
