@@ -9,7 +9,7 @@
     deepseekApiKeyFile = config.sops.secrets."tsukkomi_deepseek_api_key".path;
     extraArgs = [ ];
     matrix = {
-      enable = true;
+      enable = false;
       homeserver = "https://matrix.li7g.com";
       username = "@yuuko:li7g.com";
       passwordFile = config.sops.secrets."tsukkomi_matrix_password".path;
@@ -21,7 +21,7 @@
       extraArgs = [ ];
     };
     telegram = {
-      enable = true;
+      enable = false;
       tokenFile = config.sops.secrets."tsukkomi_telegram_token".path;
       chats = [
         "148111617"
