@@ -61,5 +61,12 @@ in
           user.email = "nano@linyinfeng.com";
         };
       };
+
+      programs.bash = {
+        enable = true;
+        bashrcExtra = ''
+          source enable-proxy
+        '';
+      };
     };
 }
