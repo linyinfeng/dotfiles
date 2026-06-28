@@ -2,17 +2,11 @@
 let
   jsonFormat = pkgs.formats.json { };
 
-  orchestratorModels = [
-    "opencode-go/kimi-k2.6"
-    "opencode-go/glm-5.2"
-    "opencode-go/deepseek-v4-pro"
-    "xiaomi-token-plan-cn/mimo-v2.5-pro"
-  ]
-  ++ normalTaskModels;
+  orchestratorModels = hardTaskModels;
 
   hardTaskModels = [
     "opencode-go/glm-5.2"
-    "opencode-go/kimi-k2.6"
+    "nvidia/deepseek-ai/deepseek-v4-pro"
     "opencode-go/deepseek-v4-pro"
     "xiaomi-token-plan-cn/mimo-v2.5-pro"
   ]

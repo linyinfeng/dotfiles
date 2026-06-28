@@ -31,6 +31,12 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."nvidia_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   sops.secrets."mineru_api_key" = {
     predefined.enable = true;
     restartUnits = [ ];
@@ -61,6 +67,10 @@
       };
       xiaomi-token-plan-cn = {
         key = config.sops.placeholder."mimo_token_plan_api_key";
+        type = "api";
+      };
+      nvidia = {
+        key = config.sops.placeholder."nvidia_api_key";
         type = "api";
       };
     };
