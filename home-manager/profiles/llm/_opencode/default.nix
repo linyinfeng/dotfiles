@@ -4,6 +4,7 @@
     ./oh-my-openagent.nix
     ./lsp.nix
     ./auth.nix
+    ./skills.nix
   ];
   programs.opencode = {
     enable = true;
@@ -32,9 +33,6 @@
       pnpm
       gcc # allow build some python packages
     ];
-    settings = {
-      plugin = [ "oh-my-openagent@latest" ];
-    };
   };
 
   home.global-persistence.directories = [

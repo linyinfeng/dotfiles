@@ -35,6 +35,7 @@ let
   vision = mkAgent visionModels;
 in
 {
+  programs.opencode.settings.plugin = [ "oh-my-openagent@latest" ];
   xdg.configFile."opencode/oh-my-openagent.json" = {
     source = jsonFormat.generate "oh-my-openagent.json" {
       "$schema" =
@@ -52,6 +53,9 @@ in
         max_fallback_attempts = 5;
         cooldown_seconds = 60;
         notify_on_fallback = true;
+      };
+      sisyphus_agent = {
+        default_builder_enabled = true;
       };
       agents = {
         sisyphus = orchestrator;
