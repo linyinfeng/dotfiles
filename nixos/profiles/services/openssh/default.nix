@@ -83,6 +83,11 @@ in
         AddressFamily inet
         ProxyJump ostrich
         Port 2222
+
+      Host agent
+        User agent
+        HostName nuc.li7g.com
+        Port ${toString config.ports.ssh}
     '';
   };
 
