@@ -40,6 +40,10 @@
       "on": "mtl0",
       "proxy": true
     },
+    "agent": {
+      "on": "nuc",
+      "proxy": false
+    },
     "atuin": {
       "on": "hkg0",
       "proxy": true
