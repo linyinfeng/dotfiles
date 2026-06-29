@@ -12,6 +12,7 @@ in
 {
   imports = [
     ./_opencode.nix
+    ./_filebrowser.nix
     profiles.development.llm-keys
   ];
   users.users.${name} = {

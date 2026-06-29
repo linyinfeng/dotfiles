@@ -559,3 +559,12 @@ output "opencode_web_password" {
   value     = random_password.opencode_web_password.result
   sensitive = true
 }
+
+resource "random_password" "filebrowser_agent" {
+  length  = 32
+  special = false
+}
+output "filebrowser_agent_admin_password" {
+  value     = random_password.filebrowser_agent.result
+  sensitive = true
+}
