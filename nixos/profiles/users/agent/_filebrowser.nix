@@ -23,13 +23,25 @@
   systemd.services.filebrowser = {
     preStart =
       let
+        database = config.services.filebrowser.settings.database;
         script = pkgs.writeShellApplication {
           name = "filebrowser-init";
           runtimeInputs = [ config.services.filebrowser.package ];
           text = ''
+            database="${database}"
+            cd "$(dirname "$database")"
+            echo "filebrowser-init: initializing database at $database"
+            if ! filebrowser config init --database="$database"; then
+              echo "filebrowser-init: database already initialized, skipping"
+            fi
             PASSWORD="$(cat "$CREDENTIALS_DIRECTORY/filebrowser-admin-password")"
-            filebrowser users add admin "$PASSWORD" --perm.admin 2>/dev/null || \
-            filebrowser users update admin --password "$PASSWORD" --perm.admin
+            echo "filebrowser-init: setting admin password"
+            if filebrowser users add admin "$PASSWORD" --perm.admin --database="$database"; then
+              echo "filebrowser-init: admin user created"
+            else
+              echo "filebrowser-init: admin user already exists, updating password"
+              filebrowser users update admin --password "$PASSWORD" --perm.admin --database="$database"
+            fi
           '';
         };
       in
