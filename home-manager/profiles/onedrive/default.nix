@@ -1,4 +1,9 @@
-{ config, ... }:
+{
+  lib,
+  osConfig,
+  config,
+  ...
+}:
 {
   programs.onedrive = {
     enable = true;
@@ -6,6 +11,9 @@
       # currently nothing
     };
   };
+
+  systemd.user.services.onedrive.Service.Environment =
+    lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.stringEnvironment;
 
   systemd.user.tmpfiles.rules = [
     # enable onedrive service
