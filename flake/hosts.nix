@@ -230,6 +230,7 @@ let
         ok
         vscode-server
         terminal-multiplexing
+        obsidian
       ];
       music = [
         profiles.music
