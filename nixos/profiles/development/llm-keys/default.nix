@@ -43,6 +43,12 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."voyage_ai_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   sops.templates."opencode-auth" = {
     content = builtins.toJSON {
       deepseek = {
