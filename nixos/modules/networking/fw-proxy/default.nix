@@ -14,6 +14,7 @@ let
     name: env:
     pkgs.writeShellApplication {
       inherit name;
+      bashOptions = [ ]; # no bash options since this script should be sourced
       text = ''
         ${lib.concatMapStringsSep "\n" (env: ''export ${env.name}="${env.value}"'') (lib.attrsToList env)}
       '';
