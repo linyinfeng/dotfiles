@@ -452,19 +452,14 @@ in
     # noctalia
     (
       let
-        toggleDarkMode = pkgs.writeShellApplication {
-          name = "noctalia-toggle-dark-mode";
+        themeModeChanged = pkgs.writeShellApplication {
+          name = "noctalia-toggle-theme-mode-change";
           runtimeInputs = [
             config.services.darkman.package
           ];
           text = ''
-            if [ "$1" = "true" ]; then
-              mode="dark"
-            else
-              mode="light"
-            fi
             niri msg action do-screen-transition --delay-ms 500
-            darkman set "$mode"
+            darkman set "$NOCTALIA_THEME_MODE"
           '';
         };
         defaultWallpaper = pkgs.fetchurl {
@@ -473,7 +468,7 @@ in
         };
         specialSettings = {
           general.avatarImage = "${config.home.homeDirectory}/.face";
-          hooks.theme_mode_changed = "${lib.getExe toggleDarkMode} $1";
+          hooks.theme_mode_changed = "${lib.getExe themeModeChanged} $1";
           screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";
           wallpaper = {
             default.path = "${defaultWallpaper}";
