@@ -13,4 +13,6 @@ lib.fix (self: {
   requireBigParallel = self.requireSystemFeatures [ "big-parallel" ];
   replaceModules = import ./replace-modules.nix { inherit lib; };
   replaceModuleSimple = import ./replace-module-simple.nix { inherit (self) replaceModules; };
+  groupNameIfPresent =
+    config: name: lib.optional (config.users.groups ? ${name}) config.users.groups.${name}.name;
 })

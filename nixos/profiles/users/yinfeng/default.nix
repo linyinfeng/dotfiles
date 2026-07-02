@@ -9,9 +9,7 @@ let
   name = "yinfeng";
   uid = config.ids.uids.${name};
   homeDirectory = "/home/${name}";
-
-  groupNameIfPresent =
-    name: lib.optional (config.users.groups ? ${name}) config.users.groups.${name}.name;
+  groupNameIfPresent = config.lib.self.groupNameIfPresent config;
 in
 {
   imports = [

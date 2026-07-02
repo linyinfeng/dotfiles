@@ -8,6 +8,7 @@ let
   name = "agent";
   uid = config.ids.uids.${name};
   homeDirectory = "/home/${name}";
+  groupNameIfPresent = config.lib.self.groupNameIfPresent config;
 in
 {
   imports = [
@@ -23,11 +24,15 @@ in
     createHome = false;
     group = name;
     linger = true;
-    extraGroups = with config.users.groups; [
-      users.name
-      keys.name
-      llm.name
-    ];
+    extraGroups =
+      with config.users.groups;
+      [
+        users.name
+        keys.name
+        llm.name
+      ]
+      ++ groupNameIfPresent "nix-access-tokens"
+      ++ groupNameIfPresent "hydra-builder-client";
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };
   users.groups.${name}.gid = uid; # use private group
