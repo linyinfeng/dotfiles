@@ -57,7 +57,7 @@ in
         { device = "/dev/vda2"; }
         {
           device = "/swapfile";
-          size = 4096; # 4 GiB
+          size = 512; # 512 MiB
         }
       ];
 
