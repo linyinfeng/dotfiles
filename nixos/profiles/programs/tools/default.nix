@@ -73,6 +73,7 @@ in
     with pkgs;
     [
       # keep-sorted start
+      ast-grep
       bat
       bc
       binutils
@@ -80,6 +81,7 @@ in
       compsize
       coreutils
       cryptsetup
+      difftastic
       dool
       dosfstools
       efibootmgr
@@ -88,6 +90,7 @@ in
       fd
       file
       gptfdisk
+      grit
       helix
       jq
       jujutsu
@@ -109,6 +112,7 @@ in
       ripgrep
       rlwrap
       s-tui
+      sd
       stress
       tokei
       unar
