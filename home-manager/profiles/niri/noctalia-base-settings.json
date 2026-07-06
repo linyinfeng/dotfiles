@@ -75,6 +75,7 @@
     "showOnWorkspaceSwitch": true,
     "showOutline": false,
     "tasks": {
+      "background_opacity": 0.7999999821186066,
       "capsule": true,
       "capsule_group": [
         {
@@ -95,15 +96,16 @@
       "center": [],
       "enabled": true,
       "end": ["clipboard", "group:g1", "group:g2", "privacy", "tray"],
-      "margin_edge": 0,
-      "margin_ends": 0,
+      "margin_edge": 8,
+      "margin_ends": 8,
       "position": "left",
-      "radius": 0,
+      "radius": 8,
       "start": ["taskbar"]
     },
     "useSeparateOpacity": false,
     "widgetSpacing": 6,
     "widgets": {
+      "background_opacity": 0.7999999821186066,
       "capsule": true,
       "capsule_group": [
         {
@@ -263,9 +265,9 @@
           "titleWidth": 120
         }
       ],
-      "margin_edge": 0,
-      "margin_ends": 0,
-      "radius": 0,
+      "margin_edge": 8,
+      "margin_ends": 8,
+      "radius": 8,
       "right": [
         {
           "compactMode": false,
@@ -482,49 +484,51 @@
   },
   "desktop_widgets": {
     "grid": {
-      "cell_size": 16,
+      "cell_size": 24,
       "major_interval": 4,
       "visible": true
     },
     "schema_version": 2,
     "widget": {
       "desktop-widget-0000000000000001": {
-        "box_height": 256.0,
-        "box_width": 256.0,
-        "cx": 1024.0,
-        "cy": 576.0,
-        "output": "DP-8",
+        "box_height": 128.0,
+        "box_width": 200.0,
+        "cx": 172.0,
+        "cy": 136.0,
+        "output": "eDP-1",
         "rotation": 0.0,
         "settings": {
-          "background": false,
+          "background": true,
+          "stat": "cpu_usage",
+          "stat2": "cpu_temp",
           "visualization_mode": "bars_rings"
         },
-        "type": "fancy_audio_visualizer"
+        "type": "sysmon"
       },
       "desktop-widget-0000000000000002": {
         "box_height": 128.0,
-        "box_width": 256.0,
-        "cx": 192.0,
-        "cy": 128.0,
-        "output": "DP-8",
+        "box_width": 200.0,
+        "cx": 172.0,
+        "cy": 272.0,
+        "output": "eDP-1",
         "rotation": 0.0,
         "settings": {
           "display": "graph",
-          "stat": "cpu_usage",
-          "stat2": "cpu_temp"
+          "stat": "ram_pct",
+          "stat2": "swap_pct"
         },
         "type": "sysmon"
       },
       "desktop-widget-0000000000000003": {
         "box_height": 128.0,
-        "box_width": 256.0,
-        "cx": 192.0,
-        "cy": 320.0,
-        "output": "DP-8",
+        "box_width": 200.0,
+        "cx": 172.0,
+        "cy": 408.0,
+        "output": "eDP-1",
         "rotation": 0.0,
         "settings": {
-          "stat": "ram_pct",
-          "stat2": "swap_pct"
+          "stat": "net_rx",
+          "stat2": "net_tx"
         },
         "type": "sysmon"
       },
@@ -545,14 +549,13 @@
     "widget_order": [
       "desktop-widget-0000000000000001",
       "desktop-widget-0000000000000002",
-      "desktop-widget-0000000000000003",
-      "desktop-widget-0000000000000004"
+      "desktop-widget-0000000000000003"
     ]
   },
   "dock": {
     "active_monitor_only": true,
     "animationSpeed": 1,
-    "auto_hide": false,
+    "auto_hide": true,
     "backgroundOpacity": 1,
     "background_opacity": 0.75,
     "colorizeIcons": false,
@@ -560,7 +563,7 @@
     "deadOpacity": 0.6,
     "displayMode": "auto_hide",
     "dockType": "floating",
-    "enabled": false,
+    "enabled": true,
     "floatingRatio": 1,
     "groupApps": false,
     "groupClickAction": "cycle",
@@ -580,10 +583,11 @@
     "onlySameOutput": true,
     "pinnedApps": [],
     "pinnedStatic": false,
-    "position": "left",
-    "reserve_space": true,
+    "position": "bottom",
+    "reserve_space": false,
     "showDockIndicator": false,
     "showLauncherIcon": false,
+    "show_dots": true,
     "sitOnFrame": false,
     "size": 1
   },
@@ -646,6 +650,9 @@
     "startup": "",
     "wallpaperChange": ""
   },
+  "hot_corners": {
+    "enabled": true
+  },
   "idle": {
     "behavior": {
       "lock": {
@@ -678,6 +685,12 @@
     "screenOffTimeout": 600,
     "suspendCommand": "",
     "suspendTimeout": 1800
+  },
+  "keybinds": {
+    "cancel": ["Escape", "Ctrl+g"],
+    "down": ["Down", "Ctrl+n"],
+    "left": ["Left"],
+    "up": ["Up", "Ctrl+p"]
   },
   "location": {
     "address": "Nanjing",
@@ -814,11 +827,15 @@
   "osd": {
     "autoHideMs": 1000,
     "backgroundOpacity": 1,
+    "background_opacity": 0.7999999821186066,
     "enabled": true,
     "enabledTypes": [0, 1, 2, 3],
     "location": "right",
     "monitors": [],
-    "overlayLayer": true
+    "offset_x": 8,
+    "overlayLayer": true,
+    "position": "top_right",
+    "position_vertical": "top_right"
   },
   "plugin_settings": {
     "noctalia/wallhaven": {
@@ -904,14 +921,19 @@
     "corner_radius_scale": 1.2000000178813934,
     "launch_apps_custom_command": "niri msg action spawn -- $CMD",
     "launcher": {
-      "app_grid": true,
+      "app_grid": false,
+      "compact": true,
       "session_search": true
     },
     "niri_overview_type_to_launch_enabled": true,
     "panel": {
-      "clipboard_placement": "attached",
+      "clipboard_placement": "floating",
+      "control_center_placement": "floating",
       "open_near_click_clipboard": true,
-      "open_near_click_control_center": true
+      "open_near_click_control_center": true,
+      "session_placement": "floating",
+      "transparency_mode": "glass",
+      "wallpaper_placement": "floating"
     },
     "password_style": "random",
     "polkit_agent": true,
@@ -959,6 +981,9 @@
     "community_palette": "Everdeer",
     "mode": "light",
     "source": "wallpaper",
+    "templates": {
+      "builtin_ids": ["niri"]
+    },
     "wallpaper_scheme": "m3-content"
   },
   "ui": {
