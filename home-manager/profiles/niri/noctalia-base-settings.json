@@ -871,7 +871,7 @@
   "settingsVersion": 59,
   "shell": {
     "corner_radius_scale": 1.2000000178813934,
-    "launch_apps_custom_command": "niri msg action spawn --",
+    "launch_apps_custom_command": "niri msg action spawn -- $CMD",
     "launcher": {
       "app_grid": true,
       "session_search": true
