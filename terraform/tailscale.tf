@@ -20,6 +20,10 @@ resource "tailscale_tailnet_key" "tailnet_key" {
   }
 }
 
+output "tailscale_tailnet_domain" {
+  value = local.tailscale_account_suffix
+}
+
 output "tailscale_tailnet_key" {
   value     = tailscale_tailnet_key.tailnet_key.key
   sensitive = true

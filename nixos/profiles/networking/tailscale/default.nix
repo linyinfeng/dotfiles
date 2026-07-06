@@ -1,8 +1,10 @@
 { config, lib, ... }:
 let
+  inherit (config.networking) useNetworkd;
   cfg = config.services.tailscale;
   interfaceName = "tailscale0";
   exitNode = config.networking.hostsData.indexed;
+  inherit (config.lib.self) data;
 in
 lib.mkMerge [
   { services.tailscale.enable = lib.mkDefault config.networking.hostsData.indexed; }
@@ -10,33 +12,16 @@ lib.mkMerge [
     services.tailscale = {
       port = config.ports.tailscale;
       inherit interfaceName;
+      authKeyFile = config.sops.secrets."tailscale_tailnet_key".path;
+      extraSetFlags = lib.optional exitNode "--advertise-exit-node" ++ [
+        "--accept-dns"
+      ];
     };
     passthru.tailscaleInterfaceName = interfaceName;
     systemd.services.tailscaled = {
       serviceConfig = {
         LogLevelMax = "notice"; # simply suppress all logs from tailscaled
       };
-    };
-    systemd.services.tailscale-setup = {
-      script = ''
-        sleep 10
-
-        if tailscale status; then
-          echo "tailscale already up, skip"
-        else
-          echo "tailscale down, login using auth key"
-          tailscale up --reset \
-            --auth-key "file:${config.sops.secrets."tailscale_tailnet_key".path}" \
-            ${lib.optionalString exitNode "--advertise-exit-node"}
-        fi
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      path = [ config.services.tailscale.package ];
-      after = [ "tailscaled.service" ];
-      requiredBy = [ "tailscaled.service" ];
     };
     sops.secrets."tailscale_tailnet_key" = {
       terraformOutput.enable = true;
@@ -47,4 +32,25 @@ lib.mkMerge [
     networking.firewall.checkReversePath = false;
     networking.networkmanager.unmanaged = [ interfaceName ];
   })
+  {
+    systemd.network.networks."40-tailscale-override" = lib.mkIf useNetworkd {
+      matchConfig = {
+        Name = cfg.interfaceName;
+      };
+      linkConfig = {
+        RequiredForOnline = false;
+        ActivationPolicy = "manual";
+      };
+      networkConfig = {
+        # tailscale is a layer 3 VPN
+        # do not advertise or configure any IP addresses on the tailscale interface through systemd-networkd
+        LinkLocalAddressing = "no";
+        IPv6AcceptRA = "no";
+        DHCP = "no";
+        # DNS configuration only
+        DNS = [ "100.100.100.100" ];
+        Domains = [ "~${data.tailscale_tailnet_domain}" ];
+      };
+    };
+  }
 ]
