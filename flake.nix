@@ -191,6 +191,9 @@
     run0-sudo-shim.inputs.treefmt-nix.follows = "treefmt-nix";
     run0-sudo-shim.inputs.nix-github-actions.follows = "nix-github-actions";
 
+    zen-browser.url = "github:youwen5/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+
     # combined flakes
 
     nur.url = "github:nix-community/NUR";

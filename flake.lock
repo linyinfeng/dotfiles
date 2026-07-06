@@ -1617,7 +1617,8 @@
         "treefmt-nix": "treefmt-nix",
         "tsukkomi": "tsukkomi",
         "uv2nix": "uv2nix",
-        "weird-deployer": "weird-deployer"
+        "weird-deployer": "weird-deployer",
+        "zen-browser": "zen-browser"
       }
     },
     "run0-sudo-shim": {
@@ -1811,6 +1812,27 @@
       "original": {
         "owner": "linyinfeng",
         "repo": "weird-deployer",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783340407,
+        "narHash": "sha256-TyXgfAbMb41Y3/mIBMCGUjrMy+labLw1J12ae04OGI0=",
+        "ref": "refs/heads/master",
+        "rev": "cf50b43c25b2d635d2a158f99298d55fec42bded",
+        "revCount": 320,
+        "type": "git",
+        "url": "file:///home/yinfeng/Projects/zen-browser-flake"
+      },
+      "original": {
+        "owner": "youwen5",
+        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

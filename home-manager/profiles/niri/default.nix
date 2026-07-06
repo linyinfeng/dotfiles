@@ -200,6 +200,7 @@ in
           // blur effects suggested by
           // https://docs.noctalia.dev/v5/compositor-settings/niri/
           window-rule {
+            draw-border-with-background false
             background-effect {
               blur true
               xray false

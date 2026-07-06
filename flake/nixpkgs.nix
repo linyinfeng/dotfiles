@@ -28,6 +28,7 @@ let
     inputs.nix-cache-overlay.overlays.default
     inputs.hongbao-rpn.overlays.default
     inputs.tsukkomi.overlays.default
+    inputs.zen-browser.overlays.default
     (
       _final: prev:
       let

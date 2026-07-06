@@ -1,7 +1,8 @@
 {
+  config,
+  osConfig,
   pkgs,
   lib,
-  osConfig,
   ...
 }:
 let
@@ -48,13 +49,7 @@ lib.mkIf osConfig.services.desktopManager.gnome.enable {
         "light-style@gnome-shell-extensions.gcampax.github.com"
       ];
       disabled-extensions = [ ];
-      favorite-apps = lib.mkBefore [
-        "org.gnome.Console.desktop"
-        "org.gnome.Nautilus.desktop"
-        "google-chrome.desktop"
-        "gnome-system-monitor.desktop"
-        "code.desktop"
-      ];
+      favorite-apps = config.programs.desktop-files.favorites;
       welcome-dialog-last-shown-version = "43.1";
     };
     "org/gnome/mutter" = {

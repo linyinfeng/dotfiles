@@ -13,11 +13,8 @@ in
       # keep-sorted start
       amberol
       calibre
-      clapper
-      element-desktop
       gimp
       # gnuradio # unused
-      gparted
       inkscape
       kicad
       libreoffice-fresh
