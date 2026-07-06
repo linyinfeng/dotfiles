@@ -6,7 +6,7 @@
 }:
 lib.mkMerge [
   {
-    programs.desktop-files.favorites = lib.mkOrder 1000 [ "zen.desktop" ];
+    programs.desktop-files.favorites = lib.mkOrder 1000 [ "zen" ];
   }
   {
     programs.google-chrome = {

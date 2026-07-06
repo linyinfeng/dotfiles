@@ -203,6 +203,12 @@ in
             draw-border-with-background false
             background-effect {
               blur true
+              xray true
+            }
+          }
+          window-rule {
+            match is-floating=true
+            background-effect {
               xray false
             }
           }
@@ -214,6 +220,10 @@ in
             }
           }
 
+          window-rule {
+            match app-id="dev.noctalia.Noctalia"
+            open-floating true
+          }
           window-rule {
             geometry-corner-radius ${toString windowCornerRadius}
             clip-to-geometry true
@@ -468,6 +478,7 @@ in
           hash = "sha256-67Igunje3W8U6kH87F8y/Fl/6kFUv3tD9xWAkH1/Gfw=";
         };
         specialSettings = {
+          dock.pinned = config.programs.desktop-files.favorites;
           general.avatarImage = "${config.home.homeDirectory}/.face";
           hooks.theme_mode_changed = "${lib.getExe themeModeChanged} $1";
           screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";

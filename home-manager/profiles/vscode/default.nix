@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.vscode = {
     enable = true;
@@ -6,6 +6,8 @@
       extensions = with pkgs.vscode-extensions; [ ];
     };
   };
+
+  programs.desktop-files.favorites = lib.mkOrder 1100 [ "code" ];
 
   programs.git.ignores = [
     "/.vscode"

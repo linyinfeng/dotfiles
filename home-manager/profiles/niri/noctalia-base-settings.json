@@ -361,7 +361,12 @@
           "useCustomFont": false
         }
       ],
-      "start": ["control-center", "launcher", "workspaces"]
+      "start": [
+        "control-center",
+        "launcher",
+        "workspaces",
+        "taskbar_workspace_only"
+      ]
     }
   },
   "battery": {
@@ -922,7 +927,7 @@
     "launch_apps_custom_command": "niri msg action spawn -- $CMD",
     "launcher": {
       "app_grid": false,
-      "compact": true,
+      "compact": false,
       "session_search": true
     },
     "niri_overview_type_to_launch_enabled": true,
@@ -1010,16 +1015,16 @@
     "fillMode": "crop",
     "hideWallpaperFilenames": false,
     "last": {
-      "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
+      "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-43kg30.jpg"
     },
     "linkLightAndDarkWallpapers": true,
     "monitorDirectories": [],
     "monitors": {
       "DP-8": {
-        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
+        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-43kg30.jpg"
       },
       "eDP-1": {
-        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
+        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-43kg30.jpg"
       }
     },
     "overviewBlur": 0.4,
@@ -1082,6 +1087,10 @@
       "group_by_workspace": true,
       "hide_empty_workspaces": true,
       "only_active_workspace": false
+    },
+    "taskbar_workspace_only": {
+      "only_active_workspace": true,
+      "type": "taskbar"
     },
     "temp": {
       "show_label": false
