@@ -25,11 +25,9 @@
     pre-commit-hooks-nix.url = "github:cachix/pre-commit-hooks.nix";
     pre-commit-hooks-nix.inputs.flake-compat.follows = "flake-compat";
     pre-commit-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
-    pre-commit-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
 
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     git-hooks-nix.inputs.nixpkgs.follows = "nixpkgs";
-    git-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
     git-hooks-nix.inputs.flake-compat.follows = "flake-compat";
 
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -224,8 +222,9 @@
     tsukkomi.inputs.nixpkgs.follows = "nixpkgs";
     tsukkomi.inputs.crane.follows = "crane";
     tsukkomi.inputs.flake-parts.follows = "flake-parts";
-    tsukkomi.inputs.systems.follows = "systems";
     tsukkomi.inputs.treefmt-nix.follows = "treefmt-nix";
+    tsukkomi.inputs.git-hooks-nix.follows = "git-hooks-nix";
+    tsukkomi.inputs.nix-github-actions.follows = "nix-github-actions";
 
     # libraries
 
