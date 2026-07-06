@@ -65,6 +65,7 @@ let
     home-assistant = [ ];
     portal = [ ];
     opencode = [ ];
+    agent = [ ];
   };
   overrides = {
     box = [
