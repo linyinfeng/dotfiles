@@ -50,6 +50,7 @@ in
           ]
           ++ groupNameIfPresent "audio"
           ++ groupNameIfPresent "video"
+          ++ groupNameIfPresent "i2c"
           ++ groupNameIfPresent "input"
           ++ groupNameIfPresent "adbusers"
           ++ groupNameIfPresent "libvirtd"

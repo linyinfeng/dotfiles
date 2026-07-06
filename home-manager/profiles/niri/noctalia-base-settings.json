@@ -63,6 +63,7 @@
     "monitors": [],
     "mouseWheelAction": "none",
     "mouseWheelWrap": true,
+    "order": ["widgets", "tasks"],
     "outerCorners": true,
     "position": "top",
     "reverseScroll": false,
@@ -73,23 +74,69 @@
     "showCapsule": true,
     "showOnWorkspaceSwitch": true,
     "showOutline": false,
+    "tasks": {
+      "capsule": true,
+      "capsule_group": [
+        {
+          "fill": "surface_variant",
+          "id": "g1",
+          "members": ["audio_visualizer", "media"],
+          "opacity": 1.0,
+          "padding": 6.0
+        },
+        {
+          "fill": "surface_variant",
+          "id": "g2",
+          "members": ["sysmon", "temp", "ram", "power_profile"],
+          "opacity": 1.0,
+          "padding": 6.0
+        }
+      ],
+      "center": [],
+      "enabled": true,
+      "end": ["clipboard", "group:g1", "group:g2", "privacy", "tray"],
+      "margin_edge": 0,
+      "margin_ends": 0,
+      "position": "left",
+      "radius": 0,
+      "start": ["taskbar"]
+    },
     "useSeparateOpacity": false,
     "widgetSpacing": 6,
     "widgets": {
       "capsule": true,
-      "center": ["date", "clock", "notifications"],
-      "end": [
-        "media",
-        "sysmon",
-        "tray",
-        "clipboard",
-        "network",
-        "bluetooth",
-        "volume",
-        "brightness",
-        "caffeine",
-        "battery"
+      "capsule_group": [
+        {
+          "fill": "surface_variant",
+          "id": "g1",
+          "members": ["theme_mode", "nightlight", "wallpaper", "caffeine"],
+          "opacity": 1.0,
+          "padding": 6.0
+        },
+        {
+          "fill": "surface_variant",
+          "id": "g2",
+          "members": ["network", "bluetooth"],
+          "opacity": 1.0,
+          "padding": 6.0
+        },
+        {
+          "fill": "surface_variant",
+          "id": "g3",
+          "members": ["brightness", "volume"],
+          "opacity": 1.0,
+          "padding": 6.0
+        },
+        {
+          "fill": "surface_variant",
+          "id": "g4",
+          "members": ["network_rx", "network_tx"],
+          "opacity": 1.0,
+          "padding": 6.0
+        }
       ],
+      "center": ["date", "clock", "weather", "notifications"],
+      "end": ["group:g4", "group:g2", "group:g3", "group:g1", "battery"],
       "left": [
         {
           "colorizeDistroLogo": false,
@@ -302,13 +349,17 @@
           "useCustomFont": false
         }
       ],
-      "start": ["control-center", "workspaces", "taskbar"]
+      "start": ["control-center", "launcher", "workspaces"]
     }
+  },
+  "battery": {
+    "warning_threshold": 20
   },
   "brightness": {
     "backlightDeviceMappings": [],
     "brightnessStep": 1,
     "enableDdcSupport": true,
+    "enable_ddcutil": true,
     "enforceMinimum": true
   },
   "calendar": {
@@ -396,6 +447,10 @@
       ]
     }
   },
+  "control_center": {
+    "sidebar": "full",
+    "sidebar_section": "full"
+  },
   "desktopWidgets": {
     "enabled": true,
     "gridSnap": true,
@@ -415,6 +470,75 @@
     ],
     "overviewEnabled": true
   },
+  "desktop_widgets": {
+    "grid": {
+      "cell_size": 16,
+      "major_interval": 4,
+      "visible": true
+    },
+    "schema_version": 2,
+    "widget": {
+      "desktop-widget-0000000000000001": {
+        "box_height": 256.0,
+        "box_width": 256.0,
+        "cx": 1024.0,
+        "cy": 576.0,
+        "output": "DP-8",
+        "rotation": 0.0,
+        "settings": {
+          "background": false,
+          "visualization_mode": "bars_rings"
+        },
+        "type": "fancy_audio_visualizer"
+      },
+      "desktop-widget-0000000000000002": {
+        "box_height": 128.0,
+        "box_width": 256.0,
+        "cx": 192.0,
+        "cy": 128.0,
+        "output": "DP-8",
+        "rotation": 0.0,
+        "settings": {
+          "display": "graph",
+          "stat": "cpu_usage",
+          "stat2": "cpu_temp"
+        },
+        "type": "sysmon"
+      },
+      "desktop-widget-0000000000000003": {
+        "box_height": 128.0,
+        "box_width": 256.0,
+        "cx": 192.0,
+        "cy": 320.0,
+        "output": "DP-8",
+        "rotation": 0.0,
+        "settings": {
+          "stat": "ram_pct",
+          "stat2": "swap_pct"
+        },
+        "type": "sysmon"
+      },
+      "desktop-widget-0000000000000004": {
+        "box_height": 128.0,
+        "box_width": 256.0,
+        "cx": 192.0,
+        "cy": 512.0,
+        "output": "DP-8",
+        "rotation": 0.0,
+        "settings": {
+          "stat": "net_rx",
+          "stat2": "net_tx"
+        },
+        "type": "sysmon"
+      }
+    },
+    "widget_order": [
+      "desktop-widget-0000000000000001",
+      "desktop-widget-0000000000000002",
+      "desktop-widget-0000000000000003",
+      "desktop-widget-0000000000000004"
+    ]
+  },
   "dock": {
     "active_monitor_only": true,
     "animationSpeed": 1,
@@ -426,7 +550,7 @@
     "deadOpacity": 0.6,
     "displayMode": "auto_hide",
     "dockType": "floating",
-    "enabled": true,
+    "enabled": false,
     "floatingRatio": 1,
     "groupApps": false,
     "groupClickAction": "cycle",
@@ -517,17 +641,17 @@
       "lock": {
         "action": "lock",
         "enabled": true,
-        "timeout": 600
+        "timeout": 600.0
       },
       "lock-and-suspend": {
         "action": "lock_and_suspend",
         "enabled": false,
-        "timeout": 900
+        "timeout": 900.0
       },
       "screen-off": {
         "action": "screen_off",
-        "enabled": false,
-        "timeout": 660
+        "enabled": true,
+        "timeout": 660.0
       }
     },
     "behavior_order": ["lock", "screen-off", "lock-and-suspend"],
@@ -536,6 +660,7 @@
     "fadeDuration": 5,
     "lockCommand": "",
     "lockTimeout": 660,
+    "pre_action_fade_seconds": 10,
     "resumeLockCommand": "",
     "resumeScreenOffCommand": "",
     "resumeSuspendCommand": "",
@@ -548,6 +673,7 @@
     "address": "Nanjing",
     "analogClockInCalendar": false,
     "autoLocate": false,
+    "auto_locate": true,
     "firstDayOfWeek": -1,
     "hideWeatherCityName": false,
     "hideWeatherTimezone": false,
@@ -744,11 +870,21 @@
   },
   "settingsVersion": 59,
   "shell": {
+    "corner_radius_scale": 1.2000000178813934,
+    "launch_apps_custom_command": "niri msg action spawn --",
+    "launcher": {
+      "app_grid": true,
+      "session_search": true
+    },
     "niri_overview_type_to_launch_enabled": true,
     "panel": {
+      "clipboard_placement": "attached",
+      "open_near_click_clipboard": true,
       "open_near_click_control_center": true
     },
-    "polkit_agent": true
+    "password_style": "random",
+    "polkit_agent": true,
+    "screen_time_enabled": true
   },
   "systemMonitor": {
     "batteryCriticalThreshold": 5,
@@ -787,8 +923,10 @@
     "enableUserTheming": false
   },
   "theme": {
-    "mode": "auto",
-    "source": "wallpaper"
+    "community_palette": "Everdeer",
+    "mode": "light",
+    "source": "wallpaper",
+    "wallpaper_scheme": "m3-content"
   },
   "ui": {
     "boxBorderEnabled": false,
@@ -819,6 +957,9 @@
     "linkLightAndDarkWallpapers": true,
     "monitorDirectories": [],
     "monitors": {
+      "DP-8": {
+        "path": "/home/yinfeng/Data/Pictures/Wallpapers/nichijou.png"
+      },
       "eDP-1": {
         "path": "/home/yinfeng/Data/Pictures/Wallpapers/nichijou.png"
       }
@@ -873,9 +1014,22 @@
     "media": {
       "hide_when_no_media": true
     },
+    "ram": {
+      "show_label": false
+    },
+    "sysmon": {
+      "show_label": false
+    },
     "taskbar": {
-      "group_by_workspace": false,
-      "only_active_workspace": true
+      "group_by_workspace": true,
+      "hide_empty_workspaces": true,
+      "only_active_workspace": false
+    },
+    "temp": {
+      "show_label": false
+    },
+    "workspaces": {
+      "hide_when_empty": true
     }
   }
 }

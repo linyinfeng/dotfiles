@@ -519,6 +519,7 @@ in
       {
         programs.noctalia = {
           enable = true;
+          systemd.enable = true;
           settings = lib.foldr lib.recursiveUpdate { } [
             (builtins.fromJSON (builtins.readFile ./noctalia-base-settings.json))
             specialSettings
@@ -533,7 +534,7 @@ in
         home.packages = with pkgs; [
           mpv
           matugen
-          pwvucontrol
+          ddcutil
 
           syncSettings
           restoreWorking
@@ -741,24 +742,6 @@ in
     # system76-niri-scheduler
     {
       services.system76-scheduler-niri.enable = true;
-    }
-
-    # polkit agent
-    {
-      systemd.user.services.niri-polkit-agent = {
-        Unit = {
-          Description = "PolicyKit Agent for Niri";
-          After = [ "graphical-session.target" ];
-          PartOf = [ "graphical-session.target" ];
-        };
-        Install = {
-          WantedBy = [ config.wayland.systemd.target ];
-        };
-        Service = {
-          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-          # ExecStart = "${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1";
-        };
-      };
     }
 
     # touch
