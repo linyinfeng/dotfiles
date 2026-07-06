@@ -479,36 +479,36 @@ in
       ];
     })
 
-    (mkHost {
-      name = "sparrow";
-      system = "aarch64-linux";
-      extraModules = [
-        inputs.kukui-nixos.nixosModules.default
-        "${inputs.kukui-nixos}/profiles/disko.nix"
-        (
-          { ... }:
-          {
-            passthru.sparrow-installer = inputs.kukui-nixos.nixosConfigurations.installer.extendModules {
-              modules = [
-                {
-                  environment.etc."system-to-install/source".source = "${self}";
-                  environment.etc."system-to-install/toplevel".source =
-                    self.nixosConfigurations.sparrow.config.system.build.toplevel;
-                  environment.etc."system-to-install/scripts/destroy-format-mount".source =
-                    self.nixosConfigurations.sparrow.config.system.build.destroyFormatMount;
-                  environment.etc."system-to-install/scripts/mount".source =
-                    self.nixosConfigurations.sparrow.config.system.build.mount;
-                  kukui.disko = {
-                    diskName = "installer";
-                    device = "/dev/sda"; # usb drive
-                  };
-                }
-              ];
-            };
-          }
-        )
-      ];
-    })
+    # (mkHost {
+    #   name = "sparrow";
+    #   system = "aarch64-linux";
+    #   extraModules = [
+    #     inputs.kukui-nixos.nixosModules.default
+    #     "${inputs.kukui-nixos}/profiles/disko.nix"
+    #     (
+    #       { ... }:
+    #       {
+    #         passthru.sparrow-installer = inputs.kukui-nixos.nixosConfigurations.installer.extendModules {
+    #           modules = [
+    #             {
+    #               environment.etc."system-to-install/source".source = "${self}";
+    #               environment.etc."system-to-install/toplevel".source =
+    #                 self.nixosConfigurations.sparrow.config.system.build.toplevel;
+    #               environment.etc."system-to-install/scripts/destroy-format-mount".source =
+    #                 self.nixosConfigurations.sparrow.config.system.build.destroyFormatMount;
+    #               environment.etc."system-to-install/scripts/mount".source =
+    #                 self.nixosConfigurations.sparrow.config.system.build.mount;
+    #               kukui.disko = {
+    #                 diskName = "installer";
+    #                 device = "/dev/sda"; # usb drive
+    #               };
+    #             }
+    #           ];
+    #         };
+    #       }
+    #     )
+    #   ];
+    # })
 
     # TODO broken
     # (mkHost {
