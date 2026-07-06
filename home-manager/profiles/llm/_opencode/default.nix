@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
   imports = [
-    ./oh-my-openagent.nix
+    # ./oh-my-openagent.nix
     ./lsp.nix
     ./auth.nix
     ./skills.nix
