@@ -30,6 +30,7 @@ in
         simpleMcps = with pkgs; [
           mcp-nixos
           mineruMcp
+          context7-mcp
         ];
       in
       lib.listToAttrs (
@@ -46,7 +47,14 @@ in
         ) simpleMcps
       )
       // {
-        # nothing
+        "grep.app" = {
+          type = "remote";
+          url = "https://mcp.grep.app";
+        };
+        "exa" = {
+          type = "remote";
+          url = "https://mcp.exa.ai/mcp";
+        };
       };
   };
 }
