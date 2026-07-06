@@ -13,6 +13,7 @@ in
       # keep-sorted start
       amberol
       calibre
+      file-roller
       gimp
       # gnuradio # unused
       inkscape
