@@ -107,13 +107,21 @@
       "capsule": true,
       "capsule_group": [
         {
+          "enabled": true,
           "fill": "surface_variant",
           "id": "g1",
-          "members": ["theme_mode", "nightlight", "wallpaper", "caffeine"],
+          "members": [
+            "theme_mode",
+            "nightlight",
+            "wallpaper",
+            "wallhaven",
+            "caffeine"
+          ],
           "opacity": 1.0,
           "padding": 6.0
         },
         {
+          "enabled": true,
           "fill": "surface_variant",
           "id": "g2",
           "members": ["network", "bluetooth"],
@@ -121,6 +129,7 @@
           "padding": 6.0
         },
         {
+          "enabled": true,
           "fill": "surface_variant",
           "id": "g3",
           "members": ["brightness", "volume"],
@@ -128,6 +137,7 @@
           "padding": 6.0
         },
         {
+          "enabled": true,
           "fill": "surface_variant",
           "id": "g4",
           "members": ["network_rx", "network_tx"],
@@ -810,9 +820,30 @@
     "monitors": [],
     "overlayLayer": true
   },
+  "plugin_settings": {
+    "noctalia/wallhaven": {
+      "api_key": "",
+      "download_dir": "~/Data/Pictures/Wallpapers"
+    }
+  },
   "plugins": {
     "autoUpdate": false,
-    "notifyUpdates": true
+    "enabled": ["noctalia/wallhaven"],
+    "notifyUpdates": true,
+    "source": [
+      {
+        "auto_update": true,
+        "kind": "git",
+        "location": "https://github.com/noctalia-dev/official-plugins",
+        "name": "official"
+      },
+      {
+        "auto_update": true,
+        "kind": "git",
+        "location": "https://github.com/noctalia-dev/community-plugins",
+        "name": "community"
+      }
+    ]
   },
   "screenRecorder": {},
   "sessionMenu": {
@@ -884,7 +915,8 @@
     },
     "password_style": "random",
     "polkit_agent": true,
-    "screen_time_enabled": true
+    "screen_time_enabled": true,
+    "settings_show_advanced": false
   },
   "systemMonitor": {
     "batteryCriticalThreshold": 5,
@@ -923,6 +955,7 @@
     "enableUserTheming": false
   },
   "theme": {
+    "builtin": "Noctalia",
     "community_palette": "Everdeer",
     "mode": "light",
     "source": "wallpaper",
@@ -952,16 +985,16 @@
     "fillMode": "crop",
     "hideWallpaperFilenames": false,
     "last": {
-      "path": "/home/yinfeng/Data/Pictures/Wallpapers/nichijou.png"
+      "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
     },
     "linkLightAndDarkWallpapers": true,
     "monitorDirectories": [],
     "monitors": {
       "DP-8": {
-        "path": "/home/yinfeng/Data/Pictures/Wallpapers/nichijou.png"
+        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
       },
       "eDP-1": {
-        "path": "/home/yinfeng/Data/Pictures/Wallpapers/nichijou.png"
+        "path": "/home/yinfeng/Data/Pictures/Wallpapers/wallhaven-0j35ky.png"
       }
     },
     "overviewBlur": 0.4,
@@ -1027,6 +1060,9 @@
     },
     "temp": {
       "show_label": false
+    },
+    "wallhaven": {
+      "type": "noctalia/wallhaven:wallhaven"
     },
     "workspaces": {
       "hide_when_empty": true
