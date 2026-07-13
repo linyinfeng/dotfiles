@@ -5,6 +5,7 @@
     ./lsp.nix
     ./auth.nix
     ./skills.nix
+    ./ark-coding-plan.nix
   ];
   programs.opencode = {
     enable = true;

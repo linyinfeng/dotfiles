@@ -49,6 +49,12 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."ark_coding_plan_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   sops.templates."opencode-auth" = {
     content = builtins.toJSON {
       deepseek = {
