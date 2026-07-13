@@ -25,7 +25,7 @@ lib.mkMerge [
     };
     sops.secrets."tailscale_tailnet_key" = {
       terraformOutput.enable = true;
-      restartUnits = [ "tailscale-setup.service" ];
+      restartUnits = [ "tailscaled.service" ];
     };
     # no need to open ports
     networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
