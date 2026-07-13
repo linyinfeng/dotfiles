@@ -17,7 +17,7 @@ in
       # sheet music
       lilypond
       frescobaldi
-      musescore
+      # musescore # TODO broken
 
       # midi
       timidity

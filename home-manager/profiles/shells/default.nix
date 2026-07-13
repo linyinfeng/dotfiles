@@ -33,7 +33,6 @@
       nushell-plugin-polars
       nushell-plugin-formats # additional formats
       nushell-plugin-query # data selectors
-      nushell-plugin-semver
       nushell-plugin-gstat # git status
       nushell-plugin-skim
       nushell-plugin-hcl

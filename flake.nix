@@ -281,7 +281,8 @@
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
 
-    systems.url = "github:nix-systems/default";
+    systems.url = "./systems";
+    systems.flake = false;
 
     mc-config.url = "github:linyinfeng/mc-config";
     mc-config.inputs.nixpkgs.follows = "nixpkgs";
@@ -364,16 +365,8 @@
             ]
           ];
         };
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          # unused
-          # "loongarch64-linux"
-        ];
-        devSystems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
+        systems = import inputs.systems;
+        devSystems = import inputs.systems;
         flake.libs = {
           inherit (config) systems;
         }

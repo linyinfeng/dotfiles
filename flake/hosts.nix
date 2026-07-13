@@ -78,7 +78,7 @@ let
         services.nixseparatedebuginfod
 
         services.envfs
-        programs.nix-alien
+        # programs.nix-alien # TODO broken
         nix.nix-ld
       ];
       multimediaDev = suites.multimedia ++ suites.development ++ (with profiles; [ development.ides ]);
@@ -250,7 +250,7 @@ let
         ]);
       synchronize = with profiles; [
         onedrive
-        digital-paper
+        # digital-paper # TODO broken
       ];
       security = with profiles; [ gpg ];
       other = with profiles; [ hledger ];
