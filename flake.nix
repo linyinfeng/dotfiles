@@ -209,6 +209,7 @@
     linyinfeng.inputs.treefmt-nix.follows = "treefmt-nix";
     linyinfeng.inputs.nvfetcher.follows = "nvfetcher";
     linyinfeng.inputs.flake-compat.follows = "flake-compat";
+    linyinfeng.inputs.nix-github-actions.follows = "nix-github-actions";
 
     nixos-cn.url = "github:nixos-cn/flakes";
     nixos-cn.inputs.nixpkgs.follows = "nixpkgs";
