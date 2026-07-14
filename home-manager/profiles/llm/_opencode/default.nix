@@ -30,7 +30,7 @@
       python3
       uv
       nodejs
-      bun
+      # bun # AI slop
       pnpm
       gcc # allow build some python packages
     ];
@@ -40,6 +40,6 @@
     ".config/opencode"
     ".local/share/opencode"
     ".cache/opencode"
-    ".cache/bun"
+    # ".cache/bun"
   ];
 }
