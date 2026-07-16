@@ -6,6 +6,7 @@
     ./auth.nix
     ./skills.nix
     ./ark-coding-plan.nix
+    ./relays.nix
   ];
   programs.opencode = {
     enable = true;
