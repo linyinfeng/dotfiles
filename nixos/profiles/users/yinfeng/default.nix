@@ -102,18 +102,6 @@ in
       };
     }
 
-    # antigravity-cli
-    {
-      home-manager.users.yinfeng.programs.fish.interactiveShellInit = ''
-        export GEMINI_API_KEY="$(cat "${config.sops.secrets."gemini_api_key".path}")"
-      '';
-      sops.secrets."gemini_api_key" = {
-        predefined.enable = true;
-        restartUnits = [ ];
-        owner = name;
-      };
-    }
-
     # system administration
     {
       environment.etc."nixos".source = "${homeDirectory}/Projects/dotfiles";

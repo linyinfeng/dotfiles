@@ -55,7 +55,7 @@
     group = "llm";
     mode = "440";
   };
-  sops.secrets."cun_ai_api_key" = {
+  sops.secrets."gemini_api_key" = {
     predefined.enable = true;
     restartUnits = [ ];
     group = "llm";

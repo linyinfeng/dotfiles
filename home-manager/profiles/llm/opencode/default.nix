@@ -5,8 +5,6 @@
     ./lsp.nix
     ./auth.nix
     ./skills.nix
-    ./ark-coding-plan.nix
-    ./relays.nix
   ];
   programs.opencode = {
     enable = true;
@@ -36,11 +34,4 @@
       gcc # allow build some python packages
     ];
   };
-
-  home.global-persistence.directories = [
-    ".config/opencode"
-    ".local/share/opencode"
-    ".cache/opencode"
-    # ".cache/bun"
-  ];
 }

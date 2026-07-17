@@ -215,7 +215,7 @@ let
       ];
       development = with profiles; [
         git
-        llm
+        llm.general
         development
         emacs
         helix

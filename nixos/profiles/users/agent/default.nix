@@ -57,7 +57,8 @@ in
         suites.base
         ++ (with profiles; [
           git
-          llm
+          llm.general
+          llm.opencode
           vscode-server
           xdg-dirs
         ]);
