@@ -42,28 +42,4 @@ lib.mkMerge [
 
     environment.global-persistence.user.directories = [ ".cache/nix" ];
   }
-  {
-    nix.settings = {
-      substituters = [ "https://cache.li7g.com" ];
-      trusted-public-keys = [
-        "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM="
-      ];
-    };
-  }
-  # {
-  #   nix.settings = {
-  #     substituters = [ "https://cache.garnix.io" ];
-  #     trusted-public-keys = [
-  #       "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-  #     ];
-  #   };
-  # }
-  {
-    nix.settings = {
-      substituters = [ "https://attic.xuyh0120.win/lantian" ];
-      trusted-public-keys = [
-        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
-      ];
-    };
-  }
 ]

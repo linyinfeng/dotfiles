@@ -850,6 +850,26 @@
         "type": "github"
       }
     },
+    "ncro": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784212632,
+        "narHash": "sha256-E4sJw/ySR3bEGd3eyqXErmDtjj0TF+8JGYXH9uDPctc=",
+        "owner": "manic-systems",
+        "repo": "ncro",
+        "rev": "8681ec50b9570de825786f9ec599b1301214a1ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "manic-systems",
+        "repo": "ncro",
+        "type": "github"
+      }
+    },
     "nix-alien": {
       "inputs": {
         "flake-compat": [
@@ -1581,6 +1601,7 @@
         "minecraft-json": "minecraft-json",
         "minecraft-nix": "minecraft-nix",
         "mobile-nixos": "mobile-nixos",
+        "ncro": "ncro",
         "nix-alien": "nix-alien",
         "nix-cache-overlay": "nix-cache-overlay",
         "nix-cachyos-kernel": "nix-cachyos-kernel",

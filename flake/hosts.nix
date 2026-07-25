@@ -306,6 +306,7 @@ let
       inputs.run0-sudo-shim.nixosModules.default
       inputs.nix-cache-overlay.nixosModules.default
       inputs.tsukkomi.nixosModules.tsukkomi
+      inputs.ncro.nixosModules.ncro
 
       {
         lib = {

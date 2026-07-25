@@ -81,6 +81,9 @@
     kukui-nixos.inputs.treefmt-nix.follows = "treefmt-nix";
     kukui-nixos.inputs.pmaports.follows = "pmaports";
 
+    ncro.url = "github:manic-systems/ncro";
+    ncro.inputs.nixpkgs.follows = "nixpkgs";
+
     # home-manager modules
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
