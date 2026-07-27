@@ -1,10 +1,10 @@
 { pkgs, lib, ... }:
 {
   imports = [
-    # ./oh-my-openagent.nix
-    ./lsp.nix
-    ./auth.nix
-    ./skills.nix
+    # ./_oh-my-openagent.nix
+    ./_lsp.nix
+    ./_auth.nix
+    ./_skills.nix
   ];
   programs.opencode = {
     enable = true;
