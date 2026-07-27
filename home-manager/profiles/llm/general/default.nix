@@ -1,4 +1,6 @@
 {
+  config,
+  lib,
   pkgs,
   ...
 }:
@@ -13,8 +15,8 @@
     pkgs.claude-code
     pkgs.antigravity-cli
     pkgs.codex
-    pkgs.opencode
-  ];
+  ]
+  ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
 
   home.global-persistence.directories = [
     ".cc-switch"
