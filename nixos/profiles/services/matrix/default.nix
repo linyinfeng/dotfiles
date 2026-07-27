@@ -149,7 +149,8 @@ lib.mkMerge [
   }
 
   # mautrix-telegram
-  {
+  # disabled due to broken
+  (lib.mkIf false {
     services.mautrix-telegram = {
       enable = true;
       registerToSynapse = false; # manual registration for flexible deployment
@@ -284,7 +285,7 @@ lib.mkMerge [
         }
       ];
     };
-  }
+  })
 
   # njulug-bridge
   {
