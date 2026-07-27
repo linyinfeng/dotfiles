@@ -7,6 +7,7 @@
       logging.timestamps = false;
     };
   };
+  systemd.services.ncro.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   services.ncro.settings.upstreams = [
     {
       url = "https://cache.nixos.org";
