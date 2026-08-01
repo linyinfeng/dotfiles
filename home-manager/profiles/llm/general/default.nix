@@ -8,15 +8,18 @@
   imports = [
     ./_mcp.nix
   ];
-  home.packages = [
-    pkgs.cc-switch
-    pkgs.nono
+  home.packages =
+    with pkgs;
+    [
+      cc-switch
+      nono
 
-    pkgs.claude-code
-    pkgs.antigravity-cli
-    pkgs.codex
-  ]
-  ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
+      claude-code
+      antigravity-cli
+      codex
+      pi-coding-agent
+    ]
+    ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
 
   home.global-persistence.directories = [
     ".cc-switch"
@@ -32,6 +35,7 @@
     ".config/opencode"
     ".local/share/opencode"
     ".cache/opencode"
+    ".pi"
   ];
   home.global-persistence.files = [
     ".claude.json"
