@@ -40,4 +40,7 @@
   home.global-persistence.files = [
     ".claude.json"
   ];
+  programs.git.ignores = [
+    "/.pi"
+  ];
 }
