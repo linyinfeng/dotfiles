@@ -1,8 +1,9 @@
-{ config, ... }:
+{ ... }:
 {
-  services.vnstat.enable = true;
-  systemd.services.vnstat.restartTriggers = [ config.environment.etc."vnstat.conf".text ];
-  environment.etc."vnstat.conf".text = ''
-    UseUTC 1
-  '';
+  services.vnstat = {
+    enable = true;
+    settings = {
+      UseUTC = 1;
+    };
+  };
 }
