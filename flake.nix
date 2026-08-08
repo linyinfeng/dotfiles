@@ -91,8 +91,6 @@
     emacs-overlay.inputs.nixpkgs-stable.follows = "blank";
 
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
-    nixos-vscode-server.inputs.flake-utils.follows = "flake-utils";
-    nixos-vscode-server.inputs.nixpkgs.follows = "nixpkgs";
 
     # programs
 
@@ -122,10 +120,6 @@
     # for angrr test on real environment
     angrr.url = "github:linyinfeng/angrr";
     angrr.inputs.nixpkgs.follows = "nixpkgs";
-    angrr.inputs.flake-compat.follows = "flake-compat";
-    angrr.inputs.flake-parts.follows = "flake-parts";
-    angrr.inputs.treefmt-nix.follows = "treefmt-nix";
-    angrr.inputs.nix-darwin.follows = "blank";
     nixpkgs-angrr.url = "github:linyinfeng/nixpkgs/angrr";
 
     nix-cache-overlay.url = "github:linyinfeng/nix-cache-overlay";
