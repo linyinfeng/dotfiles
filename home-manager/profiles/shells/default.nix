@@ -29,13 +29,13 @@
         $env.PATH = do (env-conversions).path.from_string $env.PATH
       }]
     '';
-    plugins = with pkgs; [
-      nushell-plugin-polars
-      nushell-plugin-formats # additional formats
-      nushell-plugin-query # data selectors
-      nushell-plugin-gstat # git status
-      nushell-plugin-skim
-      nushell-plugin-hcl
+    plugins = with pkgs.nushellPlugins; [
+      polars
+      formats # additional formats
+      query # data selectors
+      gstat # git status
+      skim
+      hcl
     ];
   };
   programs.fish.interactiveShellInit = ''
