@@ -117,17 +117,14 @@ resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
 
 locals {
   service_cname_mappings = {
-    atuin          = { on = "hkg0", proxy = true }
-    nuc-proxy      = { on = "hkg0", proxy = true }
-    hydra-proxy    = { on = "hkg0", proxy = true }
-    sicp-tutorials = { on = "hkg0", proxy = true }
-    id             = { on = "hkg0", proxy = true }
-    rathole-ad-hoc = { on = "hkg0", proxy = false }
-    portal         = { on = "hkg0", proxy = false }
-    tar            = { on = "hkg0", proxy = true }
-    pgp-public-key = { on = "hkg0", proxy = true }
-    oranc          = { on = "hkg0", proxy = true }
-    hongbao2026    = { on = "hkg0", proxy = true }
+    atuin          = { on = "mtl0", proxy = true }
+    nuc-proxy      = { on = "mtl0", proxy = true }
+    hydra-proxy    = { on = "mtl0", proxy = true }
+    id             = { on = "mtl0", proxy = true }
+    portal         = { on = "mtl0", proxy = false }
+    tar            = { on = "mtl0", proxy = true }
+    pgp-public-key = { on = "mtl0", proxy = true }
+    oranc          = { on = "mtl0", proxy = true }
     ace-bot        = { on = "mtl0", proxy = true }
     hledger        = { on = "mtl0", proxy = true }
     vault          = { on = "mtl0", proxy = true }

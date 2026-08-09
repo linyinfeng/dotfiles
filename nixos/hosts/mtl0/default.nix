@@ -43,12 +43,20 @@ in
       services.prebuilt-zip
       services.hledger-web
       # services.sicp-staging
-      services.rabbitmq
-      services.mongodb
+      # services.rabbitmq
+      # services.mongodb
       services.gitlab-runner-sicp
       services.ollama
       services.open-webui
-      services.ace-bot
+      # services.ace-bot
+      services.portal-server
+      services.atuin
+      services.nuc-proxy
+      services.pocket-id
+      services.pgp-public-key-web
+      services.oranc
+      services.dot-tar
+      services.dotfiles-update-trigger
       i18n.input-method
       virtualization.podman
       users.yinfeng

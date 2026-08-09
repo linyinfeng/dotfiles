@@ -17,18 +17,7 @@ in
       programs.tg-send
       services.nginx
       services.acme
-      services.portal-server
       services.postgresql
-      services.atuin
-      services.nuc-proxy
-      services.sicp-tutorials
-      services.rathole
-      services.pocket-id
-      services.pgp-public-key-web
-      services.oranc
-      services.dot-tar
-      services.dotfiles-update-trigger
-      services.hongbao2026
     ])
     ++ [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
