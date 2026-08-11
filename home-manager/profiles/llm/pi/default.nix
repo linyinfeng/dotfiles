@@ -36,8 +36,10 @@ in
       packages = [
         # keep-sorted start
         "git:github.com/DietrichGebert/ponytail"
+        "npm:pi-acp"
         "npm:pi-btw"
         "npm:pi-codex-goal"
+        "npm:pi-interview"
         "npm:pi-mcp-adapter"
         "npm:pi-rtk-optimizer"
         "npm:pi-simplify"
