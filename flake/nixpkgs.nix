@@ -28,6 +28,7 @@ let
     inputs.nix-cache-overlay.overlays.default
     inputs.hongbao-rpn.overlays.default
     inputs.tsukkomi.overlays.default
+    inputs.llm-agents.overlays.shared-nixpkgs
     (
       _final: prev:
       let

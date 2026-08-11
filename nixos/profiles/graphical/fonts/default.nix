@@ -6,6 +6,7 @@
   config = {
     fonts.packages = with pkgs; [
       noto-fonts-color-emoji
+      openmoji-black
 
       source-serif
       source-han-serif
@@ -52,6 +53,7 @@
       monospace = [
         "IosevkaTermSlab Nerd Font"
         "Sarasa Mono Slab SC"
+        "OpenMoji Black"
       ];
       emoji = [ "Noto Color Emoji" ];
     };

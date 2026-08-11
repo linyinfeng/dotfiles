@@ -17,7 +17,6 @@
       claude-code
       antigravity-cli
       codex
-      pi-coding-agent
     ]
     ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
 
@@ -35,12 +34,8 @@
     ".config/opencode"
     ".local/share/opencode"
     ".cache/opencode"
-    ".pi"
   ];
   home.global-persistence.files = [
     ".claude.json"
-  ];
-  programs.git.ignores = [
-    "/.pi"
   ];
 }

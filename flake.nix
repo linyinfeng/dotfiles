@@ -91,6 +91,7 @@
     emacs-overlay.inputs.nixpkgs-stable.follows = "blank";
 
     nixos-vscode-server.url = "github:nix-community/nixos-vscode-server";
+    nixos-vscode-server.inputs.flake-parts.follows = "flake-parts";
 
     # programs
 
@@ -109,6 +110,13 @@
     nix-cachyos-kernel.inputs.nixpkgs.follows = "nixpkgs";
     nix-cachyos-kernel.inputs.flake-parts.follows = "flake-parts";
     nix-cachyos-kernel.inputs.flake-compat.follows = "flake-compat";
+
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    llm-agents.inputs.nixpkgs.follows = "nixpkgs";
+    llm-agents.inputs.bun2nix.follows = "bun2nix";
+    llm-agents.inputs.flake-parts.follows = "flake-parts";
+    llm-agents.inputs.systems.follows = "systems";
+    llm-agents.inputs.treefmt-nix.follows = "treefmt-nix";
 
     # hongbao2026
     hongbao-rpn.url = "github:linyinfeng/hongbao-rpn";
@@ -276,6 +284,12 @@
     pyproject-build-systems.inputs.uv2nix.follows = "uv2nix";
     pyproject-build-systems.inputs.nixpkgs.follows = "nixpkgs";
 
+    bun2nix.url = "github:nix-community/bun2nix";
+    bun2nix.inputs.flake-parts.follows = "flake-parts";
+    bun2nix.inputs.nixpkgs.follows = "nixpkgs";
+    bun2nix.inputs.systems.follows = "systems";
+    bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
+
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -353,14 +367,7 @@
         debug = true; # for nixd
         flatFlake.config = {
           allowed = [
-            [
-              "nix-cachyos-kernel"
-              "cachyos-kernel"
-            ]
-            [
-              "nix-cachyos-kernel"
-              "cachyos-kernel-patches"
-            ]
+            # nothing
           ];
         };
         systems = import inputs.systems;
