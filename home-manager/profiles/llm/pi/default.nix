@@ -66,5 +66,6 @@ in
 
   programs.git.ignores = [
     "/.pi"
+    "/.pi-subagents"
   ];
 }
