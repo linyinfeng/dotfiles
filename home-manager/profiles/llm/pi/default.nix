@@ -46,6 +46,8 @@ in
       enabledModels = [
         "opencode-go/deepseek-v4-flash"
         "deepseek/deepseek-v4-flash"
+        "opencode-go/deepseek-v4-pro"
+        "deepseek/deepseek-v4-pro"
       ];
       defaultThinkingLevel = "high";
       steeringMode = "all";
