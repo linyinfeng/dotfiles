@@ -51,6 +51,7 @@ in
       ];
       defaultThinkingLevel = "high";
       steeringMode = "all";
+      tokenSpeed.display = "ttft";
       packages = [
         # keep-sorted start
         "npm:@99percentpeople/pi-background-tasks"
@@ -80,6 +81,35 @@ in
 
   home.file.".config/pi/web-search.json".text = builtins.toJSON {
     workflow = "auto-summary";
+  };
+
+  home.file.".config/rpiv-ask-user-question/config.json".text = builtins.toJSON {
+    guidance.promptGuidelines = [
+      ''
+        Keep each question to a single sentence stating the core decision;
+        move all context and trade-offs into option descriptions — never dump
+        long prose into the question field (it wraps badly).
+      ''
+      ''
+        Keep labels to 1-5 words and descriptions to one line; multi-line
+        content (commit message, diff, code, config, mockup) goes into the
+        option's markdown preview — put it in a fenced code block, keep it
+        brief.
+      ''
+      ''
+        Put your recommended option first and append (Recommended) to its
+        label; set multiSelect: true only when multiple answers are valid.
+      ''
+      ''
+        Group every clarifying question into one ask_user_question call —
+        never stack multiple calls back-to-back.
+      ''
+      ''
+        Each question MUST have 2-4 options, each with a concise label and
+        description; never author Other or Type something. labels yourself —
+        they are reserved and rejected at runtime.
+      ''
+    ];
   };
 
   home.file.".config/nono/profiles/pi.json".source = ./nono-pi-profile.json;
