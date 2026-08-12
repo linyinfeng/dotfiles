@@ -17,3 +17,7 @@
   never pip.
 - This machine's dotfiles live in `~/Projects/dotfiles`;
   declarative changes belong there.
+- When changing nix-related config (nixpkgs packages, NixOS/home-manager
+  options, flake inputs, etc.), prefer mcp-nixos for real-time info (`nix` /
+  `nix_versions` tools) — fresher and more accurate than `nix search`/manual
+  lookup.

@@ -217,6 +217,7 @@ let
         git
         llm.general
         llm.pi
+        llm.omp
         development
         emacs
         helix

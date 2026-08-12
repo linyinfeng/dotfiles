@@ -1,0 +1,20 @@
+{
+  "extends": "nolabs-ai/pi",
+  "meta": {
+    "name": "pi"
+  },
+  "groups": {
+    "include": ["linux_temp_read"]
+  },
+  "workdir": {
+    "access": "readwrite"
+  },
+  "filesystem": {
+    "allow": [
+      "$HOME/.config/pi",
+      "$HOME/.config/pi-hashline-edit-pro",
+      "$HOME/.pi-lens"
+    ],
+    "read": ["$HOME/Projects"]
+  }
+}
