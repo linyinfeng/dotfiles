@@ -61,7 +61,7 @@ let
     smtp = [ ];
     teamspeak = [ ];
     subscription = [ ];
-    rathole-ad-hoc = [ ];
+    # rathole-ad-hoc = [ ];
     home-assistant = [ ];
     portal = [ ];
     opencode = [ ];
@@ -116,12 +116,12 @@ let
     #     code = 200;
     #   }
     # ];
-    sicp-tutorials = [
-      {
-        url = "https://sicp-tutorials.li7g.com";
-        code = 401;
-      }
-    ];
+    # sicp-tutorials = [
+    #   {
+    #     url = "https://sicp-tutorials.li7g.com";
+    #     code = 401;
+    #   }
+    # ];
     s3 = [
       {
         url = "https://s3.li7g.com";
