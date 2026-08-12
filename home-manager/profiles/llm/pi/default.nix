@@ -60,6 +60,7 @@ in
         "npm:@juicesharp/rpiv-ask-user-question"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
+        "npm:@narumitw/pi-goal"
         "npm:pi-acp"
         "npm:pi-btw"
         "npm:pi-hashline-edit-pro"
