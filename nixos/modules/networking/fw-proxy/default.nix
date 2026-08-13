@@ -397,15 +397,15 @@ with lib;
       default =
         let
           proxyUrl = "http://localhost:${toString mixedPort}";
-          socksProxyUrl = "socks5h://localhost:${toString mixedPort}";
+          # socksProxyUrl = "socks5h://localhost:${toString mixedPort}";
         in
         {
           HTTP_PROXY = proxyUrl;
           HTTPS_PROXY = proxyUrl;
-          ALL_PROXY = socksProxyUrl;
+          # ALL_PROXY = socksProxyUrl;
           http_proxy = proxyUrl;
           https_proxy = proxyUrl;
-          all_proxy = socksProxyUrl;
+          # all_proxy = socksProxyUrl;
           NO_PROXY = cfg.noProxy;
           no_proxy = cfg.noProxy;
         };

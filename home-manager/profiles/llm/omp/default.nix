@@ -46,7 +46,9 @@ in
         "cursor"
       ];
       setupVersion = 1;
-      modelRoles.default = "opencode-go/deepseek-v4-flash";
+      modelRoles.default = "opencode-go/deepseek-v4-pro";
+      modelRoles.smol = "opencode-go/deepseek-v4-flash";
+      modelRoles.slow = "opencode-go/deepseek-v4-pro";
       modelRoles.vision = "opencode-go/mimo-v2.5";
       hideThinkingBlock = true;
       statusLine.transparent = true;

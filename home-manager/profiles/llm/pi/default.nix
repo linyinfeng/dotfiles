@@ -54,18 +54,18 @@ in
       tokenSpeed.display = "ttft";
       packages = [
         # keep-sorted start
-        "npm:@99percentpeople/pi-background-tasks"
-        "npm:@dietrichgebert/ponytail"
         "npm:@ff-labs/pi-fff"
         "npm:@juicesharp/rpiv-ask-user-question"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
-        "npm:@narumitw/pi-goal"
         "npm:pi-acp"
+        "npm:pi-background-tasks"
         "npm:pi-btw"
-        "npm:pi-hashline-edit-pro"
+        "npm:pi-goal-list-loop-audit"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
+        # "npm:pi-hashline-edit-pro"
+        "npm:pi-readseek"
         "npm:pi-rtk-optimizer"
         "npm:pi-simplify"
         "npm:pi-subagents"
@@ -124,6 +124,7 @@ in
 
   programs.git.ignores = [
     "/.pi"
+    "/.pi-glla"
     "/.pi-subagents"
   ];
 }
