@@ -61,6 +61,7 @@ in
         "npm:pi-acp"
         "npm:pi-background-tasks"
         "npm:pi-btw"
+        "npm:pi-fabric"
         "npm:pi-goal-list-loop-audit"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
