@@ -117,48 +117,48 @@ resource "cloudflare_dns_record" "zip_prebuilt_wildcard" {
 
 locals {
   service_cname_mappings = {
+    # keep-sorted start block=yes
+    ace-bot        = { on = "mtl0", proxy = true }
+    agent          = { on = "nuc", proxy = false }
     atuin          = { on = "mtl0", proxy = true }
-    nuc-proxy      = { on = "mtl0", proxy = true }
+    bird-lg        = { on = "mtl0", proxy = true }
+    box            = { on = "mtl0", proxy = true }
+    cache-overlay  = { on = "nuc", proxy = false }
+    dn42           = { on = "mtl0", proxy = true }
+    garage-admin   = { on = "mtl0", proxy = true }
+    hledger        = { on = "mtl0", proxy = true }
+    home-assistant = { on = "nuc", proxy = false }
+    http-test      = { on = "mtl0", proxy = true }
+    hydra          = { on = "nuc", proxy = false }
     hydra-proxy    = { on = "mtl0", proxy = true }
     id             = { on = "mtl0", proxy = true }
-    portal         = { on = "mtl0", proxy = false }
-    tar            = { on = "mtl0", proxy = true }
-    pgp-public-key = { on = "mtl0", proxy = true }
+    influxdb       = { on = "mtl0", proxy = true }
+    jellyfin       = { on = "nuc", proxy = false }
+    mastodon       = { on = "mtl0", proxy = true }
+    matrix         = { on = "mtl0", proxy = true }
+    matrix-qq      = { on = "nuc", proxy = false }
+    mc             = { on = "nuc", proxy = false }
+    nextcloud      = { on = "nuc", proxy = false }
+    nuc-proxy      = { on = "mtl0", proxy = true }
+    opencode       = { on = "nuc", proxy = false }
     oranc          = { on = "mtl0", proxy = true }
-    ace-bot        = { on = "mtl0", proxy = true }
-    hledger        = { on = "mtl0", proxy = true }
-    vault          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
-    box            = { on = "mtl0", proxy = true }
-    static         = { on = "mtl0", proxy = true }
-    http-test      = { on = "mtl0", proxy = true }
-    sicp-staging   = { on = "mtl0", proxy = true }
+    pgp-public-key = { on = "mtl0", proxy = true }
+    portal         = { on = "mtl0", proxy = false }
+    prebuilt-zip   = { on = "mtl0", proxy = false }
     s3             = { on = "mtl0", proxy = true }
     s3-web         = { on = "mtl0", proxy = true }
-    garage-admin   = { on = "mtl0", proxy = true }
-    prebuilt-zip   = { on = "mtl0", proxy = false }
-    open-webui     = { on = "mtl0", proxy = true }
-    matrix         = { on = "fsn0", proxy = true }
-    synapse-admin  = { on = "fsn0", proxy = true }
-    social         = { on = "fsn0", proxy = true }
-    mastodon       = { on = "fsn0", proxy = true }
-    smtp           = { on = "fsn0", proxy = false }
-    influxdb       = { on = "fsn0", proxy = true }
-    bird-lg        = { on = "fsn0", proxy = true }
-    dn42           = { on = "fsn0", proxy = true }
-    keycloak       = { on = "fsn0", proxy = true }
-    hydra          = { on = "nuc", proxy = false }
-    transmission   = { on = "nuc", proxy = false }
-    jellyfin       = { on = "nuc", proxy = false }
-    nextcloud      = { on = "nuc", proxy = false }
-    mc             = { on = "nuc", proxy = false }
-    matrix-qq      = { on = "nuc", proxy = false }
-    teamspeak      = { on = "nuc", proxy = false }
+    sicp-staging   = { on = "mtl0", proxy = true }
+    smtp           = { on = "mtl0", proxy = false }
+    social         = { on = "mtl0", proxy = true }
+    static         = { on = "mtl0", proxy = true }
     subscription   = { on = "nuc", proxy = false }
-    cache-overlay  = { on = "nuc", proxy = false }
-    home-assistant = { on = "nuc", proxy = false }
-    opencode       = { on = "nuc", proxy = false }
-    agent          = { on = "nuc", proxy = false }
+    synapse-admin  = { on = "mtl0", proxy = true }
+    tar            = { on = "mtl0", proxy = true }
+    teamspeak      = { on = "nuc", proxy = false }
+    transmission   = { on = "nuc", proxy = false }
+    vault          = { on = "mtl0", proxy = true }
+    # keep-sorted end
   }
 }
 output "service_cname_mappings" {

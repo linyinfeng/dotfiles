@@ -15,16 +15,6 @@
       services.acme
       services.notify-failure
       services.postgresql
-      services.influxdb
-      services.dn42-site
-      services.bird-lg
-      services.keycloak
-      services.matrix
-      # services.baibot # TODO broken
-      services.mastodon
-      services.maddy
-      services.well-known
-      nix.hydra-builder-server
     ])
     ++ [ "${modulesPath}/profiles/qemu-guest.nix" ];
 

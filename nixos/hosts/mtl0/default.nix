@@ -27,39 +27,45 @@ in
     suites.overseaServer
     ++ suites.development
     ++ (with profiles; [
+      # keep-sorted start
+      i18n.input-method
       programs.tg-send
-      services.nginx
       services.acme
-      services.postgresql
-      services.garage
-      services.vaultwarden
+      services.atuin
+      services.bird-lg
       # services.gitweb
       # services.seafile
       services.commit-notifier
-      services.pastebin
-      services.http-test
-      services.static-file-hosting
-      services.telegraf-http
-      services.prebuilt-zip
-      services.hledger-web
+      services.dn42-site
+      services.dot-tar
+      services.dotfiles-update-trigger
+      services.garage
       # services.sicp-staging
       # services.rabbitmq
       # services.mongodb
       services.gitlab-runner-sicp
-      services.ollama
-      services.open-webui
+      services.hledger-web
+      services.http-test
+      services.maddy
+      services.mastodon
+      services.matrix
+      services.nginx
+      services.nuc-proxy
+      services.oranc
+      services.pastebin
+      services.pgp-public-key-web
+      services.pocket-id
       # services.ace-bot
       services.portal-server
-      services.atuin
-      services.nuc-proxy
-      services.pocket-id
-      services.pgp-public-key-web
-      services.oranc
-      services.dot-tar
-      services.dotfiles-update-trigger
-      i18n.input-method
-      virtualization.podman
+      services.postgresql
+      services.prebuilt-zip
+      services.static-file-hosting
+      services.telegraf-http
+      services.vaultwarden
+      services.well-known
       users.yinfeng
+      virtualization.podman
+      # keep-sorted end
     ]);
 
   config = lib.mkMerge [

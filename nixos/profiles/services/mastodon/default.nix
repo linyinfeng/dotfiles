@@ -6,10 +6,7 @@
 }:
 let
   serviceNames = [
-    "mastodon-streaming"
-    "mastodon-web"
     "mastodon-sidekiq-all"
-    "mastodon-media-auto-remove"
   ];
   serviceUnits = lib.lists.map (n: "${n}.service") serviceNames;
 in

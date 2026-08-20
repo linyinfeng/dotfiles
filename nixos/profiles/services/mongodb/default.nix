@@ -64,7 +64,7 @@ lib.mkMerge [
       db.changeUserPassword("monitor", "${config.sops.placeholder."mongodb_monitor_password"}");
     '';
 
-    services.telegraf.extraConfig.outputs.influxdb_v2 = [
+    services.telegraf.extraConfig.outputs.influxdb = [
       (config.lib.telegraf.mkMainInfluxdbOutput "mongodb")
     ];
     services.telegraf.extraConfig = {

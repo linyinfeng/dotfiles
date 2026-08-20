@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 {
-  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+  services.telegraf.extraConfig.outputs.influxdb = [
     (config.lib.telegraf.mkMainInfluxdbOutput "system")
   ];
   services.telegraf.extraConfig = {

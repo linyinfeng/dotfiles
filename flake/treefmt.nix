@@ -52,7 +52,10 @@
               ];
             };
             keep-sorted = {
-              includes = lib.mkForce [ "*.nix" ];
+              includes = lib.mkForce [
+                "*.nix"
+                "*.tf"
+              ];
             };
           };
         };

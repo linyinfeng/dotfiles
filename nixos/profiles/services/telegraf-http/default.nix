@@ -104,24 +104,6 @@ let
         code = 200;
       }
     ];
-    keycloak = [
-      {
-        url = "https://keycloak.li7g.com";
-        code = 302;
-      }
-    ];
-    # sicp-staging = [
-    #   {
-    #     url = "https://sicp-staging.li7g.com/2024/oj/web/";
-    #     code = 200;
-    #   }
-    # ];
-    # sicp-tutorials = [
-    #   {
-    #     url = "https://sicp-tutorials.li7g.com";
-    #     code = 401;
-    #   }
-    # ];
     s3 = [
       {
         url = "https://s3.li7g.com";
@@ -178,7 +160,7 @@ in
       }
     )
   ];
-  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+  services.telegraf.extraConfig.outputs.influxdb = [
     (config.lib.telegraf.mkMainInfluxdbOutput "http")
   ];
   services.telegraf.extraConfig = {

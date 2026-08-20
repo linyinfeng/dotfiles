@@ -97,7 +97,9 @@ lib.mkMerge [
     ];
   }
 
-  {
+  # TODO disabled
+  # takes too much space
+  (lib.mkIf false {
     users.users.barman = {
       isSystemUser = true;
       group = config.users.groups.barman.name;
@@ -179,5 +181,5 @@ lib.mkMerge [
       requires = [ "barman-cron.service" ];
       after = [ "barman-cron.service" ];
     };
-  }
+  })
 ]

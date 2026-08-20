@@ -70,7 +70,7 @@ in
   };
 
   # metrics
-  services.telegraf.extraConfig.outputs.influxdb_v2 = [
+  services.telegraf.extraConfig.outputs.influxdb = [
     (config.lib.telegraf.mkMainInfluxdbOutput "garage")
   ];
   services.telegraf.extraConfig = {

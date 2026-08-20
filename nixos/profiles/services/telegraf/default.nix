@@ -1,10 +1,11 @@
 { config, ... }:
 let
   mkMainInfluxdbOutput = bucket: {
-    urls = [ config.lib.self.data.influxdb_url ];
-    token = "$INFLUX_TOKEN";
-    organization = "main-org";
-    inherit bucket;
+    urls = [ "${config.lib.self.data.influxdb_url}/api/v1/push/influx" ];
+    skip_database_creation = true;
+    database = bucket;
+    username = config.lib.self.data.influxdb_username;
+    password = "$INFLUX_TOKEN";
     tagpass.output_bucket = [ bucket ];
   };
 in
@@ -22,7 +23,7 @@ in
         flush_interval = "10s";
         flush_jitter = "5s";
       };
-      outputs.influxdb_v2 = [
+      outputs.influxdb = [
         # make using config.lib.telegraf.mkMainInfluxdbOutput
       ];
     };

@@ -50,7 +50,6 @@ in
       WorkingDirectory = "/var/lib/minecraft";
       LoadCredential = [
         "rcon-password:${config.sops.secrets."rcon_password".path}"
-        "driver-influxdb:${config.sops.templates."driver-influxdb".path}"
       ];
       CPUQuota = "${toString (config.system.nproc * 50)}%";
     };
@@ -70,23 +69,6 @@ in
     terraformOutput.enable = true;
     restartUnits = [ "minecraft.service" ];
   };
-  sops.secrets."influxdb_token" = {
-    terraformOutput.enable = true;
-    restartUnits = [ "minecraft.service" ];
-  };
-  sops.templates."driver-influxdb".content = builtins.toJSON {
-    output = {
-      url = config.lib.self.data.influxdb_url;
-      organization = "main-org";
-      bucket = "minecraft";
-      interval = 10;
-    };
-    authentication = {
-      scheme = "TOKEN";
-      token = config.sops.placeholder."influxdb_token";
-    };
-  };
-
   services.nginx.virtualHosts."mc.*" = {
     forceSSL = true;
     inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
