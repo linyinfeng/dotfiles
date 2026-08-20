@@ -31,14 +31,6 @@ let
       key = "age1eele84f8nufp7g2j8cws8z2su0kp9ldgcvj8gmgldc326j7ykv9qzxcuaa";
       owned = true;
     };
-    fsn0 = {
-      key = "age1q8rds85ppw8uas9jk4dl4ynfvwm9qp92m0mry9aqse7zjvh5fpms5c98at";
-      owned = true;
-    };
-    hkg0 = {
-      key = "age1r0m4u6wpegaxxs6dlknkgwxd637p88wjvljladv9l7l7v60kgf2q7p3jcp";
-      owned = true;
-    };
     sparrow = {
       key = "age1ylnctxz36rpe95huc9v92pvu5zrk5td6rne9md52q7x4ceppkq7sm2pzph";
       owned = true;

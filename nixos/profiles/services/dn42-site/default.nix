@@ -6,14 +6,6 @@
 }:
 let
   extraHostInfo = {
-    fsn0 = {
-      comment = null;
-      provider = "Hetzner";
-      location = [
-        "Falkenstein"
-        "Germany"
-      ];
-    };
     mtl0 = {
       comment = null;
       provider = "ServaRICA";
@@ -21,14 +13,6 @@ let
         "Montreal"
         "Quebec"
         "Canada"
-      ];
-    };
-    hkg0 = {
-      comment = null;
-      provider = "JuHost";
-      location = [
-        "Hong Kong"
-        "China"
       ];
     };
   };

@@ -87,15 +87,6 @@ resource "cloudflare_dns_record" "li7g_home" {
   zone_id = cloudflare_zone.com_li7g.id
 }
 
-resource "cloudflare_dns_record" "li7g" {
-  name    = "li7g.com"
-  proxied = true
-  ttl     = 1
-  type    = "CNAME"
-  content = "fsn0.li7g.com"
-  zone_id = cloudflare_zone.com_li7g.id
-}
-
 resource "cloudflare_dns_record" "zip_prebuilt" {
   name    = "prebuilt.zip"
   proxied = true

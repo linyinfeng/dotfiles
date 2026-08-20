@@ -534,16 +534,6 @@ in
       name = "mtl0";
       system = "x86_64-linux";
     })
-
-    (mkHost {
-      name = "fsn0";
-      system = "aarch64-linux";
-    })
-
-    (mkHost {
-      name = "hkg0";
-      system = "x86_64-linux";
-    })
     # PLACEHOLDER new host
   ];
 

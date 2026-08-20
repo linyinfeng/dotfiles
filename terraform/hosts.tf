@@ -1,23 +1,5 @@
 locals {
   hosts = {
-    fsn0 = {
-      records = {
-        a = {
-          proxied = true
-          type    = "A"
-          value   = hcloud_server.fsn0.ipv4_address
-        }
-        aaaa = {
-          proxied = true
-          type    = "AAAA"
-          value   = hcloud_server.fsn0.ipv6_address
-        }
-      }
-      ddns_records = {}
-      host_indices = [2]
-      endpoints_v4 = [hcloud_server.fsn0.ipv4_address]
-      endpoints_v6 = [hcloud_server.fsn0.ipv6_address]
-    }
     mtl0 = {
       records = {
         a = {
@@ -30,25 +12,6 @@ locals {
       host_indices = [3]
       endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])]
       endpoints_v6 = []
-    }
-    # waiting for setup
-    hkg0 = {
-      records = {
-        a = {
-          proxied = true
-          type    = "A"
-          value   = nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])
-        }
-        aaaa = {
-          proxied = true
-          type    = "AAAA"
-          value   = nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])
-        }
-      }
-      ddns_records = {}
-      host_indices = [6]
-      endpoints_v4 = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v4"])]
-      endpoints_v6 = [nonsensitive(data.sops_file.terraform.data["ip.hkg0.v6"])]
     }
     nuc = {
       records = {}

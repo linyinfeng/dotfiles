@@ -50,7 +50,7 @@ output "zerotier_network_id" {
 
 variable "zerotier_moon_main_host" {
   type    = string
-  default = "hkg0"
+  default = "mtl0"
 }
 variable "zerotier_port" {
   type    = number

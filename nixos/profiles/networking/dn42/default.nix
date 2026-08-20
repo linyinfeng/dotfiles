@@ -14,38 +14,18 @@ let
   };
   peerTable = import ./_peers.nix;
   trafficControlTable = {
-    # Hetzner 20 TB/month
-    "fsn0".enable = false; # 20TB/month
     "mtl0".enable = false; # unmetered
-    "hkg0" = {
-      # 1TB/month
-      enable = true;
-      rate = "10M";
-    };
 
     "nuc".enable = false; # unmetered
-    "xps8930".enable = false; # mobile
     "parrot".enable = false; # mobile
   };
   regionTable = {
-    "fsn0" = {
-      region = 41; # Europe
-      country = 1276; # Germany
-    };
     "mtl0" = {
       region = 42; # North America-E
       country = 1124; # Canada
     };
-    "hkg0" = {
-      region = 52; # Asia-E (JP,CN,KR,TW,HK)
-      country = 1344; # Hong Kong
-    };
 
     "nuc" = {
-      region = 52; # Asia-E (JP,CN,KR,TW,HK)
-      country = 1156; # China
-    };
-    "xps8930" = {
       region = 52; # Asia-E (JP,CN,KR,TW,HK)
       country = 1156; # China
     };
