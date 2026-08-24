@@ -58,7 +58,7 @@ locals {
           value   = "::1"
         }
       }
-      host_indices = [22]
+      host_indices = []
       endpoints_v4 = []
       endpoints_v6 = []
     }
