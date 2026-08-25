@@ -30,6 +30,7 @@ in
       nodejs
       bun
       rtk
+      agent-browser
     ];
 
     settings = {
@@ -59,6 +60,7 @@ in
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:pi-acp"
+        "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
         "npm:pi-fabric"
