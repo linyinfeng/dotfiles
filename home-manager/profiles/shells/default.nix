@@ -34,7 +34,6 @@
       formats # additional formats
       query # data selectors
       gstat # git status
-      skim
       hcl
     ];
   };
