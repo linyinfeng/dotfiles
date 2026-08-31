@@ -157,6 +157,15 @@ output "service_cname_mappings" {
   sensitive = false
 }
 
+resource "cloudflare_dns_record" "apex" {
+  name    = cloudflare_zone.com_li7g.name
+  proxied = false
+  ttl     = 1
+  type    = "CNAME"
+  content = "mtl0.li7g.com"
+  zone_id = cloudflare_zone.com_li7g.id
+}
+
 resource "cloudflare_dns_record" "general_cname" {
   for_each = local.service_cname_mappings
 
