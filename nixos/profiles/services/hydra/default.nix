@@ -17,8 +17,19 @@
         serverAliases = [ "hydra-proxy.*" ];
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString config.ports.hydra}";
+          extraConfig = ''
+            # preserve :8443 so Hydra emits :8443 asset URLs; 443 keeps no port
+            proxy_set_header Host $host_with_alt_port;
+          '';
         };
       };
+      services.nginx.appendHttpConfig = ''
+        # only pass the alt https port in Host (Hydra uses it for asset URLs)
+        map $server_port $host_with_alt_port {
+          "8443" "$host:8443";
+          default "$host";
+        }
+      '';
       services.hydra = {
         enable = true;
         listenHost = "127.0.0.1";

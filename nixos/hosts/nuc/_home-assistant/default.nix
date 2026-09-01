@@ -2,7 +2,6 @@
 {
   services.home-assistant = {
     enable = true;
-    openFirewall = true;
     package = pkgs.home-assistant.override {
       extraPackages =
         p: with p; [
