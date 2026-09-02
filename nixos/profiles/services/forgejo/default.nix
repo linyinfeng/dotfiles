@@ -19,6 +19,7 @@
       DISABLE_SSH = false;
     };
     settings.session.COOKIE_SECURE = true;
+    settings.service.DISABLE_REGISTRATION = true;
     database = {
       type = "postgres";
       createDatabase = true;
