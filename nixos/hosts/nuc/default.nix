@@ -52,6 +52,7 @@ in
       services.postgresql
       services.hydra
       services.fw-proxy-subscription
+      services.forgejo
       services.fwupd
       services.tsukkomi
       # services.matrix-qq

@@ -560,3 +560,12 @@ output "filebrowser_agent_admin_password" {
   value     = random_password.filebrowser_agent.result
   sensitive = true
 }
+
+resource "random_password" "forgejo_admin_password" {
+  length  = 32
+  special = false
+}
+output "forgejo_admin_password" {
+  value     = random_password.forgejo_admin_password.result
+  sensitive = true
+}

@@ -117,6 +117,7 @@ locals {
     cache-overlay  = { on = "nuc", proxy = false }
     dn42           = { on = "mtl0", proxy = true }
     garage-admin   = { on = "mtl0", proxy = true }
+    git            = { on = "nuc", proxy = false }
     hledger        = { on = "mtl0", proxy = true }
     home-assistant = { on = "nuc", proxy = false }
     http-test      = { on = "mtl0", proxy = true }

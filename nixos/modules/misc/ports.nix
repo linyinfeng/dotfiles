@@ -101,6 +101,7 @@
       opencode-web = 3470;
       filebrowser-agent = 3480;
       ncro = 3490;
+      forgejo = 3500;
 
       ipsec-nat-traversal = 4500;
       babel = 6696;

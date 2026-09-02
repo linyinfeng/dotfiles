@@ -69,6 +69,10 @@
       "on": "mtl0",
       "proxy": true
     },
+    "git": {
+      "on": "nuc",
+      "proxy": false
+    },
     "hledger": {
       "on": "mtl0",
       "proxy": true
