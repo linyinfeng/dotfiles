@@ -45,10 +45,10 @@ in
       defaultProvider = "opencode-go";
       defaultModel = "deepseek-v4-flash";
       enabledModels = [
-        "openrouter/stealth/ox-alpha"
         "opencode-go/hy3"
         "opencode-go/deepseek-v4-flash"
         "opencode-go/glm-5.3"
+        "deepseek/deepseek-v4-flash-vision-exp"
       ];
       defaultThinkingLevel = "high";
       steeringMode = "all";

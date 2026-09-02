@@ -12,6 +12,16 @@ let
     preferredAddressV4 = lib.elemAt hostData.dn42_addresses_v4 0;
     preferredAddressV6 = lib.elemAt hostData.dn42_addresses_v6 0;
   };
+  # /etc/hosts entries: <host>.dn42.li7g.com -> dn42 addresses
+  dn42HostList = lib.flatten (
+    lib.mapAttrsToList (
+      name: hostData:
+      lib.lists.map (ip: {
+        hostName = "${name}.dn42.li7g.com";
+        inherit ip;
+      }) (hostData.dn42_addresses_v4 ++ hostData.dn42_addresses_v6)
+    ) data.hosts
+  );
   peerTable = import ./_peers.nix;
   trafficControlTable = {
     "mtl0".enable = false; # unmetered
@@ -54,6 +64,9 @@ lib.mkIf meshCfg.enable {
       dn42V6.preferredAddress = asThisHostCfg.preferredAddressV6;
     };
   };
+  networking.hosts = lib.foldr (
+    entry: m: m // { ${entry.ip} = (m.${entry.ip} or [ ]) ++ [ entry.hostName ]; }
+  ) { } dn42HostList;
   networking.dn42 = {
     enable = true;
     bgp = {
