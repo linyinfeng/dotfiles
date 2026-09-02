@@ -40,6 +40,7 @@ lib.mkMerge [
           ];
           "https://gitlab.com".provider = "gitlab";
           "https://git.nju.edu.cn".provider = "gitlab";
+          "https://git.li7g.com:8443".provider = "generic";
         };
         commit.gpgSign = true;
 
