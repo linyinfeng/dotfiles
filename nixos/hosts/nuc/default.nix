@@ -76,8 +76,6 @@ in
       };
       hardware.enableRedistributableFirmware = true;
 
-      services.thermald.enable = true;
-
       environment.global-persistence.enable = true;
       environment.global-persistence.root = "/persist";
 
