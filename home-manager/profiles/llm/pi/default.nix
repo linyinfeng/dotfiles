@@ -59,6 +59,7 @@ in
         "npm:@juicesharp/rpiv-ask-user-question"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
+        "npm:@narumitw/pi-usage"
         "npm:pi-acp"
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
@@ -71,7 +72,6 @@ in
         "npm:pi-rtk-optimizer"
         "npm:pi-simplify"
         "npm:pi-subagents"
-        "npm:pi-tian-usage"
         "npm:pi-token-speed"
         "npm:pi-web-access"
         {
