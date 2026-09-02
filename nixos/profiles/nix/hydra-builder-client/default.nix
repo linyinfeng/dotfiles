@@ -13,7 +13,7 @@ in
   };
   # https://nixos.org/manual/nix/stable/advanced-topics/distributed-builds
   environment.etc."${dir}/machines".text = ''
-    hydra-builder@nuc  x86_64-linux  ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@nuc x86_64-linux,aarch64-linux ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
   '';
   environment.etc."${dir}/machines-workstation".text = ''
     hydra-builder@nuc     ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
