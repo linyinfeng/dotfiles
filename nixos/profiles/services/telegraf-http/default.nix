@@ -71,6 +71,7 @@ let
     home-assistant = [ ];
     portal = [ ];
     opencode = [ ];
+    pi-web = [ ];
     agent = [ ];
   };
   overrides = {

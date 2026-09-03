@@ -145,6 +145,10 @@
       "on": "mtl0",
       "proxy": true
     },
+    "pi-web": {
+      "on": "nuc",
+      "proxy": false
+    },
     "portal": {
       "on": "mtl0",
       "proxy": false

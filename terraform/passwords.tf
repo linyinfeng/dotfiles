@@ -228,6 +228,32 @@ output "hledger_hashed_password" {
   value     = htpasswd_password.hledger.sha512
   sensitive = true
 }
+
+resource "random_pet" "pi_web_username" {
+}
+output "pi_web_username" {
+  value     = random_pet.pi_web_username.id
+  sensitive = true
+}
+resource "random_password" "pi_web" {
+  length = 32
+}
+resource "random_password" "pi_web_salt" {
+  length  = 8
+  special = false
+}
+resource "htpasswd_password" "pi_web" {
+  password = random_password.pi_web.result
+  salt     = random_password.pi_web_salt.result
+}
+output "pi_web_password" {
+  value     = random_password.pi_web.result
+  sensitive = true
+}
+output "pi_web_hashed_password" {
+  value     = htpasswd_password.pi_web.sha512
+  sensitive = true
+}
 resource "random_password" "keycloak_db" {
   length  = 32
   special = false

@@ -136,6 +136,7 @@ locals {
     oranc          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
     pgp-public-key = { on = "mtl0", proxy = true }
+    pi-web         = { on = "nuc", proxy = false }
     portal         = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     s3             = { on = "mtl0", proxy = true }

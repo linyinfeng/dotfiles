@@ -14,6 +14,7 @@ in
   imports = [
     ./_opencode.nix
     ./_filebrowser.nix
+    ./_pi-web.nix
     profiles.development.llm-keys
   ];
   users.users.${name} = {
@@ -59,6 +60,7 @@ in
           git
           llm.general
           llm.opencode
+          llm.pi
           vscode-server
           xdg-dirs
         ]);
