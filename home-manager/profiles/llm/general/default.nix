@@ -11,7 +11,6 @@
   home.packages =
     with pkgs;
     [
-      cc-switch
       llm-agents.nono
       llm-agents.cc-switch-cli
       codex
