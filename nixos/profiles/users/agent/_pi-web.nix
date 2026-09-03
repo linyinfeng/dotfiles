@@ -103,6 +103,10 @@ in
       extraConfig = ''
         auth_basic "pi-web";
         auth_basic_user_file ${config.sops.templates."pi-web-auth-file".path};
+        # pi-web serves websockets (session events / terminal sockets)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
       '';
     };
   };
