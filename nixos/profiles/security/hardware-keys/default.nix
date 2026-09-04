@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   # canokey
   services.udev.packages = [ pkgs.linyinfeng.canokey-udev-rules ];
@@ -12,15 +15,15 @@
 
   environment.systemPackages = with pkgs; [
     yubikey-manager
+    pam_u2f
     pcsc-tools
   ];
 
   services.gnome.gcr-ssh-agent.enable = false;
 
-  # disabled
   security.pam.u2f = {
-    enable = false;
-    settings.cue = false;
+    enable = true;
+    settings.cue = true;
   };
   environment.global-persistence.user.directories = [ ".config/Yubico" ];
 }
