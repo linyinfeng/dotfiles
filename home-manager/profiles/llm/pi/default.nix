@@ -1,12 +1,15 @@
 {
   pkgs,
   config,
+  osConfig,
   ...
 }:
 let
   context = pkgs.runCommand "pi-agents-md" { } ''
     cat ${../_context}/*.md > $out
   '';
+
+  inherit (config.lib.file) mkOutOfStoreSymlink;
 
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
@@ -45,10 +48,16 @@ in
       defaultProvider = "opencode-go";
       defaultModel = "deepseek-v4-flash";
       enabledModels = [
-        "opencode-go/hy3"
+        # keep-sorted start
+        "cc-switch/gpt-5.6-sol"
+        "deepseek/deepseek-v4-flash-vision-exp"
         "opencode-go/deepseek-v4-flash"
         "opencode-go/glm-5.3-flash"
-        "deepseek/deepseek-v4-flash-vision-exp"
+        "opencode-go/hy4-preview"
+        "opencode-go/omen-alpha"
+        "openrouter/google/gemini-3.8-flash"
+        "zai-coding-cn/glm-5.3-flash"
+        # keep-sorted end
       ];
       defaultThinkingLevel = "high";
       steeringMode = "all";
@@ -56,7 +65,6 @@ in
       packages = [
         # keep-sorted start
         "npm:@ff-labs/pi-fff"
-        "npm:@juicesharp/rpiv-ask-user-question"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:@narumitw/pi-usage"
@@ -82,40 +90,98 @@ in
     };
   };
 
-  home.file.".config/pi/web-search.json".text = builtins.toJSON {
-    workflow = "auto-summary";
-  };
-
-  home.file.".config/rpiv-ask-user-question/config.json".text = builtins.toJSON {
-    guidance.promptGuidelines = [
-      ''
-        Keep each question to a single sentence stating the core decision;
-        move all context and trade-offs into option descriptions — never dump
-        long prose into the question field (it wraps badly).
-      ''
-      ''
-        Keep labels to 1-5 words and descriptions to one line; multi-line
-        content (commit message, diff, code, config, mockup) goes into the
-        option's markdown preview — put it in a fenced code block, keep it
-        brief.
-      ''
-      ''
-        Put your recommended option first and append (Recommended) to its
-        label; set multiSelect: true only when multiple answers are valid.
-      ''
-      ''
-        Group every clarifying question into one ask_user_question call —
-        never stack multiple calls back-to-back.
-      ''
-      ''
-        Each question MUST have 2-4 options, each with a concise label and
-        description; never author Other or Type something. labels yourself —
-        they are reserved and rejected at runtime.
-      ''
-    ];
-  };
+  home.file.".config/pi/web-search.json".source =
+    mkOutOfStoreSymlink
+      osConfig.sops.templates."pi-web-search-config".path;
 
   home.file.".config/nono/profiles/pi.json".source = ./nono-pi-profile.json;
+
+  home.file.".pi/agent/auth.json".source = mkOutOfStoreSymlink osConfig.sops.templates."pi-auth".path;
+
+  home.file.".pi/agent/models.json".text = builtins.toJSON {
+    providers = {
+      "cc-switch" = {
+        name = "cc-switch";
+        baseUrl = "http://127.0.0.1:15721/v1";
+        apiKey = "sk-local";
+        api = "openai-completions";
+        models = [
+          {
+            id = "gpt-5.6-sol";
+            name = "GPT-5.6 Sol";
+            api = "openai-responses";
+            reasoning = true;
+            thinkingLevelMap = {
+              off = "none";
+              minimal = null;
+              xhigh = "xhigh";
+            };
+            input = [
+              "text"
+              "image"
+            ];
+            contextWindow = 353000;
+            maxTokens = 128000;
+            cost = {
+              input = 0;
+              output = 0;
+              cacheRead = 0;
+              cacheWrite = 0;
+            };
+          }
+        ];
+      };
+      opencode-go = {
+        models = [
+          {
+            id = "omen-alpha";
+            name = "Omen Alpha";
+            api = "openai-completions";
+            baseUrl = "https://opencode.ai/zen/go/v1";
+            reasoning = true;
+            compat = {
+              supportsStore = false;
+              supportsDeveloperRole = false;
+              maxTokensField = "max_tokens";
+            };
+            thinkingLevelMap = {
+              off = "none";
+              minimal = null;
+              low = "low";
+              medium = null;
+              high = "high";
+              xhigh = null;
+              max = null;
+            };
+            input = [
+              "text"
+              "image"
+            ];
+            contextWindow = 500000;
+            maxTokens = 128000;
+            cost = {
+              input = 0.2;
+              output = 0.66;
+              cacheRead = 0.04;
+              cacheWrite = 0;
+            };
+          }
+        ];
+      };
+      openrouter = {
+        modelOverrides = {
+          "google/gemini-3.8-flash" = {
+            compat = {
+              openRouterRouting = {
+                order = [ "google-vertex/global" ];
+                allow_fallbacks = false;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 
   home.packages = [ pi-sandbox ];
 

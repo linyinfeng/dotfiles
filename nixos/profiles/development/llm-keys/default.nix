@@ -61,6 +61,24 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."perplexity_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
+  sops.secrets."xai_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
+  sops.secrets."zhipu_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   sops.templates."opencode-auth" = {
     content = builtins.toJSON {
       deepseek = {
@@ -90,6 +108,44 @@
       nvidia = {
         key = config.sops.placeholder."nvidia_api_key";
         type = "api";
+      };
+    };
+    group = "llm";
+    mode = "440";
+  };
+  sops.templates."pi-web-search-config" = {
+    content = builtins.toJSON {
+      workflow = "auto-summary";
+      perplexityApiKey = config.sops.placeholder."perplexity_api_key";
+    };
+    group = "llm";
+    mode = "440";
+  };
+  sops.templates."pi-auth" = {
+    content = builtins.toJSON {
+      deepseek = {
+        key = config.sops.placeholder."deepseek_api_key";
+        type = "api_key";
+      };
+      opencode = {
+        key = config.sops.placeholder."opencode_api_key";
+        type = "api_key";
+      };
+      opencode-go = {
+        key = config.sops.placeholder."opencode_api_key";
+        type = "api_key";
+      };
+      openrouter = {
+        key = config.sops.placeholder."openrouter_api_key";
+        type = "api_key";
+      };
+      xai = {
+        key = config.sops.placeholder."xai_api_key";
+        type = "api_key";
+      };
+      "zai-coding-cn" = {
+        key = config.sops.placeholder."zhipu_api_key";
+        type = "api_key";
       };
     };
     group = "llm";
