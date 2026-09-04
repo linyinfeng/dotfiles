@@ -30,10 +30,11 @@ in
     inherit context;
 
     extraPackages = with pkgs; [
-      nodejs
-      bun
-      rtk
       agent-browser
+      ast-grep
+      bun
+      nodejs
+      rtk
     ];
 
     settings = {
@@ -184,6 +185,12 @@ in
   };
 
   home.packages = [ pi-sandbox ];
+
+  # pi-lens: prefer PATH tools only, no self-install of npm binaries
+  home.sessionVariables = {
+    PI_LENS_DISABLE_TOOL_INSTALL = "1";
+    PI_LENS_DISABLE_LSP_INSTALL = "1";
+  };
 
   home.global-persistence.directories = [
     ".pi"
