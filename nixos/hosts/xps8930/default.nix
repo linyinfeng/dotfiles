@@ -28,7 +28,6 @@ in
     suites.workstation
     ++ (with profiles; [
       security.tpm
-      networking.wireguard-home
       networking.behind-fw
       networking.fw-proxy
       services.godns

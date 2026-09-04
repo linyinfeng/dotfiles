@@ -13,10 +13,6 @@ let
       ip = "192.168.2.2";
       inherit port;
     };
-    xps8930 = {
-      ip = "192.168.2.3";
-      inherit port;
-    };
     enchilada = {
       ip = "192.168.2.101";
       inherit port;
