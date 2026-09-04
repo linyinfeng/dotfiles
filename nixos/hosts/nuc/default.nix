@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   suites,
   profiles,
   ...
@@ -81,6 +82,10 @@ in
       environment.global-persistence.root = "/persist";
 
       systemd.settings.Manager.RuntimeWatchdogSec = "60s";
+
+      # TODO: drop when nixpkgs hydra bundles nix >= 2.53
+      # match the nix bundled by hydra so evaluator/queue-runner see the same version
+      nix.package = lib.mkForce pkgs.hydra.passthru.nix;
 
       services.fstrim.enable = true;
       services.btrfs.autoScrub = {
