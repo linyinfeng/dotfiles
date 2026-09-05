@@ -1,6 +1,7 @@
 {
   profiles,
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -69,6 +70,8 @@ in
         settings = {
           user.name = "Nano";
           user.email = "nano@linyinfeng.com";
+          # no signing key on this machine; override shared git profile
+          commit.gpgSign = lib.mkForce false;
         };
       };
 
