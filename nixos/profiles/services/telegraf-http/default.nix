@@ -73,6 +73,7 @@ let
     opencode = [ ];
     pi-web = [ ];
     agent = [ ];
+    frp-nuc = [ ];
   };
   overrides = {
     box = [
@@ -120,6 +121,7 @@ let
     s3-web = [ ];
     garage-admin = [
     ];
+    frp-mtl0 = [ ];
   };
   mkServiceCfg =
     name: cnameMapping:

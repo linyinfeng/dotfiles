@@ -39,6 +39,7 @@ in
       services.dn42-site
       services.dot-tar
       services.dotfiles-update-trigger
+      services.frp-server
       services.garage
       # services.sicp-staging
       # services.rabbitmq

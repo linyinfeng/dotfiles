@@ -65,6 +65,14 @@
       "on": "mtl0",
       "proxy": true
     },
+    "frp-mtl0": {
+      "on": "mtl0",
+      "proxy": true
+    },
+    "frp-nuc": {
+      "on": "nuc",
+      "proxy": false
+    },
     "garage-admin": {
       "on": "mtl0",
       "proxy": true
@@ -204,10 +212,6 @@
     "vault": {
       "on": "mtl0",
       "proxy": true
-    },
-    "xps8930-frp": {
-      "on": "nuc",
-      "proxy": false
     }
   },
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",

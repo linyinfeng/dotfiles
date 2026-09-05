@@ -59,13 +59,13 @@ in
       # services.matrix-qq
       services.teamspeak
       services.cache-overlay
+      services.frp-server
       programs.service-mail
       programs.tg-send
       users.yinfeng
       users.agent
     ])
     ++ [
-      ./_frp-tunnel.nix
       ./_minecraft-unmanaged
       ./_steam
       ./_home-assistant

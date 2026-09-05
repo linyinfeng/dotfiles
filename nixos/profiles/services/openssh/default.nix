@@ -15,6 +15,7 @@ let
             "${host}.li7g.com"
             "${host}.ts.li7g.com"
             "${host}.dn42.li7g.com"
+            "${host}.endpoints.li7g.com"
           ];
           publicKey = hostData.ssh_host_ed25519_key_pub;
         })
@@ -24,6 +25,7 @@ let
             "${host}.li7g.com"
             "${host}.ts.li7g.com"
             "${host}.dn42.li7g.com"
+            "${host}.endpoints.li7g.com"
           ];
           publicKey = hostData.ssh_host_rsa_key_pub;
         })
@@ -62,7 +64,7 @@ in
     ''
     + lib.concatMapStringsSep "\n" (h: ''
       Host ${h}
-        HostName ${h}.dn42.li7g.com
+        HostName ${h}.li7g.com
         Port ${toString config.ports.ssh}
       Host ${h}.dn42
         HostName ${h}.dn42.li7g.com
@@ -89,9 +91,8 @@ in
         Port 2222
 
       Host xps8930-frp
-        HostName 127.0.0.1
-        Port ${toString config.ports.frp-ssh}
-        User yinfeng
+        HostName nuc.li7g.com
+        Port ${toString config.ports.frp-xps8930-ssh}
 
       Host agent
         User agent

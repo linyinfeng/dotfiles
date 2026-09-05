@@ -34,11 +34,11 @@ in
       services.nginx
       services.acme
       services.fwupd
+      services.frp-client
       programs.service-mail
       programs.tg-send
       users.yinfeng
-    ])
-    ++ [ ./_frp-tunnel.nix ];
+    ]);
 
   # campus network requirement
   services.zerotierone.enable = lib.mkForce false;
@@ -91,6 +91,22 @@ in
       ];
       ip_type = "IPv6";
       ip_interface = "enp4s0";
+    };
+  };
+
+  services.frp-client = {
+    enable = true;
+    settings = {
+      log.level = "info";
+      proxies = [
+        {
+          name = "ssh";
+          type = "tcp";
+          localIP = "127.0.0.1";
+          localPort = config.ports.ssh;
+          remotePort = config.ports.frp-xps8930-ssh;
+        }
+      ];
     };
   };
 

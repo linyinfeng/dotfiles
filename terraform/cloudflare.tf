@@ -116,6 +116,8 @@ locals {
     box            = { on = "mtl0", proxy = true }
     cache-overlay  = { on = "nuc", proxy = false }
     dn42           = { on = "mtl0", proxy = true }
+    frp-mtl0       = { on = "mtl0", proxy = true }
+    frp-nuc        = { on = "nuc", proxy = false }
     garage-admin   = { on = "mtl0", proxy = true }
     git            = { on = "nuc", proxy = false }
     hledger        = { on = "mtl0", proxy = true }
@@ -151,7 +153,6 @@ locals {
     teamspeak      = { on = "nuc", proxy = false }
     transmission   = { on = "nuc", proxy = false }
     vault          = { on = "mtl0", proxy = true }
-    xps8930-frp    = { on = "nuc", proxy = false }
     # keep-sorted end
   }
 }

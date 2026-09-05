@@ -83,7 +83,9 @@
       ntfy = 3300;
       atuin = 3310;
       frp = 3320;
-      frp-ssh = 3321;
+      frp-min = 3321;
+      frp-xps8930-ssh = 3322;
+      frp-max = 3329;
       vlmcsd = 3330;
       jellyfin = 3340;
       jellyfin-https = 3341;
