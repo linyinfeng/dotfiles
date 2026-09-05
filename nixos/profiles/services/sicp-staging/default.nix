@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   # Pin the uid so the rootless podman socket path (/run/user/<uid>/podman/podman.sock)
   # is predictable for CI's DOCKER_HOST and the app container's grading sandbox.
@@ -10,7 +15,7 @@ lib.mkMerge [
   {
     users.users.sicp-staging = {
       isSystemUser = true;
-      uid = uid;
+      inherit uid;
       home = "/home/sicp-staging";
       createHome = true;
       shell = pkgs.bash;

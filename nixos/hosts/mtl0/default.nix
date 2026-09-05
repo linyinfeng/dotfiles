@@ -41,7 +41,6 @@ in
       services.dotfiles-update-trigger
       services.frp-server
       services.garage
-      services.sicp-staging
       services.gitlab-runner-sicp
       services.hledger-web
       services.http-test
@@ -58,6 +57,7 @@ in
       services.portal-server
       services.postgresql
       services.prebuilt-zip
+      services.sicp-staging
       services.static-file-hosting
       services.telegraf-http
       services.vaultwarden
