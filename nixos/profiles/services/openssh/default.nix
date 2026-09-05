@@ -4,7 +4,6 @@
   ...
 }:
 let
-  inherit (config.lib.self) data;
   aliveInterval = "15";
   aliveCountMax = "4";
   knownHosts = lib.listToAttrs (

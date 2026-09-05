@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   tokenPath = config.sops.secrets."frp_token".path;
 in

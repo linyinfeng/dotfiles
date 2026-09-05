@@ -204,6 +204,10 @@
     "vault": {
       "on": "mtl0",
       "proxy": true
+    },
+    "xps8930-frp": {
+      "on": "nuc",
+      "proxy": false
     }
   },
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
