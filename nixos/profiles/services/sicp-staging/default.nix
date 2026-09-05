@@ -23,7 +23,7 @@ lib.mkMerge [
       ];
       openssh.authorizedKeys = {
         keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGPFIcA9bW0fYc2i7aiGLaS3XaYnTCnqCCZtCKDaxG/4 sicp-staging-gitlab"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPvGhmEbOZTemV1eiA1Txs/DZTpEwu/pFO70QA7O7Hm5 sicp-staging-gitlab-2026"
         ];
         inherit (config.users.users.root.openssh.authorizedKeys) keyFiles;
       };
