@@ -13,7 +13,7 @@ lib.mkMerge [
         LLMNR = true;
         FallbackDNS = dnsServers;
         # DNSSEC = "allow-downgrade";
-        # DNSOverTLS = "opportunistic";
+        DNSOverTLS = "opportunistic";
       };
     };
     networking.firewall.allowedUDPPorts = [ 5353 ];
