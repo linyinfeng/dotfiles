@@ -34,6 +34,13 @@ lib.mkMerge [
       };
     };
     users.groups.sicp-staging = { };
+    # sops-nix renders config into /home/sicp-staging/oj/config as root;
+    # hand the whole compose project tree to the staging user so CI can
+    # rsync compose files and rootless podman can create data dirs.
+    # Recursive chown; "-" mode keeps the 0400 application.yml intact.
+    systemd.tmpfiles.rules = [
+      "Z /home/sicp-staging/oj - sicp-staging sicp-staging - -"
+    ];
 
     # User-level podman socket for docker compose (DOCKER_HOST) and the app
     # container's grading sandbox. Not reachable by other host users:
