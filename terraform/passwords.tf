@@ -296,6 +296,14 @@ output "rathole_ad_hoc_token" {
   value     = random_password.rathole_ad_hoc_token.result
   sensitive = true
 }
+resource "random_password" "frp_token" {
+  length  = 32
+  special = false
+}
+output "frp_token" {
+  value     = random_password.frp_token.result
+  sensitive = true
+}
 output "rathole_hashed_password" {
   value     = htpasswd_password.rathole.sha512
   sensitive = true

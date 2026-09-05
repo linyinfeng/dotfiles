@@ -151,6 +151,7 @@ locals {
     teamspeak      = { on = "nuc", proxy = false }
     transmission   = { on = "nuc", proxy = false }
     vault          = { on = "mtl0", proxy = true }
+    xps8930-frp    = { on = "nuc", proxy = false }
     # keep-sorted end
   }
 }

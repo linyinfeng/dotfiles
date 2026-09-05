@@ -71,7 +71,7 @@ in
       Host ${h}.ts
         HostName ${h}.ts.li7g.com
         Port ${toString config.ports.ssh}
-    '') (lib.attrNames data.hosts)
+    '') (lib.attrNames config.networking.hostsData.indexedHosts)
     + ''
       Host ostrich
         User Yinfeng
@@ -83,6 +83,12 @@ in
         AddressFamily inet
         ProxyJump ostrich
         Port 2222
+
+      Host xps8930-frp
+        HostName 127.0.0.1
+        Port ${toString config.ports.frp-ssh}
+        User yinfeng
+        HostKeyAlias xps8930
 
       Host agent
         User agent

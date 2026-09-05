@@ -82,6 +82,8 @@
       rathole-ad-hoc = 3291;
       ntfy = 3300;
       atuin = 3310;
+      frp = 3320;
+      frp-ssh = 3321;
       vlmcsd = 3330;
       jellyfin = 3340;
       jellyfin-https = 3341;

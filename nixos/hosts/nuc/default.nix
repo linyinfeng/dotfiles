@@ -65,6 +65,7 @@ in
       users.agent
     ])
     ++ [
+      ./_frp-tunnel.nix
       ./_minecraft-unmanaged
       ./_steam
       ./_home-assistant

@@ -37,7 +37,8 @@ in
       programs.service-mail
       programs.tg-send
       users.yinfeng
-    ]);
+    ])
+    ++ [ ./_frp-tunnel.nix ];
 
   # campus network requirement
   services.zerotierone.enable = lib.mkForce false;
