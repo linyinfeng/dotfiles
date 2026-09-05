@@ -21,6 +21,7 @@
     # windows = 406;
     steam = 407;
     cowrie = 408;
+    sicp-staging = 409;
   };
   ids.gids = {
     # service groups
@@ -33,5 +34,6 @@
     windows = 406;
     steam = 407;
     cowrie = 408;
+    sicp-staging = 409;
   };
 }

@@ -41,9 +41,7 @@ in
       services.dotfiles-update-trigger
       services.frp-server
       services.garage
-      # services.sicp-staging
-      # services.rabbitmq
-      # services.mongodb
+      services.sicp-staging
       services.gitlab-runner-sicp
       services.hledger-web
       services.http-test

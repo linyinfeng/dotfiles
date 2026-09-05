@@ -1,56 +1,25 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, lib, ... }:
 let
-  ojBase = "2024/oj";
+  # Pin the uid so the rootless podman socket path (/run/user/<uid>/podman/podman.sock)
+  # is predictable for CI's DOCKER_HOST and the app container's grading sandbox.
+  uid = config.ids.uids.sicp-staging;
+  composeDir = "/home/sicp-staging/oj";
 in
 lib.mkMerge [
-  # online judge
+  # sicp-staging: OJ compose stack isolated in a dedicated user's rootless podman
   {
-    systemd.services.sicp-staging-app = {
-      script = ''
-        exec java --add-opens "java.base/java.io=ALL-UNNAMED" \
-          -Dspring.profiles.active=prod -Dspring.config.location="$CREDENTIALS_DIRECTORY/application.yml" \
-          -jar "app.jar"
-      '';
-      path = with pkgs; [
-        openjdk
-      ];
-      unitConfig = {
-        ConditionPathExists = "/var/lib/sicp-staging/app.jar";
-      };
-      serviceConfig = {
-        User = config.users.users.sicp-staging.name;
-        Group = config.users.groups.sicp-staging.name;
-        StateDirectory = "sicp-staging";
-        WorkingDirectory = "/var/lib/sicp-staging";
-        LoadCredential = [
-          "application.yml:${config.sops.templates."sicp-staging-application.yml".path}"
-        ];
-      };
-      restartTriggers = [
-        config.sops.templates."sicp-staging-application.yml".content
-      ];
-      requires = [
-        "sicp-staging-mongodb-setup.service"
-        "sicp-staging-rabbitmq-setup.service"
-      ];
-      after = [
-        "sicp-staging-mongodb-setup.service"
-        "sicp-staging-rabbitmq-setup.service"
-      ];
-      wantedBy = [ "multi-user.target" ];
-    };
-
     users.users.sicp-staging = {
       isSystemUser = true;
+      uid = uid;
+      home = "/home/sicp-staging";
+      createHome = true;
       shell = pkgs.bash;
       group = config.users.groups.sicp-staging.name;
-      extraGroups = [
-        config.users.groups.podman.name
+      linger = true;
+      autoSubUidGidRange = true;
+      packages = with pkgs; [
+        docker
+        docker-compose
       ];
       openssh.authorizedKeys = {
         keys = [
@@ -60,274 +29,147 @@ lib.mkMerge [
       };
     };
     users.groups.sicp-staging = { };
-    security.polkit.extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if (action.id == "org.freedesktop.systemd1.manage-units" &&
-            RegExp('sicp-staging-app\.service').test(action.lookup("unit")) === true &&
-            subject.isInGroup("sicp-staging")) {
-          return polkit.Result.YES;
-        }
-      });
-    '';
-    users.users.nginx.extraGroups = [ config.users.groups.sicp-staging.name ];
 
-    systemd.services.sicp-staging-mongodb-setup = {
-      script = ''
-        mongodb_admin_password="$(cat "$CREDENTIALS_DIRECTORY/mongodb-admin-password")"
-        mongo --username root --password "$mongodb_admin_password" admin "$CREDENTIALS_DIRECTORY/mongodb-init.js"
-      '';
-      requires = [
-        "mongodb.service"
-      ];
-      after = [
-        "mongodb.service"
-      ];
-      path = [
-        config.services.mongodb.package
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        LoadCredential = [
-          "mongodb-admin-password:${config.sops.secrets."mongodb_admin_password".path}"
-          "mongodb-init.js:${config.sops.templates."sicp-staging-mongodb-init.js".path}"
-        ];
+    # User-level podman socket for docker compose (DOCKER_HOST) and the app
+    # container's grading sandbox. Not reachable by other host users:
+    # /run/user/<uid> is 0700, so socket mode 0666 widens nothing.
+    systemd.user.sockets.sicp-staging-podman = {
+      listenStreams = [ "%t/podman/podman.sock" ];
+      socketConfig = {
+        SocketMode = "0666";
+        DirectoryMode = "0700";
       };
-      restartTriggers = [
-        config.sops.templates."sicp-staging-mongodb-init.js".content
-      ];
+      wantedBy = [ "sockets.target" ];
     };
-    systemd.services.sicp-staging-rabbitmq-setup = {
-      script = ''
-        # initialize rabbitmq
-        export RABBITMQ_ERLANG_COOKIE="$(cat /var/lib/rabbitmq/.erlang.cookie)"
-        rabbitmq_sicp_staging_password="$(cat "$CREDENTIALS_DIRECTORY/rabbitmq-sicp-staging-password")"
-        rabbitmqctl await_startup --timeout 300
-        rabbitmqctl add_vhost sicp_staging
-        rabbitmqctl add_user sicp_staging changeit || true
-        rabbitmqctl change_password sicp_staging "$rabbitmq_sicp_staging_password"
-        rabbitmqctl set_permissions -p sicp_staging "sicp_staging" ".*" ".*" ".*"
-      '';
-      after = [
-        "rabbitmq.service"
-      ];
-      path = [
-        config.services.rabbitmq.package
-      ];
+    systemd.user.services.sicp-staging-podman = {
       serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        User = config.users.users.rabbitmq.name;
-        Group = config.users.groups.rabbitmq.name;
-        LoadCredential = [
-          "rabbitmq-sicp-staging-password:${config.sops.secrets."rabbitmq_sicp_staging_password".path}"
-        ];
+        ExecStart = "${pkgs.podman}/bin/podman system service --time=0";
+        Slice = "sicp-staging.slice";
       };
     };
-    sops.templates."sicp-staging-mongodb-init.js".content = ''
-      db = db.getSiblingDB("sicp_staging");
-      if (db.getUser("sicp_staging") == null) {
-        db.createUser({
-          user: "sicp_staging",
-          pwd: "temporary",
-          roles: []
-        });
+    systemd.slices.sicp-staging = {
+      sliceConfig = {
+        MemoryMax = "8G";
       };
-      db.updateUser("sicp_staging", {
-        roles: [ { role: "dbOwner", db: "sicp_staging" } ]
-      });
-      db.changeUserPassword("sicp_staging", "${config.sops.placeholder."mongodb_sicp_staging_password"}");
-    '';
+    };
 
-    services.redis.servers.sicp-staging = {
-      enable = true;
-      port = config.ports.sicp-staging-redis;
-      requirePassFile = config.sops.secrets."sicp_staging_redis_password".path;
-    };
-    sops.templates."sicp-staging-application.yml".content = builtins.toJSON {
-      sicp = {
-        admin = {
-          username = "YINFENGLIN";
-          password = config.sops.placeholder."sicp_staging_admin_password";
-          fullName = "Lin Yinfeng";
-        };
-        jwt = {
-          issuer = "sicp";
-          audience = "sicp-user";
-          secret = config.sops.placeholder."sicp_staging_jwt_secret";
-        };
-        docker = {
-          host = "unix:///run/podman/podman.sock";
-          tls-verify = false;
-        };
-        s3 = {
-          endpoint = "https://s3.li7g.com";
-          access-key = config.sops.placeholder."garage_sicp_staging_key_id";
-          secret-key = config.sops.placeholder."garage_sicp_staging_access_key";
-          region = "garage";
-          bucket = "sicp-staging";
-        };
-        oauth2 = {
-          gitlab = {
-            endpoint = "https://git.nju.edu.cn";
-            redirectUri = "https://sicp-staging.li7g.com/${ojBase}/web/auth/callback";
-            scope = "read_user";
-            clientId = "824e65daa58165919d7e3137616a67818400e0610cad26a10db97234029fa508";
-            clientSecret = config.sops.placeholder."nju_git_sicp_staging_oauth2";
-          };
-        };
+    # Proxy everything to the compose stack's caddy gateway (bound to
+    # 127.0.0.1:3390); path semantics (/oj/web, /oj/api) live in the in-stack
+    # Caddyfile, mirroring production.
+    services.nginx.virtualHosts."sicp-staging.*" = {
+      forceSSL = true;
+      inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString config.ports.sicp-staging}";
+        extraConfig = ''
+          client_max_body_size 10m;
+        '';
       };
-      spring = {
-        application = {
-          name = "SICP Online Judge (Staging)";
-        };
-        main = {
-          banner-mode = "off";
-        };
-        data = {
-          mongodb = {
-            host = "localhost";
-            port = config.ports.mongodb;
-            database = "sicp_staging";
-            username = "sicp_staging";
-            password = config.sops.placeholder."mongodb_sicp_staging_password";
-            # authentication-database = "sicp_staging";
+    };
+
+    # App config is rendered by sops and bind-mounted into the container;
+    # secrets never pass through CI.
+    sops.templates."sicp-staging-application.yml" = {
+      path = "${composeDir}/config/application.yml";
+      owner = config.users.users.sicp-staging.name;
+      mode = "0400";
+      content = builtins.toJSON {
+        sicp = {
+          admin = {
+            username = "YINFENGLIN";
+            password = config.sops.placeholder."sicp_staging_admin_password";
+            fullName = "Lin Yinfeng";
           };
-          redis = {
-            host = "localhost";
-            inherit (config.services.redis.servers.sicp-staging) port;
-            database = 0;
-            password = config.sops.placeholder."sicp_staging_redis_password";
+          jwt = {
+            issuer = "sicp";
+            audience = "sicp-user";
+            secret = config.sops.placeholder."sicp_staging_jwt_secret";
+          };
+          oauth2 = {
+            gitlab = {
+              endpoint = "https://git.nju.edu.cn";
+              redirectUri = "https://sicp-staging.li7g.com/oj/web/auth/callback";
+              scope = "read_user";
+              clientId = "824e65daa58165919d7e3137616a67818400e0610cad26a10db97234029fa508";
+              clientSecret = config.sops.placeholder."nju_git_sicp_staging_oauth2";
+            };
+          };
+          docker = {
+            host = "unix:///var/run/docker.sock";
+            tls-verify = false;
+          };
+          s3 = {
+            endpoint = "http://minio:9000";
+            access-key = "sicp_minio";
+            secret-key = "sicp_minio";
+            region = "us-east-1";
+            bucket = "sicp";
           };
         };
-        rabbitmq = {
-          host = "localhost";
-          inherit (config.services.rabbitmq) port;
-          virtual-host = "sicp_staging";
-          username = "sicp_staging";
-          password = config.sops.placeholder."rabbitmq_sicp_staging_password";
-        };
-        servlet = {
-          multipart = {
+        spring = {
+          application.name = "SICP Online Judge (Staging)";
+          main.banner-mode = "off";
+          data = {
+            mongodb = {
+              host = "mongo";
+              port = 27017;
+              database = "sicp";
+              username = "sicp_mongo";
+              password = "sicp_mongo";
+            };
+            redis = {
+              host = "redis";
+              port = 6379;
+              database = 0;
+              password = "sicp_redis";
+            };
+          };
+          rabbitmq = {
+            host = "rabbitmq";
+            port = 5672;
+            username = "sicp_rabbitmq";
+            password = "sicp_rabbitmq";
+          };
+          servlet.multipart = {
             max-file-size = "1MB";
             max-request-size = "1MB";
           };
         };
-      };
-      logging = {
-        level = {
+        logging.level = {
           root = "ERROR";
           "cn.edu.nju.sicp" = "INFO";
         };
-      };
-      server = {
-        port = config.ports.sicp-staging;
-        error = {
-          include-message = "always";
-          whitelabel = {
-            enabled = false;
+        server = {
+          port = 8080;
+          error = {
+            include-message = "always";
+            whitelabel.enabled = false;
           };
         };
-      };
-      management = {
-        endpoints = {
-          web = {
-            cors = {
-              allowed-origins = [
-                "https://sicp-staging.li7g.com"
-                "http://localhost:5173"
-                "http://localhost:3000"
-              ];
-              allowed-methods = "*";
-              allowed-headers = "*";
-              allowed-credentials = true;
-              max-age = "3600s";
-            };
-          };
+        management.endpoints.web.cors = {
+          allowed-origins = [
+            "https://sicp-staging.li7g.com"
+            "http://localhost:5173"
+          ];
+          allowed-methods = "*";
+          allowed-headers = "*";
+          allowed-credentials = true;
+          max-age = "3600s";
         };
       };
     };
-
-    services.nginx.virtualHosts."sicp-staging.*" =
-      let
-        webDist = "/var/lib/sicp-staging/web/";
-      in
-      {
-        forceSSL = true;
-        inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-        locations."/oj".extraConfig = ''
-          return 302 https://$host/${ojBase}/web/;
-        '';
-        locations."= /${ojBase}/web".extraConfig = ''
-          return 302 https://$host$request_uri/;
-        '';
-        locations."/${ojBase}/web/" = {
-          alias = webDist;
-          index = "no-such-file"; # use @index as index
-          extraConfig = ''
-            try_files $uri @index;
-          '';
-        };
-        locations."@index" = {
-          root = webDist;
-          extraConfig = ''
-            add_header Cache-Control no-cache;
-            expires 0;
-            try_files /index.html =404;
-          '';
-        };
-        locations."/api/" = {
-          proxyPass = "http://127.0.0.1:${toString config.ports.sicp-staging}";
-          extraConfig = ''
-            rewrite /api/(.*) /$1  break;
-          '';
-        };
-        locations."/${ojBase}/api/" = {
-          proxyPass = "http://127.0.0.1:${toString config.ports.sicp-staging}";
-          extraConfig = ''
-            rewrite /${ojBase}/api/(.*) /$1  break;
-          '';
-        };
-      };
 
     sops.secrets."sicp_staging_jwt_secret" = {
       terraformOutput.enable = true;
-      restartUnits = [ "sicp-staging-app.service" ];
-    };
-    sops.secrets."garage_sicp_staging_key_id" = {
-      terraformOutput.enable = true;
-      restartUnits = [ "sicp-staging-app.service" ];
-    };
-    sops.secrets."garage_sicp_staging_access_key" = {
-      terraformOutput.enable = true;
-      restartUnits = [ "sicp-staging-app.service" ];
-    };
-    sops.secrets."mongodb_sicp_staging_password" = {
-      terraformOutput.enable = true;
-      restartUnits = [
-        "sicp-staging-mongodb-setup.service"
-      ];
-    };
-    sops.secrets."rabbitmq_sicp_staging_password" = {
-      terraformOutput.enable = true;
-      restartUnits = [
-        "sicp-staging-rabbitmq-setup.service"
-      ];
+      restartUnits = [ ];
     };
     sops.secrets."sicp_staging_admin_password" = {
       terraformOutput.enable = true;
-      restartUnits = [ "sicp-staging-app.service" ];
-    };
-    sops.secrets."sicp_staging_redis_password" = {
-      terraformOutput.enable = true;
-      restartUnits = [
-        "sicp-staging-app.service"
-        "redis-sicp-staging.service"
-      ];
+      restartUnits = [ ];
     };
     sops.secrets."nju_git_sicp_staging_oauth2" = {
       predefined.enable = true;
-      restartUnits = [ "sicp-staging-app.service" ];
+      restartUnits = [ ];
     };
   }
 

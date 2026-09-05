@@ -94,7 +94,6 @@
       rabbitmq = 3370;
       rabbitmq-management = 3371;
       sicp-staging = 3390;
-      sicp-staging-redis = 3391;
       ollama = 3400;
       open-webui = 3410;
       fw-proxy-subscription = 3420;
