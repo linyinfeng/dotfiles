@@ -77,6 +77,11 @@ in
         HostName ostrich.ts.li7g.com
         Port 2222
 
+      Host xps8930
+        HostName xps8930.li7g.com
+        AddressFamily inet
+        Port 2222
+
       Host xps8930-ostrich
         HostName xps8930.li7g.com
         AddressFamily inet
@@ -87,7 +92,6 @@ in
         HostName 127.0.0.1
         Port ${toString config.ports.frp-ssh}
         User yinfeng
-        HostKeyAlias xps8930
 
       Host agent
         User agent
