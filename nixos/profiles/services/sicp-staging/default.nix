@@ -5,8 +5,6 @@
   ...
 }:
 let
-  # Pin the uid so the rootless podman socket path (/run/user/<uid>/podman/podman.sock)
-  # is predictable for CI's DOCKER_HOST and the app container's grading sandbox.
   uid = config.ids.uids.sicp-staging;
   composeDir = "/home/sicp-staging/oj";
 in
@@ -17,7 +15,7 @@ lib.mkMerge [
       isSystemUser = true;
       inherit uid;
       home = "/home/sicp-staging";
-      createHome = true;
+      createHome = false; # home is a bind mount from persistent storage
       shell = pkgs.bash;
       group = config.users.groups.sicp-staging.name;
       linger = true;
@@ -33,18 +31,27 @@ lib.mkMerge [
         inherit (config.users.users.root.openssh.authorizedKeys) keyFiles;
       };
     };
-    users.groups.sicp-staging = { };
-    # sops-nix renders config into /home/sicp-staging/oj/config as root;
-    # hand the whole compose project tree to the staging user so CI can
-    # rsync compose files and rootless podman can create data dirs.
-    # Recursive chown; "-" mode keeps the 0400 application.yml intact.
-    systemd.tmpfiles.rules = [
-      "Z /home/sicp-staging/oj - sicp-staging sicp-staging - -"
-    ];
+    users.groups.sicp-staging.gid = config.ids.uids.sicp-staging; # private group
+
+    environment.global-persistence.directories = [
+      {
+        directory = "/home/sicp-staging";
+        user = "sicp-staging";
+        group = "sicp-staging";
+        mode = "0700";
+      }
+    ]; # persist the whole home directory
 
     # User-level podman socket for docker compose (DOCKER_HOST) and the app
     # container's grading sandbox. Not reachable by other host users:
     # /run/user/<uid> is 0700, so socket mode 0666 widens nothing.
+    # user-level sops render must run after the persistent home mount,
+    # otherwise the config symlink lands on the shadowed tmpfs home
+    systemd.services."sops-install-secrets-for-users" = {
+      after = [ "home-sicp\\x2dstaging.mount" ];
+      wants = [ "home-sicp\\x2dstaging.mount" ];
+    };
+
     systemd.user.sockets.sicp-staging-podman = {
       listenStreams = [ "%t/podman/podman.sock" ];
       socketConfig = {
@@ -54,6 +61,10 @@ lib.mkMerge [
       wantedBy = [ "sockets.target" ];
     };
     systemd.user.services.sicp-staging-podman = {
+      environment = {
+        # blob extraction must not go to the 2G tmpfs root
+        TMPDIR = "%h/tmp";
+      };
       serviceConfig = {
         ExecStart = "${pkgs.podman}/bin/podman system service --time=0";
         Slice = "sicp-staging.slice";
@@ -128,6 +139,7 @@ lib.mkMerge [
               database = "sicp";
               username = "sicp_mongo";
               password = "sicp_mongo";
+              authentication-database = "admin";
             };
             redis = {
               host = "redis";
