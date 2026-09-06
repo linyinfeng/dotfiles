@@ -205,6 +205,8 @@ lib.mkMerge [
       [engine]
       image_copy_tmp_dir = "/var/lib/containers/tmp"
     '';
+    # podman does not create the image_copy_tmp_dir itself
+    systemd.tmpfiles.rules = [ "d /var/lib/containers/tmp 0755 root root - -" ];
   }
 
   # tutorials
