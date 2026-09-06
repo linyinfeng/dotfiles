@@ -38,8 +38,14 @@ lib.mkMerge [
             ""
             "${lib.getExe pkgs.gh} auth git-credential"
           ];
-          "https://gitlab.com".provider = "gitlab";
-          "https://git.nju.edu.cn".provider = "gitlab";
+          "https://gitlab.com".helper = [
+            ""
+            "${lib.getExe pkgs.glab} auth git-credential"
+          ];
+          "https://git.nju.edu.cn".helper = [
+            ""
+            "${lib.getExe pkgs.glab} auth git-credential"
+          ];
           "https://git.li7g.com:8443".provider = "generic";
         };
         commit.gpgSign = true;
@@ -52,10 +58,12 @@ lib.mkMerge [
     home.packages = with pkgs; [
       github-cli
       git-credential-manager
+      glab
     ];
 
     home.global-persistence.directories = [
       ".config/gh" # github-cli
+      ".config/glab-cli" # glab (gitlab)
     ];
   }
 
