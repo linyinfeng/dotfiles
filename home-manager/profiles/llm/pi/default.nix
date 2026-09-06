@@ -114,7 +114,62 @@ in
             reasoning = true;
             thinkingLevelMap = {
               off = "none";
-              minimal = null;
+              minimal = "minimal";
+              low = "low";
+              medium = "medium";
+              high = "high";
+              xhigh = "xhigh";
+            };
+            input = [
+              "text"
+              "image"
+            ];
+            contextWindow = 353000;
+            maxTokens = 128000;
+            cost = {
+              input = 0;
+              output = 0;
+              cacheRead = 0;
+              cacheWrite = 0;
+            };
+          }
+          {
+            id = "gpt-5.6-terra";
+            name = "GPT-5.6 Terra";
+            api = "openai-responses";
+            reasoning = true;
+            thinkingLevelMap = {
+              off = "none";
+              minimal = "minimal";
+              low = "low";
+              medium = "medium";
+              high = "high";
+              xhigh = "xhigh";
+            };
+            input = [
+              "text"
+              "image"
+            ];
+            contextWindow = 353000;
+            maxTokens = 128000;
+            cost = {
+              input = 0;
+              output = 0;
+              cacheRead = 0;
+              cacheWrite = 0;
+            };
+          }
+          {
+            id = "gpt-6-astra";
+            name = "GPT-6 Astra";
+            api = "openai-responses";
+            reasoning = true;
+            thinkingLevelMap = {
+              off = "none";
+              minimal = "minimal";
+              low = "low";
+              medium = "medium";
+              high = "high";
               xhigh = "xhigh";
             };
             input = [
