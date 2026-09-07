@@ -65,7 +65,7 @@ in
       tokenSpeed.display = "ttft";
       packages = [
         # keep-sorted start
-        "npm:@ff-labs/pi-fff"
+        # "npm:@ff-labs/pi-fff"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:@narumitw/pi-usage"
@@ -73,12 +73,12 @@ in
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
-        "npm:pi-fabric"
+        # "npm:pi-fabric"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
         # "npm:pi-hashline-edit-pro"
-        "npm:pi-readseek"
-        "npm:pi-rtk-optimizer"
+        # "npm:pi-readseek"
+        # "npm:pi-rtk-optimizer"
         "npm:pi-simplify"
         "npm:pi-subagents"
         "npm:pi-token-speed"
