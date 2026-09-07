@@ -13,7 +13,7 @@
     [
       llm-agents.nono
       llm-agents.cc-switch-cli
-      codex
+      llm-agents.codex
     ]
     ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
 

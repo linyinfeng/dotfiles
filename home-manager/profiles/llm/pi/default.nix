@@ -51,6 +51,7 @@ in
       enabledModels = [
         # keep-sorted start
         "cc-switch/gpt-5.6-sol"
+        "cc-switch/gpt-6-astra"
         "deepseek/deepseek-v4-flash-vision-exp"
         "opencode-go/deepseek-v4-flash"
         "opencode-go/glm-5.3-flash"
@@ -69,7 +70,6 @@ in
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:@narumitw/pi-usage"
-        "npm:pi-acp"
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
@@ -165,24 +165,34 @@ in
             api = "openai-responses";
             reasoning = true;
             thinkingLevelMap = {
-              off = "none";
-              minimal = "minimal";
+              off = null;
+              minimal = null;
               low = "low";
               medium = "medium";
               high = "high";
               xhigh = "xhigh";
+              max = "max";
             };
             input = [
               "text"
               "image"
             ];
-            contextWindow = 353000;
+            contextWindow = 272000;
             maxTokens = 128000;
             cost = {
-              input = 0;
-              output = 0;
-              cacheRead = 0;
-              cacheWrite = 0;
+              input = 10;
+              output = 50;
+              cacheRead = 1;
+              cacheWrite = 12.5;
+              tiers = [
+                {
+                  inputTokensAbove = 272000;
+                  input = 20;
+                  output = 75;
+                  cacheRead = 2;
+                  cacheWrite = 25;
+                }
+              ];
             };
           }
         ];
