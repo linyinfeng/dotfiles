@@ -53,6 +53,7 @@ in
         "cc-switch/gpt-5.6-sol"
         "cc-switch/gpt-6-astra"
         "deepseek/deepseek-v4-flash-vision-exp"
+        "deepseek/deepseek-v4.1-flash-expires-on-0910"
         "opencode-go/deepseek-v4-flash"
         "opencode-go/glm-5.3-flash"
         "opencode-go/hy4-preview"
@@ -193,6 +194,42 @@ in
                   cacheWrite = 25;
                 }
               ];
+            };
+          }
+        ];
+      };
+      deepseek = {
+        models = [
+          {
+            id = "deepseek-v4.1-flash-expires-on-0910";
+            name = "DeepSeek V4.1 Flash Expires On 0910";
+            api = "openai-completions";
+            baseUrl = "https://api.deepseek.com";
+            reasoning = true;
+            input = [
+              "text"
+            ];
+            cost = {
+              input = 0.14;
+              output = 0.28;
+              cacheRead = 0.0028;
+              cacheWrite = 0;
+            };
+            contextWindow = 1000000;
+            maxTokens = 384000;
+            compat = {
+              supportsStore = false;
+              supportsDeveloperRole = false;
+              maxTokensField = "max_tokens";
+              requiresReasoningContentOnAssistantMessages = true;
+              thinkingFormat = "deepseek";
+            };
+            thinkingLevelMap = {
+              minimal = null;
+              low = "low";
+              medium = null;
+              high = "high";
+              max = "max";
             };
           }
         ];
