@@ -8,6 +8,7 @@ in
     openssh.authorizedKeys.keyFiles = [
       _ssh/pgp.pub
       _ssh/juice.pub
+      _ssh/goose.pub
     ];
   };
 
