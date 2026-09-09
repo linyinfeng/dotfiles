@@ -11,6 +11,8 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
+  commandNotFoundModel = "deepseek/deepseek-v4.1-flash-expires-on-0910";
+
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
     runtimeInputs = [ pkgs.llm-agents.nono ];
@@ -18,6 +20,34 @@ let
       nono pull nolabs-ai/pi
       nono update
       exec nono run --profile pi --allow-cwd -- pi "$@"
+    '';
+  };
+
+  command-not-found-adaptor = pkgs.writers.writePython3Bin "command-not-found-adaptor" { } (
+    builtins.readFile ./command-not-found-adaptor.py
+  );
+
+  command-not-found-agent = pkgs.writeShellApplication {
+    name = "command-not-found-agent";
+    bashOptions = [
+      "errexit"
+      "nounset"
+    ];
+    runtimeInputs = [
+      config.programs.pi-coding-agent.package
+      command-not-found-adaptor
+      pkgs.bash
+      pkgs.mdcat
+    ]
+    ++ config.programs.pi-coding-agent.extraPackages;
+    text = ''
+      exec pi \
+        --model "${commandNotFoundModel}" \
+        --mode json \
+        --no-context-files \
+        --append-system-prompt "${./command-not-found-system-prompt.md}" \
+        -- "$(printf '%q ' "$@")" \
+        | exec command-not-found-adaptor
     '';
   };
 in
@@ -286,7 +316,16 @@ in
     };
   };
 
-  home.packages = [ pi-sandbox ];
+  home.packages = [
+    command-not-found-agent
+    pi-sandbox
+  ];
+
+  passthru.command-not-found-agent = command-not-found-agent;
+
+  programs.fish.interactiveShellInit = ''
+    set -gx COMMAND_NOT_FOUND_AGENT command-not-found-agent
+  '';
 
   # pi-lens: prefer PATH tools only, no self-install of npm binaries
   home.sessionVariables = {

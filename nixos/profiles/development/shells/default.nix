@@ -62,19 +62,44 @@ lib.mkMerge [
       environment.systemPackages = [ comma ];
       programs.bash.interactiveShellInit = ''
         function command_not_found_handle() {
-          comma --ask "$@"
-          return $?
+          if command -v comma >/dev/null 2>&1 && comma --print-packages "$1" >/dev/null 2>&1; then
+            comma --ask "$@"
+            return $?
+          fi
+          if [[ -n ''${COMMAND_NOT_FOUND_AGENT-} ]] && command -v "$COMMAND_NOT_FOUND_AGENT" >/dev/null 2>&1; then
+            "$COMMAND_NOT_FOUND_AGENT" "$@"
+            return $?
+          fi
+          echo "$1: command not found" >&2
+          return 127
         }
       '';
       programs.zsh.interactiveShellInit = ''
         function command_not_found_handler () {
-          comma --ask "$@"
-          return $?
+          if command -v comma >/dev/null 2>&1 && comma --print-packages "$1" >/dev/null 2>&1; then
+            comma --ask "$@"
+            return $?
+          fi
+          if [[ -n ''${COMMAND_NOT_FOUND_AGENT-} ]] && command -v "$COMMAND_NOT_FOUND_AGENT" >/dev/null 2>&1; then
+            "$COMMAND_NOT_FOUND_AGENT" "$@"
+            return $?
+          fi
+          print -u2 "$1: command not found"
+          return 127
         }
       '';
       programs.fish.interactiveShellInit = ''
         function fish_command_not_found
-          "${lib.getExe comma}" --ask $argv
+          if command -q comma; and comma --print-packages $argv[1] >/dev/null 2>&1
+            comma --ask $argv
+            return $status
+          end
+          if set -q COMMAND_NOT_FOUND_AGENT; and command -q "$COMMAND_NOT_FOUND_AGENT"
+            $COMMAND_NOT_FOUND_AGENT $argv
+            return $status
+          end
+          echo "$argv[1]: command not found" >&2
+          return 127
         end
       '';
     }
