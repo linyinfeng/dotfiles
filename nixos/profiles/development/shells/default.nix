@@ -58,9 +58,10 @@ lib.mkMerge [
       comma = pkgs.comma-with-db;
     in
     {
-      programs.command-not-found.enable = false;
       environment.systemPackages = [ comma ];
       programs.bash.interactiveShellInit = ''
+        export COMMAND_NOT_FOUND_SESSION_ID="''${COMMAND_NOT_FOUND_SESSION_ID:-$(cat /proc/sys/kernel/random/uuid)}"
+
         function command_not_found_handle() {
           if command -v comma >/dev/null 2>&1 && comma --print-packages "$1" >/dev/null 2>&1; then
             comma --ask "$@"
@@ -75,6 +76,8 @@ lib.mkMerge [
         }
       '';
       programs.zsh.interactiveShellInit = ''
+        export COMMAND_NOT_FOUND_SESSION_ID="''${COMMAND_NOT_FOUND_SESSION_ID:-$(cat /proc/sys/kernel/random/uuid)}"
+
         function command_not_found_handler () {
           if command -v comma >/dev/null 2>&1 && comma --print-packages "$1" >/dev/null 2>&1; then
             comma --ask "$@"
@@ -89,6 +92,12 @@ lib.mkMerge [
         }
       '';
       programs.fish.interactiveShellInit = ''
+        set -q COMMAND_NOT_FOUND_SESSION_ID
+        and test -n "$COMMAND_NOT_FOUND_SESSION_ID"
+        or set -gx COMMAND_NOT_FOUND_SESSION_ID (cat /proc/sys/kernel/random/uuid)
+
+        # fish wires this function's stdout to stderr, so a command run from
+        # here is not pipeable/redirectable (bash and zsh are).
         function fish_command_not_found
           if command -q comma; and comma --print-packages $argv[1] >/dev/null 2>&1
             comma --ask $argv

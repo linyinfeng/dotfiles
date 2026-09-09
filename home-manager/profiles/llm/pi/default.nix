@@ -37,16 +37,32 @@ let
       config.programs.pi-coding-agent.package
       command-not-found-adaptor
       pkgs.bash
+      pkgs.jq
       pkgs.mdcat
     ]
     ++ config.programs.pi-coding-agent.extraPackages;
     text = ''
+      session_id="''${COMMAND_NOT_FOUND_SESSION_ID:-}"
+      session_id="''${session_id//[^[:alnum:]-]/_}"
+      [ -n "$session_id" ] || session_id=$(cat /proc/sys/kernel/random/uuid)
+      export COMMAND_NOT_FOUND_SESSION_ID="$session_id"
+
+      session_dir="$HOME/.pi/command-not-found/sessions/$session_id"
+      mkdir -p "$session_dir"
+      chmod 700 "$session_dir"
+
+      prompt=$(jq -cn \
+        --arg session_id "$session_id" \
+        --arg cwd "$PWD" \
+        --arg input "$(printf '%q ' "$@")" \
+        '{session_id: $session_id, cwd: $cwd, input: $input}')
       exec pi \
         --model "${commandNotFoundModel}" \
         --mode json \
         --no-context-files \
+        --session "$session_dir/session.jsonl" \
         --append-system-prompt "${./command-not-found-system-prompt.md}" \
-        -- "$(printf '%q ' "$@")" \
+        -- "$prompt" \
         | exec command-not-found-adaptor
     '';
   };
