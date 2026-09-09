@@ -5,10 +5,19 @@
   ...
 }:
 let
-  serviceNames = [
-    "mastodon-sidekiq-all"
+  # Units that read the S3 credentials from sops.templates."mastodon-extra-env".
+  s3Units = [
+    "mastodon-media-auto-remove.service"
+    "mastodon-sidekiq-all.service"
+    "mastodon-web.service"
   ];
-  serviceUnits = lib.lists.map (n: "${n}.service") serviceNames;
+
+  # Units that send mail; they get SMTP_PASSWORD from .secrets_env, which
+  # mastodon-init-dirs (re)writes from the mail-password credential.
+  mailUnits = [
+    "mastodon-sidekiq-all.service"
+    "mastodon-web.service"
+  ];
 in
 lib.mkMerge [
   {
@@ -45,24 +54,13 @@ lib.mkMerge [
         S3_ENDPOINT = config.lib.self.data.b2_s3_api_url;
         S3_ALIAS_HOST = "b2.li7g.com/file/${config.lib.self.data.b2_mastodon_media_bucket_name}";
       };
+      extraEnvFiles = [ config.sops.templates."mastodon-extra-env".path ];
       streamingProcesses = config.system.nproc - 1;
     };
     users.users.${config.services.mastodon.user}.shell = pkgs.bash;
-    systemd.services =
-      lib.listToAttrs (
-        lib.lists.map (
-          serviceName:
-          lib.nameValuePair serviceName {
-            serviceConfig.EnvironmentFile = [ config.sops.templates."mastodon-extra-env".path ];
-            restartTriggers = [ config.sops.templates."mastodon-extra-env".file ];
-          }
-        ) serviceNames
-      )
-      // {
-        mastodon-init-dirs.serviceConfig.LoadCredential = [
-          "mail-password:${config.sops.secrets."mail_password".path}"
-        ];
-      };
+    systemd.services.mastodon-init-dirs.serviceConfig.LoadCredential = [
+      "mail-password:${config.sops.secrets."mail_password".path}"
+    ];
     sops.templates."mastodon-extra-env".content = ''
       AWS_ACCESS_KEY_ID=${config.sops.placeholder."b2_mastodon_media_key_id"}
       AWS_SECRET_ACCESS_KEY=${config.sops.placeholder."b2_mastodon_media_access_key"}
@@ -76,15 +74,15 @@ lib.mkMerge [
     ];
     sops.secrets."mail_password" = {
       terraformOutput.enable = true;
-      restartUnits = [ "mastodon-init-dirs.service" ];
+      restartUnits = [ "mastodon-init-dirs.service" ] ++ mailUnits;
     };
     sops.secrets."b2_mastodon_media_key_id" = {
       terraformOutput.enable = true;
-      restartUnits = serviceUnits;
+      restartUnits = s3Units;
     };
     sops.secrets."b2_mastodon_media_access_key" = {
       terraformOutput.enable = true;
-      restartUnits = serviceUnits;
+      restartUnits = s3Units;
     };
   }
 
