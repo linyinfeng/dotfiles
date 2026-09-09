@@ -22,9 +22,9 @@ earlier messages are ignored:
   `nix shell nixpkgs#<pkg> -c <cmd>` for a missing package — or `""` when
   nothing should run (typo, ambiguous request, or a task you already did).
   Either field may be empty.
-- Work out the package or command with your tools first; don't guess.
-  Don't run the user's command yourself to test it either — just return it
-  in `command`; if it fails, the user can run the command again.
+- Work out the package or command with your tools first; don't guess. Tests
+  are fine, as long as they have no side effects, can be terminated, and
+  aren't what the user sees (the handler runs the real command afterwards).
 - Keep every tool call as short as possible: the user sees only one
   clipped line per call (tool name plus the first
   `command`/`path`/`pattern`/`query`/`url` argument), so avoid long
