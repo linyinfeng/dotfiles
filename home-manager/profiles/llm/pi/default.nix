@@ -7,7 +7,7 @@
 }:
 let
   context = pkgs.runCommand "pi-agents-md" { } ''
-    cat ${../_context}/*.md > $out
+    cat ${../_context}/*.md ${./_context}/*.md > $out
   '';
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
