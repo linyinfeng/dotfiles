@@ -121,6 +121,7 @@ in
         "npm:pi-background-tasks"
         "npm:pi-btw"
         # "npm:pi-fabric"
+        "npm:pi-goal-x"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
         # "npm:pi-hashline-edit-pro"
