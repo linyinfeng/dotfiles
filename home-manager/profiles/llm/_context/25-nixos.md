@@ -11,8 +11,8 @@
   `nix run nixpkgs#<pkg> -- <args>`; several at once:
   `nix shell nixpkgs#nodejs nixpkgs#jq -c bash`.
 - Repo dev env: if `flake.nix`/`shell.nix` exists,
-  `nix develop -c <cmd>` beats ad-hoc `nix shell` (pi runs
-  non-interactive, so no bare `nix develop`).
+  `nix develop -c <cmd>` beats ad-hoc `nix shell`; a bare
+  `nix develop` needs a TTY, so it cannot run non-interactively.
 - Python: `nix shell nixpkgs#python3 nixpkgs#python3Packages.<pkg>`,
   never pip.
 - This machine's dotfiles live in `~/Projects/dotfiles`;
