@@ -11,7 +11,7 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  commandNotFoundModel = "deepseek/deepseek-v4.1-flash-expires-on-0910";
+  commandNotFoundModel = "deepseek/deepseek-flash";
 
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
@@ -96,11 +96,9 @@ in
       defaultModel = "deepseek-v4-flash";
       enabledModels = [
         # keep-sorted start
-        "cc-switch/gpt-5.6-sol"
         "cc-switch/gpt-6-astra"
-        "deepseek/deepseek-v4-flash-vision-exp"
-        "deepseek/deepseek-v4.1-flash-expires-on-0910"
-        "opencode-go/deepseek-v4-flash"
+        "deepseek/deepseek-flash"
+        "opencode-go/deepseek-flash"
         "opencode-go/glm-5.3-flash"
         "opencode-go/hy4-preview"
         "opencode-go/omen-alpha"
@@ -156,58 +154,6 @@ in
         api = "openai-completions";
         models = [
           {
-            id = "gpt-5.6-sol";
-            name = "GPT-5.6 Sol";
-            api = "openai-responses";
-            reasoning = true;
-            thinkingLevelMap = {
-              off = "none";
-              minimal = "minimal";
-              low = "low";
-              medium = "medium";
-              high = "high";
-              xhigh = "xhigh";
-            };
-            input = [
-              "text"
-              "image"
-            ];
-            contextWindow = 353000;
-            maxTokens = 128000;
-            cost = {
-              input = 0;
-              output = 0;
-              cacheRead = 0;
-              cacheWrite = 0;
-            };
-          }
-          {
-            id = "gpt-5.6-terra";
-            name = "GPT-5.6 Terra";
-            api = "openai-responses";
-            reasoning = true;
-            thinkingLevelMap = {
-              off = "none";
-              minimal = "minimal";
-              low = "low";
-              medium = "medium";
-              high = "high";
-              xhigh = "xhigh";
-            };
-            input = [
-              "text"
-              "image"
-            ];
-            contextWindow = 353000;
-            maxTokens = 128000;
-            cost = {
-              input = 0;
-              output = 0;
-              cacheRead = 0;
-              cacheWrite = 0;
-            };
-          }
-          {
             id = "gpt-6-astra";
             name = "GPT-6 Astra";
             api = "openai-responses";
@@ -245,11 +191,13 @@ in
           }
         ];
       };
+      # models.dev has not picked up the DeepSeek V4.1 Flash rename yet
+      # (its deepseek provider data is from 2026-08-25), so declare it here.
       deepseek = {
         models = [
           {
-            id = "deepseek-v4.1-flash-expires-on-0910";
-            name = "DeepSeek V4.1 Flash Expires On 0910";
+            id = "deepseek-flash";
+            name = "DeepSeek V4.1 Flash";
             api = "openai-completions";
             baseUrl = "https://api.deepseek.com";
             reasoning = true;
@@ -257,9 +205,9 @@ in
               "text"
             ];
             cost = {
-              input = 0.14;
-              output = 0.28;
-              cacheRead = 0.0028;
+              input = 0.15;
+              output = 0.6;
+              cacheRead = 0.003;
               cacheWrite = 0;
             };
             contextWindow = 1000000;
@@ -277,43 +225,6 @@ in
               medium = null;
               high = "high";
               max = "max";
-            };
-          }
-        ];
-      };
-      opencode-go = {
-        models = [
-          {
-            id = "omen-alpha";
-            name = "Omen Alpha";
-            api = "openai-completions";
-            baseUrl = "https://opencode.ai/zen/go/v1";
-            reasoning = true;
-            compat = {
-              supportsStore = false;
-              supportsDeveloperRole = false;
-              maxTokensField = "max_tokens";
-            };
-            thinkingLevelMap = {
-              off = "none";
-              minimal = null;
-              low = "low";
-              medium = null;
-              high = "high";
-              xhigh = null;
-              max = null;
-            };
-            input = [
-              "text"
-              "image"
-            ];
-            contextWindow = 500000;
-            maxTokens = 128000;
-            cost = {
-              input = 0.2;
-              output = 0.66;
-              cacheRead = 0.04;
-              cacheWrite = 0;
             };
           }
         ];
