@@ -93,13 +93,11 @@ in
       theme = "light/dark";
       collapseChangelog = true;
       enableInstallTelemetry = false;
-      enableAnalytics = false;
       outputPad = 0;
-      editorPaddingX = 0;
       hideThinkingBlock = true;
       terminal.showTerminalProgress = true;
       defaultProvider = "opencode-go";
-      defaultModel = "deepseek-v4-flash";
+      defaultModel = "deepseek-flash";
       enabledModels = [
         # keep-sorted start
         "cc-switch/gpt-6-astra"
@@ -107,7 +105,6 @@ in
         "opencode-go/deepseek-flash"
         "opencode-go/glm-5.3-flash"
         "opencode-go/hy4-preview"
-        "opencode-go/omen-alpha"
         "openrouter/google/gemini-3.8-flash"
         "zai-coding-cn/glm-5.3-flash"
         # keep-sorted end
@@ -116,33 +113,23 @@ in
       steeringMode = "all";
       tokenSpeed = {
         display = "ttft";
-        icon = "⚡";
-        updateInterval = 0;
         useProviderTokens = true;
-        slidingWindow = 1000;
-        endTpsBehavior = "average";
         tpsBlazing = 200;
         tpsFast = 100;
         tpsMedium = 60;
         tpsSlow = 30;
-        colorBlazing = "#44ddff";
       };
       packages = [
         # keep-sorted start
-        # "npm:@ff-labs/pi-fff"
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:@narumitw/pi-usage"
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
-        # "npm:pi-fabric"
         "npm:pi-goal-x"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
-        # "npm:pi-hashline-edit-pro"
-        # "npm:pi-readseek"
-        # "npm:pi-rtk-optimizer"
         "npm:pi-simplify"
         "npm:pi-subagents"
         "npm:pi-token-speed"
