@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   osConfig,
   ...
 }:
@@ -12,6 +13,11 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
   commandNotFoundModel = "deepseek/deepseek-flash";
+
+  # pi rewrites settings.json at runtime (model selection, extension settings),
+  # so this file stays writable and the switch merges into it instead of
+  # replacing it wholesale.
+  piSettingsFile = "${config.home.homeDirectory}/.pi/agent/settings.json";
 
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
@@ -108,7 +114,19 @@ in
       ];
       defaultThinkingLevel = "high";
       steeringMode = "all";
-      tokenSpeed.display = "ttft";
+      tokenSpeed = {
+        display = "ttft";
+        icon = "⚡";
+        updateInterval = 0;
+        useProviderTokens = true;
+        slidingWindow = 1000;
+        endTpsBehavior = "average";
+        tpsBlazing = 200;
+        tpsFast = 100;
+        tpsMedium = 60;
+        tpsSlow = 30;
+        colorBlazing = "#44ddff";
+      };
       packages = [
         # keep-sorted start
         # "npm:@ff-labs/pi-fff"
@@ -136,6 +154,20 @@ in
       ];
     };
   };
+
+  home.file.${piSettingsFile}.enable = false;
+
+  home.activation.piSettingsMerge = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    settings=${piSettingsFile}
+    generated=${config.home.file.${piSettingsFile}.source}
+    if [ -f "$settings" ] && ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" "$generated" > "$settings.merged"; then
+      run mv -f "$settings.merged" "$settings"
+    else
+      rm -f "$settings.merged"
+      warnEcho "$settings is not valid JSON; replacing it with the declared settings"
+      run cp -f "$generated" "$settings"
+    fi
+  '';
 
   home.file.".config/pi/web-search.json".source =
     mkOutOfStoreSymlink
