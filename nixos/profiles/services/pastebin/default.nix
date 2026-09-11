@@ -14,6 +14,7 @@
     script = ''
       export AWS_ACCESS_KEY_ID=$(cat "$CREDENTIALS_DIRECTORY/key-id")
       export AWS_SECRET_ACCESS_KEY=$(cat "$CREDENTIALS_DIRECTORY/access-key")
+      export AWS_REGION=garage
       ${pkgs.pastebin}/bin/pastebin \
         --endpoint-host s3.li7g.com \
         --bucket pastebin \
