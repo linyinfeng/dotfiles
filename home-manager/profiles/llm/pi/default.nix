@@ -96,18 +96,9 @@ in
       hideThinkingBlock = true;
       terminal.showTerminalProgress = true;
       defaultProvider = "opencode-go";
-      defaultModel = "deepseek-flash";
-      enabledModels = [
-        # keep-sorted start
-        "cc-switch/gpt-6-astra"
-        "deepseek/deepseek-flash"
-        "opencode-go/deepseek-flash"
-        "opencode-go/glm-5.3-flash"
-        "opencode-go/hy4-preview"
-        "openrouter/google/gemini-3.8-flash"
-        "zai-coding-cn/glm-5.3-flash"
-        # keep-sorted end
-      ];
+      # defaultModel / enabledModels are deliberately not declared: pi owns
+      # model selection at runtime in settings.json, so the declarative value
+      # would just fight the switch merge on every rebuild.
       defaultThinkingLevel = "high";
       steeringMode = "all";
       tokenSpeed = {
