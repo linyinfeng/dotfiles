@@ -350,6 +350,32 @@ let
     suites = hmSuites;
   };
 
+  mkStandaloneHm =
+    system: extraModules:
+    inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = (getSystem system).allModuleArgs.pkgs;
+      extraSpecialArgs = hmSpecialArgs;
+      modules = commonHmModules ++ extraModules ++ [
+        {
+          home.username = "standalone";
+          home.homeDirectory = "/home/standalone";
+          home.stateVersion = self.lib.flakeStateVersion;
+        }
+      ];
+    };
+
+  standaloneHm = lib.genAttrs config.systems (system: mkStandaloneHm system [ ]);
+  standaloneHmChecks = lib.mapAttrs (_: cfg: {
+    "home-manager/standalone-modules" = cfg.activationPackage;
+  }) standaloneHm;
+
+  standaloneHomeConfigurations = lib.mergeAttrsList (
+    map (
+      system:
+      lib.mapAttrs' (name: extra: lib.nameValuePair "${system}-${name}" (mkStandaloneHm system extra)) hmSuites
+    ) config.systems
+  );
+
   mkHost =
     {
       name,
@@ -567,7 +593,9 @@ in
       packages."secrets-templates/predefined" = aggregateSecretsTemplates "predefined";
     };
 
-  flake.checks = lib.recursiveUpdate hostToplevels {
+  flake.homeConfigurations = standaloneHomeConfigurations;
+
+  flake.checks = lib.recursiveUpdate (lib.recursiveUpdate hostToplevels {
     # TODO fix
     # "aarch64-linux" = {
     #   "android-boot-image/enchilada" = self.nixosConfigurations.enchilada.config.system.build.bootImage;
@@ -576,7 +604,7 @@ in
     "x86_64-linux" = {
       "linux/parrot" = self.nixosConfigurations.parrot.config.boot.kernelPackages.kernel;
     };
-  };
+  }) standaloneHmChecks;
 
   flake.libs.nixd =
     let
@@ -591,20 +619,6 @@ in
           configurationName = null;
           system = dummySystem;
         }).nixd.options;
-      homeManagerOptions =
-        (inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = dummyPkgs;
-          extraSpecialArgs = hmSpecialArgs // {
-            osConfig = {
-              system.stateVersion = self.lib.flakeStateVersion;
-            };
-          };
-          modules = commonHmModules ++ [
-            {
-              home.username = "nixd";
-              home.homeDirectory = "/home/nixd";
-            }
-          ];
-        }).options;
+      homeManagerOptions = (mkStandaloneHm dummySystem).options;
     };
 }
