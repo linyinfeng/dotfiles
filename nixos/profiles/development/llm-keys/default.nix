@@ -113,10 +113,16 @@
     group = "llm";
     mode = "440";
   };
+  # TODO: drop the fetch answer override once pi-ai sends x-opencode-session
+  # itself (earendil-works/pi#9326), so this can use the opencode-go models again.
   sops.templates."pi-web-search-config" = {
     content = builtins.toJSON {
       workflow = "auto-summary";
       perplexityApiKey = config.sops.placeholder."perplexity_api_key";
+      fetch = {
+        answerProvider = "deepseek";
+        answerModel = "deepseek-flash";
+      };
     };
     group = "llm";
     mode = "440";
