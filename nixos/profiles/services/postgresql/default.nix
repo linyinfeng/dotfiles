@@ -88,6 +88,10 @@ lib.mkMerge [
   {
     services.postgresql.enable = true;
 
+    # an inactive replication slot retains WAL forever at the -1 default;
+    # the disabled barman block below left one behind and filled the disk
+    services.postgresql.settings.max_slot_wal_keep_size = "10GB";
+
     environment.systemPackages = lib.mkMerge [
       [
         refreshPGCollationVersion
