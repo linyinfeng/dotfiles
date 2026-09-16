@@ -134,8 +134,4 @@ lib.mkIf (devices ? ${hostName}) {
     restartUnits = [ "container@syncthing-yinfeng.service" ];
   };
   home-manager.users.yinfeng.home.global-persistence.directories = [ "Syncthing" ];
-  networking.firewall.allowedTCPPorts = with config.ports; [
-    syncthing-transfer-yinfeng
-    syncthing-discovery-yinfeng
-  ];
 }

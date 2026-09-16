@@ -128,8 +128,8 @@
       teamspeak-voice = 9987;
       teamspeak-file-transfer = 30033;
       teamspeak-query = 10011;
-      syncthing-discovery-yinfeng = 21027; # TODO change to 3221
-      syncthing-transfer-yinfeng = 22000; # TODO change to 3231
+      syncthing-discovery-yinfeng = 21027; # syncthing default
+      syncthing-transfer-yinfeng = 22000; # syncthing default
       tailscale = 41641;
       wireguard = 51820;
     };
