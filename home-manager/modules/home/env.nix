@@ -73,5 +73,22 @@ in
       default = 22;
       description = "Port the hosts listen on for ssh.";
     };
+
+    inputMethod = mkOption {
+      type =
+        with types;
+        enum [
+          "fcitx5"
+          "ibus"
+        ];
+      default = "fcitx5";
+      description = "Input method the system provides.";
+    };
+
+    rimeDataPkgs = mkOption {
+      type = with types; listOf package;
+      default = [ ];
+      description = "Packages providing the rime data.";
+    };
   };
 }

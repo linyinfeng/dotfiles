@@ -16,6 +16,11 @@ in
     };
   };
   config = {
+    home-manager.sharedModules = [
+      ({ lib, ... }: {
+        home.env.rimeDataPkgs = lib.mkDefault cfg.rime.rimeDataPkgs;
+      })
+    ];
     i18n.inputMethod = {
       enable = true;
       type = lib.mkOverride 900 "fcitx5";

@@ -2,22 +2,16 @@
   config,
   pkgs,
   lib,
-  osConfig,
   ...
 }:
 let
   yq = "${pkgs.yq-go}/bin/yq";
   home = "${config.home.homeDirectory}";
   rimeConfig =
-    if osConfig.i18n.inputMethod.type == "fcitx5" then
-      ".local/share/fcitx5/rime"
-    else if osConfig.i18n.inputMethod.type == "ibus" then
-      ".config/ibus/rime"
-    else
-      throw "unable to determine rime config directory";
+    if config.home.env.inputMethod == "fcitx5" then ".local/share/fcitx5/rime" else ".config/ibus/rime";
   installationCustom = ''
     sync_dir: "${home}/Syncthing/Main/rime"
-    installation_id: "${osConfig.networking.hostName}"
+    installation_id: "${config.home.env.hostName}"
   '';
 in
 {

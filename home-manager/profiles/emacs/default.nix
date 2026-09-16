@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  osConfig,
   ...
 }:
 let
@@ -31,7 +30,7 @@ let
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";
-    paths = osConfig.i18n.inputMethod.rime.rimeDataPkgs;
+    paths = config.home.env.rimeDataPkgs;
   };
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.replaceVars rawEmacsConfig {
