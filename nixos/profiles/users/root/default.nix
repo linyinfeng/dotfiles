@@ -1,7 +1,4 @@
 { config, ... }:
-let
-  homeDirectory = "/root";
-in
 {
   users.users.root = {
     hashedPasswordFile = config.sops.secrets."user_password_root".path;
@@ -17,10 +14,7 @@ in
     { suites, ... }:
     {
       imports = suites.base;
-      home.global-persistence = {
-        enable = true;
-        home = homeDirectory;
-      };
+      home.global-persistence.enable = true;
     };
 
   sops.secrets."user_password_root" = {

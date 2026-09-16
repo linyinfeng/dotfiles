@@ -31,10 +31,7 @@ in
   };
   environment.global-persistence.user.users = [ "steam" ];
   home-manager.users.steam = {
-    home.global-persistence = {
-      enable = true;
-      home = gameHome;
-    };
+    home.global-persistence.enable = true;
     home.global-persistence.directories = [ "Steam" ];
     home.packages = with pkgs; [
       steamcmd

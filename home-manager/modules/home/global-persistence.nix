@@ -1,28 +1,19 @@
-{
-  config,
-  lib,
-  osConfig,
-  ...
-}:
+{ lib, ... }:
 let
-  cfg = config.home.global-persistence;
-  sysCfg = osConfig.environment.global-persistence;
+  inherit (lib) mkOption types;
 in
-with lib;
 {
+  # Declaration only: which users are persisted is a system-level decision
+  # (environment.global-persistence.user.users), and the home directory comes
+  # from the NixOS side (users.users.<name>.home), so that users without a
+  # home-manager config can be persisted too.
   options.home.global-persistence = {
-    enable = lib.mkOption {
+    enable = mkOption {
       type = types.bool;
       default = false;
       description = ''
-        Whether to enable global home persistence storage.
-      '';
-    };
-
-    home = mkOption {
-      type = types.str;
-      description = ''
-        Home directory.
+        Whether this user wants its home stored on persistent storage.
+        Whether persistence exists at all is a system-level decision.
       '';
     };
 
@@ -40,22 +31,6 @@ with lib;
       description = ''
         A list of files in your home directory you want to link to persistent storage.
       '';
-    };
-
-    enabled = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Is global home persistence storage enabled.
-      '';
-    };
-  };
-
-  config = mkIf sysCfg.enable {
-    home.global-persistence = {
-      inherit (sysCfg.user) directories;
-      inherit (sysCfg.user) files;
-      enabled = cfg.enable;
     };
   };
 }

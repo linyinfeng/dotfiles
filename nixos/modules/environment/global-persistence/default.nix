@@ -83,16 +83,28 @@ let
     '';
   };
 
+  hasHm = name: config.home-manager.users ? ${name};
+  hmCfg = name: config.home-manager.users.${name}.home.global-persistence;
+
+  # user.users is the only authority: it may name users without a home-manager config
+  # (system users), so the path comes from the NixOS side and the HM side only adds entries.
+  persistedDirs = name: lib.optionals (hasHm name) (hmCfg name).directories ++ cfg.user.directories;
+  persistedFiles = name: lib.optionals (hasHm name) (hmCfg name).files ++ cfg.user.files;
+
+  knownUsers = lib.filter (name: config.users.users ? ${name}) cfg.user.users;
+  unknownUsers = lib.subtractLists knownUsers cfg.user.users;
+
   mkUserCfg =
     name:
-    assert config.home-manager.users.${name}.home.global-persistence.enabled;
     {
       inherit name;
       value = {
-        inherit (config.home-manager.users.${name}.home.global-persistence) home directories files;
+        home = config.users.users.${name}.home;
+        directories = persistedDirs name;
+        files = persistedFiles name;
       };
     };
-  usersCfg = lib.listToAttrs (map mkUserCfg cfg.user.users);
+  usersCfg = lib.listToAttrs (map mkUserCfg knownUsers);
 
   parentDir =
     path:
@@ -116,7 +128,9 @@ let
   mkUserTmpFilesCfg =
     name:
     let
-      inherit (config.home-manager.users.${name}.home.global-persistence) home directories files;
+      home = config.users.users.${name}.home;
+      directories = persistedDirs name;
+      files = persistedFiles name;
       userCfg = config.users.users.${name};
       parents = parentClosure (parentDirs (directories ++ files));
       parentsWithHome = map (p: "${home}/${p}") parents;
@@ -132,7 +146,7 @@ let
       };
     }) parentsWithHome;
 
-  userTmpFilesCfg = lib.listToAttrs (lib.concatLists (map mkUserTmpFilesCfg cfg.user.users));
+  userTmpFilesCfg = lib.listToAttrs (lib.concatLists (map mkUserTmpFilesCfg knownUsers));
 in
 with lib;
 {
@@ -207,6 +221,24 @@ with lib;
 
   config = mkIf (cfg.enable && cfg.root != null) {
     preservation.enable = true;
+
+    warnings =
+      map
+        (name: "environment.global-persistence: '${name}' in user.users is not a defined user; ignored")
+        unknownUsers
+      ++ lib.concatMap
+        (
+          name:
+          lib.optional (
+            config.users.users.${name}.home == "/var/empty"
+            && persistedDirs name ++ persistedFiles name != [ ]
+          )
+            "environment.global-persistence: user '${name}' has home = /var/empty; relative entries are created there, use environment.global-persistence.directories for absolute paths"
+          ++ lib.optional (hasHm name && !(hmCfg name).enable)
+            "environment.global-persistence: user '${name}' is persisted while home.global-persistence.enable is false"
+        )
+        knownUsers;
+
     preservation.preserveAt.${cfg.root} = {
       inherit (cfg) directories files;
       users = usersCfg;

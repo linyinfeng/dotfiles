@@ -68,10 +68,7 @@ in
       };
 
       environment.global-persistence.user.users = [ name ];
-      home-manager.users.${name}.home.global-persistence = {
-        enable = true;
-        home = homeDirectory;
-      };
+      home-manager.users.${name}.home.global-persistence.enable = true;
     }
     # git and gpg
     {
