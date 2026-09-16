@@ -35,7 +35,7 @@ let
   rimeShareDataDir = "${rimeShareData}/share/rime-data";
   emacsConfig = pkgs.replaceVars rawEmacsConfig {
     inherit syncDir rimeShareDataDir;
-    ledgerFile = config.home.sessionVariables."LEDGER_FILE";
+    ledgerFile = config.home.sessionVariables."LEDGER_FILE" or "";
   };
 in
 {
