@@ -31,5 +31,23 @@ in
       default = false;
       description = "Whether the system provides dconf.";
     };
+
+    types = mkOption {
+      type =
+        with types;
+        listOf (enum [
+          "server"
+          "workstation"
+          "phone"
+        ]);
+      default = [ ];
+      description = "System types.";
+    };
+
+    desktopManagers = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      description = "Desktop managers the system provides.";
+    };
   };
 }

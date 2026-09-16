@@ -1,6 +1,5 @@
 {
   config,
-  osConfig,
   pkgs,
   lib,
   ...
@@ -27,9 +26,9 @@ let
     mkString
     type
     ;
-  longStatusBar = lib.elem "workstation" osConfig.system.types;
+  longStatusBar = lib.elem "workstation" config.home.env.types;
 in
-lib.mkIf osConfig.services.desktopManager.gnome.enable {
+lib.mkIf (lib.elem "gnome" config.home.env.desktopManagers) {
   home.packages = extensionPkgs;
 
   # remove initial setup dialog
