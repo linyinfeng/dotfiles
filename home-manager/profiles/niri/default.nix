@@ -512,7 +512,7 @@ in
             echo "writing to '$full_path'..."
             cat "$tmp_dir/current-settings.json" | jq 'del(
               ${lib.concatMapAttrsStringSep ",\n  " (name: _value: ".${name}") (
-                osConfig.lib.self.flattenTree {
+                config.lib.self.flattenTree {
                   separator = ".";
                   mapper = x: "\"${x}\"";
                 } specialSettings
