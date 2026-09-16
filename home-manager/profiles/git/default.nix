@@ -12,6 +12,7 @@ let
     line_column="''${BASH_REMATCH[2]}"
     emacsclient --no-wait +"$line_column" "$file"
   '';
+  gitUser = config.programs.git.settings.user or { };
 in
 lib.mkMerge [
   {
@@ -71,11 +72,10 @@ lib.mkMerge [
   {
     programs.jujutsu = {
       enable = true;
-      settings = {
-        user = {
-          inherit (config.programs.git.settings.user) email name;
-        };
-      };
+      settings.user = lib.mkMerge [
+        (lib.optionalAttrs (gitUser ? name) { inherit (gitUser) name; })
+        (lib.optionalAttrs (gitUser ? email) { inherit (gitUser) email; })
+      ];
     };
   }
 
