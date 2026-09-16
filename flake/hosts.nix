@@ -355,13 +355,17 @@ let
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = (getSystem system).allModuleArgs.pkgs;
       extraSpecialArgs = hmSpecialArgs;
-      modules = commonHmModules ++ extraModules ++ [
-        {
-          home.username = "standalone";
-          home.homeDirectory = "/home/standalone";
-          home.stateVersion = self.lib.flakeStateVersion;
-        }
-      ];
+      modules =
+        commonHmModules
+        ++ extraModules
+        ++ [
+          {
+            home.username = "standalone";
+            home.homeDirectory = "/home/standalone";
+            home.stateVersion = self.lib.flakeStateVersion;
+            home.env.inputMethod = "fcitx5";
+          }
+        ];
     };
 
   standaloneHm = lib.genAttrs config.systems (system: mkStandaloneHm system [ ]);
@@ -372,7 +376,9 @@ let
   standaloneHomeConfigurations = lib.mergeAttrsList (
     map (
       system:
-      lib.mapAttrs' (name: extra: lib.nameValuePair "${system}-${name}" (mkStandaloneHm system extra)) hmSuites
+      lib.mapAttrs' (
+        name: extra: lib.nameValuePair "${system}-${name}" (mkStandaloneHm system extra)
+      ) hmSuites
     ) config.systems
   );
 

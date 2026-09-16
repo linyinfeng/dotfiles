@@ -8,7 +8,12 @@ let
   yq = "${pkgs.yq-go}/bin/yq";
   home = "${config.home.homeDirectory}";
   rimeConfig =
-    if config.home.env.inputMethod == "fcitx5" then ".local/share/fcitx5/rime" else ".config/ibus/rime";
+    if config.home.env.inputMethod == "fcitx5" then
+      ".local/share/fcitx5/rime"
+    else if config.home.env.inputMethod == "ibus" then
+      ".config/ibus/rime"
+    else
+      throw "unable to determine rime config directory";
   installationCustom = ''
     sync_dir: "${home}/Syncthing/Main/rime"
     installation_id: "${config.home.env.hostName}"

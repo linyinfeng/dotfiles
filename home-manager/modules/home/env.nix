@@ -77,12 +77,12 @@ in
     inputMethod = mkOption {
       type =
         with types;
-        enum [
+        nullOr (enum [
           "fcitx5"
           "ibus"
-        ];
-      default = "fcitx5";
-      description = "Input method the system provides.";
+        ]);
+      default = null;
+      description = "Input method the system provides, if any.";
     };
 
     rimeDataPkgs = mkOption {
