@@ -118,6 +118,9 @@
     llm-agents.inputs.systems.follows = "systems";
     llm-agents.inputs.treefmt-nix.follows = "treefmt-nix";
 
+    pi-command-not-found-adapter.url = "github:linyinfeng/pi-command-not-found-adapter";
+    pi-command-not-found-adapter.inputs.nixpkgs.follows = "nixpkgs";
+
     # hongbao2026
     hongbao-rpn.url = "github:linyinfeng/hongbao-rpn";
     hongbao-rpn.inputs.nixpkgs.follows = "nixpkgs";

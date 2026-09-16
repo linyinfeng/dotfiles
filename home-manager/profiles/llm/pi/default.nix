@@ -11,8 +11,6 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  commandNotFoundModel = "deepseek/deepseek-flash";
-
   # pi rewrites settings.json at runtime (model selection, extension settings),
   # so this file stays writable and the switch merges into it instead of
   # replacing it wholesale.
@@ -28,51 +26,12 @@ let
     '';
   };
 
-  command-not-found-adaptor = pkgs.writers.writePython3Bin "command-not-found-adaptor" { } (
-    builtins.readFile ./command-not-found-adaptor.py
-  );
-
-  command-not-found-agent = pkgs.writeShellApplication {
-    name = "command-not-found-agent";
-    bashOptions = [
-      "errexit"
-      "nounset"
-    ];
-    runtimeInputs = [
-      config.programs.pi-coding-agent.package
-      command-not-found-adaptor
-      pkgs.bash
-      pkgs.jq
-      pkgs.mdcat
-    ]
-    ++ config.programs.pi-coding-agent.extraPackages;
-    text = ''
-      session_id="''${COMMAND_NOT_FOUND_SESSION_ID:-}"
-      session_id="''${session_id//[^[:alnum:]-]/_}"
-      [ -n "$session_id" ] || session_id=$(cat /proc/sys/kernel/random/uuid)
-      export COMMAND_NOT_FOUND_SESSION_ID="$session_id"
-
-      session_dir="$HOME/.pi/command-not-found/sessions/$session_id"
-      mkdir -p "$session_dir"
-      chmod 700 "$session_dir"
-
-      prompt=$(jq -cn \
-        --arg session_id "$session_id" \
-        --arg cwd "$PWD" \
-        --arg input "$(printf '%q ' "$@")" \
-        '{session_id: $session_id, cwd: $cwd, input: $input}')
-      exec pi \
-        --model "${commandNotFoundModel}" \
-        --mode json \
-        --no-context-files \
-        --session "$session_dir/session.jsonl" \
-        --append-system-prompt "${./command-not-found-system-prompt.md}" \
-        -- "$prompt" \
-        | exec command-not-found-adaptor
-    '';
-  };
 in
 {
+  imports = [
+    ./_pi-cnf-adapter.nix
+  ];
+
   programs.pi-coding-agent = {
     enable = true;
     package = pkgs.llm-agents.pi.override {
@@ -258,15 +217,8 @@ in
   };
 
   home.packages = [
-    command-not-found-agent
     pi-sandbox
   ];
-
-  passthru.command-not-found-agent = command-not-found-agent;
-
-  programs.fish.interactiveShellInit = ''
-    set -gx COMMAND_NOT_FOUND_AGENT command-not-found-agent
-  '';
 
   # pi-lens: prefer PATH tools only, no self-install of npm binaries
   home.sessionVariables = {

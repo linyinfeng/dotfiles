@@ -334,6 +334,7 @@ let
   commonHmModules = hmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
     inputs.noctalia.homeModules.default
+    inputs.pi-command-not-found-adapter.homeManagerModules.default
     inputs.system76-scheduler-niri.homeModules.default
     { lib.self = self.lib; }
   ];
