@@ -90,5 +90,11 @@ in
       default = [ ];
       description = "Packages providing the rime data.";
     };
+
+    secretPaths = mkOption {
+      type = with types; attrsOf str;
+      default = { };
+      description = "Paths of secrets the system provides.";
+    };
   };
 }

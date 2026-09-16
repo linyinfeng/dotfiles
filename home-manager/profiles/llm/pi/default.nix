@@ -2,7 +2,6 @@
   pkgs,
   config,
   lib,
-  osConfig,
   ...
 }:
 let
@@ -156,13 +155,15 @@ in
     fi
   '';
 
-  home.file.".config/pi/web-search.json".source =
-    mkOutOfStoreSymlink
-      osConfig.sops.templates."pi-web-search-config".path;
+  home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
+    source = mkOutOfStoreSymlink config.home.env.secretPaths.piWebSearch;
+  };
 
   home.file.".config/nono/profiles/pi.json".source = ./nono-pi-profile.json;
 
-  home.file.".pi/agent/auth.json".source = mkOutOfStoreSymlink osConfig.sops.templates."pi-auth".path;
+  home.file.".pi/agent/auth.json" = lib.mkIf (config.home.env.secretPaths ? piAuth) {
+    source = mkOutOfStoreSymlink config.home.env.secretPaths.piAuth;
+  };
 
   home.file.".pi/agent/models.json".text = builtins.toJSON {
     providers = {

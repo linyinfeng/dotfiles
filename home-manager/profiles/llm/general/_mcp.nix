@@ -1,11 +1,11 @@
 {
   pkgs,
   lib,
-  osConfig,
   config,
   ...
 }:
 let
+  secretPaths = config.home.env.secretPaths;
   mineruMcp = pkgs.writeShellApplication {
     name = "mineru-open-mcp";
     runtimeInputs = with pkgs; [
@@ -16,7 +16,7 @@ let
       ENABLE_LOG = "true";
     };
     text = ''
-      MINERU_API_TOKEN="$(cat "${osConfig.sops.secrets."mineru_api_key".path}")"
+      MINERU_API_TOKEN="$(cat "${secretPaths.mineruApiKey}")"
       export MINERU_API_TOKEN
       exec uvx mineru-open-mcp "$@"
     '';
@@ -27,11 +27,12 @@ in
     enable = true;
     servers =
       let
-        simpleMcps = with pkgs; [
-          mcp-nixos
-          mineruMcp
-          context7-mcp
-        ];
+        simpleMcps =
+          (with pkgs; [
+            mcp-nixos
+            context7-mcp
+          ])
+          ++ lib.optionals (secretPaths ? mineruApiKey) [ mineruMcp ];
       in
       lib.listToAttrs (
         lib.map (

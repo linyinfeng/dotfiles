@@ -1,5 +1,16 @@
 { config, ... }:
 {
+  home-manager.sharedModules = [
+    ({ lib, ... }: {
+      home.env.secretPaths = {
+        piWebSearch = lib.mkDefault config.sops.templates."pi-web-search-config".path;
+        piAuth = lib.mkDefault config.sops.templates."pi-auth".path;
+        opencodeAuth = lib.mkDefault config.sops.templates."opencode-auth".path;
+        mineruApiKey = lib.mkDefault config.sops.secrets."mineru_api_key".path;
+      };
+    })
+  ];
+
   users.groups.llm = { };
   sops.secrets."deepseek_api_key" = {
     predefined.enable = true;
