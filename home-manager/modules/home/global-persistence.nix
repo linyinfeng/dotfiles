@@ -32,5 +32,13 @@ in
         A list of files in your home directory you want to link to persistent storage.
       '';
     };
+
+    root = mkOption {
+      type = types.str;
+      default = "/";
+      description = ''
+        Where the persistent storage is mounted.
+      '';
+    };
   };
 }

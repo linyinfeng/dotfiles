@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 let
   inherit (lib) mkEnableOption mkOption types;
 in
@@ -48,6 +48,12 @@ in
       type = with types; listOf str;
       default = [ ];
       description = "Desktop managers the system provides.";
+    };
+
+    systemdPackage = mkOption {
+      type = with types; nullOr package;
+      default = if pkgs.stdenv.hostPlatform.isLinux then pkgs.systemd else null;
+      description = "The systemd package of the system.";
     };
   };
 }

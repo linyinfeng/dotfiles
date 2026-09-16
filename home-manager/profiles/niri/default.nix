@@ -1,5 +1,4 @@
 {
-  osConfig,
   config,
   lib,
   pkgs,
@@ -486,7 +485,7 @@ in
             default.path = "${defaultWallpaper}";
             directory = "${config.xdg.userDirs.pictures}/Wallpapers";
           };
-          controlCenter.diskPath = if osConfig.environment.global-persistence.enable then "/persist" else "/";
+          controlCenter.diskPath = config.home.global-persistence.root;
         };
         syncSettings = pkgs.writeShellApplication {
           name = "noctalia-sync-settings";
@@ -663,7 +662,7 @@ in
         wvkbdToggle = pkgs.writeShellApplication {
           name = "wvkbd-toggle";
           runtimeInputs = [
-            osConfig.systemd.package
+            config.home.env.systemdPackage
             pkgs.procps
           ];
           text = ''

@@ -8,6 +8,7 @@
         desktopManagers = lib.mkDefault (
           lib.optionals config.services.desktopManager.gnome.enable [ "gnome" ]
         );
+        systemdPackage = lib.mkDefault config.systemd.package;
       };
     })
   ];

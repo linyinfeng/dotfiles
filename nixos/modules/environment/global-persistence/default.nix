@@ -94,16 +94,14 @@ let
   knownUsers = lib.filter (name: config.users.users ? ${name}) cfg.user.users;
   unknownUsers = lib.subtractLists knownUsers cfg.user.users;
 
-  mkUserCfg =
-    name:
-    {
-      inherit name;
-      value = {
-        home = config.users.users.${name}.home;
-        directories = persistedDirs name;
-        files = persistedFiles name;
-      };
+  mkUserCfg = name: {
+    inherit name;
+    value = {
+      home = config.users.users.${name}.home;
+      directories = persistedDirs name;
+      files = persistedFiles name;
     };
+  };
   usersCfg = lib.listToAttrs (map mkUserCfg knownUsers);
 
   parentDir =
@@ -222,22 +220,27 @@ with lib;
   config = mkIf (cfg.enable && cfg.root != null) {
     preservation.enable = true;
 
+    home-manager.sharedModules = [
+      ({ lib, ... }: {
+        home.global-persistence.root = lib.mkDefault cfg.root;
+      })
+    ];
+
     warnings =
-      map
-        (name: "environment.global-persistence: '${name}' in user.users is not a defined user; ignored")
-        unknownUsers
-      ++ lib.concatMap
-        (
-          name:
-          lib.optional (
-            config.users.users.${name}.home == "/var/empty"
-            && persistedDirs name ++ persistedFiles name != [ ]
+      map (
+        name: "environment.global-persistence: '${name}' in user.users is not a defined user; ignored"
+      ) unknownUsers
+      ++ lib.concatMap (
+        name:
+        lib.optional
+          (
+            config.users.users.${name}.home == "/var/empty" && persistedDirs name ++ persistedFiles name != [ ]
           )
-            "environment.global-persistence: user '${name}' has home = /var/empty; relative entries are created there, use environment.global-persistence.directories for absolute paths"
-          ++ lib.optional (hasHm name && !(hmCfg name).enable)
+          "environment.global-persistence: user '${name}' has home = /var/empty; relative entries are created there, use environment.global-persistence.directories for absolute paths"
+        ++
+          lib.optional (hasHm name && !(hmCfg name).enable)
             "environment.global-persistence: user '${name}' is persisted while home.global-persistence.enable is false"
-        )
-        knownUsers;
+      ) knownUsers;
 
     preservation.preserveAt.${cfg.root} = {
       inherit (cfg) directories files;
