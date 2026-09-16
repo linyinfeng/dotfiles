@@ -10,5 +10,7 @@ Escalate only when the cheaper rung cannot answer:
 6. `web_search`, `source_check` — provider calls plus LLM synthesis.
 7. `mcp` → `mcpScript` — spawns MCP servers; a script returns one result.
 8. `bg_run`, `subagent` — child process; a subagent also spends model tokens.
-9. `agent_browser` — real browser process, artifacts on disk.
-10. `fusion_*` — five model slots per call.
+9. `interactive_shell` — a PTY behind a TUI overlay: an interactive CLI, or a
+   shell the user watches and takes over.
+10. `agent_browser` — real browser process, artifacts on disk.
+11. `fusion_*` — five model slots per call.

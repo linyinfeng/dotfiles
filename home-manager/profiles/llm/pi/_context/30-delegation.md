@@ -7,10 +7,23 @@ Pick the surface by what the work needs, not by which tool is closest to hand:
 - Read-only investigation that needs this conversation as context →
   `bg_delegate`.
 - A role, edits, model tiering, or several children → `subagent`.
+- A command that needs a TTY, or an interactive CLI (`vim`, `psql`, `ssh`, a
+  REPL) → `interactive_shell`.
+- Root → `sudo_run`, never `interactive_shell`, even though the password prompt
+  looks interactive: privileged approval happens outside the overlay, so an
+  overlay waiting on the prompt only stalls.
 - Several model perspectives on one prompt → `fusion_*`.
 
-None of these exists to run a shell command, and none is worth it for what two
-or three direct tool calls finish — read the file, run the command, answer.
+None of these exists to run an ordinary non-interactive command — that is
+`bash`, or `bg_run` once it outlives the turn — and none is worth it for what
+two or three direct tool calls finish: read the file, run the command, answer.
+
+- `interactive_shell` modes: `interactive` and `hands-free` keep running and are
+  queried with `sessionId`; `dispatch` and `monitor` return immediately and wake
+  the session on completion or on a monitor trigger; `background: true` runs one
+  headless. `/spawn`, `/attach` and `/dismiss` are the user-facing entries,
+  structured `spawn` is the agent-side one, and raw `command` covers any other
+  CLI.
 
 - `bg_delegate` vs `subagent` (`scout`): both read the repo — `bg_delegate` when
   the child needs this conversation as context, `subagent` when it needs a role,

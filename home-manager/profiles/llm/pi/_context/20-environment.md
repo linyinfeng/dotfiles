@@ -9,6 +9,11 @@
   callable only on the next turn; activation is additive and never reverses.
   Never activate a tool and call it in the same turn — use `bash` instead when
   this turn cannot wait.
+- `pi-interactive-shell` adds `interactive_shell` (active, not deferred) plus the
+  `/spawn`, `/attach` and `/dismiss` commands; its config file is optional and
+  unset here. Spawn agents resolve through the `pi`, `codex`, `claude` and cursor
+  `agent` binaries, so only `pi` and `codex` are spawnable here; PTY support is
+  experimental on Linux.
 - `context_report` is off, and `agent_browser_web_search` is registered only
   when an Exa or Brave key exists; it is absent here.
 - Subagents `claude-code`, `claude-code-writer`, `cursor-agent` and
