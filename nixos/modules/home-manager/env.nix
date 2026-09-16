@@ -9,6 +9,9 @@
           lib.optionals config.services.desktopManager.gnome.enable [ "gnome" ]
         );
         systemdPackage = lib.mkDefault config.systemd.package;
+        hostName = lib.mkDefault config.networking.hostName;
+        hosts = lib.mkDefault (lib.attrNames config.networking.hostsData.indexedHosts);
+        sshPort = lib.mkDefault config.ports.ssh;
       };
     })
   ];

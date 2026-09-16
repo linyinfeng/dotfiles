@@ -55,5 +55,23 @@ in
       default = if pkgs.stdenv.hostPlatform.isLinux then pkgs.systemd else null;
       description = "The systemd package of the system.";
     };
+
+    hostName = mkOption {
+      type = types.str;
+      default = "localhost";
+      description = "Name of the machine.";
+    };
+
+    hosts = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      description = "Names of the hosts in this cluster.";
+    };
+
+    sshPort = mkOption {
+      type = types.port;
+      default = 22;
+      description = "Port the hosts listen on for ssh.";
+    };
   };
 }

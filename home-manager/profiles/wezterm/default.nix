@@ -1,5 +1,5 @@
 {
-  osConfig,
+  config,
   lib,
   ...
 }:
@@ -21,20 +21,20 @@
         ${lib.concatMapStringsSep "\n" (h: ''
           {
               name = "${h}",
-              remote_address = "${h}.dn42.li7g.com:${toString osConfig.ports.ssh}",
+              remote_address = "${h}.dn42.li7g.com:${toString config.home.env.sshPort}",
               username = "root",
             },
             {
               name = "${h}.dn42",
-              remote_address = "${h}.dn42.li7g.com:${toString osConfig.ports.ssh}",
+              remote_address = "${h}.dn42.li7g.com:${toString config.home.env.sshPort}",
               username = "root",
             },
             {
               name = "${h}.ts",
-              remote_address = "${h}.ts.li7g.com:${toString osConfig.ports.ssh}",
+              remote_address = "${h}.ts.li7g.com:${toString config.home.env.sshPort}",
               username = "root",
             },
-        '') (lib.attrNames osConfig.networking.hostsData.indexedHosts)}
+        '') config.home.env.hosts}
       }
 
       return config
