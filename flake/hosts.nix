@@ -619,6 +619,6 @@ in
           configurationName = null;
           system = dummySystem;
         }).nixd.options;
-      homeManagerOptions = (mkStandaloneHm dummySystem).options;
+      homeManagerOptions = (mkStandaloneHm dummySystem [ ]).options;
     };
 }
