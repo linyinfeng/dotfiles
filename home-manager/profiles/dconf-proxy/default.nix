@@ -1,12 +1,11 @@
 {
   lib,
-  osConfig,
   config,
   ...
 }:
 let
   cfg = config.home.env.proxy;
-  enabled = cfg.enable && cfg.mixedPort != null && osConfig.programs.dconf.enable;
+  enabled = cfg.enable && cfg.mixedPort != null && config.home.env.dconf;
   proxy = {
     host = "localhost";
     port = cfg.mixedPort;

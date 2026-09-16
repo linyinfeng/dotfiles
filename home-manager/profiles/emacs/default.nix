@@ -79,7 +79,7 @@ in
     ecn = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
-  dconf.settings = lib.mkIf osConfig.programs.dconf.enable {
+  dconf.settings = lib.mkIf config.home.env.dconf {
     "org/gnome/shell".favorite-apps = [ "emacsclient.desktop" ];
   };
 
