@@ -1,14 +1,20 @@
 # Environment invariants
 
-- Built-ins enabled: `read`, `bash`, `edit`, `write`. `grep`, `find` and `ls`
-  exist but are not enabled, so text search runs through `bash` (`rg`),
-  `symbol_search` or `ast_grep_search`.
-- pi-lens's six situational tools — `ast_grep_search`, `ast_grep_replace`,
-  `ast_grep_outline`, `ast_grep_dump`, `lsp_navigation`, `lens_diagnostic_mark`
-  — register inactive. `pi_lens_activate_tools` activates them, and they are
+- This harness runs pi-fabric's full code mode, so every tool named in these
+  files is a ref inside `fabric_exec`: `pi.*` for core tools, `extensions.*` for
+  extension tools, `mcp.*` for servers.
+- An extension ref resolves to `{content, text, details, isError, terminate,
+source}`; the tool's own payload is on `.text` or inside `.content`.
+- `fullCodeMode` and `capture.keepVisible` apply live from `/fabric settings`. If
+  a captured tool turns out to be callable directly, that is why — call it
+  directly.
+- pi-lens's five situational tools — `ast_grep_search`, `ast_grep_replace`,
+  `ast_grep_outline`, `lsp_navigation`, `lens_diagnostic_mark` — register
+  inactive. `extensions.pi_lens_activate_tools` activates them, and they are
   callable only on the next turn; activation is additive and never reverses.
-  Never activate a tool and call it in the same turn — use `bash` instead when
-  this turn cannot wait.
+- Two retired pi-lens names are not tools here: `lsp_diagnostics` folded into
+  `lens_diagnostics`, whose `source` and `scope` select the analyzer, and
+  `ast_grep_dump` folded into `ast_grep_search` with `dump=true`.
 - `pi-interactive-shell` adds `interactive_shell` (active, not deferred) plus the
   `/spawn`, `/attach` and `/dismiss` commands; its config file is optional and
   unset here. Spawn agents resolve through the `pi`, `codex`, `claude` and cursor
