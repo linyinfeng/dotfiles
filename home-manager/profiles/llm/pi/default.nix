@@ -127,6 +127,7 @@ in
         "npm:pi-background-tasks"
         "npm:pi-btw"
         "npm:pi-goal-x"
+        "npm:pi-interactive-shell"
         "npm:pi-lens"
         "npm:pi-mcp-adapter"
         "npm:pi-simplify"
