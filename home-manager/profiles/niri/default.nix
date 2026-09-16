@@ -551,7 +551,10 @@ in
           restoreWorking
         ];
 
-        xdg.configFile."alacritty/alacritty.toml".force = true; # allow noctalia to manage alacritty theme
+        # allow noctalia to manage alacritty theme
+        xdg.configFile."alacritty/alacritty.toml" = lib.mkIf config.programs.alacritty.enable {
+          force = true;
+        };
 
         home.global-persistence.directories = [
           ".config/noctalia"
