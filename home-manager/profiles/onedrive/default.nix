@@ -1,6 +1,5 @@
 {
   lib,
-  osConfig,
   config,
   ...
 }:
@@ -13,7 +12,7 @@
   };
 
   systemd.user.services.onedrive.Service.Environment =
-    lib.mkIf osConfig.networking.fw-proxy.enable osConfig.networking.fw-proxy.stringEnvironment;
+    lib.mkIf config.home.env.proxy.enable config.home.env.proxy.stringEnvironment;
 
   systemd.user.tmpfiles.rules = [
     # enable onedrive service

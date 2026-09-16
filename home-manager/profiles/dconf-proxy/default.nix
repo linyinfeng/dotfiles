@@ -1,12 +1,19 @@
-{ lib, osConfig, ... }:
+{
+  lib,
+  osConfig,
+  config,
+  ...
+}:
 let
+  cfg = config.home.env.proxy;
+  enabled = cfg.enable && cfg.mixedPort != null && osConfig.programs.dconf.enable;
   proxy = {
     host = "localhost";
-    port = osConfig.networking.fw-proxy.ports.mixed;
+    port = cfg.mixedPort;
   };
 in
 {
-  dconf.settings = lib.mkIf (osConfig.networking.fw-proxy.enable && osConfig.programs.dconf.enable) {
+  dconf.settings = lib.mkIf enabled {
     "system/proxy" = {
       mode = "manual";
       use-same-proxy = true;

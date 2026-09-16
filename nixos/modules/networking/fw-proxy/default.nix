@@ -730,5 +730,18 @@ with lib;
         networking.firewall.interfaces = ifCfgs;
       }
     ))
+
+    {
+      home-manager.sharedModules = [
+        ({ lib, ... }: {
+          home.env.proxy = {
+            enable = lib.mkDefault true;
+            environment = lib.mkDefault cfg.environment;
+            stringEnvironment = lib.mkDefault cfg.stringEnvironment;
+            mixedPort = lib.mkDefault cfg.ports.mixed;
+          };
+        })
+      ];
+    }
   ]);
 }

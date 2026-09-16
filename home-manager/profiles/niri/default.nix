@@ -181,10 +181,10 @@ in
           }
 
           environment {
-            ${lib.optionalString osConfig.networking.fw-proxy.enable (
+            ${lib.optionalString config.home.env.proxy.enable (
               lib.concatMapAttrsStringSep "\n  " (
                 name: value: "${name} \"${value}\""
-              ) osConfig.networking.fw-proxy.environment
+              ) config.home.env.proxy.environment
             )}
           }
 

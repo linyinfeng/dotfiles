@@ -1,6 +1,6 @@
 {
   lib,
-  osConfig,
+  config,
   pkgs,
   ...
 }:
@@ -39,7 +39,7 @@
   };
   programs.fish.interactiveShellInit = ''
     # proxy
-    ${lib.optionalString osConfig.networking.fw-proxy.enable "fenv source enable-proxy"}
+    ${lib.optionalString config.home.env.proxy.enable "fenv source enable-proxy"}
   '';
 
   home.global-persistence.directories = [

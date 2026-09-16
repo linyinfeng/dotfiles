@@ -27,7 +27,7 @@ let
         }
       );
   };
-  inherit (osConfig.networking) fw-proxy;
+  inherit (config.home.env) proxy;
   syncDir = "${config.home.homeDirectory}/Syncthing/Main";
   rimeShareData = pkgs.symlinkJoin {
     name = "emacs-rime-share-data";
@@ -68,7 +68,7 @@ in
     client.enable = true;
   };
   systemd.user.services.emacs = {
-    Service.Environment = lib.mkIf fw-proxy.enable fw-proxy.stringEnvironment;
+    Service.Environment = lib.mkIf proxy.enable proxy.stringEnvironment;
   };
 
   home.sessionVariables = {
