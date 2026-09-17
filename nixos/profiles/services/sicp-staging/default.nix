@@ -71,6 +71,10 @@ lib.mkMerge [
         Slice = "sicp-staging.slice";
       };
     };
+
+    # Without this the restart=always containers stay down after a host reboot
+    # (packaged podman-restart.service is linked but not enabled).
+    systemd.user.services.podman-restart.wantedBy = [ "default.target" ];
     systemd.slices.sicp-staging = {
       sliceConfig = {
         MemoryMax = "8G";
