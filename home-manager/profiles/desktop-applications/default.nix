@@ -19,6 +19,7 @@ in
       inkscape
       kicad
       libreoffice-fresh
+      llm-agents.chatgpt
       meld
       mission-center
       moonlight-qt
@@ -90,6 +91,7 @@ in
       ".zotero"
       ".goldendict"
 
+      ".config/Codex"
       ".config/calibre"
       ".config/Element"
       ".config/icalingua"
