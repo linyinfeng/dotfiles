@@ -62,6 +62,7 @@ in
           llm.general
           llm.opencode
           llm.pi
+          shells
           vscode-server
           xdg-dirs
         ]);
