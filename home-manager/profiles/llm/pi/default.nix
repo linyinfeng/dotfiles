@@ -16,6 +16,10 @@ let
   # replacing it wholesale.
   piSettingsFile = "${config.home.homeDirectory}/.pi/agent/settings.json";
 
+  # same deal for the provider list: cc-switch and manual edits add providers
+  # at runtime, and a plain symlink would drop them on the next rebuild.
+  piModelsFile = "${config.home.homeDirectory}/.pi/agent/models.json";
+
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
     runtimeInputs = [ pkgs.llm-agents.nono ];
@@ -117,97 +121,100 @@ in
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piAuth;
   };
 
-  home.file.".pi/agent/models.json".text = builtins.toJSON {
-    providers = {
-      "cc-switch" = {
-        name = "cc-switch";
-        baseUrl = "http://127.0.0.1:15722/v1";
-        apiKey = "sk-local";
-        api = "openai-completions";
-        models = [
-          {
-            id = "gpt-6-astra";
-            name = "GPT-6 Astra";
-            api = "openai-responses";
-            reasoning = true;
-            thinkingLevelMap = {
-              off = null;
-              minimal = null;
-              low = "low";
-              medium = "medium";
-              high = "high";
-              xhigh = "xhigh";
-              max = "max";
-            };
-            input = [
-              "text"
-              "image"
-            ];
-            contextWindow = 272000;
-            maxTokens = 128000;
-            cost = {
-              input = 10;
-              output = 50;
-              cacheRead = 1;
-              cacheWrite = 12.5;
-              tiers = [
-                {
-                  inputTokensAbove = 272000;
-                  input = 20;
-                  output = 75;
-                  cacheRead = 2;
-                  cacheWrite = 25;
-                }
+  home.file.${piModelsFile} = {
+    enable = false;
+    text = builtins.toJSON {
+      providers = {
+        "cc-switch" = {
+          name = "cc-switch";
+          baseUrl = "http://127.0.0.1:15722/v1";
+          apiKey = "sk-local";
+          api = "openai-completions";
+          models = [
+            {
+              id = "gpt-6-astra";
+              name = "GPT-6 Astra";
+              api = "openai-responses";
+              reasoning = true;
+              thinkingLevelMap = {
+                off = null;
+                minimal = null;
+                low = "low";
+                medium = "medium";
+                high = "high";
+                xhigh = "xhigh";
+                max = "max";
+              };
+              input = [
+                "text"
+                "image"
               ];
-            };
-          }
-        ];
-      };
-      # models.dev has not picked up the DeepSeek V4.1 Flash rename yet
-      # (its deepseek provider data is from 2026-08-25), so declare it here.
-      deepseek = {
-        models = [
-          {
-            id = "deepseek-flash";
-            name = "DeepSeek V4.1 Flash";
-            api = "openai-completions";
-            baseUrl = "https://api.deepseek.com";
-            reasoning = true;
-            input = [
-              "text"
-            ];
-            cost = {
-              input = 0.15;
-              output = 0.6;
-              cacheRead = 0.003;
-              cacheWrite = 0;
-            };
-            contextWindow = 1000000;
-            maxTokens = 384000;
-            compat = {
-              supportsStore = false;
-              supportsDeveloperRole = false;
-              maxTokensField = "max_tokens";
-              requiresReasoningContentOnAssistantMessages = true;
-              thinkingFormat = "deepseek";
-            };
-            thinkingLevelMap = {
-              minimal = null;
-              low = "low";
-              medium = null;
-              high = "high";
-              max = "max";
-            };
-          }
-        ];
-      };
-      openrouter = {
-        modelOverrides = {
-          "google/gemini-3.8-flash" = {
-            compat = {
-              openRouterRouting = {
-                order = [ "google-vertex/global" ];
-                allow_fallbacks = false;
+              contextWindow = 272000;
+              maxTokens = 128000;
+              cost = {
+                input = 10;
+                output = 50;
+                cacheRead = 1;
+                cacheWrite = 12.5;
+                tiers = [
+                  {
+                    inputTokensAbove = 272000;
+                    input = 20;
+                    output = 75;
+                    cacheRead = 2;
+                    cacheWrite = 25;
+                  }
+                ];
+              };
+            }
+          ];
+        };
+        # models.dev has not picked up the DeepSeek V4.1 Flash rename yet
+        # (its deepseek provider data is from 2026-08-25), so declare it here.
+        deepseek = {
+          models = [
+            {
+              id = "deepseek-flash";
+              name = "DeepSeek V4.1 Flash";
+              api = "openai-completions";
+              baseUrl = "https://api.deepseek.com";
+              reasoning = true;
+              input = [
+                "text"
+              ];
+              cost = {
+                input = 0.15;
+                output = 0.6;
+                cacheRead = 0.003;
+                cacheWrite = 0;
+              };
+              contextWindow = 1000000;
+              maxTokens = 384000;
+              compat = {
+                supportsStore = false;
+                supportsDeveloperRole = false;
+                maxTokensField = "max_tokens";
+                requiresReasoningContentOnAssistantMessages = true;
+                thinkingFormat = "deepseek";
+              };
+              thinkingLevelMap = {
+                minimal = null;
+                low = "low";
+                medium = null;
+                high = "high";
+                max = "max";
+              };
+            }
+          ];
+        };
+        openrouter = {
+          modelOverrides = {
+            "google/gemini-3.8-flash" = {
+              compat = {
+                openRouterRouting = {
+                  order = [ "google-vertex/global" ];
+                  allow_fallbacks = false;
+                };
               };
             };
           };
@@ -215,6 +222,18 @@ in
       };
     };
   };
+
+  home.activation.piModelsMerge = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    models=${piModelsFile}
+    generated=${config.home.file.${piModelsFile}.source}
+    if [ -f "$models" ] && ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$models" "$generated" > "$models.merged"; then
+      run mv -f "$models.merged" "$models"
+    else
+      rm -f "$models.merged"
+      warnEcho "$models is not valid JSON; replacing it with the declared models"
+      run cp -f "$generated" "$models"
+    fi
+  '';
 
   home.packages = [
     pi-sandbox
