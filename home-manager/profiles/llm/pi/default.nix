@@ -121,7 +121,7 @@ in
     providers = {
       "cc-switch" = {
         name = "cc-switch";
-        baseUrl = "http://127.0.0.1:15721/v1";
+        baseUrl = "http://127.0.0.1:15722/v1";
         apiKey = "sk-local";
         api = "openai-completions";
         models = [
