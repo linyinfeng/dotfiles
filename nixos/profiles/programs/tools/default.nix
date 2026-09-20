@@ -78,6 +78,7 @@ in
       bc
       binutils
       btop
+      bubblewrap
       compsize
       coreutils
       cryptsetup
