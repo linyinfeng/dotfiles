@@ -248,7 +248,7 @@ let
           vscode
           alacritty
           wezterm
-          android-studio
+          # android-studio # TODO output limit exceeded on Hydra
         ]);
       synchronize = with profiles; [
         onedrive
