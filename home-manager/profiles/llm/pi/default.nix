@@ -67,10 +67,12 @@ in
       tokenSpeed = {
         display = "ttft";
         useProviderTokens = true;
-        tpsBlazing = 200;
-        tpsFast = 100;
-        tpsMedium = 60;
-        tpsSlow = 30;
+        thresholds = {
+          slow = 30;
+          medium = 60;
+          fast = 100;
+          blazing = 200;
+        };
       };
       packages = [
         # keep-sorted start
