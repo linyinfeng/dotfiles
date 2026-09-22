@@ -17,8 +17,10 @@
       procstat = [
         {
           pattern = ".*";
-          cmdline_tag = true;
-          pid_tag = true;
+          tag_with = [
+            "cmdline"
+            "pid"
+          ];
           tags.output_bucket = "system";
         }
       ];
