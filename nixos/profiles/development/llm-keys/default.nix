@@ -160,6 +160,14 @@
         key = config.sops.placeholder."xai_api_key";
         type = "api_key";
       };
+      xiaomi = {
+        key = config.sops.placeholder."mimo_api_key";
+        type = "api_key";
+      };
+      xiaomi-token-plan-cn = {
+        key = config.sops.placeholder."mimo_token_plan_api_key";
+        type = "api_key";
+      };
       "zai-coding-cn" = {
         key = config.sops.placeholder."zhipu_api_key";
         type = "api_key";
