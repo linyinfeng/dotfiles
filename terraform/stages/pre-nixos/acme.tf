@@ -16,6 +16,12 @@ resource "acme_certificate" "li7g_com" {
   account_key_pem = acme_registration.main.account_key_pem
   key_type        = "EC384"
   common_name     = "li7g.com"
+  # Cloudflare injects its own _acme-challenge.li7g.com DCV records for the zone's
+  # edge certificates (absent from the API, TTL 300, permanently hot in recursive
+  # caches), so lego's default propagation check never sees the challenge record
+  # within its 2min budget. Query the zone's authoritative servers directly - they
+  # merge the challenge record within seconds.
+  recursive_nameservers = [for ns in cloudflare_zone.com_li7g.name_servers : "${ns}:53"]
   subject_alternative_names = [
     "*.li7g.com",
     "*.ts.li7g.com",
