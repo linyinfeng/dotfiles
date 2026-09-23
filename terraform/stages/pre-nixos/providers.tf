@@ -3,6 +3,8 @@ terraform {
     # official verified providers
     cloudflare = {
       source = "cloudflare/cloudflare"
+      # TODO: Remove this pin once the email routing settings schema bug is fixed.
+      version = "5.22.0"
     }
     vultr = {
       source = "vultr/vultr"

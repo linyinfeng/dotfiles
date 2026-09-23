@@ -47,8 +47,8 @@ jobs:
       - name: Cache terraform
         uses: actions/cache@main
         with:
-          path: dotfiles/terraform/.terraform/providers
-          key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
+          path: dotfiles/terraform/stages/pre-nixos/.terraform-data/providers
+          key: ${{ runner.os }}-terraform-pre-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/pre-nixos/.terraform.lock.hcl') }}
       - name: Terraform init
         run: |
           nix develop ./dotfiles --command terraform-init
@@ -141,8 +141,8 @@ jobs:
       - name: Cache terraform
         uses: actions/cache@main
         with:
-          path: dotfiles/terraform/.terraform/providers
-          key: ${{ runner.os }}-terraform-providers-${{ hashFiles('terraform/.terraform.lock.hcl') }}
+          path: dotfiles/terraform/stages/pre-nixos/.terraform-data/providers
+          key: ${{ runner.os }}-terraform-pre-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/pre-nixos/.terraform.lock.hcl') }}
       - name: Terraform init
         run: |
           nix develop ./dotfiles --command terraform-init

@@ -4,7 +4,7 @@ provider "hcloud" {
 
 resource "hcloud_ssh_key" "pgp" {
   name       = "PGP"
-  public_key = file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub")
+  public_key = file("${path.module}/inputs/pgp.pub")
 }
 
 data "hcloud_locations" "all" {

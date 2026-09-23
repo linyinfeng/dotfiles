@@ -19,6 +19,10 @@
         eval = "\${TERRAFORM_DIR:-$(realpath \"$DOTFILES_DIR/terraform\")}";
       }
       {
+        name = "TERRAFORM_STAGE";
+        eval = "\${TERRAFORM_STAGE:-pre-nixos}";
+      }
+      {
         name = "TF_VAR_terraform_input_path";
         eval = "\${TF_VAR_terraform_input_path:-$(realpath \"$SECRETS_DIR/terraform-inputs.yaml\")}";
       }

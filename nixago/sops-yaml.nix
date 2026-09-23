@@ -63,7 +63,7 @@ in
       ];
     }
     {
-      path_regex = "terraform-outputs\.yaml$";
+      path_regex = "terraform/outputs/[^/]+\.yaml$";
       key_groups = [
         {
           inherit pgp;
@@ -72,7 +72,7 @@ in
       ];
     }
     {
-      path_regex = "terraform.(tfstate|plan)$";
+      path_regex = "(terraform/states/[^/]+\.tfstate|terraform\.tfstate|terraform\.plan)$";
       key_groups = [
         {
           inherit pgp;

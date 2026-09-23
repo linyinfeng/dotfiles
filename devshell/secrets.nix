@@ -57,8 +57,28 @@ let
     ];
     text = ''
       ${common}
-      sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" 'extract-secrets-terraform {}'
+      terraform_outputs="$SECRETS_DIR/terraform/outputs/pre-nixos.yaml"
+      if [ ! -e "$terraform_outputs" ]; then
+      terraform_outputs="$SECRETS_DIR/terraform-outputs.yaml"
+      fi
+      sops exec-file "$terraform_outputs" 'extract-secrets-terraform {}'
       sops exec-file "$SECRETS_DIR/predefined.yaml"        'extract-secrets-predefined {}'
+    '';
+  };
+
+  extractSecretsTerraformOnly = pkgs.writeShellApplication {
+    name = "extract-secrets-terraform-only";
+    runtimeInputs = with pkgs; [
+      sops
+      (mkExtractSecret "terraform")
+    ];
+    text = ''
+      ${common}
+      terraform_outputs="$SECRETS_DIR/terraform/outputs/pre-nixos.yaml"
+      if [ ! -e "$terraform_outputs" ]; then
+        terraform_outputs="$SECRETS_DIR/terraform-outputs.yaml"
+      fi
+      sops exec-file "$terraform_outputs" 'extract-secrets-terraform {}'
     '';
   };
 
@@ -115,6 +135,10 @@ in
       {
         category = "infrastructure";
         package = extractSecrets;
+      }
+      {
+        category = "infrastructure";
+        package = extractSecretsTerraformOnly;
       }
     ];
   };

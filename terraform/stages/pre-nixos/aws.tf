@@ -38,7 +38,7 @@ resource "aws_eip" "main" {
 }
 
 locals {
-  nixos_state_version = jsondecode(file("${path.module}/../lib/state-version.json"))
+  nixos_state_version = jsondecode(file("${path.module}/inputs/state-version.json"))
 }
 
 data "aws_ami" "nixos_x86_64" {
@@ -87,5 +87,5 @@ resource "aws_default_route_table" "main" {
 
 resource "aws_key_pair" "pgp" {
   key_name   = "pgp"
-  public_key = file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub")
+  public_key = file("${path.module}/inputs/pgp.pub")
 }

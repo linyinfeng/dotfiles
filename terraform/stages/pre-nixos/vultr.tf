@@ -6,5 +6,5 @@ provider "vultr" {
 
 resource "vultr_ssh_key" "pgp" {
   name    = "pgp"
-  ssh_key = trim(file("${path.module}/../nixos/profiles/users/root/_ssh/pgp.pub"), "\n ")
+  ssh_key = trim(file("${path.module}/inputs/pgp.pub"), "\n ")
 }

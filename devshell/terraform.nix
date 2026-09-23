@@ -47,7 +47,19 @@ let
     name = "terraform-init";
     runtimeInputs = with pkgs; [ terraform ];
     text = ''
-      terraform -chdir="$(realpath "$TERRAFORM_DIR")" init "$@"
+      stage="''${1:-$TERRAFORM_STAGE}"
+      shift || true
+      case "$stage" in
+        pre-nixos|post-nixos) ;;
+        *) message "unknown terraform stage: $stage"; exit 2 ;;
+      esac
+      root="$TERRAFORM_DIR/stages/$stage"
+      if [ ! -d "$root" ]; then
+        message "terraform root does not exist for stage: $stage"
+        exit 2
+      fi
+      root="$(realpath "$root")"
+      TF_DATA_DIR="$root/.terraform-data" terraform -chdir="$root" init -backend-config="path=$root/terraform.tfstate" "$@"
     '';
   };
 
@@ -72,19 +84,41 @@ let
     text = ''
       ${common}
 
-      encrypted="$SECRETS_DIR/terraform.tfstate"
-      plain="$TERRAFORM_DIR/terraform.tfstate"
+      stage="''${TERRAFORM_STAGE:-pre-nixos}"
+      case "$stage" in
+        pre-nixos|post-nixos) ;;
+        *) message "unknown terraform stage: $stage"; exit 2 ;;
+      esac
+      root="$TERRAFORM_DIR/stages/$stage"
+      if [ ! -d "$root" ]; then
+        message "terraform root does not exist for stage: $stage"
+        exit 2
+      fi
+      root="$(realpath "$root")"
+      state_dir="$SECRETS_DIR/terraform/states"
+      encrypted="$state_dir/$stage.tfstate"
+      plain="$root/terraform.tfstate"
+      export TF_DATA_DIR="$root/.terraform-data"
+
+      if [ ! -e "$encrypted" ] && [ "$stage" = "pre-nixos" ] && [ -e "$SECRETS_DIR/terraform.tfstate" ]; then
+        encrypted="$SECRETS_DIR/terraform.tfstate"
+        message "using legacy encrypted state for pre-nixos"
+      fi
 
       message "decrypt terraform state to '$plain'..."
-      sops --input-type json --output-type json \
-        --decrypt "$encrypted" >"$plain"
+      if [ ! -e "$encrypted" ]; then
+        message "encrypted state is missing: $encrypted"
+        message "refusing to run Terraform without an explicitly migrated state"
+        exit 2
+      fi
+      sops --input-type json --output-type json --decrypt "$encrypted" >"$plain"
 
       function cleanup {
         exit_code=$?
 
         set -e
 
-        if [ -n "$(cat "$plain")" ]; then
+        if [ -s "$plain" ]; then
           encrypt-to "$plain" "$encrypted" json "yq --prettyPrint"
         fi
         message "deleting terraform state '$plain'..."
@@ -94,9 +128,11 @@ let
         exit $exit_code
       }
       trap cleanup EXIT
+      trap 'exit 130' INT
+      trap 'exit 143' TERM
 
       set +e
-      terraform -chdir="$(realpath "$TERRAFORM_DIR")" "$@"
+      terraform -chdir="$root" "$@"
     '';
   };
 
@@ -115,11 +151,20 @@ let
         rm -r "$tmp_dir"
       }
       trap cleanup EXIT
+      trap 'exit 130' INT
+      trap 'exit 143' TERM
 
+      stage="''${1:-$TERRAFORM_STAGE}"
+      shift || true
+      case "$stage" in
+        pre-nixos|post-nixos) ;;
+        *) message "unknown terraform stage: $stage"; exit 2 ;;
+      esac
       plain_output="$tmp_dir/terraform-outputs.plain.yaml"
 
-      terraform-wrapper output --json >"$plain_output"
-      encrypt-to "$plain_output" "$SECRETS_DIR/terraform-outputs.yaml" yaml "yq --prettyPrint"
+      TERRAFORM_STAGE="$stage" terraform-wrapper output --json "$@" >"$plain_output"
+      mkdir -p "$SECRETS_DIR/terraform/outputs"
+      encrypt-to "$plain_output" "$SECRETS_DIR/terraform/outputs/$stage.yaml" yaml "yq --prettyPrint"
     '';
   };
 
@@ -132,9 +177,19 @@ let
     text = ''
       ${common}
 
+      stage="''${1:-pre-nixos}"
+      shift || true
+      if [ "$stage" != "pre-nixos" ]; then
+        message "NixOS data can only be extracted from pre-nixos outputs"
+        exit 2
+      fi
+      output_file="$SECRETS_DIR/terraform/outputs/$stage.yaml"
+      if [ ! -e "$output_file" ] && [ -e "$SECRETS_DIR/terraform-outputs.yaml" ]; then
+        output_file="$SECRETS_DIR/terraform-outputs.yaml"
+      fi
       format="json"
       message "creating 'data.$format'..."
-      sops exec-file "$SECRETS_DIR/terraform-outputs.yaml" \
+      sops exec-file "$output_file" \
         "yq eval --from-file \"$DATA_EXTRACT_DIR/template.yq\" {} --output-format $format" \
         >"$DATA_EXTRACT_DIR/data.$format"
     '';
@@ -150,20 +205,34 @@ in
         command = ''
           set -e
 
-          git -C "$SECRETS_DIR" pull
+          stage="''${1:-$TERRAFORM_STAGE}"
+          if [ "$#" -gt 0 ]; then shift; fi
+          case "$stage" in
+            pre-nixos|post-nixos) ;;
+            *) message "unknown terraform stage: $stage"; exit 2 ;;
+          esac
+
+          git -C "$SECRETS_DIR" pull --ff-only
           function cleanup {
+            exit_code=$?
+            if [ "$exit_code" -ne 0 ]; then
+              return "$exit_code"
+            fi
             git -C "$SECRETS_DIR" add --all
-            git -C "$SECRETS_DIR" commit --message "Terraform apply"
-            git -C "$SECRETS_DIR" push
+            if ! git -C "$SECRETS_DIR" diff --cached --quiet; then
+              git -C "$SECRETS_DIR" commit --message "Terraform $stage apply"
+              git -C "$SECRETS_DIR" push
+            fi
           }
           trap cleanup EXIT
 
-          terraform-init
-          terraform-wrapper apply "$@"
-          terraform-update-outputs
-          terraform-outputs-extract-data
-
-          extract-secrets
+          terraform-init "$stage"
+          TERRAFORM_STAGE="$stage" terraform-wrapper apply "$@"
+          terraform-update-outputs "$stage"
+          if [ "$stage" = "pre-nixos" ]; then
+            terraform-outputs-extract-data "$stage"
+            extract-secrets-terraform-only
+          fi
 
           nix fmt
         '';
