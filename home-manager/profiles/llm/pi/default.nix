@@ -44,9 +44,9 @@ in
     inherit context;
 
     extraPackages = with pkgs; [
-      agent-browser
       ast-grep
       bun
+      llm-agents.agent-browser
       nodejs
       rtk
     ];
