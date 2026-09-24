@@ -193,8 +193,7 @@ let
           system.types.workstation
           i18n.input-method
           wsl.settings
-        ])
-        ++ [ inputs.nixos-wsl.nixosModules.wsl ];
+        ]);
     }
   );
 
@@ -301,25 +300,6 @@ let
   commonNixosModules =
     worldNixosModules
     ++ [
-      inputs.sops-nix.nixosModules.sops
-      inputs.preservation.nixosModules.preservation
-      inputs.disko.nixosModules.disko
-      inputs.flake-utils-plus.nixosModules.autoGenFromInputs
-      inputs.linyinfeng.nixosModules.vlmcsd
-      inputs.linyinfeng.nixosModules.tprofile
-      inputs.linyinfeng.nixosModules.tg-send
-      inputs.linyinfeng.nixosModules.dot-tar
-      inputs.linyinfeng.nixosModules.matrix-media-repo
-      inputs.oranc.nixosModules.oranc
-      inputs.ace-bot.nixosModules.ace-bot
-      inputs.commit-notifier.nixosModules.commit-notifier
-      inputs.lanzaboote.nixosModules.lanzaboote
-      inputs.nix-topology.nixosModules.default
-      inputs.run0-sudo-shim.nixosModules.default
-      inputs.nix-cache-overlay.nixosModules.default
-      inputs.tsukkomi.nixosModules.tsukkomi
-      inputs.ncro.nixosModules.ncro
-
       {
         lib = {
           self = self.lib;
@@ -342,10 +322,6 @@ let
     );
 
   commonHmModules = worldHmModules ++ [
-    inputs.nixos-vscode-server.homeModules.default
-    inputs.noctalia.homeModules.default
-    inputs.pi-command-not-found-adapter.homeManagerModules.default
-    inputs.system76-scheduler-niri.homeModules.default
     { lib.self = self.lib; }
   ];
 
