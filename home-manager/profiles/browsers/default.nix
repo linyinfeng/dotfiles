@@ -6,9 +6,6 @@
 }:
 lib.mkMerge [
   {
-    programs.desktop-files.favorites = lib.mkOrder 1000 [ "zen" ];
-  }
-  {
     programs.google-chrome = {
       enable = true;
       commandLineArgs = [
@@ -53,12 +50,4 @@ lib.mkMerge [
     };
   }
 
-  {
-    home.packages = with pkgs; [
-      zen-browser
-    ];
-    home.global-persistence = {
-      directories = [ ".config/zen" ];
-    };
-  }
 ]
