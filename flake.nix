@@ -366,7 +366,7 @@
           ];
         };
         systems = import inputs.systems;
-        devSystems = import inputs.systems;
+        devSystems = [ "x86_64-linux" ];
         flake.libs = {
           inherit (config) systems;
         }
