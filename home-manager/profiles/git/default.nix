@@ -105,7 +105,7 @@ lib.mkMerge [
       ];
     };
     home.packages = [ fileLineColumnHandler ];
-    xdg.desktopEntries = {
+    xdg.desktopEntries = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       file-line-column-handler = {
         name = "file-line-column-handler";
         genericName = "File line URI handler";

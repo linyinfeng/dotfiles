@@ -9,7 +9,7 @@ let
   emacs = pkgs.emacsWithPackagesFromUsePackage {
     config = rawEmacsConfig;
     package = pkgs.emacs.override {
-      withPgtk = true;
+      withPgtk = pkgs.stdenv.hostPlatform.isLinux;
     };
     alwaysEnsure = false;
     override =

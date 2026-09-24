@@ -1,9 +1,10 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   programs.onedrive = {
     enable = true;
     settings = {

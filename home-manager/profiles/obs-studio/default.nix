@@ -1,5 +1,5 @@
-{ pkgs, ... }:
-{
+{ lib, pkgs, ... }:
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   programs.obs-studio = {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [

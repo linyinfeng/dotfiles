@@ -38,7 +38,7 @@ in
       ];
     };
   };
-  systemd.user.tmpfiles.rules = [
+  systemd.user.tmpfiles.rules = lib.mkIf pkgs.stdenv.hostPlatform.isLinux [
     # link theme if not exists
     "C %h/.config/alacritty/${themeFile} - - - - ${themeToml}"
     "z %h/.config/alacritty/${themeFile} 644 - - -"

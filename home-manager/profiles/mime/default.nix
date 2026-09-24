@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   webFormats = [
     "x-scheme-handler/http"
@@ -190,7 +195,7 @@ let
 
   buildMap = app: formats: lib.listToAttrs (map (f: lib.nameValuePair f app) formats);
 in
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   xdg.mimeApps = {
     enable = true;
     defaultApplications =

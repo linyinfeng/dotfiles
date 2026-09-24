@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -11,7 +12,7 @@ let
     port = cfg.mixedPort;
   };
 in
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   dconf.settings = lib.mkIf enabled {
     "system/proxy" = {
       mode = "manual";

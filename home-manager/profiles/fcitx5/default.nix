@@ -1,5 +1,10 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   xdg.configFile."fcitx5" = {
     source = ./_config;
     recursive = true;

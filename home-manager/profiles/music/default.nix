@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   audioPlugins = with pkgs; [
     # lv2
@@ -7,7 +12,7 @@ let
     # ladspa
   ];
 in
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   home.packages =
     with pkgs;
     [

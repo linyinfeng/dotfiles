@@ -12,7 +12,7 @@ let
     '';
   };
 in
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   services.darkman = {
     enable = true;
     settings = {

@@ -1,12 +1,13 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
 let
   optionalPkg = config.lib.self.optionalPkg pkgs;
 in
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   home.packages =
     with pkgs;
     [
