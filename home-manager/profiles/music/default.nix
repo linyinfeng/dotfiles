@@ -12,36 +12,45 @@ let
     # ladspa
   ];
 in
-lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-  home.packages =
-    with pkgs;
-    [
-      # DAW
-      reaper
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
+  lib.mkMerge [
+    {
+      home.packages = with pkgs; [
+        # DAW
+        reaper
 
-      # sheet music
-      lilypond
-      frescobaldi
-      # musescore # TODO broken
+        # sheet music
+        lilypond
+        frescobaldi
+        # musescore # TODO broken
 
-      # midi
-      timidity
-
-      # plugin support
-      yabridge
-      yabridgectl
-    ]
-    ++ audioPlugins;
-  home.sessionVariables = {
-    LV2_PATH = "${config.xdg.stateHome}/nix/profiles/home-manager/home-path/lib/lv2";
-    LADSPA_PATH = "${config.xdg.stateHome}/nix/profiles/home-manager/home-path/lib/ladspa";
-  };
-  home.global-persistence.directories = [
-    ".config/REAPER"
-    ".config/MuseScore"
-    ".local/share/MuseScore"
-    ".vst"
-    ".vst3"
-    ".clap"
-  ];
-}
+        # midi
+        timidity
+      ];
+      home.global-persistence.directories = [
+        ".config/MuseScore"
+        ".config/REAPER"
+        ".local/share/MuseScore"
+      ];
+    }
+    (lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
+      # plugin support: yabridge is a Wine-based VST bridge, upstream ships x86_64-linux only
+      home.packages =
+        with pkgs;
+        [
+          yabridge
+          yabridgectl
+        ]
+        ++ audioPlugins;
+      home.global-persistence.directories = [
+        ".clap"
+        ".vst"
+        ".vst3"
+      ];
+      home.sessionVariables = {
+        LADSPA_PATH = "${config.xdg.stateHome}/nix/profiles/home-manager/home-path/lib/ladspa";
+        LV2_PATH = "${config.xdg.stateHome}/nix/profiles/home-manager/home-path/lib/lv2";
+      };
+    })
+  ]
+)
