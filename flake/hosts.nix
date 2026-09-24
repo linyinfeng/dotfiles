@@ -9,6 +9,11 @@
 let
   buildSuites = profiles: f: lib.mapAttrs (_: lib.flatten) (lib.fix (f profiles));
 
+  worldNixosModules = self.lib.mkWorld {
+    src = ../nixos/modules;
+    tree = "modules";
+    enable = true;
+  };
   nixosModules = self.lib.buildModuleList ../nixos/modules;
   nixosProfiles = self.lib.rakeLeaves ../nixos/profiles;
   nixosSuites = buildSuites nixosProfiles (
@@ -193,6 +198,11 @@ let
     }
   );
 
+  worldHmModules = self.lib.mkWorld {
+    src = ../home-manager/modules;
+    tree = "modules";
+    enable = true;
+  };
   hmModules = self.lib.buildModuleList ../home-manager/modules;
   hmProfiles = self.lib.rakeLeaves ../home-manager/profiles;
   hmSuites = buildSuites hmProfiles (
@@ -289,7 +299,7 @@ let
   );
 
   commonNixosModules =
-    nixosModules
+    worldNixosModules
     ++ [
       inputs.sops-nix.nixosModules.sops
       inputs.preservation.nixosModules.preservation
@@ -331,7 +341,7 @@ let
       }
     );
 
-  commonHmModules = hmModules ++ [
+  commonHmModules = worldHmModules ++ [
     inputs.nixos-vscode-server.homeModules.default
     inputs.noctalia.homeModules.default
     inputs.pi-command-not-found-adapter.homeManagerModules.default
