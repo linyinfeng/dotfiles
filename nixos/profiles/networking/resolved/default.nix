@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   dnsServers = [
-    "[${config.lib.self.data.dn42_anycast_dns_v6}]:${toString config.ports.dns-over-tls}#dns.li7g.com"
+    "[${config.lib.self.data.dn42_anycast_dns_v6}]:${toString config.ports.dns}#dns.li7g.com"
   ];
 in
 lib.mkMerge [
