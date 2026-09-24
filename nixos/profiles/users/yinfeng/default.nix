@@ -31,6 +31,7 @@ in
         shell = pkgs.fish;
         home = homeDirectory;
         group = name; # private group
+        homeMode = "0750";
         extraGroups =
           with config.users.groups;
           [
@@ -72,6 +73,16 @@ in
       environment.global-persistence.user.users = [ name ];
       home-manager.users.${name}.home.global-persistence.enable = true;
     }
+    # greeter
+    {
+      # noctalia-greeter runs as the unprivileged 'greeter' user and reads
+      # avatars from AccountsService, whose IconFile is $HOME/.face: give it
+      # the user's group, which the 0750 home directory lets in
+      users.users = lib.optionalAttrs config.services.displayManager.noctalia-greeter.enable {
+        greeter.extraGroups = [ name ];
+      };
+    }
+
     # system administration
     {
       environment.etc."nixos".source = "${homeDirectory}/Projects/dotfiles";
