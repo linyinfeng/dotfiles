@@ -39,9 +39,9 @@ in
       "2001:4860:4860::8844 port 853 tls google"
     ];
     extraOptions = ''
-      listen-on    port ${toString dotPort} tls local { any; };
-      listen-on-v6 port ${toString dotPort} tls local { any; };
-      listen-on-v6 port ${toString config.ports.bind-http} tls none http local { any; };
+      listen-on-v6 port ${toString dotPort} tls local { ${data.dn42_anycast_dns_v6}; };
+      listen-on-v6 port ${toString config.ports.bind-http} tls none http local { ::1; };
+      listen-on-v6 port ${toString config.ports.dns} { ${data.dn42_anycast_dns_v6}; };
 
       dnssec-validation auto;
     '';
@@ -82,10 +82,8 @@ in
         "systemd-networkd.service"
         "bind.service"
       ];
-      after = [
-        "systemd-networkd.service"
-        "bind.service"
-      ];
+      after = [ "systemd-networkd.service" ];
+      before = [ "bind.service" ];
       wantedBy = [ "bind.service" ];
     };
   services.nginx.virtualHosts."dns.*" = {
@@ -100,7 +98,10 @@ in
   };
   environment.etc."bind/rndc.key".source = config.sops.secrets."bind_rndc_config".path;
   users.users.named.extraGroups = [ config.users.groups.acmetf.name ];
-  networking.firewall.allowedTCPPorts = [ dotPort ];
+  networking.firewall.allowedTCPPorts = [
+    config.ports.dns
+    dotPort
+  ];
   networking.firewall.allowedUDPPorts = [ config.ports.dns ];
   environment.systemPackages = [
     # for rndc cli
