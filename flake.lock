@@ -1638,7 +1638,6 @@
         "treefmt-nix": "treefmt-nix",
         "tsukkomi": "tsukkomi",
         "uv2nix": "uv2nix",
-        "weird-deployer": "weird-deployer",
         "zen-browser": "zen-browser"
       }
     },
@@ -1815,21 +1814,6 @@
       "original": {
         "owner": "pyproject-nix",
         "repo": "uv2nix",
-        "type": "github"
-      }
-    },
-    "weird-deployer": {
-      "locked": {
-        "lastModified": 1728549622,
-        "narHash": "sha256-gsTCrF5McQgrZkstusw0Qg7+BEdUIYm44gQdSqOi7mw=",
-        "owner": "linyinfeng",
-        "repo": "weird-deployer",
-        "rev": "cbab86e054a686024e2c6ef03f64d0e89e183e56",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "repo": "weird-deployer",
         "type": "github"
       }
     },
