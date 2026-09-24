@@ -2,8 +2,6 @@
   config,
   lib,
   pkgs,
-  suites,
-  profiles,
   ...
 }:
 let
@@ -25,53 +23,70 @@ let
   btrfsSubvolMobile = btrfsSubvol "/dev/mapper/crypt-mobile";
 in
 {
-  imports =
-    suites.server
-    ++ suites.development
-    ++ suites.virtualization
-    ++ (with profiles; [
-      boot.binfmt
-      nix.hydra-builder-server
-      nix.hydra-builder-client
-      nix.nixbuild
-      security.tpm
-      security.audit
-      i18n.input-method
-      networking.network-manager
-      networking.behind-fw
-      networking.fw-proxy
-      services.gnome-keyring
-      services.transmission
-      services.jellyfin
-      services.samba
-      services.nextcloud
-      services.vlmcsd
-      services.godns
-      services.nginx
-      services.acme
-      services.smartd
-      services.postgresql
-      services.hydra
-      services.fw-proxy-subscription
-      services.forgejo
-      services.fwupd
-      services.tsukkomi
-      # services.matrix-qq
-      services.teamspeak
-      services.cache-overlay
-      services.frp-server
-      programs.service-mail
-      programs.tg-send
-      users.yinfeng
-      users.agent
-    ])
-    ++ [
-      ./_minecraft-unmanaged
-      ./_steam
-      ./_home-assistant
-    ];
+  imports = [
+    ./_minecraft-unmanaged
+    ./_steam
+    ./_home-assistant
+  ];
 
   config = lib.mkMerge [
+    {
+      world = {
+        profiles = {
+          boot.binfmt.enable = true;
+          i18n.input-method.enable = true;
+          networking = {
+            behind-fw.enable = true;
+            fw-proxy.enable = true;
+            network-manager.enable = true;
+          };
+          nix = {
+            hydra-builder-client.enable = true;
+            hydra-builder-server.enable = true;
+            nixbuild.enable = true;
+          };
+          programs = {
+            service-mail.enable = true;
+            tg-send.enable = true;
+          };
+          security = {
+            audit.enable = true;
+            tpm.enable = true;
+          };
+          services = {
+            acme.enable = true;
+            cache-overlay.enable = true;
+            forgejo.enable = true;
+            frp-server.enable = true;
+            fw-proxy-subscription.enable = true;
+            fwupd.enable = true;
+            gnome-keyring.enable = true;
+            godns.enable = true;
+            hydra.enable = true;
+            jellyfin.enable = true;
+            nextcloud.enable = true;
+            nginx.enable = true;
+            postgresql.enable = true;
+            samba.enable = true;
+            smartd.enable = true;
+            teamspeak.enable = true;
+            transmission.enable = true;
+            tsukkomi.enable = true;
+            vlmcsd.enable = true;
+          };
+          users = {
+            agent.enable = true;
+            yinfeng.enable = true;
+          };
+        };
+        suites = {
+          development.enable = true;
+          server.enable = true;
+          virtualization.enable = true;
+        };
+      };
+    }
+
     {
       boot.loader = {
         efi.canTouchEfiVariables = true;
@@ -98,9 +113,10 @@ in
       };
 
       home-manager.users.yinfeng =
-        { suites, ... }:
+        { ... }:
         {
-          imports = suites.nonGraphical;
+          world.users.yinfeng.common.enable = true;
+          world.suites.nonGraphical.enable = true;
         };
 
       boot.initrd.availableKernelModules = [

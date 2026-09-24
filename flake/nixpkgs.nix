@@ -1,5 +1,4 @@
 {
-  config,
   self,
   inputs,
   lib,
@@ -89,14 +88,13 @@ let
       };
     })
   ]
-  ++ lib.optional config.testingFlags.angrr inputs.angrr.overlays.default;
+  ++ [ inputs.angrr.overlays.default ];
 
   alternativeChannels = nixpkgsArgs: {
     unstable = import inputs.nixpkgs nixpkgsArgs;
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
     unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
     stable = import inputs.nixpkgs-stable nixpkgsArgs;
-    angrr = import inputs.nixpkgs-angrr nixpkgsArgs;
   };
   earlyFixes =
     nixpkgsArgs:
@@ -105,16 +103,10 @@ let
       channels = alternativeChannels nixpkgsArgs;
     in
     [
-      (
-        _final: _prev:
-        {
-          # maintained packages
-          inherit (channels.latest) godns;
-        }
-        // (lib.optionalAttrs config.testingFlags.angrrNixpkgs {
-          inherit (channels.angrr) angrr;
-        })
-      )
+      (_final: _prev: {
+        # maintained packages
+        inherit (channels.latest) godns;
+      })
     ];
   lateFixes =
     nixpkgsArgs:

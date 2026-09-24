@@ -45,7 +45,13 @@ let
         attrs = lib.filterAttrs (name: _: builtins.elem name moduleKeys) m';
       in
       attrs
+      // lib.optionalAttrs (!attrs ? _file && (builtins.isPath file || builtins.isString file)) {
+        _file = toString file;
+      }
       // {
+        # Imports inherit this gate, while an imported file that lives in the tree is a leaf
+        # itself: it would be wrapped twice and applied twice. Import only `_`-prefixed
+        # files -- haumea skips those, so they never become leaves.
         imports = lib.map (
           i:
           wrap {
@@ -54,9 +60,21 @@ let
           }
         ) (attrs.imports or [ ]);
         options = (attrs.options or { }) // declare;
-        # Explicit module: `config`. Shorthand: everything else.
         config = lib.mkIf (lib.attrByPath gatePath false args.config) (
-          m'.config or (lib.removeAttrs m' (builtins.attrNames attrs))
+          let
+            # nixpkgs' explicit-module test is `config` *or* `options`; the rest is shorthand.
+            bare = lib.removeAttrs m' ([ "config" ] ++ builtins.attrNames attrs);
+          in
+          # `lib.mkIf` / `lib.mkDefault` / `lib.mkMerge` covering the whole module, which nixpkgs
+          # itself rewrites into `{ config = ...; }`.
+          if m' ? _type then
+            m'
+          else if !(m' ? config || m' ? options) then
+            bare
+          else if bare != { } then
+            throw "mkWorld: ${lib.concatStringsSep "." (lib.init gatePath)} has an unsupported attribute `${lib.head (builtins.attrNames bare)}`; move it into `config`"
+          else
+            m'.config or { }
         );
       }
     ) (if lib.isFunction inner then lib.functionArgs inner else { });

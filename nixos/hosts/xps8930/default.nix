@@ -1,8 +1,6 @@
 {
   config,
   lib,
-  suites,
-  profiles,
   ...
 }:
 let
@@ -24,21 +22,28 @@ let
   btrfsSubvolData = btrfsSubvol "/dev/disk/by-uuid/fc047db2-0ba9-445a-9b84-194af545fa23";
 in
 {
-  imports =
-    suites.workstation
-    ++ (with profiles; [
-      security.tpm
-      networking.behind-fw
-      networking.fw-proxy
-      services.godns
-      services.nginx
-      services.acme
-      services.fwupd
-      services.frp-client
-      programs.service-mail
-      programs.tg-send
-      users.yinfeng
-    ]);
+  world = {
+    profiles = {
+      networking = {
+        behind-fw.enable = true;
+        fw-proxy.enable = true;
+      };
+      programs = {
+        service-mail.enable = true;
+        tg-send.enable = true;
+      };
+      security.tpm.enable = true;
+      services = {
+        acme.enable = true;
+        frp-client.enable = true;
+        fwupd.enable = true;
+        godns.enable = true;
+        nginx.enable = true;
+      };
+      users.yinfeng.enable = true;
+    };
+    suites.workstation.enable = true;
+  };
 
   # campus network requirement
   services.zerotierone.enable = lib.mkForce false;
@@ -111,9 +116,10 @@ in
   };
 
   home-manager.users.yinfeng =
-    { suites, ... }:
+    { ... }:
     {
-      imports = suites.full;
+      world.users.yinfeng.common.enable = true;
+      world.suites.full.enable = true;
     };
 
   topology.self.interfaces.enp4s0 = {

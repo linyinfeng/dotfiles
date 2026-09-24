@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.music.enable = lib.mkDefault true;
+  world.profiles.music.enable = true;
 }

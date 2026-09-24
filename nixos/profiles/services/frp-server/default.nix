@@ -1,11 +1,14 @@
-{ profiles, config, ... }:
+{
+  lib,
+  config,
+  ...
+}:
 let
   inherit (config.networking) hostName;
 in
 {
-  imports = [
-    profiles.services.frp-token
-  ];
+  world.profiles.services.frp-token.enable = lib.mkDefault true;
+
   services.frp.instances."server" = {
     enable = true;
     role = "server";

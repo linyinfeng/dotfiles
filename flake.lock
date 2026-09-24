@@ -415,26 +415,6 @@
         "type": "github"
       }
     },
-    "flake-utils-plus": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ]
-      },
-      "locked": {
-        "lastModified": 1779563444,
-        "narHash": "sha256-+rEagECcF6BhWfLs8VCkPqsBuxxSSIRxMlgjXj6G8UQ=",
-        "owner": "gytis-ivaskevicius",
-        "repo": "flake-utils-plus",
-        "rev": "a00f6f51907b5c74d2fde086b10b19d446d15717",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gytis-ivaskevicius",
-        "repo": "flake-utils-plus",
-        "type": "github"
-      }
-    },
     "flat-flake": {
       "inputs": {
         "crane": [
@@ -1258,22 +1238,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-angrr": {
-      "locked": {
-        "lastModified": 1765892973,
-        "narHash": "sha256-i0ioi17gcWqoixWsiq26ESUBuiQy2JDFvqCppzcsu1M=",
-        "owner": "linyinfeng",
-        "repo": "nixpkgs",
-        "rev": "62ea5b9ae7d4329475089f60232ee1426d9547a9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "ref": "angrr",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-latest": {
       "locked": {
         "lastModified": 1789795359,
@@ -1619,7 +1583,6 @@
         "flake-parts": "flake-parts",
         "flake-schemas": "flake-schemas",
         "flake-utils": "flake-utils",
-        "flake-utils-plus": "flake-utils-plus",
         "flat-flake": "flat-flake",
         "git-hooks-nix": "git-hooks-nix",
         "gitignore-nix": "gitignore-nix",
@@ -1652,7 +1615,6 @@
         "nixos-vscode-server": "nixos-vscode-server",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-angrr": "nixpkgs-angrr",
         "nixpkgs-latest": "nixpkgs-latest",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",

@@ -1,5 +1,4 @@
 {
-  suites,
   config,
   pkgs,
   ...
@@ -8,7 +7,8 @@ let
   gameHome = "/home/steam";
 in
 {
-  imports = suites.games;
+  world.suites.games.enable = true;
+
   programs.steam.hidpi = {
     enable = true;
     scale = "2";

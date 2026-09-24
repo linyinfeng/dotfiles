@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.blender.enable = lib.mkDefault true;
+  world.profiles.blender.enable = true;
 }

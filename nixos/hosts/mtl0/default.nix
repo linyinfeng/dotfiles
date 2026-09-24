@@ -1,7 +1,5 @@
 {
   config,
-  suites,
-  profiles,
   lib,
   ...
 }:
@@ -23,51 +21,54 @@ let
   btrfsSubvolMain = btrfsSubvol "/dev/disk/by-uuid/9f227a19-d570-449f-b4cb-0eecc5b2d227";
 in
 {
-  imports =
-    suites.overseaServer
-    ++ suites.development
-    ++ (with profiles; [
-      # keep-sorted start
-      i18n.input-method
-      programs.tg-send
-      services.acme
-      services.atuin
-      services.bird-lg
-      # services.gitweb
-      # services.seafile
-      services.commit-notifier
-      services.dn42-site
-      services.dot-tar
-      services.dotfiles-update-trigger
-      services.frp-server
-      services.garage
-      services.gitlab-runner-sicp
-      services.hledger-web
-      services.http-test
-      services.maddy
-      services.mastodon
-      services.matrix
-      services.nginx
-      services.nuc-proxy
-      services.oranc
-      services.pastebin
-      services.pgp-public-key-web
-      services.pocket-id
-      # services.ace-bot
-      services.portal-server
-      services.postgresql
-      services.prebuilt-zip
-      services.sicp-staging
-      services.static-file-hosting
-      services.telegraf-http
-      services.vaultwarden
-      services.well-known
-      users.yinfeng
-      virtualization.podman
-      # keep-sorted end
-    ]);
-
   config = lib.mkMerge [
+    {
+      world.suites = {
+        development.enable = true;
+        overseaServer.enable = true;
+      };
+
+      # keep-sorted start
+      world.profiles = {
+        i18n.input-method.enable = true;
+        programs.tg-send.enable = true;
+        services = {
+          acme.enable = true;
+          atuin.enable = true;
+          bird-lg.enable = true;
+          commit-notifier.enable = true;
+          dn42-site.enable = true;
+          dot-tar.enable = true;
+          dotfiles-update-trigger.enable = true;
+          frp-server.enable = true;
+          garage.enable = true;
+          gitlab-runner-sicp.enable = true;
+          hledger-web.enable = true;
+          http-test.enable = true;
+          maddy.enable = true;
+          mastodon.enable = true;
+          matrix.enable = true;
+          nginx.enable = true;
+          nuc-proxy.enable = true;
+          oranc.enable = true;
+          pastebin.enable = true;
+          pgp-public-key-web.enable = true;
+          pocket-id.enable = true;
+          portal-server.enable = true;
+          postgresql.enable = true;
+          prebuilt-zip.enable = true;
+          sicp-staging.enable = true;
+          static-file-hosting.enable = true;
+          telegraf-http.enable = true;
+          vaultwarden.enable = true;
+          well-known.enable = true;
+        };
+        users.yinfeng.enable = true;
+        virtualization.podman.enable = true;
+      };
+      # keep-sorted end
+    }
+
     {
       boot.loader.grub = {
         enable = true;
@@ -192,9 +193,10 @@ in
     # user
     {
       home-manager.users.yinfeng =
-        { suites, ... }:
+        { ... }:
         {
-          imports = suites.nonGraphical;
+          world.users.yinfeng.common.enable = true;
+          world.suites.nonGraphical.enable = true;
         };
     }
 

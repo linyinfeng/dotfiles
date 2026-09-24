@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.services.restic.enable = lib.mkDefault true;
+  world.profiles.services.restic.enable = true;
 }

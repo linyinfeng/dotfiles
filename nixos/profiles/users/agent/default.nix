@@ -1,5 +1,4 @@
 {
-  profiles,
   config,
   lib,
   pkgs,
@@ -16,8 +15,9 @@ in
     ./_opencode.nix
     ./_filebrowser.nix
     ./_pi-web.nix
-    profiles.development.llm-keys
   ];
+
+  world.profiles.development.llm-keys.enable = lib.mkDefault true;
   users.users.${name} = {
     inherit uid;
     isNormalUser = true;
@@ -53,19 +53,22 @@ in
     requires = [ "home-agent.mount" ];
   };
   home-manager.users.${name} =
-    { suites, profiles, ... }:
+    { lib, ... }:
     {
-      imports =
-        suites.base
-        ++ (with profiles; [
-          git
-          llm.general
-          llm.opencode
-          llm.pi
-          shells
-          vscode-server
-          xdg-dirs
-        ]);
+      world = {
+        profiles = {
+          git.enable = lib.mkDefault true;
+          llm = {
+            general.enable = lib.mkDefault true;
+            opencode.enable = lib.mkDefault true;
+            pi.enable = lib.mkDefault true;
+          };
+          shells.enable = lib.mkDefault true;
+          vscode-server.enable = lib.mkDefault true;
+          xdg-dirs.enable = lib.mkDefault true;
+        };
+        suites.base.enable = lib.mkDefault true;
+      };
 
       programs.git = {
         settings = {

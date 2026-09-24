@@ -1,5 +1,4 @@
 {
-  profiles,
   config,
   pkgs,
   lib,
@@ -15,10 +14,13 @@ in
   imports = [
     ./_syncthing
     ./_atuin
-    profiles.development.llm-keys
   ];
 
   config = lib.mkMerge [
+    {
+      world.profiles.development.llm-keys.enable = lib.mkDefault true;
+    }
+
     # basic
     {
       users.users.${name} = {
@@ -70,24 +72,6 @@ in
       environment.global-persistence.user.users = [ name ];
       home-manager.users.${name}.home.global-persistence.enable = true;
     }
-    # git and gpg
-    {
-      home-manager.users.${name} = {
-        programs.git.settings = {
-          user.name = "Lin Yinfeng";
-          user.email = "lin.yinfeng@outlook.com";
-          # do not sign by default
-          # signing.signByDefault = true;
-        };
-        programs.gpg.publicKeys = [
-          {
-            source = ./_pgp/pub.asc;
-            trust = "ultimate";
-          }
-        ];
-      };
-    }
-
     # system administration
     {
       environment.etc."nixos".source = "${homeDirectory}/Projects/dotfiles";

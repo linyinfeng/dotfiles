@@ -1,7 +1,10 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.suites.multimedia.enable = lib.mkDefault true;
-  world.suites.development.enable = lib.mkDefault true;
-
-  world.profiles.development.ides.enable = lib.mkDefault true;
+  world = {
+    profiles.development.ides.enable = true;
+    suites = {
+      development.enable = true;
+      multimedia.enable = true;
+    };
+  };
 }

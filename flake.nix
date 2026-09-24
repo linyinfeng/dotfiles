@@ -81,6 +81,8 @@
     kukui-nixos.inputs.treefmt-nix.follows = "treefmt-nix";
     kukui-nixos.inputs.pmaports.follows = "pmaports";
 
+    angrr.url = "github:linyinfeng/angrr";
+    angrr.inputs.nixpkgs.follows = "nixpkgs";
     ncro.url = "github:manic-systems/ncro";
     ncro.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -127,11 +129,6 @@
     hongbao-rpn.inputs.flake-parts.follows = "flake-parts";
     hongbao-rpn.inputs.treefmt-nix.follows = "treefmt-nix";
     hongbao-rpn.inputs.crane.follows = "crane";
-
-    # for angrr test on real environment
-    angrr.url = "github:linyinfeng/angrr";
-    angrr.inputs.nixpkgs.follows = "nixpkgs";
-    nixpkgs-angrr.url = "github:linyinfeng/nixpkgs/angrr";
 
     nix-cache-overlay.url = "github:linyinfeng/nix-cache-overlay";
     nix-cache-overlay.inputs.nixpkgs.follows = "nixpkgs";
@@ -244,9 +241,6 @@
 
     flake-utils.url = "github:numtide/flake-utils";
     flake-utils.inputs.systems.follows = "systems";
-
-    flake-utils-plus.url = "github:gytis-ivaskevicius/flake-utils-plus";
-    flake-utils-plus.inputs.flake-utils.follows = "flake-utils";
 
     haumea.url = "github:nix-community/haumea";
     haumea.inputs.nixpkgs.follows = "nixpkgs";

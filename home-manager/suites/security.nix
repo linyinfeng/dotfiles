@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.gpg.enable = lib.mkDefault true;
+  world.profiles.gpg.enable = true;
 }

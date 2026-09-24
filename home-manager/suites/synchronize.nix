@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.onedrive.enable = lib.mkDefault true;
+  world.profiles.onedrive.enable = true;
 }

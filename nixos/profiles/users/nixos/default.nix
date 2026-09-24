@@ -1,9 +1,9 @@
 { config, ... }:
 {
   home-manager.users.nixos =
-    { suites, ... }:
+    { lib, ... }:
     {
-      imports = suites.base;
+      world.suites.base.enable = lib.mkDefault true;
     };
 
   users.users.nixos = {

@@ -4,16 +4,11 @@ let
 
   hostDefaultNixTemplate = pkgs.writeText "host-default-template.nix" ''
     {
-      suites,
-      profiles,
       lib,
       ...
     }: {
-      imports =
-        suites.server
-        ++ (with profiles; [
-          # PLACEHOLDER
-        ]);
+      world.suites.server.enable = lib.mkDefault true;
+      # PLACEHOLDER profile gates
 
       config = lib.mkMerge [
         {

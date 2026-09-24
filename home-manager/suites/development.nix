@@ -1,21 +1,25 @@
-{ lib, ... }:
+{ ... }:
 {
-  world.profiles.git.enable = lib.mkDefault true;
-  world.profiles.llm.general.enable = lib.mkDefault true;
-  world.profiles.llm.pi.enable = lib.mkDefault true;
-  world.profiles.llm.omp.enable = lib.mkDefault true;
-  world.profiles.development.enable = lib.mkDefault true;
-  world.profiles.emacs.enable = lib.mkDefault true;
-  world.profiles.helix.enable = lib.mkDefault true;
-  world.profiles.ssh.enable = lib.mkDefault true;
-  world.profiles.pssh.enable = lib.mkDefault true;
-  world.profiles.tools.enable = lib.mkDefault true;
-  world.profiles.tex.enable = lib.mkDefault true;
-  world.profiles.awscli.enable = lib.mkDefault true;
-  world.profiles.terraform.enable = lib.mkDefault true;
-  world.profiles.shells.enable = lib.mkDefault true;
-  world.profiles.ok.enable = lib.mkDefault true;
-  world.profiles.vscode-server.enable = lib.mkDefault true;
-  world.profiles.terminal-multiplexing.enable = lib.mkDefault true;
-  world.profiles.obsidian.enable = lib.mkDefault true;
+  world.profiles = {
+    awscli.enable = true;
+    development.enable = true;
+    emacs.enable = true;
+    git.enable = true;
+    helix.enable = true;
+    llm = {
+      general.enable = true;
+      omp.enable = true;
+      pi.enable = true;
+    };
+    obsidian.enable = true;
+    ok.enable = true;
+    pssh.enable = true;
+    shells.enable = true;
+    ssh.enable = true;
+    terminal-multiplexing.enable = true;
+    terraform.enable = true;
+    tex.enable = true;
+    tools.enable = true;
+    vscode-server.enable = true;
+  };
 }

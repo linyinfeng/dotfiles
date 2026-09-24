@@ -6,7 +6,6 @@
     ./terraform.nix
     ./boot-sd.nix
     ./patches.nix
-    ./enchilada.nix
     ./prepare
   ];
   devshells.default = {

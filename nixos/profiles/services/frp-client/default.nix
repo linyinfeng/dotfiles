@@ -1,5 +1,4 @@
 {
-  profiles,
   config,
   lib,
   pkgs,
@@ -23,9 +22,6 @@ let
   };
 in
 {
-  imports = [
-    profiles.services.frp-token
-  ];
   options.services.frp-client = {
     enable = lib.mkEnableOption "frp-client";
     settings = lib.mkOption {
@@ -37,6 +33,8 @@ in
     };
   };
   config = {
+    world.profiles.services.frp-token.enable = lib.mkDefault true;
+
     services.frp.instances = {
       "nuc" = commonConfig {
         serverAddr = "frp-nuc.li7g.com";

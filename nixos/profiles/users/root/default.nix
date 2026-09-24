@@ -11,9 +11,9 @@
 
   environment.global-persistence.user.users = [ "root" ];
   home-manager.users.root =
-    { suites, ... }:
+    { lib, ... }:
     {
-      imports = suites.base;
+      world.suites.base.enable = lib.mkDefault true;
       home.global-persistence.enable = true;
     };
 

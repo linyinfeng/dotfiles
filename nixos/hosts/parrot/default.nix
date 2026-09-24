@@ -1,7 +1,5 @@
 {
   config,
-  suites,
-  profiles,
   lib,
   ...
 }:
@@ -9,26 +7,32 @@ let
   inherit (config.networking) hostName;
 in
 {
-  imports =
-    suites.mobileWorkstation
-    ++ suites.games
-    ++ (with profiles; [
-      boot.secure-boot
-      security.tpm
-      virtualization.waydroid
-      services.godns
-      services.nginx
-      services.acme
-      services.fwupd
-      networking.wireguard-home
-      hardware.backlight
-      users.yinfeng
-    ])
-    ++ [
-      ./_hardware.nix
-    ];
+  imports = [ ./_hardware.nix ];
 
   config = lib.mkMerge [
+    {
+      world = {
+        profiles = {
+          boot.secure-boot.enable = true;
+          hardware.backlight.enable = true;
+          networking.wireguard-home.enable = true;
+          security.tpm.enable = true;
+          services = {
+            acme.enable = true;
+            fwupd.enable = true;
+            godns.enable = true;
+            nginx.enable = true;
+          };
+          users.yinfeng.enable = true;
+          virtualization.waydroid.enable = true;
+        };
+        suites = {
+          games.enable = true;
+          mobileWorkstation.enable = true;
+        };
+      };
+    }
+
     {
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot = {
@@ -65,9 +69,10 @@ in
       };
 
       home-manager.users.yinfeng =
-        { suites, ... }:
+        { ... }:
         {
-          imports = suites.full;
+          world.users.yinfeng.common.enable = true;
+          world.suites.full.enable = true;
         };
 
       boot.tmp.useTmpfs = true;
