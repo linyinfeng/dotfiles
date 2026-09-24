@@ -5,11 +5,14 @@
 let
   # `attrsToRemove` ∪ `shorthandAttrsToRemove` from nixpkgs' `unifyModuleSyntax`, keep in
   # sync: `wrap` emits the explicit form, so it does the shorthand -> explicit split itself
-  # (letting `_class` fall into `config` is what broke flake-parts' modules).
+  # (letting `_class` fall into `config` is what broke flake-parts' modules). `require`
+  # only stays here so that it is not mistaken for configuration: passing it on makes the
+  # module system reject it, since the explicit form has no `require`.
   moduleKeys = [
     "options"
     "imports"
     "disabledModules"
+    "require"
     "meta"
     "freeformType"
     "_class"
@@ -41,24 +44,21 @@ let
         m' = if builtins.isList m then { imports = m; } else m;
         attrs = lib.filterAttrs (name: _: builtins.elem name moduleKeys) m';
       in
-      if m' ? require then
-        throw "mkWorld: ${lib.concatStringsSep "." (lib.init gatePath)} uses the deprecated `require`, use `imports`"
-      else
-        attrs
-        // {
-          imports = lib.map (
-            i:
-            wrap {
-              inherit gatePath;
-              file = i;
-            }
-          ) (attrs.imports or [ ]);
-          options = (attrs.options or { }) // declare;
-          # Explicit module: `config`. Shorthand: everything else.
-          config = lib.mkIf (lib.attrByPath gatePath false args.config) (
-            m'.config or (lib.removeAttrs m' (builtins.attrNames attrs))
-          );
-        }
+      attrs
+      // {
+        imports = lib.map (
+          i:
+          wrap {
+            inherit gatePath;
+            file = i;
+          }
+        ) (attrs.imports or [ ]);
+        options = (attrs.options or { }) // declare;
+        # Explicit module: `config`. Shorthand: everything else.
+        config = lib.mkIf (lib.attrByPath gatePath false args.config) (
+          m'.config or (lib.removeAttrs m' (builtins.attrNames attrs))
+        );
+      }
     ) (if lib.isFunction inner then lib.functionArgs inner else { });
 in
 {
