@@ -27,7 +27,6 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       picard
       praat
       qq
-      teamspeak6-client
       telegram-desktop
       transmission-remote-gtk
       virt-manager
@@ -36,6 +35,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       zotero
       # keep-sorted end
     ]
+    ++ optionalPkg [ "teamspeak6-client" ]
     ++ optionalPkg [
       "nur"
       "repos"
