@@ -5,6 +5,7 @@ lib.fix (self: {
   buildModuleList = import ./build-module-list.nix { inherit self lib; };
   flattenTree = import ./flatten-tree.nix { inherit lib; };
   rakeLeaves = import ./rake-leaves.nix { inherit inputs lib; };
+  inherit (import ./mk-world.nix { inherit self lib; }) mkWorld mkWorldLeaves;
   maybeAttrByPath = import ./maybe-attr-by-path.nix { inherit lib; };
   optionalPkg = import ./optional-pkg.nix { inherit lib; };
   transposeAttrs = import ./transpose-attrs.nix { inherit lib; };
