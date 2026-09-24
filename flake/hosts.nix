@@ -90,27 +90,24 @@ let
         ];
     };
 
-  standaloneHm = lib.genAttrs config.systems (
-    system:
-    mkStandaloneHm {
-      inherit system;
-      shapePath = [
-        "yinfeng"
-        "nonGraphical"
-      ];
-    }
-  );
-
   standaloneHomeConfigurations = lib.mergeAttrsList (
     map (
       system:
       lib.listToAttrs (
         map (
           leaf:
-          lib.nameValuePair "${system}-${lib.concatStringsSep "-" leaf.path}" (mkStandaloneHm {
-            inherit system;
-            shapePath = leaf.path;
-          })
+          let
+            name = lib.concatStringsSep "-" leaf.path;
+          in
+          lib.nameValuePair "${name}/${system}" (
+            (mkStandaloneHm {
+              inherit system;
+              shapePath = leaf.path;
+            })
+            // {
+              inherit name;
+            }
+          )
         ) (self.lib.mkWorldLeaves ../home-manager/standalone)
       )
     ) config.systems
@@ -176,11 +173,11 @@ let
     lib.mapAttrsToList getHostToplevel self.nixosConfigurations
   );
 
-  getHomeActivation = system: cfg: {
-    "${system}"."home-manager/standalone-modules" = cfg.activationPackage;
+  getHomeActivation = cfg: {
+    "${cfg.pkgs.stdenv.hostPlatform.system}"."home/${cfg.name}" = cfg.activationPackage;
   };
   homeActivations = lib.foldr lib.recursiveUpdate { } (
-    lib.mapAttrsToList getHomeActivation standaloneHm
+    lib.map getHomeActivation (lib.attrValues self.homeConfigurations)
   );
 in
 {
