@@ -3,6 +3,7 @@
   world = {
     profiles = {
       audio.midi.enable = true;
+      graphical.niri.enable = true;
       boot = {
         binfmt.enable = true;
         plymouth.enable = true;

@@ -43,7 +43,6 @@ in
 
       hardware.enableRedistributableFirmware = true;
 
-      services.desktopManager.gnome.enable = true;
       services.power-profiles-daemon.enable = true;
       services.logind.settings.Login.HandleLidSwitchExternalPower = "ignore";
 

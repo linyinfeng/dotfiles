@@ -61,8 +61,6 @@ in
   boot.kernelParams = [ "fbcon=font:VGA8x16" ];
   hardware.enableRedistributableFirmware = true;
 
-  services.desktopManager.gnome.enable = true;
-
   virtualisation.kvmgt = {
     enable = true;
     device = "0000:00:02.0";

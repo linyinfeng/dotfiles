@@ -9,8 +9,6 @@
   imports =
     suites.mobile
     ++ (with profiles; [
-      graphical.gnome
-      graphical.niri
       graphical.activate-linux
       services.acme
       services.nginx
@@ -28,7 +26,7 @@
 
   config = lib.mkMerge [
     {
-      services.desktopManager.gnome.enable = true;
+      world.profiles.graphical.niri.enable = true;
 
       services.tailscale.enable = true;
       networking.campus-network = {
@@ -42,7 +40,6 @@
           imports =
             suites.mobile
             ++ (with profiles; [
-              gnome
               niri
               alacritty
             ]);

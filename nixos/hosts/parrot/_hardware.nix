@@ -37,30 +37,6 @@ lib.mkMerge [
       options kvm-amd nested=1
     '';
 
-    systemd.services = lib.mkIf config.services.displayManager.gdm.enable {
-      gdm-prepare = {
-        script = ''
-          mkdir -p .config
-          ln -sf ${./monitors.xml} .config/monitors.xml
-        '';
-        serviceConfig = {
-          User = config.users.users.gdm.name;
-          Group = config.users.users.gdm.name;
-          StateDirectory = "gdm";
-          WorkingDirectory = "/var/lib/gdm";
-        };
-        before = [ "display-manager.service" ];
-        wantedBy = [ "display-manager.service" ];
-      };
-    };
-    systemd.tmpfiles.settings."80-gdm-monitors" = {
-      "${config.users.users.gdm.home}/.config/monitors.xml" = {
-        "L+" = {
-          argument = "${./monitors.xml}";
-        };
-      };
-    };
-
     home-manager.users.yinfeng.services.kanshi.settings =
       let
         embedded = "eDP-1";
