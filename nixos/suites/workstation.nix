@@ -1,0 +1,41 @@
+{ lib, ... }:
+{
+  world.suites.base.enable = lib.mkDefault true;
+  world.suites.multimediaDev.enable = lib.mkDefault true;
+  world.suites.virtualization.enable = lib.mkDefault true;
+  world.suites.network.enable = lib.mkDefault true;
+  world.suites.backup.enable = lib.mkDefault true;
+  world.suites.monitoring.enable = lib.mkDefault true;
+
+  world.profiles.boot.binfmt.enable = lib.mkDefault true;
+  world.profiles.boot.plymouth.enable = lib.mkDefault true;
+  world.profiles.system.types.workstation.enable = lib.mkDefault true;
+  world.profiles.networking.network-manager.enable = lib.mkDefault true;
+  world.profiles.networking.tools.enable = lib.mkDefault true;
+  world.profiles.networking.mobile-nixos-usb.enable = lib.mkDefault true;
+  world.profiles.programs.terminal-multiplexing.enable = lib.mkDefault true;
+  world.profiles.programs.tools.enable = lib.mkDefault true;
+  world.profiles.programs.solaar.enable = lib.mkDefault true;
+  world.profiles.programs.service-mail.enable = lib.mkDefault true;
+  world.profiles.programs.tg-send.enable = lib.mkDefault true;
+  world.profiles.programs.localsend.enable = lib.mkDefault true;
+  world.profiles.services.bluetooth.enable = lib.mkDefault true;
+  world.profiles.services.auto-upgrade.enable = lib.mkDefault true;
+  world.profiles.services.kde-connect.enable = lib.mkDefault true;
+  world.profiles.services.printing.enable = lib.mkDefault true;
+  world.profiles.services.snapper.enable = lib.mkDefault true;
+  world.profiles.services.iperf3.enable = lib.mkDefault true;
+  world.profiles.services.homed.enable = lib.mkDefault true;
+  world.profiles.services.portal-client.enable = lib.mkDefault true;
+  world.profiles.services.flatpak.enable = lib.mkDefault true;
+  world.profiles.services.smartd.enable = lib.mkDefault true;
+  world.profiles.services.system76-scheduler.enable = lib.mkDefault true;
+  world.profiles.audio.midi.enable = lib.mkDefault true;
+  world.profiles.security.hardware-keys.enable = lib.mkDefault true;
+  world.profiles.hardware.rtl-sdr.enable = lib.mkDefault true;
+  world.profiles.hardware.tablet.enable = lib.mkDefault true;
+  world.profiles.nix.nixbuild.enable = lib.mkDefault true;
+  world.profiles.nix.hydra-builder-client.enable = lib.mkDefault true;
+  world.profiles.nix.hydra-builder-server.enable = lib.mkDefault true;
+  world.profiles.nix.auto-gen.enable = lib.mkDefault true;
+}
