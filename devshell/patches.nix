@@ -6,7 +6,6 @@ let
       echo "updating patches..."
       pushd "$PRJ_ROOT/patches" >/dev/null
       # currently nothing
-      curl --location https://github.com/Alexays/Waybar/pull/3930.patch >waybar-3930.patch
       popd >/dev/null
     '';
   };
