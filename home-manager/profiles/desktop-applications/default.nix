@@ -14,20 +14,27 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       # keep-sorted start
       amberol
       calibre
+      decibels
       file-roller
+      geary
       gimp
       # gnuradio # unused
+      gnome-text-editor
       inkscape
       kicad
       libreoffice
       llm-agents.chatgpt
+      loupe
       meld
       mission-center
       moonlight-qt
+      nautilus
+      papers
       picard
       praat
       qq
       telegram-desktop
+      totem
       transmission-remote-gtk
       virt-manager
       virt-viewer
@@ -68,12 +75,6 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   };
 
   dconf.settings = {
-    "org/gnome/shell" = {
-      favorite-apps = [
-        "zotero.desktop"
-        "io.missioncenter.MissionCenter.desktop"
-      ];
-    };
     "org/virt-manager/virt-manager/connections" = {
       autoconnect = [ "qemu:///system" ];
       uris = [

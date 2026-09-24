@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [ logseq ];
@@ -13,7 +13,6 @@
       categories = [ "Utility" ];
     };
   };
-  dconf.settings."org/gnome/shell".favorite-apps = lib.mkAfter [ "logseq.desktop" ];
   home.global-persistence.directories = [
     ".config/Logseq"
     ".logseq"

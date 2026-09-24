@@ -259,10 +259,6 @@ in
               block-out-from "screencast"
             }
             layer-rule {
-              match namespace="^waybar$"
-              ${shadow}
-            }
-            layer-rule {
               match namespace="^noctalia-notifications-"
               match namespace="^notifications$"
               block-out-from "screencast"

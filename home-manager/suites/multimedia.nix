@@ -6,7 +6,7 @@
     dconf-proxy.enable = true;
     desktop-applications.enable = true;
     fcitx5.enable = true;
-    gnome.enable = true;
+    gtk.enable = true;
     mime.enable = true;
     minecraft.enable = true;
     niri.enable = true;

@@ -1,8 +1,8 @@
 { pkgs, lib, ... }:
 
 let
-  switchGnome = pkgs.writeShellApplication {
-    name = "darkman-switch-gnome";
+  switchGtk = pkgs.writeShellApplication {
+    name = "darkman-switch-gtk";
     runtimeInputs = with pkgs; [
       glib
     ];
@@ -20,10 +20,10 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       portal = true;
     };
     lightModeScripts = {
-      gnome = "${lib.getExe switchGnome} light";
+      gtk = "${lib.getExe switchGtk} light";
     };
     darkModeScripts = {
-      gnome = "${lib.getExe switchGnome} dark";
+      gtk = "${lib.getExe switchGtk} dark";
     };
   };
 }

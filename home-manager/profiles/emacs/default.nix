@@ -78,9 +78,6 @@ in
     ecn = "emacsclient --create-frame --no-wait";
     ect = "emacsclient --create-frame --tty";
   };
-  dconf.settings = lib.mkIf config.home.env.dconf {
-    "org/gnome/shell".favorite-apps = [ "emacsclient.desktop" ];
-  };
 
   home.file.".emacs.d/init.el".source = emacsConfig;
   home.link.".ispell_english".target = "${syncDir}/dotfiles/ispell_english";
