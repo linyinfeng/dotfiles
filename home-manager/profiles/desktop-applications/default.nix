@@ -19,7 +19,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       # gnuradio # unused
       inkscape
       kicad
-      libreoffice-fresh
+      libreoffice
       llm-agents.chatgpt
       meld
       mission-center
