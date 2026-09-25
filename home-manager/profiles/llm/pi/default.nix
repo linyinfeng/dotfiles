@@ -82,6 +82,7 @@ in
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
+        "npm:pi-commandcode-provider"
         "npm:pi-fabric"
         "npm:pi-goal-x"
         "npm:pi-interactive-shell"

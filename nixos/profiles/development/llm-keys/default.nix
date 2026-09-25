@@ -90,6 +90,12 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."command_code_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   sops.templates."opencode-auth" = {
     content = builtins.toJSON {
       deepseek = {
@@ -140,6 +146,10 @@
   };
   sops.templates."pi-auth" = {
     content = builtins.toJSON {
+      commandcode = {
+        key = config.sops.placeholder."command_code_api_key";
+        type = "api_key";
+      };
       deepseek = {
         key = config.sops.placeholder."deepseek_api_key";
         type = "api_key";
