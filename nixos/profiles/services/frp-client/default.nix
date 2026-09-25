@@ -44,6 +44,10 @@ in
         serverAddr = "frp-mtl0.li7g.com";
         serverPort = 443;
       };
+      "hkg0" = commonConfig {
+        serverAddr = "frp-hkg0.li7g.com";
+        serverPort = 443;
+      };
     };
   };
 }

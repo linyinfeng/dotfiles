@@ -6,7 +6,10 @@
 {
   config = lib.mkMerge [
     {
-      world.suites.overseaServer.enable = true;
+      world = {
+        profiles.services.frp-server.enable = true;
+        suites.overseaServer.enable = true;
+      };
 
       environment.global-persistence = {
         enable = true;
