@@ -58,10 +58,19 @@ in
       outputPad = 0;
       hideThinkingBlock = true;
       terminal.showTerminalProgress = true;
-      defaultProvider = "opencode-go";
-      # defaultModel / enabledModels are deliberately not declared: pi owns
-      # model selection at runtime in settings.json, so the declarative value
-      # would just fight the switch merge on every rebuild.
+      # pi also writes these at runtime; the switch merge wins, so a /model
+      # pick only survives until the next rebuild.
+      defaultProvider = "commandcode";
+      defaultModel = "deepseek/deepseek-v4.1-flash";
+      enabledModels = [
+        "cc-switch/gpt-6-astra"
+        "deepseek/deepseek-flash"
+        "openrouter/google/gemini-3.8-flash"
+        "zai-coding-cn/glm-5.3-flash"
+        "commandcode/deepseek/deepseek-v4.1-flash"
+        "xiaomi-token-plan-cn/mimo-v2.6-flash"
+        "xiaomi-token-plan-cn/mimo-v2.6-pro"
+      ];
       defaultThinkingLevel = "high";
       steeringMode = "all";
       tokenSpeed = {
