@@ -1,0 +1,70 @@
+name: "Terraform post-nixos"
+on:
+  schedule:
+    # reconcile the resources that depend on a running NixOS (garage buckets and
+    # keys, <device>.ts.li7g.com records): a host that came back, a device whose
+    # tailscale address changed, or a new host in local.hosts is picked up here
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+concurrency: terraform-post-nixos
+
+env:
+  SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+  DOTFILES_DIR: dotfiles
+  SECRETS_DIR: infrastructure-secrets
+  TERRAFORM_STAGE: post-nixos
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    environment: infrastructure
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          path: dotfiles
+          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
+      - name: Checkout infrastructure-secrets
+        uses: actions/checkout@main
+        with:
+          repository: linyinfeng/infrastructure-secrets
+          ref: main
+          path: infrastructure-secrets
+          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
+      - name: Install nix
+        uses: cachix/install-nix-action@master
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Setup cachix
+        uses: cachix/cachix-action@master
+        with:
+          name: linyinfeng
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - name: Cache terraform
+        uses: actions/cache@main
+        with:
+          path: dotfiles/terraform/stages/post-nixos/.terraform-data/providers
+          key: ${{ runner.os }}-terraform-post-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/post-nixos/.terraform.lock.hcl') }}
+      - name: Git identity
+        run: |
+          git config --global user.email "nano@linyinfeng.com"
+          git config --global user.name "Nano"
+      - name: Terraform pipe
+        # applies this stage and commits the refreshed encrypted state/outputs;
+        # it never writes the NixOS inputs, those belong to pre-nixos
+        run: |
+          nix develop ./dotfiles --command terraform-pipe post-nixos -auto-approve
+      - name: Notify
+        if: failure()
+        run: |
+          set -e
+          nix develop ./dotfiles --command sops exec-file infrastructure-secrets/terraform/outputs/pre-nixos.yaml 'yq ".ntfy_sh_topic_secret.value" "{}" > ntfy-topic-secret'
+          curl \
+            --header "Title: Terraform post-nixos" \
+            --header "Tags: terraform" \
+            --data "post-nixos apply failed, run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            "https://ntfy.sh/main-$(cat ntfy-topic-secret)"

@@ -74,6 +74,64 @@ let
     ++ [ "esac" ]
   );
 
+  # stages in dependency order; asserted against the registry below
+  stageOrder =
+    assert
+      builtins.sort builtins.lessThan [
+        "pre-nixos"
+        "post-nixos"
+      ] == builtins.sort builtins.lessThan stageNames;
+    [
+      "pre-nixos"
+      "post-nixos"
+    ];
+
+  # one stage of the pipeline: init, apply, refresh that stage's outputs and, for
+  # pre-nixos, the NixOS inputs derived from them
+  terraformApplyStage = pkgs.writeShellApplication {
+    name = "terraform-apply-stage";
+    runtimeInputs = with pkgs; [
+      terraform
+      terraformInit
+      terraformWrapper
+      terraformUpdateOutputs
+      terraformOutputsExtractData
+    ];
+    text = ''
+      ${common}
+
+      stage="''${1:-''${TERRAFORM_STAGE:-}}"
+      shift || true
+      ${requireStage}
+      ${stageCheck}
+
+      terraform-init "$stage"
+      TERRAFORM_STAGE="$stage" terraform-wrapper apply "$@"
+      terraform-update-outputs "$stage"
+      if [ "$stage" = "pre-nixos" ]; then
+        terraform-outputs-extract-data "$stage"
+        extract-secrets-terraform-only
+      fi
+    '';
+  };
+
+  # commit the state/outputs a successful pipeline produced
+  terraformCommitOutputs = pkgs.writeShellApplication {
+    name = "terraform-commit-outputs";
+    runtimeInputs = with pkgs; [ git ];
+    text = ''
+      ${common}
+
+      git -C "$SECRETS_DIR" add --all
+      if git -C "$SECRETS_DIR" diff --cached --quiet; then
+        message "secrets repository is clean, nothing to commit"
+      else
+        git -C "$SECRETS_DIR" commit --message "$1"
+        git -C "$SECRETS_DIR" push
+      fi
+    '';
+  };
+
   encryptTo = pkgs.writeShellApplication {
     name = "encrypt-to";
     runtimeInputs = with pkgs; [ sops ];
@@ -286,23 +344,38 @@ in
             if [ "$exit_code" -ne 0 ]; then
               return "$exit_code"
             fi
-            git -C "$SECRETS_DIR" add --all
-            if ! git -C "$SECRETS_DIR" diff --cached --quiet; then
-              git -C "$SECRETS_DIR" commit --message "Terraform $stage apply"
-              git -C "$SECRETS_DIR" push
-            fi
+            terraform-commit-outputs "Terraform $stage apply"
           }
           trap cleanup EXIT
 
-          terraform-init "$stage"
-          TERRAFORM_STAGE="$stage" terraform-wrapper apply "$@"
-          terraform-update-outputs "$stage"
-          if [ "$stage" = "pre-nixos" ]; then
-            terraform-outputs-extract-data "$stage"
-            extract-secrets-terraform-only
-          fi
+          terraform-apply-stage "$stage" "$@"
 
           nix fmt
+        '';
+      }
+
+      {
+        category = "infrastructure";
+        name = "terraform-pipe-all";
+        help = "run every stage in dependency order, publishing the NixOS inputs after pre-nixos";
+        command = ''
+          set -e
+
+          git -C "$SECRETS_DIR" pull --ff-only
+          function cleanup {
+            exit_code=$?
+            if [ "$exit_code" -ne 0 ]; then
+              return "$exit_code"
+            fi
+            terraform-commit-outputs "Terraform ${builtins.concatStringsSep "+" stageOrder} apply"
+            nix fmt
+          }
+          trap cleanup EXIT
+
+          for stage in ${builtins.concatStringsSep " " stageOrder}; do
+            echo "== stage: $stage"
+            terraform-apply-stage "$stage" "$@"
+          done
         '';
       }
 
@@ -329,6 +402,16 @@ in
       {
         category = "infrastructure";
         package = terraformInit;
+      }
+
+      {
+        category = "infrastructure";
+        package = terraformApplyStage;
+      }
+
+      {
+        category = "infrastructure";
+        package = terraformCommitOutputs;
       }
 
       {
