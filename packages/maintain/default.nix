@@ -3,8 +3,11 @@
   pkgs,
   python3Packages,
   makeWrapper,
+  age,
+  coreutils,
   git,
   nix,
+  openssh,
   prettier,
   sops,
   yq-go,
@@ -53,7 +56,11 @@ let
 
   # tools the pipelines shell out to, next to terraform itself
   runtimeTools = [
+    age
     bind
+    coreutils
+    git
+    openssh
     efitools
     git
     jq

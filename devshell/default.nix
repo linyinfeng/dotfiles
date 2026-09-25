@@ -1,11 +1,6 @@
 { pkgs, self', ... }:
 {
-  imports = [
-    ./envs.nix
-    ./boot-sd.nix
-    ./patches.nix
-    ./prepare
-  ];
+  imports = [ ./envs.nix ];
   devshells.default = {
     commands = [
       {
