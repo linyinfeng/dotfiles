@@ -177,6 +177,11 @@ in
       http_response = lib.lists.map (code: {
         urls = lib.lists.map (c: c.url) (lib.filter (c: c.code == code) urlCfgs);
         response_status_code = code;
+        fieldinclude = [
+          "http_response_code"
+          "response_time"
+          "result_code"
+        ];
         tags.output_bucket = "http";
       }) allCodes;
     };

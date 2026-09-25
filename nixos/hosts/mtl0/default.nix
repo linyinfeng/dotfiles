@@ -107,6 +107,10 @@ in
         device = "/dev/disk/by-uuid/4a186796-5865-4b47-985c-9354adec09a4";
         fsType = "ext4";
       };
+      services.telegraf-system.diskMountPoints = [
+        "/boot" # ext4
+        "/nix" # btrfs main pool
+      ];
       services.zswap.enable = true;
       swapDevices = [ { device = "/swap/swapfile"; } ];
 

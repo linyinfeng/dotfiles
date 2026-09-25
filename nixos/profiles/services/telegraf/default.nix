@@ -15,7 +15,8 @@ in
     environmentFiles = [ config.sops.templates."telegraf-environment".path ];
     extraConfig = {
       agent = {
-        interval = "10s";
+        # Grafana Cloud bills max(active series, DPM); 60s = 1 sample/min/series
+        interval = "60s";
         round_interval = true;
         metric_batch_size = 1000;
         metric_buffer_limit = 10000;

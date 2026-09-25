@@ -173,6 +173,10 @@ in
       fileSystems."/persist".neededForBoot = true;
       fileSystems."/var/log".neededForBoot = true;
       services.zswap.enable = true;
+      services.telegraf-system.diskMountPoints = [
+        "/boot" # vfat
+        "/nix" # btrfs main pool
+      ];
 
       boot.supportedFilesystems = [ "ntfs" ];
 

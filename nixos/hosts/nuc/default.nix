@@ -171,6 +171,11 @@ in
       swapDevices = [ { device = "/swap/swapfile"; } ];
       fileSystems."/var/lib/transmission" = btrfsSubvolMobile "@bittorrent" { };
       fileSystems."/media/data" = btrfsSubvolMobile "@data" { };
+      services.telegraf-system.diskMountPoints = [
+        "/boot" # vfat
+        "/media/data" # btrfs mobile pool
+        "/nix" # btrfs main pool
+      ];
 
       system.nproc = 8;
     }

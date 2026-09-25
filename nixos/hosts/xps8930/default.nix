@@ -184,6 +184,11 @@ in
   };
   fileSystems."/media/data" = btrfsSubvolData "@data" { };
   services.zswap.enable = true;
+  services.telegraf-system.diskMountPoints = [
+    "/boot" # vfat
+    "/media/data" # btrfs data pool
+    "/nix" # btrfs main pool
+  ];
   swapDevices = [ { device = "/swap/swapfile"; } ];
 
   system.stateVersion = "26.05";
