@@ -150,6 +150,16 @@
       };
     }
 
+    {
+      topology.self.interfaces.ens3 = {
+        network = "internet";
+        renderer.hidePhysicalConnections = config.topology.tidy;
+        physicalConnections = [
+          (config.lib.topology.mkConnection "internet" "*")
+        ];
+      };
+    }
+
     { system.stateVersion = "26.05"; }
   ];
 }
