@@ -2,8 +2,6 @@
 {
   imports = [
     ./envs.nix
-    ./secrets.nix
-    ./terraform.nix
     ./boot-sd.nix
     ./patches.nix
     ./prepare

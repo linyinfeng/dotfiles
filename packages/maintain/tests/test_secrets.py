@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from maintain import secrets
+from maintain.common import secrets_dir, secrets_extract_dir
 
 
 def test_sops_files(tmp_path):
@@ -15,11 +16,28 @@ def test_env_path_absolutizes(tmp_path, monkeypatch):
     monkeypatch.setenv("SECRETS_DIR", "infrastructure-secrets")
     monkeypatch.chdir(tmp_path)
 
-    assert secrets.secrets_dir() == tmp_path / "infrastructure-secrets"
+    assert secrets_dir() == tmp_path / "infrastructure-secrets"
 
 
 def test_env_path_default_is_lazy(monkeypatch):
     monkeypatch.delenv("SECRETS_EXTRACT_DIR", raising=False)
-    monkeypatch.setattr(secrets, "repo_root", lambda: Path("/repo"))
+    monkeypatch.setattr("maintain.common.repo_root", lambda: Path("/repo"))
 
-    assert secrets.extract_dir() == Path("/repo/secrets")
+    assert secrets_extract_dir() == Path("/repo/secrets")
+
+
+def test_encrypted_outputs_falls_back_to_the_pre_split_layout(tmp_path, monkeypatch):
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path))
+    (tmp_path / "terraform-outputs.yaml").write_text("")
+
+    assert secrets.encrypted_outputs("pre-nixos") == tmp_path / "terraform-outputs.yaml"
+
+
+def test_encrypted_outputs_prefers_the_split_layout(tmp_path, monkeypatch):
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path))
+    (tmp_path / "terraform-outputs.yaml").write_text("")
+    split = tmp_path / "terraform/outputs/pre-nixos.yaml"
+    split.parent.mkdir(parents=True)
+    split.write_text("")
+
+    assert secrets.encrypted_outputs("pre-nixos") == split

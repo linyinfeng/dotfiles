@@ -3,77 +3,42 @@
 import os
 import shlex
 import shutil
-import subprocess
 import sys
 import tempfile
-from collections.abc import Callable
 from pathlib import Path
 from typing import Annotated, Literal
 
 import typer
+
+from maintain.common import (
+    dotfiles_dir,
+    message,
+    nix_build,
+    repo_root,
+    run,
+    secrets_dir,
+    secrets_extract_dir,
+)
 
 app = typer.Typer(help="sops encrypted files")
 
 SecretType = Literal["terraform", "predefined", "both"]
 
 
-def message(text: str) -> None:
-    print(f"> {text}", file=sys.stderr)
-
-
-def run(cmd: list[str], **kwargs: object) -> None:
-    subprocess.run(cmd, check=True, **kwargs)
-
-
-def repo_root() -> Path:
-    """The checkout this runs in, independent of the current directory."""
-    out = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
-    return Path(out.stdout.strip())
-
-
-def env_path(name: str, default: Callable[[], Path]) -> Path:
-    """$NAME made absolute, or the default. CI passes these relative to its workspace root."""
-    value = os.environ.get(name)
-    return Path(value).resolve() if value else default()
-
-
-def dotfiles_dir() -> Path:
-    return env_path("DOTFILES_DIR", repo_root)
-
-
-def secrets_dir() -> Path:
-    return env_path(
-        "SECRETS_DIR", lambda: repo_root().parent / "infrastructure-secrets"
-    )
-
-
-def extract_dir() -> Path:
-    return env_path("SECRETS_EXTRACT_DIR", lambda: repo_root() / "secrets")
-
-
 def sops_files(root: Path) -> list[Path]:
     return sorted((root / "secrets").rglob("*.yaml"))
 
 
-def nix_build(flake_ref: str, out_link: Path) -> None:
-    run(["nix", "build", flake_ref, "--out-link", str(out_link)])
-
-
-def decrypt(source: Path, target: Path) -> None:
-    """Decrypt SOURCE into TARGET, which the caller keeps inside a private temp directory."""
+def decrypt(source: Path, target: Path, type: str = "yaml") -> None:
+    """Decrypt SOURCE into TARGET, which callers keep inside a private temp directory."""
     with target.open("w") as out:
         run(
             [
                 "sops",
                 "--input-type",
-                "yaml",
+                type,
                 "--output-type",
-                "yaml",
+                type,
                 "--decrypt",
                 str(source),
             ],
@@ -81,19 +46,18 @@ def decrypt(source: Path, target: Path) -> None:
         )
 
 
-def encrypt_to_file(plain: Path, target: Path, type: str, formatter: str) -> None:
+def encrypt_to_file(plain: Path, target: Path, type: str, formatter: list[str]) -> None:
     """Encrypt PLAIN into TARGET, skipping when the formatted content is unchanged."""
-    argv = shlex.split(formatter)
     if target.exists():
         with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
             tmpdir = Path(tmp)
             decrypted = tmpdir / "target_plain"
-            decrypt(target, decrypted)
+            decrypt(target, decrypted, type)
             formatted = []
             for source in (decrypted, plain):
                 path = tmpdir / f"{source.name}.formatted"
                 with path.open("w") as out:
-                    run([*argv, str(source)], stdout=out)
+                    run([*formatter, str(source)], stdout=out)
                 formatted.append(path.read_bytes())
             if formatted[0] == formatted[1]:
                 message(f"same, skipping '{target}'...")
@@ -108,7 +72,7 @@ def encrypt_to_file(plain: Path, target: Path, type: str, formatter: str) -> Non
 
 def extract_file(source: Path, secret_type: str) -> None:
     """Render the SECRET_TYPE templates from a decrypted SOURCE into the secrets tree."""
-    target_dir = extract_dir() / secret_type / "hosts"
+    target_dir = secrets_extract_dir() / secret_type / "hosts"
     target_dir.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
@@ -139,8 +103,19 @@ def extract_file(source: Path, secret_type: str) -> None:
                     stdout=out,
                 )
             encrypt_to_file(
-                plain, target_dir / f"{name}.yaml", "yaml", "yq --prettyPrint"
+                plain, target_dir / f"{name}.yaml", "yaml", ["yq", "--prettyPrint"]
             )
+
+
+def encrypted_outputs(stage: str = "pre-nixos") -> Path:
+    """The encrypted terraform outputs of STAGE, with the pre-split layout as fallback."""
+    outputs = secrets_dir() / f"terraform/outputs/{stage}.yaml"
+    if (
+        not outputs.exists()
+        and (legacy := secrets_dir() / "terraform-outputs.yaml").exists()
+    ):
+        return legacy
+    return outputs
 
 
 @app.command("update-keys")
@@ -154,27 +129,6 @@ def update_keys() -> None:
     message(f"{len(files)} file(s)")
 
 
-@app.command("encrypt-to")
-def encrypt_to(
-    plain: Annotated[Path, typer.Argument(help="plaintext file to encrypt")],
-    target: Annotated[
-        Path, typer.Option("--target", "-t", help="encrypted file to write")
-    ],
-    type: Annotated[str, typer.Option(help="sops input and output type")] = "yaml",
-    formatter: Annotated[
-        str,
-        typer.Option(
-            help="command that formats one file to stdout, e.g. 'yq --prettyPrint'"
-        ),
-    ] = "",
-) -> None:
-    """Encrypt PLAIN into TARGET, skipping when the formatted content is unchanged."""
-    message(
-        f"encrypting '{plain}' to '{target}' (type: '{type}', formatter: '{formatter}')..."
-    )
-    encrypt_to_file(plain, target, type, formatter)
-
-
 @app.command("extract")
 def extract(secret_type: Annotated[SecretType, typer.Argument()] = "both") -> None:
     """Regenerate the extracted secrets from the encrypted sources."""
@@ -182,11 +136,8 @@ def extract(secret_type: Annotated[SecretType, typer.Argument()] = "both") -> No
         tmpdir = Path(tmp)
 
         if secret_type in ("terraform", "both"):
-            outputs = secrets_dir() / "terraform/outputs/pre-nixos.yaml"
-            if not outputs.exists():
-                outputs = secrets_dir() / "terraform-outputs.yaml"
             source = tmpdir / "terraform.yaml"
-            decrypt(outputs, source)
+            decrypt(encrypted_outputs("pre-nixos"), source)
             extract_file(source, "terraform")
 
         if secret_type in ("predefined", "both"):

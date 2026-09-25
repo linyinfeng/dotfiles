@@ -35,7 +35,7 @@ jobs:
         # applies this stage and commits the refreshed encrypted state/outputs;
         # it never writes the NixOS inputs, those belong to pre-nixos
         run: |
-          nix develop ./dotfiles --command terraform-pipe post-nixos -auto-approve
+          nix develop ./dotfiles --command maintain terraform pipe post-nixos -- -auto-approve
       - name: Notify
         if: failure()
         run: |

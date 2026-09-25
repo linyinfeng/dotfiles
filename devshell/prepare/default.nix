@@ -90,8 +90,8 @@ let
 
       manual run
       ==========
-      terraform-pipe-all
-      sops-update-keys
+      maintain terraform pipe-all
+      maintain secrets update-keys
       EOF
 
       message "notice saved in 'prepare-host-notice-$host'"

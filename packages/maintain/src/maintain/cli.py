@@ -2,10 +2,11 @@
 
 import typer
 
-from maintain import secrets
+from maintain import secrets, terraform
 
 app = typer.Typer(help="maintenance CLI for this repository")
 app.add_typer(secrets.app, name="secrets")
+app.add_typer(terraform.app, name="terraform")
 
 
 def main() -> None:
