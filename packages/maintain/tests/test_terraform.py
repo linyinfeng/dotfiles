@@ -71,6 +71,18 @@ def test_stage_env_drops_the_other_stages_variables(monkeypatch):
     assert "TF_VAR_pre_nixos_outputs_path" not in env
 
 
+def test_stage_env_absolutizes_the_secrets_dir(monkeypatch, tmp_path):
+    # CI passes SECRETS_DIR relative to its workspace root, but terraform runs with -chdir
+    monkeypatch.setenv("SECRETS_DIR", "infrastructure-secrets")
+    monkeypatch.chdir(tmp_path)
+
+    env = terraform.stage_env("pre-nixos")
+
+    assert env["TF_VAR_terraform_input_path"] == str(
+        tmp_path / "infrastructure-secrets/terraform-inputs.yaml"
+    )
+
+
 def test_stage_env_keeps_an_explicit_override(monkeypatch):
     monkeypatch.setenv("SECRETS_DIR", "/secrets")
     monkeypatch.setenv("TF_VAR_terraform_input_path", "/elsewhere/inputs.yaml")

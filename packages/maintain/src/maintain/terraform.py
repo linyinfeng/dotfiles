@@ -3,6 +3,7 @@
 import json
 import os
 import signal
+import string
 import subprocess
 import sys
 import tempfile
@@ -77,14 +78,17 @@ def stage_env(stage: str) -> dict[str, str]:
     """The stage's TF_VAR_* values: an explicit override wins, the other stages' are dropped."""
     stages = registry()["stages"]
     env = dict(os.environ)
+    # terraform runs with -chdir, so every path it receives must be absolute; CI passes
+    # SECRETS_DIR relative to its workspace root, so resolve it before expanding the defaults
+    env["SECRETS_DIR"] = str(secrets_dir())
     for var in {v for defaults in stages.values() for v in defaults} - set(
         stages[stage]
     ):
         env.pop(f"TF_VAR_{var}", None)
     for var, default in stages[stage].items():
-        env[f"TF_VAR_{var}"] = os.environ.get(f"TF_VAR_{var}") or os.path.expandvars(
+        env[f"TF_VAR_{var}"] = os.environ.get(f"TF_VAR_{var}") or string.Template(
             default
-        )
+        ).substitute(env)
     return env
 
 
@@ -102,8 +106,6 @@ def terraform_run(stage: str, args: list[str], stdout: IO[str] | None = None) ->
     """Run terraform in STAGE, decrypting its state first and re-encrypting it afterwards."""
     root = stage_root(stage)
     env = stage_env(stage)
-    # terraform runs with -chdir, so every path it receives must be absolute
-    env["SECRETS_DIR"] = str(secrets_dir())
     env["TF_DATA_DIR"] = str(root / ".terraform-data")
 
     encrypted = encrypted_state(stage)
