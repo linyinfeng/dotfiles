@@ -365,6 +365,15 @@
         };
         systems = import inputs.systems;
         devSystems = [ "x86_64-linux" ];
+        # flake-parts guesses whether perSystem.formatter is defined for *every*
+        # system; gating it on devSystems makes that guess fail for non-dev systems.
+        # https://github.com/hercules-ci/flake-parts/blob/main/modules/formatter.nix
+        touchup.attr.formatter = {
+          any.enable = lib.mkDefault false;
+          attr = lib.genAttrs config.devSystems (_: {
+            enable = true;
+          });
+        };
         flake.libs = {
           inherit (config) systems;
         }
@@ -372,6 +381,7 @@
         imports = [
           inputs.flat-flake.flakeModules.flatFlake
           inputs.flake-parts.flakeModules.easyOverlay
+          inputs.flake-parts.flakeModules.touchup
           inputs.devshell.flakeModule
           inputs.treefmt-nix.flakeModule
           inputs.pre-commit-hooks-nix.flakeModule
