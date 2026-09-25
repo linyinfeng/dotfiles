@@ -1,6 +1,11 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
-  inherit (config.lib.self.data) loki_username loki_host;
+  inherit (config.lib.self.data)
+    loki_username
+    loki_host
+    influxdb_url
+    influxdb_username
+    ;
 in
 {
   services.alloy = {
@@ -64,11 +69,50 @@ in
       }
       external_labels = {}
     }
+  ''
+  + lib.optionalString config.services.garage.enable ''
+    // Scraped locally rather than through the influx push path: that path names the
+    // field after the metric type (<metric>_counter / <metric>_gauge) and replaces
+    // the scrape's `job` label, which no upstream Prometheus dashboard expects.
+    prometheus.remote_write "cloud" {
+      endpoint {
+        url = "${influxdb_url}/api/prom/push"
+
+        basic_auth {
+          username = "${toString influxdb_username}"
+          password = sys.env("GRAFANA_METRICS_TOKEN")
+        }
+      }
+    }
+
+    prometheus.scrape "garage" {
+      // instance is pinned so the series identity does not depend on how we scrape
+      targets         = [
+        {
+          __address__ = "[::1]:${toString config.ports.garage-admin}",
+          instance    = "${config.networking.hostName}",
+        },
+      ]
+      job_name        = "garage"
+      scrape_interval = "60s"
+      bearer_token    = sys.env("GARAGE_METRICS_TOKEN")
+      forward_to      = [prometheus.remote_write.cloud.receiver]
+    }
   '';
   sops.templates."alloy-env".content = ''
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
+    GRAFANA_METRICS_TOKEN=${config.sops.placeholder."influxdb_token"}
+    GARAGE_METRICS_TOKEN=${config.sops.placeholder."garage_metrics_token"}
   '';
   sops.secrets."loki_password" = {
+    terraformOutput.enable = true;
+    restartUnits = [ "alloy.service" ];
+  };
+  sops.secrets."influxdb_token" = {
+    terraformOutput.enable = true;
+    restartUnits = [ "alloy.service" ];
+  };
+  sops.secrets."garage_metrics_token" = {
     terraformOutput.enable = true;
     restartUnits = [ "alloy.service" ];
   };

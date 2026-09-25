@@ -69,20 +69,4 @@ in
     locations."/".proxyPass = "http://[::1]:${toString ports.garage-admin}";
   };
 
-  # metrics
-  services.telegraf.extraConfig.outputs.influxdb = [
-    (config.lib.telegraf.mkMainInfluxdbOutput "garage")
-  ];
-  services.telegraf.extraConfig = {
-    inputs.prometheus = [
-      {
-        urls = [ "https://garage-admin.li7g.com" ];
-        bearer_token = "$CREDENTIALS_DIRECTORY/garage_bearer_token";
-        tags.output_bucket = "garage";
-      }
-    ];
-  };
-  systemd.services.telegraf.serviceConfig.LoadCredential = [
-    "garage_bearer_token:${config.sops.secrets."garage_metrics_token".path}"
-  ];
 }
