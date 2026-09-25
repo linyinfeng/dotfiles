@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - "main"
-  pull_request:
-    branches:
-      - "main"
   workflow_dispatch:
 
 concurrency: push-to-main
@@ -17,249 +14,44 @@ env:
   TERRAFORM_STAGE: pre-nixos
 
 jobs:
-  plan:
-    runs-on: ubuntu-latest
-    outputs:
-      diff: ${{ steps.plan.outputs.diff }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          path: dotfiles
-      - name: Checkout infrastructure-secrets
-        uses: actions/checkout@main
-        with:
-          repository: linyinfeng/infrastructure-secrets
-          ref: main
-          path: infrastructure-secrets
-          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Install nix
-        uses: cachix/install-nix-action@master
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Setup cachix
-        uses: cachix/cachix-action@master
-        with:
-          name: linyinfeng
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Cache terraform
-        uses: actions/cache@main
-        with:
-          path: dotfiles/terraform/stages/pre-nixos/.terraform-data/providers
-          key: ${{ runner.os }}-terraform-pre-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/pre-nixos/.terraform.lock.hcl') }}
-      - name: Terraform init
-        run: |
-          nix develop ./dotfiles --command terraform-init
-      - name: Terraform plan
-        id: plan
-        run: |
-          mkdir logs
-          set +e
-          nix develop ./dotfiles --command terraform-wrapper plan -out="$PWD/terraform.plan" -detailed-exitcode \
-             > >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-plan.stdout.log) \
-            2> >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-plan.stderr.log >&2)
-          exit_code="${PIPESTATUS[0]}"
-          set -e
-          if [ "$exit_code" -eq 0 ]; then
-            # success, empty diff
-            echo "diff=false" >>"$GITHUB_OUTPUT"
-          elif [ "$exit_code" -eq 2 ]; then
-            # success, non-empty diff
-            echo "diff=true" >>"$GITHUB_OUTPUT"
-          else
-            exit "$exit_code"
-          fi
-      - name: Import GPG key
-        if: steps.plan.outputs.diff == 'true'
-        run: |
-          gpg --import dotfiles/nixos/profiles/users/yinfeng/_pgp/pub.asc
-      - name: Encrypt plan
-        if: steps.plan.outputs.diff == 'true'
-        run: |
-          mkdir encrypted_plan
-          nix develop ./dotfiles --command bash -c "sops --encrypt terraform.plan > encrypted_plan/terraform.plan"
-      - name: Upload plan
-        if: steps.plan.outputs.diff == 'true'
-        uses: actions/upload-artifact@main
-        with:
-          name: plan
-          path: encrypted_plan
-      - name: Upload logs
-        uses: actions/upload-artifact@main
-        with:
-          name: logs-plan
-          path: logs
-      - name: Notify
-        if: steps.plan.outputs.diff == 'true'
-        run: |
-          set -e
-          nix develop ./dotfiles --command sops exec-file infrastructure-secrets/terraform/outputs/pre-nixos.yaml 'yq ".ntfy_sh_topic_secret.value" "{}" > ntfy-topic-secret'
-          stdout_log_url=$(curl -F "c=@logs/terraform-plan.stdout.log" https://pb.li7g.com)
-          stderr_log_url=$(curl -F "c=@logs/terraform-plan.stderr.log" https://pb.li7g.com)
-          curl \
-            --header "Title: Terraform" \
-            --header "Tags: terraform" \
-            --data "Terraform planned
-          stdout: $stdout_log_url
-          stderr: $stderr_log_url" \
-            "https://ntfy.sh/main-$(cat ntfy-topic-secret)"
-
-  plan-post-nixos:
-    runs-on: ubuntu-latest
-    # post-nixos is plan-only here on purpose: its apply has to happen after the
-    # NixOS deployment, which CI cannot observe. Run it manually in that order.
-    env:
-      TERRAFORM_STAGE: post-nixos
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-        with:
-          path: dotfiles
-      - name: Checkout infrastructure-secrets
-        uses: actions/checkout@main
-        with:
-          repository: linyinfeng/infrastructure-secrets
-          ref: main
-          path: infrastructure-secrets
-          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Install nix
-        uses: cachix/install-nix-action@master
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Setup cachix
-        uses: cachix/cachix-action@master
-        with:
-          name: linyinfeng
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Cache terraform
-        uses: actions/cache@main
-        with:
-          path: dotfiles/terraform/stages/post-nixos/.terraform-data/providers
-          key: ${{ runner.os }}-terraform-post-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/post-nixos/.terraform.lock.hcl') }}
-      - name: Terraform init
-        run: |
-          nix develop ./dotfiles --command terraform-init
-      - name: Terraform plan
-        run: |
-          nix develop ./dotfiles --command terraform-wrapper plan
-
   apply:
     runs-on: ubuntu-latest
     environment: infrastructure
-    needs: [plan]
-    if: |
-      needs.plan.outputs.diff == 'true' &&
-      github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@main
         with:
           path: dotfiles
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Checkout infrastructure-secrets
-        uses: actions/checkout@main
+      - name: Setup
+        uses: ./dotfiles/.github/actions/terraform-setup
         with:
-          repository: linyinfeng/infrastructure-secrets
-          ref: main
-          path: infrastructure-secrets
-          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Install nix
-        uses: cachix/install-nix-action@master
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Setup cachix
-        uses: cachix/cachix-action@master
-        with:
-          name: linyinfeng
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Cache terraform
-        uses: actions/cache@main
-        with:
-          path: dotfiles/terraform/stages/pre-nixos/.terraform-data/providers
-          key: ${{ runner.os }}-terraform-pre-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/pre-nixos/.terraform.lock.hcl') }}
-      - name: Terraform init
+          stage: pre-nixos
+          secrets-repo-token: ${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}
+          cachix-signing-key: ${{ secrets.CACHIX_SIGNING_KEY }}
+      # init, apply, refresh the encrypted outputs, publish the NixOS inputs through
+      # this stage's extraction steps and commit the secrets repo
+      - name: Terraform pipe
         run: |
-          nix develop ./dotfiles --command terraform-init
-      - name: Download plan
-        uses: actions/download-artifact@main
-        with:
-          name: plan
-          path: encrypted_plan
-      - name: Download logs
-        uses: actions/download-artifact@main
-        with:
-          name: logs-plan
-          path: logs
-      - name: Decrypt plan
+          nix develop ./dotfiles --command terraform-pipe pre-nixos -auto-approve
+      # the NixOS inputs (lib/data/data.json, secrets/terraform/hosts/*.yaml) live in
+      # this repo, so they need a commit of their own
+      - name: Commit dotfiles
         run: |
-          nix develop ./dotfiles --command sops --decrypt encrypted_plan/terraform.plan > terraform.plan
-      - name: Terraform apply
-        run: |
-          nix develop ./dotfiles --command terraform-wrapper apply "$(realpath terraform.plan)" \
-             > >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-apply.stdout.log) \
-            2> >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' | tee logs/terraform-apply.stderr.log >&2)
-      - name: Terraform update outputs
-        if: always()
-        run: |
-          nix develop ./dotfiles --command terraform-update-outputs
-      - name: Terraform extract data
-        if: always()
-        run: |
-          nix develop ./dotfiles --command terraform-outputs-extract-data
-      - name: Terraform extract secrets
-        if: always()
-        run: |
-          nix develop ./dotfiles --command extract-secrets
-      - name: Format
-        if: always()
-        run: |
-          cd dotfiles
-          nix fmt
-      - name: Commit and push
-        if: always()
-        run: |
-          set -e
-          root=$(pwd)
-          for repo in "dotfiles" "infrastructure-secrets"; do
-            echo "commit and push '$repo'..."
-
-            cd "$root/$repo"
-            if [ -z "$(git status --porcelain)" ]; then
-              echo "repository is clean, skip commit and push"
-            else
-              git config --global user.email "nano@linyinfeng.com"
-              git config --global user.name "Nano"
-              git add --all
-              git commit --message "Terraform apply"
-              git push
-            fi
-          done
-      - name: Upload logs
-        if: always()
-        uses: actions/upload-artifact@main
-        with:
-          name: logs-apply
-          path: logs
+          git add --all
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "repository is clean, skip commit"
+          else
+            git commit --message "Terraform pre-nixos apply"
+            git push
+          fi
       - name: Notify
-        if: always()
+        if: failure()
         run: |
           set -e
           nix develop ./dotfiles --command sops exec-file infrastructure-secrets/terraform/outputs/pre-nixos.yaml 'yq ".ntfy_sh_topic_secret.value" "{}" > ntfy-topic-secret'
-          stdout_log_url=$(curl -F "c=@logs/terraform-apply.stdout.log" https://pb.li7g.com)
-          stderr_log_url=$(curl -F "c=@logs/terraform-apply.stderr.log" https://pb.li7g.com)
           curl \
-            --header "Title: Terraform" \
+            --header "Title: Terraform pre-nixos" \
             --header "Tags: terraform" \
-            --data "Terraform applied
-          stdout: $stdout_log_url
-          stderr: $stderr_log_url" \
+            --data "pre-nixos apply failed, run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             "https://ntfy.sh/main-$(cat ntfy-topic-secret)"

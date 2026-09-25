@@ -7,7 +7,7 @@ on:
     - cron: "0 5 * * *"
   workflow_dispatch:
 
-concurrency: terraform-post-nixos
+concurrency: push-to-main
 
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
@@ -25,34 +25,12 @@ jobs:
         with:
           path: dotfiles
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Checkout infrastructure-secrets
-        uses: actions/checkout@main
+      - name: Setup
+        uses: ./dotfiles/.github/actions/terraform-setup
         with:
-          repository: linyinfeng/infrastructure-secrets
-          ref: main
-          path: infrastructure-secrets
-          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
-      - name: Install nix
-        uses: cachix/install-nix-action@master
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - name: Setup cachix
-        uses: cachix/cachix-action@master
-        with:
-          name: linyinfeng
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Cache terraform
-        uses: actions/cache@main
-        with:
-          path: dotfiles/terraform/stages/post-nixos/.terraform-data/providers
-          key: ${{ runner.os }}-terraform-post-nixos-providers-${{ hashFiles('dotfiles/terraform/stages/post-nixos/.terraform.lock.hcl') }}
-      - name: Git identity
-        run: |
-          git config --global user.email "nano@linyinfeng.com"
-          git config --global user.name "Nano"
+          stage: post-nixos
+          secrets-repo-token: ${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}
+          cachix-signing-key: ${{ secrets.CACHIX_SIGNING_KEY }}
       - name: Terraform pipe
         # applies this stage and commits the refreshed encrypted state/outputs;
         # it never writes the NixOS inputs, those belong to pre-nixos

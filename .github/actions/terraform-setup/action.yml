@@ -1,0 +1,50 @@
+name: "Terraform stage setup"
+description: >-
+  Check out the secrets repo and set up nix, cachix and the provider cache for
+  one terraform stage. Composite actions cannot read secrets, so the tokens are
+  passed in by the caller.
+
+inputs:
+  stage:
+    description: "terraform stage, e.g. pre-nixos"
+    required: true
+  secrets-repo-token:
+    description: "token with access to infrastructure-secrets"
+    required: true
+  cachix-signing-key:
+    description: "cachix signing key"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout infrastructure-secrets
+      uses: actions/checkout@main
+      with:
+        repository: linyinfeng/infrastructure-secrets
+        ref: main
+        path: infrastructure-secrets
+        token: ${{ inputs.secrets-repo-token }}
+    - name: Install nix
+      uses: cachix/install-nix-action@master
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+          access-tokens = github.com=${{ github.token }}
+    - name: Setup cachix
+      uses: cachix/cachix-action@master
+      with:
+        name: linyinfeng
+        signingKey: ${{ inputs.cachix-signing-key }}
+    - name: Git identity
+      # the PAT authenticates the push; git still needs a committer
+      shell: bash
+      run: |
+        git config --global user.email "nano@linyinfeng.com"
+        git config --global user.name "Nano"
+    - name: Cache terraform
+      uses: actions/cache@main
+      with:
+        path: dotfiles/terraform/stages/${{ inputs.stage }}/.terraform-data/providers
+        key: ${{ runner.os }}-terraform-${{ inputs.stage }}-providers-${{ hashFiles(format('dotfiles/terraform/stages/{0}/.terraform.lock.hcl', inputs.stage)) }}

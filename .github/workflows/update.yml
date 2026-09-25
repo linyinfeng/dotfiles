@@ -38,7 +38,8 @@ jobs:
           git config --global user.name "Nano"
       - name: Terraform update
         run: |
-          nix develop --command terraform-init -upgrade
+          nix develop --command terraform-init pre-nixos -upgrade
+          nix develop --command terraform-init post-nixos -upgrade
           if [ -z "$(git status --porcelain)" ]; then
             echo "repository is clean, skip commit"
           else
