@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, self', ... }:
 {
   imports = [
     ./envs.nix
@@ -15,12 +15,8 @@
         category = "secrets";
       }
       {
+        package = self'.packages.maintain;
         category = "secrets";
-        name = "sops-update-keys";
-        help = "update keys for all sops file";
-        command = ''
-          ${pkgs.fd}/bin/fd '.*\.yaml' $PRJ_ROOT/secrets --exec sops updatekeys --yes
-        '';
       }
       {
         package = pkgs.age;

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "maintain"
+version = "0"
+description = "maintenance CLI for this repository"
+requires-python = ">=3.12"
+dependencies = ["typer"]
+
+[project.scripts]
+maintain = "maintain.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/maintain"]

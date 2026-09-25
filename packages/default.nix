@@ -9,6 +9,7 @@ lib.makeScope newScope (
   in
   {
     fake-secrets = callPackage ./fake-secrets.nix { };
+    maintain = callPackage ./maintain { };
     make-fake-secrets = callPackage ./make-fake-secrets { };
   }
 )
