@@ -26,4 +26,5 @@ locals {
   tailscale_hosts      = nonsensitive(jsondecode(local.pre_nixos.tailscale_hosts_json.value))
   cloudflare_zone_id   = nonsensitive(local.pre_nixos.cloudflare_com_li7g_zone_id.value)
   cloudflare_zone_name = nonsensitive(local.pre_nixos.cloudflare_com_li7g_zone_name.value)
+  zerotier_network_id  = nonsensitive(local.pre_nixos.zerotier_network_id.value)
 }

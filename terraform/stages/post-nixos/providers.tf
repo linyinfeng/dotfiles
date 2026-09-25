@@ -9,6 +9,9 @@ terraform {
     tailscale = {
       source = "tailscale/tailscale"
     }
+    zerotier = {
+      source = "zerotier/zerotier"
+    }
     # third-party providers
     sops = {
       source = "carlpett/sops"
