@@ -36,13 +36,7 @@
     deploy-rs.inputs.utils.follows = "flake-utils";
 
     flat-flake.url = "github:linyinfeng/flat-flake";
-    flat-flake.inputs.crane.follows = "crane";
-    flat-flake.inputs.flake-compat.follows = "flake-compat";
-    flat-flake.inputs.flake-parts.follows = "flake-parts";
     flat-flake.inputs.nixpkgs.follows = "nixpkgs";
-    flat-flake.inputs.rust-overlay.follows = "rust-overlay";
-    flat-flake.inputs.systems.follows = "systems";
-    flat-flake.inputs.treefmt-nix.follows = "treefmt-nix";
 
     # nixos modules
 
