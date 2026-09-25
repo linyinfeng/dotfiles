@@ -214,12 +214,8 @@ let
       fi
       root="$(realpath "$root")"
 
-      # CI passes a relative SECRETS_DIR, and terraform runs with -chdir, so
-      # the variables it receives must be absolute paths
-      case "$SECRETS_DIR" in
-        /*) ;;
-        *) SECRETS_DIR="$(realpath "$SECRETS_DIR")" ;;
-      esac
+      # terraform runs with -chdir, so the paths it receives must be absolute
+      SECRETS_DIR="$(realpath "$SECRETS_DIR")"
       ${stageVarSetup}
 
       state_dir="$SECRETS_DIR/terraform/states"
