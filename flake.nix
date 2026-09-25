@@ -97,6 +97,10 @@
 
     # programs
 
+    nizctl.url = "github:linyinfeng/nizctl/atom68";
+    nizctl.inputs.nixpkgs.follows = "nixpkgs";
+    nizctl.inputs.flake-utils.follows = "flake-utils";
+
     nix-gc-s3.url = "github:linyinfeng/nix-gc-s3";
     nix-gc-s3.inputs.nixpkgs.follows = "nixpkgs";
     nix-gc-s3.inputs.flake-parts.follows = "flake-parts";

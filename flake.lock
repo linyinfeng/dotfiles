@@ -1286,6 +1286,30 @@
         "type": "github"
       }
     },
+    "nizctl": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790323796,
+        "narHash": "sha256-D5cTtclCgayYe633vnB2AXEXidlS7wPArumeRI3frRE=",
+        "owner": "linyinfeng",
+        "repo": "nizctl",
+        "rev": "edb23c5f61af9fd909fb69c427713e42794a9b55",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linyinfeng",
+        "ref": "atom68",
+        "repo": "nizctl",
+        "type": "github"
+      }
+    },
     "noctalia": {
       "inputs": {
         "nixpkgs": [
@@ -1618,6 +1642,7 @@
         "nixpkgs-latest": "nixpkgs-latest",
         "nixpkgs-stable": "nixpkgs-stable",
         "nixpkgs-unstable-small": "nixpkgs-unstable-small",
+        "nizctl": "nizctl",
         "noctalia": "noctalia",
         "nur": "nur",
         "nvfetcher": "nvfetcher",
