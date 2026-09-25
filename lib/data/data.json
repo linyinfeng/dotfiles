@@ -17,7 +17,7 @@
   "dn42_anycast_v6_cidr": "fd72:db83:badd:ffff::/64",
   "dn42_v4_cidr": "172.23.224.96/27",
   "dn42_v6_cidr": "fd72:db83:badd::/48",
-  "garage_backup_hosts_json": "[\"mtl0\",\"nuc\",\"parrot\",\"sparrow\",\"xps8930\"]",
+  "garage_backup_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "garage_pastebin_key_id": "GKb0704acb2c6549d7322d8b42",
   "garage_sicp_staging_key_id": "GK439502b66b234bebeb495082",
   "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",
@@ -217,9 +217,27 @@
       "proxy": true
     }
   },
-  "tailscale_hosts_json": "[\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
+  "tailscale_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
   "hosts": {
+    "hkg0": {
+      "b2_backup_key_id": "00462cd88e29986000000002d",
+      "dn42_addresses_v4": ["172.23.224.100"],
+      "dn42_addresses_v6": ["fd72:db83:badd:4::1"],
+      "dn42_v6_prefixes": ["fd72:db83:badd:4::/64"],
+      "endpoints": ["45.135.119.87", "2a12:ab80:4:6::cef2:8adf"],
+      "endpoints_v4": ["45.135.119.87"],
+      "endpoints_v6": ["2a12:ab80:4:6::cef2:8adf"],
+      "garage_backup_key_id": "GK05bf5c9170343b62251949aa",
+      "host_indices": [4],
+      "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB6TCCAW+gAwIBAgIPVpNukNxqPHle/fp0Ol4YMAoGCCqGSM49BAMDMCUxEDAO\nBgNVBAoTB1lpbmZlbmcxETAPBgNVBAMTCGxpN2cuY29tMB4XDTI2MDkyNTE4MTMw\nN1oXDTI2MTEyNTE0MTMwN1owKjEQMA4GA1UEChMHWWluZmVuZzEWMBQGA1UEAxMN\naGtnMC5saTdnLmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABKB3tV4MDQt/MdHh\n4JIO2en1ROoRsvPGtcuPW8/wbLiMwnvkWasdA5CCBRCkNgAdYwUcnwUMiorvIHZW\n+MelQWJ1rjPAOimpvvAlEB3hXwNDNzMqVnGv2ud5Qz27LinEuKNgMF4wEwYDVR0l\nBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQXukUM/qqg\n7vLzRIIk1vA8DMqiHDAYBgNVHREEETAPgg1oa2cwLmxpN2cuY29tMAoGCCqGSM49\nBAMDA2gAMGUCMQCuw5SOHUmiX2XjyQ8zT1Zob7qC9bhQdLYHQiwnkgKtZqDWJE8Y\nr+RPtQWuzCxkmc8CMCrDjvBwaWG31ihvbySiogUoj1+0PFKEdUc0kBbRV+hGVM+o\nwT7rBlXtunAXWrMBqQ==\n-----END CERTIFICATE-----\n",
+      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOfXwRFG4LbFhgTmfccTO0lH6p+UeMO9srz5KMbp/JKs",
+      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDULu6glvdF3l66t3xZq9J6rcTlwhLgJyIcsVuDGPbJ2fb4KlRY4HaPu0NOrd4Yf2FRt533OGpyUq3NeTBkTuG4jVIgCFcNPa5yr6Q8QEWOK7J+/tE82yYVrTunqW44fXyCxIv8/Kgx2qq0nNmXM8wrGCtZhuyZMi+ua6IarwOp9blJ+Q99dxHlonVvUP4aKZxhL29QSfhu9VyKbJDoTk2sw6B01Fj0+2nRoX72LfCTK29kj543hDYza0cqrANm6PFmHl8gmzPBb37FThoetoDmrcLQhn+WvkVLr+xt5JiXGxo5jY6m3fA67N3Oehd+u6Ww5M0Yczin6TCxqbKwGRVckZFXXZLwVZ0lpojueQ757dkScrOPZr6L2o8C0JYv2KfGb5MA0/jpfVpInX+tC3JXKykXjiHo5RAQGrRxDQKMJtkeXHxTWmaaD2d/xDmeXxlky5z85aW+nlaqutFx6aKWbSGj8suhqxOy9kaM8EIZk1rTzzkyl0fjMInvFBYHtJ+HSwjXUKc33JUjtYOpsesHzlt+IQeIf4aZXl7LNnDesuZzc4uokY1VX4yeaUeu6ALAcFh5iBRrn/YWXYNGqMIBPNA1sQqKksx6dXmKDOljfBm4YR7/aUNUi/hCh5XvEUmjsdpumnY6BSh4MahLc200bkSTUBYpVZaIxnHNLkDqwQ==",
+      "syncthing_device_id": "WKZMOKC-T6V62LT-IUP66OA-DKJQ4GY-L3PYCS2-43MGAJC-U3TQJOA-VF336A5",
+      "wireguard_public_key": "4uG/UFvhccXzD2JpYTkEc/EFHFZxMzdpyhNy1II2AgM=",
+      "zerotier_id": "2ddbe61246",
+      "zerotier_public_key": "2ddbe61246:0:c3cd9f993c508e258f20522bec03993fbf59ddda635d65f85f4f42c5da1c130a9f7dea92da99d8afddb117bd4ba7b296e1d8d5b1b8278739f4c902ef9b116420"
+    },
     "mtl0": {
       "b2_backup_key_id": "00462cd88e29986000000001d",
       "dn42_addresses_v4": ["172.23.224.99"],

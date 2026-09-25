@@ -31,6 +31,10 @@ let
       key = "age1ylnctxz36rpe95huc9v92pvu5zrk5td6rne9md52q7x4ceppkq7sm2pzph";
       owned = true;
     };
+    hkg0 = {
+      key = "age1xjcqxkpmxk32s9kf72f0fm6kh3e3t26843n2klnnmskq8mhdrdsqd0ug87";
+      owned = true;
+    };
     # PLACEHOLDER new host
   };
 

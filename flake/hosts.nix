@@ -218,6 +218,10 @@ in
       name = "mtl0";
       system = "x86_64-linux";
     })
+    (mkHost {
+      name = "hkg0";
+      system = "x86_64-linux";
+    })
     # PLACEHOLDER new host
 
     # Disabled hosts. Their configs are kept as `nixos/hosts/_<name>/` (the `_` prefix keeps

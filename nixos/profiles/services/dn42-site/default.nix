@@ -6,6 +6,11 @@
 }:
 let
   extraHostInfo = {
+    hkg0 = {
+      comment = null;
+      provider = "XNNET";
+      location = [ "Hong Kong" ];
+    };
     mtl0 = {
       comment = null;
       provider = "ServaRICA";

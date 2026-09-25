@@ -13,6 +13,24 @@ locals {
       endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])]
       endpoints_v6 = []
     }
+    hkg0 = {
+      records = {
+        a = {
+          proxied = true
+          type    = "A"
+          value   = nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v4"])
+        }
+        aaaa = {
+          proxied = true
+          type    = "AAAA"
+          value   = nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v6"])
+        }
+      }
+      ddns_records = {}
+      host_indices = [4]
+      endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v4"])]
+      endpoints_v6 = [nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v6"])]
+    }
     nuc = {
       records = {}
       ddns_records = {

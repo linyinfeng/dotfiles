@@ -24,12 +24,20 @@ let
   );
   peerTable = import ./_peers.nix;
   trafficControlTable = {
+    "hkg0" = {
+      enable = true;
+      rate = "1M";
+    };
     "mtl0".enable = false; # unmetered
 
     "nuc".enable = false; # unmetered
     "parrot".enable = false; # mobile
   };
   regionTable = {
+    "hkg0" = {
+      region = 52;
+      country = 1344;
+    };
     "mtl0" = {
       region = 42; # North America-E
       country = 1124; # Canada
