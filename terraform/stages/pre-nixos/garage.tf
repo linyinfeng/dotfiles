@@ -31,15 +31,12 @@ output "garage_sicp_staging_access_key" {
   sensitive = true
 }
 
-# Non-sensitive companion of garage_keys_json: decoding the sensitive blob
-# yields sensitive values, which cannot be used as for_each keys.
+# non-sensitive companion of garage_keys_json (sensitive values cannot be for_each keys)
 output "garage_backup_hosts_json" {
   value = jsonencode(keys(local.hosts))
 }
 
-# Key material is generated here instead of in post-nixos because NixOS consumes
-# it through this stage's outputs; post-nixos only registers it with the Garage
-# admin API.
+# key material lives here because NixOS consumes it; post-nixos only registers it
 output "garage_keys_json" {
   value = jsonencode({
     pastebin = {

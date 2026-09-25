@@ -12,8 +12,7 @@ resource "garage_bucket" "pastebin" {
 }
 resource "garage_key" "pastebin" {
   name = "pastebin"
-  # the access key id is public (it is published in lib/data/data.json), the
-  # secret is not; marking only the secret keeps the state marks stable
+  # the access key id is public (lib/data/data.json); only the secret is sensitive
   id                = nonsensitive(local.garage_keys.pastebin.id)
   secret_access_key = local.garage_keys.pastebin.secret
 }

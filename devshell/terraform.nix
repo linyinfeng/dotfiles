@@ -2,9 +2,7 @@
 let
   common = builtins.readFile ./common.sh;
 
-  # Stage registry: the TF_VAR_* each stage declares. The wrapper exports them
-  # from here, so a stage never carries the other stage's variables around
-  # (terraform warns about values for undeclared variables).
+  # TF_VAR_* declared per stage; the wrapper exports only these
   stages = {
     pre-nixos = {
       "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
@@ -21,7 +19,7 @@ let
     builtins.foldl' (acc: name: acc // stages.${name}) { } stageNames
   );
 
-  # there is no default stage: every command has to be told which one to run
+  # no default stage: every command must be told one
   requireStage = ''
     if [ -z "$stage" ]; then
       echo "no terraform stage given: pass it as the first argument (e.g. pre-nixos) or set TERRAFORM_STAGE" >&2
@@ -46,12 +44,9 @@ let
     esac
   '';
 
-  # one TF_VAR export line per variable the stage declares
   mkExport = name: var: "    export TF_VAR_${var}=\"\${TF_VAR_${var}:-${stages.${name}.${var}}}\"";
 
-  # a stage gets exactly the variables it declares: the other stages' TF_VARs
-  # are unset (terraform warns about values for undeclared variables), while a
-  # value that is already set from outside still wins
+  # unset the other stages' variables; an explicit override still wins
   mkStageVars =
     name:
     builtins.concatStringsSep "\n" (
@@ -74,20 +69,16 @@ let
     ++ [ "esac" ]
   );
 
-  # stages in dependency order; asserted against the registry below
+  # eval fails if this list and the registry disagree
+  stageOrderList = [
+    "pre-nixos"
+    "post-nixos"
+  ];
   stageOrder =
-    assert
-      builtins.sort builtins.lessThan [
-        "pre-nixos"
-        "post-nixos"
-      ] == builtins.sort builtins.lessThan stageNames;
-    [
-      "pre-nixos"
-      "post-nixos"
-    ];
+    assert builtins.sort builtins.lessThan stageOrderList == builtins.sort builtins.lessThan stageNames;
+    stageOrderList;
 
-  # one stage of the pipeline: init, apply, refresh that stage's outputs and, for
-  # pre-nixos, the NixOS inputs derived from them
+  # one stage: init, apply, refresh its outputs (+ the NixOS inputs for pre-nixos)
   terraformApplyStage = pkgs.writeShellApplication {
     name = "terraform-apply-stage";
     runtimeInputs = with pkgs; [

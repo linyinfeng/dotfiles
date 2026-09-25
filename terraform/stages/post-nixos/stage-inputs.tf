@@ -1,5 +1,4 @@
-# Stage interface: pre-nixos publishes the Garage admin token and the Garage key
-# material through its encrypted outputs file.
+# Stage interface: pre-nixos publishes these through its encrypted outputs file.
 
 variable "terraform_input_path" {
   type = string
@@ -21,8 +20,7 @@ locals {
   pre_nixos          = yamldecode(data.sops_file.pre_nixos.raw)
   garage_admin_token = local.pre_nixos.garage_admin_token.value
   garage_keys        = jsondecode(local.pre_nixos.garage_keys_json.value)
-  # non-sensitive on purpose: hosts are public, and sensitive values cannot be
-  # used as for_each keys
+  # must stay non-sensitive: sensitive values cannot be for_each keys
   garage_backup_hosts = nonsensitive(jsondecode(local.pre_nixos.garage_backup_hosts_json.value))
   # non-sensitive on purpose: device names are public
   tailscale_hosts      = nonsensitive(jsondecode(local.pre_nixos.tailscale_hosts_json.value))

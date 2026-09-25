@@ -90,7 +90,7 @@ let
 
       manual run
       ==========
-      terraform-pipe
+      terraform-pipe-all
       sops-update-keys
       EOF
 

@@ -16,10 +16,7 @@ locals {
     trimsuffix(device.name, ".${local.tailscale_account_suffix}") => device
   }
 
-  # Only the names pre-nixos knows about get a record, so devices joining or
-  # leaving the tailnet cannot add or remove records behind our back. A known
-  # name whose device is not in the tailnet right now gets no record; the
-  # check below reports it instead of failing the plan.
+  # only names pre-nixos knows get a record; the check below reports the missing ones
   ts_record_addresses = {
     for name in local.tailscale_hosts : name =>
     [for address in local.tailscale_devices[name].addresses : address
@@ -44,10 +41,7 @@ check "tailscale_hosts_present" {
 data "tailscale_devices" "all" {
 }
 
-# Records can only exist once the device has joined the tailnet, i.e. after the
-# NixOS deployment; the names themselves come from pre-nixos. Service names
-# (<service>.ts.li7g.com) stay in pre-nixos, so the wildcard certificate covers
-# all of them and no per-device certificate is needed.
+# records appear once the device has joined the tailnet, i.e. after the NixOS deployment
 resource "cloudflare_dns_record" "li7g_ts" {
   for_each = local.ts_record_addresses
 
