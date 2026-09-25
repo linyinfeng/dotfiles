@@ -5,7 +5,7 @@
   ...
 }:
 let
-  version = 33; # pinned
+  version = 35; # pinned
 
   cfg = config.services.nextcloud;
   package = pkgs."nextcloud${toString version}";
@@ -42,8 +42,6 @@ let
       popd
 
       nextcloud-occ files:scan "$username"
-      nextcloud-occ memories:index --user="$username"
-      nextcloud-occ preview:generate-all --path="$username/files"
     '';
   };
 
@@ -110,18 +108,11 @@ in
         "OC\\Preview\\TIFF"
         "OC\\Preview\\Movie"
       ];
-
-      # memories
-      "memories.vod.disable" = false; # enable video transcoding
-      "memories.vod.vaapi" = true;
     };
     secretFile = config.sops.templates."nextcloud-secret-config".path;
     extraApps = {
       inherit (apps)
         onlyoffice
-        memories
-        previewgenerator
-        # maps
         ;
     };
     notify_push = {
@@ -151,25 +142,6 @@ in
   systemd.services.phpfpm-nextcloud.serviceConfig = {
     # allow access to VA-API device
     PrivateDevices = lib.mkForce false;
-  };
-
-  systemd.services.nextcloud-cron-extra = {
-    script = ''
-      nextcloud-occ preview:pre-generate
-    '';
-    serviceConfig = {
-      ExecCondition = "${lib.getExe cfg.occ} status --exit-code";
-      Type = "oneshot";
-      User = "nextcloud";
-      Group = "nextcloud";
-    };
-    path = [ cfg.occ ];
-  };
-  systemd.timers.nextcloud-cron-extra = {
-    timerConfig = {
-      OnCalendar = "*:0/5";
-    };
-    wantedBy = [ "timers.target" ];
   };
 
   systemd.services.nextcloud-cron-daily = {
