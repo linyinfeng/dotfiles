@@ -60,13 +60,14 @@ resource "grafana_dashboard" "system" {
   config_json = file("${path.module}/../../grafana/dashboards/system.json")
   folder      = grafana_folder.infrastructure.uid
 }
-# garage: the plugin metrics arrive without the `job` label (the influx push path
-# tags them output_bucket="garage") and block_bytes_read is gone, so the upstream
-# dashboard needs a rewrite first. minecraft: its exporter is not running any more.
-# resource "grafana_dashboard" "garage" {
-#   config_json = file("${path.module}/../../grafana/dashboards/garage.json")
-#   folder      = grafana_folder.infrastructure.uid
-# }
+# The upstream dashboard (garage/script/telemetry/grafana-garage-dashboard-prometheus.json)
+# with its metric names adapted to the influx push path: telegraf's prometheus input
+# names the field after the metric type, so the series arrive as <metric>_counter /
+# <metric>_gauge, and the scrape's job label is replaced by output_bucket.
+resource "grafana_dashboard" "garage" {
+  config_json = file("${path.module}/../../grafana/dashboards/garage.json")
+  folder      = grafana_folder.infrastructure.uid
+}
 # resource "grafana_dashboard" "minecraft" {
 #   config_json = file("${path.module}/../../grafana/dashboards/minecraft.json")
 #   folder      = grafana_folder.application.uid
