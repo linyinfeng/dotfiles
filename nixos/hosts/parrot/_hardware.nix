@@ -133,11 +133,11 @@ lib.mkMerge [
             outputs = [
               {
                 criteria = embedded;
-                position = "0,192";
+                position = "2134,255";
               }
               {
                 criteria = captureCard;
-                position = "1536,70";
+                position = "212,134";
               }
             ];
           };
