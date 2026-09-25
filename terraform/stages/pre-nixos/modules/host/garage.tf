@@ -1,25 +1,16 @@
-# Backup bucket
+# Backup bucket key material; post-nixos registers it with the Garage admin API.
 
+resource "random_id" "backup_key_id" {
+  byte_length = 12
+}
+resource "random_id" "backup_key_secret" {
+  byte_length = 32
+}
 
-resource "garage_bucket" "backup" {
-  global_alias    = "backup-${var.name}"
-  website_enabled = false
-}
-resource "garage_key" "backup" {
-  name = "backup-${var.name}"
-}
 output "garage_backup_key_id" {
-  value     = garage_key.backup.id
-  sensitive = false
+  value = "GK${random_id.backup_key_id.hex}"
 }
 output "garage_backup_access_key" {
-  value     = garage_key.backup.secret_access_key
+  value     = random_id.backup_key_secret.hex
   sensitive = true
-}
-resource "garage_bucket_permission" "backup" {
-  bucket_id     = garage_bucket.backup.id
-  access_key_id = garage_key.backup.id
-  read          = true
-  write         = true
-  owner         = false
 }

@@ -18,18 +18,7 @@
         name = "TERRAFORM_DIR";
         eval = "\${TERRAFORM_DIR:-$(realpath \"$DOTFILES_DIR/terraform\")}";
       }
-      {
-        name = "TERRAFORM_STAGE";
-        eval = "\${TERRAFORM_STAGE:-pre-nixos}";
-      }
-      {
-        name = "TF_VAR_terraform_input_path";
-        eval = "\${TF_VAR_terraform_input_path:-$(realpath \"$SECRETS_DIR/terraform-inputs.yaml\")}";
-      }
-      {
-        name = "TF_VAR_predefined_secrets_path";
-        eval = "\${TF_VAR_predefined_secrets_path:-$(realpath \"$SECRETS_DIR/predefined.yaml\")}";
-      }
+
       {
         name = "DATA_EXTRACT_DIR";
         eval = "\${DATA_EXTRACT_DIR:-$(realpath \"$DOTFILES_DIR/lib/data\")}";

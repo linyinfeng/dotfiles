@@ -2,6 +2,78 @@
 let
   common = builtins.readFile ./common.sh;
 
+  # Stage registry: the TF_VAR_* each stage declares. The wrapper exports them
+  # from here, so a stage never carries the other stage's variables around
+  # (terraform warns about values for undeclared variables).
+  stages = {
+    pre-nixos = {
+      "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
+      "predefined_secrets_path" = "\${SECRETS_DIR}/predefined.yaml";
+    };
+    post-nixos = {
+      "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
+      # stage interface: the previous stage's encrypted outputs
+      "pre_nixos_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/pre-nixos.yaml";
+    };
+  };
+  stageNames = builtins.attrNames stages;
+  allStageVars = builtins.attrNames (
+    builtins.foldl' (acc: name: acc // stages.${name}) { } stageNames
+  );
+
+  # there is no default stage: every command has to be told which one to run
+  requireStage = ''
+    if [ -z "$stage" ]; then
+      echo "no terraform stage given: pass it as the first argument (e.g. pre-nixos) or set TERRAFORM_STAGE" >&2
+      exit 2
+    fi
+  '';
+
+  # a leading stage argument wins over the environment
+  takeStageArg = ''
+    case "''${1:-}" in
+      ${builtins.concatStringsSep "|" stageNames})
+        stage="$1"
+        shift
+        ;;
+    esac
+  '';
+
+  stageCheck = ''
+    case "$stage" in
+      ${builtins.concatStringsSep "|" stageNames}) ;;
+      *) echo "unknown terraform stage: $stage" >&2; exit 2 ;;
+    esac
+  '';
+
+  # one TF_VAR export line per variable the stage declares
+  mkExport = name: var: "    export TF_VAR_${var}=\"\${TF_VAR_${var}:-${stages.${name}.${var}}}\"";
+
+  # a stage gets exactly the variables it declares: the other stages' TF_VARs
+  # are unset (terraform warns about values for undeclared variables), while a
+  # value that is already set from outside still wins
+  mkStageVars =
+    name:
+    builtins.concatStringsSep "\n" (
+      map (var: "    unset TF_VAR_${var}") (
+        builtins.filter (var: !builtins.hasAttr var stages.${name}) allStageVars
+      )
+      ++ map (mkExport name) (builtins.attrNames stages.${name})
+    );
+
+  stageVarSetup = builtins.concatStringsSep "\n" (
+    [ "# stage inputs, generated from the devshell stage registry" ]
+    ++ [ "case \"$stage\" in" ]
+    ++ builtins.concatLists (
+      map (name: [
+        "  ${name})"
+        (mkStageVars name)
+        "    ;;"
+      ]) stageNames
+    )
+    ++ [ "esac" ]
+  );
+
   encryptTo = pkgs.writeShellApplication {
     name = "encrypt-to";
     runtimeInputs = with pkgs; [ sops ];
@@ -47,12 +119,10 @@ let
     name = "terraform-init";
     runtimeInputs = with pkgs; [ terraform ];
     text = ''
-      stage="''${1:-$TERRAFORM_STAGE}"
+      stage="''${1:-''${TERRAFORM_STAGE:-}}"
       shift || true
-      case "$stage" in
-        pre-nixos|post-nixos) ;;
-        *) message "unknown terraform stage: $stage"; exit 2 ;;
-      esac
+      ${requireStage}
+      ${stageCheck}
       root="$TERRAFORM_DIR/stages/$stage"
       if [ ! -d "$root" ]; then
         message "terraform root does not exist for stage: $stage"
@@ -84,17 +154,19 @@ let
     text = ''
       ${common}
 
-      stage="''${TERRAFORM_STAGE:-pre-nixos}"
-      case "$stage" in
-        pre-nixos|post-nixos) ;;
-        *) message "unknown terraform stage: $stage"; exit 2 ;;
-      esac
+      stage="''${TERRAFORM_STAGE:-}"
+      ${takeStageArg}
+      ${requireStage}
+      ${stageCheck}
       root="$TERRAFORM_DIR/stages/$stage"
       if [ ! -d "$root" ]; then
         message "terraform root does not exist for stage: $stage"
         exit 2
       fi
       root="$(realpath "$root")"
+
+      ${stageVarSetup}
+
       state_dir="$SECRETS_DIR/terraform/states"
       encrypted="$state_dir/$stage.tfstate"
       plain="$root/terraform.tfstate"
@@ -154,12 +226,10 @@ let
       trap 'exit 130' INT
       trap 'exit 143' TERM
 
-      stage="''${1:-$TERRAFORM_STAGE}"
+      stage="''${1:-''${TERRAFORM_STAGE:-}}"
       shift || true
-      case "$stage" in
-        pre-nixos|post-nixos) ;;
-        *) message "unknown terraform stage: $stage"; exit 2 ;;
-      esac
+      ${requireStage}
+      ${stageCheck}
       plain_output="$tmp_dir/terraform-outputs.plain.yaml"
 
       TERRAFORM_STAGE="$stage" terraform-wrapper output --json "$@" >"$plain_output"
@@ -205,12 +275,10 @@ in
         command = ''
           set -e
 
-          stage="''${1:-$TERRAFORM_STAGE}"
+          stage="''${1:-''${TERRAFORM_STAGE:-}}"
           if [ "$#" -gt 0 ]; then shift; fi
-          case "$stage" in
-            pre-nixos|post-nixos) ;;
-            *) message "unknown terraform stage: $stage"; exit 2 ;;
-          esac
+          ${requireStage}
+          ${stageCheck}
 
           git -C "$SECRETS_DIR" pull --ff-only
           function cleanup {

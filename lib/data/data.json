@@ -11,10 +11,13 @@
   "b2_s3_api_url": "https://s3.us-west-004.backblazeb2.com",
   "b2_s3_region": "us-west-004",
   "ca_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIByTCCAU6gAwIBAgIRAORecfsaQN+D6QL3M78lXhcwCgYIKoZIzj0EAwMwJTEQ\nMA4GA1UEChMHWWluZmVuZzERMA8GA1UEAxMIbGk3Zy5jb20wHhcNMjYwODA5MTYy\nODA1WhcNMjcwODA5MTYyODA1WjAlMRAwDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQD\nEwhsaTdnLmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABG5fGlOO2Fp4Xp9VQ933\nKp+w+ipbIMVpKST1Z7hicRwBv7Y/9SKfUAzIFDaXovLLqRkimTPIXF0r4XMedvQO\ns0aNh51nR0UZj0tjJxLrDhVgAVWkta7gRHUwSOTL3IgqPqNCMEAwDgYDVR0PAQH/\nBAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFBe6RQz+qqDu8vNEgiTW\n8DwMyqIcMAoGCCqGSM49BAMDA2kAMGYCMQCa3KhdFH15fwxBix19IZpqaWPcAUJl\nMkr2j6kAVZmsJglH30hbty+9y82ERghQtq8CMQCD3/F0Rc+L6333joO4S4vHjC2v\n5vJYL0h5ZM/LYbXFUddQkhgpH7levsyDme4KgGM=\n-----END CERTIFICATE-----\n",
+  "cloudflare_com_li7g_zone_id": "16a623e143f27e93333cc4376e3fd3e1",
+  "cloudflare_com_li7g_zone_name": "li7g.com",
   "dn42_anycast_dns_v6": "fd72:db83:badd:ffff::8888",
   "dn42_anycast_v6_cidr": "fd72:db83:badd:ffff::/64",
   "dn42_v4_cidr": "172.23.224.96/27",
   "dn42_v6_cidr": "fd72:db83:badd::/48",
+  "garage_backup_hosts_json": "[\"mtl0\",\"nuc\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "garage_pastebin_key_id": "GKb0704acb2c6549d7322d8b42",
   "garage_sicp_staging_key_id": "GK439502b66b234bebeb495082",
   "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",
@@ -214,6 +217,7 @@
       "proxy": true
     }
   },
+  "tailscale_hosts_json": "[\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
   "hosts": {
     "mtl0": {

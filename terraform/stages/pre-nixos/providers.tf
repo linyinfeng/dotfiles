@@ -49,9 +49,6 @@ terraform {
     sops = {
       source = "carlpett/sops"
     }
-    garage = {
-      source = "jkossis/garage"
-    }
     shell = {
       source = "linyinfeng/shell"
     }

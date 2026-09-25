@@ -6,6 +6,17 @@ provider "tailscale" {
 locals {
   # the suffix is actually non-sensitive
   tailscale_account_suffix = nonsensitive(data.sops_file.terraform.data["tailscale.suffix"])
+
+  # tailnet devices that are not NixOS hosts but still get a <name>.ts.li7g.com
+  # record; NixOS hosts come from local.hosts
+  extra_tailscale_devices = [
+    "ostrich",
+  ]
+}
+
+# stage interface for post-nixos: which names get a <name>.ts.li7g.com record
+output "tailscale_hosts_json" {
+  value = jsonencode(sort(concat(keys(local.hosts), local.extra_tailscale_devices)))
 }
 
 resource "tailscale_tailnet_key" "tailnet_key" {
@@ -40,24 +51,4 @@ resource "tailscale_acl" "main" {
       }
     ]
   })
-}
-
-data "tailscale_devices" "all" {
-}
-
-resource "cloudflare_dns_record" "li7g_ts" {
-  for_each = {
-    for device in data.tailscale_devices.all.devices :
-    device.name =>
-    [for address in device.addresses : address
-      if can(cidrnetmask("${address}/32")) # ipv4 address only
-    ][0]                                   # first ipv4 address
-  }
-
-  name    = "${trimsuffix(each.key, ".${local.tailscale_account_suffix}")}.ts.${cloudflare_zone.com_li7g.name}"
-  proxied = false
-  ttl     = 1
-  type    = "A" # ipv4
-  content = each.value
-  zone_id = cloudflare_zone.com_li7g.id
 }

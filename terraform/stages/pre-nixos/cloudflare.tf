@@ -55,6 +55,14 @@ resource "cloudflare_zone" "com_li7g" {
   }
 }
 
+# stage interface for post-nixos
+output "cloudflare_com_li7g_zone_id" {
+  value = cloudflare_zone.com_li7g.id
+}
+output "cloudflare_com_li7g_zone_name" {
+  value = cloudflare_zone.com_li7g.name
+}
+
 resource "cloudflare_zone" "zip_prebuilt" {
   account = {
     id = local.cloudflare_main_account_id

@@ -1,57 +1,61 @@
-provider "garage" {
-  endpoint = "https://garage-admin.li7g.com"
-  token    = random_password.garage_admin_token.result
+resource "random_id" "garage_pastebin_key_id" {
+  byte_length = 12
+}
+resource "random_id" "garage_pastebin_key_secret" {
+  byte_length = 32
 }
 
 # Pastebin
 
-resource "garage_bucket" "pastebin" {
-  global_alias    = "pastebin"
-  website_enabled = false
-  max_size        = 1 * 1024 * 1024 * 1024 # in bytes, 1 GiB
-}
-resource "garage_key" "pastebin" {
-  name = "pastebin"
-}
 output "garage_pastebin_key_id" {
-  value     = garage_key.pastebin.id
-  sensitive = false
+  value = "GK${random_id.garage_pastebin_key_id.hex}"
 }
 output "garage_pastebin_access_key" {
-  value     = garage_key.pastebin.secret_access_key
+  value     = random_id.garage_pastebin_key_secret.hex
   sensitive = true
 }
-resource "garage_bucket_permission" "pastebin" {
-  bucket_id     = garage_bucket.pastebin.id
-  access_key_id = garage_key.pastebin.id
-  read          = true
-  write         = true
-  owner         = false
-}
-# TODO retention policy for pastebin
 
 # SICP staging
 
-resource "garage_bucket" "sicp_staging" {
-  global_alias    = "sicp-staging"
-  website_enabled = false
-  max_size        = 1 * 1024 * 1024 * 1024 # in bytes, 1 GiB
+resource "random_id" "garage_sicp_staging_key_id" {
+  byte_length = 12
 }
-resource "garage_key" "sicp_staging" {
-  name = "sicp-staging"
+resource "random_id" "garage_sicp_staging_key_secret" {
+  byte_length = 32
 }
 output "garage_sicp_staging_key_id" {
-  value     = garage_key.sicp_staging.id
-  sensitive = false
+  value = "GK${random_id.garage_sicp_staging_key_id.hex}"
 }
 output "garage_sicp_staging_access_key" {
-  value     = garage_key.sicp_staging.secret_access_key
+  value     = random_id.garage_sicp_staging_key_secret.hex
   sensitive = true
 }
-resource "garage_bucket_permission" "sicp_staging" {
-  bucket_id     = garage_bucket.sicp_staging.id
-  access_key_id = garage_key.sicp_staging.id
-  read          = true
-  write         = true
-  owner         = false
+
+# Non-sensitive companion of garage_keys_json: decoding the sensitive blob
+# yields sensitive values, which cannot be used as for_each keys.
+output "garage_backup_hosts_json" {
+  value = jsonencode(keys(local.hosts))
+}
+
+# Key material is generated here instead of in post-nixos because NixOS consumes
+# it through this stage's outputs; post-nixos only registers it with the Garage
+# admin API.
+output "garage_keys_json" {
+  value = jsonencode({
+    pastebin = {
+      id     = "GK${random_id.garage_pastebin_key_id.hex}"
+      secret = random_id.garage_pastebin_key_secret.hex
+    }
+    sicp_staging = {
+      id     = "GK${random_id.garage_sicp_staging_key_id.hex}"
+      secret = random_id.garage_sicp_staging_key_secret.hex
+    }
+    hosts = {
+      for name, outputs in module.hosts : name => {
+        id     = outputs.garage_backup_key_id
+        secret = outputs.garage_backup_access_key
+      }
+    }
+  })
+  sensitive = true
 }
