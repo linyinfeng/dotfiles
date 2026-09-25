@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 18,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -43,9 +43,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "description": "",
       "fieldConfig": {
@@ -152,19 +151,26 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
+          "editorMode": "code",
+          "expr": "count(systemd_units_active_code{host=~\"$host\", active=\"failed\"}) or vector(0)",
+          "legendFormat": "Failed",
+          "range": false,
+          "instant": true,
           "refId": "Failed"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 1 or r._value == 4 or r._value == 5, onEmpty: \"keep\") // 1 -- reloading | 4 -- activating | 5 -- deactivating\n  |> group()\n  |> count()",
+          "editorMode": "code",
+          "expr": "count(systemd_units_active_code{host=~\"$host\", active=~\"reloading|activating|deactivating\"}) or vector(0)",
+          "legendFormat": "Jobs",
+          "range": false,
+          "instant": true,
           "refId": "Jobs"
         }
       ],
@@ -187,22 +193,14 @@
       "panels": [],
       "repeat": "host",
       "repeatDirection": "h",
-      "targets": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "refId": "A"
-        }
-      ],
+      "targets": [],
       "title": "Host ${host}",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -249,10 +247,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"uptime\")\n  |> last()\n  |> yield(name: \"last\")",
+          "editorMode": "code",
+          "expr": "system_uptime{host=~\"$host\"}",
+          "legendFormat": "{{host}}",
+          "range": false,
+          "instant": true,
           "refId": "A"
         }
       ],
@@ -261,9 +263,8 @@
     },
     {
       "datasource": {
-        "default": false,
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "description": "",
       "fieldConfig": {
@@ -367,19 +368,26 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 3, onEmpty: \"keep\") // 3 -- failed\n  |> group()\n  |> count()",
+          "editorMode": "code",
+          "expr": "count(systemd_units_active_code{host=~\"$host\", active=\"failed\"}) or vector(0)",
+          "legendFormat": "Failed",
+          "range": false,
+          "instant": true,
           "refId": "Failed"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"systemd_units\" and r._field == \"active_code\")\n  |> drop(columns: [\"load\", \"active\", \"sub\"])\n  |> last()\n  |> filter(fn: (r) => r._value == 1 or r._value == 4 or r._value == 5, onEmpty: \"keep\") // 1 -- reloading | 4 -- activating | 5 -- deactivating\n  |> group()\n  |> count()",
+          "editorMode": "code",
+          "expr": "count(systemd_units_active_code{host=~\"$host\", active=~\"reloading|activating|deactivating\"}) or vector(0)",
+          "legendFormat": "Jobs",
+          "range": false,
+          "instant": true,
           "refId": "Jobs"
         }
       ],
@@ -388,8 +396,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -472,10 +480,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"cpu\")\n  |> filter(fn: (r) => r._field == \"usage_idle\")\n  |> filter(fn: (r) => r.cpu == \"cpu-total\")\n  |> toFloat()\n  |> map(fn: (r) => ({ r with _field: \"usage_total\", _value: 100.0 - r._value }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "100 - cpu_usage_idle{host=~\"$host\", cpu=\"cpu-total\"}",
+          "legendFormat": "total",
+          "range": true,
+          "instant": false,
           "refId": "A"
         }
       ],
@@ -484,8 +496,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -532,10 +544,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load1\")\n  |> last()\n  |> yield(name: \"last\")",
+          "editorMode": "code",
+          "expr": "system_load1{host=~\"$host\"}",
+          "legendFormat": "load1",
+          "range": false,
+          "instant": true,
           "refId": "load1"
         }
       ],
@@ -544,8 +560,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -592,10 +608,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load5\")\n  |> last()\n  |> yield(name: \"last\")",
+          "editorMode": "code",
+          "expr": "system_load5{host=~\"$host\"}",
+          "legendFormat": "load5",
+          "range": false,
+          "instant": true,
           "refId": "load1"
         }
       ],
@@ -604,8 +624,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -681,11 +701,51 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"processes\")\n  |> filter(fn: (r) => r._field == \"running\" or r._field == \"blocked\" or r._field == \"idle\" or r._field == \"unknown\")\n  |> aggregateWindow(every: v.windowPeriod, fn: max, createEmpty: false)\n  |> yield(name: \"max\")",
-          "refId": "A"
+          "editorMode": "code",
+          "expr": "processes_running{host=~\"$host\"}",
+          "legendFormat": "running",
+          "range": true,
+          "instant": false,
+          "refId": "running"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
+          },
+          "editorMode": "code",
+          "expr": "processes_blocked{host=~\"$host\"}",
+          "legendFormat": "blocked",
+          "range": true,
+          "instant": false,
+          "refId": "blocked"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
+          },
+          "editorMode": "code",
+          "expr": "processes_idle{host=~\"$host\"}",
+          "legendFormat": "idle",
+          "range": true,
+          "instant": false,
+          "refId": "idle"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
+          },
+          "editorMode": "code",
+          "expr": "processes_unknown{host=~\"$host\"}",
+          "legendFormat": "unknown",
+          "range": true,
+          "instant": false,
+          "refId": "unknown"
         }
       ],
       "title": "Processes",
@@ -693,8 +753,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -741,10 +801,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"system\")\n  |> filter(fn: (r) => r._field == \"load15\")\n  |> last()\n  |> yield(name: \"last\")",
+          "editorMode": "code",
+          "expr": "system_load15{host=~\"$host\"}",
+          "legendFormat": "load15",
+          "range": false,
+          "instant": true,
           "refId": "load1"
         }
       ],
@@ -753,8 +817,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -952,55 +1016,74 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"used\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_used{host=~\"$host\"}",
+          "legendFormat": "used",
+          "range": true,
+          "instant": false,
           "refId": "used"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"buffered\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_buffered{host=~\"$host\"}",
+          "legendFormat": "buffered",
+          "range": true,
+          "instant": false,
           "refId": "buffered"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"cached\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_cached{host=~\"$host\"}",
+          "legendFormat": "cached",
+          "range": true,
+          "instant": false,
           "refId": "cached"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"free\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_free{host=~\"$host\"}",
+          "legendFormat": "free",
+          "range": true,
+          "instant": false,
           "refId": "free"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"swap_cached\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_swap_cached{host=~\"$host\"}",
+          "legendFormat": "swap",
+          "range": true,
+          "instant": false,
           "refId": "swap"
         },
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "hide": false,
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"mem\")\n  |> filter(fn: (r) => r._field == \"total\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "mem_total{host=~\"$host\"}",
+          "legendFormat": "total",
+          "range": true,
+          "instant": false,
           "refId": "total"
         }
       ],
@@ -1009,8 +1092,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -1061,10 +1144,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "import \"date\"\n\nfrom(bucket: \"system\")\n  |> range(start: date.sub(d: 1m, from: v.timeRangeStop), stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"disk\")\n  |> filter(fn: (r) => r._field == \"used_percent\")\n  |> drop(columns: [\"path\"])\n  |> last()\n  |> map(fn: (r) => ({_value: r._value, _time: r._time, _field: r.device}))\n",
+          "editorMode": "code",
+          "expr": "disk_used_percent{host=~\"$host\"}",
+          "legendFormat": "{{device}}",
+          "range": false,
+          "instant": true,
           "refId": "A"
         }
       ],
@@ -1073,8 +1160,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -1154,11 +1241,27 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"net\")\n  |> filter(fn: (r) => r._field == \"bytes_recv\" or r._field == \"bytes_sent\")\n  |> filter(fn: (r) => r.interface != \"all\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> derivative(unit: 1s, nonNegative: true)\n  |> map(fn: (r) => ({ r with _value: if r._field == \"bytes_recv\" then r._value else - r._value, _field: if r._field == \"bytes_recv\" then \"receive\" else \"send\" }))",
+          "editorMode": "code",
+          "expr": "rate(net_bytes_recv{host=~\"$host\", interface!=\"all\"}[$__rate_interval])",
+          "legendFormat": "receive",
+          "range": true,
+          "instant": false,
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
+          },
+          "editorMode": "code",
+          "expr": "-rate(net_bytes_sent{host=~\"$host\", interface!=\"all\"}[$__rate_interval])",
+          "legendFormat": "send",
+          "range": true,
+          "instant": false,
+          "refId": "B"
         }
       ],
       "title": "Network",
@@ -1166,8 +1269,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -1247,10 +1350,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"sensors\")\n  |> filter(fn: (r) => r._field == \"temp_input\")\n  |> map(fn: (r) => ({ _field: r.chip, _value: r._value, _time: r._time }))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "sensors_temp_input{host=~\"$host\"}",
+          "legendFormat": "{{chip}}",
+          "range": true,
+          "instant": false,
           "refId": "A"
         }
       ],
@@ -1259,8 +1366,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -1340,10 +1447,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"cpu_usage\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "topk(5, max by (process_name) (procstat_cpu_usage_topk_aggregate{host=~\"$host\"}))",
+          "legendFormat": "{{process_name}}",
+          "range": true,
+          "instant": false,
           "refId": "A"
         }
       ],
@@ -1352,8 +1463,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "influxdb"
+        "type": "prometheus",
+        "uid": "grafanacloud-prom"
       },
       "fieldConfig": {
         "defaults": {
@@ -1433,10 +1544,14 @@
       "targets": [
         {
           "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
+            "type": "prometheus",
+            "uid": "grafanacloud-prom"
           },
-          "query": "from(bucket: \"system\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r.host == \"${host}\")\n  |> filter(fn: (r) => r._measurement == \"procstat\")\n  |> filter(fn: (r) => r._field == \"memory_rss\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "editorMode": "code",
+          "expr": "topk(5, max by (process_name) (procstat_memory_rss_topk_aggregate{host=~\"$host\"}))",
+          "legendFormat": "{{process_name}}",
+          "range": true,
+          "instant": false,
           "refId": "A"
         }
       ],
@@ -1457,157 +1572,18 @@
           "value": ["$__all"]
         },
         "datasource": {
-          "type": "influxdb",
-          "uid": "influxdb"
+          "type": "prometheus",
+          "uid": "grafanacloud-prom"
         },
-        "definition": "import \"influxdata/influxdb/schema\"\nschema.tagValues(\n  bucket: \"system\",\n  tag: \"host\",\n  start: v.timeRangeStart)",
+        "definition": "label_values(system_uptime, host)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "host",
         "options": [],
         "query": {
-          "0": "i",
-          "1": "m",
-          "2": "p",
-          "3": "o",
-          "4": "r",
-          "5": "t",
-          "6": " ",
-          "7": "\"",
-          "8": "i",
-          "9": "n",
-          "10": "f",
-          "11": "l",
-          "12": "u",
-          "13": "x",
-          "14": "d",
-          "15": "a",
-          "16": "t",
-          "17": "a",
-          "18": "/",
-          "19": "i",
-          "20": "n",
-          "21": "f",
-          "22": "l",
-          "23": "u",
-          "24": "x",
-          "25": "d",
-          "26": "b",
-          "27": "/",
-          "28": "s",
-          "29": "c",
-          "30": "h",
-          "31": "e",
-          "32": "m",
-          "33": "a",
-          "34": "\"",
-          "35": "\n",
-          "36": "s",
-          "37": "c",
-          "38": "h",
-          "39": "e",
-          "40": "m",
-          "41": "a",
-          "42": ".",
-          "43": "t",
-          "44": "a",
-          "45": "g",
-          "46": "V",
-          "47": "a",
-          "48": "l",
-          "49": "u",
-          "50": "e",
-          "51": "s",
-          "52": "(",
-          "53": "\n",
-          "54": " ",
-          "55": " ",
-          "56": "b",
-          "57": "u",
-          "58": "c",
-          "59": "k",
-          "60": "e",
-          "61": "t",
-          "62": ":",
-          "63": " ",
-          "64": "\"",
-          "65": "s",
-          "66": "y",
-          "67": "s",
-          "68": "t",
-          "69": "e",
-          "70": "m",
-          "71": "\"",
-          "72": ",",
-          "73": "\n",
-          "74": " ",
-          "75": " ",
-          "76": "t",
-          "77": "a",
-          "78": "g",
-          "79": ":",
-          "80": " ",
-          "81": "\"",
-          "82": "h",
-          "83": "o",
-          "84": "s",
-          "85": "t",
-          "86": "\"",
-          "87": ",",
-          "88": "\n",
-          "89": " ",
-          "90": " ",
-          "91": "s",
-          "92": "t",
-          "93": "a",
-          "94": "r",
-          "95": "t",
-          "96": ":",
-          "97": " ",
-          "98": "v",
-          "99": ".",
-          "100": "t",
-          "101": "i",
-          "102": "m",
-          "103": "e",
-          "104": "R",
-          "105": "a",
-          "106": "n",
-          "107": "g",
-          "108": "e",
-          "109": "S",
-          "110": "t",
-          "111": "a",
-          "112": "r",
-          "113": "t",
-          "114": ",",
-          "115": "\n",
-          "116": " ",
-          "117": " ",
-          "118": "s",
-          "119": "t",
-          "120": "o",
-          "121": "p",
-          "122": ":",
-          "123": " ",
-          "124": "v",
-          "125": ".",
-          "126": "t",
-          "127": "i",
-          "128": "m",
-          "129": "e",
-          "130": "R",
-          "131": "a",
-          "132": "n",
-          "133": "g",
-          "134": "e",
-          "135": "S",
-          "136": "t",
-          "137": "o",
-          "138": "p",
-          "139": ")",
-          "query": "import \"influxdata/influxdb/schema\"\nschema.tagValues(\n  bucket: \"system\",\n  tag: \"host\",\n  start: v.timeRangeStart)"
+          "query": "label_values(system_uptime, host)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
         "regex": "",
@@ -1624,7 +1600,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "Systems",
-  "uid": "dashboard-system",
+  "uid": "system",
   "version": 8,
   "weekStart": ""
 }
