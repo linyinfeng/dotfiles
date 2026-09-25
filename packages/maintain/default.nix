@@ -2,7 +2,11 @@
   lib,
   python3Packages,
   makeWrapper,
+  git,
+  nix,
+  prettier,
   sops,
+  yq-go,
 }:
 python3Packages.buildPythonApplication {
   pname = "maintain";
@@ -18,7 +22,15 @@ python3Packages.buildPythonApplication {
   nativeCheckInputs = [ python3Packages.pytestCheckHook ];
 
   postFixup = ''
-    wrapProgram $out/bin/maintain --prefix PATH : ${lib.makeBinPath [ sops ]}
+    wrapProgram $out/bin/maintain --prefix PATH : ${
+      lib.makeBinPath [
+        git
+        nix
+        prettier
+        sops
+        yq-go
+      ]
+    }
   '';
 
   meta = {
