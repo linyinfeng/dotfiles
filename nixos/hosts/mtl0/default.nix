@@ -33,7 +33,6 @@ in
         i18n.input-method.enable = true;
         programs.tg-send.enable = true;
         services = {
-          acme.enable = true;
           atuin.enable = true;
           bird-lg.enable = true;
           commit-notifier.enable = true;
@@ -48,7 +47,6 @@ in
           maddy.enable = true;
           mastodon.enable = true;
           matrix.enable = true;
-          nginx.enable = true;
           nuc-proxy.enable = true;
           oranc.enable = true;
           pastebin.enable = true;
