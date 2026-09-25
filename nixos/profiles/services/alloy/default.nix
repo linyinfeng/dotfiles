@@ -101,19 +101,26 @@ in
   '';
   sops.templates."alloy-env".content = ''
     LOKI_PASSWORD=${config.sops.placeholder."loki_password"}
+  ''
+  + lib.optionalString config.services.garage.enable ''
     GRAFANA_METRICS_TOKEN=${config.sops.placeholder."influxdb_token"}
     GARAGE_METRICS_TOKEN=${config.sops.placeholder."garage_metrics_token"}
   '';
-  sops.secrets."loki_password" = {
-    terraformOutput.enable = true;
-    restartUnits = [ "alloy.service" ];
-  };
-  sops.secrets."influxdb_token" = {
-    terraformOutput.enable = true;
-    restartUnits = [ "alloy.service" ];
-  };
-  sops.secrets."garage_metrics_token" = {
-    terraformOutput.enable = true;
-    restartUnits = [ "alloy.service" ];
-  };
+  sops.secrets = lib.mkMerge [
+    {
+      loki_password = {
+        terraformOutput.enable = true;
+        restartUnits = [ "alloy.service" ];
+      };
+    }
+    # the write token and garage's metrics token are only revealed on the hosts that
+    # scrape garage; garage_metrics_token itself is declared by the garage profile
+    (lib.mkIf config.services.garage.enable {
+      influxdb_token = {
+        terraformOutput.enable = true;
+        restartUnits = [ "alloy.service" ];
+      };
+      garage_metrics_token.restartUnits = [ "alloy.service" ];
+    })
+  ];
 }
