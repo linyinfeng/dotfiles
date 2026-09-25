@@ -73,186 +73,184 @@ resource "grafana_dashboard" "garage" {
 #   folder      = grafana_folder.application.uid
 # }
 #
-# resource "grafana_rule_group" "infrastructure" {
-#   name             = "Infrastructure Rules"
-#   folder_uid       = grafana_folder.infrastructure.uid
-#   interval_seconds = 60
-#   rule {
-#     name           = "Systemd units failure"
-#     for            = "1m"
-#     condition      = "Threshold"
-#     no_data_state  = "OK"
-#     exec_err_state = "Error"
-#     annotations = {
-#     }
-#     labels = {
-#     }
-#     is_paused = false
-#     data {
-#       ref_id     = "Query"
-#       query_type = ""
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       datasource_uid = grafana_data_source.influxdb.uid
-#       model = jsonencode({
-#         datasource = {
-#           type = "influxdb"
-#           uid  = grafana_data_source.influxdb.uid
-#         }
-#         hide  = false
-#         query = <<-EOT
-# from(bucket: "system")
-#   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
-#   |> filter(fn: (r) => r._measurement == "systemd_units" and
-#                        r._field == "active_code" and
-#                        r._value == 3)
-# EOT
-#         refId = "Query"
-#       })
-#     }
-#     data {
-#       ref_id         = "Count"
-#       query_type     = ""
-#       datasource_uid = "__expr__"
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       model = jsonencode({
-#         datasource = {
-#           name = "Expression"
-#           type = "__expr__"
-#           uid  = "__expr__"
-#         }
-#         expression = "Query"
-#         hide       = false
-#         reducer    = "count"
-#         refId      = "Count"
-#         type       = "reduce"
-#       })
-#     }
-#     data {
-#       ref_id         = "Threshold"
-#       query_type     = ""
-#       datasource_uid = "__expr__"
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       model = jsonencode({
-#         conditions = [
-#           {
-#             evaluator = {
-#               params = [
-#                 0,
-#               ]
-#               type = "gt"
-#             }
-#           },
-#         ]
-#         datasource = {
-#           name = "Expression"
-#           type = "__expr__"
-#           uid  = "__expr__"
-#         }
-#         expression = "Count"
-#         hide       = false
-#         refId      = "Threshold"
-#         type       = "threshold"
-#       })
-#     }
-#   }
+locals {
+  # Grafana Cloud provisions the stack's own Prometheus datasource
+  prometheus_uid = "grafanacloud-prom"
+}
 
-#   rule {
-#     name           = "HTTP Service Down"
-#     for            = "5m"
-#     condition      = "Threshold"
-#     no_data_state  = "OK"
-#     exec_err_state = "Error"
-#     annotations = {
-#     }
-#     labels = {
-#     }
-#     is_paused = false
-#     data {
-#       ref_id     = "Query"
-#       query_type = ""
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       datasource_uid = grafana_data_source.influxdb.uid
-#       model = jsonencode({
-#         datasource = {
-#           type = "influxdb"
-#           uid  = grafana_data_source.influxdb.uid
-#         }
-#         hide  = false
-#         query = <<-EOT
-# from(bucket: "http")
-#   |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
-#   |> filter(fn: (r) => r["_measurement"] == "http_response" and
-#                        r["_field"] == "result_code" and
-#                        r._value != 0)
-# EOT
-#         refId = "Query"
-#       })
-#     }
-#     data {
-#       ref_id         = "Count"
-#       query_type     = ""
-#       datasource_uid = "__expr__"
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       model = jsonencode({
-#         datasource = {
-#           name = "Expression"
-#           type = "__expr__"
-#           uid  = "__expr__"
-#         }
-#         expression = "Query"
-#         hide       = false
-#         reducer    = "count"
-#         refId      = "Count"
-#         type       = "reduce"
-#       })
-#     }
-#     data {
-#       ref_id         = "Threshold"
-#       query_type     = ""
-#       datasource_uid = "__expr__"
-#       relative_time_range {
-#         from = 60
-#         to   = 0
-#       }
-#       model = jsonencode({
-#         conditions = [
-#           {
-#             evaluator = {
-#               params = [
-#                 0,
-#               ]
-#               type = "gt"
-#             }
-#           },
-#         ]
-#         datasource = {
-#           name = "Expression"
-#           type = "__expr__"
-#           uid  = "__expr__"
-#         }
-#         expression = "Count"
-#         hide       = false
-#         refId      = "Threshold"
-#         type       = "threshold"
-#       })
-#     }
-#   }
-# }
+resource "grafana_rule_group" "infrastructure" {
+  name             = "Infrastructure Rules"
+  folder_uid       = grafana_folder.infrastructure.uid
+  interval_seconds = 60
+
+  rule {
+    name           = "Systemd units failure"
+    for            = "1m"
+    condition      = "Threshold"
+    no_data_state  = "OK"
+    exec_err_state = "Error"
+    annotations    = {}
+    labels         = {}
+    is_paused      = false
+
+    data {
+      ref_id = "Query"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = local.prometheus_uid
+      model = jsonencode({
+        datasource = {
+          type = "prometheus"
+          uid  = local.prometheus_uid
+        }
+        editorMode = "code"
+        expr       = "count(systemd_units_active_code{active=\"failed\"}) or vector(0)"
+        instant    = true
+        range      = false
+        refId      = "Query"
+      })
+    }
+
+    data {
+      ref_id = "Value"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model = jsonencode({
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Query"
+        reducer    = "last"
+        refId      = "Value"
+        type       = "reduce"
+      })
+    }
+
+    data {
+      ref_id = "Threshold"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [0]
+              type   = "gt"
+            }
+          },
+        ]
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Value"
+        refId      = "Threshold"
+        type       = "threshold"
+      })
+    }
+  }
+
+  rule {
+    name           = "HTTP Service Down"
+    for            = "5m"
+    condition      = "Threshold"
+    no_data_state  = "OK"
+    exec_err_state = "Error"
+    annotations    = {}
+    labels         = {}
+    is_paused      = false
+
+    data {
+      ref_id = "Query"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = local.prometheus_uid
+      model = jsonencode({
+        datasource = {
+          type = "prometheus"
+          uid  = local.prometheus_uid
+        }
+        editorMode = "code"
+        expr       = "count(http_response_result_code != 0) or vector(0)"
+        instant    = true
+        range      = false
+        refId      = "Query"
+      })
+    }
+
+    data {
+      ref_id = "Value"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model = jsonencode({
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Query"
+        reducer    = "last"
+        refId      = "Value"
+        type       = "reduce"
+      })
+    }
+
+    data {
+      ref_id = "Threshold"
+
+      relative_time_range {
+        from = 60
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model = jsonencode({
+        conditions = [
+          {
+            evaluator = {
+              params = [0]
+              type   = "gt"
+            }
+          },
+        ]
+        datasource = {
+          name = "Expression"
+          type = "__expr__"
+          uid  = "__expr__"
+        }
+        expression = "Value"
+        refId      = "Threshold"
+        type       = "threshold"
+      })
+    }
+  }
+}
 
 resource "grafana_contact_point" "email" {
   name = "Email"
