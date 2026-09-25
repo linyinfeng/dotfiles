@@ -343,7 +343,7 @@ in
 
           terraform-apply-stage "$stage" "$@"
 
-          nix fmt
+          nix fmt "$DOTFILES_DIR"
         '';
       }
 
@@ -361,7 +361,7 @@ in
               return "$exit_code"
             fi
             terraform-commit-outputs "Terraform ${builtins.concatStringsSep "+" stageOrder} apply"
-            nix fmt
+            nix fmt "$DOTFILES_DIR"
           }
           trap cleanup EXIT
 
