@@ -26,10 +26,4 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       gtk = "${lib.getExe switchGtk} dark";
     };
   };
-  # D-Bus activatable and BindsTo=graphical-session.target; without a display
-  # check the activation drags graphical-session.target into ssh sessions.
-  systemd.user.services.darkman.Unit.ConditionEnvironment = [
-    "|WAYLAND_DISPLAY"
-    "|DISPLAY"
-  ];
 }
