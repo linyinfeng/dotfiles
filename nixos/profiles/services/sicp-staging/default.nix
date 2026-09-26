@@ -97,6 +97,7 @@ lib.mkMerge [
 
     # App config is rendered by sops and bind-mounted into the container;
     # secrets never pass through CI.
+    systemd.tmpfiles.rules = [ "d ${composeDir}/config 0755 sicp-staging sicp-staging - -" ];
     sops.templates."sicp-staging-application.yml" = {
       path = "${composeDir}/config/application.yml";
       owner = config.users.users.sicp-staging.name;
