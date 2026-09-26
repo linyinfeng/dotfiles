@@ -181,8 +181,8 @@
       "proxy": true
     },
     "sicp-staging": {
-      "on": "mtl0",
-      "proxy": true
+      "on": "nuc",
+      "proxy": false
     },
     "smtp": {
       "on": "mtl0",
