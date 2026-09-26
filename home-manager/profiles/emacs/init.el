@@ -134,12 +134,15 @@
   (counsel-projectile-mode))
 
 (use-package darkman
-  :ensure t)
-
-(use-package delight
   :ensure t
   :config
-  (darkman-mode))
+  ;; darkman is a D-Bus service bound to graphical-session.target; connecting
+  ;; from a display-less session (ssh) activates it and its target's X11 units.
+  (when (or (getenv "WAYLAND_DISPLAY") (getenv "DISPLAY"))
+    (darkman-mode)))
+
+(use-package delight
+  :ensure t)
 
 (use-package eldoc
   :ensure t)
