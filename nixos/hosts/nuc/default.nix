@@ -68,6 +68,7 @@ in
             nginx.enable = true;
             postgresql.enable = true;
             samba.enable = true;
+            sicp-staging.enable = true;
             smartd.enable = true;
             teamspeak.enable = true;
             transmission.enable = true;

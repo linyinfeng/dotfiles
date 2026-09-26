@@ -152,7 +152,7 @@ locals {
     prebuilt-zip   = { on = "mtl0", proxy = false }
     s3             = { on = "mtl0", proxy = true }
     s3-web         = { on = "mtl0", proxy = true }
-    sicp-staging   = { on = "mtl0", proxy = true }
+    sicp-staging   = { on = "nuc", proxy = false }
     smtp           = { on = "mtl0", proxy = false }
     social         = { on = "mtl0", proxy = true }
     static         = { on = "mtl0", proxy = true }

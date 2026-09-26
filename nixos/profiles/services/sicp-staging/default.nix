@@ -116,7 +116,7 @@ lib.mkMerge [
           oauth2 = {
             gitlab = {
               endpoint = "https://git.nju.edu.cn";
-              redirectUri = "https://sicp-staging.li7g.com/oj/web/auth/callback";
+              redirectUri = "https://sicp-staging.li7g.com:8443/oj/web/auth/callback";
               scope = "read_user";
               clientId = "824e65daa58165919d7e3137616a67818400e0610cad26a10db97234029fa508";
               clientSecret = config.sops.placeholder."nju_git_sicp_staging_oauth2";
@@ -177,6 +177,7 @@ lib.mkMerge [
         };
         management.endpoints.web.cors = {
           allowed-origins = [
+            "https://sicp-staging.li7g.com:8443"
             "https://sicp-staging.li7g.com"
             "http://localhost:5173"
           ];

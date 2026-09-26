@@ -55,7 +55,6 @@ in
           portal-server.enable = true;
           postgresql.enable = true;
           prebuilt-zip.enable = true;
-          sicp-staging.enable = true;
           static-file-hosting.enable = true;
           telegraf-http.enable = true;
           vaultwarden.enable = true;
