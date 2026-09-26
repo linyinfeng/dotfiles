@@ -45,6 +45,9 @@ lib.mkMerge [
         # tailscale is a layer 3 VPN
         # do not advertise or configure any IP addresses on the tailscale interface through systemd-networkd
         LinkLocalAddressing = "no";
+        # tailscaled owns the addresses and routes on this link: without this,
+        # networkd prunes them as foreign config and the data path goes dead
+        KeepConfiguration = "yes";
         IPv6AcceptRA = "no";
         DHCP = "no";
         # DNS configuration only
