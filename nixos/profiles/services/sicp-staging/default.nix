@@ -61,7 +61,11 @@ lib.mkMerge [
       };
       wantedBy = [ "sockets.target" ];
     };
+    # docker compose only talks to the socket, so image pulls happen inside the
+    # podman service: it is the process that needs the fw proxy to reach the
+    # public registries.
     systemd.user.services.sicp-staging-podman = {
+      environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
       serviceConfig = {
         ExecStart = "${pkgs.podman}/bin/podman system service --time=0";
         Slice = "sicp-staging.slice";
