@@ -137,9 +137,7 @@
   :ensure t)
 
 (use-package delight
-  :ensure t
-  :config
-  (darkman-mode))
+  :ensure t)
 
 (use-package eldoc
   :ensure t)
