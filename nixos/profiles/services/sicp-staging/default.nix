@@ -62,10 +62,6 @@ lib.mkMerge [
       wantedBy = [ "sockets.target" ];
     };
     systemd.user.services.sicp-staging-podman = {
-      environment = {
-        # blob extraction must not go to the 2G tmpfs root
-        TMPDIR = "%h/tmp";
-      };
       serviceConfig = {
         ExecStart = "${pkgs.podman}/bin/podman system service --time=0";
         Slice = "sicp-staging.slice";
