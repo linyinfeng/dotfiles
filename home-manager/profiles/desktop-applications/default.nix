@@ -22,7 +22,6 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       gnome-text-editor
       inkscape
       kicad
-      libreoffice
       llm-agents.chatgpt
       loupe
       meld
@@ -42,6 +41,9 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       zotero
       # keep-sorted end
     ]
+    # TODO: drop the isAarch64 guard once libreoffice builds on aarch64-linux
+    # (buildPhase fails there: git not found, dragonbox tarball missing).
+    ++ lib.optionals (!pkgs.stdenv.hostPlatform.isAarch64) [ libreoffice ]
     ++ optionalPkg [ "teamspeak6-client" ]
     ++ optionalPkg [
       "nur"
