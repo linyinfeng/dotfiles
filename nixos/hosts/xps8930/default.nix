@@ -74,6 +74,7 @@ in
     enable = true;
     auto-login.enable = true;
   };
+  systemd.network.wait-online.enable = false; # networkd manages nothing here
   services.godns-multi = {
     ipv4.settings = {
       domains = [
