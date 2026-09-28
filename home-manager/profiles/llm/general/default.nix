@@ -20,6 +20,7 @@
 
   home.global-persistence.directories = [
     ".cc-switch"
+    ".claude"
     ".codex"
     ".continue"
     ".codebuddy"
@@ -27,6 +28,8 @@
     ".local/share/opencode"
     ".cache/opencode"
   ];
+
+  home.global-persistence.files = [ ".claude.json" ];
 
   systemd.user.services.codex-app-server = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     Unit = {
