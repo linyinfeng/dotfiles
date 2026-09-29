@@ -66,6 +66,8 @@ in
         };
       };
 
+      synchronize.users.yinfeng.enable = true;
+
       home-manager.users.yinfeng =
         { ... }:
         {
