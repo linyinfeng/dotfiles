@@ -16,11 +16,14 @@
     with pkgs;
     [
       # keep-sorted start
+      fd
       ffmpeg
       ghostscript
       imagemagick
       linyinfeng.mstickereditor
       minio-client
+      nixfmt
+      ripgrep
       # keep-sorted end
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [

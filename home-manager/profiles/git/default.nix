@@ -57,6 +57,7 @@ lib.mkMerge [
     };
 
     home.packages = with pkgs; [
+      forgejo-cli
       github-cli
       git-credential-manager
       glab
