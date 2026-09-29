@@ -97,39 +97,44 @@ let
     unstable-small = import inputs.nixpkgs-unstable-small nixpkgsArgs;
     stable = import inputs.nixpkgs-stable nixpkgsArgs;
   };
-  earlyFixes =
-    nixpkgsArgs:
-    let
-      # deadnix: skip
-      channels = alternativeChannels nixpkgsArgs;
-    in
-    [
-      (_final: _prev: {
-        # maintained packages
-        inherit (channels.latest) godns;
-      })
-    ];
-  lateFixes =
-    nixpkgsArgs:
-    let
-      # deadnix: skip
-      channels = alternativeChannels nixpkgsArgs;
-    in
-    [
-      (_final: prev: {
-        inherit (channels.stable) shim-unsigned; # TODO fix
-        nginx =
-          if lib.versionAtLeast prev.nginx.version "1.30.1" then
-            prev.nginx
-          else
-            # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=519893
-            channels.latest.nginx;
-      })
-    ];
+  # Derive the channel arguments from the pkgs being overlaid, so the overlay
+  # list below is independent of which system the caller evaluates it for.
+  channelsOf =
+    final:
+    alternativeChannels {
+      inherit (final) config;
+      localSystem = final.stdenv.buildPlatform;
+      crossSystem =
+        if final.stdenv.hostPlatform.system == final.stdenv.buildPlatform.system then
+          null
+        else
+          final.stdenv.hostPlatform;
+    };
+  earlyFixes = [
+    (final: _prev: {
+      # maintained packages
+      godns = (channelsOf final).latest.godns;
+    })
+  ];
+  lateFixes = [
+    (final: prev: {
+      shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
+      nginx =
+        if lib.versionAtLeast prev.nginx.version "1.30.1" then
+          prev.nginx
+        else
+          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=519893
+          (channelsOf final).latest.nginx;
+    })
+  ];
+
+  allOverlays = earlyFixes ++ packages ++ lateFixes;
 in
 {
+  flake.overlays.all = lib.composeManyExtensions allOverlays;
+
   perSystem =
-    { config, system, ... }:
+    { system, ... }:
     lib.mkMerge [
       # common nixpkgs options
       {
@@ -150,19 +155,7 @@ in
                 ]
               );
           };
-          overlays =
-            let
-              # do not include overlays to prevent infinite recursion
-              overlayNixpkgsArgs = {
-                inherit (config.nixpkgs)
-                  localSystem
-                  crossSystem
-                  config
-                  crossOverlays
-                  ;
-              };
-            in
-            (earlyFixes overlayNixpkgsArgs) ++ packages ++ (lateFixes overlayNixpkgsArgs);
+          overlays = allOverlays;
         };
       }
       (lib.mkIf (system == "loongarch64-linux") {
