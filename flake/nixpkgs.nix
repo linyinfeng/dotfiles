@@ -2,6 +2,7 @@
   self,
   inputs,
   lib,
+  config,
   getSystem,
   ...
 }:
@@ -132,6 +133,10 @@ let
 in
 {
   flake.overlays.all = lib.composeManyExtensions allOverlays;
+
+  # The merged nixpkgs config (dotfiles' own plus the flake modules'), per
+  # system, so downstream flakes can reuse it alongside overlays.all.
+  flake.libs.nixpkgsConfig = lib.genAttrs config.systems (system: (getSystem system).nixpkgs.config);
 
   perSystem =
     { system, ... }:
