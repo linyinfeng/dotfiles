@@ -7,11 +7,7 @@
 let
   cfg = config.networking.fw-proxy;
   inherit (config.networking) hostName;
-  profiles = [
-    "main"
-    "exclusive"
-    "alternative"
-  ];
+  profiles = [ "main" ];
 in
 lib.mkMerge [
   {
@@ -82,7 +78,7 @@ lib.mkMerge [
 
     networking.fw-proxy.auto-update = {
       enable = false;
-      service = "alternative";
+      service = "main";
     };
 
     systemd.services.nix-daemon.environment = cfg.environment;
