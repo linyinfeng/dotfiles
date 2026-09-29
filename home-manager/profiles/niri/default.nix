@@ -292,6 +292,7 @@ in
           # create an empty file if not exists
           "f %h/.config/niri/noctalia.kdl - - - -"
         ];
+        home.packages = [ pkgs.adwaita-icon-theme ];
         programs.niri.binds =
           let
             modMove = "Shift";
