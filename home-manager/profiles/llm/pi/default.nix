@@ -88,6 +88,7 @@ in
         "npm:@juicesharp/rpiv-todo"
         "npm:@mrclrchtr/supi-context"
         "npm:@narumitw/pi-usage"
+        "npm:@xynogen/pix-sudo"
         "npm:pi-agent-browser-native"
         "npm:pi-background-tasks"
         "npm:pi-btw"
