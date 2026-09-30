@@ -64,11 +64,19 @@ def write(
     flake = f"{dotfiles_dir()}#nixosConfigurations.{name}.config.system.build.bootsd"
     image = captured(["nix", "build", flake, "--no-link", "--print-out-paths"])
     run(["sha1sum", image])
-    with open(image, "rb") as image_file:
-        run(
-            ["ssh", *ssh_args, "dd of=/firmware/boot.sd\nsha1sum /firmware/boot.sd"],
-            stdin=image_file,
-        )
+    try:
+        with open(image, "rb") as image_file:
+            run(
+                [
+                    "ssh",
+                    *ssh_args,
+                    "dd of=/firmware/boot.sd\nsha1sum /firmware/boot.sd",
+                ],
+                stdin=image_file,
+            )
+    except OSError as error:
+        message(f"cannot read boot image {image}: {error}")
+        raise typer.Exit(2) from error
     run(["sync"])
 
 
