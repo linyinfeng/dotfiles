@@ -11,15 +11,6 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  # pi rewrites settings.json at runtime (model selection, extension settings),
-  # so this file stays writable and the switch merges into it instead of
-  # replacing it wholesale.
-  piSettingsFile = "${config.home.homeDirectory}/.pi/agent/settings.json";
-
-  # same deal for the provider list: cc-switch and manual edits add providers
-  # at runtime, and a plain symlink would drop them on the next rebuild.
-  piModelsFile = "${config.home.homeDirectory}/.pi/agent/models.json";
-
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
     runtimeInputs = [ pkgs.llm-agents.nono ];
@@ -50,79 +41,71 @@ in
       nodejs
       rtk
     ];
-
-    settings = {
-      theme = "light/dark";
-      collapseChangelog = true;
-      enableInstallTelemetry = false;
-      outputPad = 0;
-      hideThinkingBlock = true;
-      terminal.showTerminalProgress = true;
-      # pi also writes these at runtime; the switch merge wins, so a /model
-      # pick only survives until the next rebuild.
-      defaultProvider = "commandcode";
-      defaultModel = "deepseek/deepseek-v4.1-flash";
-      enabledModels = [
-        "cc-switch/gpt-6-astra"
-        "deepseek/deepseek-flash"
-        "openrouter/google/gemini-3.8-flash"
-        "zai-coding-cn/glm-5.3-flash"
-        "commandcode/deepseek/deepseek-v4.1-flash"
-        "xiaomi-token-plan-cn/mimo-v2.6-flash"
-        "xiaomi-token-plan-cn/mimo-v2.6-pro"
-      ];
-      defaultThinkingLevel = "high";
-      steeringMode = "all";
-      tokenSpeed = {
-        display = "ttft";
-        useProviderTokens = true;
-        thresholds = {
-          slow = 30;
-          medium = 60;
-          fast = 100;
-          blazing = 200;
-        };
-      };
-      packages = [
-        # keep-sorted start
-        "npm:@juicesharp/rpiv-todo"
-        "npm:@mrclrchtr/supi-context"
-        "npm:@narumitw/pi-usage"
-        "npm:@xynogen/pix-sudo"
-        "npm:pi-agent-browser-native"
-        "npm:pi-background-tasks"
-        "npm:pi-btw"
-        "npm:pi-commandcode-provider"
-        "npm:pi-fabric"
-        "npm:pi-goal-x"
-        "npm:pi-interactive-shell"
-        "npm:pi-lens"
-        "npm:pi-mcp-adapter"
-        "npm:pi-simplify"
-        "npm:pi-subagents"
-        "npm:pi-token-speed"
-        "npm:pi-web-access"
-        {
-          source = "${config.xdg.configHome}/nono/packages/nolabs-ai/pi";
-        }
-        # keep-sorted end
-      ];
-    };
   };
 
-  home.file.${piSettingsFile}.enable = false;
+  # pi, cc-switch and /model rewrite these at runtime, so the switch merges into
+  # them instead of linking; a pick made in the TUI lasts until the next rebuild.
+  home.merge.".pi/agent/settings.json".value = {
+    theme = "light/dark";
+    collapseChangelog = true;
+    enableInstallTelemetry = false;
+    outputPad = 0;
+    hideThinkingBlock = true;
+    terminal.showTerminalProgress = true;
+    defaultProvider = "commandcode";
+    defaultModel = "deepseek/deepseek-v4.1-flash";
+    enabledModels = [
+      "cc-switch/gpt-6-astra"
+      "deepseek/deepseek-flash"
+      "openrouter/google/gemini-3.8-flash"
+      "zai-coding-cn/glm-5.3-flash"
+      "commandcode/deepseek/deepseek-v4.1-flash"
+      "xiaomi-token-plan-cn/mimo-v2.6-flash"
+      "xiaomi-token-plan-cn/mimo-v2.6-pro"
+    ];
+    defaultThinkingLevel = "high";
+    steeringMode = "all";
+    tokenSpeed = {
+      display = "ttft";
+      useProviderTokens = true;
+      thresholds = {
+        slow = 30;
+        medium = 60;
+        fast = 100;
+        blazing = 200;
+      };
+    };
+    packages = [
+      # keep-sorted start
+      "npm:@juicesharp/rpiv-todo"
+      "npm:@mrclrchtr/supi-context"
+      "npm:@narumitw/pi-usage"
+      "npm:@xynogen/pix-sudo"
+      "npm:pi-agent-browser-native"
+      "npm:pi-background-tasks"
+      "npm:pi-btw"
+      "npm:pi-commandcode-provider"
+      "npm:pi-fabric"
+      "npm:pi-goal-x"
+      "npm:pi-interactive-shell"
+      "npm:pi-lens"
+      "npm:pi-mcp-adapter"
+      "npm:pi-simplify"
+      "npm:pi-subagents"
+      "npm:pi-token-speed"
+      "npm:pi-web-access"
+      {
+        source = "${config.xdg.configHome}/nono/packages/nolabs-ai/pi";
+      }
+      # keep-sorted end
+    ];
+  };
 
-  home.activation.piSettingsMerge = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    settings=${piSettingsFile}
-    generated=${config.home.file.${piSettingsFile}.source}
-    if [ -f "$settings" ] && ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$settings" "$generated" > "$settings.merged"; then
-      run mv -f "$settings.merged" "$settings"
-    else
-      rm -f "$settings.merged"
-      warnEcho "$settings is not valid JSON; replacing it with the declared settings"
-      run cp -f "$generated" "$settings"
-    fi
-  '';
+  home.merge.".pi/agent/models.json".value = {
+    # providers live in the file itself (cc-switch, /model, hand edits);
+    # nothing is declared here, the switch only supplies an empty default.
+    providers = { };
+  };
 
   home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piWebSearch;
@@ -133,25 +116,6 @@ in
   home.file.".pi/agent/auth.json" = lib.mkIf (config.home.env.secretPaths ? piAuth) {
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piAuth;
   };
-
-  home.file.${piModelsFile} = {
-    enable = false;
-    # providers live in the file itself (cc-switch, /model, hand edits);
-    # nothing is declared here, the switch only supplies an empty default.
-    text = builtins.toJSON { providers = { }; };
-  };
-
-  home.activation.piModelsMerge = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
-    models=${piModelsFile}
-    generated=${config.home.file.${piModelsFile}.source}
-    if [ -f "$models" ] && ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$models" "$generated" > "$models.merged"; then
-      run mv -f "$models.merged" "$models"
-    else
-      rm -f "$models.merged"
-      warnEcho "$models is not valid JSON; replacing it with the declared models"
-      run cp -f "$generated" "$models"
-    fi
-  '';
 
   home.packages = [
     pi-sandbox
