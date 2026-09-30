@@ -24,14 +24,6 @@ in
   };
 
   home.merge.".omp/agent/config.yml".value = {
-    providers.webSearchOrder = [
-      "exa"
-    ];
-    providers.webSearchExclude = [
-      "google"
-      "ecosia"
-      "mojeek"
-    ];
     # disable auto provider discovery
     disabledProviders = [
       "claude"
@@ -41,14 +33,48 @@ in
       "github"
       "cursor"
     ];
-    setupVersion = 1;
-    modelRoles.default = "opencode-go/deepseek-v4-pro";
-    modelRoles.smol = "opencode-go/deepseek-v4-flash";
-    modelRoles.slow = "opencode-go/deepseek-v4-pro";
-    modelRoles.vision = "opencode-go/mimo-v2.5";
+    # setupVersion is intentionally not declared: it is onboarding progress
+    # (the wizard rewrites it when an upstream bump adds scenes) and the merge
+    # keeps whatever omp wrote. Pinning it here would rewind it every switch and
+    # re-run the wizard until the pin catches up with CURRENT_SETUP_VERSION.
+    modelRoles.default = "commandcode/deepseek/deepseek-v4.1-flash:high";
+    modelRoles.smol = "commandcode/deepseek/deepseek-v4.1-flash";
+    modelRoles.slow = "xiaomi/mimo-v2.6-pro";
+    modelRoles.vision = "opencode-go/mimo-v2.6-flash";
+    modelRoles.web = "web/exa";
+    # web role falls back down the search-provider list; google/ecosia/mojeek
+    # are the providers the old providers.webSearchExclude dropped.
+    retry.fallbackChains.web = [
+      "web/parallel"
+      "web/perplexity"
+      "google-gemini-cli/gemini-2.5-flash"
+      "google-antigravity/gemini-2.5-flash"
+      "google/gemini-2.5-flash"
+      "anthropic/claude-haiku-4-5"
+      "openai-codex/gpt-5.6-luna"
+      "openai-codex/gpt-5.6"
+      "openai-codex/gpt-5.5"
+      "xai/grok-4.5"
+      "xai-oauth/grok-4.5"
+      "web/zai"
+      "web/tinyfish"
+      "web/jina"
+      "web/kagi"
+      "web/tavily"
+      "web/firecrawl"
+      "web/brave"
+      "web/kimi"
+      "web/synthetic"
+      "web/ollama"
+      "web/searxng"
+      "web/startpage"
+      "web/duckduckgo"
+      "web/public"
+    ];
     hideThinkingBlock = true;
     statusLine.transparent = true;
     statusLine.preset = "custom";
+    statusLine.separator = "powerline";
     statusLine.leftSegments = [
       "mode"
       "model"
@@ -67,7 +93,6 @@ in
     ];
     terminal.showProgress = true;
     tui.tight = true;
-    tui.scrollbackRebuild = true;
     display.shimmer = "kitt";
     display.cacheMissMarker = true;
     steeringMode = "all";
@@ -76,11 +101,18 @@ in
     bashInterceptor.enabled = true;
     github.enabled = true;
     astGrep.enabled = true;
+    autolearn.enabled = true;
+    autolearn.autoContinue = true;
     checkpoint.enabled = true;
     compaction.idleEnabled = true;
+    computer.enabled = true;
+    composer.tokenRate = true;
     edit.enforceSeenLines = true;
     lsp.diagnosticsOnEdit = true;
     lsp.formatOnWrite = true;
+    memory.backend = "sharpshooter";
+    plan.enabled = false;
+    power.sleepPrevention = "off";
     read.renderMarkdown = true;
     secrets.enabled = true;
   };
