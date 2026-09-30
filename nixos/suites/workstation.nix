@@ -10,7 +10,6 @@
       };
       hardware = {
         niz.enable = true;
-        rtl-sdr.enable = true;
         tablet.enable = true;
       };
       networking = {
