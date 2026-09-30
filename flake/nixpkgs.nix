@@ -143,6 +143,12 @@ let
         else
           # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=519893
           (channelsOf final).latest.nginx;
+      # zotero 10.x's fetch_xulrunner expects the Gecko 140 layout
+      # (JSWINDOWACTORS entries, aboutaddons.js), but nixpkgs dropped
+      # firefox-esr-140 (2026-09-28). Drop this once zotero 11 supports ESR 153.
+      zotero = prev.zotero.override {
+        firefox-esr-153-unwrapped = (channelsOf final).stable.firefox-esr-140-unwrapped;
+      };
     })
   ];
 
