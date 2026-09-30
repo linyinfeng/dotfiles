@@ -92,6 +92,23 @@ let
   ]
   ++ [ inputs.angrr.overlays.default ];
 
+  nixpkgsConfig = {
+    allowUnfree = true;
+    # cudaSupport = true;
+    # rocmSupport = true;
+    # TODO wait for mautrix-telegram, matrix-qq
+    allowInsecurePredicate =
+      p:
+      (p.pname or null) == "olm"
+      || (
+        (p.pname or null) == "electron"
+        && lib.elem (lib.versions.major (p.version or null)) [
+          "27"
+          "28"
+        ]
+      );
+  };
+
   alternativeChannels = nixpkgsArgs: {
     unstable = import inputs.nixpkgs nixpkgsArgs;
     latest = import inputs.nixpkgs-latest nixpkgsArgs;
@@ -103,13 +120,13 @@ let
   channelsOf =
     final:
     alternativeChannels {
-      inherit (final) config;
-      localSystem = final.stdenv.buildPlatform;
+      config = nixpkgsConfig;
+      localSystem = final.stdenv.buildPlatform.system;
       crossSystem =
         if final.stdenv.hostPlatform.system == final.stdenv.buildPlatform.system then
           null
         else
-          final.stdenv.hostPlatform;
+          final.stdenv.hostPlatform.system;
     };
   earlyFixes = [
     (final: _prev: {
@@ -144,22 +161,7 @@ in
       # common nixpkgs options
       {
         nixpkgs = {
-          config = {
-            allowUnfree = true;
-            # cudaSupport = true;
-            # rocmSupport = true;
-            # TODO wait for mautrix-telegram, matrix-qq
-            allowInsecurePredicate =
-              p:
-              (p.pname or null) == "olm"
-              || (
-                (p.pname or null) == "electron"
-                && lib.elem (lib.versions.major (p.version or null)) [
-                  "27"
-                  "28"
-                ]
-              );
-          };
+          config = nixpkgsConfig;
           overlays = allOverlays;
         };
       }
