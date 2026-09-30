@@ -70,6 +70,12 @@ let
     # rathole-ad-hoc = [ ];
     home-assistant = [ ];
     portal = [ ];
+    sicp-staging = [
+      {
+        url = "https://sicp-staging.li7g.com:8443";
+        code = 200;
+      }
+    ];
     opencode = [ ];
     pi-web = [ ];
     agent = [ ];
