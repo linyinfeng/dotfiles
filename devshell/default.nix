@@ -1,4 +1,12 @@
-{ pkgs, self', ... }:
+{
+  pkgs,
+  lib,
+  self',
+  ...
+}:
+let
+  sopsYaml = (pkgs.formats.yaml { }).generate "sops.yaml" (import ./sops-yaml.nix { inherit lib; });
+in
 {
   imports = [ ./envs.nix ];
   devshells.default = {
@@ -24,5 +32,8 @@
         category = "secrets";
       }
     ];
+    devshell.startup.sops-yaml.text = ''
+      ln -sfn ${sopsYaml} "$PRJ_ROOT/.sops.yaml"
+    '';
   };
 }

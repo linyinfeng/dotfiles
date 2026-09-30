@@ -1043,58 +1043,6 @@
         "type": "github"
       }
     },
-    "nixago": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixago-exts": [
-          "nixago-exts"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1746801636,
-        "narHash": "sha256-dlcKfIXp/eqFHzFm+DzseXAWWlpVwyk9cTvCKGtVKkw=",
-        "owner": "nix-community",
-        "repo": "nixago",
-        "rev": "8cc33f973ab3a891d8a41391e73ef451a783960b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixago",
-        "type": "github"
-      }
-    },
-    "nixago-exts": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixago": [
-          "nixago"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1676070308,
-        "narHash": "sha256-QaJ65oc2l8iwQIGWUJ0EKjCeSuuCM/LqR8RauxZUUkc=",
-        "owner": "nix-community",
-        "repo": "nixago-extensions",
-        "rev": "e5380cb0456f4ea3c86cf94e3039eb856bf07d0b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nixago-extensions",
-        "type": "github"
-      }
-    },
     "nixos-cn": {
       "inputs": {
         "flake-utils": [
@@ -1613,8 +1561,6 @@
         "nix-github-actions": "nix-github-actions",
         "nix-index-database": "nix-index-database",
         "nix-topology": "nix-topology",
-        "nixago": "nixago",
-        "nixago-exts": "nixago-exts",
         "nixos-cn": "nixos-cn",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",

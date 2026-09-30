@@ -311,16 +311,6 @@
 
     nix-filter.url = "github:numtide/nix-filter";
 
-    nixago.url = "github:nix-community/nixago";
-    nixago.inputs.nixpkgs.follows = "nixpkgs";
-    nixago.inputs.flake-utils.follows = "flake-utils";
-    nixago.inputs.nixago-exts.follows = "nixago-exts";
-
-    nixago-exts.url = "github:nix-community/nixago-extensions";
-    nixago-exts.inputs.flake-utils.follows = "flake-utils";
-    nixago-exts.inputs.nixago.follows = "nixago";
-    nixago-exts.inputs.nixpkgs.follows = "nixpkgs";
-
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -387,7 +377,6 @@
           inputs.pre-commit-hooks-nix.flakeModule
           inputs.linyinfeng.flakeModules.nixpkgs
           inputs.linyinfeng.flakeModules.passthru
-          inputs.linyinfeng.flakeModules.nixago
           inputs.nix-topology.flakeModule
         ]
         ++ selfLib.buildModuleList ./flake;

@@ -122,9 +122,9 @@ def new_host(host: str, system: str) -> None:
         run(["age-keygen", "--output", str(key)])
         identity = captured(["age-keygen", "-y", str(key)])
 
-        message("updating nixago configuration...")
+        message("updating sops configuration...")
         insert_before(
-            root / "nixago/sops-yaml.nix",
+            root / "devshell/sops-yaml.nix",
             "# PLACEHOLDER new host",
             f'{host} = {{\n  key = "{identity}";\n  owned = true;\n}};\n',
         )
