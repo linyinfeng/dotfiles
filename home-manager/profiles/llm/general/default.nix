@@ -27,4 +27,17 @@
     ".local/share/opencode"
     ".cache/opencode"
   ];
+
+  systemd.user.services.codex-app-server = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    Unit = {
+      Description = "Codex app-server daemon";
+      After = [ "default.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${lib.getExe pkgs.llm-agents.codex} app-server daemon start";
+      RemainAfterExit = true;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 }
