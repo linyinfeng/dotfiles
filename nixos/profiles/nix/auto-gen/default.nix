@@ -29,5 +29,5 @@ in
     name: value: lib.nameValuePair "nix/inputs/${name}" { source = value.outPath; }
   ) linkedInputs;
 
-  nix.nixPath = [ "/etc/nix/inputs" ];
+  nix.settings.nix-path = [ "/etc/nix/inputs" ];
 }

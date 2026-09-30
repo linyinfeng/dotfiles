@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 lib.mkMerge [
   {
     nix = {
@@ -31,9 +31,6 @@ lib.mkMerge [
     };
 
     nix.channel.enable = false;
-    # TODO wait for https://github.com/NixOS/nix/issues/9574
-    # `nix.channel.enable = false` will set 'nix-path =' in system nix.conf
-    nix.settings.nix-path = config.nix.nixPath;
 
     systemd.services.nix-daemon.serviceConfig = {
       Slice = "minor.slice";
