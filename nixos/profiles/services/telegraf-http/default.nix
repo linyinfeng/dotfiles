@@ -76,7 +76,6 @@ let
         code = 200;
       }
     ];
-    opencode = [ ];
     pi-web = [ ];
     agent = [ ];
     frp-nuc = [ ];

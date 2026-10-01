@@ -12,7 +12,6 @@ let
 in
 {
   imports = [
-    ./_opencode.nix
     ./_filebrowser.nix
     ./_pi-web.nix
   ];
@@ -60,7 +59,6 @@ in
           git.enable = lib.mkDefault true;
           llm = {
             general.enable = lib.mkDefault true;
-            opencode.enable = lib.mkDefault true;
             pi.enable = lib.mkDefault true;
           };
           shells.enable = lib.mkDefault true;
