@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -8,15 +7,12 @@
   imports = [
     ./_mcp.nix
   ];
-  home.packages =
-    with pkgs;
-    [
-      llm-agents.nono
-      llm-agents.cc-switch-cli
-      llm-agents.claude-code
-      llm-agents.codex
-    ]
-    ++ (lib.optional (!config.programs.opencode.enable) pkgs.opencode);
+  home.packages = with pkgs; [
+    llm-agents.nono
+    llm-agents.cc-switch-cli
+    llm-agents.claude-code
+    llm-agents.codex
+  ];
 
   home.global-persistence.directories = [
     ".cc-switch"
@@ -24,9 +20,6 @@
     ".codex"
     ".continue"
     ".codebuddy"
-    ".config/opencode"
-    ".local/share/opencode"
-    ".cache/opencode"
   ];
 
   home.global-persistence.files = [ ".claude.json" ];
