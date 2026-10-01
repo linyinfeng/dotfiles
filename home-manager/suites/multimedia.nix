@@ -10,6 +10,7 @@
     mime.enable = true;
     minecraft.enable = true;
     niri.enable = true;
+    noctalia.enable = true;
     obs-studio.enable = true;
     rime.enable = true;
   };
