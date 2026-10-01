@@ -21,41 +21,41 @@ let
       exec uvx mineru-open-mcp "$@"
     '';
   };
+
+  servers =
+    let
+      simpleMcps =
+        (with pkgs; [
+          mcp-nixos
+          context7-mcp
+        ])
+        ++ lib.optionals (secretPaths ? mineruApiKey) [ mineruMcp ];
+    in
+    lib.listToAttrs (
+      lib.map (
+        p:
+        lib.nameValuePair (p.pname or p.name) {
+          command = lib.getExe p;
+          env = {
+            # some python MCP does not support SOCKS 5 proxies
+            "ALL_PROXY" = "";
+            "all_proxy" = "";
+          };
+        }
+      ) simpleMcps
+    )
+    // {
+      "grep-app" = {
+        url = "https://mcp.grep.app";
+      };
+      "exa" = {
+        url = "https://mcp.exa.ai/mcp";
+      };
+    };
 in
 {
   programs.mcp = {
     enable = true;
-    servers =
-      let
-        simpleMcps =
-          (with pkgs; [
-            mcp-nixos
-            context7-mcp
-          ])
-          ++ lib.optionals (secretPaths ? mineruApiKey) [ mineruMcp ];
-      in
-      lib.listToAttrs (
-        lib.map (
-          p:
-          lib.nameValuePair (p.pname or p.name) {
-            command = lib.getExe p;
-            env = {
-              # some python MCP does not support SOCKS 5 proxies
-              "ALL_PROXY" = "";
-              "all_proxy" = "";
-            };
-          }
-        ) simpleMcps
-      )
-      // {
-        "grep.app" = {
-          type = "remote";
-          url = "https://mcp.grep.app";
-        };
-        "exa" = {
-          type = "remote";
-          url = "https://mcp.exa.ai/mcp";
-        };
-      };
+    inherit servers;
   };
 }

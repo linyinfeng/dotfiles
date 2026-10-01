@@ -32,6 +32,6 @@ source}`; the tool's own payload is on `.text` or inside `.content`.
   turn end (knip, jscpd, madge, gitleaks, govulncheck, dead-code, test-runner).
   trivy and the turn-end madge pass are opt-in and off — do not re-run any of
   them by hand.
-- The five MCP servers (`context7-mcp`, `exa`, `grep.app`, `mcp-nixos`,
-  `mineru-open-mcp`) connect lazily and their metadata is cached, so `search`
-  and `describe` work with no live server.
+- The five MCP servers (`context7-mcp`, `exa`, `grep-app`, `mcp-nixos`,
+  `mineru-open-mcp`) come from pi's built-in MCP and connect lazily; fabric's
+  descriptor cache answers for the ones already fetched without a live server.

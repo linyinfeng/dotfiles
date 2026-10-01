@@ -89,7 +89,6 @@ in
       "npm:pi-goal-x"
       "npm:pi-interactive-shell"
       "npm:pi-lens"
-      "npm:pi-mcp-adapter"
       "npm:pi-simplify"
       "npm:pi-subagents"
       "npm:pi-token-speed"
@@ -105,6 +104,20 @@ in
     # providers live in the file itself (cc-switch, /model, hand edits);
     # nothing is declared here, the switch only supplies an empty default.
     providers = { };
+  };
+
+  home.merge.".pi/agent/mcp.json".value = {
+    mcpServers = lib.mapAttrs (
+      _: server:
+      lib.filterAttrs (_: value: value != null && value != [ ] && value != { }) server
+      // {
+        exposure = "deferred";
+      }
+    ) config.programs.mcp.servers;
+  };
+
+  home.merge.".pi/agent/fabric.json".value = {
+    mcp.nativeServers = lib.attrNames config.programs.mcp.servers;
   };
 
   home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
