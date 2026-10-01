@@ -27,6 +27,7 @@
   config = lib.mkMerge [
     {
       world.profiles.graphical.niri.enable = true;
+      world.profiles.graphical.noctalia.enable = true;
 
       services.tailscale.enable = true;
       networking.campus-network = {

@@ -4,6 +4,7 @@
     profiles = {
       audio.midi.enable = true;
       graphical.niri.enable = true;
+      graphical.noctalia.enable = true;
       boot = {
         binfmt.enable = true;
         plymouth.enable = true;

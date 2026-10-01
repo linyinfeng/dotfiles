@@ -5,6 +5,7 @@
       activate-linux.enable = true;
       fonts.enable = true;
       niri.enable = true;
+      noctalia.enable = true;
     };
     i18n.input-method.enable = true;
     services = {
