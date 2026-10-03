@@ -9,6 +9,3 @@ resource "hcloud_ssh_key" "pgp" {
 
 data "hcloud_locations" "all" {
 }
-
-data "hcloud_datacenters" "all" {
-}
