@@ -5,7 +5,6 @@
       home.env.secretPaths = {
         piWebSearch = lib.mkDefault config.sops.templates."pi-web-search-config".path;
         piAuth = lib.mkDefault config.sops.templates."pi-auth".path;
-        opencodeAuth = lib.mkDefault config.sops.templates."opencode-auth".path;
         mineruApiKey = lib.mkDefault config.sops.secrets."mineru_api_key".path;
       };
     })
@@ -93,40 +92,6 @@
   sops.secrets."command_code_api_key" = {
     predefined.enable = true;
     restartUnits = [ ];
-    group = "llm";
-    mode = "440";
-  };
-  sops.templates."opencode-auth" = {
-    content = builtins.toJSON {
-      deepseek = {
-        key = config.sops.placeholder."deepseek_api_key";
-        type = "api";
-      };
-      opencode = {
-        key = config.sops.placeholder."opencode_api_key";
-        type = "api";
-      };
-      opencode-go = {
-        key = config.sops.placeholder."opencode_api_key";
-        type = "api";
-      };
-      openrouter = {
-        key = config.sops.placeholder."openrouter_api_key";
-        type = "api";
-      };
-      xiaomi = {
-        key = config.sops.placeholder."mimo_api_key";
-        type = "api";
-      };
-      xiaomi-token-plan-cn = {
-        key = config.sops.placeholder."mimo_token_plan_api_key";
-        type = "api";
-      };
-      nvidia = {
-        key = config.sops.placeholder."nvidia_api_key";
-        type = "api";
-      };
-    };
     group = "llm";
     mode = "440";
   };

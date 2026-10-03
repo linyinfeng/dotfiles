@@ -577,14 +577,6 @@ output "xray_service_name" {
   value     = random_password.xray_service_name.result
   sensitive = true
 }
-resource "random_password" "opencode_web_password" {
-  length  = 32
-  special = false
-}
-output "opencode_web_password" {
-  value     = random_password.opencode_web_password.result
-  sensitive = true
-}
 
 resource "random_password" "filebrowser_agent" {
   length  = 32

@@ -8,7 +8,6 @@
     helix.enable = true;
     llm = {
       general.enable = true;
-      omp.enable = true;
       pi.enable = true;
     };
     obsidian.enable = true;

@@ -143,7 +143,6 @@ locals {
     mc             = { on = "nuc", proxy = false }
     nextcloud      = { on = "nuc", proxy = false }
     nuc-proxy      = { on = "mtl0", proxy = true }
-    opencode       = { on = "nuc", proxy = false }
     oranc          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }
     pgp-public-key = { on = "mtl0", proxy = true }
