@@ -64,6 +64,12 @@ in
       "xiaomi-token-plan-cn/mimo-v2.6-pro"
     ];
     defaultThinkingLevel = "high";
+    defaultTools = [
+      "+codemode"
+      "+find"
+      "+grep"
+      "+ls"
+    ];
     steeringMode = "all";
     tokenSpeed = {
       display = "ttft";
@@ -84,7 +90,6 @@ in
       "npm:pi-background-tasks"
       "npm:pi-btw"
       "npm:pi-commandcode-provider"
-      "npm:pi-fabric"
       "npm:pi-goal-x"
       "npm:pi-interactive-shell"
       "npm:pi-lens"
@@ -113,10 +118,6 @@ in
         exposure = "deferred";
       }
     ) config.programs.mcp.servers;
-  };
-
-  home.merge.".pi/agent/fabric.json".value = {
-    mcp.nativeServers = lib.attrNames config.programs.mcp.servers;
   };
 
   home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
