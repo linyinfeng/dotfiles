@@ -225,6 +225,9 @@
     noctalia.url = "github:noctalia-dev/noctalia-shell";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
 
+    umbriel.url = "github:noctalia-dev/umbriel";
+    umbriel.inputs.nixpkgs.follows = "nixpkgs";
+
     tsukkomi.url = "github:linyinfeng/tsukkomi";
     tsukkomi.inputs.nixpkgs.follows = "nixpkgs";
     tsukkomi.inputs.crane.follows = "crane";
