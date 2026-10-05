@@ -6,43 +6,6 @@
 }:
 let
   cfg = config.programs.niri;
-  noctaliaIpc =
-    cmd:
-    [
-      "noctalia"
-      "msg"
-    ]
-    ++ cmd;
-  launcherToggle = noctaliaIpc [
-    "panel-toggle"
-    "launcher"
-  ];
-  volumeUp = noctaliaIpc [
-    "volume-up"
-  ];
-  volumeDown = noctaliaIpc [
-    "volume-down"
-  ];
-  volumeMute = noctaliaIpc [
-    "volume-mute"
-  ];
-  volumeMicMute = noctaliaIpc [
-    "mic-mute"
-  ];
-  lightUp = noctaliaIpc [
-    "brightness-up"
-  ];
-  lightDown = noctaliaIpc [
-    "brightness-down"
-  ];
-  lockScreen = noctaliaIpc [
-    "session"
-    "lock"
-  ];
-  sessionMenu = noctaliaIpc [
-    "panel-toggle"
-    "session"
-  ];
   spawn = command: "spawn ${lib.concatMapStringsSep " " (s: "\"${s}\"") command}";
   restoreWorking = pkgs.writeShellApplication {
     name = "niri-restore-working";
@@ -289,171 +252,127 @@ in
           "f %h/.config/niri/noctalia.kdl - - - -"
         ];
         home.packages = [
-          pkgs.adwaita-icon-theme
           restoreWorking
         ];
         programs.niri.binds =
           let
-            modMove = "Shift";
-            modMonitor = "Ctrl";
-            keyUp = "P";
-            keyDown = "N";
-            keyLeft = "B";
-            keyRight = "F";
-            keyWorkspaceUp = "W";
-            keyWorkspaceDown = "S";
-            directions = {
-              left = {
-                keys = [
-                  "Left"
-                  keyLeft
+            # Niri spells the wheel chords as `WheelScroll*` and takes an action
+            # as a KDL node, so the shared keymap is translated, not rendered
+            # verbatim.
+            niriKey =
+              key:
+              lib.replaceStrings
+                [
+                  "WheelLeft"
+                  "WheelRight"
+                  "WheelUp"
+                  "WheelDown"
+                ]
+                [
                   "WheelScrollLeft"
-                ];
-                windowTerm = "column";
-              };
-              down = {
-                keys = [
-                  "Down"
-                  keyDown
-                ];
-                windowTerm = "window";
-              };
-              up = {
-                keys = [
-                  "Up"
-                  keyUp
-                ];
-                windowTerm = "window";
-              };
-              right = {
-                keys = [
-                  "Right"
-                  keyRight
                   "WheelScrollRight"
-                ];
-                windowTerm = "column";
-              };
-            };
-            workspaceDirections = {
-              up = {
-                keys = [
-                  "Page_Up"
-                  keyWorkspaceUp
                   "WheelScrollUp"
-                ];
-              };
-              down = {
-                keys = [
-                  "Page_Down"
-                  keyWorkspaceDown
                   "WheelScrollDown"
-                ];
-              };
-            };
-            workspaceIndices = lib.range 1 9;
-            isWheelKey = lib.hasPrefix "Wheel";
-            wheelCooldownMs = 100;
+                ]
+                key;
+            kdlString = value: "\"${lib.replaceStrings [ "\\" "\"" ] [ "\\\\" "\\\"" ] value}\"";
+            niriActions = {
+              # focus
+              "window-focus-left" = "focus-column-left";
+              "window-focus-right" = "focus-column-right";
+              "window-focus-up" = "focus-window-up";
+              "window-focus-down" = "focus-window-down";
+              "window-focus-switch-floating" = "switch-focus-between-floating-and-tiling";
+              "column-focus-first" = "focus-column-first";
+              "column-focus-last" = "focus-column-last";
+              "output-focus-left" = "focus-monitor-left";
+              "output-focus-right" = "focus-monitor-right";
+              "output-focus-up" = "focus-monitor-up";
+              "output-focus-down" = "focus-monitor-down";
 
-            windowBindings = lib.mapAttrsToList (
-              direction: cfg:
-              (lib.lists.map (
-                key:
-                let
-                  cooldown = if (isWheelKey key) then "cooldown-ms=${toString wheelCooldownMs} " else "";
-                in
-                [
-                  "Mod+${key} ${cooldown}{ focus-${cfg.windowTerm}-${direction}; }"
-                  "Mod+${modMove}+${key} ${cooldown}{ move-${cfg.windowTerm}-${direction}; }"
-                  "Mod+${modMonitor}+${key} ${cooldown}{ focus-monitor-${direction}; }"
-                  "Mod+${modMove}+${modMonitor}+${key} ${cooldown}{ move-column-to-monitor-${direction}; }"
-                ]
-              ) cfg.keys)
-            ) directions;
-            workspaceBindings = lib.mapAttrsToList (
-              direction: cfg:
-              (lib.lists.map (
-                key:
-                let
-                  cooldown = if (isWheelKey key) then "cooldown-ms=${toString wheelCooldownMs} " else "";
-                in
-                [
-                  "Mod+${key} ${cooldown}{ focus-workspace-${direction}; }"
-                  "Mod+${modMove}+${key} ${cooldown}{ move-column-to-workspace-${direction}; }"
-                  "Mod+Ctrl+${key} ${cooldown}{ move-workspace-${direction}; }"
-                ]
-              ) cfg.keys)
-            ) workspaceDirections;
-            indexedWorkspaceBindings = lib.map (index: [
-              "Mod+${toString index} { focus-workspace ${toString index}; }"
-              "Mod+${modMove}+${toString index} { move-column-to-workspace ${toString index}; }"
-            ]) workspaceIndices;
-            specialBindings = [
-              # overview
-              "Mod+O { toggle-overview; }"
-              # show help
-              "Mod+Shift+Slash { show-hotkey-overlay; }"
-              # terminal, app launcher, screen locker, ...
-              "Mod+Return repeat=false { ${spawn [ "alacritty" ]}; }"
-              "Mod+D hotkey-overlay-title=\"Toggle launcher\" repeat=false { ${spawn launcherToggle}; }"
-              "Mod+L hotkey-overlay-title=\"Lock screen\"     { ${spawn lockScreen}; }"
-              # volume keys
-              "XF86AudioRaiseVolume allow-when-locked=true { ${spawn volumeUp}; }"
-              "XF86AudioLowerVolume allow-when-locked=true { ${spawn volumeDown}; }"
-              "XF86AudioMute        allow-when-locked=true { ${spawn volumeMute}; }"
-              "XF86AudioMicMute     allow-when-locked=true { ${spawn volumeMicMute}; }"
-              # brightness keys
-              "XF86MonBrightnessUp   allow-when-locked=true { ${spawn lightUp}; }"
-              "XF86MonBrightnessDown allow-when-locked=true { ${spawn lightDown}; }"
-              # quit window
-              "Mod+Q { close-window; }"
-              "Mod+MouseMiddle { close-window; }"
-              # first and last
-              "Mod+A { focus-column-first; }"
-              "Mod+E { focus-column-last; }"
-              "Mod+${modMove}+A { move-column-to-first; }"
-              "Mod+${modMove}+E { move-column-to-last; }"
-              # consume and expel
-              "Mod+Comma  { consume-window-into-column; }"
-              "Mod+Period { expel-window-from-column; }"
-              "Mod+BracketLeft  { consume-or-expel-window-left; }"
-              "Mod+BracketRight { consume-or-expel-window-right; }"
-              "Mod+T { toggle-column-tabbed-display; }"
-              # preset size
-              "Mod+R { switch-preset-column-width; }"
-              "Mod+Shift+R { reset-window-height; }"
-              "Mod+M { maximize-column; }"
-              "Mod+Shift+M { fullscreen-window; }"
-              "Mod+Ctrl+M { maximize-window-to-edges; }"
-              # center column
-              "Mod+C { center-column; }"
-              # manual size
-              "Mod+Minus       { set-column-width \"-10%\"; }"
-              "Mod+Equal       { set-column-width \"+10%\"; }"
-              "Mod+Shift+Minus { set-window-height \"-10%\"; }"
-              "Mod+Shift+Equal { set-window-height \"+10%\"; }"
-              # screenshot
-              "Print            { screenshot show-pointer=false; }"
-              "Ctrl+Print       { screenshot-screen show-pointer=false; }"
-              "Ctrl+Shift+Print { screenshot-screen show-pointer=false write-to-disk=false; }"
-              "Alt+Print        { screenshot-window; }"
-              "Alt+Shift+Print  { screenshot-window write-to-disk=false; }"
-              # floating
-              "Mod+BackSlash       { switch-focus-between-floating-and-tiling; }"
-              "Mod+Shift+BackSlash { toggle-window-floating; }"
-              # inhibit
-              "Mod+Escape { toggle-keyboard-shortcuts-inhibit; }"
-              # quit
-              "Mod+Ctrl+E { ${spawn sessionMenu}; }"
-            ];
+              # move and resize
+              "column-move-left" = "move-column-left";
+              "column-move-right" = "move-column-right";
+              "window-move-up" = "move-window-up";
+              "window-move-down" = "move-window-down";
+              "column-move-to-first" = "move-column-to-first";
+              "column-move-to-last" = "move-column-to-last";
+              "column-move-to-output-left" = "move-column-to-monitor-left";
+              "column-move-to-output-right" = "move-column-to-monitor-right";
+              "column-move-to-output-up" = "move-column-to-monitor-up";
+              "column-move-to-output-down" = "move-column-to-monitor-down";
+              "column-center" = "center-column";
+              "window-consume-left" = "consume-window-into-column";
+              "window-consume-or-expel-left" = "consume-or-expel-window-left";
+              "window-consume-or-expel-right" = "consume-or-expel-window-right";
+              "window-cycle-primary-extent" = "switch-preset-column-width";
+              "window-reset-height" = "reset-window-height";
+              "window-modify-primary-extent:-0.1" = "set-column-width \"-10%\"";
+              "window-modify-primary-extent:0.1" = "set-column-width \"+10%\"";
+              "window-modify-secondary-extent:-0.1" = "set-window-height \"-10%\"";
+              "window-modify-secondary-extent:0.1" = "set-window-height \"+10%\"";
+
+              # workspaces
+              "workspace-previous" = "focus-workspace-up";
+              "workspace-next" = "focus-workspace-down";
+              "column-move-to-workspace-previous" = "move-column-to-workspace-up";
+              "column-move-to-workspace-next" = "move-column-to-workspace-down";
+              "workspace-move-up" = "move-workspace-up";
+              "workspace-move-down" = "move-workspace-down";
+
+              # windows
+              "window-close" = "close-window";
+              "window-toggle-floating" = "toggle-window-floating";
+              "window-toggle-fullscreen" = "fullscreen-window";
+              "window-toggle-maximize" = "maximize-column";
+              "window-toggle-maximize-to-edges" = "maximize-window-to-edges";
+              "column-toggle-tabbed" = "toggle-column-tabbed-display";
+
+              # overview, help and session
+              "overview-toggle" = "toggle-overview";
+              "cheatsheet-toggle" = "show-hotkey-overlay";
+              "shortcuts-inhibit-toggle" = "toggle-keyboard-shortcuts-inhibit";
+
+              # screenshots
+              "screenshot-region" = "screenshot show-pointer=false";
+              "screenshot-output" = "screenshot-screen show-pointer=false";
+              "screenshot-output-copy" = "screenshot-screen show-pointer=false write-to-disk=false";
+              "screenshot-window" = "screenshot-window";
+              "screenshot-window-copy" = "screenshot-window write-to-disk=false";
+            };
+            niriAction =
+              action:
+              if lib.hasPrefix "workspace-switch:" action then
+                "focus-workspace ${lib.removePrefix "workspace-switch:" action}"
+              else if lib.hasPrefix "column-move-to-workspace:" action then
+                "move-column-to-workspace ${lib.removePrefix "column-move-to-workspace:" action}"
+              else
+                niriActions.${action} or (throw "window-manager: no niri action for `${action}`");
+            renderBind =
+              bind:
+              let
+                action =
+                  if bind.spawn != null then
+                    "spawn ${lib.concatMapStringsSep " " kdlString bind.spawn}"
+                  else
+                    niriAction bind.action;
+                properties = lib.concatStringsSep " " (
+                  lib.optional (bind.title != null) "hotkey-overlay-title=${kdlString bind.title}"
+                  ++ lib.optional (bind.cooldownMs != null) "cooldown-ms=${toString bind.cooldownMs}"
+                  ++ lib.optional (!bind.repeat) "repeat=false"
+                  ++ lib.optional bind.allowWhenLocked "allow-when-locked=true"
+                );
+              in
+              "${niriKey bind.key}${lib.optionalString (properties != "") " ${properties}"} { ${action}; }";
           in
-          lib.flatten [
-            specialBindings
-            workspaceBindings
-            indexedWorkspaceBindings
-            windowBindings
-          ];
+          map renderBind config.programs.windowManager.binds;
 
         wayland.systemd.target = "niri.service";
+      }
+
+      # shared with the other compositors
+      {
+        world.profiles.window-manager.enable = true;
       }
 
       # noctalia (niri side)
@@ -499,161 +418,6 @@ in
         }
       )
 
-      # kanshi
-      {
-        home.packages = with pkgs; [
-          wdisplays
-          wlr-randr
-        ];
-        services.kanshi = {
-          enable = true;
-        };
-      }
-
-      # wluma
-      {
-        services.wluma = {
-          # noctalia notification for brightness change is annoying
-          enable = false;
-          systemd.enable = true;
-        };
-      }
-
-      # wl-mirror
-      {
-        home.packages =
-          let
-            inherit (pkgs) wl-mirror;
-            mirror = pkgs.writeShellApplication {
-              name = "mirror";
-              runtimeInputs = [ wl-mirror ];
-              text = ''
-                wl-mirror --backend screencopy-dmabuf --fullscreen-output "$2" "$1"
-              '';
-            };
-          in
-          [
-            wl-mirror
-            mirror
-          ];
-      }
-
-      # hexexcute
-      {
-        home.packages = with pkgs; [
-          linyinfeng.hexecute
-        ];
-        programs.niri.binds = [
-          "Mod+X { ${
-            spawn [
-              "hexecute"
-            ]
-          }; }"
-        ];
-        home.global-persistence.directories = [
-          ".config/hexecute"
-        ];
-      }
-
-      # osd
-      (
-        let
-          wvkbd = pkgs.wvkbd.overrideAttrs (oldAttrs: {
-            makeFlags = (oldAttrs.makeFlags or [ ]) ++ [
-              "LAYOUT=deskintl"
-            ];
-          });
-          wvkbdToggle = pkgs.writeShellApplication {
-            name = "wvkbd-toggle";
-            runtimeInputs = [
-              config.home.env.systemdPackage
-              pkgs.procps
-            ];
-            text = ''
-              wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
-              state="$(cat "$wvkbd_state_file")"
-              if [ "$state" = "shown" ]; then
-                systemctl --user kill --kill-whom=main --signal=USR1 wvkbd.service
-              elif [ "$state" = "hidden" ]; then
-                systemctl --user kill --kill-whom=main --signal=USR2 wvkbd.service
-              fi
-            '';
-          };
-        in
-        {
-          home.packages = [ wvkbdToggle ];
-          systemd.user.services.wvkbd = {
-            Unit = {
-              Description = "On-screen keyboard for wlroots";
-              ConditionEnvironment = [
-                "WAYLAND_DISPLAY"
-              ];
-              After = [ "graphical-session.target" ];
-              PartOf = [ "graphical-session.target" ];
-            };
-            Service = {
-              ExecStart =
-                let
-                  wvkbdDeamon = pkgs.writeShellApplication {
-                    name = "wvkbd-daemon";
-                    runtimeInputs = [
-                      wvkbd
-                      pkgs.clickclack
-                    ];
-                    text = ''
-                      cd "$RUNTIME_DIRECTORY"
-                      rm --force pressed
-                      mkfifo pressed
-                      wvkbd-deskintl --hidden -o >pressed &
-                      wvkbd_pid="$!"
-                      clickclack -V <pressed &
-                      clickclack_pid="$!"
-
-                      state_file="$RUNTIME_DIRECTORY/state"
-                      new_state_file="$RUNTIME_DIRECTORY/state.new"
-                      echo "hidden" >"$state_file"
-                      # transition_delay_ms=50
-
-                      function hide_keyboard {
-                        echo "hide keyboard..."
-                        echo "hidden" >"$new_state_file"
-                        kill -USR1 "$wvkbd_pid"
-                        mv --force "$new_state_file" "$state_file"
-                        echo "keyboard hidden"
-                      }
-                      function show_keyboard {
-                        echo "show keyboard..."
-                        echo "shown" >"$new_state_file"
-                        kill -USR2 "$wvkbd_pid"
-                        mv --force "$new_state_file" "$state_file"
-                        echo "keyboard shown"
-                      }
-
-                      trap "hide_keyboard" SIGUSR1
-                      trap "show_keyboard" SIGUSR2
-
-                      # https://stackoverflow.com/questions/55866583/wait-exits-after-trap
-                      function loop_wait {
-                        while wait "$1"; [ "$?" -ge 128 ]; do
-                          echo 'finished wait'
-                        done
-                      }
-                      loop_wait "$wvkbd_pid"
-                      loop_wait "$clickclack_pid"
-                    '';
-                  };
-                in
-                lib.getExe wvkbdDeamon;
-              Restart = "on-failure";
-              RuntimeDirectory = "wvkbd";
-            };
-            Install = {
-              WantedBy = [ config.wayland.systemd.target ];
-            };
-          };
-        }
-      )
-
       # system76-niri-scheduler
       {
         services.system76-scheduler-niri.enable = true;
@@ -683,13 +447,6 @@ in
           };
         }
       )
-
-      # fastfetch
-      {
-        home.packages = with pkgs; [
-          fastfetch
-        ];
-      }
     ]
   );
 }
