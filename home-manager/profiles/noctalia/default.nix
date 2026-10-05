@@ -22,14 +22,13 @@ let
   };
   specialSettings = {
     dock.pinned = config.programs.desktop-files.favorites;
-    general.avatarImage = "${config.home.homeDirectory}/.face";
     hooks.theme_mode_changed = "${lib.getExe themeModeChanged} $1";
-    screenRecorder.directory = "${config.xdg.userDirs.videos}/Recordings";
+    shell.avatar_path = "${config.home.homeDirectory}/.face";
     wallpaper = {
       default.path = "${defaultWallpaper}";
       directory = "${config.xdg.userDirs.pictures}/Wallpapers";
     };
-    controlCenter.diskPath = config.home.global-persistence.root;
+    widget.sysmon.path = config.home.global-persistence.root;
   };
   syncSettings = pkgs.writeShellApplication {
     name = "noctalia-sync-settings";
