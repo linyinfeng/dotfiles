@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   toml = pkgs.formats.toml { };
   themeFile = "theme.toml";
@@ -39,8 +44,7 @@ in
     };
   };
   systemd.user.tmpfiles.rules = lib.mkIf pkgs.stdenv.hostPlatform.isLinux [
-    # link theme if not exists
-    "C %h/.config/alacritty/${themeFile} - - - - ${themeToml}"
+    "C %h/.config/alacritty/${themeFile} 644 ${config.home.username} ${config.home.username} - ${themeToml}"
     "z %h/.config/alacritty/${themeFile} 644 - - -"
   ];
   services.darkman = {
