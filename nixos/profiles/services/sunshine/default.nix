@@ -16,7 +16,7 @@ in
     };
   };
   sops.secrets."sunshine_credentials_file" = {
-    predefined.enable = true;
+    terraformOutput.enable = true;
     # credentials are hashed, simply make it available to all users
     mode = "440";
     group = config.users.groups.users.name;
