@@ -6,6 +6,7 @@
       fonts.enable = true;
       niri.enable = true;
       noctalia.enable = true;
+      umbriel.enable = true;
     };
     i18n.input-method.enable = true;
     services = {
