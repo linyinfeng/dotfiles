@@ -74,11 +74,6 @@ in
         Port ${toString config.ports.ssh}
     '') (lib.attrNames config.networking.hostsData.indexedHosts)
     + ''
-      Host ostrich
-        User Yinfeng
-        HostName ostrich.ts.li7g.com
-        Port 2222
-
       Host xps8930
         HostName xps8930.li7g.com
         AddressFamily inet

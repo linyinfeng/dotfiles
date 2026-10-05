@@ -17,7 +17,7 @@
   "dn42_anycast_v6_cidr": "fd72:db83:badd:ffff::/64",
   "dn42_v4_cidr": "172.23.224.96/27",
   "dn42_v6_cidr": "fd72:db83:badd::/48",
-  "garage_backup_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"parrot\",\"sparrow\",\"xps8930\"]",
+  "garage_backup_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "garage_pastebin_key_id": "GKb0704acb2c6549d7322d8b42",
   "garage_sicp_staging_key_id": "GK439502b66b234bebeb495082",
   "hydra_builder_public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKp9ARl93QOVwRgOLmp6H2A+v3PZsEP88TVQmtG95ZZv\n",
@@ -273,6 +273,24 @@
       "wireguard_public_key": "VNXv5/7nDMDJi6AnrYKt69/IP0G8GQJwUiTR6ellSxs=",
       "zerotier_id": "45e757c712",
       "zerotier_public_key": "45e757c712:0:5cd1a07a7df0e0150366e817c8efcfb45b6af958fc2e9b1451c82a5a9d0ca451dac96135339f87f5660a72e40bd6fb02f34e81488ede2c4b592bbfec3680534c"
+    },
+    "ostrich": {
+      "b2_backup_key_id": "00462cd88e29986000000002e",
+      "dn42_addresses_v4": ["172.23.224.104"],
+      "dn42_addresses_v6": ["fd72:db83:badd:8::1"],
+      "dn42_v6_prefixes": ["fd72:db83:badd:8::/64"],
+      "endpoints": [],
+      "endpoints_v4": [],
+      "endpoints_v6": [],
+      "garage_backup_key_id": "GK1b6109c1bb33564484da880e",
+      "host_indices": [8],
+      "ike_cert_pem": "-----BEGIN CERTIFICATE-----\nMIIB8DCCAXagAwIBAgIQJfkIoqoUKY4cUkpEPQVlbDAKBggqhkjOPQQDAzAlMRAw\nDgYDVQQKEwdZaW5mZW5nMREwDwYDVQQDEwhsaTdnLmNvbTAeFw0yNjEwMDQxMTM5\nMDhaFw0yNjEyMDQwNzM5MDhaMC0xEDAOBgNVBAoTB1lpbmZlbmcxGTAXBgNVBAMT\nEG9zdHJpY2gubGk3Zy5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAARpzSvJN3KG\ntBY5vCkRzhGrYF2Yq1rVVEQ/PBZzHn9FbO0r2Z3NbRIU+CTZFXlU7Bzhrbr64FTQ\nPuQ6jZNqDqLoknA9bWI5+CWgtcM1ZYMmpI/oabr4G7PnS2F2rqDDIVyjYzBhMBMG\nA1UdJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUF7pF\nDP6qoO7y80SCJNbwPAzKohwwGwYDVR0RBBQwEoIQb3N0cmljaC5saTdnLmNvbTAK\nBggqhkjOPQQDAwNoADBlAjEA1iDixJ2spjQtclWYu/0Rigs5Bdsuf8JWQ2JO/f+K\nHhoM93+lnLJ5cp6y/UXlUCQdAjBE5Q8MDQ6+DdIv1AHV227+eenH+haFTGXlPsD5\naI4RegWuudDGMWCgUsSpxDeLd4Y=\n-----END CERTIFICATE-----\n",
+      "ssh_host_ed25519_key_pub": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJSAXTvRSUJkRSPNIrf0yIQDlJdIsMMmFPpg2phdX9sM",
+      "ssh_host_rsa_key_pub": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDwGVg6sk6Ee1dehtXFZTaW8O75DGBBYzLwQ06gPA4CuJt30p21d+FpEDQlbtHbBUTkBrPX9jP+7tO6sNvd/eScgDDydLXEOBaORtEaUNbt95ZtLqSLRCh0s/0maLt2b4Q//4yHcd/6YNxNvwxBc6dBmj0fzMgg7mhb1NcrKxCnkBvtgJNE2JbQDlUQnkkqKtlBtZWQxtMjelbNvpB2E5Yc1z4x5A+kZ4HmMh5VXkwgQ56oA2Jl/p+OEPq96F0KaRwgoJfQ9IKL+KiZHnTx/YPZWkuNIOQN+rfhsYhoVLhHAaIh7jsXi1UCs5zs1V6lQ83nBzpjapO7glfoHrdmWcXC5x7Xi/rcooxlwb1pYtuw4QspvfOGh64OdKh/Hb1Z9V0/092+0VWPzhhVoGLjx9UDkHkMfIJ7PFyGadM1IM0dhMQWx402ce+wTjOLZp7ofNJj/S8BKbkFfZOe/ebD5lh7NIRKxp44NlT1WAfZqWgvNeKHdhYPTCYN8hgC/L+ytCsutfNZk84ZOW3loWThkZm15WAXYY7Ut74M/FkCC6bnCew9wgRZ9njWwZTSP+vvctXTAKYnP7m4lIF1eSiRKD7uPn9RY/x7dly4HOOcnBhmbFORQIt4MdCsxyGq7A4J4plQcO/8ABZfrhzGVB8iN0M6shGs6HCn3dmTO6vKQZjznw==",
+      "syncthing_device_id": "YFEKMOL-CDV5A7F-GR4VF7K-3HOQS3Y-RQPBJFA-3USFWCG-UHV3CDR-PT3AQAQ",
+      "wireguard_public_key": "Puf4HXbwvqBYud0w1VkqdjZc6SSXzy/D3RtgMtw1cR8=",
+      "zerotier_id": "6f0c9313a3",
+      "zerotier_public_key": "6f0c9313a3:0:96d45a19f39e14065e156c450f8fa9354299768048731d966a52f4667b83ff59318d7be1d68f9f6a0782e57ac2863e3df475eafa5aa8b4c633053eaf5f54e44e"
     },
     "parrot": {
       "b2_backup_key_id": "00462cd88e299860000000029",

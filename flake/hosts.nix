@@ -222,6 +222,17 @@ in
       name = "hkg0";
       system = "x86_64-linux";
     })
+    (mkHost {
+      name = "ostrich";
+      system = "x86_64-linux";
+      extraModules = with inputs.nixos-hardware.nixosModules; [
+        common-pc
+        common-pc-ssd
+        common-cpu-amd
+        common-cpu-amd-pstate
+        common-gpu-nvidia-nonprime
+      ];
+    })
     # PLACEHOLDER new host
 
     # Disabled hosts. Their configs are kept as `nixos/hosts/_<name>/` (the `_` prefix keeps

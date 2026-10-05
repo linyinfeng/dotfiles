@@ -49,6 +49,13 @@ locals {
       endpoints_v4 = []
       endpoints_v6 = []
     }
+    ostrich = {
+      records      = {}
+      ddns_records = {}
+      host_indices = [8]
+      endpoints_v4 = []
+      endpoints_v6 = []
+    }
     parrot = {
       records = {}
       ddns_records = {

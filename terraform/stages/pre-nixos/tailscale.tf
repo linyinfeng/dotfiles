@@ -9,9 +9,7 @@ locals {
 
   # tailnet devices that are not NixOS hosts but still get a <name>.ts.li7g.com
   # record; NixOS hosts come from local.hosts
-  extra_tailscale_devices = [
-    "ostrich",
-  ]
+  extra_tailscale_devices = []
 }
 
 # stage interface for post-nixos: which names get a <name>.ts.li7g.com record

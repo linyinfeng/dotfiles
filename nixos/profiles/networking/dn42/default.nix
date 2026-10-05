@@ -31,6 +31,7 @@ let
     "mtl0".enable = false; # unmetered
 
     "nuc".enable = false; # unmetered
+    "ostrich".enable = false; # behind NAT
     "parrot".enable = false; # mobile
   };
   regionTable = {
@@ -46,6 +47,10 @@ let
     "nuc" = {
       region = 52; # Asia-E (JP,CN,KR,TW,HK)
       country = 1156; # China
+    };
+    "ostrich" = {
+      region = null; # not publicly reachable
+      country = null;
     };
     # mobile devices
     "parrot" = {
