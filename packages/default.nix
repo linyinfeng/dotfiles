@@ -1,6 +1,7 @@
 {
   lib,
   newScope,
+  isDevSystem,
 }:
 lib.makeScope newScope (
   self:
@@ -8,8 +9,11 @@ lib.makeScope newScope (
     inherit (self) callPackage;
   in
   {
+    # currently nothing
+  }
+  // lib.optionalAttrs isDevSystem {
     fake-secrets = callPackage ./fake-secrets.nix { };
-    maintain = callPackage ./maintain { };
     make-fake-secrets = callPackage ./make-fake-secrets { };
+    maintain = callPackage ./maintain { };
   }
 )
