@@ -9,7 +9,6 @@
     gtk.enable = true;
     mime.enable = true;
     minecraft.enable = true;
-    niri.enable = true;
     noctalia.enable = true;
     umbriel.enable = true;
     obs-studio.enable = true;

@@ -285,6 +285,17 @@ in
   config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
     lib.mkMerge [
       {
+        home.sessionVariables.NIXOS_OZONE_WL = "1";
+        home.global-persistence.directories = [
+          ".cache/thumbnails"
+          ".local/share/applications"
+          ".local/share/backgrounds"
+          ".local/share/icc"
+          ".local/share/Trash"
+        ];
+      }
+
+      {
         home.packages = [
           # cursor theme
           pkgs.adwaita-icon-theme

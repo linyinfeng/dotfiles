@@ -4,7 +4,6 @@
     graphical = {
       activate-linux.enable = true;
       fonts.enable = true;
-      niri.enable = true;
       noctalia.enable = true;
       umbriel.enable = true;
     };

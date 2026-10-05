@@ -26,8 +26,8 @@
 
   config = lib.mkMerge [
     {
-      world.profiles.graphical.niri.enable = true;
       world.profiles.graphical.noctalia.enable = true;
+      world.profiles.graphical.umbriel.enable = true;
 
       services.tailscale.enable = true;
       networking.campus-network = {
@@ -41,14 +41,9 @@
           imports =
             suites.mobile
             ++ (with profiles; [
-              niri
               alacritty
+              umbriel
             ]);
-          programs = {
-            niri = {
-              default-column-proportion = 1.0; # open everything in full width
-            };
-          };
         };
       i18n.inputMethod.type = "fcitx5";
 

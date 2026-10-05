@@ -4,7 +4,7 @@
     "clipboardWatchImageCommand": "wl-paste --type image --watch cliphist store",
     "clipboardWatchTextCommand": "wl-paste --type text --watch cliphist store",
     "clipboardWrapText": true,
-    "customLaunchPrefix": "niri msg action spawn --",
+    "customLaunchPrefix": "umbriel msg spawn:",
     "customLaunchPrefixEnabled": true,
     "density": "default",
     "enableClipPreview": true,
@@ -988,7 +988,7 @@
   "settingsVersion": 59,
   "shell": {
     "corner_radius_scale": 1.2000000178813934,
-    "launch_apps_custom_command": "niri msg action spawn -- $CMD",
+    "launch_apps_custom_command": "umbriel msg 'spawn:$CMD'",
     "launcher": {
       "app_grid": false,
       "compact": false,

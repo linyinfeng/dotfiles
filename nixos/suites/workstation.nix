@@ -3,7 +3,6 @@
   world = {
     profiles = {
       audio.midi.enable = true;
-      graphical.niri.enable = true;
       graphical.noctalia.enable = true;
       graphical.umbriel.enable = true;
       boot = {

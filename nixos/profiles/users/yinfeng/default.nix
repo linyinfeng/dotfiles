@@ -75,12 +75,10 @@ in
     }
     # greeter
     {
-      # noctalia-greeter runs as the unprivileged 'greeter' user and reads
-      # avatars from AccountsService, whose IconFile is $HOME/.face: give it
-      # the user's group, which the 0750 home directory lets in
       users.users = lib.optionalAttrs config.services.displayManager.noctalia-greeter.enable {
         greeter.extraGroups = [ name ];
       };
+      environment.global-persistence.user.files = [ ".face" ];
     }
 
     # system administration
