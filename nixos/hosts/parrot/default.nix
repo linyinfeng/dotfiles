@@ -117,7 +117,7 @@ in
               };
               crypt-root = {
                 priority = 100;
-                size = "1T";
+                size = "100%";
                 content = {
                   type = "luks";
                   name = "crypt-root";
@@ -155,18 +155,6 @@ in
                   };
                 };
               };
-              windows = {
-                priority = 900;
-                size = "512G";
-                content = {
-                  type = "filesystem";
-                  format = "ntfs";
-                };
-              };
-              # reserved = {
-              #   priority = 1000;
-              #   size = "100%";
-              # };
             };
           };
         };
