@@ -7,18 +7,20 @@ in
     enable = true;
     capSysAdmin = true;
     openFirewall = true;
+    applications = {
+      env = { };
+      apps = [
+        {
+          name = "Desktop";
+          image-path = "desktop.png";
+        }
+      ];
+    };
     settings = {
-      # port = 47989; # simply use default port
       sunshine_name = hostName;
       address_family = "both";
       origin_web_ui_allowed = "pc"; # localhost only
-      credentials_file = config.sops.secrets."sunshine_credentials_file".path;
+      capture = "kms";
     };
-  };
-  sops.secrets."sunshine_credentials_file" = {
-    terraformOutput.enable = true;
-    # credentials are hashed, simply make it available to all users
-    mode = "440";
-    group = config.users.groups.users.name;
   };
 }
