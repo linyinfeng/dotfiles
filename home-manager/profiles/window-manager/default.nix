@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -340,105 +339,6 @@ in
           ".config/hexecute"
         ];
       }
-
-      # osd
-      (
-        let
-          wvkbd = pkgs.wvkbd.overrideAttrs (oldAttrs: {
-            makeFlags = (oldAttrs.makeFlags or [ ]) ++ [
-              "LAYOUT=deskintl"
-            ];
-          });
-          wvkbdToggle = pkgs.writeShellApplication {
-            name = "wvkbd-toggle";
-            runtimeInputs = [
-              config.home.env.systemdPackage
-              pkgs.procps
-            ];
-            text = ''
-              wvkbd_state_file="$XDG_RUNTIME_DIR/wvkbd/state"
-              state="$(cat "$wvkbd_state_file")"
-              if [ "$state" = "shown" ]; then
-                systemctl --user kill --kill-whom=main --signal=USR1 wvkbd.service
-              elif [ "$state" = "hidden" ]; then
-                systemctl --user kill --kill-whom=main --signal=USR2 wvkbd.service
-              fi
-            '';
-          };
-        in
-        {
-          home.packages = [ wvkbdToggle ];
-          systemd.user.services.wvkbd = {
-            Unit = {
-              Description = "On-screen keyboard for wlroots";
-              ConditionEnvironment = [
-                "WAYLAND_DISPLAY"
-              ];
-              After = [ "graphical-session.target" ];
-              PartOf = [ "graphical-session.target" ];
-            };
-            Service = {
-              ExecStart =
-                let
-                  wvkbdDeamon = pkgs.writeShellApplication {
-                    name = "wvkbd-daemon";
-                    runtimeInputs = [
-                      wvkbd
-                      pkgs.clickclack
-                    ];
-                    text = ''
-                      cd "$RUNTIME_DIRECTORY"
-                      rm --force pressed
-                      mkfifo pressed
-                      wvkbd-deskintl --hidden -o >pressed &
-                      wvkbd_pid="$!"
-                      clickclack -V <pressed &
-                      clickclack_pid="$!"
-
-                      state_file="$RUNTIME_DIRECTORY/state"
-                      new_state_file="$RUNTIME_DIRECTORY/state.new"
-                      echo "hidden" >"$state_file"
-                      # transition_delay_ms=50
-
-                      function hide_keyboard {
-                        echo "hide keyboard..."
-                        echo "hidden" >"$new_state_file"
-                        kill -USR1 "$wvkbd_pid"
-                        mv --force "$new_state_file" "$state_file"
-                        echo "keyboard hidden"
-                      }
-                      function show_keyboard {
-                        echo "show keyboard..."
-                        echo "shown" >"$new_state_file"
-                        kill -USR2 "$wvkbd_pid"
-                        mv --force "$new_state_file" "$state_file"
-                        echo "keyboard shown"
-                      }
-
-                      trap "hide_keyboard" SIGUSR1
-                      trap "show_keyboard" SIGUSR2
-
-                      # https://stackoverflow.com/questions/55866583/wait-exits-after-trap
-                      function loop_wait {
-                        while wait "$1"; [ "$?" -ge 128 ]; do
-                          echo 'finished wait'
-                        done
-                      }
-                      loop_wait "$wvkbd_pid"
-                      loop_wait "$clickclack_pid"
-                    '';
-                  };
-                in
-                lib.getExe wvkbdDeamon;
-              Restart = "on-failure";
-              RuntimeDirectory = "wvkbd";
-            };
-            Install = {
-              WantedBy = [ config.wayland.systemd.target ];
-            };
-          };
-        }
-      )
 
       # fastfetch
       {
