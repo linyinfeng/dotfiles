@@ -1,4 +1,0 @@
-{ ... }:
-{
-  security.rtkit.enable = true;
-}

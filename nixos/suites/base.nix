@@ -2,6 +2,7 @@
 {
   world = {
     profiles = {
+      audio.daw.enable = true;
       boot = {
         kernel.latest.enable = true;
         systemd-initrd.enable = true;
@@ -11,7 +12,6 @@
       nix.auto-gen.enable = true;
       security = {
         polkit.enable = true;
-        rtkit.enable = true;
         run0-sudo-shim.enable = true;
       };
       services = {
