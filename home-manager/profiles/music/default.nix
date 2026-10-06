@@ -18,6 +18,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
       home.packages = with pkgs; [
         # DAW
         reaper
+        qpwgraph # PipeWire patchbay
 
         # sheet music
         lilypond
