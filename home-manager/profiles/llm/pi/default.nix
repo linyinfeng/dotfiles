@@ -37,7 +37,6 @@ in
     extraPackages = with pkgs; [
       ast-grep
       bun
-      llm-agents.agent-browser
       nodejs
       rtk
     ];
@@ -86,8 +85,8 @@ in
       "npm:@juicesharp/rpiv-todo"
       "npm:@narumitw/pi-usage"
       "npm:@xynogen/pix-sudo"
-      "npm:pi-agent-browser-native"
       "npm:pi-background-tasks"
+      "npm:pi-browser-use"
       "npm:pi-btw"
       "npm:pi-commandcode-provider"
       "npm:pi-goal-x"
