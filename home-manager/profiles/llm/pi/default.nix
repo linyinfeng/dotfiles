@@ -63,6 +63,10 @@ in
       "xiaomi-token-plan-cn/mimo-v2.6-pro"
     ];
     defaultThinkingLevel = "high";
+    litellm.providers.litellm = {
+      baseUrl = "https://llm.li7g.com";
+      displayName = "Gateway";
+    };
     defaultTools = [
       "+codemode"
       "+find"
@@ -92,6 +96,7 @@ in
       "npm:pi-goal-x"
       "npm:pi-interactive-shell"
       "npm:pi-lens"
+      "npm:pi-provider-litellm"
       "npm:pi-simplify"
       "npm:pi-subagents"
       "npm:pi-token-speed"

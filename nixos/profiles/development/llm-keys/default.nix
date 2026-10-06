@@ -95,6 +95,12 @@
     group = "llm";
     mode = "440";
   };
+  sops.secrets."litellm_api_key" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+    group = "llm";
+    mode = "440";
+  };
   # TODO: drop the fetch answer override once pi-ai sends x-opencode-session
   # itself (earendil-works/pi#9326), so this can use the opencode-go models again.
   sops.templates."pi-web-search-config" = {
@@ -113,6 +119,10 @@
     content = builtins.toJSON {
       commandcode = {
         key = config.sops.placeholder."command_code_api_key";
+        type = "api_key";
+      };
+      litellm = {
+        key = config.sops.placeholder."litellm_api_key";
         type = "api_key";
       };
       deepseek = {
