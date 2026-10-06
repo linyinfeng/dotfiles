@@ -595,3 +595,30 @@ output "forgejo_admin_password" {
   value     = random_password.forgejo_admin_password.result
   sensitive = true
 }
+
+resource "random_password" "litellm_master_key" {
+  length  = 32
+  special = false
+}
+output "litellm_master_key" {
+  value     = random_password.litellm_master_key.result
+  sensitive = true
+}
+
+resource "random_password" "litellm_salt_key" {
+  length  = 32
+  special = false
+}
+output "litellm_salt_key" {
+  value     = random_password.litellm_salt_key.result
+  sensitive = true
+}
+
+resource "random_password" "litellm_db_password" {
+  length  = 32
+  special = false
+}
+output "litellm_db_password" {
+  value     = random_password.litellm_db_password.result
+  sensitive = true
+}

@@ -7,7 +7,10 @@
   config = lib.mkMerge [
     {
       world = {
-        profiles.services.frp-server.enable = true;
+        profiles.services = {
+          frp-server.enable = true;
+          litellm.enable = true;
+        };
         suites.overseaServer.enable = true;
       };
 

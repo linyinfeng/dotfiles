@@ -105,8 +105,10 @@
       ncro = 3490;
       forgejo = 3500;
       pi-web = 3510;
+      litellm = 3520;
 
       ipsec-nat-traversal = 4500;
+      postgresql = 5432;
       babel = 6696;
       jellyfin-auto-discovery-2 = 7359;
       http-alternative = 8080;

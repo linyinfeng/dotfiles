@@ -120,6 +120,10 @@
       "on": "nuc",
       "proxy": false
     },
+    "llm": {
+      "on": "hkg0",
+      "proxy": false
+    },
     "mastodon": {
       "on": "mtl0",
       "proxy": true
