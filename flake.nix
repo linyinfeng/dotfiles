@@ -228,6 +228,10 @@
     umbriel.url = "github:noctalia-dev/umbriel";
     umbriel.inputs.nixpkgs.follows = "nixpkgs";
 
+    lan-mouse.url = "github:feschber/lan-mouse";
+    lan-mouse.inputs.nixpkgs.follows = "nixpkgs";
+    lan-mouse.inputs.rust-overlay.follows = "rust-overlay";
+
     tsukkomi.url = "github:linyinfeng/tsukkomi";
     tsukkomi.inputs.nixpkgs.follows = "nixpkgs";
     tsukkomi.inputs.crane.follows = "crane";
