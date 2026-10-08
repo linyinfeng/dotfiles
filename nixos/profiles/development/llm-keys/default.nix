@@ -101,15 +101,13 @@
     group = "llm";
     mode = "440";
   };
-  # TODO: drop the fetch answer override once pi-ai sends x-opencode-session
-  # itself (earendil-works/pi#9326), so this can use the opencode-go models again.
   sops.templates."pi-web-search-config" = {
     content = builtins.toJSON {
       workflow = "auto-summary";
       perplexityApiKey = config.sops.placeholder."perplexity_api_key";
       fetch = {
-        answerProvider = "deepseek";
-        answerModel = "deepseek-flash";
+        answerProvider = "litellm";
+        answerModel = "deepseek/deepseek-flash";
       };
     };
     group = "llm";
@@ -117,44 +115,8 @@
   };
   sops.templates."pi-auth" = {
     content = builtins.toJSON {
-      commandcode = {
-        key = config.sops.placeholder."command_code_api_key";
-        type = "api_key";
-      };
       litellm = {
         key = config.sops.placeholder."litellm_api_key";
-        type = "api_key";
-      };
-      deepseek = {
-        key = config.sops.placeholder."deepseek_api_key";
-        type = "api_key";
-      };
-      opencode = {
-        key = config.sops.placeholder."opencode_api_key";
-        type = "api_key";
-      };
-      opencode-go = {
-        key = config.sops.placeholder."opencode_api_key";
-        type = "api_key";
-      };
-      openrouter = {
-        key = config.sops.placeholder."openrouter_api_key";
-        type = "api_key";
-      };
-      xai = {
-        key = config.sops.placeholder."xai_api_key";
-        type = "api_key";
-      };
-      xiaomi = {
-        key = config.sops.placeholder."mimo_api_key";
-        type = "api_key";
-      };
-      xiaomi-token-plan-cn = {
-        key = config.sops.placeholder."mimo_token_plan_api_key";
-        type = "api_key";
-      };
-      "zai-coding-cn" = {
-        key = config.sops.placeholder."zhipu_api_key";
         type = "api_key";
       };
     };

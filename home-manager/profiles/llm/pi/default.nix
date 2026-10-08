@@ -96,16 +96,15 @@ in
     outputPad = 0;
     hideThinkingBlock = true;
     terminal.showTerminalProgress = true;
-    defaultProvider = "commandcode";
-    defaultModel = "deepseek/deepseek-v4.1-flash";
+    defaultProvider = "litellm";
+    defaultModel = "commandcode/deepseek/deepseek-v4.1-flash";
     enabledModels = [
-      "cc-switch/gpt-6-astra"
-      "deepseek/deepseek-flash"
-      "openrouter/google/gemini-3.8-flash"
-      "zai-coding-cn/glm-5.3-flash"
-      "commandcode/deepseek/deepseek-v4.1-flash"
-      "xiaomi-token-plan-cn/mimo-v2.6-flash"
-      "xiaomi-token-plan-cn/mimo-v2.6-pro"
+      "litellm/deepseek/deepseek-flash"
+      "litellm/openrouter/google/gemini-3.8-flash"
+      "litellm/openrouter/z-ai/glm-5.3-flash"
+      "litellm/commandcode/deepseek/deepseek-v4.1-flash"
+      "litellm/xiaomi-coding-plan-cn/mimo-v2.6-flash"
+      "litellm/xiaomi-coding-plan-cn/mimo-v2.6-pro"
     ];
     defaultThinkingLevel = "high";
     litellm.providers.litellm = {
@@ -137,7 +136,6 @@ in
       "npm:pi-background-tasks"
       "npm:pi-browser-use"
       "npm:pi-btw"
-      "npm:pi-commandcode-provider"
       "npm:pi-goal-x"
       "npm:pi-interactive-shell"
       "npm:pi-lens"
