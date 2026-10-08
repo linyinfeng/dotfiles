@@ -100,8 +100,6 @@ in
     defaultModel = "commandcode/deepseek/deepseek-v4.1-flash";
     enabledModels = [
       "litellm/deepseek/deepseek-flash"
-      "litellm/openrouter/google/gemini-3.8-flash"
-      "litellm/openrouter/z-ai/glm-5.3-flash"
       "litellm/commandcode/deepseek/deepseek-v4.1-flash"
       "litellm/xiaomi-coding-plan-cn/mimo-v2.6-flash"
       "litellm/xiaomi-coding-plan-cn/mimo-v2.6-pro"
