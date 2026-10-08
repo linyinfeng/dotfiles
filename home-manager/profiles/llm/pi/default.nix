@@ -11,6 +11,22 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
+  # The agent's commits also name the human as co-author.
+  git-with-coauthor = pkgs.writeShellScriptBin "git" ''
+    real=${lib.getExe pkgs.gitFull}
+    trailer='Co-authored-by: Lin Yinfeng <lin.yinfeng@outlook.com>'
+    if [ "$1" = commit ]; then
+      shift
+      exec "$real" commit --trailer "$trailer" "$@"
+    fi
+    if [ "$1" = -C ] && [ "$3" = commit ]; then
+      dir=$2
+      shift 3
+      exec "$real" -C "$dir" commit --trailer "$trailer" "$@"
+    fi
+    exec "$real" "$@"
+  '';
+
   # The agent's commits are automation's, not the human's; the human keeps the
   # identity from the git profile.
   pi-package = pkgs.symlinkJoin {
@@ -22,7 +38,8 @@ let
         --set GIT_AUTHOR_NAME Nano \
         --set GIT_AUTHOR_EMAIL nano@linyinfeng.com \
         --set GIT_COMMITTER_NAME Nano \
-        --set GIT_COMMITTER_EMAIL nano@linyinfeng.com
+        --set GIT_COMMITTER_EMAIL nano@linyinfeng.com \
+        --prefix PATH : ${git-with-coauthor}/bin
     '';
   };
 
