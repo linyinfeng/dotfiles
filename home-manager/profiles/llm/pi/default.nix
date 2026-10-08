@@ -11,6 +11,21 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
+  # The agent's commits are automation's, not the human's; the human keeps the
+  # identity from the git profile.
+  pi-package = pkgs.symlinkJoin {
+    name = "pi-agent-git-identity";
+    paths = [ (pkgs.llm-agents.pi.override { useBun = false; }) ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/pi \
+        --set GIT_AUTHOR_NAME Nano \
+        --set GIT_AUTHOR_EMAIL nano@linyinfeng.com \
+        --set GIT_COMMITTER_NAME Nano \
+        --set GIT_COMMITTER_EMAIL nano@linyinfeng.com
+    '';
+  };
+
   pi-sandbox = pkgs.writeShellApplication {
     name = "pi-sandbox";
     runtimeInputs = [ pkgs.llm-agents.nono ];
@@ -29,9 +44,7 @@ in
 
   programs.pi-coding-agent = {
     enable = true;
-    package = pkgs.llm-agents.pi.override {
-      useBun = false;
-    };
+    package = pi-package;
     inherit context;
 
     extraPackages = with pkgs; [

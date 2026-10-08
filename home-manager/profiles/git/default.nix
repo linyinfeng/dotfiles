@@ -21,17 +21,6 @@ lib.mkMerge [
       package = pkgs.gitFull;
       lfs.enable = true;
 
-      # commits to dotfiles come from automation, not from the human
-      includes = [
-        {
-          condition = "hasconfig:remote.*.url:https://github.com/linyinfeng/dotfiles.git";
-          contents.user = {
-            name = "Nano";
-            email = "nano@linyinfeng.com";
-          };
-        }
-      ];
-
       settings = {
         init.defaultBranch = "main";
         pull.rebase = false;
