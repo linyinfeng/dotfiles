@@ -11,20 +11,33 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  # The agent's commits also name the human as co-author.
-  git-with-coauthor = pkgs.writeShellScriptBin "git" ''
-    real=${lib.getExe pkgs.gitFull}
-    trailer='Co-authored-by: Lin Yinfeng <lin.yinfeng@outlook.com>'
-    if [ "$1" = commit ]; then
-      shift
-      exec "$real" commit --trailer "$trailer" "$@"
+  # git has no config that adds a trailer, but it reads any config from the
+  # environment, so a prepare-commit-msg hook does it without a `git` shim.
+  agent-hooks = pkgs.runCommand "pi-agent-git-hooks" { } ''
+    mkdir -p $out
+    cat > $out/chain <<'EOF'
+    #!/bin/sh
+    name=$(basename "$0")
+    hooks=$(git config --local --get core.hooksPath)
+    [ -n "$hooks" ] || hooks="$(git rev-parse --git-common-dir)/hooks"
+    if [ -x "$hooks/$name" ]; then
+      exec "$hooks/$name" "$@"
     fi
-    if [ "$1" = -C ] && [ "$3" = commit ]; then
-      dir=$2
-      shift 3
-      exec "$real" -C "$dir" commit --trailer "$trailer" "$@"
-    fi
-    exec "$real" "$@"
+    exit 0
+    EOF
+    cat > $out/prepare-commit-msg <<'EOF'
+    #!/bin/sh
+    hooks=$(git config --local --get core.hooksPath)
+    [ -n "$hooks" ] || hooks="$(git rev-parse --git-common-dir)/hooks"
+    [ -x "$hooks/prepare-commit-msg" ] && "$hooks/prepare-commit-msg" "$@"
+    git interpret-trailers --in-place --if-exists doNothing \
+      --trailer 'Co-authored-by: Lin Yinfeng <lin.yinfeng@outlook.com>' "$1"
+    EOF
+    chmod +x $out/chain $out/prepare-commit-msg
+    for name in applypatch-msg pre-applypatch post-applypatch pre-commit pre-merge-commit commit-msg post-commit pre-rebase post-checkout post-merge pre-push pre-auto-gc post-rewrite post-index-change sendemail-validate fsmonitor-watchman reference-transaction post-update; do
+      cp $out/chain $out/$name
+    done
+    rm $out/chain
   '';
 
   # The agent's commits are automation's, not the human's; the human keeps the
@@ -39,7 +52,9 @@ let
         --set GIT_AUTHOR_EMAIL nano@linyinfeng.com \
         --set GIT_COMMITTER_NAME Nano \
         --set GIT_COMMITTER_EMAIL nano@linyinfeng.com \
-        --prefix PATH : ${git-with-coauthor}/bin
+        --set GIT_CONFIG_COUNT 1 \
+        --set GIT_CONFIG_KEY_0 core.hooksPath \
+        --set GIT_CONFIG_VALUE_0 ${agent-hooks}
     '';
   };
 
