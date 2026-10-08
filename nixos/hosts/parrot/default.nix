@@ -15,7 +15,10 @@ in
         profiles = {
           boot.secure-boot.enable = true;
           hardware.backlight.enable = true;
-          networking.wireguard-home.enable = true;
+          networking = {
+            campus-net.enable = true;
+            wireguard-home.enable = true;
+          };
           security.tpm.enable = true;
           services = {
             acme.enable = true;

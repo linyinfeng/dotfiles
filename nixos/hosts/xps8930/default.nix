@@ -26,6 +26,7 @@ in
     profiles = {
       networking = {
         behind-fw.enable = true;
+        campus-net.enable = true;
         fw-proxy.enable = true;
       };
       programs = {
