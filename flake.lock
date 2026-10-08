@@ -588,29 +588,6 @@
         "type": "github"
       }
     },
-    "lan-mouse": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "rust-overlay": [
-          "rust-overlay"
-        ]
-      },
-      "locked": {
-        "lastModified": 1790422438,
-        "narHash": "sha256-GGmVzbNbIyTV6hvG9lz/FEc+PwIgM2tX8nbcuD1fo9Y=",
-        "owner": "feschber",
-        "repo": "lan-mouse",
-        "rev": "f1b96bdcc0294d285bc9050b7e146800a3ef8796",
-        "type": "github"
-      },
-      "original": {
-        "owner": "feschber",
-        "repo": "lan-mouse",
-        "type": "github"
-      }
-    },
     "lanzaboote": {
       "inputs": {
         "crane": [
@@ -1567,7 +1544,6 @@
         "home-manager": "home-manager",
         "hongbao-rpn": "hongbao-rpn",
         "kukui-nixos": "kukui-nixos",
-        "lan-mouse": "lan-mouse",
         "lanzaboote": "lanzaboote",
         "linyinfeng": "linyinfeng",
         "llm-agents": "llm-agents",
