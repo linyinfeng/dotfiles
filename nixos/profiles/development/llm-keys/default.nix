@@ -109,6 +109,8 @@
         answerProvider = "litellm";
         answerModel = "deepseek/deepseek-flash";
       };
+      # TUN fake-IP proxies resolve public names into the synthetic range
+      ssrf.allowRanges = [ "198.18.0.0/15" ];
     };
     group = "llm";
     mode = "440";
