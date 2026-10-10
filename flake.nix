@@ -358,6 +358,11 @@
         };
         systems = import inputs.systems;
         devSystems = [ "x86_64-linux" ];
+        hydraSystems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "i686-linux"
+        ];
         # flake-parts guesses whether perSystem.formatter is defined for *every*
         # system; gating it on devSystems makes that guess fail for non-dev systems.
         # https://github.com/hercules-ci/flake-parts/blob/main/modules/formatter.nix
