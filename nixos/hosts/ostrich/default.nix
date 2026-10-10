@@ -19,6 +19,7 @@
             fwupd.enable = true;
             sunshine.enable = true;
           };
+          nix.hydra-builder.enable = true;
           users.yinfeng.enable = true;
         };
         suites = {

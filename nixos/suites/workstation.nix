@@ -20,7 +20,6 @@
       };
       nix = {
         auto-gen.enable = true;
-        hydra-builder.enable = true;
         nixbuild.enable = true;
       };
       programs = {

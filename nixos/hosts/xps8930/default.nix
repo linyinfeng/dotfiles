@@ -41,6 +41,7 @@ in
         godns.enable = true;
         nginx.enable = true;
       };
+      nix.hydra-builder.enable = true;
       users.yinfeng.enable = true;
     };
     suites.workstation.enable = true;
