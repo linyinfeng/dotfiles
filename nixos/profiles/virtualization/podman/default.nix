@@ -21,6 +21,9 @@ lib.mkMerge [
 
     systemd.services.podman-restart.wantedBy = [ "multi-user.target" ];
     systemd.timers.podman-auto-update.wantedBy = [ "timers.target" ];
+
+    systemd.user.services.podman-restart.wantedBy = [ "default.target" ];
+    systemd.user.timers.podman-auto-update.wantedBy = [ "timers.target" ];
   }
   {
     environment.systemPackages = with pkgs; [
