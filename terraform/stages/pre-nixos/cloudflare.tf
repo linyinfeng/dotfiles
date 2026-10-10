@@ -137,7 +137,7 @@ locals {
     id             = { on = "mtl0", proxy = true }
     influxdb       = { on = "mtl0", proxy = true }
     jellyfin       = { on = "nuc", proxy = false }
-    llm            = { on = "hkg0", proxy = false }
+    llm            = { on = "hkg0", proxy = true }
     mastodon       = { on = "mtl0", proxy = true }
     matrix         = { on = "mtl0", proxy = true }
     matrix-qq      = { on = "nuc", proxy = false }
