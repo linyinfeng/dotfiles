@@ -33,6 +33,7 @@ lib.mkMerge [
       distrobox
     ];
     environment.global-persistence.user.directories = [
+      ".config/containers"
       ".local/share/containers"
     ];
   }
