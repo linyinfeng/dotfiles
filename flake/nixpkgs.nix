@@ -28,7 +28,6 @@ let
     inputs.hongbao-rpn.overlays.default
     inputs.tsukkomi.overlays.default
     inputs.llm-agents.overlays.shared-nixpkgs
-    inputs.pi-command-not-found-adapter.overlays.default
     inputs.nizctl.overlay
     (
       _final: prev:

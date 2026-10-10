@@ -1364,26 +1364,6 @@
         "type": "github"
       }
     },
-    "pi-command-not-found-adapter": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1789623711,
-        "narHash": "sha256-l9ucWNzWRb42rZugA6x9ck5i+K9jtsm/1zjtAjCbt7c=",
-        "owner": "linyinfeng",
-        "repo": "pi-command-not-found-adapter",
-        "rev": "31bbcb03c93a6e98504b4fc18dbf6337d3728247",
-        "type": "github"
-      },
-      "original": {
-        "owner": "linyinfeng",
-        "repo": "pi-command-not-found-adapter",
-        "type": "github"
-      }
-    },
     "pmaports": {
       "flake": false,
       "locked": {
@@ -1576,7 +1556,6 @@
         "nvfetcher": "nvfetcher",
         "oranc": "oranc",
         "pastebin": "pastebin",
-        "pi-command-not-found-adapter": "pi-command-not-found-adapter",
         "pmaports": "pmaports",
         "poetry2nix": "poetry2nix",
         "pre-commit-hooks-nix": "pre-commit-hooks-nix",

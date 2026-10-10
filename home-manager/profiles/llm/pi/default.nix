@@ -113,10 +113,6 @@ let
 
 in
 {
-  imports = [
-    ./_pi-cnf-adapter.nix
-  ];
-
   programs.pi-coding-agent = {
     enable = true;
     package = null;
