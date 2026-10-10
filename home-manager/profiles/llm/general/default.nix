@@ -1,9 +1,49 @@
 {
+  config,
   lib,
   pkgs,
   ...
 }:
 let
+  secretPaths = config.home.env.secretPaths;
+
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+
+  # A second codex home whose provider is the local LiteLLM gateway. The release
+  # tree under CODEX_HOME is self-contained and a few hundred megabytes, so this
+  # home shares the one codex-install maintains and only keeps its own data.
+  codex-li7g = pkgs.writeShellApplication {
+    name = "codex-li7g";
+    runtimeInputs = with pkgs; [ coreutils ];
+    text = ''
+      export CODEX_HOME="$HOME/.local/share/codex-li7g"
+
+      key="${secretPaths.litellmApiKey}"
+      if [ ! -r "$key" ]; then
+        printf 'litellm api key is not readable: %s\n' "$key" >&2
+        exit 1
+      fi
+      # Only the model request may see the gateway key; the agent's own shell
+      # does not inherit it, see shell_environment_policy below.
+      LITELLM_API_KEY="$(cat "$key")"
+      export LITELLM_API_KEY
+
+      # The provider is argv rather than config.toml: codex rewrites its own
+      # config when its settings change, and a linked file cannot survive that.
+      # codex-wrapper resolves the release inside the home set above.
+      exec ${codex-wrapper}/bin/codex \
+        -c 'model="aijws/gpt-6.1-sol"' \
+        -c 'model_provider="li7g"' \
+        -c 'model_reasoning_effort="medium"' \
+        -c 'model_providers.li7g.name="llm.li7g.com"' \
+        -c 'model_providers.li7g.base_url="https://llm.li7g.com/v1"' \
+        -c 'model_providers.li7g.env_key="LITELLM_API_KEY"' \
+        -c 'model_providers.li7g.wire_api="responses"' \
+        -c 'shell_environment_policy.exclude=["LITELLM_API_KEY"]' \
+        "$@"
+    '';
+  };
+
   # Codex installs and updates itself into ~/.codex/packages/standalone, so nix
   # only owns the entry point. The wrapper follows the `current` symlink that
   # the standalone installer and codex's own updater maintain, rather than
@@ -54,17 +94,23 @@ in
   imports = [
     ./_mcp.nix
   ];
-  home.packages = with pkgs; [
+  home.packages = [
     codex-wrapper
     codex-install
-  ];
+  ]
+  ++ lib.optionals (secretPaths ? litellmApiKey) [ codex-li7g ];
+
+  home.file.".local/share/codex-li7g/packages/standalone" = lib.mkIf (secretPaths ? litellmApiKey) {
+    source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.codex/packages/standalone";
+  };
 
   home.global-persistence.directories = [
     ".claude"
     ".codex"
     ".continue"
     ".codebuddy"
-  ];
+  ]
+  ++ lib.optionals (secretPaths ? litellmApiKey) [ ".local/share/codex-li7g" ];
 
   home.global-persistence.files = [ ".claude.json" ];
 

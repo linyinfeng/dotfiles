@@ -5,6 +5,7 @@
       home.env.secretPaths = {
         piWebSearch = lib.mkDefault config.sops.templates."pi-web-search-config".path;
         piAuth = lib.mkDefault config.sops.templates."pi-auth".path;
+        litellmApiKey = lib.mkDefault config.sops.secrets."litellm_api_key".path;
         mineruApiKey = lib.mkDefault config.sops.secrets."mineru_api_key".path;
       };
     })
