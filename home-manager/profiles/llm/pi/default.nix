@@ -40,31 +40,74 @@ let
     rm $out/chain
   '';
 
-  # The agent's commits are automation's, not the human's; the human keeps the
-  # identity from the git profile.
-  pi-package = pkgs.symlinkJoin {
-    name = "pi-agent-git-identity";
-    paths = [ (pkgs.llm-agents.pi.override { useBun = false; }) ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/pi \
-        --set GIT_AUTHOR_NAME Nano \
-        --set GIT_AUTHOR_EMAIL nano@linyinfeng.com \
-        --set GIT_COMMITTER_NAME Nano \
-        --set GIT_COMMITTER_EMAIL nano@linyinfeng.com \
-        --set GIT_CONFIG_COUNT 1 \
-        --set GIT_CONFIG_KEY_0 core.hooksPath \
-        --set GIT_CONFIG_VALUE_0 ${agent-hooks}
+  # pi installs and updates itself into ~/.pi/agent/install through the
+  # upstream managed installer, so nix only owns the entry point. The launcher
+  # is reached indirectly: pi prepends ~/.pi/agent/bin to its children's PATH,
+  # and by then the identity below is already in the environment.
+  pi-wrapper = pkgs.writeShellApplication {
+    name = "pi";
+    runtimeInputs = with pkgs; [
+      ast-grep
+      bun
+      nodejs
+      rtk
+    ];
+    text = ''
+      launcher="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/bin/pi"
+      if [ ! -x "$launcher" ]; then
+        printf 'pi is not installed; run pi-install\n' >&2
+        exit 127
+      fi
+
+      # The agent's commits are automation's, not the human's; the human keeps
+      # the identity from the git profile.
+      export GIT_AUTHOR_NAME=Nano
+      export GIT_AUTHOR_EMAIL=nano@linyinfeng.com
+      export GIT_COMMITTER_NAME=Nano
+      export GIT_COMMITTER_EMAIL=nano@linyinfeng.com
+      export GIT_CONFIG_COUNT=1
+      export GIT_CONFIG_KEY_0=core.hooksPath
+      export GIT_CONFIG_VALUE_0=${agent-hooks}
+
+      exec "$launcher" "$@"
     '';
   };
 
-  pi-sandbox = pkgs.writeShellApplication {
-    name = "pi-sandbox";
-    runtimeInputs = [ pkgs.llm-agents.nono ];
+  # Bootstrap or reinstall through the upstream installer. It refuses to replace
+  # a pi that is not its own managed launcher, so hide every other pi and put
+  # the managed bin dir first; the installer then finds the install on PATH and
+  # leaves shell profiles alone. setsid drops the controlling terminal so the
+  # installer takes its non-interactive path instead of showing the action menu.
+  pi-install = pkgs.writeShellApplication {
+    name = "pi-install";
+    runtimeInputs = with pkgs; [
+      bash
+      coreutils
+      curl
+      nodejs
+      util-linux
+    ];
     text = ''
-      nono pull nolabs-ai/pi
-      nono update
-      exec nono run --profile pi --allow-cwd -- pi "$@"
+      agent_dir="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+      export PI_MANAGED_INSTALL_ROOT="$agent_dir/install"
+
+      old_ifs=$IFS
+      IFS=:
+      new_path="$agent_dir/bin"
+      for dir in $PATH; do
+        [ -n "$dir" ] || continue
+        if [ "$dir" = "$agent_dir/bin" ]; then
+          continue
+        fi
+        if [ -x "$dir/pi" ]; then
+          continue
+        fi
+        new_path="$new_path:$dir"
+      done
+      IFS=$old_ifs
+      export PATH="$new_path"
+
+      curl -fsSL https://pi.dev/install.sh | setsid --wait sh
     '';
   };
 
@@ -76,7 +119,7 @@ in
 
   programs.pi-coding-agent = {
     enable = true;
-    package = pi-package;
+    package = null;
     inherit context;
 
     extraPackages = with pkgs; [
@@ -142,9 +185,6 @@ in
       "npm:pi-subagents"
       "npm:pi-token-speed"
       "npm:pi-web-access"
-      {
-        source = "${config.xdg.configHome}/nono/packages/nolabs-ai/pi";
-      }
       # keep-sorted end
     ];
   };
@@ -169,14 +209,13 @@ in
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piWebSearch;
   };
 
-  home.file.".config/nono/profiles/pi.json".source = ./nono-pi-profile.json;
-
   home.file.".pi/agent/auth.json" = lib.mkIf (config.home.env.secretPaths ? piAuth) {
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piAuth;
   };
 
   home.packages = [
-    pi-sandbox
+    pi-wrapper
+    pi-install
   ];
 
   # pi-lens: prefer PATH tools only, no self-install of npm binaries
