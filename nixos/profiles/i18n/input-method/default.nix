@@ -31,6 +31,7 @@ in
       fcitx5.addons = with pkgs; [
         (fcitx5-rime.override { inherit (cfg.rime) rimeDataPkgs; })
         fcitx5-mozc
+        fcitx5-mellow-themes
       ];
       rime.rimeDataPkgs = with pkgs.linyinfeng.rimePackages; [ rime-ice ];
     };
