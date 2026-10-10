@@ -87,7 +87,8 @@ let
           echo "commit $commit is already in branch $branch, skip."
           exit 0
         fi
-        repo-git push origin "$commit:$branch"
+        # a bare branch name is only guessed when the branch already exists
+        repo-git push origin "$commit:refs/heads/$branch"
 
         echo "leave critical section"
       ) 200>lock
