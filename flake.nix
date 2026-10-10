@@ -353,7 +353,10 @@
         debug = true; # for nixd
         flatFlake.config = {
           allowed = [
-            # nothing
+            [
+              "umbriel"
+              "xdg-desktop-portal-umbriel"
+            ]
           ];
         };
         systems = import inputs.systems;
