@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   services.nginx.virtualHosts."git.*" = {
     forceSSL = true;
@@ -12,6 +12,7 @@
 
   services.forgejo = {
     enable = true;
+    package = pkgs.forgejo;
     settings.server = {
       DOMAIN = "git.li7g.com";
       ROOT_URL = "https://git.li7g.com:8443/";
