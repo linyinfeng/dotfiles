@@ -47,7 +47,7 @@
 
           # nix-eval-jobs budget: one NixOS/HM attribute alone peaks near 6 GiB
           evaluator_workers = 1
-          evaluator_max_memory_size = 8192
+          evaluator_max_memory_size = 16384
 
           <githubstatus>
             jobs = .*
