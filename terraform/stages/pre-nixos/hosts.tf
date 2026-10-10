@@ -8,10 +8,8 @@ locals {
           value   = nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])
         }
       }
-      ddns_records = {}
       host_indices = [3]
       endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["mtl0_network_address"])]
-      endpoints_v6 = []
     }
     hkg0 = {
       records = {
@@ -26,13 +24,11 @@ locals {
           value   = nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v6"])
         }
       }
-      ddns_records = {}
       host_indices = [4]
       endpoints_v4 = [nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v4"])]
       endpoints_v6 = [nonsensitive(data.sops_file.predefined.data["hkg0_network_address_v6"])]
     }
     nuc = {
-      records = {}
       ddns_records = {
         a = {
           proxied = false
@@ -46,18 +42,13 @@ locals {
         }
       }
       host_indices = [7]
-      endpoints_v4 = []
-      endpoints_v6 = []
+      # the queue runner's gRPC endpoint is exposed under this name
+      mtls_extra_dns_names = ["hydra-runner.li7g.com"]
     }
     ostrich = {
-      records      = {}
-      ddns_records = {}
       host_indices = [8]
-      endpoints_v4 = []
-      endpoints_v6 = []
     }
     parrot = {
-      records = {}
       ddns_records = {
         aaaa = {
           proxied = false
@@ -66,11 +57,8 @@ locals {
         }
       }
       host_indices = [21]
-      endpoints_v4 = []
-      endpoints_v6 = []
     }
     xps8930 = {
-      records = {}
       ddns_records = {
         a = {
           proxied = false
@@ -83,23 +71,14 @@ locals {
           value   = "::1"
         }
       }
-      host_indices = []
-      endpoints_v4 = []
-      endpoints_v6 = []
     }
-    sparrow = {
-      records      = {}
-      ddns_records = {}
-      host_indices = []
-      endpoints_v4 = []
-      endpoints_v6 = []
-    }
+    sparrow = {}
     # PLACEHOLDER new host
   }
 }
 
 locals {
-  all_host_indices = flatten([for name, cfg in local.hosts : cfg.host_indices])
+  all_host_indices = flatten([for name, cfg in local.hosts : lookup(cfg, "host_indices", [])])
 }
 
 data "assert_test" "host_indices_collision" {
@@ -121,16 +100,17 @@ module "hosts" {
   name                 = each.key
   cloudflare_zone_id   = cloudflare_zone.com_li7g.id
   cloudflare_zone_name = cloudflare_zone.com_li7g.name
-  records              = each.value.records
-  ddns_records         = each.value.ddns_records
+  records              = lookup(each.value, "records", {})
+  ddns_records         = lookup(each.value, "ddns_records", {})
   zerotier_network_id  = zerotier_network.main.id
-  host_indices         = each.value.host_indices
+  host_indices         = lookup(each.value, "host_indices", [])
   dn42_v4_cidr         = var.dn42_v4_cidr
   dn42_v6_cidr         = var.dn42_v6_cidr
-  endpoints_v4         = each.value.endpoints_v4
-  endpoints_v6         = each.value.endpoints_v6
+  endpoints_v4         = lookup(each.value, "endpoints_v4", [])
+  endpoints_v6         = lookup(each.value, "endpoints_v6", [])
   ca_cert_pem          = tls_self_signed_cert.ca.cert_pem
   ca_private_key_pem   = tls_self_signed_cert.ca.private_key_pem
+  mtls_extra_dns_names = lookup(each.value, "mtls_extra_dns_names", [])
 }
 
 output "hosts" {

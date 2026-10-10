@@ -60,7 +60,7 @@ locals {
   zerotier_moon_id = module.hosts[var.zerotier_moon_main_host].zerotier_id
   zerotier_moon_hosts = [
     for host in keys(local.hosts) : host
-    if length(local.hosts[host].records) > 0
+    if length(lookup(local.hosts[host], "records", {})) > 0
   ]
 }
 
@@ -93,7 +93,7 @@ locals {
       {
         identity = module.hosts[host].zerotier_public_key
         stableEndpoints = [
-          for k, v in local.hosts[host].records :
+          for k, v in lookup(local.hosts[host], "records", {}) :
           "${v.value}/${var.zerotier_port}"
           if v.type == "A" || v.type == "AAAA"
         ]

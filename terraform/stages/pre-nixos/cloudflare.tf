@@ -134,6 +134,7 @@ locals {
     http-test      = { on = "mtl0", proxy = true }
     hydra          = { on = "nuc", proxy = false }
     hydra-proxy    = { on = "mtl0", proxy = true }
+    hydra-runner   = { on = "nuc", proxy = false }
     id             = { on = "mtl0", proxy = true }
     influxdb       = { on = "mtl0", proxy = true }
     jellyfin       = { on = "nuc", proxy = false }
