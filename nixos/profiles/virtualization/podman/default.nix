@@ -18,6 +18,9 @@ lib.mkMerge [
     };
     virtualisation.oci-containers.backend = "podman";
     systemd.services.podman-auto-update.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
+
+    systemd.services.podman-restart.wantedBy = [ "multi-user.target" ];
+    systemd.timers.podman-auto-update.wantedBy = [ "timers.target" ];
   }
   {
     environment.systemPackages = with pkgs; [
