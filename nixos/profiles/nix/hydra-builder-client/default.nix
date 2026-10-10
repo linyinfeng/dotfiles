@@ -12,8 +12,9 @@ in
     '';
   };
   # https://nixos.org/manual/nix/stable/advanced-topics/distributed-builds
+  # i686-linux is needed for 32-bit closures (steam); hydra ignores nuc's extra-platforms
   environment.etc."${dir}/machines".text = ''
-    hydra-builder@nuc.dn42 x86_64-linux,aarch64-linux ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
+    hydra-builder@nuc.dn42 x86_64-linux,aarch64-linux,i686-linux ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
   '';
   environment.etc."${dir}/machines-workstation".text = ''
     hydra-builder@nuc.dn42 ${nonAarch64Systems} ${keyFile} 8 100 kvm,nixos-test,benchmark,big-parallel
