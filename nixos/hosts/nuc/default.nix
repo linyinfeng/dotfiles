@@ -41,8 +41,7 @@ in
             network-manager.enable = true;
           };
           nix = {
-            hydra-builder-client.enable = true;
-            hydra-builder-server.enable = true;
+            hydra-builder.enable = true;
             nixbuild.enable = true;
           };
           programs = {
@@ -234,9 +233,10 @@ in
             port = config.ports.http-alternative;
             ssl = false;
           }
+          # reached only through the ports.https-alternative split below
           {
-            addr = "0.0.0.0";
-            port = config.ports.https-alternative;
+            addr = "127.0.0.1";
+            port = config.ports.https-internal;
             ssl = true;
           }
           {
@@ -255,11 +255,25 @@ in
             ssl = false;
           }
           {
-            addr = "[::]";
-            port = config.ports.https-alternative;
+            addr = "[::1]";
+            port = config.ports.https-internal;
             ssl = true;
           }
         ];
+        # builders reach the queue runner through ports.https-alternative: its own
+        # SNI goes to gRPC, everything else to the ports.https-internal http listener
+        streamConfig = ''
+          map $ssl_preread_server_name $hydra_queue_runner {
+            hydra-runner.li7g.com  [::1]:${toString config.ports.hydra-grpc};
+            default                127.0.0.1:${toString config.ports.https-internal};
+          }
+          server {
+            listen ${toString config.ports.https-alternative};
+            listen [::]:${toString config.ports.https-alternative};
+            ssl_preread on;
+            proxy_pass $hydra_queue_runner;
+          }
+        '';
         virtualHosts."nuc.*" = {
           serverAliases = [ "nuc-proxy.*" ];
           locations."/" = {

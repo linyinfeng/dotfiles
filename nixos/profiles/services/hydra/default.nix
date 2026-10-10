@@ -7,6 +7,7 @@
   imports = [
     ./_cache.nix
     ./_channel.nix
+    ./_queue-runner.nix
   ];
 
   config = lib.mkMerge [
@@ -24,9 +25,10 @@
         };
       };
       services.nginx.appendHttpConfig = ''
-        # asset base follows the real host; add the port only on 8443 (only-reachable)
+        # the asset base follows the real host; the split reaches this listener on
+        # ports.https-internal, so the client came in on ports.https-alternative
         map $server_port $hydra_base {
-          "8443" "$scheme://$host:8443/";
+          "${toString config.ports.https-internal}" "$scheme://$host:${toString config.ports.https-alternative}/";
           default "$scheme://$host/";
         }
       '';
@@ -37,11 +39,11 @@
         hydraURL = "https://hydra.li7g.com";
         notificationSender = "hydra@li7g.com";
         useSubstitutes = true;
+        smtpHost = "smtp.li7g.com";
+        evaluatorSettings.max_concurrent_evals = 1;
         extraEnv = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
         extraConfig = ''
           Include "${config.sops.templates."hydra-extra-config".path}"
-
-          max_concurrent_evals = 1
 
           <githubstatus>
             jobs = .*
@@ -49,14 +51,9 @@
           </githubstatus>
         '';
       };
-      services.hydra.buildMachinesFiles = [ "/etc/nix-build-machines/hydra-builder/machines" ];
-      # allow evaluator and queue-runner to access nix-access-tokens
+      # allow evaluator to access nix-access-tokens
       systemd.services.hydra-evaluator.serviceConfig.SupplementaryGroups = [
         config.users.groups.nix-access-tokens.name
-      ];
-      systemd.services.hydra-queue-runner.serviceConfig.SupplementaryGroups = [
-        config.users.groups.nix-access-tokens.name
-        config.users.groups.hydra-builder-client.name
       ];
       sops.templates."hydra-extra-config" = {
         group = "hydra";
@@ -135,8 +132,18 @@
       services.hydra.extraConfig = ''
         email_notification = 1
       '';
-      systemd.services.hydra-notify.serviceConfig.EnvironmentFile =
-        config.sops.templates."hydra-email".path;
+      # only the services that actually send mail: build notifications (notify),
+      # evaluation errors (evaluator) and web ui password resets (server)
+      systemd.services =
+        lib.genAttrs
+          [
+            "hydra-evaluator"
+            "hydra-notify"
+            "hydra-server"
+          ]
+          (_: {
+            serviceConfig.EnvironmentFile = config.sops.templates."hydra-email".path;
+          });
       sops.templates."hydra-email".content = ''
         EMAIL_SENDER_TRANSPORT=SMTP
         EMAIL_SENDER_TRANSPORT_sasl_username=hydra@li7g.com
@@ -147,7 +154,11 @@
       '';
       sops.secrets."mail_password" = {
         terraformOutput.enable = true;
-        restartUnits = [ "hydra-notify.service" ];
+        restartUnits = [
+          "hydra-evaluator.service"
+          "hydra-notify.service"
+          "hydra-server.service"
+        ];
       };
     }
 

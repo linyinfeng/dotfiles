@@ -33,7 +33,6 @@ in
         llm.name
       ]
       ++ groupNameIfPresent "nix-access-tokens"
-      ++ groupNameIfPresent "hydra-builder-client"
       ++ groupNameIfPresent "tg-send";
     openssh.authorizedKeys.keyFiles = config.users.users.root.openssh.authorizedKeys.keyFiles;
   };

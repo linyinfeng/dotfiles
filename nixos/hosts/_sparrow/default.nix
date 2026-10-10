@@ -17,7 +17,6 @@
       virtualization.waydroid
       hardware.backlight
       hardware.tablet
-      nix.hydra-builder-client
       users.yinfeng
     ])
     ++ [

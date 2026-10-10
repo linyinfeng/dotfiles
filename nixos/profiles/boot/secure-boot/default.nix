@@ -45,6 +45,7 @@ let
     '';
 in
 {
+  imports = [ ./_keys.nix ];
   options = {
     boot.secureBoot = {
       publicKeyFile = lib.mkOption {
@@ -77,8 +78,7 @@ in
         type = lib.types.path;
         default = config.boot.secureBoot.privateKeyFile;
       };
-      # defined in profiles/nix/hydra-builder-server
-      # kernel and modules must be built on thess servers
+      # the module signing key, sandboxed by ./_keys.nix
       combined = lib.mkOption {
         type = lib.types.path;
         default = config.sops.templates."linux-module-signing-key.pem".path;

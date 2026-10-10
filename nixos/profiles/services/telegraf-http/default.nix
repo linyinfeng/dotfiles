@@ -52,6 +52,12 @@ let
         code = 200;
       }
     ];
+    hydra-runner = [
+      {
+        url = "https://hydra-runner.ts.li7g.com/status";
+        code = 200;
+      }
+    ];
     git = [
       {
         url = "https://git.ts.li7g.com";

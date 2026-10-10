@@ -37,14 +37,6 @@ let
     '';
   };
 
-  nomHydra = pkgs.writeShellApplication {
-    name = "nom-hydra";
-    runtimeInputs = [ nomWrapper ];
-    text = ''
-      exec nom --builders "@/etc/nix-build-machines/hydra-builder/machines" "$@"
-    '';
-  };
-
   json2nix = pkgs.writeShellApplication {
     name = "json2nix";
     runtimeInputs = with pkgs; [ jq ];
@@ -151,7 +143,6 @@ in
       # keep-sorted start
       delink
       json2nix
-      nomHydra
       nomWrapper
       tmpTest
       # keep-sorted end

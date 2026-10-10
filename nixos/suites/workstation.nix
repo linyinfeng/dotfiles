@@ -20,8 +20,6 @@
       };
       nix = {
         auto-gen.enable = true;
-        hydra-builder-client.enable = true;
-        hydra-builder-server.enable = true;
         nixbuild.enable = true;
       };
       programs = {

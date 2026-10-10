@@ -51,7 +51,6 @@ in
           ++ groupNameIfPresent "tss"
           ++ groupNameIfPresent "nix-access-tokens"
           ++ groupNameIfPresent "nixbuild"
-          ++ groupNameIfPresent "hydra-builder-client"
           ++ groupNameIfPresent "tg-send"
           ++ groupNameIfPresent "service-mail"
           ++ groupNameIfPresent "plugdev"

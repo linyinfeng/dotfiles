@@ -16,8 +16,8 @@
     nixbuild = 401;
     # tg-send = 402;
     # service-mail = 403;
-    hydra-builder = 404;
-    hydra-builder-client = 405;
+    # hydra-builder = 404; # replaced by the gRPC build agent
+    # hydra-builder-client = 405;
     # windows = 406;
     steam = 407;
     cowrie = 408;
@@ -29,8 +29,8 @@
     nixbuild = 401;
     tg-send = 402;
     service-mail = 403;
-    hydra-builder = 404;
-    hydra-builder-client = 405;
+    # hydra-builder = 404; # replaced by the gRPC build agent
+    # hydra-builder-client = 405;
     windows = 406;
     steam = 407;
     cowrie = 408;

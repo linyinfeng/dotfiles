@@ -42,6 +42,8 @@
       alertmanager = 3050;
       seafile-file-server = 3060;
       hydra = 3070;
+      hydra-grpc = 3071;
+      hydra-rest = 3072;
       nix-serve = 3080;
       matrix = 3090;
       matrix-manhole = 3091;
@@ -114,6 +116,8 @@
       http-alternative = 8080;
       home-assistant = 8123;
       https-alternative = 8443;
+      # the http listener behind the https-alternative split
+      https-internal = 9443;
       zerotier = 9993;
       dn42-mesh-min = 19000;
       # interval: no ports here
