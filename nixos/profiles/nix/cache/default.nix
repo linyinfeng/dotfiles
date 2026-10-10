@@ -19,11 +19,6 @@
       priority = 30;
       public_key = "cache.li7g.com:YIVuYf8AjnOc5oncjClmtM19RaAZfOKLFFyZUpOrfqM=";
     }
-    {
-      url = "https://attic.xuyh0120.win/lantian";
-      priority = 30;
-      public_key = "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc=";
-    }
   ];
   nix.settings.substituters = lib.mkForce [ "http://[::1]:${toString config.ports.ncro}" ];
 }
