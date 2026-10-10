@@ -14,6 +14,9 @@ lib.mkMerge [
       open = true;
       # required by the display manager and every Wayland compositor
       modesetting.enable = true;
+      # nixpkgs emits nvidia.NVreg_UseKernelSuspendNotifiers=1 only with both of these
+      powerManagement.enable = true;
+      powerManagement.kernelSuspendNotifier = true;
       nvidiaSettings = true;
     };
 
