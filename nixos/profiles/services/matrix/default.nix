@@ -119,36 +119,6 @@ lib.mkMerge [
 
   # oidc
   {
-    services.matrix-synapse.settings = {
-      oidc_providers = [
-        {
-          allow_existing_users = true;
-          idp_id = "pocket_id";
-          idp_name = "Pocket ID";
-          issuer = "https://id.li7g.com";
-          client_id = "6ab75dbc-8cf9-45f5-8a2a-9425e45e58c7";
-          client_secret_path = config.sops.secrets."synapse_oidc_pocket_id".path;
-          scopes = [
-            "openid"
-            "profile"
-          ];
-          user_mapping_provider = {
-            config = {
-              localpart_template = "{{ user.preferred_username }}";
-              display_name_template = "{{ user.name }}";
-            };
-          };
-        }
-      ];
-    };
-    sops.secrets."synapse_oidc_pocket_id" = {
-      predefined.enable = true;
-      owner = config.users.users.matrix-synapse.name;
-      restartUnits = [ "matrix-synapse.service" ];
-    };
-  }
-
-  {
     services.matrix-synapse.settings.oidc_providers = [
       {
         allow_existing_users = true;

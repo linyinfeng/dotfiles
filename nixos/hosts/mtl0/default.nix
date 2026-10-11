@@ -51,7 +51,6 @@ in
           oranc.enable = true;
           pastebin.enable = true;
           pgp-public-key-web.enable = true;
-          pocket-id.enable = true;
           portal-server.enable = true;
           postgresql.enable = true;
           prebuilt-zip.enable = true;
