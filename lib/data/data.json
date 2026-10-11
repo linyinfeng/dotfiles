@@ -179,6 +179,18 @@
       "on": "mtl0",
       "proxy": true
     },
+    "s3-ca": {
+      "on": "mtl0",
+      "proxy": true
+    },
+    "s3-cn": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "s3-hk": {
+      "on": "hkg0",
+      "proxy": true
+    },
     "s3-web": {
       "on": "mtl0",
       "proxy": true
