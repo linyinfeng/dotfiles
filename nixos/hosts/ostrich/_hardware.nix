@@ -37,6 +37,17 @@ lib.mkMerge [
     '';
   }
 
+  # The IT8689E's fan and PWM registers share the I/O range 0xA45-0xA46 with
+  # the ACPI \GSA1.SIO1 OpRegion, so the it87 probe aborts with -EBUSY unless
+  # the resource check is relaxed; this is what makes the three fan tachometers
+  # readable from `sensors` and telegraf.
+  {
+    boot.kernelModules = [ "it87" ];
+    boot.extraModprobeConfig = ''
+      options it87 ignore_resource_conflict=1
+    '';
+  }
+
   # powertop tweaks
   (
     let
