@@ -16,7 +16,9 @@
           };
           security.tpm.enable = true;
           services = {
+            acme.enable = true;
             fwupd.enable = true;
+            garage.enable = true;
             sunshine.enable = true;
           };
           nix.hydra-builder.enable = true;

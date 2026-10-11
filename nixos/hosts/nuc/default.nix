@@ -59,6 +59,7 @@ in
             frp-server.enable = true;
             fw-proxy-subscription.enable = true;
             fwupd.enable = true;
+            garage.enable = true;
             gnome-keyring.enable = true;
             godns.enable = true;
             hydra.enable = true;

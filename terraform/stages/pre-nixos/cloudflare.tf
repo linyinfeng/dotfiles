@@ -152,6 +152,9 @@ locals {
     portal         = { on = "mtl0", proxy = false }
     prebuilt-zip   = { on = "mtl0", proxy = false }
     s3             = { on = "mtl0", proxy = true }
+    s3-ca          = { on = "mtl0", proxy = true }
+    s3-cn          = { on = "nuc", proxy = false }
+    s3-hk          = { on = "hkg0", proxy = true }
     s3-web         = { on = "mtl0", proxy = true }
     sicp-staging   = { on = "nuc", proxy = false }
     smtp           = { on = "mtl0", proxy = false }

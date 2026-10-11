@@ -9,6 +9,7 @@
       world = {
         profiles.services = {
           frp-server.enable = true;
+          garage.enable = true;
           litellm.enable = true;
         };
         suites.overseaServer.enable = true;
