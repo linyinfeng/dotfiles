@@ -10,11 +10,9 @@ lib.mkMerge [
   {
     services.xserver.videoDrivers = [ "nvidia" ];
     hardware.nvidia = {
-      # Ada Lovelace is supported by the open kernel modules
       open = true;
-      # required by the display manager and every Wayland compositor
+      branch = "latest";
       modesetting.enable = true;
-      # nixpkgs emits nvidia.NVreg_UseKernelSuspendNotifiers=1 only with both of these
       powerManagement.enable = true;
       powerManagement.kernelSuspendNotifier = true;
       nvidiaSettings = true;
