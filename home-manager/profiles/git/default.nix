@@ -66,6 +66,7 @@ lib.mkMerge [
     home.global-persistence.directories = [
       ".config/gh" # github-cli
       ".config/glab-cli" # glab (gitlab)
+      ".local/share/forgejo-cli" # forgejo-cli
     ];
   }
 
