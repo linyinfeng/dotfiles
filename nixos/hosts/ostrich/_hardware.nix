@@ -13,8 +13,6 @@ lib.mkMerge [
       open = true;
       branch = "latest";
       modesetting.enable = true;
-      powerManagement.enable = true;
-      powerManagement.kernelSuspendNotifier = true;
       nvidiaSettings = true;
     };
 
