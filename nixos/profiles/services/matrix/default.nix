@@ -148,6 +148,35 @@ lib.mkMerge [
     };
   }
 
+  {
+    services.matrix-synapse.settings.oidc_providers = [
+      {
+        allow_existing_users = true;
+        idp_id = "zitadel";
+        idp_name = "Zitadel";
+        issuer = config.lib.self.data.zitadel_issuer;
+        client_id = config.lib.self.data.zitadel_synapse_client_id;
+        client_secret_path = config.sops.secrets."zitadel_synapse_client_secret".path;
+        scopes = [
+          "openid"
+          "profile"
+        ];
+        user_mapping_provider = {
+          config = {
+            # matrix localparts must be lowercase
+            localpart_template = "{{ user.preferred_username | lower }}";
+            display_name_template = "{{ user.name }}";
+          };
+        };
+      }
+    ];
+    sops.secrets."zitadel_synapse_client_secret" = {
+      terraformOutput.enable = true;
+      owner = config.users.users.matrix-synapse.name;
+      restartUnits = [ "matrix-synapse.service" ];
+    };
+  }
+
   # mautrix-telegram
   # disabled due to broken
   (lib.mkIf false {

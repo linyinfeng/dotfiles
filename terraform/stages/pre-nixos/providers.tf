@@ -45,6 +45,9 @@ terraform {
     null = {
       source = "hashicorp/null"
     }
+    zitadel = {
+      source = "zitadel/zitadel"
+    }
     # third-party providers
     sops = {
       source = "carlpett/sops"

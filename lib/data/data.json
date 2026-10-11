@@ -238,6 +238,8 @@
   },
   "tailscale_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
+  "zitadel_issuer": "https://yinfeng-fsgmya.us1.zitadel.cloud",
+  "zitadel_synapse_client_id": "394607060265841364",
   "hosts": {
     "hkg0": {
       "b2_backup_key_id": "00462cd88e29986000000002d",
