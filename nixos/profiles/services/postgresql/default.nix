@@ -1,10 +1,13 @@
 {
   config,
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
 let
+  inherit (config.networking) hostName;
+  inherit (config.lib.self.data) b2_s3_api_host b2_s3_region;
+
   newPostgres = config.specialisation.target-state-version.configuration.services.postgresql.package;
   upgradePGCluster = pkgs.writeShellApplication {
     name = "upgrade-pg-cluster";
@@ -68,122 +71,142 @@ let
       done
     '';
   };
-  backupDir = "/var/backup/postgresql";
-  barmanService =
-    cfg:
-    lib.recursiveUpdate {
-      serviceConfig = {
-        StateDirectory = "barman";
-        User = config.users.users.barman.name;
-        Group = config.users.groups.barman.name;
-      };
-      path = with pkgs; [
-        barman
-        postgresql
-      ];
-      after = [ "postgresql.service" ];
-    } cfg;
+
+  # the WAL archive queue is written by postgres (archive-push) and read by the
+  # backup jobs (archive-check), so it lives outside PGDATA and is group-writable
+  spoolDir = "/var/spool/pgbackrest";
+  pgbackrestEnv = config.sops.templates."pgbackrest-env".path;
+  pgbackrestJobs = [
+    "pgbackrest-default-full"
+    "pgbackrest-default-diff"
+  ];
 in
-lib.mkMerge [
-  {
-    services.postgresql.enable = true;
+{
+  services.postgresql.enable = true;
 
-    # an inactive replication slot retains WAL forever at the -1 default;
-    # the disabled barman block below left one behind and filled the disk
-    services.postgresql.settings.max_slot_wal_keep_size = "10GB";
+  # a replication slot retains WAL forever at the -1 default; the barman setup this
+  # profile used to carry left one behind and filled the disk
+  services.postgresql.settings.max_slot_wal_keep_size = "10GB";
 
-    environment.systemPackages = lib.mkMerge [
-      [
-        refreshPGCollationVersion
-        refreshPGCollationVersionAll
-      ]
-      (lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ])
-    ];
-  }
+  # weekly full + daily diff: block incremental only ships the changed blocks, which
+  # keeps the diffs small while restore still walks a short chain
+  services.pgbackrest = {
+    enable = true;
 
-  # TODO disabled
-  # takes too much space
-  (lib.mkIf false {
-    users.users.barman = {
-      isSystemUser = true;
-      group = config.users.groups.barman.name;
+    settings = {
+      compress-type = "zst";
+      process-max = 2;
+      start-fast = true;
+      # a slow object store push must not stall WAL reuse
+      archive-async = true;
+      # drop the queue rather than fill pg_wal when the repository is unreachable
+      # for long enough; a new backup restores full recoverability
+      archive-push-queue-max = "1GiB";
+      spool-path = spoolDir;
     };
-    users.groups.barman = { };
-    services.postgresql.ensureUsers = [
-      {
-        name = "barman";
-        ensureClauses = {
-          superuser = true;
-        };
-      }
-    ];
-    services.postgresql = {
-      settings.wal_level = "replica";
-      authentication = ''
-        # allow local replication connection from barman
-        local replication barman trust
-      '';
+
+    repos.b2 = {
+      type = "s3";
+      s3-bucket = "yinfeng-backup-${hostName}";
+      s3-endpoint = b2_s3_api_host;
+      s3-region = b2_s3_region;
+      s3-uri-style = "path";
+      path = "/pgbackrest";
+      # bundling first, block incremental depends on it and object stores prefer
+      # fewer, larger files
+      bundle = true;
+      block = true;
+      cipher-type = "aes-256-cbc";
+      retention-full = 2;
+      retention-diff = 7;
+      retention-history = 30;
     };
-    systemd.tmpfiles.rules = [
-      "d '/var/lib/barman' 0700 barman barman - -"
-      "d '${backupDir}' 0700 barman barman - -"
-    ];
-    environment.systemPackages = with pkgs; [
-      barman
-    ];
-    environment.etc."barman.conf".text = ''
-      [barman]
-      barman_user = ${config.users.users.barman.name}
-      barman_home = /var/lib/barman
-      configuration_files_directory = /etc/barman.d
-    '';
-    environment.etc."barman.d/local.conf".text = ''
-      [local]
-      description = "Local barman backup server"
 
-      backup_method = postgres
-      slot_name = barman
-      create_slot = auto
-
-      streaming_conninfo = user=barman dbname=postgres
-      conninfo = user=barman dbname=postgres
-
-      backup_directory = ${backupDir}
-      streaming_archiver = on
-
-      last_backup_maximum_age = 7 DAYS
-      retention_policy = RECOVERY WINDOW OF 7 DAYS
-      wal_retention_policy = main
-    '';
-    systemd.services.barman-receive-wal = barmanService {
-      script = ''
-        barman receive-wal --create-slot --if-not-exists local
-        exec barman receive-wal local
-      '';
-      wantedBy = [ "postgresql.service" ];
-    };
-    systemd.services.barman-cron = barmanService {
-      script = ''
-        exec barman cron
-      '';
-      requires = [ "barman-receive-wal.service" ];
-      after = [
-        "postgresql.service"
-        "barman-receive-wal.service"
-      ];
-    };
-    systemd.timers.barman-cron = {
-      timerConfig = {
-        OnCalendar = "hourly";
+    stanzas.default.jobs = {
+      full = {
+        schedule = "Sun 03:00";
+        type = "full";
       };
-      wantedBy = [ "postgresql.service" ];
+      diff = {
+        schedule = "Mon..Sat 03:00";
+        type = "diff";
+      };
     };
-    services.restic.backups.b2 = {
-      paths = [ backupDir ];
+  };
+
+  # archive-push runs as postgres while the backup jobs run as pgbackrest: both read
+  # the credentials from the same rendered file
+  systemd.services =
+    (lib.genAttrs pgbackrestJobs (_: {
+      serviceConfig.EnvironmentFile = pgbackrestEnv;
+    }))
+    // {
+      # ProtectSystem=strict leaves the spool read-only otherwise
+      postgresql.serviceConfig = {
+        EnvironmentFile = pgbackrestEnv;
+        ReadWritePaths = [ spoolDir ];
+      };
+
+      pgbackrest-check = {
+        description = "pgBackRest repository check";
+        serviceConfig = {
+          Type = "oneshot";
+          User = "pgbackrest";
+          Group = "pgbackrest";
+          EnvironmentFile = pgbackrestEnv;
+          ExecStart = "${lib.getExe pkgs.pgbackrest} --stanza=default check";
+        };
+      };
     };
-    systemd.services."restic-backups-b2" = {
-      requires = [ "barman-cron.service" ];
-      after = [ "barman-cron.service" ];
+
+  systemd.timers.pgbackrest-check = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "Mon 04:00";
+      Persistent = true;
     };
-  })
-]
+  };
+
+  systemd.tmpfiles.rules = [ "d ${spoolDir} 0770 pgbackrest pgbackrest -" ];
+  environment.global-persistence.directories = [ spoolDir ];
+
+  sops.templates."pgbackrest-env" = {
+    owner = "root";
+    group = "pgbackrest";
+    mode = "0440";
+    content = ''
+      PGBACKREST_REPO1_S3_KEY="${config.sops.placeholder."b2_backup_key_id"}"
+      PGBACKREST_REPO1_S3_KEY_SECRET="${config.sops.placeholder."b2_backup_access_key"}"
+      PGBACKREST_REPO1_CIPHER_PASS="${config.sops.placeholder."pgbackrest_cipher_pass"}"
+    '';
+  };
+  sops.secrets = {
+    b2_backup_key_id = {
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
+    };
+    b2_backup_access_key = {
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
+    };
+    pgbackrest_cipher_pass = {
+      terraformOutput = {
+        enable = true;
+        perHost = true;
+      };
+      restartUnits = map (job: "${job}.service") pgbackrestJobs;
+    };
+  };
+
+  environment.systemPackages = lib.mkMerge [
+    [
+      refreshPGCollationVersion
+      refreshPGCollationVersionAll
+    ]
+    (lib.mkIf config.system.pendingStateVersionUpgrade [ upgradePGCluster ])
+  ];
+}
