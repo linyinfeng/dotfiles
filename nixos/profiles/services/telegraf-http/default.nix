@@ -85,6 +85,12 @@ let
     pi-web = [ ];
     agent = [ ];
     frp-nuc = [ ];
+    s3-cn = [
+      {
+        url = "https://s3-cn.li7g.com:8443";
+        code = 403;
+      }
+    ];
   };
   overrides = {
     box = [
