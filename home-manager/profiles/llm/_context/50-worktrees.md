@@ -8,3 +8,9 @@ checkout stays clean and is where `git worktree add/remove/move` and
 `<topic>` off the latest target branch (`main`/`master`/`develop`), one topic per
 worktree. Rename with `git worktree move <old> <new> && git branch -m <old>
 <new>`; the branch name mirrors the directory name, so rename both together.
+
+`wtp` navigates them: `wtp cd <topic>`, `wtp cd @` for the main checkout, and
+`wtp list`; `wtp add -b <topic>` creates one. It only sees worktrees under the
+repository's `base_dir`, from a machine-local `.wtp.yml` (globally gitignored,
+written by the `wtp-bootstrap` fish function); without one the default
+`../worktrees` applies and the per-project directory is lost.
