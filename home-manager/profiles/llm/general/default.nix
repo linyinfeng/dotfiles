@@ -30,6 +30,8 @@ let
 
       # The provider is argv rather than config.toml: codex rewrites its own
       # config when its settings change, and a linked file cannot survive that.
+      # model_catalog_url together with the api_key_model_discovery feature is
+      # what makes /model list the gateway's models instead of codex's own.
       # codex-wrapper resolves the release inside the home set above.
       exec ${codex-wrapper}/bin/codex \
         -c 'model="aijws/gpt-6.1-sol"' \
@@ -39,6 +41,11 @@ let
         -c 'model_providers.li7g.base_url="https://llm.li7g.com/v1"' \
         -c 'model_providers.li7g.env_key="LITELLM_API_KEY"' \
         -c 'model_providers.li7g.wire_api="responses"' \
+        -c 'model_providers.li7g.model_catalog_url="https://llm.li7g.com/v1/models"' \
+        -c 'model_providers.li7g.stream_idle_timeout_ms=7200000' \
+        -c 'model_providers.li7g.stream_max_retries=5' \
+        -c 'model_providers.li7g.request_max_retries=4' \
+        -c 'features.api_key_model_discovery=true' \
         -c 'shell_environment_policy.exclude=["LITELLM_API_KEY"]' \
         "$@"
     '';
