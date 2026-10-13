@@ -137,7 +137,7 @@ in
     terminal.showTerminalProgress = true;
     defaultProvider = "litellm";
     defaultModel = "commandcode/deepseek/deepseek-v4.1-flash";
-    enabledModels = [ "litellm/*" ];
+    enabledModels = [ "litellm/**" ];
     defaultThinkingLevel = "high";
     litellm.providers.litellm = {
       baseUrl = "https://llm.li7g.com";
