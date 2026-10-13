@@ -137,12 +137,7 @@ in
     terminal.showTerminalProgress = true;
     defaultProvider = "litellm";
     defaultModel = "commandcode/deepseek/deepseek-v4.1-flash";
-    enabledModels = [
-      "litellm/deepseek/deepseek-flash"
-      "litellm/commandcode/deepseek/deepseek-v4.1-flash"
-      "litellm/xiaomi-coding-plan-cn/mimo-v2.6-flash"
-      "litellm/xiaomi-coding-plan-cn/mimo-v2.6-pro"
-    ];
+    enabledModels = [ "litellm/*" ];
     defaultThinkingLevel = "high";
     litellm.providers.litellm = {
       baseUrl = "https://llm.li7g.com";
