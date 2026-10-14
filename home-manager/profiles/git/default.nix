@@ -125,36 +125,16 @@ lib.mkMerge [
   }
 
   # wtp
-  {
-    home.packages = [ pkgs.wtp ];
-
-    # wtp only reads configuration from <repo>/.wtp.yml, and the worktree root
-    # differs per repository, so keep that file machine-local instead of
-    # committing one everywhere.
-    programs.git.ignores = [ "/.wtp.yml" ];
-
-    programs.fish.functions.wtp-bootstrap = {
-      description = "Generate .wtp.yml for this repository";
-      body = ''
-        set -l root (git rev-parse --show-toplevel 2>/dev/null)
-        or begin
-          echo 'not in a git repo' >&2
-          return 1
-        end
-        set -l f $root/.wtp.yml
-        if test -e $f
-          echo "$f already exists" >&2
-          return 1
-        end
-        printf 'version: "1.0"\ndefaults:\n  base_dir: "%s/Projects/worktrees/%s"\n' $HOME (basename $root) > $f
-        echo "wrote $f"
+  (
+    let
+      inherit (pkgs) wtp;
+    in
+    {
+      home.packages = [ wtp ];
+      programs.git.ignores = [ "/.wtp.yml" ];
+      xdg.configFile."fish/conf.d/wtp.fish".source = pkgs.runCommand "wtp-fish-init" { } ''
+        ${lib.getExe wtp} shell-init fish > $out
       '';
-    };
-
-    # Rendered at build time: the generated script refers to `wtp` by name, and
-    # sourcing it costs two process spawns per interactive shell.
-    xdg.configFile."fish/conf.d/wtp.fish".source = pkgs.runCommand "wtp-fish-init" { } ''
-      ${lib.getExe pkgs.wtp} shell-init fish > $out
-    '';
-  }
+    }
+  )
 ]
