@@ -58,7 +58,7 @@ in
   };
 
   virtualisation.oci-containers.containers.litellm = {
-    image = "ghcr.io/berriai/litellm:latest";
+    image = "ghcr.io/berriai/litellm:main-latest";
     labels."io.containers.autoupdate" = "registry";
     # the published port is forwarded to the container's bridge address, so the
     # container must not bind loopback; on the host only 127.0.0.1 is published
