@@ -147,7 +147,10 @@ lib.mkMerge [
       enableNushellIntegration = true;
       enableZshIntegration = true;
       settings = {
-        # currently nothing
+        # Worktrees live outside the checkout, one namespace per repository:
+        # <parent of repo>/worktrees/<repo>/<branch>. A layout policy like this
+        # is machine-wide by nature, so it cannot sit in a repository's own config.
+        "worktree-path" = "{{ repo_path }}/../worktrees/{{ repo }}/{{ branch | sanitize }}";
       };
     };
   }
