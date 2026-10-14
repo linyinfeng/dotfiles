@@ -147,7 +147,7 @@ lib.mkMerge [
       enableNushellIntegration = true;
       enableZshIntegration = true;
       settings = {
-        # currently nothing
+        "worktree-path" = "{{ repo_path }}/../worktrees/{{ repo }}/{{ branch | sanitize }}";
       };
     };
   }
