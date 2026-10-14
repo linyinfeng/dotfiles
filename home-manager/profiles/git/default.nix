@@ -137,4 +137,18 @@ lib.mkMerge [
       '';
     }
   )
+
+  # worktrunk
+  {
+    programs.worktrunk = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      enableNushellIntegration = true;
+      enableZshIntegration = true;
+      settings = {
+        # currently nothing
+      };
+    };
+  }
 ]
