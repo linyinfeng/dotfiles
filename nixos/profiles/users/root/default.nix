@@ -6,6 +6,7 @@
       _ssh/pgp.pub
       _ssh/juice.pub
       _ssh/goose.pub
+      _ssh/kagu.pub
     ];
   };
 
