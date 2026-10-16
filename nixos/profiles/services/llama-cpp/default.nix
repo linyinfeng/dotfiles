@@ -40,19 +40,10 @@ let
     };
   };
 
-  modelsPreset = pkgs.writeText "llama-cpp-models.ini" ''
-    version = 1
-
-    [*]
-    ${lib.generators.toKeyValue { } defaults}
-
-    ${lib.concatStringsSep "\n" (
-      lib.mapAttrsToList (name: preset: ''
-        [${name}]
-        ${lib.generators.toKeyValue { } preset}
-      '') presets
-    )}
-  '';
+  modelsPreset = (pkgs.formats.ini { }).generate "llama-cpp-models.ini" (
+    # the router reads the shared defaults from the `[*]` section
+    { "*" = defaults; } // presets
+  );
 in
 {
   services.llama-cpp = {
