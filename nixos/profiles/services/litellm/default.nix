@@ -13,14 +13,16 @@ let
   # from that bridge, so it is the hop whose X-Forwarded-For the proxy may trust.
   # The subnet is pinned below rather than left to podman's built-in default, and
   # a missing value must fail loudly instead of falling back to a guess.
-  podmanSubnet =
+  podmanNetwork =
     let
       subnets = config.virtualisation.podman.defaultNetwork.settings.subnets or [ ];
     in
     if subnets == [ ] then
       throw "services/litellm: virtualisation.podman.defaultNetwork.settings.subnets must be set"
     else
-      (lib.head subnets).subnet;
+      lib.head subnets;
+  podmanSubnet = podmanNetwork.subnet;
+  podmanGateway = podmanNetwork.gateway;
 
   terraformSecrets = {
     litellm_master_key = [ "podman-litellm.service" ];
@@ -72,7 +74,6 @@ in
     ];
     volumes = [
       "${configFile}:/app/config.yaml:ro"
-      "/run/postgresql:/run/postgresql"
     ];
     environmentFiles = [ config.sops.templates."litellm-env".path ];
     # inside the bridge network the host is not localhost, so the container needs
@@ -94,6 +95,7 @@ in
 
   services.postgresql = {
     enable = true;
+    enableTCPIP = true;
     ensureDatabases = [ "litellm" ];
     ensureUsers = [
       {
@@ -101,10 +103,13 @@ in
         ensureDBOwnership = true;
       }
     ];
-    # the container reaches the database through the mounted socket, so it
-    # cannot use peer authentication; this rule is inserted above the defaults
-    authentication = "local litellm litellm scram-sha-256";
+    # the container authenticates over TCP from the podman bridge; pg_hba
+    # matches top-down, so this rule must precede the defaults
+    authentication = "host litellm litellm ${podmanSubnet} scram-sha-256";
   };
+
+  # the database port is only reachable from the podman bridge
+  networking.firewall.interfaces.podman0.allowedTCPPorts = [ postgresPort ];
 
   # ensureUsers creates the role without a password; the password is only ever
   # available at activation time, so it is applied here once.
@@ -137,8 +142,12 @@ in
     };
   };
 
+  # The database is reached over TCP at the bridge gateway: inside the bridge
+  # the container's localhost is itself, and litellm's v2 migration coordinator
+  # strips query parameters from DATABASE_URL before connecting, so Prisma's
+  # ?host= socket override cannot be used either.
   sops.templates."litellm-env".content = ''
-    DATABASE_URL=postgresql://litellm:${dbPassword}@localhost:${toString postgresPort}/litellm?host=/run/postgresql
+    DATABASE_URL=postgresql://litellm:${dbPassword}@${podmanGateway}:${toString postgresPort}/litellm
     LITELLM_MASTER_KEY=sk-${config.sops.placeholder."litellm_master_key"}
     LITELLM_SALT_KEY=sk-${config.sops.placeholder."litellm_salt_key"}
     STORE_MODEL_IN_DB=True
