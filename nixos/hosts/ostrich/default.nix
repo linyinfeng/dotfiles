@@ -69,6 +69,12 @@
         fileSystems = [ config.fileSystems."/persist".device ];
       };
       services.zswap.enable = true;
+      # nginx serves the `llama-cpp.*` vhost on 443, but behind NAT only the
+      # services that ask for a port get one
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+      ];
       services.telegraf-system.diskMountPoints = [
         "/boot" # vfat
         "/nix" # btrfs main pool
