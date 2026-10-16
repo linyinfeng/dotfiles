@@ -8,9 +8,13 @@ provider "zitadel" {
   access_token = data.sops_file.terraform.data["zitadel.token"]
 }
 
+data "zitadel_organizations" "li7g" {
+  is_default = true
+}
+
 resource "zitadel_project" "li7g" {
   name   = "li7g.com"
-  org_id = "394599460455399093"
+  org_id = one(data.zitadel_organizations.li7g.ids)
 }
 
 resource "zitadel_application_oidc" "synapse" {
