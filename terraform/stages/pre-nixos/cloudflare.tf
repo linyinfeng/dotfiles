@@ -137,6 +137,7 @@ locals {
     hydra-runner   = { on = "nuc", proxy = false }
     influxdb       = { on = "mtl0", proxy = true }
     jellyfin       = { on = "nuc", proxy = false }
+    llama-cpp      = { on = "ostrich", proxy = false }
     llm            = { on = "hkg0", proxy = true }
     mastodon       = { on = "mtl0", proxy = true }
     matrix         = { on = "mtl0", proxy = true }
