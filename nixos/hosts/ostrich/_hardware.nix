@@ -24,7 +24,24 @@ lib.mkMerge [
 
     # Ada is the only GPU here, while the default build compiles kernels for
     # nine architectures
+    assertions = [
+      {
+        assertion = lib.versionOlder pkgs.llama-cpp.version "0.7.0";
+        message = "nixpkgs llama-cpp is now ${pkgs.llama-cpp.version}; drop the 0.7.0 override in nixos/hosts/ostrich/_hardware.nix";
+      }
+    ];
+
     services.llama-cpp.package = pkgs.llama-cpp-cuda.overrideAttrs (old: {
+      version = "0.7.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "ggml-org";
+        repo = "llama.cpp";
+        tag = "v0.7.0";
+        hash = "sha256-pEDYgI3AMTU+cekvRX7NNt5wddznydQSNuerswvEpsA=";
+      };
+      patches = [ ];
+      npmDepsHash = "sha256-hqYzdp1FwPhYkBP278fQXgY9NCKB6Q3P6Gko7BfP0m0=";
+      disabledTests = old.disabledTests ++ [ "test-llama-context-model" ];
       cmakeFlags =
         lib.filter (flag: !(lib.hasPrefix "-DCMAKE_CUDA_ARCHITECTURES" flag)) old.cmakeFlags
         ++ [ "-DCMAKE_CUDA_ARCHITECTURES=89" ];
