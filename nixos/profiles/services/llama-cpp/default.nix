@@ -25,17 +25,13 @@ let
   # per-model options. The scanner ignores anything not ending in `.gguf`, which is
   # how retired checkpoints stay in the models directory without being served.
   presets = {
-    # the MTP checkpoint is 12% larger and decodes slower without speculation, so
-    # the speculation has to stay with it; n-max 2 measured fastest (50.8 vs 44.2 t/s)
+    # draft-mtp acceptance collapses to 0 a few requests into a session
+    # (https://github.com/ggml-org/llama.cpp/issues/27572)
     "Qwen3.5-9B-MTP-UD-Q4_K_XL" = {
-      spec-type = "draft-mtp";
-      spec-draft-n-max = 2;
       load-on-startup = false;
     };
     "Qwen3.6-35B-A3B-MTP-UD-Q4_K_XL" = {
       n-cpu-moe = 32;
-      spec-type = "draft-mtp";
-      spec-draft-n-max = 2;
       load-on-startup = false;
     };
   };
