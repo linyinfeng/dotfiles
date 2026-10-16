@@ -91,6 +91,13 @@ let
         code = 403;
       }
     ];
+    llama-cpp = [
+      {
+        # public endpoint, so it needs no api key
+        url = "https://llama-cpp.ts.li7g.com/health";
+        code = 200;
+      }
+    ];
   };
   overrides = {
     box = [
