@@ -9,10 +9,12 @@ provider "zitadel" {
 }
 
 resource "zitadel_project" "li7g" {
-  name = "li7g.com"
+  name   = "li7g.com"
+  org_id = "394599460455399093"
 }
 
 resource "zitadel_application_oidc" "synapse" {
+  org_id     = zitadel_project.li7g.org_id
   project_id = zitadel_project.li7g.id
   name       = "Matrix Synapse"
 
