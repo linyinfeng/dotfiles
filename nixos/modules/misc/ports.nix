@@ -108,6 +108,7 @@
       forgejo = 3500;
       pi-web = 3510;
       litellm = 3520;
+      llama-cpp = 3530;
 
       ipsec-nat-traversal = 4500;
       postgresql = 5432;

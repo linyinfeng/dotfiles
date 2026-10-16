@@ -21,6 +21,14 @@ lib.mkMerge [
       vulkan-tools
       libva-utils
     ];
+
+    # Ada is the only GPU here, while the default build compiles kernels for
+    # nine architectures
+    services.llama-cpp.package = pkgs.llama-cpp-cuda.overrideAttrs (old: {
+      cmakeFlags =
+        lib.filter (flag: !(lib.hasPrefix "-DCMAKE_CUDA_ARCHITECTURES" flag)) old.cmakeFlags
+        ++ [ "-DCMAKE_CUDA_ARCHITECTURES=89" ];
+    });
   }
 
   {

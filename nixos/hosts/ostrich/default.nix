@@ -19,6 +19,7 @@
             acme.enable = true;
             fwupd.enable = true;
             garage.enable = true;
+            llama-cpp.enable = true;
             sunshine.enable = true;
           };
           nix.hydra-builder.enable = true;
