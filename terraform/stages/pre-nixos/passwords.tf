@@ -608,3 +608,12 @@ output "litellm_db_password" {
   value     = random_password.litellm_db_password.result
   sensitive = true
 }
+
+resource "random_password" "llama_cpp_api_key" {
+  length  = 32
+  special = false
+}
+output "llama_cpp_api_key" {
+  value     = random_password.llama_cpp_api_key.result
+  sensitive = true
+}
