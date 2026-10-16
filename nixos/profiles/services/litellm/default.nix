@@ -25,6 +25,7 @@ let
   podmanGateway = podmanNetwork.gateway;
 
   terraformSecrets = {
+    llama_cpp_api_key = [ "podman-litellm.service" ];
     litellm_master_key = [ "podman-litellm.service" ];
     litellm_salt_key = [ "podman-litellm.service" ];
     litellm_db_password = [
@@ -46,6 +47,18 @@ let
       use_x_forwarded_for = true;
     };
     litellm_settings.check_provider_endpoint = true;
+    # a wildcard deployment keeps the local models out of this file:
+    # check_provider_endpoint above expands it into llama.cpp's own model list
+    model_list = [
+      {
+        model_name = "llama-cpp/*";
+        litellm_params = {
+          model = "openai/*";
+          api_base = "https://llama-cpp.ts.li7g.com/v1";
+          api_key = "os.environ/LLAMA_CPP_API_KEY";
+        };
+      }
+    ];
   };
 in
 {
@@ -151,6 +164,7 @@ in
     LITELLM_MASTER_KEY=sk-${config.sops.placeholder."litellm_master_key"}
     LITELLM_SALT_KEY=sk-${config.sops.placeholder."litellm_salt_key"}
     STORE_MODEL_IN_DB=True
+    LLAMA_CPP_API_KEY=${config.sops.placeholder."llama_cpp_api_key"}
   '';
   sops.templates."litellm-db-env".content = ''
     LITELLM_DB_PASSWORD=${dbPassword}
