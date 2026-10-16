@@ -111,16 +111,16 @@
       "on": "nuc",
       "proxy": false
     },
-    "id": {
-      "on": "mtl0",
-      "proxy": true
-    },
     "influxdb": {
       "on": "mtl0",
       "proxy": true
     },
     "jellyfin": {
       "on": "nuc",
+      "proxy": false
+    },
+    "llama-cpp": {
+      "on": "ostrich",
       "proxy": false
     },
     "llm": {
