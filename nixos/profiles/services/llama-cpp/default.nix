@@ -78,9 +78,6 @@ in
     serviceConfig.LoadCredential = [ "api-key:${config.sops.secrets."llama_cpp_api_key".path}" ];
   };
 
-  # the server caches Hugging Face downloads under /var/cache
-  environment.global-persistence.directories = [ "/var/cache/llama-cpp" ];
-
   sops.secrets."llama_cpp_api_key" = {
     terraformOutput.enable = true;
     restartUnits = [ "llama-cpp.service" ];
