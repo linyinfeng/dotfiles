@@ -15,6 +15,7 @@ let
     dhparam-file "${config.sops.secrets."dhparam_pem".path}";
   '';
   dn42Cfg = config.networking.dn42;
+  dn42Interface = dn42Cfg.interfaces.dummy.name;
 in
 {
   services.bind = {
@@ -68,7 +69,8 @@ in
   };
   systemd.services.bind-address =
     let
-      addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Cfg.interfaces.dummy.name}"'';
+      addressLine = ''"${data.dn42_anycast_dns_v6}" dev "${dn42Interface}"'';
+      waitOnlineUnit = "systemd-networkd-wait-online@${dn42Interface}.service";
     in
     {
       script = "ip address add ${addressLine}";
@@ -82,7 +84,11 @@ in
         "systemd-networkd.service"
         "bind.service"
       ];
-      after = [ "systemd-networkd.service" ];
+      requires = [ waitOnlineUnit ];
+      after = [
+        "systemd-networkd.service"
+        waitOnlineUnit
+      ];
       before = [ "bind.service" ];
       wantedBy = [ "bind.service" ];
     };

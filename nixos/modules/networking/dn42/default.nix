@@ -389,6 +389,8 @@ in
         matchConfig = {
           Name = cfg.interfaces.dummy.name;
         };
+        # Preserve service-managed static addresses, including the BIND anycast address.
+        networkConfig.KeepConfiguration = "static";
         addresses =
           lib.lists.map (a: {
             Address = "${a}/32";
