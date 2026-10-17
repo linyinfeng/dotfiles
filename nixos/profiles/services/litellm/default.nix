@@ -151,6 +151,7 @@ in
         proxy_buffering off;
         proxy_cache off;
         proxy_read_timeout 1h;
+        client_max_body_size 100M;
       '';
     };
   };
