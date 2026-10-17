@@ -122,11 +122,6 @@
         key = config.sops.placeholder."litellm_api_key";
         type = "api_key";
       };
-      # pi's built-in xiaomi token plan provider takes Xiaomi's MiMo key
-      "xiaomi-token-plan-cn" = {
-        key = config.sops.placeholder."mimo_token_plan_api_key";
-        type = "api_key";
-      };
     };
     group = "llm";
     mode = "440";
