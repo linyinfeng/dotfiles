@@ -104,6 +104,7 @@ in
   home.packages = [
     codex-wrapper
     codex-install
+    pkgs.bubblewrap
   ]
   ++ lib.optionals (secretPaths ? litellmApiKey) [ codex-li7g ];
 
