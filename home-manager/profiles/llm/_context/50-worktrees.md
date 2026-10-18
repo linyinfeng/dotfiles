@@ -11,6 +11,7 @@ worktree. Rename with `git worktree move <old> <new> && git branch -m <old>
 
 `wtp` navigates them: `wtp cd <topic>`, `wtp cd @` for the main checkout, and
 `wtp list`; `wtp add -b <topic>` creates one. It only sees worktrees under the
-repository's `base_dir`, from a machine-local `.wtp.yml` (globally gitignored,
-written by the `wtp-bootstrap` fish function); without one the default
-`../worktrees` applies and the per-project directory is lost.
+repository's `base_dir`, from a machine-local `.wtp.yml` (gitignored, made by
+`wtp init`); without one the default `../worktrees` applies and the per-project
+directory is lost. `wt` (worktrunk) is installed too, its `worktree-path`
+already pointing at `worktrees/<repo>/<topic>`.

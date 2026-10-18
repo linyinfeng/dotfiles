@@ -35,7 +35,6 @@
   a gate. Spawnable child binaries are `pi` and `codex`; the `claude-code` and
   `cursor-agent` subagents, and `interactive_shell`'s `claude` and cursor agents,
   need binaries that are not installed.
-- `context_report` is not available here.
 - A privileged command runs as `bash` through `run0` (or `pkexec`), which
   authenticates through the session's polkit agent; each authentication costs a
   password prompt, so batch all root work into one call. `sudo` here is
