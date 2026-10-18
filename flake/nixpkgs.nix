@@ -70,6 +70,14 @@ let
           soapysdr = final.soapysdr-with-plugins;
         };
       };
+      # calibre only runs piper's inference CLI; the default `withTrain` pulls
+      # the whole training stack (librosa -> scikit-learn, torch, lightning),
+      # and scikit-learn's checks fail on the emulated aarch64 builder.
+      calibre = prev.calibre.override {
+        piper-tts = prev.piper-tts.override {
+          withTrain = false;
+        };
+      };
       zerotierone = prev.zerotierone.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
       });
