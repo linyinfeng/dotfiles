@@ -18,6 +18,18 @@ let
     ]
     ++ args;
 
+  # `noctalia msg session lock` returns before the compositor has presented the
+  # lock scene, so blanking straight away can land on the desktop still being
+  # visible; one second keeps the order deterministic on every compositor.
+  noctaliaLockScreen = pkgs.writeShellApplication {
+    name = "noctalia-lock-screen";
+    text = ''
+      noctalia msg session lock
+      sleep 1
+      noctalia msg dpms-off
+    '';
+  };
+
   # Wheel chords fire once per scroll event, so one flick would otherwise move
   # several columns or workspaces.
   wheelCooldownMs = 100;
@@ -188,11 +200,8 @@ let
       title = "Toggle launcher";
     })
     (mkBind "Mod+L" {
-      spawn = noctaliaMsg [
-        "session"
-        "lock"
-      ];
-      title = "Lock screen";
+      spawn = [ (lib.getExe noctaliaLockScreen) ];
+      title = "Lock screen and turn the monitors off";
     })
     (mkBind "Mod+Ctrl+E" {
       spawn = noctaliaMsg [
