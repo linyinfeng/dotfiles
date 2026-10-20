@@ -45,6 +45,8 @@ let
       # nginx already sends X-Forwarded-For; without this the recorded client IP
       # is the podman port forwarder's address for every request
       use_x_forwarded_for = true;
+      store_prompts_in_spend_logs = true;
+      maximum_spend_logs_retention_period = "30d";
     };
     litellm_settings.check_provider_endpoint = true;
     # a wildcard deployment keeps the local models out of this file:
