@@ -104,8 +104,9 @@ in
   home.packages = [
     codex-wrapper
     codex-install
-    pkgs.bubblewrap
   ]
+  # bubblewrap is a Linux-only package and the darwin hosts share this profile
+  ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.bubblewrap ]
   ++ lib.optionals (secretPaths ? litellmApiKey) [ codex-li7g ];
 
   home.file.".local/share/codex-li7g/packages/standalone" = lib.mkIf (secretPaths ? litellmApiKey) {
