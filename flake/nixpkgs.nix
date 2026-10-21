@@ -74,6 +74,15 @@ let
             });
           };
         };
+        # qt 6.12's uic rejects the leading "::" of this .ui file's class names.
+        fixMozc =
+          drv:
+          drv.overrideAttrs (old: {
+            postPatch = (old.postPatch or "") + ''
+              substituteInPlace src/gui/dictionary_tool/dictionary_tool.ui \
+                --replace-fail "::mozc::" "mozc::"
+            '';
+          });
       in
       {
         # adjustment
@@ -98,6 +107,12 @@ let
         zerotierone = prev.zerotierone.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
         });
+        mozc = fixMozc prev.mozc;
+        # built from the same source, and from the mozc it was instantiated with
+        ibus-engines = prev.ibus-engines // {
+          mozc = fixMozc prev.ibus-engines.mozc;
+        };
+        fcitx5-mozc = prev.fcitx5-mozc.override { inherit (final) mozc; };
         blender = prev.blender.override {
           # cudaSupport = true; # TODO broken
         };
