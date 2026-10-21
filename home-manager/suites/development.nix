@@ -1,7 +1,6 @@
 { ... }:
 {
   world.profiles = {
-    awscli.enable = true;
     development.enable = true;
     emacs.enable = true;
     git.enable = true;
