@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -20,6 +21,9 @@ in
       domainName = "hydra-runner.li7g.com";
     };
   };
+  # nix forwards this environment to fixed-output builders as impure env vars,
+  # so without the proxy the fetches of a proxied host go out directly and fail.
+  systemd.services.hydra-builder.environment = lib.mkIf config.networking.fw-proxy.enable config.networking.fw-proxy.environment;
   # the queue runner reads the same host key
   sops.secrets."mtls_private_key_pem" = {
     terraformOutput = {
