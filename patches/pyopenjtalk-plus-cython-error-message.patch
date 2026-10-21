@@ -1,0 +1,13 @@
+--- a/tests/test_frontend.py
++++ b/tests/test_frontend.py
+@@ -772,7 +772,9 @@
+     invalid_mecab_features = copy.deepcopy(valid_mecab_features)
+     invalid_mecab_features[0] = 123  # type: ignore[assignment]
+ 
+-    with pytest.raises(TypeError, match="must be str"):
++    # Cython 3.2 checks the list[str] elements before our own validation does,
++    # so the message is "Expected str, got int" instead of "must be str"
++    with pytest.raises(TypeError, match="str"):
+         pyopenjtalk.run_njd_from_mecab(invalid_mecab_features)
+ 
+     njd_features = pyopenjtalk.run_njd_from_mecab(valid_mecab_features)

@@ -59,43 +59,61 @@ let
       lanzaboote = inputs.lanzaboote.overlays.default final prev;
       mobile-nixos = import "${inputs.mobile-nixos}/overlay/overlay.nix" final prev;
     })
-    (final: prev: {
-      # adjustment
-      nixVersions = prev.nixVersions // {
-        selected = final.nixVersions.latest;
-      };
-      nix = final.nixVersions.selected;
-      gnuradio = prev.gnuradio.override {
-        unwrapped = prev.gnuradio.unwrapped.override {
-          soapysdr = final.soapysdr-with-plugins;
+    (
+      final: prev:
+      let
+        # piper-tts reaches pyopenjtalk-plus through calibre; its test_frontend
+        # asserts the TypeError wording Cython switched away from in 3.2.
+        piperPython = prev.python3.override {
+          self = piperPython;
+          packageOverrides = _pyFinal: pyPrev: {
+            pyopenjtalk-plus = pyPrev.pyopenjtalk-plus.overridePythonAttrs (old: {
+              patches = (old.patches or [ ]) ++ [
+                ../patches/pyopenjtalk-plus-cython-error-message.patch
+              ];
+            });
+          };
         };
-      };
-      # calibre only runs piper's inference CLI; the default `withTrain` pulls
-      # the whole training stack (librosa -> scikit-learn, torch, lightning),
-      # and scikit-learn's checks fail on the emulated aarch64 builder.
-      calibre = prev.calibre.override {
-        piper-tts = prev.piper-tts.override {
-          withTrain = false;
+      in
+      {
+        # adjustment
+        nixVersions = prev.nixVersions // {
+          selected = final.nixVersions.latest;
         };
-      };
-      zerotierone = prev.zerotierone.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
-      });
-      blender = prev.blender.override {
-        # cudaSupport = true; # TODO broken
-      };
-      vscode = final.symlinkJoin {
-        inherit (prev.vscode) pname version meta;
-        paths = [ prev.vscode ];
-        buildInputs = [ final.makeWrapper ];
-        # TODO remove --password-store=gnome-libsecret
-        # wait for https://github.com/microsoft/vscode/issues/187338
-        postBuild = ''
-          wrapProgram "$out/bin/code" \
-            --add-flags --password-store=gnome-libsecret
-        '';
-      };
-    })
+        nix = final.nixVersions.selected;
+        gnuradio = prev.gnuradio.override {
+          unwrapped = prev.gnuradio.unwrapped.override {
+            soapysdr = final.soapysdr-with-plugins;
+          };
+        };
+        # calibre only runs piper's inference CLI; the default `withTrain` pulls
+        # the whole training stack (librosa -> scikit-learn, torch, lightning),
+        # and scikit-learn's checks fail on the emulated aarch64 builder.
+        calibre = prev.calibre.override {
+          piper-tts = prev.piper-tts.override {
+            python3Packages = piperPython.pkgs;
+            withTrain = false;
+          };
+        };
+        zerotierone = prev.zerotierone.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
+        });
+        blender = prev.blender.override {
+          # cudaSupport = true; # TODO broken
+        };
+        vscode = final.symlinkJoin {
+          inherit (prev.vscode) pname version meta;
+          paths = [ prev.vscode ];
+          buildInputs = [ final.makeWrapper ];
+          # TODO remove --password-store=gnome-libsecret
+          # wait for https://github.com/microsoft/vscode/issues/187338
+          postBuild = ''
+            wrapProgram "$out/bin/code" \
+              --add-flags --password-store=gnome-libsecret
+          '';
+        };
+      }
+    )
   ]
   ++ [ inputs.angrr.overlays.default ];
 
