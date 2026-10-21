@@ -143,7 +143,6 @@ locals {
     matrix         = { on = "mtl0", proxy = true }
     matrix-qq      = { on = "nuc", proxy = false }
     mc             = { on = "nuc", proxy = false }
-    nextcloud      = { on = "nuc", proxy = false }
     nuc-proxy      = { on = "mtl0", proxy = true }
     oranc          = { on = "mtl0", proxy = true }
     pb             = { on = "mtl0", proxy = true }

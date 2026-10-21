@@ -64,7 +64,6 @@ in
             godns.enable = true;
             hydra.enable = true;
             jellyfin.enable = true;
-            nextcloud.enable = true;
             nginx.enable = true;
             postgresql.enable = true;
             samba.enable = true;
