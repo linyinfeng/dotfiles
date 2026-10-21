@@ -70,7 +70,6 @@ in
     database.createLocally = true;
     config = {
       dbtype = "pgsql";
-      adminpassFile = config.sops.secrets."nextcloud_admin_password".path;
     };
     settings = {
       trusted_domains = [
@@ -163,11 +162,6 @@ in
     wantedBy = [ "timers.target" ];
   };
 
-  sops.secrets."nextcloud_admin_password" = {
-    terraformOutput.enable = true;
-    restartUnits = [ "nextcloud-setup.service" ];
-    owner = "nextcloud";
-  };
   sops.secrets."mail_password" = {
     terraformOutput.enable = true;
     restartUnits = [ "nextcloud-setup.service" ];
