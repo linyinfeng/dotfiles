@@ -13,7 +13,6 @@
   yq-go,
   terraform,
   zerotierone,
-  minio-client,
   syncthing,
   libargon2,
   jq,
@@ -65,7 +64,6 @@ let
     git
     jq
     libargon2
-    minio-client
     nix
     openssl
     prettier

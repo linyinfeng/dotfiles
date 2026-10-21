@@ -21,7 +21,6 @@
       ghostscript
       imagemagick
       linyinfeng.mstickereditor
-      minio-client
       nixfmt
       ripgrep
       # keep-sorted end
@@ -32,7 +31,6 @@
     ];
 
   home.global-persistence.directories = [
-    ".mc" # minio-client
     ".config/mstickereditor"
   ];
 }
