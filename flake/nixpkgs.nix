@@ -83,6 +83,13 @@ let
                 --replace-fail "::mozc::" "mozc::"
             '';
           });
+        # configure only installs the python bindings when `python3` is on PATH.
+        fixSpeechd =
+          drv:
+          drv.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.python3 ];
+          });
+        speechd-minimal = fixSpeechd prev.speechd-minimal;
       in
       {
         # adjustment
@@ -99,10 +106,27 @@ let
         # the whole training stack (librosa -> scikit-learn, torch, lightning),
         # and scikit-learn's checks fail on the emulated aarch64 builder.
         calibre = prev.calibre.override {
+          inherit speechd-minimal;
           piper-tts = prev.piper-tts.override {
             python3Packages = piperPython.pkgs;
             withTrain = false;
           };
+        };
+        speechd = fixSpeechd prev.speechd;
+        inherit speechd-minimal;
+        # the aarch64 node module links against tpm2-tss, which upstream leaves
+        # out of the inputs its ELF fixup resolves against
+        chatgpt-unwrapped =
+          (prev.callPackage "${inputs.llm-agents}/packages/chatgpt/unwrapped.nix" {
+            flake = inputs.llm-agents;
+            formatelf = prev.llm-agents.formatelf;
+          }).overrideAttrs
+            (old: {
+              buildInputs =
+                (old.buildInputs or [ ]) ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [ prev.tpm2-tss ];
+            });
+        llm-agents = prev.llm-agents // {
+          chatgpt = prev.llm-agents.chatgpt.override { inherit (final) chatgpt-unwrapped; };
         };
         zerotierone = prev.zerotierone.overrideAttrs (old: {
           patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
