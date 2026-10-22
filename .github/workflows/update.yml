@@ -49,7 +49,7 @@ jobs:
       - name: Patches update
         run: |
           set -e
-          nix develop --command update-patches
+          nix develop --command maintain patches update
           if [ -z "$(git status --porcelain)" ]; then
             echo "repository is clean, skip commit"
           else
