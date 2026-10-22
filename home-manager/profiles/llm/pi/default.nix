@@ -196,6 +196,8 @@ in
     ) config.programs.mcp.servers;
   };
 
+  home.file.".pi/agent/extensions/host-status.ts".source = ./_extensions/host-status.ts;
+
   home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
     source = mkOutOfStoreSymlink config.home.env.secretPaths.piWebSearch;
   };
