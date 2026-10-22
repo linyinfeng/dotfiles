@@ -90,6 +90,13 @@ let
             nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.python3 ];
           });
         speechd-minimal = fixSpeechd prev.speechd-minimal;
+        # TODO wait for NixOS/nixpkgs#573479 in nixos-unstable
+        dropSphinxMan =
+          drv:
+          drv.overrideAttrs (old: {
+            outputs = builtins.filter (o: o != "man") (old.outputs or [ "out" ]);
+            sphinxBuilders = builtins.filter (b: b != "man") (old.sphinxBuilders or [ "html" ]);
+          });
       in
       {
         # adjustment
@@ -114,6 +121,7 @@ let
         };
         speechd = fixSpeechd prev.speechd;
         inherit speechd-minimal;
+        reuse = dropSphinxMan prev.reuse;
         # the aarch64 node module links against tpm2-tss, which upstream leaves
         # out of the inputs its ELF fixup resolves against
         chatgpt-unwrapped =
