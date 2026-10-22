@@ -2,7 +2,7 @@
 {
   services.commit-notifier = {
     enable = true;
-    cron = "0 * * * * *";
+    cron = "0 */5 * * * *";
     adminChatId = "-1001796151421";
     tokenFiles = {
       telegramBot = config.sops.secrets."telegram_bot_commit_notifier".path;
