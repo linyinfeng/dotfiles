@@ -59,108 +59,21 @@ let
       lanzaboote = inputs.lanzaboote.overlays.default final prev;
       mobile-nixos = import "${inputs.mobile-nixos}/overlay/overlay.nix" final prev;
     })
-    (
-      final: prev:
-      let
-        # piper-tts reaches pyopenjtalk-plus through calibre; its test_frontend
-        # asserts the TypeError wording Cython switched away from in 3.2.
-        piperPython = prev.python3.override {
-          self = piperPython;
-          packageOverrides = _pyFinal: pyPrev: {
-            pyopenjtalk-plus = pyPrev.pyopenjtalk-plus.overridePythonAttrs (old: {
-              patches = (old.patches or [ ]) ++ [
-                ../patches/pyopenjtalk-plus-cython-error-message.patch
-              ];
-            });
-          };
+    (final: prev: {
+      # adjustment
+      nixVersions = prev.nixVersions // {
+        selected = final.nixVersions.latest;
+      };
+      nix = final.nixVersions.selected;
+      gnuradio = prev.gnuradio.override {
+        unwrapped = prev.gnuradio.unwrapped.override {
+          soapysdr = final.soapysdr-with-plugins;
         };
-        # qt 6.12's uic rejects the leading "::" of this .ui file's class names.
-        fixMozc =
-          drv:
-          drv.overrideAttrs (old: {
-            postPatch = (old.postPatch or "") + ''
-              substituteInPlace src/gui/dictionary_tool/dictionary_tool.ui \
-                --replace-fail "::mozc::" "mozc::"
-            '';
-          });
-        # configure only installs the python bindings when `python3` is on PATH.
-        fixSpeechd =
-          drv:
-          drv.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.python3 ];
-          });
-        speechd-minimal = fixSpeechd prev.speechd-minimal;
-        # TODO wait for NixOS/nixpkgs#573479 in nixos-unstable
-        dropSphinxMan =
-          drv:
-          drv.overrideAttrs (old: {
-            outputs = builtins.filter (o: o != "man") (old.outputs or [ "out" ]);
-            sphinxBuilders = builtins.filter (b: b != "man") (old.sphinxBuilders or [ "html" ]);
-          });
-      in
-      {
-        # adjustment
-        nixVersions = prev.nixVersions // {
-          selected = final.nixVersions.latest;
-        };
-        nix = final.nixVersions.selected;
-        gnuradio = prev.gnuradio.override {
-          unwrapped = prev.gnuradio.unwrapped.override {
-            soapysdr = final.soapysdr-with-plugins;
-          };
-        };
-        # calibre only runs piper's inference CLI; the default `withTrain` pulls
-        # the whole training stack (librosa -> scikit-learn, torch, lightning),
-        # and scikit-learn's checks fail on the emulated aarch64 builder.
-        calibre = prev.calibre.override {
-          inherit speechd-minimal;
-          piper-tts = prev.piper-tts.override {
-            python3Packages = piperPython.pkgs;
-            withTrain = false;
-          };
-        };
-        speechd = fixSpeechd prev.speechd;
-        inherit speechd-minimal;
-        reuse = dropSphinxMan prev.reuse;
-        # the aarch64 node module links against tpm2-tss, which upstream leaves
-        # out of the inputs its ELF fixup resolves against
-        chatgpt-unwrapped =
-          (prev.callPackage "${inputs.llm-agents}/packages/chatgpt/unwrapped.nix" {
-            flake = inputs.llm-agents;
-            formatelf = prev.llm-agents.formatelf;
-          }).overrideAttrs
-            (old: {
-              buildInputs =
-                (old.buildInputs or [ ]) ++ prev.lib.optionals prev.stdenv.hostPlatform.isLinux [ prev.tpm2-tss ];
-            });
-        llm-agents = prev.llm-agents // {
-          chatgpt = prev.llm-agents.chatgpt.override { inherit (final) chatgpt-unwrapped; };
-        };
-        zerotierone = prev.zerotierone.overrideAttrs (old: {
-          patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
-        });
-        mozc = fixMozc prev.mozc;
-        # built from the same source, and from the mozc it was instantiated with
-        ibus-engines = prev.ibus-engines // {
-          mozc = fixMozc prev.ibus-engines.mozc;
-        };
-        fcitx5-mozc = prev.fcitx5-mozc.override { inherit (final) mozc; };
-        blender = prev.blender.override {
-          # cudaSupport = true; # TODO broken
-        };
-        vscode = final.symlinkJoin {
-          inherit (prev.vscode) pname version meta;
-          paths = [ prev.vscode ];
-          buildInputs = [ final.makeWrapper ];
-          # TODO remove --password-store=gnome-libsecret
-          # wait for https://github.com/microsoft/vscode/issues/187338
-          postBuild = ''
-            wrapProgram "$out/bin/code" \
-              --add-flags --password-store=gnome-libsecret
-          '';
-        };
-      }
-    )
+      };
+      zerotierone = prev.zerotierone.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ../patches/zerotierone-increase-world-max-roots.patch ];
+      });
+    })
   ]
   ++ [ inputs.angrr.overlays.default ];
 
@@ -202,23 +115,8 @@ let
         else
           final.stdenv.hostPlatform.system;
     };
-  earlyFixes = [
-    (final: _prev: {
-      # maintained packages
-      godns = (channelsOf final).latest.godns;
-    })
-  ];
-  lateFixes = [
-    (final: prev: {
-      shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
-      nginx =
-        if lib.versionAtLeast prev.nginx.version "1.30.1" then
-          prev.nginx
-        else
-          # TODO wait for https://nixpkgs-tracker.ocfox.me/?pr=519893
-          (channelsOf final).latest.nginx;
-    })
-  ];
+  earlyFixes = import ../workarounds/early.nix { inherit channelsOf; };
+  lateFixes = import ../workarounds/late.nix { inherit inputs lib channelsOf; };
 
   allOverlays = earlyFixes ++ packages ++ lateFixes;
 in
