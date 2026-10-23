@@ -129,6 +129,7 @@ in
       After = [ "default.target" ];
     };
     Service = {
+      Environment = lib.mkIf config.home.env.proxy.enable config.home.env.proxy.stringEnvironment;
       Type = "oneshot";
       ExecStart = "${codex-wrapper}/bin/codex app-server daemon start";
       RemainAfterExit = true;
