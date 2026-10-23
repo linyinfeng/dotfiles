@@ -143,10 +143,6 @@
       "on": "nuc",
       "proxy": false
     },
-    "nextcloud": {
-      "on": "nuc",
-      "proxy": false
-    },
     "nuc-proxy": {
       "on": "mtl0",
       "proxy": true
