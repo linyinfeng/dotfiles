@@ -90,14 +90,11 @@ let
       action = "spawn:noctalia msg window-switcher hold";
       repeat = false;
     };
-    # Scratchpads have no niri counterpart.
-    "Mod+Space" = "scratchpad-toggle";
-    "Mod+Shift+Space" = {
-      action = "window-move-to-scratchpad";
-      repeat = false;
-    };
-    "Mod+Ctrl+Space" = {
-      action = "window-restore-from-scratchpad";
+    # Scratchpads have no niri counterpart. Kept off Super+Space: the compositor
+    # consumes its keybinds before the IME sees them, and fcitx5 triggers on it.
+    "Mod+grave" = "scratchpad-toggle";
+    "Mod+Shift+grave" = {
+      action = "window-toggle-scratchpad";
       repeat = false;
     };
     "Mod+Tab" = "scratchpad-focus-next";
