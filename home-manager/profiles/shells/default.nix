@@ -11,6 +11,7 @@
   programs.zoxide.enable = true;
 
   programs.nushell = {
+    loadSessionVariables = true;
     configFile.text = ''
       $env.config.show_banner = false
 
