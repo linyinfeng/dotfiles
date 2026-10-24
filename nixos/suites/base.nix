@@ -10,6 +10,7 @@
       development.shells.enable = true;
       global-persistence.enable = true;
       nix.auto-gen.enable = true;
+      programs.terminfo.enable = true;
       security = {
         polkit.enable = true;
         run0-sudo-shim.enable = true;
