@@ -3,10 +3,9 @@
   users.users.root = {
     hashedPasswordFile = config.sops.secrets."user_password_root".path;
     openssh.authorizedKeys.keyFiles = [
-      _ssh/pgp.pub
+      _ssh/F0FF1FC0.pub
+      _ssh/FCD79CF5.pub
       _ssh/juice.pub
-      _ssh/goose.pub
-      _ssh/kagu.pub
     ];
   };
 
