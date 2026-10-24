@@ -25,7 +25,6 @@ let
   podmanGateway = podmanNetwork.gateway;
 
   terraformSecrets = {
-    llama_cpp_api_key = [ "podman-litellm.service" ];
     litellm_master_key = [ "podman-litellm.service" ];
     litellm_salt_key = [ "podman-litellm.service" ];
     litellm_db_password = [
@@ -34,10 +33,8 @@ let
     ];
   };
 
-  # None of these settings has an environment variable, so they need the mounted
-  # config file: check_provider_endpoint makes a wildcard model expand into the
-  # provider's real catalog in /v1/models, and disable_env_credential_login drops
-  # the shared env/master-key UI login in favour of database users.
+  # These settings need the mounted config file. disable_env_credential_login
+  # drops the shared env/master-key UI login in favour of database users.
   configFile = (pkgs.formats.yaml { }).generate "litellm-config.yaml" {
     general_settings = {
       disable_env_credential_login = true;
@@ -47,19 +44,7 @@ let
       use_x_forwarded_for = true;
       maximum_spend_logs_retention_period = "30d";
     };
-    litellm_settings.check_provider_endpoint = true;
-    # a wildcard deployment keeps the local models out of this file:
-    # check_provider_endpoint above expands it into llama.cpp's own model list
-    model_list = [
-      {
-        model_name = "llama-cpp/*";
-        litellm_params = {
-          model = "openai/*";
-          api_base = "https://llama-cpp.ts.li7g.com/v1";
-          api_key = "os.environ/LLAMA_CPP_API_KEY";
-        };
-      }
-    ];
+    model_list = [ ];
   };
 in
 {
@@ -166,7 +151,6 @@ in
     LITELLM_MASTER_KEY=sk-${config.sops.placeholder."litellm_master_key"}
     LITELLM_SALT_KEY=sk-${config.sops.placeholder."litellm_salt_key"}
     STORE_MODEL_IN_DB=True
-    LLAMA_CPP_API_KEY=${config.sops.placeholder."llama_cpp_api_key"}
   '';
   sops.templates."litellm-db-env".content = ''
     LITELLM_DB_PASSWORD=${dbPassword}
