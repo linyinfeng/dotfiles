@@ -33,13 +33,6 @@ let
       #   code = 404;
       # }
     ];
-    nextcloud = [
-      # currently not hosted
-      # {
-      #   url = "https://nextcloud.ts.li7g.com:8443/login";
-      #   code = 200;
-      # }
-    ];
     mc = [
       # currently not hosted
       # {
