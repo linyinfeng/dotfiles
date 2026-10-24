@@ -39,6 +39,12 @@ in
     matchConfig = {
       Name = interfaceName;
     };
+    linkConfig = {
+      # the tunnel stays down (and cannot be waited on) until it is brought
+      # up by hand: `networkctl up wg-home`, and `networkctl down wg-home`
+      RequiredForOnline = false;
+      ActivationPolicy = "manual";
+    };
     addresses = [
       {
         Address = "${hosts.${hostName}.ip}/24";
