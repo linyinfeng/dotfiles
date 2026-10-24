@@ -12,7 +12,12 @@
     honor-http-proxy
   '';
 
-  environment.global-persistence.user.directories = [ ".gnupg" ];
+  environment.global-persistence.user.directories = [
+    {
+      directory = ".gnupg";
+      mode = "0700";
+    }
+  ];
 
   services.openssh.extraConfig = ''
     StreamLocalBindUnlink yes
