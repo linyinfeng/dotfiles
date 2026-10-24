@@ -123,6 +123,9 @@ let
     in
     if iter == paths then iter else parentClosure iter;
 
+  # user entries may be plain paths or preservation attrsets ({ directory; mode; })
+  entryPath = entry: if builtins.isString entry then entry else entry.directory or entry.file;
+
   mkUserTmpFilesCfg =
     name:
     let
@@ -130,7 +133,7 @@ let
       directories = persistedDirs name;
       files = persistedFiles name;
       userCfg = config.users.users.${name};
-      parents = parentClosure (parentDirs (directories ++ files));
+      parents = parentClosure (parentDirs (map entryPath (directories ++ files)));
       parentsWithHome = map (p: "${home}/${p}") parents;
     in
     map (path: {
@@ -198,11 +201,12 @@ with lib;
       };
 
       directories = mkOption {
-        type = with types; listOf str;
+        type = with types; listOf anything;
         default = [ ];
         description = ''
           Directories to bind mount to persistent storage for users.
-          Paths should be relative to home of user.
+          Paths should be relative to home of user. Entries are either a path
+          or a preservation directory attrset, e.g. to set `mode`.
         '';
       };
 
