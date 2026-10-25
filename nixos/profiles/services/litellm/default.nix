@@ -44,6 +44,9 @@ let
       use_x_forwarded_for = true;
       maximum_spend_logs_retention_period = "30d";
     };
+    # wildcard deployments (llama-cpp/*) otherwise expand to litellm's static
+    # provider catalogue, so /v1/models lists models the endpoint does not serve
+    litellm_settings.check_provider_endpoint = true;
     model_list = [ ];
   };
 in
