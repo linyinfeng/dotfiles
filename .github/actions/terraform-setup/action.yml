@@ -19,21 +19,21 @@ runs:
   using: "composite"
   steps:
     - name: Checkout infrastructure-secrets
-      uses: actions/checkout@main
+      uses: actions/checkout@v7
       with:
         repository: linyinfeng/infrastructure-secrets
         ref: main
         path: infrastructure-secrets
         token: ${{ inputs.secrets-repo-token }}
     - name: Install nix
-      uses: cachix/install-nix-action@master
+      uses: cachix/install-nix-action@v31
       with:
         nix_path: nixpkgs=channel:nixos-unstable
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ github.token }}
     - name: Setup cachix
-      uses: cachix/cachix-action@master
+      uses: cachix/cachix-action@v17
       with:
         name: linyinfeng
         signingKey: ${{ inputs.cachix-signing-key }}
@@ -44,7 +44,7 @@ runs:
         git config --global user.email "nano@linyinfeng.com"
         git config --global user.name "Nano"
     - name: Cache terraform
-      uses: actions/cache@main
+      uses: actions/cache@v6
       with:
         path: dotfiles/terraform/stages/${{ inputs.stage }}/.terraform-data/providers
         key: ${{ runner.os }}-terraform-${{ inputs.stage }}-providers-${{ hashFiles(format('dotfiles/terraform/stages/{0}/.terraform.lock.hcl', inputs.stage)) }}

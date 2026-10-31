@@ -9,6 +9,9 @@ on:
 
 concurrency: push-to-main
 
+permissions:
+  contents: read
+
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
   DOTFILES_DIR: dotfiles
@@ -17,11 +20,12 @@ env:
 
 jobs:
   apply:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: infrastructure
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7
         with:
           path: dotfiles
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"

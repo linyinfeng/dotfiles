@@ -5,12 +5,17 @@ on:
       - "main"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   update:
+    if: github.ref == 'refs/heads/main'
+    environment: automation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7
         with:
           ref: staging
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
