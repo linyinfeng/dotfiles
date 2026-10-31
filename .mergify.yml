@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://docs.mergify.com/mergify-configuration-schema.json
+pull_request_rules:
+  - name: Merge Dependabot updates after CI
+    conditions:
+      - author = dependabot[bot]
+      - base = main
+      - check-success = Nix evaluation
+    actions:
+      merge:
+        method: squash
