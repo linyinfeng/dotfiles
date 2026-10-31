@@ -8,3 +8,17 @@ pull_request_rules:
     actions:
       merge:
         method: squash
+  - name: Merge automatic updates after evaluation and Hydra
+    conditions:
+      - base = main
+      - head = staging
+      - label = auto-update
+      - "#commits-behind = 0"
+      - check-success = Nix evaluation
+      - check-success = continuous-integration/hydra:dotfiles:staging:required
+      # Mergify's own summary must not block the rule that updates that summary.
+      - -check-failure ~= ^(?!Mergify)
+      - -check-pending ~= ^(?!Mergify)
+    actions:
+      merge:
+        method: fast-forward

@@ -1,9 +1,11 @@
-name: "Merge to staging"
+name: "Rebase to staging"
 on:
   push:
     branches:
       - "main"
   workflow_dispatch:
+
+concurrency: push-to-main
 
 permissions:
   contents: read
@@ -15,12 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        id: checkout
         uses: actions/checkout@v7
         with:
           ref: staging
+          fetch-depth: 0
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
       - name: Rebase and push
+        env:
+          STAGING_HEAD: ${{ steps.checkout.outputs.commit }}
         run: |
-          git fetch
-          git rebase origin/main
-          git push --force
+          git -c user.name=Nano -c user.email=nano@linyinfeng.com rebase origin/main
+          git push --force-with-lease="refs/heads/staging:$STAGING_HEAD" origin HEAD:staging
