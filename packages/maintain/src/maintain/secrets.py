@@ -175,7 +175,13 @@ def update_keys() -> None:
 
 @app.command("extract")
 def extract(secret_type: Annotated[SecretType, typer.Argument()] = "both") -> None:
-    """Regenerate the extracted secrets from the encrypted sources."""
+    """Regenerate the extracted secrets and format the repository."""
+    extract_sources(secret_type)
+    run(["nix", "fmt"], cwd=dotfiles_dir())
+
+
+def extract_sources(secret_type: SecretType) -> None:
+    """Extract without formatting, for pipelines that format once at the end."""
     with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
         tmpdir = Path(tmp)
 

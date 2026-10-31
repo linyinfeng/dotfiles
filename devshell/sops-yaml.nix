@@ -58,8 +58,9 @@ in
 {
   creation_rules = [
     {
-      # The offline root is never encrypted for the GitHub Actions age key.
-      path_regex = "terraform/(states/root-ca\\.tfstate|outputs/root-ca\\.yaml)$";
+      # The root private key is never encrypted for the GitHub Actions age key.
+      # Public root outputs use the regular outputs rule below so CI can read them.
+      path_regex = "terraform/states/root-ca\\.tfstate$";
       key_groups = [ { inherit pgp; } ];
     }
     {

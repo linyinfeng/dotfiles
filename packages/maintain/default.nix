@@ -27,6 +27,7 @@ let
   stages = {
     root-ca = { };
     pre-nixos = {
+      "root_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/root-ca.yaml";
       "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
       "predefined_secrets_path" = "\${SECRETS_DIR}/predefined.yaml";
     };

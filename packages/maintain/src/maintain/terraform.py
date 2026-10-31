@@ -358,7 +358,12 @@ def write_outputs(stage: str, args: list[str]) -> None:
 
 @app.command("extract-data")
 def extract_data() -> None:
-    """Render lib/data/data.json from the pre-nixos outputs (the NixOS inputs)."""
+    """Render lib/data/data.json from pre-nixos outputs and format the repository."""
+    write_data()
+    run(["nix", "fmt"], cwd=dotfiles_dir())
+
+
+def write_data() -> None:
     target = data_extract_dir() / "data.json"
     with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
         source = Path(tmp) / "outputs.yaml"
@@ -394,8 +399,8 @@ def apply_stage(stage: str, args: list[str]) -> None:
     terraform_run(stage, ["apply", *args])
     write_outputs(stage, [])
     if stage == "pre-nixos":
-        extract_data()
-        secrets.extract("terraform")
+        write_data()
+        secrets.extract_sources("terraform")
 
 
 @app.command("apply-stage")

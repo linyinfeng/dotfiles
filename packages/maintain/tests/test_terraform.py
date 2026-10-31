@@ -45,6 +45,7 @@ REGISTRY = {
     "stages": {
         "root-ca": {},
         "pre-nixos": {
+            "root_ca_outputs_path": "${SECRETS_DIR}/terraform/outputs/root-ca.yaml",
             "terraform_input_path": "${SECRETS_DIR}/terraform-inputs.yaml",
             "predefined_secrets_path": "${SECRETS_DIR}/predefined.yaml",
         },
@@ -104,6 +105,9 @@ def test_stage_env_drops_the_other_stages_variables(monkeypatch):
     env = terraform.stage_env("pre-nixos")
 
     assert env["TF_VAR_terraform_input_path"] == "/secrets/terraform-inputs.yaml"
+    assert (
+        env["TF_VAR_root_ca_outputs_path"] == "/secrets/terraform/outputs/root-ca.yaml"
+    )
     assert "TF_VAR_pre_nixos_outputs_path" not in env
 
 
