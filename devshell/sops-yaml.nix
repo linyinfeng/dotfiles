@@ -1,15 +1,15 @@
 { lib }:
 let
   pgp = [
-    "7D2F4C6B9A8300CCDDB641FDDF14B55A7A29C30F"
-    "0x1D0FFC1902304AED!" # specify subkey explicitly
+    "0x1D0FFC1902304AED!"
+    "0x7BF6E60B3360DCBF!"
   ];
   yubikeys = {
     # TODO https://github.com/mozilla/sops/issues/1103
     # yubikey5 = "age1yubikey1qda6pkn5cf75zrx6kx4wdx287dlege8eucuhnr9zjl94dzsg56afwtma6nz";
   };
   yubikeyKeys = lib.attrValues yubikeys;
-  github = "age143hpp7hqp4708z2dy868llsj8u9lc2jyq59ahnzusjvwg5g2u3cs3jaltg";
+  github = "age1nhkkzrzzpkzgz0a9qcqry8eajs9sdfgespu9g58kex7m9aglcdlsz6s6fj";
   hosts = {
     parrot = {
       key = "age1dunh0ajcw0um8l7cwu8k84dqux4krqneryx99dm9mwp4hkg42cdssfzmef";

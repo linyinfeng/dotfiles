@@ -14,7 +14,6 @@ from maintain.common import (
     dotfiles_dir,
     message,
     nix_build,
-    repo_root,
     run,
     secrets_dir,
     secrets_extract_dir,
@@ -25,8 +24,20 @@ app = typer.Typer(help="sops encrypted files")
 SecretType = Literal["terraform", "predefined", "both"]
 
 
-def sops_files(root: Path) -> list[Path]:
-    return sorted((root / "secrets").rglob("*.yaml"))
+def infrastructure_sops_files(root: Path) -> list[Path]:
+    """Only encrypted inputs, outputs and state, including the legacy layout."""
+    patterns = [
+        "predefined.yaml",
+        "terraform-inputs.yaml",
+        "terraform/outputs/*.yaml",
+        "terraform/states/*.tfstate",
+        "terraform-outputs.yaml",
+        "terraform.tfstate",
+        "terraform.plan",
+    ]
+    return sorted(
+        {path for pattern in patterns for path in root.glob(pattern) if path.is_file()}
+    )
 
 
 def decrypt(source: Path, target: Path, type: str = "yaml") -> None:
@@ -120,12 +131,27 @@ def encrypted_outputs(stage: str = "pre-nixos") -> Path:
 
 @app.command("update-keys")
 def update_keys() -> None:
-    """Re-wrap every sops file for the current recipient set."""
-    root = repo_root()
-    files = sops_files(root)
+    """Re-wrap the host secrets and infrastructure sources for current recipients."""
+    root = dotfiles_dir()
+    infrastructure = secrets_dir()
+    if not infrastructure.is_dir():
+        raise typer.BadParameter(f"secrets directory does not exist: {infrastructure}")
+    files = sorted(
+        set(secrets_extract_dir().rglob("*.yaml"))
+        | set(infrastructure_sops_files(infrastructure))
+    )
     for path in files:
-        message(f"updating {path.relative_to(root)}")
-        run(["sops", "updatekeys", "--yes", str(path)])
+        message(f"updating {path}")
+        run(
+            [
+                "sops",
+                "--config",
+                str(root / ".sops.yaml"),
+                "updatekeys",
+                "--yes",
+                str(path),
+            ]
+        )
     message(f"{len(files)} file(s)")
 
 
