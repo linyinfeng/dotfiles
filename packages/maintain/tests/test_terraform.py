@@ -1,13 +1,49 @@
 import json
+import subprocess
 
 import pytest
 import typer
 
 from maintain import terraform
 
+
+def git(repo, *args):
+    return subprocess.run(
+        ["git", "-C", str(repo), *args], check=True, capture_output=True, text=True
+    ).stdout.strip()
+
+
+@pytest.fixture
+def terraform_checkout(tmp_path, monkeypatch):
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", "/dev/null")
+    remote = tmp_path / "remote.git"
+    repo = tmp_path / "private"
+    repo.mkdir()
+    git(tmp_path, "init", "--bare", "--initial-branch=main", str(remote))
+    git(repo, "init", "--initial-branch=main")
+    git(repo, "config", "user.name", "Test")
+    git(repo, "config", "user.email", "test@example.invalid")
+    (repo / "README").write_text("fixture")
+    git(repo, "add", "README")
+    git(repo, "commit", "-m", "Initial")
+    git(repo, "remote", "add", "origin", str(remote))
+    git(repo, "push", "-u", "origin", "main")
+    monkeypatch.delenv("CI", raising=False)
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    monkeypatch.setenv("TERRAFORM_DIR", str(tmp_path / "terraform"))
+    monkeypatch.setenv("SECRETS_DIR", str(repo))
+    monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
+    for stage in REGISTRY["stages"]:
+        (tmp_path / "terraform/stages" / stage).mkdir(parents=True)
+    return repo, remote
+
+
 REGISTRY = {
     "order": ["pre-nixos", "post-nixos"],
+    "manual": ["root-ca"],
     "stages": {
+        "root-ca": {},
         "pre-nixos": {
             "terraform_input_path": "${SECRETS_DIR}/terraform-inputs.yaml",
             "predefined_secrets_path": "${SECRETS_DIR}/predefined.yaml",
@@ -90,3 +126,300 @@ def test_stage_env_keeps_an_explicit_override(monkeypatch):
     env = terraform.stage_env("pre-nixos")
 
     assert env["TF_VAR_terraform_input_path"] == "/elsewhere/inputs.yaml"
+
+
+def test_root_ca_is_explicitly_available_locally(monkeypatch):
+    monkeypatch.delenv("CI", raising=False)
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    monkeypatch.setenv("TERRAFORM_STAGE", "pre-nixos")
+
+    assert terraform.stage_from(["root-ca", "plan"]) == ("root-ca", ["plan"])
+
+
+@pytest.mark.parametrize("name", ["CI", "GITHUB_ACTIONS"])
+def test_root_ca_refuses_ci_before_running_commands(monkeypatch, name):
+    monkeypatch.setenv(name, "true")
+    calls = []
+    monkeypatch.setattr(terraform, "run", lambda *args, **kwargs: calls.append(args))
+
+    with pytest.raises(typer.Exit) as excinfo:
+        terraform.init(["root-ca"])
+
+    assert excinfo.value.exit_code == 2
+    assert calls == []
+
+
+def test_pipe_all_excludes_the_manual_root(terraform_checkout, monkeypatch):
+    calls = []
+    real_run = terraform.run
+    monkeypatch.setattr(
+        terraform,
+        "run",
+        lambda args, **kwargs: None if args[0] == "nix" else real_run(args, **kwargs),
+    )
+    monkeypatch.setattr(
+        terraform, "apply_stage", lambda stage, args: calls.append(stage)
+    )
+
+    terraform.pipe_all([])
+
+    assert calls == ["pre-nixos", "post-nixos"]
+
+
+def test_bootstrap_creates_empty_state_and_refuses_a_second_run(
+    terraform_checkout, monkeypatch
+):
+    repo, remote = terraform_checkout
+    calls = []
+
+    def fake_encrypt(plain, encrypted, type, formatter):
+        state = json.loads(plain.read_text())
+        calls.append(state)
+        encrypted.write_text("synthetic encrypted state")
+
+    monkeypatch.setattr(terraform.secrets, "encrypt_to_file", fake_encrypt)
+
+    terraform.bootstrap(["root-ca"])
+    assert calls[0]["version"] == 4
+    assert calls[0]["resources"] == []
+    assert calls[0]["lineage"]
+    assert (repo / "terraform/states/root-ca.tfstate").exists()
+    assert (
+        git(remote, "show", "main:terraform/states/root-ca.tfstate")
+        == "synthetic encrypted state"
+    )
+    first_commit = git(remote, "rev-parse", "main")
+
+    with pytest.raises(typer.BadParameter, match="state already exists"):
+        terraform.bootstrap(["root-ca"])
+    assert len(calls) == 1
+    assert git(remote, "rev-parse", "main") == first_commit
+
+
+def test_bootstrap_refuses_routine_stages():
+    with pytest.raises(typer.BadParameter, match="manual stage"):
+        terraform.bootstrap(["pre-nixos"])
+
+
+def write_stage_state(repo, stage, content):
+    state = repo / f"terraform/states/{stage}.tfstate"
+    state.parent.mkdir(parents=True, exist_ok=True)
+    state.write_text(content)
+    return state
+
+
+def test_bootstrap_checks_for_existing_state_after_pull(terraform_checkout, tmp_path):
+    repo, remote = terraform_checkout
+    other = tmp_path / "other"
+    git(tmp_path, "clone", str(remote), str(other))
+    git(other, "config", "user.name", "Other")
+    git(other, "config", "user.email", "other@example.invalid")
+    write_stage_state(other, "root-ca", "remote encrypted state")
+    git(other, "add", ".")
+    git(other, "commit", "-m", "Bootstrap elsewhere")
+    git(other, "push")
+
+    with pytest.raises(typer.BadParameter, match="state already exists"):
+        terraform.bootstrap(["root-ca"])
+
+    assert (
+        repo / "terraform/states/root-ca.tfstate"
+    ).read_text() == "remote encrypted state"
+
+
+def test_transaction_commits_only_its_stage_and_preserves_other_staged_changes(
+    terraform_checkout,
+):
+    repo, remote = terraform_checkout
+    unrelated = repo / "other-secret.yaml"
+    unrelated.write_text("unrelated")
+    git(repo, "add", unrelated.name)
+    before = git(remote, "rev-parse", "main")
+
+    with terraform.state_transaction(["root-ca"], "Root bootstrap"):
+        write_stage_state(repo, "root-ca", "encrypted root")
+
+    assert (
+        git(remote, "diff", "--name-only", before, "main")
+        == "terraform/states/root-ca.tfstate"
+    )
+    assert git(repo, "diff", "--cached", "--name-only") == unrelated.name
+
+
+@pytest.mark.parametrize("push_fails", [False, True])
+def test_failed_apply_encrypts_and_publishes_partial_state(
+    terraform_checkout, tmp_path, monkeypatch, push_fails
+):
+    repo, remote = terraform_checkout
+    state = write_stage_state(repo, "pre-nixos", "previous encrypted state")
+    git(repo, "add", ".")
+    git(repo, "commit", "-m", "Initial state")
+    git(repo, "push")
+    if push_fails:
+        git(
+            repo, "remote", "set-url", "--push", "origin", str(tmp_path / "missing.git")
+        )
+    plain = tmp_path / "terraform/stages/pre-nixos/terraform.tfstate"
+    monkeypatch.setattr(
+        terraform.secrets,
+        "decrypt",
+        lambda source, target, type: target.write_text('{"serial":0}'),
+    )
+    monkeypatch.setattr(
+        terraform.secrets,
+        "encrypt_to_file",
+        lambda source, target, type, formatter: target.write_text(
+            "encrypted:" + source.read_text()
+        ),
+    )
+    real_subprocess_run = subprocess.run
+
+    def partial_apply(args, **kwargs):
+        if args[0] == "terraform":
+            plain.write_text('{"serial":1}')
+            return subprocess.CompletedProcess(args, 17)
+        return real_subprocess_run(args, **kwargs)
+
+    monkeypatch.setattr(terraform.subprocess, "run", partial_apply)
+    with pytest.raises(typer.Exit) as excinfo:
+        terraform.run_terraform(["pre-nixos", "apply"])
+
+    assert excinfo.value.exit_code == 17
+    assert state.read_text() == 'encrypted:{"serial":1}'
+    assert not plain.exists()
+    assert git(repo, "status", "--porcelain") == ""
+    assert (
+        git(repo, "show", "HEAD:terraform/states/pre-nixos.tfstate")
+        == state.read_text()
+    )
+    if push_fails:
+        assert (
+            git(remote, "show", "main:terraform/states/pre-nixos.tfstate")
+            == "previous encrypted state"
+        )
+    else:
+        assert (
+            git(remote, "show", "main:terraform/states/pre-nixos.tfstate")
+            == state.read_text()
+        )
+
+
+def test_push_failure_preserves_commit_and_next_transaction_retries(
+    terraform_checkout, tmp_path
+):
+    repo, remote = terraform_checkout
+    before = git(remote, "rev-parse", "main")
+    git(repo, "remote", "set-url", "--push", "origin", str(tmp_path / "missing.git"))
+
+    with pytest.raises(subprocess.CalledProcessError):
+        with terraform.state_transaction(["root-ca"], "Create root state"):
+            state = write_stage_state(repo, "root-ca", "encrypted state")
+
+    pending = git(repo, "rev-parse", "HEAD")
+    assert pending != before
+    assert git(remote, "rev-parse", "main") == before
+    assert state.read_text() == "encrypted state"
+    git(repo, "remote", "set-url", "--push", "origin", str(remote))
+    with terraform.state_transaction(["root-ca"], "No further changes"):
+        pass
+    assert git(remote, "rev-parse", "main") == pending
+
+
+def test_no_changes_do_not_create_commit(terraform_checkout):
+    repo, remote = terraform_checkout
+    before = git(remote, "rev-parse", "main")
+    with terraform.state_transaction(["root-ca"], "No changes"):
+        pass
+    assert git(repo, "rev-parse", "HEAD") == before
+    assert git(remote, "rev-parse", "main") == before
+
+
+def test_dirty_stage_files_block_execution(terraform_checkout):
+    repo, _ = terraform_checkout
+    write_stage_state(repo, "root-ca", "pending encrypted state")
+    with pytest.raises(typer.Exit) as excinfo:
+        with terraform.state_transaction(["root-ca"], "Should not run"):
+            pytest.fail("must not execute with uncommitted state")
+    assert excinfo.value.exit_code == 2
+
+
+def test_pull_failure_blocks_execution(terraform_checkout, monkeypatch):
+    repo, _ = terraform_checkout
+    git(repo, "remote", "set-url", "origin", str(repo / "missing.git"))
+    with pytest.raises(subprocess.CalledProcessError):
+        with terraform.state_transaction(["root-ca"], "Should not run"):
+            pytest.fail("must not execute after a failed pull")
+
+
+def test_pipe_all_publishes_completed_stages_when_later_stage_fails(
+    terraform_checkout, monkeypatch
+):
+    repo, remote = terraform_checkout
+
+    def apply(stage, args):
+        write_stage_state(repo, stage, f"encrypted {stage}")
+        if stage == "post-nixos":
+            raise typer.Exit(23)
+
+    monkeypatch.setattr(terraform, "apply_stage", apply)
+    with pytest.raises(typer.Exit) as excinfo:
+        terraform.pipe_all([])
+    assert excinfo.value.exit_code == 23
+    for stage in ("pre-nixos", "post-nixos"):
+        assert (
+            git(remote, "show", f"main:terraform/states/{stage}.tfstate")
+            == f"encrypted {stage}"
+        )
+
+
+def test_git_sync_keeps_stdout_available_for_terraform_output(
+    terraform_checkout, monkeypatch, capfd
+):
+    monkeypatch.setattr(
+        terraform, "terraform_run", lambda *args: print("PUBLIC CERTIFICATE")
+    )
+    terraform.run_terraform(["root-ca", "output", "-raw", "root_ca_cert_pem"])
+    assert capfd.readouterr().out == "PUBLIC CERTIFICATE\n"
+
+
+@pytest.mark.parametrize("command", ["apply-stage", "pipe", "update-outputs"])
+def test_public_commands_share_state_sync(terraform_checkout, monkeypatch, command):
+    repo, remote = terraform_checkout
+    monkeypatch.setattr(
+        terraform,
+        "apply_stage",
+        lambda stage, args: write_stage_state(repo, stage, "encrypted apply"),
+    )
+    monkeypatch.setattr(
+        terraform,
+        "write_outputs",
+        lambda stage, args: write_stage_state(repo, stage, "encrypted outputs"),
+    )
+    real_run = terraform.run
+    monkeypatch.setattr(
+        terraform,
+        "run",
+        lambda args, **kwargs: None if args[0] == "nix" else real_run(args, **kwargs),
+    )
+    commands = {
+        "apply-stage": terraform.apply_stage_command,
+        "pipe": terraform.pipe,
+        "update-outputs": terraform.update_outputs,
+    }
+    commands[command](["root-ca"])
+    expected = "encrypted outputs" if command == "update-outputs" else "encrypted apply"
+    assert git(remote, "show", "main:terraform/states/root-ca.tfstate") == expected
+
+
+def test_local_lock_blocks_a_second_transaction(terraform_checkout):
+    with terraform.state_lock():
+        with pytest.raises(typer.Exit) as excinfo:
+            with terraform.state_transaction(["root-ca"], "Should not run"):
+                pytest.fail("must not overlap a local state operation")
+        assert excinfo.value.exit_code == 2
+
+
+@pytest.mark.parametrize("flag", ["-migrate-state", "-force-copy"])
+def test_init_refuses_backend_migration_flags(flag):
+    with pytest.raises(typer.BadParameter, match="migration"):
+        terraform.init(["pre-nixos", flag])

@@ -12,6 +12,7 @@ import typer
 
 from maintain.common import (
     dotfiles_dir,
+    env_path,
     message,
     nix_build,
     run,
@@ -22,6 +23,10 @@ from maintain.common import (
 app = typer.Typer(help="sops encrypted files")
 
 SecretType = Literal["terraform", "predefined", "both"]
+
+
+def sops_config() -> Path:
+    return env_path("MAINTAIN_SOPS_CONFIG", lambda: dotfiles_dir() / ".sops.yaml")
 
 
 def infrastructure_sops_files(root: Path) -> list[Path]:
@@ -42,7 +47,9 @@ def infrastructure_sops_files(root: Path) -> list[Path]:
 
 def decrypt(source: Path, target: Path, type: str = "yaml") -> None:
     """Decrypt SOURCE into TARGET, which callers keep inside a private temp directory."""
-    with target.open("w") as out:
+    fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as out:
+        os.fchmod(out.fileno(), 0o600)
         run(
             [
                 "sops",
@@ -77,7 +84,19 @@ def encrypt_to_file(plain: Path, target: Path, type: str, formatter: list[str]) 
     # sops runs $EDITOR on a temporary copy of the plaintext; copying the new plaintext
     # over it is how this repository writes secrets without an interactive editor.
     env = os.environ | {"EDITOR": f"cp {shlex.quote(str(plain))}"}
-    run(["sops", "--input-type", type, "--output-type", type, str(target)], env=env)
+    run(
+        [
+            "sops",
+            "--config",
+            str(sops_config()),
+            "--input-type",
+            type,
+            "--output-type",
+            type,
+            str(target),
+        ],
+        env=env,
+    )
     run(["prettier", "--write", str(target)])
 
 
@@ -132,7 +151,6 @@ def encrypted_outputs(stage: str = "pre-nixos") -> Path:
 @app.command("update-keys")
 def update_keys() -> None:
     """Re-wrap the host secrets and infrastructure sources for current recipients."""
-    root = dotfiles_dir()
     infrastructure = secrets_dir()
     if not infrastructure.is_dir():
         raise typer.BadParameter(f"secrets directory does not exist: {infrastructure}")
@@ -146,7 +164,7 @@ def update_keys() -> None:
             [
                 "sops",
                 "--config",
-                str(root / ".sops.yaml"),
+                str(sops_config()),
                 "updatekeys",
                 "--yes",
                 str(path),

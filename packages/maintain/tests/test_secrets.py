@@ -15,8 +15,10 @@ def test_infrastructure_sops_files_includes_both_stages_and_legacy_files(tmp_pat
             "terraform-inputs.yaml",
             "terraform/outputs/pre-nixos.yaml",
             "terraform/outputs/post-nixos.yaml",
+            "terraform/outputs/root-ca.yaml",
             "terraform/states/pre-nixos.tfstate",
             "terraform/states/post-nixos.tfstate",
+            "terraform/states/root-ca.tfstate",
             "terraform-outputs.yaml",
             "terraform.tfstate",
             "terraform.plan",
@@ -48,6 +50,7 @@ def test_update_keys_covers_both_repositories_with_dotfiles_config(
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("")
     monkeypatch.setenv("DOTFILES_DIR", str(dotfiles))
+    monkeypatch.delenv("MAINTAIN_SOPS_CONFIG", raising=False)
     monkeypatch.setenv("SECRETS_DIR", str(infrastructure))
     monkeypatch.setenv("SECRETS_EXTRACT_DIR", str(extracted))
     calls = []
@@ -110,3 +113,37 @@ def test_encrypted_outputs_prefers_the_split_layout(tmp_path, monkeypatch):
     split.write_text("")
 
     assert secrets.encrypted_outputs("pre-nixos") == split
+
+
+def test_sops_config_uses_the_packaged_rules(monkeypatch):
+    monkeypatch.setenv("MAINTAIN_SOPS_CONFIG", "/packaged/sops.yaml")
+
+    assert secrets.sops_config() == Path("/packaged/sops.yaml")
+
+
+def test_encrypt_uses_the_packaged_rules_for_new_files(tmp_path, monkeypatch):
+    monkeypatch.setenv("MAINTAIN_SOPS_CONFIG", "/packaged/sops.yaml")
+    calls = []
+    monkeypatch.setattr(secrets, "run", lambda cmd, **kwargs: calls.append(cmd))
+
+    secrets.encrypt_to_file(
+        tmp_path / "plain", tmp_path / "root-ca.tfstate", "json", []
+    )
+
+    assert calls[0][:3] == ["sops", "--config", "/packaged/sops.yaml"]
+
+
+def test_decrypt_keeps_plaintext_private(tmp_path, monkeypatch):
+    target = tmp_path / "terraform.tfstate"
+    target.write_text("old")
+    target.chmod(0o644)
+
+    def fake_decrypt(cmd, stdout):
+        stdout.write("synthetic plaintext")
+
+    monkeypatch.setattr(secrets, "run", fake_decrypt)
+
+    secrets.decrypt(tmp_path / "encrypted", target, "json")
+
+    assert target.read_text() == "synthetic plaintext"
+    assert target.stat().st_mode & 0o777 == 0o600

@@ -25,6 +25,7 @@
 let
   # TF_VAR_* declared per stage; the wrapper exports only these
   stages = {
+    root-ca = { };
     pre-nixos = {
       "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
       "predefined_secrets_path" = "\${SECRETS_DIR}/predefined.yaml";
@@ -39,18 +40,23 @@ let
     "pre-nixos"
     "post-nixos"
   ];
+  manualStages = [ "root-ca" ];
   # eval fails if this list and the registry disagree
   stageOrder =
     assert
-      builtins.sort builtins.lessThan stageOrderList
+      builtins.sort builtins.lessThan (stageOrderList ++ manualStages)
       == builtins.sort builtins.lessThan (builtins.attrNames stages);
     stageOrderList;
 
   stageRegistry = pkgs.writeText "terraform-stages.json" (
     builtins.toJSON {
       order = stageOrder;
+      manual = manualStages;
       inherit stages;
     }
+  );
+  sopsConfig = (pkgs.formats.yaml { }).generate "maintain-sops.yaml" (
+    import ../../devshell/sops-yaml.nix { inherit lib; }
   );
 
   # tools the pipelines shell out to, next to terraform itself
@@ -87,7 +93,10 @@ python3Packages.buildPythonApplication {
   dependencies = [ python3Packages.typer ];
 
   nativeBuildInputs = [ makeWrapper ];
-  nativeCheckInputs = [ python3Packages.pytestCheckHook ];
+  nativeCheckInputs = [
+    python3Packages.pytestCheckHook
+    git
+  ];
 
   postInstall = ''
     install -Dm644 ${stageRegistry} $out/share/maintain/terraform-stages.json
@@ -96,7 +105,8 @@ python3Packages.buildPythonApplication {
   postFixup = ''
     wrapProgram $out/bin/maintain \
       --prefix PATH : ${lib.makeBinPath runtimeTools} \
-      --set MAINTAIN_STAGE_REGISTRY ${stageRegistry}
+      --set MAINTAIN_STAGE_REGISTRY ${stageRegistry} \
+      --set MAINTAIN_SOPS_CONFIG ${sopsConfig}
   '';
 
   meta = {

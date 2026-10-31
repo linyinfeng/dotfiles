@@ -1,5 +1,6 @@
 """terraform pipelines: one encrypted state per stage, plus their outputs."""
 
+import fcntl
 import json
 import os
 import signal
@@ -7,6 +8,8 @@ import string
 import subprocess
 import sys
 import tempfile
+import uuid
+from contextlib import contextmanager
 from pathlib import Path
 from typing import IO, Annotated
 
@@ -63,10 +66,21 @@ def stage_from(args: list[str]) -> tuple[str, list[str]]:
         message(f"unknown terraform stage: {stage}")
         raise typer.Exit(2)
 
+    check_manual_stage(stage)
     return stage, args[1:] if given else args
 
 
+def check_manual_stage(stage: str) -> None:
+    if stage in registry().get("manual", []) and any(
+        os.environ.get(name, "").lower() not in ("", "0", "false")
+        for name in ("CI", "GITHUB_ACTIONS")
+    ):
+        message(f"stage {stage} is local-only and cannot run in CI")
+        raise typer.Exit(2)
+
+
 def stage_root(stage: str) -> Path:
+    check_manual_stage(stage)
     root = terraform_dir() / "stages" / stage
     if not root.is_dir():
         message(f"terraform root does not exist for stage: {stage}")
@@ -102,6 +116,116 @@ def encrypted_state(stage: str) -> Path:
     return state
 
 
+def stage_files(stages: list[str]) -> list[str]:
+    """Repository-relative files owned by these stages, including legacy state."""
+    paths = [
+        f"terraform/{kind}/{stage}.{suffix}"
+        for stage in stages
+        for kind, suffix in (("states", "tfstate"), ("outputs", "yaml"))
+    ]
+    if "pre-nixos" in stages:
+        paths.extend(["terraform.tfstate", "terraform-outputs.yaml"])
+    return paths
+
+
+def changed_files(paths: list[str]) -> list[str]:
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(secrets_dir()),
+            "status",
+            "--porcelain=v1",
+            "--no-renames",
+            "-z",
+            "--",
+            *paths,
+        ],
+        check=True,
+        capture_output=True,
+    )
+    return [os.fsdecode(entry[3:]) for entry in result.stdout.split(b"\0") if entry]
+
+
+@contextmanager
+def state_lock():
+    """Serialize local invocations, including their decrypt/encrypt windows."""
+    result = subprocess.run(
+        ["git", "-C", str(secrets_dir()), "rev-parse", "--absolute-git-dir"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    with (Path(result.stdout.strip()) / "maintain-terraform.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            message("another local Terraform command is using this secrets repository")
+            raise typer.Exit(2)
+        yield
+
+
+def publish_state(paths: list[str], commit_message: str) -> None:
+    repo = str(secrets_dir())
+    changed = changed_files(paths)
+    if changed:
+        run(["git", "-C", repo, "add", "--all", "--", *changed], stdout=sys.stderr)
+        run(
+            [
+                "git",
+                "-C",
+                repo,
+                "commit",
+                "--only",
+                "--message",
+                commit_message,
+                "--",
+                *changed,
+            ],
+            stdout=sys.stderr,
+        )
+    else:
+        message("stage state and outputs are unchanged, nothing to commit")
+    # Retry a previous unpushed commit even when this invocation changed no files.
+    try:
+        run(["git", "-C", repo, "push"], stdout=sys.stderr)
+    except Exception:
+        message(
+            "push failed; encrypted state and local commits are preserved; retry git push before continuing"
+        )
+        raise
+
+
+@contextmanager
+def state_transaction(stages: list[str], commit_message: str):
+    for stage in stages:
+        stage_root(stage)
+    paths = stage_files(stages)
+    with state_lock():
+        dirty = changed_files(paths)
+        if dirty:
+            message(
+                "stage files have uncommitted changes; commit/push or recover them before continuing: "
+                + ", ".join(dirty)
+            )
+            raise typer.Exit(2)
+        run(["git", "-C", str(secrets_dir()), "pull", "--ff-only"], stdout=sys.stderr)
+        try:
+            yield
+        except BaseException:
+            # Partial applies still change state. Preserve the original failure even
+            # if publishing that state also fails; neither failure should discard it.
+            try:
+                publish_state(paths, commit_message)
+            except Exception as error:
+                message(
+                    f"also failed to publish state after the command failed: {error}"
+                )
+            raise
+        else:
+            publish_state(paths, commit_message)
+
+
 def terraform_run(stage: str, args: list[str], stdout: IO[str] | None = None) -> None:
     """Run terraform in STAGE, decrypting its state first and re-encrypting it afterwards."""
     root = stage_root(stage)
@@ -114,6 +238,11 @@ def terraform_run(stage: str, args: list[str], stdout: IO[str] | None = None) ->
     if not encrypted.exists():
         message(f"encrypted state is missing: {encrypted}")
         message("refusing to run Terraform without an explicitly migrated state")
+        raise typer.Exit(2)
+    if any(root.glob("terraform.tfstate*")):
+        message(
+            "plaintext state already exists; recover it before running Terraform again"
+        )
         raise typer.Exit(2)
     secrets.decrypt(encrypted, plain, "json")
 
@@ -145,6 +274,8 @@ def init(
 ) -> None:
     """Initialize one stage (its state lives encrypted in the secrets repository)."""
     stage, rest = stage_from(args)
+    if any(arg.split("=", 1)[0] in ("-migrate-state", "-force-copy") for arg in rest):
+        raise typer.BadParameter("backend state migration is not supported by init")
     root = stage_root(stage)
     run(
         [
@@ -158,6 +289,39 @@ def init(
     )
 
 
+@app.command("bootstrap")
+def bootstrap(
+    args: Annotated[list[str], typer.Argument(help="manual stage to initialize")] = [],
+) -> None:
+    """Create an encrypted empty state once, only for an explicitly selected manual stage."""
+    stage, rest = stage_from(args)
+    if stage not in registry().get("manual", []) or rest:
+        raise typer.BadParameter("bootstrap requires exactly one manual stage")
+    with state_transaction([stage], f"Terraform {stage} bootstrap"):
+        root = stage_root(stage)
+        encrypted = encrypted_state(stage)
+        if encrypted.exists() or any(root.glob("terraform.tfstate*")):
+            raise typer.BadParameter(
+                f"state already exists for {stage}; refusing to overwrite it"
+            )
+        encrypted.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
+            plain = Path(tmp) / "empty-state.json"
+            plain.write_text(
+                json.dumps(
+                    {
+                        "version": 4,
+                        "serial": 0,
+                        "lineage": str(uuid.uuid4()),
+                        "outputs": {},
+                        "resources": [],
+                    }
+                )
+            )
+            secrets.encrypt_to_file(plain, encrypted, "json", ["yq", "--prettyPrint"])
+    message(f"initialized encrypted state for {stage}")
+
+
 @app.command("run")
 def run_terraform(
     args: Annotated[
@@ -166,7 +330,8 @@ def run_terraform(
 ) -> None:
     """Run any terraform subcommand in a stage, its state handled automatically."""
     stage, rest = stage_from(args)
-    terraform_run(stage, rest)
+    with state_transaction([stage], f"Terraform {stage} run"):
+        terraform_run(stage, rest)
 
 
 @app.command("update-outputs")
@@ -177,10 +342,15 @@ def update_outputs(
 ) -> None:
     """Store the stage outputs encrypted in the secrets repository."""
     stage, rest = stage_from(args)
+    with state_transaction([stage], f"Terraform {stage} update outputs"):
+        write_outputs(stage, rest)
+
+
+def write_outputs(stage: str, args: list[str]) -> None:
     with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
         plain_output = Path(tmp) / "terraform-outputs.plain.yaml"
         with plain_output.open("w") as out:
-            terraform_run(stage, ["output", "--json", *rest], stdout=out)
+            terraform_run(stage, ["output", "--json", *args], stdout=out)
         outputs = secrets_dir() / f"terraform/outputs/{stage}.yaml"
         outputs.parent.mkdir(parents=True, exist_ok=True)
         secrets.encrypt_to_file(plain_output, outputs, "yaml", ["yq", "--prettyPrint"])
@@ -213,26 +383,16 @@ def extract_data() -> None:
 def commit_outputs(
     message_: Annotated[str, typer.Argument(help="commit message")],
 ) -> None:
-    """Commit and push whatever the pipeline wrote into the secrets repository."""
-    secrets_repo = str(secrets_dir())
-    run(["git", "-C", secrets_repo, "add", "--all"])
-    if (
-        subprocess.run(
-            ["git", "-C", secrets_repo, "diff", "--cached", "--quiet"]
-        ).returncode
-        == 0
-    ):
-        message("secrets repository is clean, nothing to commit")
-        return
-    run(["git", "-C", secrets_repo, "commit", "--message", message_])
-    run(["git", "-C", secrets_repo, "push"])
+    """Recover pending Terraform state/output changes and push local commits."""
+    with state_lock():
+        publish_state(stage_files(list(registry()["stages"])), message_)
 
 
 def apply_stage(stage: str, args: list[str]) -> None:
     """init, apply, refresh the outputs, and feed the NixOS inputs from pre-nixos."""
     init([stage])
     terraform_run(stage, ["apply", *args])
-    update_outputs([stage])
+    write_outputs(stage, [])
     if stage == "pre-nixos":
         extract_data()
         secrets.extract("terraform")
@@ -246,7 +406,8 @@ def apply_stage_command(
 ) -> None:
     """Initialize, apply and publish one stage."""
     stage, rest = stage_from(args)
-    apply_stage(stage, rest)
+    with state_transaction([stage], f"Terraform {stage} apply"):
+        apply_stage(stage, rest)
 
 
 @app.command("pipe")
@@ -257,9 +418,8 @@ def pipe(
 ) -> None:
     """Apply one stage and, when it succeeded, commit its outputs and format the repository."""
     stage, rest = stage_from(args)
-    run(["git", "-C", str(secrets_dir()), "pull", "--ff-only"])
-    apply_stage(stage, rest)
-    commit_outputs(f"Terraform {stage} apply")
+    with state_transaction([stage], f"Terraform {stage} apply"):
+        apply_stage(stage, rest)
     run(["nix", "fmt"], cwd=dotfiles_dir())
 
 
@@ -267,11 +427,10 @@ def pipe(
 def pipe_all(
     args: Annotated[list[str], typer.Argument(help="terraform apply arguments")] = [],
 ) -> None:
-    """Run every stage in dependency order, then commit and format once."""
+    """Run the routine stages in dependency order; manual stages are excluded."""
     stages = registry()["order"]
-    run(["git", "-C", str(secrets_dir()), "pull", "--ff-only"])
-    for stage in stages:
-        print(f"== stage: {stage}")
-        apply_stage(stage, args)
-    commit_outputs(f"Terraform {'+'.join(stages)} apply")
+    with state_transaction(stages, f"Terraform {'+'.join(stages)} apply"):
+        for stage in stages:
+            print(f"== stage: {stage}")
+            apply_stage(stage, args)
     run(["nix", "fmt"], cwd=dotfiles_dir())
