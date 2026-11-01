@@ -1,5 +1,6 @@
 import json
 import subprocess
+from pathlib import Path
 
 import pytest
 import typer
@@ -154,6 +155,72 @@ def test_manual_ca_refuses_ci_before_running_commands(monkeypatch, name, stage):
 
     assert excinfo.value.exit_code == 2
     assert calls == []
+
+
+@pytest.mark.parametrize("stage", [None, "root-ca", "intermediate-ca"])
+def test_update_locks_in_ci_without_secrets(tmp_path, monkeypatch, stage):
+    monkeypatch.setenv("CI", "true")
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    monkeypatch.setenv("TERRAFORM_STAGE", "pre-nixos")
+    monkeypatch.setenv("TERRAFORM_DIR", str(tmp_path / "terraform"))
+    monkeypatch.setenv("SECRETS_DIR", str(tmp_path / "does-not-exist"))
+    for name in REGISTRY["stages"]:
+        root = tmp_path / "terraform/stages" / name
+        root.mkdir(parents=True)
+        (root / "terraform.tfstate").write_text("must not be read")
+        (root / ".terraform-data").mkdir()
+        (root / ".terraform-data/terraform.tfstate").write_text("backend metadata")
+    calls = []
+    data_dirs = []
+
+    def fake_init(args, env):
+        data = Path(env["TF_DATA_DIR"])
+        root = Path(args[1].removeprefix("-chdir="))
+        assert data.is_dir() and not list(data.iterdir())
+        assert not (root / "terraform.tfstate").exists()
+        assert not (root / ".terraform-data").exists()
+        assert args[2:] == ["init", "-backend=false", "-input=false", "-upgrade"]
+        (root / ".terraform.lock.hcl").write_text("updated provider lock")
+        calls.append(root.name)
+        data_dirs.append(data)
+
+    monkeypatch.setattr(terraform, "run", fake_init)
+    terraform.update_locks(stage)
+
+    assert calls == ([stage] if stage else sorted(REGISTRY["stages"]))
+    for name in calls:
+        root = tmp_path / "terraform/stages" / name
+        assert (root / ".terraform.lock.hcl").read_text() == "updated provider lock"
+        assert (root / "terraform.tfstate").read_text() == "must not be read"
+    assert all(not path.exists() for path in data_dirs)
+    assert not (tmp_path / "does-not-exist").exists()
+
+
+def test_update_locks_rejects_unknown_stage_before_commands(monkeypatch):
+    calls = []
+    monkeypatch.setattr(terraform, "run", lambda *args, **kwargs: calls.append(args))
+    with pytest.raises(typer.BadParameter, match="unknown terraform stage"):
+        terraform.update_locks("unknown")
+    assert calls == []
+
+
+def test_update_locks_stops_on_failure_and_removes_temporary_data(
+    tmp_path, monkeypatch
+):
+    monkeypatch.setenv("TERRAFORM_DIR", str(tmp_path))
+    for name in REGISTRY["stages"]:
+        (tmp_path / "stages" / name).mkdir(parents=True)
+    data_dirs = []
+
+    def fail_init(args, env):
+        data_dirs.append(Path(env["TF_DATA_DIR"]))
+        raise subprocess.CalledProcessError(1, args)
+
+    monkeypatch.setattr(terraform, "run", fail_init)
+    with pytest.raises(subprocess.CalledProcessError):
+        terraform.update_locks()
+    assert len(data_dirs) == 1
+    assert not data_dirs[0].exists()
 
 
 def test_pipe_all_excludes_the_manual_root(terraform_checkout, monkeypatch):

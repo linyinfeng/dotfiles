@@ -13,6 +13,17 @@
 `root-ca` are excluded. `pipe` also formats dotfiles after publishing state.
 Ordinary `init` does not synchronize state; backend migration flags are refused.
 
+Update provider locks for every registered stage, or just one:
+
+```sh
+maintain terraform update-locks
+maintain terraform update-locks root-ca
+```
+
+This uses `init -backend=false -upgrade` in temporary copies containing only
+Terraform configuration, then copies back only the provider lock files.
+It runs in CI for manual stages too, without accessing their state or secrets.
+
 A failed or interrupted Terraform operation can still change state. Its encrypted
 state is committed and pushed before the original failure is returned. Later
 stages do not run after a failure. Outputs are refreshed only if apply succeeds.

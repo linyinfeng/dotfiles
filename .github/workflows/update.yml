@@ -48,13 +48,12 @@ jobs:
           git rebase origin/main
       - name: Terraform update
         run: |
-          nix develop --command maintain terraform init pre-nixos -- -upgrade
-          nix develop --command maintain terraform init post-nixos -- -upgrade
+          nix develop --command maintain terraform update-locks
           if [ -z "$(git status --porcelain)" ]; then
             echo "repository is clean, skip commit"
           else
             git add --all
-            git commit --message "maintain terraform init -upgrade"
+            git commit --message "maintain terraform update-locks"
           fi
       - name: Patches update
         run: |

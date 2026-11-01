@@ -4,6 +4,7 @@ import fcntl
 import json
 import os
 import signal
+import shutil
 import string
 import subprocess
 import sys
@@ -81,6 +82,10 @@ def check_manual_stage(stage: str) -> None:
 
 def stage_root(stage: str) -> Path:
     check_manual_stage(stage)
+    return stage_directory(stage)
+
+
+def stage_directory(stage: str) -> Path:
     root = terraform_dir() / "stages" / stage
     if not root.is_dir():
         message(f"terraform root does not exist for stage: {stage}")
@@ -287,6 +292,58 @@ def init(
         ],
         env=os.environ | {"TF_DATA_DIR": str(root / ".terraform-data")},
     )
+
+
+@app.command("update-locks")
+def update_locks(
+    stage: Annotated[
+        str | None, typer.Argument(help="one stage; omit to update every stage")
+    ] = None,
+) -> None:
+    """Upgrade provider locks without initializing backends or decrypting state."""
+    stages = registry()["stages"]
+    if stage is not None and stage not in stages:
+        raise typer.BadParameter(f"unknown terraform stage: {stage}")
+    # Resolve all directories before changing any locks. This maintenance-only
+    # path also permits manual stages in CI; execution commands keep their guard.
+    roots = [stage_directory(name) for name in ([stage] if stage else sorted(stages))]
+    for root in roots:
+        message(f"updating provider lock for {root.name}...")
+        # Even init -backend=false probes local state. Copy only configuration,
+        # retaining relative module paths, and write back only the provider lock.
+        with tempfile.TemporaryDirectory(prefix="terraform-locks.") as data:
+            snapshot = Path(data) / "terraform"
+            shutil.copytree(
+                terraform_dir(),
+                snapshot,
+                ignore=lambda directory, names: [
+                    name
+                    for name in names
+                    if name in (".terraform", ".terraform-data", ".git")
+                    or not (
+                        (Path(directory) / name).is_dir()
+                        or name.endswith((".tf", ".tf.json"))
+                        or name == ".terraform.lock.hcl"
+                    )
+                ],
+            )
+            workdir = snapshot / root.relative_to(terraform_dir().resolve())
+            init_data = Path(data) / "data"
+            init_data.mkdir()
+            run(
+                [
+                    "terraform",
+                    f"-chdir={workdir}",
+                    "init",
+                    "-backend=false",
+                    "-input=false",
+                    "-upgrade",
+                ],
+                env=os.environ | {"TF_DATA_DIR": str(init_data)},
+            )
+            lock = workdir / ".terraform.lock.hcl"
+            if lock.exists():
+                shutil.copy2(lock, root / lock.name)
 
 
 @app.command("bootstrap")
