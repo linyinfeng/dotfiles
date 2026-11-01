@@ -17,9 +17,8 @@ output "root_ca_cert_pem" {
   value = local.root_ca_cert_pem
 }
 
-output "mesh_intermediate_ca_certificates" {
+output "intermediate_ca_certificates" {
   value = {
     for name, certificate in local.signed_intermediate_ca_certificates : name => certificate.cert_pem
-    if startswith(name, "mesh-")
   }
 }
