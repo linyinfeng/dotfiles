@@ -25,9 +25,10 @@ resource "tls_locally_signed_cert" "intermediate_ca" {
   validity_period_hours = 5 * 365 * 24
   early_renewal_hours   = 0
   is_ca_certificate     = true
-  max_path_length       = 0
-  set_subject_key_id    = true
-  allowed_uses          = ["cert_signing", "crl_signing"]
+  # TODO wait for https://github.com/hashicorp/terraform-provider-tls/pull/828
+  max_path_length    = 0
+  set_subject_key_id = true
+  allowed_uses       = ["cert_signing", "crl_signing"]
 
   lifecycle {
     prevent_destroy = true
