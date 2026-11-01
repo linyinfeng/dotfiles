@@ -18,9 +18,11 @@ in
     rest.port = restPort;
     # builders authenticate with their own host certificate
     mtls = {
-      serverCertPath = pkgs.writeText "hydra-queue-runner-cert.pem" data.hosts.${hostName}.mtls_cert_pem;
+      serverCertPath =
+        pkgs.writeText "hydra-queue-runner-cert.pem"
+          data.hosts.${hostName}.mtls_cert_chain_pem;
       serverKeyPath = config.sops.secrets."mtls_private_key_pem".path;
-      clientCaCertPath = pkgs.writeText "hydra-mtls-ca.pem" data.ca_cert_pem;
+      clientCaCertPath = pkgs.writeText "hydra-mtls-ca.pem" data.root_ca_cert_pem;
     };
   };
   # the build agent shares this host with the queue runner: skip the public name

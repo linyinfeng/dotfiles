@@ -28,7 +28,10 @@ lib.mkMerge [
       };
       ipsec = {
         enable = true;
-        caCert = data.ca_cert_pem;
+        caCert = data.root_ca_cert_pem;
+        intermediateCerts = lib.filterAttrs (
+          name: _: lib.hasPrefix "mesh-" name
+        ) data.intermediate_ca_certificates;
         hostCert = data.hosts.${hostName}.ike_cert_pem;
         hostCertKeyFile = config.sops.secrets."ike_private_key_pem".path;
       };
