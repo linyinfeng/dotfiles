@@ -1,22 +1,25 @@
-resource "tls_private_key" "ca" {
-  algorithm   = "ECDSA"
-  ecdsa_curve = "P384"
+variable "root_ca_outputs_path" {
+  type = string
 }
-resource "tls_self_signed_cert" "ca" {
-  is_ca_certificate = true
-  private_key_pem   = tls_private_key.ca.private_key_pem
-  subject {
-    common_name  = "li7g.com"
-    organization = "Yinfeng"
+
+# This file contains only public certificate metadata, never the root private key.
+data "sops_file" "root_ca" {
+  source_file = var.root_ca_outputs_path
+}
+
+locals {
+  root_ca_outputs                     = yamldecode(data.sops_file.root_ca.raw)
+  root_ca_cert_pem                    = nonsensitive(local.root_ca_outputs.root_ca_cert_pem.value)
+  signed_intermediate_ca_certificates = nonsensitive(local.root_ca_outputs.intermediate_ca_certificates.value)
+}
+
+output "root_ca_cert_pem" {
+  value = local.root_ca_cert_pem
+}
+
+output "mesh_intermediate_ca_certificates" {
+  value = {
+    for name, certificate in local.signed_intermediate_ca_certificates : name => certificate.cert_pem
+    if startswith(name, "mesh-")
   }
-  validity_period_hours = 8760 # 1 year
-  early_renewal_hours   = 4320 # 6 months
-  allowed_uses = [
-    "cert_signing",
-    "crl_signing"
-  ]
-}
-output "ca_cert_pem" {
-  value     = tls_self_signed_cert.ca.cert_pem
-  sensitive = false
 }
