@@ -25,6 +25,7 @@
 let
   # TF_VAR_* declared per stage; the wrapper exports only these
   stages = {
+    intermediate-ca = { };
     root-ca = { };
     pre-nixos = {
       "root_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/root-ca.yaml";
@@ -41,7 +42,10 @@ let
     "pre-nixos"
     "post-nixos"
   ];
-  manualStages = [ "root-ca" ];
+  manualStages = [
+    "intermediate-ca"
+    "root-ca"
+  ];
   # eval fails if this list and the registry disagree
   stageOrder =
     assert

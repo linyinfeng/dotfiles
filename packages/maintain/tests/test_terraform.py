@@ -41,8 +41,9 @@ def terraform_checkout(tmp_path, monkeypatch):
 
 REGISTRY = {
     "order": ["pre-nixos", "post-nixos"],
-    "manual": ["root-ca"],
+    "manual": ["intermediate-ca", "root-ca"],
     "stages": {
+        "intermediate-ca": {},
         "root-ca": {},
         "pre-nixos": {
             "root_ca_outputs_path": "${SECRETS_DIR}/terraform/outputs/root-ca.yaml",
@@ -132,22 +133,24 @@ def test_stage_env_keeps_an_explicit_override(monkeypatch):
     assert env["TF_VAR_terraform_input_path"] == "/elsewhere/inputs.yaml"
 
 
-def test_root_ca_is_explicitly_available_locally(monkeypatch):
+@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca"])
+def test_manual_ca_is_explicitly_available_locally(monkeypatch, stage):
     monkeypatch.delenv("CI", raising=False)
     monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
     monkeypatch.setenv("TERRAFORM_STAGE", "pre-nixos")
 
-    assert terraform.stage_from(["root-ca", "plan"]) == ("root-ca", ["plan"])
+    assert terraform.stage_from([stage, "plan"]) == (stage, ["plan"])
 
 
 @pytest.mark.parametrize("name", ["CI", "GITHUB_ACTIONS"])
-def test_root_ca_refuses_ci_before_running_commands(monkeypatch, name):
+@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca"])
+def test_manual_ca_refuses_ci_before_running_commands(monkeypatch, name, stage):
     monkeypatch.setenv(name, "true")
     calls = []
     monkeypatch.setattr(terraform, "run", lambda *args, **kwargs: calls.append(args))
 
     with pytest.raises(typer.Exit) as excinfo:
-        terraform.init(["root-ca"])
+        terraform.init([stage])
 
     assert excinfo.value.exit_code == 2
     assert calls == []
