@@ -108,10 +108,10 @@ module "hosts" {
   dn42_v6_cidr            = var.dn42_v6_cidr
   endpoints_v4            = lookup(each.value, "endpoints_v4", [])
   endpoints_v6            = lookup(each.value, "endpoints_v6", [])
-  ike_ca_cert_pem         = tls_self_signed_cert.ca.cert_pem
-  ike_ca_private_key_pem  = tls_self_signed_cert.ca.private_key_pem
-  mtls_ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
-  mtls_ca_private_key_pem = tls_self_signed_cert.ca.private_key_pem
+  ike_ca_cert_pem         = local.ca_issuers.mesh.cert_pem
+  ike_ca_private_key_pem  = local.ca_issuers.mesh.private_key_pem
+  mtls_ca_cert_pem        = local.ca_issuers.services.cert_pem
+  mtls_ca_private_key_pem = local.ca_issuers.services.private_key_pem
   mtls_extra_dns_names    = lookup(each.value, "mtls_extra_dns_names", [])
 }
 

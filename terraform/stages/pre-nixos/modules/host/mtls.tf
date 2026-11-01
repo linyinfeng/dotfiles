@@ -45,3 +45,6 @@ output "mtls_cert_pem" {
   value     = tls_locally_signed_cert.mtls.cert_pem
   sensitive = false
 }
+output "mtls_cert_chain_pem" {
+  value = "${trimspace(tls_locally_signed_cert.mtls.cert_pem)}\n${trimspace(var.mtls_ca_cert_pem)}\n"
+}
