@@ -3,6 +3,7 @@
   pkgs,
   python3Packages,
   makeWrapper,
+  installShellFiles,
   age,
   coreutils,
   git,
@@ -99,7 +100,10 @@ python3Packages.buildPythonApplication {
   build-system = [ python3Packages.hatchling ];
   dependencies = [ python3Packages.typer ];
 
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [
+    makeWrapper
+    installShellFiles
+  ];
   nativeCheckInputs = [
     python3Packages.pytestCheckHook
     git
@@ -114,6 +118,10 @@ python3Packages.buildPythonApplication {
       --prefix PATH : ${lib.makeBinPath runtimeTools} \
       --set MAINTAIN_STAGE_REGISTRY ${stageRegistry} \
       --set MAINTAIN_SOPS_CONFIG ${sopsConfig}
+
+    installShellCompletion --cmd maintain \
+      --bash <($out/bin/maintain completion bash) \
+      --fish <($out/bin/maintain completion fish)
   '';
 
   meta = {

@@ -1,5 +1,10 @@
 # Terraform state synchronization
 
+The package includes Bash and Fish completions generated with
+`maintain completion bash` and `maintain completion fish`. The
+devshell exposes them through `XDG_DATA_DIRS`; the Fish shell profile refreshes
+its completion search path when direnv changes that variable.
+
 `maintain terraform bootstrap`, `apply-stage`, `pipe`, `pipe-all`, `run`, and
 `update-outputs` share the same Git synchronization around their work:
 
