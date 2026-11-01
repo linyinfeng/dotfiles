@@ -9,7 +9,7 @@ lib.makeScope newScope (
     inherit (self) callPackage;
   in
   {
-    # currently nothing
+    fish-direnv-completions = callPackage ./fish-direnv-completions { };
   }
   // lib.optionalAttrs isDevSystem {
     fake-secrets = callPackage ./fake-secrets.nix { };
