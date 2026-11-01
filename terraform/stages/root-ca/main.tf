@@ -1,5 +1,5 @@
 # This state is encrypted only to personal PGP recipients, never the CI age key.
-# Keep the root separate from pre-nixos until intermediates are introduced.
+# Keep offline root signing separate from online issuing keys and services.
 resource "tls_private_key" "root_ca" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P384"

@@ -20,6 +20,8 @@ through `lib/data/data.json`. No separate certificate export is needed.
 Run once from dotfiles with the GPG/YubiKey identity available:
 
 ```sh
+nix develop --command maintain terraform bootstrap intermediate-ca
+nix develop --command maintain terraform pipe intermediate-ca
 nix develop --command maintain terraform bootstrap root-ca
 nix develop --command maintain terraform pipe root-ca
 ```
@@ -33,5 +35,15 @@ Secure Boot keys, or system trust stores.
 
 Run the root stage successfully before applying pre-nixos: bootstrap alone only
 creates empty state and does not produce the public outputs file.
+
+Intermediate keys and enrollment requests are provisioned by the separate,
+manual `intermediate-ca` stage. Its state and outputs are encrypted for personal
+PGP keys and CI age; its private keys are for online leaf signing only.
+Provision `intermediate-ca` before applying `root-ca`. Review the configured
+CSRs and the Terraform plan, then confirm the local root apply to sign them.
+There is no separate approval file or pinned CSR digest. Only the intermediate
+names configured in `intermediates.tf` are signed. Intermediates receive
+five-year certificates with a maximum path length of zero. Root outputs contain
+only public certificates and metadata.
 
 Keep independent, recoverable backups of the encrypted state and personal GPG keys.

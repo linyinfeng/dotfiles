@@ -3,5 +3,8 @@ terraform {
     tls = {
       source = "hashicorp/tls"
     }
+    sops = {
+      source = "carlpett/sops"
+    }
   }
 }

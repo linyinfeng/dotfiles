@@ -26,7 +26,9 @@ let
   # TF_VAR_* declared per stage; the wrapper exports only these
   stages = {
     intermediate-ca = { };
-    root-ca = { };
+    root-ca = {
+      "intermediate_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/intermediate-ca.yaml";
+    };
     pre-nixos = {
       "root_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/root-ca.yaml";
       "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
