@@ -185,6 +185,18 @@ in
           type = lib.types.path;
           default = pkgs.writeText "ipsec_ca_cert.pem" cfg.ipsec.caCert;
         };
+        intermediateCerts = lib.mkOption {
+          type = with lib.types; attrsOf str;
+          default = { };
+          description = "Intermediate CA certificates needed to build IKE certificate chains.";
+        };
+        intermediateCertFiles = lib.mkOption {
+          type = with lib.types; attrsOf path;
+          default = lib.mapAttrs (
+            name: cert: pkgs.writeText "ipsec_intermediate_ca_${name}.pem" cert
+          ) cfg.ipsec.intermediateCerts;
+          description = "Files containing intermediate CA certificates needed to build IKE certificate chains.";
+        };
         hostCert = lib.mkOption { type = lib.types.str; };
         hostCertFile = lib.mkOption {
           type = lib.types.path;
@@ -454,11 +466,19 @@ in
                   };
               in
               lib.mapAttrs' mkConnection cfg.peerHosts;
-            authorities.main.cacert = "ca.pem";
+            authorities.main.cacert = "root-ca.pem";
           };
         };
-        environment.etc."swanctl/ecdsa/key.pem".source = cfg.ipsec.hostCertKeyFile;
-        environment.etc."/swanctl/x509ca/ca.pem".source = cfg.ipsec.caCertFile;
+        environment.etc = {
+          "swanctl/ecdsa/key.pem".source = cfg.ipsec.hostCertKeyFile;
+          "swanctl/x509ca/root-ca.pem".source = cfg.ipsec.caCertFile;
+        }
+        // lib.mapAttrs' (
+          name: certFile:
+          lib.nameValuePair "swanctl/x509ca/intermediate-ca-${name}.pem" {
+            source = certFile;
+          }
+        ) cfg.ipsec.intermediateCertFiles;
 
         # mesh interfaces
         systemd.network.netdevs = lib.mapAttrs' (
