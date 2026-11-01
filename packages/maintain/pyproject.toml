@@ -7,7 +7,7 @@ name = "maintain"
 version = "0"
 description = "maintenance CLI for this repository"
 requires-python = ">=3.12"
-dependencies = ["typer"]
+dependencies = ["cryptography", "typer"]
 
 [project.scripts]
 maintain = "maintain.cli:main"

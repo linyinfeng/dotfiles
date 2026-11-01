@@ -5,9 +5,10 @@ from typing import Literal
 import typer
 from typer.completion import get_completion_script
 
-from maintain import secrets, terraform, tools
+from maintain import ca, secrets, terraform, tools
 
 app = typer.Typer(help="maintenance CLI for this repository")
+app.add_typer(ca.app, name="ca")
 app.add_typer(secrets.app, name="secrets")
 app.add_typer(terraform.app, name="terraform")
 app.add_typer(tools.boot_sd, name="boot-sd")

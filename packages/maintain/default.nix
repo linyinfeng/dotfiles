@@ -98,7 +98,10 @@ python3Packages.buildPythonApplication {
   src = ./.;
 
   build-system = [ python3Packages.hatchling ];
-  dependencies = [ python3Packages.typer ];
+  dependencies = [
+    python3Packages.cryptography
+    python3Packages.typer
+  ];
 
   nativeBuildInputs = [
     makeWrapper

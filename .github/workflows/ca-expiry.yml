@@ -1,0 +1,40 @@
+name: "CA expiry"
+on:
+  schedule:
+    # every day 09:00 +08:00; a CA close to expiry should not wait for the next push
+    - cron: "0 1 * * *"
+  push:
+    branches:
+      - "main"
+    paths:
+      - "lib/data/data.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install nix
+        uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Setup cachix
+        uses: cachix/cachix-action@v17
+        with:
+          name: linyinfeng
+          skipPush: true
+      # checks the certificates rendered into lib/data/data.json, so neither
+      # terraform nor the secrets repository is involved; it fails when the root
+      # CA or the newest version of an intermediate CA expires within a year
+      - name: Check CA expiry
+        run: nix develop --command maintain ca check-expiry --min-days 365
