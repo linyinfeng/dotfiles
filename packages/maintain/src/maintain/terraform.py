@@ -457,7 +457,6 @@ def apply_stage(stage: str, args: list[str]) -> None:
     write_outputs(stage, [])
     if stage == "pre-nixos":
         write_data()
-        secrets.extract_sources("terraform")
 
 
 @app.command("apply-stage")
@@ -470,6 +469,8 @@ def apply_stage_command(
     stage, rest = stage_from(args)
     with state_transaction([stage], f"Terraform {stage} apply"):
         apply_stage(stage, rest)
+        if stage == "pre-nixos":
+            secrets.extract_sources("terraform")
 
 
 @app.command("pipe")
@@ -482,6 +483,8 @@ def pipe(
     stage, rest = stage_from(args)
     with state_transaction([stage], f"Terraform {stage} apply"):
         apply_stage(stage, rest)
+        if stage == "pre-nixos":
+            secrets.extract_sources("terraform")
     run(["nix", "fmt"], cwd=dotfiles_dir())
 
 
@@ -504,4 +507,5 @@ def pipe_all(
         for stage in stages:
             print(f"== stage: {stage}")
             apply_stage(stage, args)
+        secrets.extract_sources("terraform")
     run(["nix", "fmt"], cwd=dotfiles_dir())

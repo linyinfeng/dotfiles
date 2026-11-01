@@ -19,6 +19,9 @@ its completion search path when direnv changes that variable.
 `post-nixos` in that order. This option remains local-only; CI rejects it before
 executing any stage. States must already be bootstrapped.
 `pipe` and `pipe-all` also format dotfiles after publishing state.
+`pipe-all` extracts Terraform host secrets once after all selected stages succeed,
+before publishing state and formatting. A single pre-nixos apply still extracts
+its Terraform host secrets immediately after refreshing its outputs and data.
 Ordinary `init` does not synchronize state; backend migration flags are refused.
 
 Update provider locks for every registered stage, or just one:

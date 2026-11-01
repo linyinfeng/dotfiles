@@ -240,6 +240,11 @@ def test_pipe_all_stage_order(terraform_checkout, monkeypatch, include_manual):
     monkeypatch.setattr(
         terraform, "apply_stage", lambda stage, args: calls.append((stage, args))
     )
+    monkeypatch.setattr(
+        terraform.secrets,
+        "extract_sources",
+        lambda source: calls.append(("extract", source)),
+    )
 
     result = CliRunner().invoke(
         terraform.app,
@@ -256,7 +261,9 @@ def test_pipe_all_stage_order(terraform_checkout, monkeypatch, include_manual):
         "pre-nixos",
         "post-nixos",
     ]
-    assert calls == [(stage, ["-parallelism=2"]) for stage in stages]
+    assert calls == [(stage, ["-parallelism=2"]) for stage in stages] + [
+        ("extract", "terraform")
+    ]
 
 
 @pytest.mark.parametrize("name", ["CI", "GITHUB_ACTIONS"])
@@ -462,6 +469,8 @@ def test_pipe_all_publishes_completed_stages_when_later_stage_fails(
     terraform_checkout, monkeypatch
 ):
     repo, remote = terraform_checkout
+    extractions = []
+    monkeypatch.setattr(terraform.secrets, "extract_sources", extractions.append)
 
     def apply(stage, args):
         write_stage_state(repo, stage, f"encrypted {stage}")
@@ -472,6 +481,7 @@ def test_pipe_all_publishes_completed_stages_when_later_stage_fails(
     with pytest.raises(typer.Exit) as excinfo:
         terraform.pipe_all([])
     assert excinfo.value.exit_code == 23
+    assert extractions == []
     for stage in ("pre-nixos", "post-nixos"):
         assert (
             git(remote, "show", f"main:terraform/states/{stage}.tfstate")
@@ -490,8 +500,13 @@ def test_git_sync_keeps_stdout_available_for_terraform_output(
 
 
 @pytest.mark.parametrize("command", ["apply-stage", "pipe", "update-outputs"])
-def test_public_commands_share_state_sync(terraform_checkout, monkeypatch, command):
+@pytest.mark.parametrize("stage", ["root-ca", "pre-nixos"])
+def test_public_commands_share_state_sync(
+    terraform_checkout, monkeypatch, command, stage
+):
     repo, remote = terraform_checkout
+    extractions = []
+    monkeypatch.setattr(terraform.secrets, "extract_sources", extractions.append)
     monkeypatch.setattr(
         terraform,
         "apply_stage",
@@ -513,9 +528,12 @@ def test_public_commands_share_state_sync(terraform_checkout, monkeypatch, comma
         "pipe": terraform.pipe,
         "update-outputs": terraform.update_outputs,
     }
-    commands[command](["root-ca"])
+    commands[command]([stage])
     expected = "encrypted outputs" if command == "update-outputs" else "encrypted apply"
-    assert git(remote, "show", "main:terraform/states/root-ca.tfstate") == expected
+    assert git(remote, "show", f"main:terraform/states/{stage}.tfstate") == expected
+    assert extractions == (
+        ["terraform"] if stage == "pre-nixos" and command != "update-outputs" else []
+    )
 
 
 def test_local_lock_blocks_a_second_transaction(terraform_checkout):
