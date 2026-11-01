@@ -17,7 +17,7 @@ resource "tls_self_signed_cert" "root_ca" {
     organization = "Yinfeng"
   }
 
-  validity_period_hours = 100 * 365 * 24 # 100 years
+  validity_period_hours = 10 * 365 * 24 # 10 years
   early_renewal_hours   = 0
   is_ca_certificate     = true
   max_path_length       = 1
