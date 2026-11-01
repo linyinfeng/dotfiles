@@ -1,3 +1,12 @@
+variable "mtls_ca_private_key_pem" {
+  type      = string
+  sensitive = true
+}
+
+variable "mtls_ca_cert_pem" {
+  type = string
+}
+
 variable "mtls_extra_dns_names" {
   type    = list(string)
   default = []
@@ -16,11 +25,11 @@ resource "tls_cert_request" "mtls" {
 }
 resource "tls_locally_signed_cert" "mtls" {
   cert_request_pem   = tls_cert_request.mtls.cert_request_pem
-  ca_private_key_pem = var.ca_private_key_pem
-  ca_cert_pem        = var.ca_cert_pem
+  ca_private_key_pem = var.mtls_ca_private_key_pem
+  ca_cert_pem        = var.mtls_ca_cert_pem
 
-  validity_period_hours = 1460 # 2 months
-  early_renewal_hours   = 730  # 1 months
+  validity_period_hours = 2160 # 90 days
+  early_renewal_hours   = 720  # 30 days
   allowed_uses = [
     # gRPC server of the hydra queue runner
     "server_auth",

@@ -1,7 +1,8 @@
-variable "ca_private_key_pem" {
-  type = string
+variable "ike_ca_private_key_pem" {
+  type      = string
+  sensitive = true
 }
-variable "ca_cert_pem" {
+variable "ike_ca_cert_pem" {
   type = string
 }
 resource "tls_private_key" "ike" {
@@ -18,11 +19,11 @@ resource "tls_cert_request" "ike" {
 }
 resource "tls_locally_signed_cert" "ike" {
   cert_request_pem   = tls_cert_request.ike.cert_request_pem
-  ca_private_key_pem = var.ca_private_key_pem
-  ca_cert_pem        = var.ca_cert_pem
+  ca_private_key_pem = var.ike_ca_private_key_pem
+  ca_cert_pem        = var.ike_ca_cert_pem
 
-  validity_period_hours = 1460 # 2 months
-  early_renewal_hours   = 730  # 1 months
+  validity_period_hours = 2160 # 90 days
+  early_renewal_hours   = 720  # 30 days
   allowed_uses = [
     "server_auth"
   ]

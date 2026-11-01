@@ -97,20 +97,22 @@ module "hosts" {
     )
   }
 
-  name                 = each.key
-  cloudflare_zone_id   = cloudflare_zone.com_li7g.id
-  cloudflare_zone_name = cloudflare_zone.com_li7g.name
-  records              = lookup(each.value, "records", {})
-  ddns_records         = lookup(each.value, "ddns_records", {})
-  zerotier_network_id  = zerotier_network.main.id
-  host_indices         = lookup(each.value, "host_indices", [])
-  dn42_v4_cidr         = var.dn42_v4_cidr
-  dn42_v6_cidr         = var.dn42_v6_cidr
-  endpoints_v4         = lookup(each.value, "endpoints_v4", [])
-  endpoints_v6         = lookup(each.value, "endpoints_v6", [])
-  ca_cert_pem          = tls_self_signed_cert.ca.cert_pem
-  ca_private_key_pem   = tls_self_signed_cert.ca.private_key_pem
-  mtls_extra_dns_names = lookup(each.value, "mtls_extra_dns_names", [])
+  name                    = each.key
+  cloudflare_zone_id      = cloudflare_zone.com_li7g.id
+  cloudflare_zone_name    = cloudflare_zone.com_li7g.name
+  records                 = lookup(each.value, "records", {})
+  ddns_records            = lookup(each.value, "ddns_records", {})
+  zerotier_network_id     = zerotier_network.main.id
+  host_indices            = lookup(each.value, "host_indices", [])
+  dn42_v4_cidr            = var.dn42_v4_cidr
+  dn42_v6_cidr            = var.dn42_v6_cidr
+  endpoints_v4            = lookup(each.value, "endpoints_v4", [])
+  endpoints_v6            = lookup(each.value, "endpoints_v6", [])
+  ike_ca_cert_pem         = tls_self_signed_cert.ca.cert_pem
+  ike_ca_private_key_pem  = tls_self_signed_cert.ca.private_key_pem
+  mtls_ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
+  mtls_ca_private_key_pem = tls_self_signed_cert.ca.private_key_pem
+  mtls_extra_dns_names    = lookup(each.value, "mtls_extra_dns_names", [])
 }
 
 output "hosts" {
