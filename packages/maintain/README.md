@@ -9,8 +9,11 @@
 4. Execute the operation, re-encrypt state, and remove plaintext state.
 5. Commit only changed state/output files for those stages and push.
 
-`pipe-all` synchronizes once around all routine stages. Manual stages such as
-`root-ca` are excluded. `pipe` also formats dotfiles after publishing state.
+`pipe-all` synchronizes once around all routine stages. Use
+`pipe-all --include-manual` to run `intermediate-ca`, `root-ca`, `pre-nixos`, and
+`post-nixos` in that order. This option remains local-only; CI rejects it before
+executing any stage. States must already be bootstrapped.
+`pipe` and `pipe-all` also format dotfiles after publishing state.
 Ordinary `init` does not synchronize state; backend migration flags are refused.
 
 Update provider locks for every registered stage, or just one:

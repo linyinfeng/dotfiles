@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 import typer
+from typer.testing import CliRunner
 
 from maintain import terraform
 
@@ -223,21 +224,53 @@ def test_update_locks_stops_on_failure_and_removes_temporary_data(
     assert not data_dirs[0].exists()
 
 
-def test_pipe_all_excludes_the_manual_root(terraform_checkout, monkeypatch):
+@pytest.mark.parametrize("include_manual", [False, True])
+def test_pipe_all_stage_order(terraform_checkout, monkeypatch, include_manual):
     calls = []
     real_run = terraform.run
     monkeypatch.setattr(
         terraform,
         "run",
-        lambda args, **kwargs: None if args[0] == "nix" else real_run(args, **kwargs),
+        lambda args, **kwargs: (
+            None
+            if args[0] == "nix"
+            else real_run(args, **(kwargs | {"stdout": subprocess.PIPE}))
+        ),
     )
     monkeypatch.setattr(
-        terraform, "apply_stage", lambda stage, args: calls.append(stage)
+        terraform, "apply_stage", lambda stage, args: calls.append((stage, args))
     )
 
-    terraform.pipe_all([])
+    result = CliRunner().invoke(
+        terraform.app,
+        [
+            "pipe-all",
+            *(["--include-manual"] if include_manual else []),
+            "--",
+            "-parallelism=2",
+        ],
+    )
 
-    assert calls == ["pre-nixos", "post-nixos"]
+    assert result.exit_code == 0, result.output
+    stages = (["intermediate-ca", "root-ca"] if include_manual else []) + [
+        "pre-nixos",
+        "post-nixos",
+    ]
+    assert calls == [(stage, ["-parallelism=2"]) for stage in stages]
+
+
+@pytest.mark.parametrize("name", ["CI", "GITHUB_ACTIONS"])
+def test_pipe_all_include_manual_refuses_ci_before_commands(monkeypatch, name):
+    monkeypatch.setenv(name, "true")
+    calls = []
+    monkeypatch.setattr(terraform, "run", lambda *args, **kwargs: calls.append(args))
+    monkeypatch.setattr(terraform, "apply_stage", lambda *args: calls.append(args))
+
+    result = CliRunner().invoke(terraform.app, ["pipe-all", "--include-manual"])
+
+    assert result.exit_code == 2, result.output
+    assert "cannot run in CI" in result.output
+    assert calls == []
 
 
 def test_bootstrap_creates_empty_state_and_refuses_a_second_run(

@@ -29,8 +29,9 @@ nix develop --command maintain terraform pipe root-ca
 `bootstrap` refuses existing state. Later runs use `pipe` without bootstrap.
 Both commands pull the secrets repository before execution and commit/push changed
 state afterwards. Commit any existing local root state/output changes first.
-The stage is excluded from `pipe-all` and refuses to run under `CI` or
-`GITHUB_ACTIONS`. It does not alter the existing pre-nixos CA, host certificates,
+The stage is excluded from `pipe-all` unless `--include-manual` is passed, and
+refuses to run under `CI` or `GITHUB_ACTIONS`.
+It does not alter the existing pre-nixos CA, host certificates,
 Secure Boot keys, or system trust stores.
 
 Run the root stage successfully before applying pre-nixos: bootstrap alone only

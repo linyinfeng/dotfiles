@@ -488,9 +488,18 @@ def pipe(
 @app.command("pipe-all")
 def pipe_all(
     args: Annotated[list[str], typer.Argument(help="terraform apply arguments")] = [],
+    include_manual: Annotated[
+        bool,
+        typer.Option(
+            "--include-manual",
+            help="Include local-only manual stages before routine stages",
+        ),
+    ] = False,
 ) -> None:
-    """Run the routine stages in dependency order; manual stages are excluded."""
+    """Run stages in dependency order, optionally including manual stages."""
     stages = registry()["order"]
+    if include_manual:
+        stages = registry().get("manual", []) + stages
     with state_transaction(stages, f"Terraform {'+'.join(stages)} apply"):
         for stage in stages:
             print(f"== stage: {stage}")
