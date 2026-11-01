@@ -31,6 +31,7 @@ let
       "intermediate_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/intermediate-ca.yaml";
     };
     pre-nixos = {
+      "intermediate_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/intermediate-ca.yaml";
       "root_ca_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/root-ca.yaml";
       "terraform_input_path" = "\${SECRETS_DIR}/terraform-inputs.yaml";
       "predefined_secrets_path" = "\${SECRETS_DIR}/predefined.yaml";

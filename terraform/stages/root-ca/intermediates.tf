@@ -15,6 +15,17 @@ locals {
   )
 }
 
+check "intermediate_ca_names" {
+  assert {
+    condition = toset(keys(local.intermediate_ca_requests)) == local.intermediate_ca_names
+    error_message = format(
+      "Intermediate CA enrollment and signing names differ. Requests not selected for signing: [%s]; signing names without requests: [%s]. Review the stage configurations; differences may be intentional during rotation.",
+      join(", ", setsubtract(toset(keys(local.intermediate_ca_requests)), local.intermediate_ca_names)),
+      join(", ", setsubtract(local.intermediate_ca_names, toset(keys(local.intermediate_ca_requests))))
+    )
+  }
+}
+
 resource "tls_locally_signed_cert" "intermediate_ca" {
   for_each = local.intermediate_ca_names
 
