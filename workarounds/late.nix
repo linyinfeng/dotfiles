@@ -31,6 +31,11 @@
         });
     in
     {
+      # test_rg_always_has_line_numbers invokes rg, but upstream omits it from
+      # the test inputs. Supply it explicitly for the emulated aarch64 build.
+      rtk = prev.rtk.overrideAttrs (old: {
+        nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ final.ripgrep ];
+      });
       shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
       nginx =
         if lib.versionAtLeast prev.nginx.version "1.30.1" then
