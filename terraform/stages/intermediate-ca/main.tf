@@ -2,6 +2,7 @@
 # The root private key must never enter this stage.
 locals {
   intermediate_ca_profiles = {
+    incus-v1    = "Yinfeng Incus Client Intermediate CA v1"
     mesh-v1     = "Yinfeng Mesh Intermediate CA v1"
     services-v1 = "Yinfeng Services Intermediate CA v1"
   }

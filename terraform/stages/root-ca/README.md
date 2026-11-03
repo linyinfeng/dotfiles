@@ -1,7 +1,7 @@
 # Offline root CA
 
 This manual Terraform stage uses `hashicorp/tls` to create an ECDSA P-384 X.509
-root, self-signed with SHA-384 and valid for 36,500 days (approximately 100 years).
+root, self-signed with SHA-384 and valid for 3,650 days (approximately 10 years).
 It permits one intermediate CA level. There is no early renewal;
 `prevent_destroy` protects both the private key and certificate against replacement.
 The provider proposes renewal once the certificate expires; renewal remains a

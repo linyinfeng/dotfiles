@@ -9,7 +9,7 @@ data "sops_file" "intermediate_ca" {
 locals {
   # Signing is a local, manual operation. Review these requests and the plan
   # before applying; requests outside this configured set are never signed.
-  intermediate_ca_names = toset(["mesh-v1", "services-v1"])
+  intermediate_ca_names = toset(["incus-v1", "mesh-v1", "services-v1"])
   intermediate_ca_requests = nonsensitive(
     yamldecode(data.sops_file.intermediate_ca.raw).intermediate_ca_requests.value
   )
@@ -39,7 +39,11 @@ resource "tls_locally_signed_cert" "intermediate_ca" {
   # TODO wait for https://github.com/hashicorp/terraform-provider-tls/pull/828
   max_path_length    = 0
   set_subject_key_id = true
-  allowed_uses       = ["cert_signing", "crl_signing"]
+  # The Incus issuer authenticates management clients, never TLS servers.
+  allowed_uses = concat(
+    ["cert_signing", "crl_signing"],
+    each.key == "incus-v1" ? ["client_auth"] : []
+  )
 
   lifecycle {
     prevent_destroy = true

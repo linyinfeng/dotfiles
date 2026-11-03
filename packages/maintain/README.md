@@ -1,5 +1,25 @@
 # Terraform state synchronization
 
+## Incus automation identity
+
+The existing root signs a dedicated `incus-v1` intermediate in the manual CA
+stages. Incus 7.6 or newer is required for CA entries in the trust store.
+Incus servers trust that intermediate for management clients; mesh and
+services certificates do not grant Incus administration rights. Every client
+signed by this intermediate inherits the CA trust entry's permissions, so only
+Incus management identities may be issued by it.
+
+The `pre-nixos` stage owns Terraform's ECDSA P-384 client key and issues a
+90-day certificate, renewed 30 days before expiry. The private key remains in
+encrypted stage state and outputs; public outputs include the client certificate
+and its chain. Installation images embed the Incus intermediate certificate from
+`intermediate_ca_certificates`, allowing client renewal without regenerating them.
+
+The client key has destruction protection. Rotating the intermediate requires
+updating server trust stores and installation images before retiring the old CA.
+
+## Commands
+
 The package includes Bash and Fish completions generated with
 `maintain completion bash` and `maintain completion fish`. The
 devshell exposes them through `XDG_DATA_DIRS`; the Fish shell profile refreshes

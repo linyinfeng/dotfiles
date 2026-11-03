@@ -21,6 +21,7 @@ locals {
   signed_intermediate_ca_certificates = nonsensitive(local.root_ca_outputs.intermediate_ca_certificates.value)
 
   intermediate_ca_generations = {
+    incus    = "incus-v1"
     mesh     = "mesh-v1"
     services = "services-v1"
   }
