@@ -9,18 +9,6 @@
   (
     final: prev:
     let
-      piperPython = prev.python3.override {
-        self = piperPython;
-        packageOverrides = _pyFinal: pyPrev: {
-          # its test_frontend asserts the TypeError wording Cython switched away
-          # from in 3.2; nixpkgs master carries the same fix.
-          pyopenjtalk-plus = pyPrev.pyopenjtalk-plus.overridePythonAttrs (old: {
-            patches = (old.patches or [ ]) ++ [
-              ../patches/pyopenjtalk-plus-cython-error-message.patch
-            ];
-          });
-        };
-      };
       # configure only installs the python bindings when `python3` is on PATH;
       # nixpkgs master passes it through nativeBuildInputs instead, so drop this
       # once nixos-unstable catches up.
@@ -51,7 +39,6 @@
         # overriding the package set itself would also rebuild chromium/electron
         speechd-minimal = fixSpeechd prev.speechd-minimal;
         piper-tts = prev.piper-tts.override {
-          python3Packages = piperPython.pkgs;
           withTrain = false;
         };
       };
