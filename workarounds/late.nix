@@ -23,6 +23,15 @@
       # the test inputs. Supply it explicitly for the emulated aarch64 build.
       rtk = prev.rtk.overrideAttrs (old: {
         nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ final.ripgrep ];
+        # Upstream's fat LTO and single codegen unit make the emulated aarch64
+        # build time out. Keep release optimizations and tests, but parallelize
+        # code generation without whole-program optimization on this platform.
+        env =
+          (old.env or { })
+          // lib.optionalAttrs prev.stdenv.hostPlatform.isAarch64 {
+            CARGO_PROFILE_RELEASE_LTO = "false";
+            CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+          };
       });
       shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
       nginx =
