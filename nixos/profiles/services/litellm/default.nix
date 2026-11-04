@@ -44,8 +44,11 @@ let
       use_x_forwarded_for = true;
       maximum_spend_logs_retention_period = "30d";
     };
-    # wildcard deployments (llama-cpp/*) otherwise expand to litellm's static
-    # provider catalogue, so /v1/models lists models the endpoint does not serve
+    # wildcard deployments otherwise expand to litellm's static provider
+    # catalogue, so /v1/models lists models the endpoint does not serve. The
+    # probe is a synchronous request with no connect timeout, run on the event
+    # loop, so one unreachable wildcard endpoint stalls every request to the
+    # proxy until the kernel gives up (minutes), health checks included.
     litellm_settings.check_provider_endpoint = true;
     model_list = [ ];
   };
