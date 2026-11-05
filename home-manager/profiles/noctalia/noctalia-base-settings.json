@@ -568,7 +568,7 @@
     "temperature_night": 4000
   },
   "notification": {
-    "background_opacity": 0.9700000286102295,
+    "background_opacity": 0.9700000286102296,
     "border": true,
     "border_color": "outline",
     "border_width": 1.0,
@@ -882,7 +882,7 @@
     "shell_mode": "follow",
     "source": "wallpaper",
     "templates": {
-      "builtin_ids": ["umbriel"],
+      "builtin_ids": ["kitty", "umbriel"],
       "community_ids": [],
       "enable_builtin_templates": true,
       "enable_community_templates": true
@@ -896,6 +896,7 @@
       "order": "random",
       "recursive": false
     },
+    "default": {},
     "directory_dark": "",
     "directory_light": "",
     "edge_smoothness": 0.30000001192092896,
@@ -981,9 +982,9 @@
       "type": "volume"
     },
     "ram": {
+      "show_value": false,
       "stat": "ram_used",
-      "type": "sysmon",
-      "show_value": false
+      "type": "sysmon"
     },
     "spacer": {
       "interactive": false,
@@ -1004,9 +1005,9 @@
       "type": "taskbar"
     },
     "temp": {
+      "show_value": false,
       "stat": "cpu_temp",
-      "type": "sysmon",
-      "show_value": false
+      "type": "sysmon"
     },
     "volume": {
       "actions": {
