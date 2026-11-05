@@ -22,6 +22,7 @@
   efitools,
   bind,
   xray,
+  linyinfeng,
 }:
 let
   # TF_VAR_* declared per stage; the wrapper exports only these
@@ -70,6 +71,7 @@ let
 
   # tools the pipelines shell out to, next to terraform itself
   runtimeTools = [
+    linyinfeng.incusos-flasher
     age
     bind
     coreutils

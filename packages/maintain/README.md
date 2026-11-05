@@ -18,6 +18,30 @@ and its chain. Installation images embed the Incus intermediate certificate from
 The client key has destruction protection. Rotating the intermediate requires
 updating server trust stores and installation images before retiring the old CA.
 
+Generate a reusable USB installation image:
+
+```sh
+maintain incusos image --arch x86_64-linux
+maintain incusos image --arch aarch64-linux --output /path/to/incusos.img
+```
+
+This uses the packaged upstream flasher from `nur-packages` to download and
+verify the stable image, then embed the selected public Incus client CA.
+The default output is `.data/incusos/incusos-<arch>.img`. Existing outputs are
+never overwritten. The seed uses DHCP/SLAAC and installs only to an unused disk;
+it contains no private keys or machine-specific settings. Writing the image to
+a USB device is a separate operation.
+
+Generate only the architecture-independent seed, without downloading an image:
+
+```sh
+maintain incusos seed
+maintain incusos seed --output /path/to/seed.tar
+```
+
+The default output is `.data/incusos/seed.tar`, suitable for `flasher-tool --seed`.
+This uses the same seed generation as `image` and refuses existing output files.
+
 ## Commands
 
 The package includes Bash and Fish completions generated with
