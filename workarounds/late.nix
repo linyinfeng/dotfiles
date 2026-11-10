@@ -34,6 +34,10 @@
           };
       });
       shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
+      # rusqlite now links the system sqlite, which viddy does not declare
+      viddy = prev.viddy.overrideAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
+      });
       nginx =
         if lib.versionAtLeast prev.nginx.version "1.30.1" then
           prev.nginx
