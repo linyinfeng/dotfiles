@@ -38,6 +38,12 @@
       viddy = prev.viddy.overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
       });
+      # the cargo setup hook probes zstd through pkg-config, which terracotta
+      # neither declares nor needs otherwise
+      terracotta = prev.terracotta.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.pkg-config ];
+        buildInputs = (old.buildInputs or [ ]) ++ [ prev.zstd ];
+      });
       nginx =
         if lib.versionAtLeast prev.nginx.version "1.30.1" then
           prev.nginx
