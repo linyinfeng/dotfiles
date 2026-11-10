@@ -5,6 +5,21 @@
   self,
   ...
 }:
+let
+  # the cargo setup hook forces system libraries for vendored crates, and
+  # nu_plugin_polars gets no crate overrides (NixOS/nixpkgs#585124)
+  nushellPlugins = pkgs.nushellPlugins // {
+    polars = pkgs.nushellPlugins.polars.overrideAttrs (prev: {
+      buildInputs = (prev.buildInputs or [ ]) ++ [
+        pkgs.aws-lc
+        pkgs.libgit2
+        pkgs.sqlite
+        pkgs.zlib
+        pkgs.zstd
+      ];
+    });
+  };
+in
 {
   programs.fish.enable = true;
   programs.nushell.enable = true;
@@ -31,7 +46,7 @@
         $env.PATH = do (env-conversions).path.from_string $env.PATH
       }]
     '';
-    plugins = with pkgs.nushellPlugins; [
+    plugins = with nushellPlugins; [
       polars
       formats # additional formats
       query # data selectors
