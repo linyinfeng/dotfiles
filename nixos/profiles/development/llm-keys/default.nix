@@ -4,7 +4,6 @@
     ({ lib, ... }: {
       home.env.secretPaths = {
         piWebSearch = lib.mkDefault config.sops.templates."pi-web-search-config".path;
-        piAuth = lib.mkDefault config.sops.templates."pi-auth".path;
         litellmApiKey = lib.mkDefault config.sops.secrets."litellm_api_key".path;
         mineruApiKey = lib.mkDefault config.sops.secrets."mineru_api_key".path;
       };
@@ -112,16 +111,6 @@
       };
       # TUN fake-IP proxies resolve public names into the synthetic range
       ssrf.allowRanges = [ "198.18.0.0/15" ];
-    };
-    group = "llm";
-    mode = "440";
-  };
-  sops.templates."pi-auth" = {
-    content = builtins.toJSON {
-      litellm = {
-        key = config.sops.placeholder."litellm_api_key";
-        type = "api_key";
-      };
     };
     group = "llm";
     mode = "440";
