@@ -11,6 +11,13 @@ let
 
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
+  secretPaths = config.home.env.secretPaths;
+
+  # pi locks and rewrites auth.json, so it cannot live in the read-only secrets dir
+  litellmApiKey = lib.optionalAttrs (secretPaths ? litellmApiKey) {
+    apiKey = "!cat ${secretPaths.litellmApiKey}";
+  };
+
   # git has no config that adds a trailer, but it reads any config from the
   # environment, so a prepare-commit-msg hook does it without a `git` shim.
   agent-hooks = pkgs.runCommand "pi-agent-git-hooks" { } ''
@@ -142,7 +149,8 @@ in
     litellm.providers.litellm = {
       baseUrl = "https://llm.li7g.com";
       displayName = "Gateway";
-    };
+    }
+    // litellmApiKey;
     defaultTools = [
       "+codemode"
       "+find"
@@ -198,12 +206,8 @@ in
 
   home.file.".pi/agent/extensions/host-status.ts".source = ./_extensions/host-status.ts;
 
-  home.file.".config/pi/web-search.json" = lib.mkIf (config.home.env.secretPaths ? piWebSearch) {
-    source = mkOutOfStoreSymlink config.home.env.secretPaths.piWebSearch;
-  };
-
-  home.file.".pi/agent/auth.json" = lib.mkIf (config.home.env.secretPaths ? piAuth) {
-    source = mkOutOfStoreSymlink config.home.env.secretPaths.piAuth;
+  home.file.".config/pi/web-search.json" = lib.mkIf (secretPaths ? piWebSearch) {
+    source = mkOutOfStoreSymlink secretPaths.piWebSearch;
   };
 
   home.packages = [
