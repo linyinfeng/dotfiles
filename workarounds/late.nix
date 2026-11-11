@@ -44,6 +44,11 @@
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.zstd ];
       });
+      # ncro 2.4.0 links sqlite3 without declaring it, and the cargo setup hook
+      # now forces the system copy instead of a vendored one
+      ncro = (inputs.ncro.packages.${prev.stdenv.hostPlatform.system}.ncro).overrideAttrs (old: {
+        buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
+      });
       nginx =
         if lib.versionAtLeast prev.nginx.version "1.30.1" then
           prev.nginx
