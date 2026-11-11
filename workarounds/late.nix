@@ -35,17 +35,20 @@
       });
       shim-unsigned = (channelsOf final).stable.shim-unsigned; # TODO fix
       # rusqlite now links the system sqlite, which viddy does not declare
+      # TODO drop once viddy declares sqlite3 in its build inputs
       viddy = prev.viddy.overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
       });
       # the cargo setup hook probes zstd through pkg-config, which terracotta
       # neither declares nor needs otherwise
+      # TODO drop once terracotta declares pkg-config and zstd
       terracotta = prev.terracotta.overrideAttrs (old: {
         nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.pkg-config ];
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.zstd ];
       });
       # ncro 2.4.0 links sqlite3 without declaring it, and the cargo setup hook
       # now forces the system copy instead of a vendored one
+      # TODO drop once ncro declares sqlite3 (manic-systems/ncro)
       ncro = (inputs.ncro.packages.${prev.stdenv.hostPlatform.system}.ncro).overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
       });
@@ -68,6 +71,7 @@
           };
         }).overrideAttrs
           # its install-check suite times out and fails under aarch64 emulation
+          # TODO drop once calibre's install checks pass on the emulated aarch64 builder
           (
             old: {
               doInstallCheck = (old.doInstallCheck or false) && !prev.stdenv.hostPlatform.isAarch64;

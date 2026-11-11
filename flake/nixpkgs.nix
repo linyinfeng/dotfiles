@@ -72,6 +72,7 @@ let
           }).overrideAttrs
             (_: {
               # qa_blocks_hier_block2 segfaults on python 3.14, everything else passes
+              # TODO drop once the python 3.14 segfault is fixed upstream
               doCheck = false;
             });
       };
