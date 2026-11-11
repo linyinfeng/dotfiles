@@ -16,6 +16,12 @@ in
   services.hydra.queueRunner = {
     grpc.port = grpcPort;
     rest.port = restPort;
+    # emulated aarch64/i686 builds compile single crates silently for hours,
+    # which the 1 h silent limit treats as a hang
+    settings = {
+      maxSilentTime = 6 * 60 * 60;
+      buildTimeout = 24 * 60 * 60;
+    };
     # builders authenticate with their own host certificate
     mtls = {
       serverCertPath =
