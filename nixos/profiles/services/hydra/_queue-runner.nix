@@ -18,6 +18,7 @@ in
     rest.port = restPort;
     # emulated aarch64/i686 builds compile single crates silently for hours,
     # which the 1 h silent limit treats as a hang
+    # TODO drop once the emulated builders compile every crate within an hour
     settings = {
       maxSilentTime = 6 * 60 * 60;
       buildTimeout = 24 * 60 * 60;
