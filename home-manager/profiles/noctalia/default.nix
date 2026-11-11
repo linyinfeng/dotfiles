@@ -30,6 +30,7 @@ let
     };
     widget.sysmon.path = config.home.global-persistence.root;
     # the built-in template's hooks rewrite kitty.conf, which is read-only here
+    # TODO drop once noctalia writes its kitty theme outside kitty's config dir
     theme.templates.user.kitty = {
       input_path = "${cfg.package}/share/noctalia/assets/templates/kitty/kitty.conf";
       output_path = "$XDG_STATE_HOME/noctalia/kitty-theme.conf";
