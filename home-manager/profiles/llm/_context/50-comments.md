@@ -11,4 +11,8 @@ Comment only when the code cannot say it itself:
 - Performance optimization — reason and measured effect
 - External dependency / side effect — the dependency and what callers must handle
 
+Every workaround carries a `# TODO` naming the condition that lets it drop
+(`# TODO drop once viddy declares sqlite3 in its build inputs`), so a temporary
+fix cannot outlive its reason.
+
 Short and factual. Otherwise refactor for clarity instead of commenting.
