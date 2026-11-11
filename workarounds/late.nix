@@ -53,14 +53,21 @@
       # calibre only runs piper's inference CLI; the default `withTrain` pulls
       # the whole training stack (librosa -> scikit-learn, torch, lightning),
       # and scikit-learn's checks fail on the emulated aarch64 builder.
-      calibre = prev.calibre.override {
-        # calibre imports speechd's python bindings; patch only its own instance,
-        # overriding the package set itself would also rebuild chromium/electron
-        speechd-minimal = fixSpeechd prev.speechd-minimal;
-        piper-tts = prev.piper-tts.override {
-          withTrain = false;
-        };
-      };
+      calibre =
+        (prev.calibre.override {
+          # calibre imports speechd's python bindings; patch only its own instance,
+          # overriding the package set itself would also rebuild chromium/electron
+          speechd-minimal = fixSpeechd prev.speechd-minimal;
+          piper-tts = prev.piper-tts.override {
+            withTrain = false;
+          };
+        }).overrideAttrs
+          # its install-check suite times out and fails under aarch64 emulation
+          (
+            old: {
+              doInstallCheck = (old.doInstallCheck or false) && !prev.stdenv.hostPlatform.isAarch64;
+            }
+          );
       # the aarch64 node module links against tpm2-tss, which upstream leaves
       # out of the inputs its ELF fixup resolves against
       chatgpt-unwrapped =
