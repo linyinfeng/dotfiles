@@ -18,6 +18,14 @@ let
         pkgs.zlib
         pkgs.zstd
       ];
+      # polars otherwise exceeds the emulated aarch64 build timeout
+      env =
+        (prev.env or { })
+        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isAarch64 {
+          CARGO_PROFILE_RELEASE_LTO = "false";
+          CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
+        };
+      doCheck = (prev.doCheck or true) && !pkgs.stdenv.hostPlatform.isAarch64;
     })
   ) pkgs.nushellPlugins;
 in
