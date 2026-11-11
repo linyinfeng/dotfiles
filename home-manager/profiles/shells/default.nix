@@ -5,30 +5,6 @@
   self,
   ...
 }:
-let
-  # the cargo setup hook forces system libraries for vendored crates, and the
-  # nushell plugins carry no crate overrides of their own (NixOS/nixpkgs#585124)
-  nushellPlugins = lib.mapAttrs (
-    _: plugin:
-    plugin.overrideAttrs (prev: {
-      buildInputs = (prev.buildInputs or [ ]) ++ [
-        pkgs.aws-lc
-        pkgs.libgit2
-        pkgs.sqlite
-        pkgs.zlib
-        pkgs.zstd
-      ];
-      # polars otherwise exceeds the emulated aarch64 build timeout
-      env =
-        (prev.env or { })
-        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isAarch64 {
-          CARGO_PROFILE_RELEASE_LTO = "false";
-          CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "16";
-        };
-      doCheck = (prev.doCheck or true) && !pkgs.stdenv.hostPlatform.isAarch64;
-    })
-  ) pkgs.nushellPlugins;
-in
 {
   programs.fish.enable = true;
   programs.nushell.enable = true;
@@ -55,13 +31,6 @@ in
         $env.PATH = do (env-conversions).path.from_string $env.PATH
       }]
     '';
-    plugins = with nushellPlugins; [
-      polars
-      formats # additional formats
-      query # data selectors
-      gstat # git status
-      hcl
-    ];
   };
   programs.fish.interactiveShellInit = ''
     # proxy
