@@ -12,7 +12,7 @@ let
   actionOverrides = {
     # Umbriel has no reset for a row's extent; the full extent is the closest
     # idempotent equivalent.
-    "window-reset-height" = "window-set-secondary-extent:1.0";
+    "window-reset-height" = "window-set-secondary-extent 1.0";
 
     # Noctalia's output policy decides save versus copy, so there is no
     # per-invocation copy.
@@ -42,22 +42,30 @@ let
     "screenshot-window-copy" = null;
   };
 
+  # Umbriel reads an action and its argument as separate words; the shared
+  # keymap spells the argument after a colon (`workspace-switch:1`).
+  spacedArgument = action: lib.concatStringsSep " " (lib.splitString ":" action);
+
+  # `spawn` hands the rest of the string to a shell, so each word keeps its
+  # quoting.
+  spawnAction = command: "spawn ${lib.escapeShellArgs command}";
+
   bindValue =
     bind:
     let
       action =
         if bind.spawn != null then
-          "spawn:${lib.concatStringsSep " " bind.spawn}"
+          spawnAction bind.spawn
         else
           let
             override = actionOverrides.${bind.action} or bind.action;
           in
           if lib.isString override then
-            override
+            spacedArgument override
           else if override == null then
             null
           else
-            "spawn:${lib.concatStringsSep " " override.spawn}";
+            spawnAction override.spawn;
       settings = {
         inherit action;
       }
@@ -87,7 +95,7 @@ let
   extraKeybinds = {
     # Noctalia's window switcher replaces niri's recent-windows overlay.
     "Alt+Tab" = {
-      action = "spawn:noctalia msg window-switcher hold";
+      action = "spawn noctalia msg window-switcher hold";
       repeat = false;
     };
     # Scratchpads have no niri counterpart. Kept off Super+Space: the compositor
