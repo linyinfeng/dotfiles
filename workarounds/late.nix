@@ -49,7 +49,7 @@
       # ncro 2.4.0 links sqlite3 without declaring it, and the cargo setup hook
       # now forces the system copy instead of a vendored one
       # TODO drop once ncro declares sqlite3 (manic-systems/ncro)
-      ncro = (inputs.ncro.packages.${prev.stdenv.hostPlatform.system}.ncro).overrideAttrs (old: {
+      ncro = inputs.ncro.packages.${prev.stdenv.hostPlatform.system}.ncro.overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
       });
       nginx =
