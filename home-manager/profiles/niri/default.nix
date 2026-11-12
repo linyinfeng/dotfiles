@@ -157,7 +157,7 @@ in
             }
 
             // blur effects suggested by
-            // https://docs.noctalia.dev/v5/compositor-settings/niri/
+            // https://docs.noctalia.dev/noctalia/compositor-settings/niri/
             window-rule {
               draw-border-with-background false
               background-effect {
@@ -234,7 +234,7 @@ in
               path "${lib.getExe pkgs.xwayland-satellite}";
             }
 
-            // https://docs.noctalia.dev/getting-started/compositor-settings/
+            // https://docs.noctalia.dev/noctalia/compositor-settings/niri/
             debug {
               // allows notification actions and window activation from noctalia
               honor-xdg-activation-with-invalid-serial
