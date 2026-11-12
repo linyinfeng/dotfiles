@@ -167,7 +167,7 @@ let
 
     workspaces.back_and_forth = true;
 
-    # https://docs.noctalia.dev/compositor-settings/umbriel/
+    # https://docs.noctalia.dev/noctalia/compositor-settings/umbriel/
     appearance = {
       prefer_no_csd = true;
       blur = {
@@ -178,7 +178,7 @@ let
       };
     };
 
-    # https://docs.noctalia.dev/compositor-settings/umbriel/
+    # https://docs.noctalia.dev/noctalia/compositor-settings/umbriel/
     layer_rule = [
       {
         match.namespace = "^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$";
