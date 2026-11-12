@@ -670,7 +670,7 @@
     "input_borders": true,
     "keyboard_layout": {},
     "launch_apps_as_systemd_services": false,
-    "launch_apps_custom_command": "umbriel msg 'spawn:$CMD'",
+    "launch_apps_custom_command": "umbriel msg spawn $CMD",
     "launcher": {
       "app_grid": false,
       "auto_paste": "auto",
