@@ -18,39 +18,8 @@ let
     apiKey = "!cat ${secretPaths.litellmApiKey}";
   };
 
-  # git has no config that adds a trailer, but it reads any config from the
-  # environment, so a prepare-commit-msg hook does it without a `git` shim.
-  agent-hooks = pkgs.runCommand "pi-agent-git-hooks" { } ''
-    mkdir -p $out
-    cat > $out/chain <<'EOF'
-    #!/bin/sh
-    name=$(basename "$0")
-    hooks=$(git config --local --get core.hooksPath)
-    [ -n "$hooks" ] || hooks="$(git rev-parse --git-common-dir)/hooks"
-    if [ -x "$hooks/$name" ]; then
-      exec "$hooks/$name" "$@"
-    fi
-    exit 0
-    EOF
-    cat > $out/prepare-commit-msg <<'EOF'
-    #!/bin/sh
-    hooks=$(git config --local --get core.hooksPath)
-    [ -n "$hooks" ] || hooks="$(git rev-parse --git-common-dir)/hooks"
-    [ -x "$hooks/prepare-commit-msg" ] && "$hooks/prepare-commit-msg" "$@"
-    git interpret-trailers --in-place --if-exists doNothing \
-      --trailer 'Co-authored-by: Lin Yinfeng <lin.yinfeng@outlook.com>' "$1"
-    EOF
-    chmod +x $out/chain $out/prepare-commit-msg
-    for name in applypatch-msg pre-applypatch post-applypatch pre-commit pre-merge-commit commit-msg post-commit pre-rebase post-checkout post-merge pre-push pre-auto-gc post-rewrite post-index-change sendemail-validate fsmonitor-watchman reference-transaction post-update; do
-      cp $out/chain $out/$name
-    done
-    rm $out/chain
-  '';
-
   # pi installs and updates itself into ~/.pi/agent/install through the
-  # upstream managed installer, so nix only owns the entry point. The launcher
-  # is reached indirectly: pi prepends ~/.pi/agent/bin to its children's PATH,
-  # and by then the identity below is already in the environment.
+  # upstream managed installer, so nix only owns the entry point.
   pi-wrapper = pkgs.writeShellApplication {
     name = "pi";
     runtimeInputs = with pkgs; [
@@ -65,16 +34,6 @@ let
         printf 'pi is not installed; run pi-install\n' >&2
         exit 127
       fi
-
-      # The agent's commits are automation's, not the human's; the human keeps
-      # the identity from the git profile.
-      export GIT_AUTHOR_NAME=Nano
-      export GIT_AUTHOR_EMAIL=nano@linyinfeng.com
-      export GIT_COMMITTER_NAME=Nano
-      export GIT_COMMITTER_EMAIL=nano@linyinfeng.com
-      export GIT_CONFIG_COUNT=1
-      export GIT_CONFIG_KEY_0=core.hooksPath
-      export GIT_CONFIG_VALUE_0=${agent-hooks}
 
       exec "$launcher" "$@"
     '';
