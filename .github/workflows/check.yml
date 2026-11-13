@@ -33,10 +33,6 @@ jobs:
         with:
           name: linyinfeng
           skipPush: true
-      - name: Set swap space
-        uses: pierotofy/set-swap-space@v1.0
-        with:
-          swap-size-gb: 10
       - name: Test nix flake show
         run: |
           nix flake show --all-systems

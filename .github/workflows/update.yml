@@ -35,10 +35,6 @@ jobs:
         with:
           name: linyinfeng
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Set swap space
-        uses: pierotofy/set-swap-space@v1.0
-        with:
-          swap-size-gb: 10
       - name: Git config
         run: |
           git config --global user.email "nano@linyinfeng.com"
