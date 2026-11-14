@@ -18,29 +18,87 @@ and its chain. Installation images embed the Incus intermediate certificate from
 The client key has destruction protection. Rotating the intermediate requires
 updating server trust stores and installation images before retiring the old CA.
 
-Generate a reusable USB installation image:
+Generate a USB installation image for a hostname:
 
 ```sh
-maintain incusos image --arch x86_64-linux
-maintain incusos image --arch aarch64-linux --output /path/to/incusos.img
+maintain incusos image --hostname ostrich --arch x86_64-linux
+maintain incusos image --hostname ostrich --arch aarch64-linux --output /path/to/incusos.img
 ```
 
 This uses the packaged upstream flasher from `nur-packages` to download and
-verify the stable image, then embed the selected public Incus client CA.
-The default output is `.data/incusos/incusos-<arch>.img`. Existing outputs are
-never overwritten. The seed uses DHCP/SLAAC and installs only to an unused disk;
-it contains no private keys or machine-specific settings. Writing the image to
+verify the stable image, then embed a seed generated at runtime.
+The default output is `.data/incusos/incusos-<hostname>-<arch>-<version>.img`,
+using the actual downloaded IncusOS release version from the upstream image
+filename. For example, `incusos-ostrich-x86_64-linux-202611112343.img`.
+Existing outputs are never overwritten. The seed uses DHCP/SLAAC and by default
+installs only to an unused disk;
+it includes the requested hostname and no private keys. Writing the image to
 a USB device is a separate operation.
+
+Both `seed` and `image` accept `--force-install/--no-force-install` (default:
+`--no-force-install`). This sets `install.json`'s `force_install`: enabling it
+allows the IncusOS installer to erase existing partitions on its target disk.
+It does not erase a disk while generating files and does not change flash's USB
+write behavior. For example:
+
+```sh
+maintain incusos seed --hostname ostrich --force-install --output /path/to/seed.tar
+maintain incusos image --hostname ostrich --arch x86_64-linux --force-install
+```
+
+Seed configuration lives in `packages/incusos-seed/*.json`. It is not a Nix
+package: maintain reads these files from the checkout at runtime and inserts
+the selected public Incus CA from `lib/data/data.json`. Both commands validate
+the CA before use. Configuration and CA changes do not require rebuilding maintain.
+Both generation commands require `--hostname` and write it to `network.json` as
+`dns.hostname`, preserving any other network settings. Use a single hostname
+label of 1-63 ASCII letters, digits or hyphens, with no leading or trailing
+hyphen. Flash uses the hostname already embedded in the supplied image or seed.
+
+The initial Tailscale configuration is enabled, uses a random UDP port, accepts
+tailnet DNS, and has no accepted or advertised routes, exit node advertisement,
+or Tailscale Serve. Both commands use SOPS at runtime to decrypt only
+`tailscale_tailnet_key.value` from the encrypted pre-nixos Terraform outputs
+(respecting `SECRETS_DIR`) and insert it as `services.json`'s `tailscale.auth_key`.
+The key stays in memory until written into the seed; decryption failure aborts
+generation before downloading an image. SOPS decryption credentials are required.
 
 Generate only the architecture-independent seed, without downloading an image:
 
 ```sh
-maintain incusos seed
-maintain incusos seed --output /path/to/seed.tar
+maintain incusos seed --hostname ostrich
+maintain incusos seed --hostname ostrich --output /path/to/seed.tar
 ```
 
 The default output is `.data/incusos/seed.tar`, suitable for `flasher-tool --seed`.
-This uses the same seed generation as `image` and refuses existing output files.
+It uses the same runtime generator as `image` and refuses existing output files.
+Generated seeds and images are written with mode 0600 so they can be managed as
+secrets. Keep credentials out of tracked configuration files and Nix builds;
+credential injection happens at runtime. The resulting seed and image contain
+the plaintext authentication key and must be handled as secrets. Existing
+images are not updated; generate a new image to include Tailscale authentication.
+
+Flash the complete image to a USB disk, or update only its existing seed partition:
+
+```sh
+maintain incusos flash /dev/disk/by-id/usb-... --image /path/to/incusos.img
+maintain incusos flash /dev/disk/by-id/usb-... --seed /path/to/seed.tar
+```
+
+Use exactly one of `--image` or `--seed`, specifying the file explicitly.
+
+Always pass the whole USB disk, including for `--seed`: maintain locates the
+`seed-data` partition itself. The image mode erases the disk's partition layout;
+the seed mode writes only that partition. Both modes refuse non-USB disks,
+partition targets, read-only devices, mounted filesystems, active swap or block
+mappings, and insufficient capacity. Unmount the USB filesystems first.
+The command displays the disk model, serial number and destination, asks for
+confirmation (`--yes` skips it), and verifies the written bytes by reading them
+back. Non-root invocations automatically re-execute flash through the host's
+`run0` before opening the device or source file. Paths are expanded
+before elevation; device checks, confirmation, writing and verification run in
+one privileged session. Root invocations run directly. It does not generate a
+new seed or image.
 
 ## Commands
 

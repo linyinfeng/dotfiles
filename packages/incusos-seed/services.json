@@ -1,0 +1,11 @@
+{
+  "version": "1",
+  "tailscale": {
+    "enabled": true,
+    "accept_dns": true,
+    "accept_routes": false,
+    "advertised_routes": [],
+    "advertise_exit_node": false,
+    "serve_enabled": false
+  }
+}

@@ -23,6 +23,7 @@
   bind,
   xray,
   linyinfeng,
+  util-linux,
 }:
 let
   # TF_VAR_* declared per stage; the wrapper exports only these
@@ -88,6 +89,7 @@ let
     sops
     syncthing
     terraform
+    util-linux
     xray
     yq-go
     zerotierone
@@ -103,6 +105,7 @@ python3Packages.buildPythonApplication {
   build-system = [ python3Packages.hatchling ];
   dependencies = [
     python3Packages.cryptography
+    python3Packages.rich
     python3Packages.typer
   ];
 
