@@ -3,19 +3,11 @@
   programs.zellij = {
     enable = true;
     settings = {
+      default_mode = "locked";
       show_startup_tips = false;
-      theme = "iceberg-dark";
+      theme_dark = "iceberg-dark";
+      theme_light = "iceberg-light";
       mouse_mode = true;
     };
-  };
-  programs.tmux = {
-    enable = true;
-    mouse = true;
-    terminal = "tmux-256color";
-    extraConfig = ''
-      set -s extended-keys on
-      set -as terminal-features 'alacritty*:extkeys,xterm*:extkeys'
-      set -g allow-passthrough on
-    '';
   };
 }
