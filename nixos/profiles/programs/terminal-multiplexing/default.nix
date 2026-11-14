@@ -6,7 +6,6 @@
 }:
 lib.mkMerge [
   {
-    programs.tmux.enable = true;
     environment.systemPackages = with pkgs; [
       zellij
     ];
