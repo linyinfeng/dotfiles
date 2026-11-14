@@ -78,9 +78,9 @@ jobs:
           pr=$(gh pr list --repo "$GITHUB_REPOSITORY" --base main --head staging \
             --state open --json number --jq '.[0].number // empty')
           if [ -n "$pr" ]; then
-            gh pr edit "$pr" --repo "$GITHUB_REPOSITORY" --add-label auto-update
+            gh pr edit "$pr" --repo "$GITHUB_REPOSITORY" --add-label "auto update"
           else
             gh pr create --repo "$GITHUB_REPOSITORY" --base main --head staging \
-              --title "Automatic update" --label auto-update \
-              --body "Update Terraform providers, patches and flake inputs. Merge after Nix evaluation and all Hydra staging builds succeed."
+              --title "Automatic update" --label "auto update" \
+              --body "Update Terraform providers, patches and flake inputs. Merge through the shared queue after its CI checks succeed."
           fi
