@@ -19,10 +19,13 @@
         });
     in
     {
-      # test_rg_always_has_line_numbers invokes rg, but upstream omits it from
-      # the test inputs. Supply it explicitly for the emulated aarch64 build.
+      # Tests invoke rg and ssh-keygen, but upstream omits them from the test
+      # inputs. Supply both so the emulated aarch64 build can run the suite.
       rtk = prev.rtk.overrideAttrs (old: {
-        nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [ final.ripgrep ];
+        nativeCheckInputs = (old.nativeCheckInputs or [ ]) ++ [
+          final.openssh
+          final.ripgrep
+        ];
         # Upstream's fat LTO and single codegen unit make the emulated aarch64
         # build time out. Keep release optimizations and tests, but parallelize
         # code generation without whole-program optimization on this platform.
