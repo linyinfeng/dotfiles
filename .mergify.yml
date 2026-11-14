@@ -1,24 +1,2 @@
 # yaml-language-server: $schema=https://docs.mergify.com/mergify-configuration-schema.json
-pull_request_rules:
-  - name: Merge Dependabot updates after CI
-    conditions:
-      - author = dependabot[bot]
-      - base = main
-      - check-success = Nix evaluation
-    actions:
-      merge:
-        method: squash
-  - name: Merge automatic updates after evaluation and Hydra
-    conditions:
-      - base = main
-      - head = staging
-      - label = auto-update
-      - "#commits-behind = 0"
-      - check-success = Nix evaluation
-      - check-success = continuous-integration/hydra:dotfiles:staging:required
-      # Mergify's own summary must not block the rule that updates that summary.
-      - -check-failure ~= ^(?!Mergify)
-      - -check-pending ~= ^(?!Mergify)
-    actions:
-      merge:
-        method: fast-forward
+extends: mergify-config
