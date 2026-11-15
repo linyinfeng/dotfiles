@@ -19,6 +19,19 @@
         });
     in
     {
+      # The locked LocalSend package omits zlib from its runtime search path.
+      # Wrap the cached package to avoid rebuilding the Flutter application.
+      # TODO drop once the locked nixpkgs includes the zlib runtime dependency:
+      # https://github.com/NixOS/nixpkgs/pull/585411
+      localsend = final.symlinkJoin {
+        inherit (prev.localsend) pname version meta;
+        paths = [ prev.localsend ];
+        nativeBuildInputs = [ final.makeWrapper ];
+        postBuild = ''
+          wrapProgram "$out/bin/localsend_app" \
+            --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [ final.zlib ]}
+        '';
+      };
       # Tests invoke rg and ssh-keygen, but upstream omits them from the test
       # inputs. Supply both so the emulated aarch64 build can run the suite.
       rtk = prev.rtk.overrideAttrs (old: {
