@@ -1,6 +1,6 @@
 # Terraform state synchronization
 
-## Incus automation identity
+## Incus client identities
 
 The existing root signs a dedicated `incus-v1` intermediate in the manual CA
 stages. Incus 7.6 or newer is required for CA entries in the trust store.
@@ -9,13 +9,25 @@ services certificates do not grant Incus administration rights. Every client
 signed by this intermediate inherits the CA trust entry's permissions, so only
 Incus management identities may be issued by it.
 
-The `pre-nixos` stage owns Terraform's ECDSA P-384 client key and issues a
-90-day certificate, renewed 30 days before expiry. The private key remains in
-encrypted stage state and outputs; public outputs include the client certificate
-and its chain. Installation images embed the Incus intermediate certificate from
-`intermediate_ca_certificates`, allowing client renewal without regenerating them.
+The `pre-nixos` host module issues a separate ECDSA P-384 client identity for
+each host. Its common name is
+`incus-client-<hostname>`, with a 90-day certificate renewed 30 days before expiry.
+Private keys remain in encrypted stage state and host outputs; public host outputs
+include the certificate and its chain. Installation images embed the Incus
+intermediate certificate from `intermediate_ca_certificates`, allowing client
+renewal without regenerating them.
 
-The client key has destruction protection. Rotating the intermediate requires
+The NixOS `users.yinfeng` profile imports `_incus` to install the host's certificate
+and private key through SOPS, readable only by `yinfeng`, and links them into the
+Incus CLI's `~/.config/incus/client.crt` and `client.key`. Apply `pre-nixos` and
+extract host secrets before deploying the profile. Every host enabling
+`users.yinfeng` receives its own client identity, without a separate Incus switch.
+
+The former shared `incus-terraform` identity is no longer generated. Removing its
+Terraform resources does not revoke an already issued certificate: it can remain
+valid until expiry unless revoked on the servers.
+
+Client keys have destruction protection. Rotating the intermediate requires
 updating server trust stores and installation images before retiring the old CA.
 
 Generate a USB installation image for a hostname:

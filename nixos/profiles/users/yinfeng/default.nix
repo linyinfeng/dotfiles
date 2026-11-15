@@ -12,6 +12,7 @@ let
 in
 {
   imports = [
+    ./_incus
     ./_syncthing
     ./_atuin
   ];
