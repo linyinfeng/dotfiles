@@ -12,8 +12,8 @@ resource "incus_profile" "gpu" {
   }
 }
 
-resource "incus_instance" "ostrich" {
-  name = "ostrich"
+resource "incus_instance" "nixos" {
+  name = "nixos"
   type = "virtual-machine"
   # Manually import the initial image with this alias before the first apply.
   # Subsequent NixOS deployments update the guest in place.
