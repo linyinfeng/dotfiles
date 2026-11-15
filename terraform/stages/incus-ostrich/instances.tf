@@ -1,24 +1,14 @@
-resource "incus_profile" "gpu" {
-  name        = "gpu"
-  description = "RTX 4060"
-
-  device {
-    name = "gpu"
-    type = "gpu"
-    properties = {
-      gputype = "physical"
-      pci     = "0000:01:00.0"
-    }
-  }
-}
-
 resource "incus_instance" "nixos" {
   name = "nixos"
   type = "virtual-machine"
   # Manually import the initial image with this alias before the first apply.
   # Subsequent NixOS deployments update the guest in place.
-  image    = "ostrich-initial"
-  profiles = [incus_profile.gpu.name]
+  image = "ostrich-initial"
+  profiles = [
+    incus_profile.seat.name,
+    incus_profile.streaming.name,
+    incus_profile.audio.name,
+  ]
   # Keep creation stopped; subsequent power changes are operational actions.
   running = false
 
