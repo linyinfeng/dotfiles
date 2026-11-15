@@ -225,13 +225,7 @@ in
     (mkHost {
       name = "ostrich";
       system = "x86_64-linux";
-      extraModules = with inputs.nixos-hardware.nixosModules; [
-        common-pc
-        common-pc-ssd
-        common-cpu-amd
-        common-cpu-amd-pstate
-        common-gpu-nvidia-nonprime
-      ];
+      extraModules = with inputs.nixos-hardware.nixosModules; [ common-gpu-nvidia-nonprime ];
     })
     # PLACEHOLDER new host
 

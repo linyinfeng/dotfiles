@@ -4,7 +4,10 @@
   ...
 }:
 {
-  imports = [ ./_hardware.nix ];
+  imports = [
+    ./_hardware.nix
+    ./_image.nix
+  ];
 
   config = lib.mkMerge [
     {
@@ -17,7 +20,6 @@
           security.tpm.enable = true;
           services = {
             acme.enable = true;
-            fwupd.enable = true;
             garage.enable = true;
             llama-cpp.enable = true;
             nginx.enable = true;
@@ -43,9 +45,7 @@
       };
 
       hardware.enableRedistributableFirmware = true;
-      services.power-profiles-daemon.enable = true;
-      # the wireless link is brought up by NetworkManager/iwd; do not let
-      # systemd-networkd-wait-online stall the boot when there is no wired link
+      # NetworkManager manages the guest network interface.
       systemd.network.wait-online.enable = false;
 
       home-manager.users.yinfeng =
@@ -54,9 +54,6 @@
           world.users.yinfeng.common.enable = true;
           world.suites.full.enable = true;
         };
-
-      boot.initrd.systemd.tpm2.enable = true;
-      boot.initrd.luks.devices."crypt-root".crypttabExtraOpts = [ "tpm2-device=auto" ];
 
       boot.tmp.useTmpfs = true;
       services.fstrim.enable = true;
@@ -86,7 +83,7 @@
         };
         disk.main = {
           type = "disk";
-          device = "/dev/disk/by-id/nvme-WDS100T1X0E-00AFY0_220367463012";
+          device = "/dev/vda";
           content = {
             type = "gpt";
             partitions = {
@@ -100,58 +97,44 @@
                   format = "vfat";
                   mountpoint = "/boot";
                   mountOptions = [
-                    "gid=wheel"
+                    "gid=${toString config.users.groups.wheel.gid}"
                     "dmask=007"
                     "fmask=117"
                   ];
                 };
               };
-              crypt-root = {
+              root = {
                 priority = 100;
                 start = "1025MiB";
-                size = "640G";
-                content = {
-                  type = "luks";
-                  name = "crypt-root";
-                  settings = {
-                    allowDiscards = true;
-                    bypassWorkqueues = true;
-                  };
-                  content = {
-                    type = "btrfs";
-                    subvolumes =
-                      let
-                        mountOptions = [
-                          "compress=zstd"
-                        ];
-                      in
-                      {
-                        "@persist" = {
-                          mountpoint = "/persist";
-                          inherit mountOptions;
-                        };
-                        "@var-log" = {
-                          mountpoint = "/var/log";
-                          inherit mountOptions;
-                        };
-                        "@nix" = {
-                          mountpoint = "/nix";
-                          inherit mountOptions;
-                        };
-                        "@swap" = {
-                          mountpoint = "/swap";
-                          inherit mountOptions;
-                          swap.swapfile.size = "32G";
-                        };
-                      };
-                  };
-                };
-              };
-              windows-backup = {
-                priority = 900;
-                start = "656385MiB";
                 size = "100%";
-                type = "0700";
+                content = {
+                  type = "btrfs";
+                  subvolumes =
+                    let
+                      mountOptions = [
+                        "compress=zstd"
+                      ];
+                    in
+                    {
+                      "@persist" = {
+                        mountpoint = "/persist";
+                        inherit mountOptions;
+                      };
+                      "@var-log" = {
+                        mountpoint = "/var/log";
+                        inherit mountOptions;
+                      };
+                      "@nix" = {
+                        mountpoint = "/nix";
+                        inherit mountOptions;
+                      };
+                      "@swap" = {
+                        mountpoint = "/swap";
+                        inherit mountOptions;
+                        swap.swapfile.size = "32G";
+                      };
+                    };
+                };
               };
             };
           };
