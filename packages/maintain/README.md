@@ -35,6 +35,12 @@ installs only to an unused disk;
 it includes the requested hostname and no private keys. Writing the image to
 a USB device is a separate operation.
 
+Images also merge the public Secure Boot certificates in
+[`packages/incusos-secureboot`](../incusos-secureboot/README.md) into their
+enrollment databases. Shared Microsoft certificates and certificates for the
+requested hostname are added to upstream IncusOS trust; host revocations are
+retained. The upstream PK is unchanged. Initial enrollment requires Setup Mode.
+
 Both `seed` and `image` accept `--force-install/--no-force-install` (default:
 `--no-force-install`). This sets `install.json`'s `force_install`: enabling it
 allows the IncusOS installer to erase existing partitions on its target disk.

@@ -11,6 +11,7 @@ from maintain.cli import app
 
 @pytest.fixture
 def seed_configuration(tmp_path, monkeypatch):
+    monkeypatch.delenv("MAINTAIN_SECUREBOOT_MICROSOFT", raising=False)
     directory = tmp_path / "packages/incusos-seed"
     directory.mkdir(parents=True)
     for name, value in {

@@ -19,6 +19,7 @@ from cryptography.x509.oid import ExtendedKeyUsageOID
 from rich.filesize import decimal
 
 from maintain.common import data_extract_dir, dotfiles_dir, message, run
+from maintain.incusos_secureboot import add_secure_boot_certificates
 from maintain.secrets import encrypted_outputs
 
 app = typer.Typer(help="IncusOS installation images")
@@ -222,6 +223,14 @@ def image(
         images = list(work.glob("*.img"))
         if len(images) != 1:
             raise typer.BadParameter("flasher-tool did not produce exactly one .img")
+        try:
+            add_secure_boot_certificates(
+                images[0], hostname, dotfiles_dir() / "packages/incusos-secureboot"
+            )
+        except (OSError, ValueError, subprocess.CalledProcessError) as error:
+            raise typer.BadParameter(
+                f"cannot prepare Secure Boot enrollment: {error}"
+            ) from error
         if target is None:
             version = re.fullmatch(
                 r"IncusOS_([A-Za-z0-9][A-Za-z0-9._-]*)\.img", images[0].name

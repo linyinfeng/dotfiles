@@ -24,8 +24,10 @@
   xray,
   linyinfeng,
   util-linux,
+  mtools,
 }:
 let
+  microsoftSecureBoot = "${linyinfeng.sources.secureboot_objects.src}/PreSignedObjects";
   # TF_VAR_* declared per stage; the wrapper exports only these
   stages = {
     intermediate-ca = { };
@@ -90,6 +92,7 @@ let
     syncthing
     terraform
     util-linux
+    mtools
     xray
     yq-go
     zerotierone
@@ -118,6 +121,11 @@ python3Packages.buildPythonApplication {
     git
   ];
 
+  preCheck = ''
+    export INCUSOS_TEST_CERTIFICATES=${../incusos-secureboot}
+    export MAINTAIN_SECUREBOOT_MICROSOFT=${microsoftSecureBoot}
+  '';
+
   postInstall = ''
     install -Dm644 ${stageRegistry} $out/share/maintain/terraform-stages.json
   '';
@@ -126,7 +134,8 @@ python3Packages.buildPythonApplication {
     wrapProgram $out/bin/maintain \
       --prefix PATH : ${lib.makeBinPath runtimeTools} \
       --set MAINTAIN_STAGE_REGISTRY ${stageRegistry} \
-      --set MAINTAIN_SOPS_CONFIG ${sopsConfig}
+      --set MAINTAIN_SOPS_CONFIG ${sopsConfig} \
+      --set MAINTAIN_SECUREBOOT_MICROSOFT ${microsoftSecureBoot}
 
     installShellCompletion --cmd maintain \
       --bash <($out/bin/maintain completion bash) \
