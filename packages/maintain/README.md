@@ -89,6 +89,11 @@ Seed configuration lives in `packages/incusos-seed/*.json`. It is not a Nix
 package: maintain reads these files from the checkout at runtime and inserts
 the selected public Incus CA from `lib/data/data.json`. Both commands validate
 the CA before use. Configuration and CA changes do not require rebuilding maintain.
+The generator also merges `zitadel_incus_server_config` from the same public data
+into `incus.json`'s `preseed.config`, enabling OIDC and its administrator
+authorization scriptlet on first installation. Missing OIDC output aborts
+generation; apply the pre-nixos Terraform stage first. The trusted client CA
+remains available for emergency certificate access independent of Zitadel.
 Both generation commands require `--hostname` and write it to `network.json` as
 `dns.hostname`, preserving any other network settings. Use a single hostname
 label of 1-63 ASCII letters, digits or hyphens, with no leading or trailing

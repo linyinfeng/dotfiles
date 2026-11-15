@@ -245,6 +245,17 @@
   },
   "tailscale_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
+  "zitadel_incus_client_id": "399722494140978289",
+  "zitadel_incus_project_id": "399722493402702763",
+  "zitadel_incus_server_config": {
+    "authorization.client.oidc": "scriptlet",
+    "authorization.scriptlet": "def authorize(details, object, entitlement):\n    return details.Protocol == \"oidc\" and details.Username == \"394599460455923381\"\n",
+    "oidc.audience": "399722493402702763",
+    "oidc.claim": "sub",
+    "oidc.client.id": "399722494140978289",
+    "oidc.issuer": "https://yinfeng-fsgmya.us1.zitadel.cloud",
+    "oidc.scopes": "openid,profile,email,offline_access,urn:zitadel:iam:org:project:id:399722493402702763:aud"
+  },
   "zitadel_issuer": "https://yinfeng-fsgmya.us1.zitadel.cloud",
   "zitadel_synapse_client_id": "394607060265841364",
   "hosts": {

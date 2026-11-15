@@ -8,6 +8,16 @@ from typer.testing import CliRunner
 from maintain import incusos
 from maintain.cli import app
 
+OIDC_CONFIG = {
+    "oidc.issuer": "https://id.example.com",
+    "oidc.client.id": "incus-cli",
+    "oidc.audience": "infrastructure",
+    "oidc.scopes": "openid,profile,email,offline_access",
+    "oidc.claim": "sub",
+    "authorization.client.oidc": "scriptlet",
+    "authorization.scriptlet": 'def authorize(details, object, entitlement):\n    return details.Username == "admin-id"\n',
+}
+
 
 @pytest.fixture
 def seed_configuration(tmp_path, monkeypatch):
@@ -23,6 +33,12 @@ def seed_configuration(tmp_path, monkeypatch):
         (directory / name).write_text(json.dumps(value))
     monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
     monkeypatch.setattr(incusos, "tailscale_auth_key", lambda: "tskey-auth-test")
+    data_dir = tmp_path / "lib/data"
+    data_dir.mkdir(parents=True)
+    (data_dir / "data.json").write_text(
+        json.dumps({"zitadel_incus_server_config": OIDC_CONFIG})
+    )
+    monkeypatch.setenv("DATA_EXTRACT_DIR", str(data_dir))
 
 
 @pytest.mark.parametrize("arch", ["x86_64-linux", "aarch64-linux"])
@@ -38,6 +54,7 @@ def test_image_seeds_ca_without_forcing_install(
         with tarfile.open(seed) as archive:
             install = json.load(archive.extractfile("install.json"))
             config = json.load(archive.extractfile("incus.json"))
+            assert config["preseed"]["config"] == OIDC_CONFIG
             assert not install.get("force_install", False)
             assert "target" not in install
             assert (
@@ -206,6 +223,7 @@ def test_seed_generates_private_archive_without_overwriting(
         }
         config = json.load(archive.extractfile("incus.json"))
         assert config["preseed"]["certificates"][0]["certificate"] == "PUBLIC CLIENT CA"
+        assert config["preseed"]["config"] == OIDC_CONFIG
 
     output.write_bytes(b"keep existing seed")
     result = CliRunner().invoke(
@@ -225,6 +243,36 @@ def test_seed_rejects_missing_configuration(tmp_path, monkeypatch, seed_configur
     assert result.exit_code != 0
     assert "cannot load IncusOS seed configuration" in result.output
     assert not output.exists()
+
+
+def test_seed_requires_oidc_outputs(tmp_path, monkeypatch, seed_configuration):
+    monkeypatch.setattr(incusos, "client_ca", lambda: "PUBLIC CLIENT CA")
+    (tmp_path / "lib/data/data.json").write_text("{}")
+    output = tmp_path / "seed.tar"
+    result = CliRunner().invoke(
+        app, ["incusos", "seed", "--hostname", "test-host", "--output", str(output)]
+    )
+    assert result.exit_code != 0
+    assert "zitadel_incus_server_config" in result.output
+    assert not output.exists()
+
+
+def test_seed_preserves_other_server_config(tmp_path, monkeypatch, seed_configuration):
+    monkeypatch.setattr(incusos, "client_ca", lambda: "PUBLIC CLIENT CA")
+    template = tmp_path / "packages/incusos-seed/incus.json"
+    template.write_text(
+        json.dumps(
+            {
+                "apply_defaults": True,
+                "preseed": {"config": {"core.https_address": ":8443"}},
+            }
+        )
+    )
+    output = tmp_path / "seed.tar"
+    incusos.write_seed(output, "PUBLIC CLIENT CA", "test-host")
+    with tarfile.open(output) as archive:
+        config = json.load(archive.extractfile("incus.json"))["preseed"]["config"]
+    assert config == {"core.https_address": ":8443", **OIDC_CONFIG}
 
 
 @pytest.mark.parametrize("command", ["seed", "image"])

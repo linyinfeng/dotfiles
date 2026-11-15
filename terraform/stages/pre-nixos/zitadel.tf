@@ -12,14 +12,21 @@ data "zitadel_organizations" "li7g" {
   is_default = true
 }
 
-resource "zitadel_project" "li7g" {
-  name   = "li7g.com"
+# Ordinary user services share a project, separate from cluster administration.
+# Keep registration and service-specific access rules in each application.
+moved {
+  from = zitadel_project.li7g
+  to   = zitadel_project.services
+}
+
+resource "zitadel_project" "services" {
+  name   = "Services"
   org_id = one(data.zitadel_organizations.li7g.ids)
 }
 
 resource "zitadel_application_oidc" "synapse" {
-  org_id     = zitadel_project.li7g.org_id
-  project_id = zitadel_project.li7g.id
+  org_id     = zitadel_project.services.org_id
+  project_id = zitadel_project.services.id
   name       = "Matrix Synapse"
 
   redirect_uris             = ["https://matrix.li7g.com/_synapse/client/oidc/callback"]

@@ -88,7 +88,7 @@ def validate_hostname(value: str) -> str:
 def write_seed(
     path: Path, certificate: str, hostname: str, force_install: bool = False
 ) -> None:
-    """Set management trust and hostname; leave addressing and disks generic."""
+    """Set management authentication and hostname; leave addressing and disks generic."""
     directory = dotfiles_dir() / "packages/incusos-seed"
     try:
         files = {
@@ -96,6 +96,10 @@ def write_seed(
             for path in sorted(directory.glob("*.json"))
         }
         files["install.json"]["force_install"] = force_install
+        data = json.loads((data_extract_dir() / "data.json").read_text())
+        files["incus.json"]["preseed"].setdefault("config", {}).update(
+            data["zitadel_incus_server_config"]
+        )
         files["incus.json"]["preseed"]["certificates"] = [
             {
                 "name": "incus-client-ca",
