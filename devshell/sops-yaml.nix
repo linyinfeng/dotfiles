@@ -36,7 +36,7 @@ let
       owned = true;
     };
     ostrich = {
-      key = "age1lnyjlzvepsakad42jgtze8dzyzg65pf6a4j8sgarnvf33et7hfsqf482r7";
+      key = "age1whz7hhsv34yqeksm4xf56u56rl7hvrwtt5mfu5pjhn89vmgpc5assefhlv";
       owned = true;
     };
     # PLACEHOLDER new host
