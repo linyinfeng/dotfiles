@@ -120,6 +120,7 @@ python3Packages.buildPythonApplication {
   ];
   nativeCheckInputs = [
     python3Packages.pytestCheckHook
+    age
     git
   ];
 

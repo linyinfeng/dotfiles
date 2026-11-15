@@ -1,8 +1,10 @@
 """sops handling: key updates, encryption, and the extracted secret trees."""
 
 import os
+import re
 import shlex
 import shutil
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -23,6 +25,44 @@ from maintain.common import (
 app = typer.Typer(help="sops encrypted files")
 
 SecretType = Literal["terraform", "predefined", "both"]
+
+
+def host_key_path(host: str) -> Path:
+    """Standard local bootstrap identity path, outside the tracked source tree."""
+    if not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?", host):
+        raise typer.BadParameter("host must be a hostname label of 1-63 characters")
+    return dotfiles_dir() / ".data/keys" / host / "age.key"
+
+
+def create_host_key(host: str) -> tuple[Path, str]:
+    """Generate a host identity without overwriting or printing private material."""
+    key = host_key_path(host)
+    if key.exists() or key.is_symlink():
+        raise typer.BadParameter(f"host key already exists: {key}")
+    key.parent.mkdir(parents=True, mode=0o700, exist_ok=True)
+    key.parent.chmod(0o700)
+    try:
+        subprocess.run(
+            ["age-keygen", "--output", str(key)], check=True, capture_output=True
+        )
+        key.chmod(0o600)
+        recipient = subprocess.run(
+            ["age-keygen", "-y", str(key)],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise typer.BadParameter(f"cannot generate host key: {key}") from error
+    return key, recipient
+
+
+@app.command("generate-host-key")
+def generate_host_key(host: str) -> None:
+    """Generate .data/keys/<host>/age.key; print only its path and public recipient."""
+    key, recipient = create_host_key(host)
+    message(f"host key saved to '{key}' (mode 0600)")
+    typer.echo(f"public recipient: {recipient}")
 
 
 def sops_config() -> Path:

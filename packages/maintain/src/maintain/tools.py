@@ -1,13 +1,13 @@
 """The remaining devshell tasks: boot images, patches, and new hosts."""
 
 import subprocess
-import tempfile
 from pathlib import Path
 from typing import Annotated
 
 import typer
 
 from maintain.common import dotfiles_dir, message, run
+from maintain.secrets import create_host_key, host_key_path
 
 boot_sd = typer.Typer(help="boot images on SD cards")
 patches = typer.Typer(help="patches/")
@@ -91,7 +91,13 @@ def update() -> None:
 def new_host(host: str, system: str) -> None:
     """Create a new host's files, its age key, and a notice with the manual steps."""
     root = dotfiles_dir()
+    key = host_key_path(host)
+    if (root / "nixos/hosts" / host).exists():
+        raise typer.BadParameter(f"host already exists: {host}")
+    if key.exists() or key.is_symlink():
+        raise typer.BadParameter(f"host key already exists: {key}")
     state_version = captured(["nix", "eval", f"{root}#libs.flakeStateVersion", "--raw"])
+    key, identity = create_host_key(host)
 
     message("creating host directory...")
     (root / "nixos/hosts" / host).mkdir(parents=True, exist_ok=True)
@@ -116,31 +122,26 @@ def new_host(host: str, system: str) -> None:
         "  host_indices = []\n  endpoints_v4 = []\n  endpoints_v6 = []\n}\n",
     )
 
-    with tempfile.TemporaryDirectory(prefix="encrypt.") as tmp:
-        message("creating new age key pair...")
-        key = Path(tmp) / "key"
-        run(["age-keygen", "--output", str(key)])
-        identity = captured(["age-keygen", "-y", str(key)])
+    message("updating sops configuration...")
+    insert_before(
+        root / "devshell/sops-yaml.nix",
+        "# PLACEHOLDER new host",
+        f'{host} = {{\n  key = "{identity}";\n  owned = true;\n}};\n',
+    )
 
-        message("updating sops configuration...")
-        insert_before(
-            root / "devshell/sops-yaml.nix",
-            "# PLACEHOLDER new host",
-            f'{host} = {{\n  key = "{identity}";\n  owned = true;\n}};\n',
-        )
+    message("formatting...")
+    run(["nix", "fmt"], cwd=root)
 
-        message("formatting...")
-        run(["nix", "fmt"], cwd=root)
+    message("git add...")
+    run(["git", "add", "--all"], cwd=root)
 
-        message("git add...")
-        run(["git", "add", "--all"], cwd=root)
-
-        message("creating notice...")
-        notice = root / f"prepare-host-notice-{host}"
-        notice.write_text(
-            f"age key\n=======\n{key.read_text()}\n"
-            "manual run\n==========\nmaintain terraform pipe-all\nmaintain secrets update-keys\n"
-        )
+    message("creating notice...")
+    notice = root / f"prepare-host-notice-{host}"
+    notice.write_text(
+        f"age key file\n============\n{key}\n"
+        f"public recipient\n================\n{identity}\n"
+        "manual run\n==========\nmaintain terraform pipe-all\nmaintain secrets update-keys\n"
+    )
 
     message(f"notice saved in '{notice.name}'")
     print(notice.read_text())

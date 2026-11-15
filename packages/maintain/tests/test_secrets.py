@@ -2,9 +2,59 @@ from pathlib import Path
 
 import pytest
 import typer
+from typer.testing import CliRunner
 
 from maintain import secrets
 from maintain.common import secrets_dir, secrets_extract_dir
+
+
+def test_generate_host_key_uses_private_standard_path(tmp_path, monkeypatch):
+    monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
+    result = CliRunner().invoke(secrets.app, ["generate-host-key", "ostrich"])
+    assert result.exit_code == 0, result.output
+    key = tmp_path / ".data/keys/ostrich/age.key"
+    assert key.is_file()
+    assert key.stat().st_mode & 0o777 == 0o600
+    assert key.parent.stat().st_mode & 0o777 == 0o700
+    assert str(key) in result.output
+    assert "public recipient: age1" in result.output
+    assert "AGE-SECRET-KEY-" not in result.output
+
+
+@pytest.mark.parametrize("symlink", [False, True])
+def test_generate_host_key_never_overwrites_existing_path(
+    tmp_path, monkeypatch, symlink
+):
+    monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
+    key = tmp_path / ".data/keys/ostrich/age.key"
+    key.parent.mkdir(parents=True)
+    if symlink:
+        key.symlink_to(tmp_path / "missing-identity")
+    else:
+        key.write_text("keep existing identity")
+    monkeypatch.setattr(
+        secrets.subprocess,
+        "run",
+        lambda *a, **kw: pytest.fail("must not generate a key"),
+    )
+    result = CliRunner().invoke(secrets.app, ["generate-host-key", "ostrich"])
+    assert result.exit_code != 0
+    assert "already exists" in result.output
+    if symlink:
+        assert key.is_symlink()
+        assert not key.exists()
+    else:
+        assert key.read_text() == "keep existing identity"
+
+
+@pytest.mark.parametrize(
+    "host", ["../ostrich", "a/b", "", "bad.name", "-bad", "a" * 64]
+)
+def test_host_key_path_rejects_non_host_labels(tmp_path, monkeypatch, host):
+    monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
+    with pytest.raises(typer.BadParameter, match="hostname label"):
+        secrets.create_host_key(host)
+    assert not (tmp_path / ".data").exists()
 
 
 def test_infrastructure_sops_files_includes_both_stages_and_legacy_files(tmp_path):
