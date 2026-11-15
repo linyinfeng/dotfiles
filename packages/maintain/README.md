@@ -23,6 +23,27 @@ Incus CLI's `~/.config/incus/client.crt` and `client.key`. Apply `pre-nixos` and
 extract host secrets before deploying the profile. Every host enabling
 `users.yinfeng` receives its own client identity, without a separate Incus switch.
 
+`_incus` also declares the CLI remotes and explicitly trusts the shared nginx
+wildcard certificate from `acme_li7g_com_certificate_pem`.
+The `ostrich` remote includes its LAN IP and Tailscale DNS name;
+connect with `incus info ostrich:`. Edit remotes in Nix rather than using
+`incus remote add`, `set-urls`, or `switch` against the managed read-only config.
+The server uses the existing Let's Encrypt wildcard certificate and key already
+managed for nginx. The CLI trusts the leaf certificate through
+`servercerts/ostrich.crt`, directly sourced from the generated public data.
+Incus then verifies the pinned certificate identity rather than matching the
+connection URL to its SANs, allowing LAN IP and Tailscale endpoints.
+Renew through `pre-nixos`, deploy the shared full chain and key with
+`incus admin update-certificate ostrich:`, and deploy the updated Home Manager
+configuration on clients. No automatically generated self-signed certificate is
+stored in the repository.
+
+The official install seed cannot import an existing server certificate/key
+pair. Deploy the shared certificate after installation using the authenticated
+API. The seed's client CA trust enables that bootstrap connection; custom
+trusted CA certificates in a security seed do not configure the server's own
+TLS identity.
+
 The former shared `incus-terraform` identity is no longer generated. Removing its
 Terraform resources does not revoke an already issued certificate: it can remain
 valid until expiry unless revoked on the servers.
