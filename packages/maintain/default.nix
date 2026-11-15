@@ -45,6 +45,7 @@ let
       # stage interface: the previous stage's encrypted outputs
       "pre_nixos_outputs_path" = "\${SECRETS_DIR}/terraform/outputs/pre-nixos.yaml";
     };
+    incus-ostrich = { };
   };
   stageOrderList = [
     "pre-nixos"
@@ -53,6 +54,7 @@ let
   manualStages = [
     "intermediate-ca"
     "root-ca"
+    "incus-ostrich"
   ];
   # eval fails if this list and the registry disagree
   stageOrder =

@@ -43,7 +43,7 @@ def terraform_checkout(tmp_path, monkeypatch):
 
 REGISTRY = {
     "order": ["pre-nixos", "post-nixos"],
-    "manual": ["intermediate-ca", "root-ca"],
+    "manual": ["intermediate-ca", "root-ca", "incus-ostrich"],
     "stages": {
         "intermediate-ca": {},
         "root-ca": {},
@@ -57,6 +57,7 @@ REGISTRY = {
             "terraform_input_path": "${SECRETS_DIR}/terraform-inputs.yaml",
             "pre_nixos_outputs_path": "${SECRETS_DIR}/terraform/outputs/pre-nixos.yaml",
         },
+        "incus-ostrich": {},
     },
 }
 
@@ -136,8 +137,8 @@ def test_stage_env_keeps_an_explicit_override(monkeypatch):
     assert env["TF_VAR_terraform_input_path"] == "/elsewhere/inputs.yaml"
 
 
-@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca"])
-def test_manual_ca_is_explicitly_available_locally(monkeypatch, stage):
+@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca", "incus-ostrich"])
+def test_manual_stage_is_explicitly_available_locally(monkeypatch, stage):
     monkeypatch.delenv("CI", raising=False)
     monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
     monkeypatch.setenv("TERRAFORM_STAGE", "pre-nixos")
@@ -146,8 +147,8 @@ def test_manual_ca_is_explicitly_available_locally(monkeypatch, stage):
 
 
 @pytest.mark.parametrize("name", ["CI", "GITHUB_ACTIONS"])
-@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca"])
-def test_manual_ca_refuses_ci_before_running_commands(monkeypatch, name, stage):
+@pytest.mark.parametrize("stage", ["intermediate-ca", "root-ca", "incus-ostrich"])
+def test_manual_stage_refuses_ci_before_running_commands(monkeypatch, name, stage):
     monkeypatch.setenv(name, "true")
     calls = []
     monkeypatch.setattr(terraform, "run", lambda *args, **kwargs: calls.append(args))
@@ -258,7 +259,9 @@ def test_pipe_all_stage_order(terraform_checkout, monkeypatch, include_manual):
     )
 
     assert result.exit_code == 0, result.output
-    stages = (["intermediate-ca", "root-ca"] if include_manual else []) + [
+    stages = (
+        ["intermediate-ca", "root-ca", "incus-ostrich"] if include_manual else []
+    ) + [
         "pre-nixos",
         "post-nixos",
     ]
@@ -281,8 +284,9 @@ def test_pipe_all_include_manual_refuses_ci_before_commands(monkeypatch, name):
     assert calls == []
 
 
+@pytest.mark.parametrize("stage", ["root-ca", "incus-ostrich"])
 def test_bootstrap_creates_empty_state_and_refuses_a_second_run(
-    terraform_checkout, monkeypatch
+    terraform_checkout, monkeypatch, stage
 ):
     repo, remote = terraform_checkout
     calls = []
@@ -294,19 +298,19 @@ def test_bootstrap_creates_empty_state_and_refuses_a_second_run(
 
     monkeypatch.setattr(terraform.secrets, "encrypt_to_file", fake_encrypt)
 
-    terraform.bootstrap(["root-ca"])
+    terraform.bootstrap([stage])
     assert calls[0]["version"] == 4
     assert calls[0]["resources"] == []
     assert calls[0]["lineage"]
-    assert (repo / "terraform/states/root-ca.tfstate").exists()
+    assert (repo / f"terraform/states/{stage}.tfstate").exists()
     assert (
-        git(remote, "show", "main:terraform/states/root-ca.tfstate")
+        git(remote, "show", f"main:terraform/states/{stage}.tfstate")
         == "synthetic encrypted state"
     )
     first_commit = git(remote, "rev-parse", "main")
 
     with pytest.raises(typer.BadParameter, match="state already exists"):
-        terraform.bootstrap(["root-ca"])
+        terraform.bootstrap([stage])
     assert len(calls) == 1
     assert git(remote, "rev-parse", "main") == first_commit
 
