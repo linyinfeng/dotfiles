@@ -22,7 +22,6 @@ in
           security.tpm.enable = true;
           services = {
             acme.enable = true;
-            fwupd.enable = true;
             godns.enable = true;
             nginx.enable = true;
           };
@@ -30,6 +29,7 @@ in
           virtualization.waydroid.enable = true;
         };
         suites = {
+          bare-metal.enable = true;
           games.enable = true;
           mobileWorkstation.enable = true;
         };

@@ -58,7 +58,6 @@ in
             forgejo.enable = true;
             frp-server.enable = true;
             fw-proxy-subscription.enable = true;
-            fwupd.enable = true;
             garage.enable = true;
             gnome-keyring.enable = true;
             godns.enable = true;
@@ -68,7 +67,6 @@ in
             postgresql.enable = true;
             samba.enable = true;
             sicp-staging.enable = true;
-            smartd.enable = true;
             teamspeak.enable = true;
             transmission.enable = true;
             tsukkomi.enable = true;
@@ -80,6 +78,7 @@ in
           };
         };
         suites = {
+          bare-metal.enable = true;
           development.enable = true;
           server.enable = true;
           virtualization.enable = true;

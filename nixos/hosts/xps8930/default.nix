@@ -37,14 +37,16 @@ in
       services = {
         acme.enable = true;
         frp-client.enable = true;
-        fwupd.enable = true;
         godns.enable = true;
         nginx.enable = true;
       };
       nix.hydra-builder.enable = true;
       users.yinfeng.enable = true;
     };
-    suites.workstation.enable = true;
+    suites = {
+      bare-metal.enable = true;
+      workstation.enable = true;
+    };
   };
 
   # campus network requirement

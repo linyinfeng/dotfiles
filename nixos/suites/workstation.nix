@@ -40,7 +40,6 @@
         kde-connect.enable = true;
         portal-client.enable = true;
         printing.enable = true;
-        smartd.enable = true;
         snapper.enable = true;
         system76-scheduler.enable = true;
       };
