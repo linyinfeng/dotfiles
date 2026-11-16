@@ -33,7 +33,6 @@ in
         i18n.input-method.enable = true;
         programs.tg-send.enable = true;
         services = {
-          atuin.enable = true;
           bird-lg.enable = true;
           commit-notifier.enable = true;
           dn42-site.enable = true;

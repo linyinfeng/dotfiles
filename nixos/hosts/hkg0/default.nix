@@ -8,6 +8,7 @@
     {
       world = {
         profiles.services = {
+          atuin.enable = true;
           frp-server.enable = true;
           garage.enable = true;
           litellm.enable = true;

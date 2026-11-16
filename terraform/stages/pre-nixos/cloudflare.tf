@@ -119,7 +119,7 @@ locals {
     # keep-sorted start block=yes
     ace-bot        = { on = "mtl0", proxy = true }
     agent          = { on = "nuc", proxy = false }
-    atuin          = { on = "mtl0", proxy = true }
+    atuin          = { on = "hkg0", proxy = true }
     bird-lg        = { on = "mtl0", proxy = true }
     box            = { on = "mtl0", proxy = true }
     cache-overlay  = { on = "nuc", proxy = false }

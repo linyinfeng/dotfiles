@@ -14,8 +14,7 @@ let
       config.programs.atuin.package
     ];
     text = ''
-      set -x
-      if [[ "$(atuin status)" =~ "not logged in" ]]; then
+      if [[ "$(LC_ALL=C atuin status 2>&1)" == *"not logged in"* ]]; then
         atuin login \
           --username yinfeng \
           --password "$(cat "${secretPaths.atuin_password_yinfeng}")" \
