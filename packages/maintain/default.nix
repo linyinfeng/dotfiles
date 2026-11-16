@@ -1,6 +1,7 @@
 {
   lib,
-  pkgs,
+  writeText,
+  formats,
   python3Packages,
   makeWrapper,
   installShellFiles,
@@ -25,6 +26,13 @@
   linyinfeng,
   util-linux,
   mtools,
+  curl,
+  xorriso,
+  qemu,
+  swtpm,
+  incus,
+  OVMFFull,
+  virtio-win,
 }:
 let
   microsoftSecureBoot = "${linyinfeng.sources.secureboot_objects.src}/PreSignedObjects";
@@ -63,38 +71,42 @@ let
       == builtins.sort builtins.lessThan (builtins.attrNames stages);
     stageOrderList;
 
-  stageRegistry = pkgs.writeText "terraform-stages.json" (
+  stageRegistry = writeText "terraform-stages.json" (
     builtins.toJSON {
       order = stageOrder;
       manual = manualStages;
       inherit stages;
     }
   );
-  sopsConfig = (pkgs.formats.yaml { }).generate "maintain-sops.yaml" (
+  sopsConfig = (formats.yaml { }).generate "maintain-sops.yaml" (
     import ../../devshell/sops-yaml.nix { inherit lib; }
   );
 
   # tools the pipelines shell out to, next to terraform itself
   runtimeTools = [
-    linyinfeng.incusos-flasher
     age
     bind
     coreutils
-    git
-    openssh
+    curl
     efitools
     git
+    incus
     jq
     libargon2
+    linyinfeng.incusos-flasher
+    mtools
     nix
+    openssh
     openssl
     prettier
+    qemu
     ruby
     sops
+    swtpm
     syncthing
     terraform
     util-linux
-    mtools
+    xorriso
     xray
     yq-go
     zerotierone
@@ -138,7 +150,10 @@ python3Packages.buildPythonApplication {
       --prefix PATH : ${lib.makeBinPath runtimeTools} \
       --set MAINTAIN_STAGE_REGISTRY ${stageRegistry} \
       --set MAINTAIN_SOPS_CONFIG ${sopsConfig} \
-      --set MAINTAIN_SECUREBOOT_MICROSOFT ${microsoftSecureBoot}
+      --set MAINTAIN_SECUREBOOT_MICROSOFT ${microsoftSecureBoot} \
+      --set MAINTAIN_WINDOWS_FIRMWARE ${OVMFFull.firmware} \
+      --set MAINTAIN_WINDOWS_VARIABLES ${OVMFFull.variablesMs} \
+      --set MAINTAIN_WINDOWS_DRIVERS ${virtio-win}
 
     installShellCompletion --cmd maintain \
       --bash <($out/bin/maintain completion bash) \
