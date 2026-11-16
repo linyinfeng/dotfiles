@@ -18,6 +18,42 @@
     nvidiaSettings = true;
   };
 
+  home-manager.users.yinfeng.services.kanshi.settings =
+    let
+      virtual = "Virtual-1";
+    in
+    [
+      {
+        profile = {
+          name = "physical";
+          outputs = [
+            {
+              criteria = virtual;
+              status = "disable";
+            }
+            {
+              # The remaining output is the monitor connected to the RTX 4060.
+              criteria = "*";
+              status = "enable";
+              position = "0,0";
+            }
+          ];
+        };
+      }
+      {
+        profile = {
+          name = "virtual";
+          outputs = [
+            {
+              criteria = virtual;
+              status = "enable";
+              position = "0,0";
+            }
+          ];
+        };
+      }
+    ];
+
   environment.systemPackages = with pkgs; [
     nvtopPackages.full
     vulkan-tools
