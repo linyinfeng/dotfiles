@@ -23,4 +23,6 @@ in
       capture = "kms";
     };
   };
+
+  environment.global-persistence.user.directories = [ ".config/sunshine" ];
 }
