@@ -8,7 +8,9 @@ from typer.completion import get_completion_script
 from maintain import ca, incusos, nixos, secrets, terraform, tools, windows
 
 app = typer.Typer(
-    help="maintenance CLI for this repository", pretty_exceptions_show_locals=False
+    help="maintenance CLI for this repository",
+    pretty_exceptions_show_locals=False,
+    no_args_is_help=True,
 )
 app.add_typer(ca.app, name="ca")
 app.add_typer(incusos.app, name="incusos")
