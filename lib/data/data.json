@@ -261,6 +261,11 @@
     },
     "personal": {
       "cidr": "10.243.0.0/16"
+    },
+    "wireguard-home": {
+      "cidr": "10.243.181.0/24",
+      "home-router": "10.243.181.1",
+      "parrot": "10.243.181.2"
     }
   },
   "tailscale_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",

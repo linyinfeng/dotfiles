@@ -6,18 +6,13 @@
 }:
 let
   interfaceName = "wg-home";
-  inherit (config.networking) hostName;
+  inherit (config.lib.self) cidr data;
+  subnet = data.subnets.wireguard-home;
+  inherit (cidr.parse subnet.cidr) prefixLength;
+  address = subnet.${config.networking.hostName};
   port = config.ports.wireguard;
-  hosts = {
-    parrot = {
-      ip = "192.168.2.2";
-      inherit port;
-    };
-  };
   home = {
-    AllowedIPs = [
-      "192.168.2.0/24"
-    ];
+    AllowedIPs = [ subnet.cidr ];
     Endpoint = "home.li7g.com:13231";
     PublicKey = "2JEjZzJGtd6Om0JN4RooJ68QtYm1WMZRP+qSgv6lBXE=";
     PersistentKeepalive = 30;
@@ -31,7 +26,7 @@ in
     };
     wireguardConfig = {
       PrivateKeyFile = config.sops.secrets."wireguard_private_key".path;
-      ListenPort = hosts.${hostName}.port;
+      ListenPort = port;
     };
     wireguardPeers = [ home ];
   };
@@ -39,22 +34,17 @@ in
     matchConfig = {
       Name = interfaceName;
     };
-    linkConfig = {
-      # the tunnel stays down (and cannot be waited on) until it is brought
-      # up by hand: `networkctl up wg-home`, and `networkctl down wg-home`
-      RequiredForOnline = false;
-      ActivationPolicy = "manual";
-    };
+    linkConfig.RequiredForOnline = false;
     addresses = [
       {
-        Address = "${hosts.${hostName}.ip}/24";
+        Address = "${address}/${toString prefixLength}";
         Scope = "link";
       }
     ];
     routes = lib.lists.map (ip: {
       Destination = ip;
       Scope = "site";
-      PreferredSource = hosts.${hostName}.ip;
+      PreferredSource = address;
     }) home.AllowedIPs;
   };
   sops.secrets."wireguard_private_key" = {
@@ -66,7 +56,7 @@ in
     reloadUnits = [ "systemd-networkd.service" ];
   };
   environment.systemPackages = with pkgs; [ wireguard-tools ];
-  networking.firewall.allowedUDPPorts = [ hosts.${hostName}.port ];
+  networking.firewall.allowedUDPPorts = [ port ];
   networking.networkmanager.unmanaged = [ interfaceName ];
   topology.self.interfaces.${interfaceName} = {
     virtual = true;

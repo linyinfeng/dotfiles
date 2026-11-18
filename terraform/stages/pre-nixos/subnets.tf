@@ -4,6 +4,9 @@ locals {
 
   # 183 is the first byte of SHA-256("ostrich"), in decimal.
   ostrich_incus_ipv4_cidr = cidrsubnet(local.personal_ipv4_cidr, 8, 183)
+
+  # 181 is the first byte of SHA-256("wireguard-home"), in decimal.
+  wireguard_home_ipv4_cidr = cidrsubnet(local.personal_ipv4_cidr, 8, 181)
 }
 
 output "subnets" {
@@ -21,6 +24,12 @@ output "subnets" {
         cidrhost(local.ostrich_incus_ipv4_cidr, 100),
         cidrhost(local.ostrich_incus_ipv4_cidr, 199),
       ])
+    }
+
+    wireguard-home = {
+      cidr        = local.wireguard_home_ipv4_cidr
+      home-router = cidrhost(local.wireguard_home_ipv4_cidr, 1)
+      parrot      = cidrhost(local.wireguard_home_ipv4_cidr, 2)
     }
   }
 }

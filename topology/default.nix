@@ -1,6 +1,7 @@
 { config, self, ... }:
 let
   helper = config.lib.topology;
+  homeVpn = self.lib.data.subnets.wireguard-home;
 in
 {
   nodes = {
@@ -86,7 +87,7 @@ in
     };
     home-vpn = {
       name = "Home (VPN)";
-      cidrv4 = "192.168.2.1/24";
+      cidrv4 = "${homeVpn.home-router}/${toString (self.lib.cidr.parse homeVpn.cidr).prefixLength}";
     };
     dn42 = {
       name = "DN42";
