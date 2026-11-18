@@ -32,7 +32,9 @@
   swtpm,
   incus,
   OVMFFull,
+  p7zip,
   virtio-win,
+  wimlib,
 }:
 let
   microsoftSecureBoot = "${linyinfeng.sources.secureboot_objects.src}/PreSignedObjects";
@@ -98,6 +100,7 @@ let
     nix
     openssh
     openssl
+    p7zip
     prettier
     qemu
     ruby
@@ -106,6 +109,7 @@ let
     syncthing
     terraform
     util-linux
+    wimlib
     xorriso
     xray
     yq-go

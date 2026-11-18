@@ -1,8 +1,15 @@
 $ErrorActionPreference = 'Stop'
 Start-Transcript -Path 'C:\Windows\Temp\maintain-image.log' -Force
 try {
-    & pnputil.exe /add-driver "$PSScriptRoot\drivers\*.inf" /subdirs /install
-    if ($LASTEXITCODE -notin @(0, 3010)) { throw "Driver installation failed: $LASTEXITCODE" }
+    $drivers = Get-ChildItem -LiteralPath "$PSScriptRoot\drivers" -Filter '*.inf' -File -Recurse
+    if (!$drivers) { throw 'No VirtIO drivers found on the installation media' }
+    foreach ($driver in $drivers) {
+        & pnputil.exe /add-driver $driver.FullName /install
+        # 259 means no matching device or Windows already has a better driver.
+        if ($LASTEXITCODE -notin @(0, 259, 3010)) {
+            throw "Driver installation failed for $($driver.Name): $LASTEXITCODE"
+        }
+    }
     $installer = Start-Process msiexec.exe -ArgumentList @('/i', "`"$PSScriptRoot\qemu-ga-x86_64.msi`"", '/qn', '/norestart') -Wait -PassThru
     if ($installer.ExitCode -notin @(0, 3010)) { throw "QEMU guest agent installation failed: $($installer.ExitCode)" }
 

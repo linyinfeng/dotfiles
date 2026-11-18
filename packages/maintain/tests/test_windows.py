@@ -21,7 +21,7 @@ def iso_file(path):
 def test_unattended_selects_pro_and_preserves_private_values():
     password = 'test<&"password'
     root = ET.fromstring(
-        windows.unattended("en-US", "Yinfeng", "ostrich-win", password)
+        windows.unattended("en-US", "Yinfeng", "ostrich-win", password, "11")
     )
     ns = {"u": "urn:schemas-microsoft-com:unattend"}
     assert root.find(".//u:InstallFrom/u:MetaData/u:Value", ns).text == "Windows 11 Pro"
@@ -124,12 +124,43 @@ def test_download_is_resumable_and_reuses_cache(tmp_path, monkeypatch):
     assert not list(tmp_path.glob("*.part"))
 
 
+def test_discover_iso_requires_one_matching_pro_target(tmp_path, monkeypatch):
+    contents = b"""<WIM>
+        <IMAGE><NAME>Windows 10 Pro</NAME><WINDOWS><ARCH>9</ARCH></WINDOWS></IMAGE>
+        <IMAGE><NAME>Windows 11 Pro</NAME><WINDOWS><ARCH>12</ARCH></WINDOWS></IMAGE>
+        <IMAGE><NAME>Windows 11 Home</NAME><WINDOWS><ARCH>9</ARCH></WINDOWS></IMAGE>
+    </WIM>"""
+
+    def run(command, **kwargs):
+        if command[0] == "7z":
+            Path(command[3][2:], "install.esd").touch()
+        else:
+            assert command[2].endswith("/install.esd")
+            return SimpleNamespace(stdout=contents)
+
+    monkeypatch.setattr(windows.subprocess, "run", run)
+    iso = tmp_path / "media.iso"
+    assert windows.discover_iso(iso, tmp_path, None, "amd64") == ("10", "amd64")
+    assert windows.discover_iso(iso, tmp_path, "11", None) == ("11", "arm64")
+    with pytest.raises(typer.BadParameter, match="multiple matching"):
+        windows.discover_iso(iso, tmp_path, None, None)
+    with pytest.raises(typer.BadParameter, match="no matching"):
+        windows.discover_iso(iso, tmp_path, "11", "amd64")
+    assert not list(tmp_path.glob(".inspect.*"))
+
+
 @pytest.fixture
 def build_environment(tmp_path, monkeypatch):
     monkeypatch.setenv("DOTFILES_DIR", str(tmp_path))
     drivers = tmp_path / "virtio"
     (drivers / "viostor/w11/amd64").mkdir(parents=True)
     (drivers / "viostor/w11/amd64/viostor.inf").write_text("driver")
+    (drivers / "viostor/w10/amd64").mkdir(parents=True)
+    (drivers / "viostor/w10/amd64/viostor.inf").write_text("driver")
+    (drivers / "viostor/w11/arm64").mkdir()
+    (drivers / "viostor/w11/arm64/viostor.inf").write_text("arm64 driver")
+    (drivers / "viostor/w7/amd64").mkdir(parents=True)
+    (drivers / "viostor/w7/amd64/viostor.inf").write_text("legacy driver")
     (drivers / "guest-agent").mkdir()
     (drivers / "guest-agent/qemu-ga-x86_64.msi").write_bytes(b"MSI")
     monkeypatch.setenv("MAINTAIN_WINDOWS_DRIVERS", str(drivers))
@@ -138,6 +169,7 @@ def build_environment(tmp_path, monkeypatch):
     monkeypatch.setattr(windows.os, "access", lambda *args: True)
     monkeypatch.setattr(windows.platform, "machine", lambda: "x86_64")
     monkeypatch.setattr(windows.shutil, "which", lambda command: "/bin/" + command)
+    monkeypatch.setattr(windows, "discover_iso", lambda *args: ("11", "amd64"))
     calls = []
 
     def run(command, **kwargs):
@@ -146,6 +178,12 @@ def build_environment(tmp_path, monkeypatch):
             stage = Path(command[-1])
             assert (stage / "autounattend.xml").is_file()
             assert (stage / "IncusBootstrap.ps1").is_file()
+            ns = {"u": "urn:schemas-microsoft-com:unattend"}
+            answer = ET.parse(stage / "autounattend.xml")
+            path = answer.find(".//u:DriverPaths/u:PathAndCredentials/u:Path", ns).text
+            assert list((stage / "drivers").rglob("*.inf")) == [
+                stage.joinpath(*path.split("\\")[1:], "viostor.inf")
+            ]
             Path(command[command.index("-o") + 1]).write_bytes(b"private seed")
 
     monkeypatch.setattr(windows, "run", run)
@@ -205,6 +243,34 @@ def test_failed_install_does_not_publish_image(
     assert not (target / "metadata.tar.xz").exists()
     assert "image ready:" not in result.output
     assert not any(command[0] == "incus" for command in calls)
+
+
+def test_manual_win10_target_skips_discovery(tmp_path, build_environment, monkeypatch):
+    source, _ = build_environment
+
+    def discover(*args):
+        pytest.fail("explicit release and architecture should skip discovery")
+
+    monkeypatch.setattr(windows, "discover_iso", discover)
+    result = CliRunner().invoke(
+        app,
+        [
+            "windows",
+            "image",
+            "--iso",
+            str(source),
+            "--release",
+            "10",
+            "--arch",
+            "amd64",
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    target = tmp_path / ".data/windows/windows-image"
+    assert json.loads((target / "manifest.json").read_text())["os"] == "Windows 10 Pro"
+    with tarfile.open(target / "metadata.tar.xz") as archive:
+        data = json.load(archive.extractfile("metadata.yaml"))
+    assert data["properties"]["release"] == "10"
 
 
 def test_existing_output_is_never_overwritten(tmp_path, build_environment):

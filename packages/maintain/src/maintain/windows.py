@@ -1,4 +1,4 @@
-"""Build a private, unattended Windows 11 Pro disk for a one-time Incus import."""
+"""Build a private, unattended Windows Pro disk for a one-time Incus import."""
 
 import hashlib
 import html
@@ -17,6 +17,7 @@ import time
 import urllib.parse
 import urllib.request
 import uuid
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -119,9 +120,7 @@ def obtain_iso(cache: Path, locale: str, url: str | None, expected: str | None) 
         partial = target.with_suffix(".iso.part")
         if partial.is_symlink():
             raise typer.BadParameter(f"cache must not be a symlink: {partial}")
-        message(
-            "downloading Windows 11 from Microsoft (partial downloads are resumable)"
-        )
+        message("downloading Windows from Microsoft (partial downloads are resumable)")
         run(
             [
                 "curl",
@@ -160,12 +159,75 @@ def verify_iso(path: Path, expected: str | None) -> None:
         raise typer.BadParameter(f"Windows ISO SHA-256 mismatch: {path}")
 
 
-def unattended(locale: str, username: str, hostname: str, password: str) -> str:
+def discover_iso(
+    iso: Path, scratch: Path, release: str | None, arch: str | None
+) -> tuple[str, str]:
+    """Find the Pro image for the requested Windows release and architecture."""
+    message("reading Windows release and architecture from ISO")
+    with tempfile.TemporaryDirectory(prefix=".inspect.", dir=scratch) as temporary:
+        directory = Path(temporary)
+        try:
+            subprocess.run(
+                [
+                    "7z",
+                    "e",
+                    "-y",
+                    f"-o{directory}",
+                    str(iso),
+                    "sources/install.wim",
+                    "sources/install.esd",
+                ],
+                check=True,
+                capture_output=True,
+            )
+            archives = [path for path in directory.iterdir() if path.is_file()]
+            if len(archives) != 1:
+                raise ValueError("expected one sources/install.wim or install.esd")
+            info = subprocess.run(
+                ["wimlib-imagex", "info", str(archives[0]), "--xml"],
+                check=True,
+                capture_output=True,
+            )
+            images = ET.fromstring(info.stdout).findall("IMAGE")
+        except (
+            OSError,
+            ValueError,
+            ET.ParseError,
+            subprocess.CalledProcessError,
+        ) as error:
+            raise typer.BadParameter(
+                "could not read Windows ISO metadata; specify both --release and --arch"
+            ) from error
+
+    candidates = set()
+    for image in images:
+        name = re.fullmatch(r"Windows (10|11) Pro", image.findtext("NAME", ""))
+        image_arch = {"9": "amd64", "12": "arm64"}.get(image.findtext("WINDOWS/ARCH"))
+        if (
+            name
+            and image_arch
+            and release in (None, name[1])
+            and arch in (None, image_arch)
+        ):
+            candidates.add((name[1], image_arch))
+    if len(candidates) != 1:
+        reason = "no matching" if not candidates else "multiple matching"
+        raise typer.BadParameter(
+            f"found {reason} Windows 10/11 Pro targets in the ISO; "
+            "check the ISO or specify both --release and --arch"
+        )
+    return candidates.pop()
+
+
+def unattended(
+    locale: str, username: str, hostname: str, password: str, release: str
+) -> str:
     text = (ASSETS / "autounattend.xml").read_text()
     for key, value in {
         "LOCALE": locale,
         "USERNAME": username,
         "HOSTNAME": hostname,
+        "RELEASE": release,
         "PASSWORD": password,
     }.items():
         text = text.replace(f"@{key}@", html.escape(value))
@@ -179,10 +241,11 @@ def seed(
     username: str,
     hostname: str,
     password: str,
+    release: str,
 ) -> None:
     directory.mkdir(mode=0o700)
     (directory / "autounattend.xml").write_text(
-        unattended(locale, username, hostname, password)
+        unattended(locale, username, hostname, password, release)
     )
     shutil.copyfile(ASSETS / "Finish.ps1", directory / "Finish.ps1")
     target = directory / "drivers"
@@ -199,12 +262,14 @@ def seed(
         "viogpudo",
         "qemufwcfg",
     ):
-        if (drivers / name).is_dir():
-            shutil.copytree(drivers / name, target / name)
+        # Older catalogs can require an interactive publisher confirmation.
+        driver = Path(name) / f"w{release}" / "amd64"
+        if (drivers / driver).is_dir():
+            shutil.copytree(drivers / driver, target / driver)
     agent = drivers / "guest-agent/qemu-ga-x86_64.msi"
-    if not agent.is_file() or not (target / "viostor/w11/amd64").is_dir():
+    if not agent.is_file() or not (target / f"viostor/w{release}/amd64").is_dir():
         raise typer.BadParameter(
-            "VirtIO package lacks Windows 11 amd64 drivers or QEMU agent"
+            f"VirtIO package lacks Windows {release} amd64 drivers or QEMU agent"
         )
     shutil.copyfile(agent, directory / "qemu-ga-x86_64.msi")
     shutil.copyfile(ASSETS / "IncusBootstrap.ps1", directory / "IncusBootstrap.ps1")
@@ -373,15 +438,15 @@ def install(
     run(["qemu-img", "check", str(target / "rootfs.qcow2")])
 
 
-def metadata(target: Path, locale: str) -> None:
+def metadata(target: Path, locale: str, release: str) -> None:
     data = json.dumps(
         {
             "architecture": "x86_64",
             "creation_date": int(time.time()),
             "properties": {
                 "os": "Windows",
-                "release": "11",
-                "description": f"Windows 11 Pro ({locale}), VirtIO",
+                "release": release,
+                "description": f"Windows {release} Pro ({locale}), VirtIO",
                 "requirements.cdrom_agent": "true",
             },
         }
@@ -399,7 +464,7 @@ def image(
         Path | None, typer.Option(help="new private output directory")
     ] = None,
     iso: Annotated[
-        Path | None, typer.Option(help="existing official Windows 11 x64 ISO")
+        Path | None, typer.Option(help="existing official Windows 10 or 11 ISO")
     ] = None,
     iso_url: Annotated[
         str | None,
@@ -407,6 +472,16 @@ def image(
     ] = None,
     iso_sha256: Annotated[
         str | None, typer.Option(help="expected SHA-256 from Microsoft")
+    ] = None,
+    release: Annotated[
+        Literal["10", "11"] | None,
+        typer.Option(help="Windows release; default: detect from ISO"),
+    ] = None,
+    arch: Annotated[
+        Literal["amd64", "arm64"] | None,
+        typer.Option(
+            help="Windows architecture; default: detect from ISO (builds support amd64)"
+        ),
     ] = None,
     locale: Annotated[Literal["zh-CN", "en-US"], typer.Option()] = "en-US",
     username: Annotated[str, typer.Option()] = "Yinfeng",
@@ -443,6 +518,10 @@ def image(
     """
     if iso and iso_url:
         raise typer.BadParameter("use either --iso or --iso-url")
+    if release == "10" and not (iso or iso_url):
+        raise typer.BadParameter("for Windows 10, supply --iso or --iso-url")
+    if arch == "arm64":
+        raise typer.BadParameter("Windows ARM64 image builds are not supported yet")
     if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,19}", username):
         raise typer.BadParameter(
             "username must be 1-20 ASCII letters, digits, underscores or hyphens"
@@ -502,6 +581,10 @@ def image(
     cache.mkdir(parents=True, mode=0o700, exist_ok=True)
     source = iso.absolute() if iso else obtain_iso(cache, locale, iso_url, iso_sha256)
     verify_iso(source, iso_sha256)
+    if release is None or arch is None:
+        release, arch = discover_iso(source, cache, release, arch)
+    if arch != "amd64":
+        raise typer.BadParameter("Windows ARM64 image builds are not supported yet")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.mkdir(mode=0o700)
     credentials = target / "credentials.json"
@@ -510,7 +593,7 @@ def image(
     )
     credentials.chmod(0o600)
     message(
-        f"building Windows 11 Pro ({locale}); credentials are saved privately in {credentials}"
+        f"building Windows {release} Pro ({locale}, {arch}); credentials are saved privately in {credentials}"
     )
     with tempfile.TemporaryDirectory(prefix=".seed.", dir=target) as temporary:
         staging = Path(temporary) / "files"
@@ -521,6 +604,7 @@ def image(
             username,
             hostname,
             password,
+            release,
         )
         run(
             [
@@ -539,11 +623,11 @@ def image(
             umask=0o077,
         )
     install(target, source, cpus, memory, timeout, vnc_display)
-    metadata(target, locale)
+    metadata(target, locale, release)
     (target / "manifest.json").write_text(
         json.dumps(
             {
-                "os": "Windows 11 Pro",
+                "os": f"Windows {release} Pro",
                 "locale": locale,
                 "hostname": hostname,
                 "iso_sha256": sha256(source),

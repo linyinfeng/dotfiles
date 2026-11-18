@@ -29,7 +29,7 @@
       </DiskConfiguration>
       <ImageInstall>
         <OSImage>
-          <InstallFrom><MetaData wcm:action="add"><Key>/IMAGE/NAME</Key><Value>Windows 11 Pro</Value></MetaData></InstallFrom>
+          <InstallFrom><MetaData wcm:action="add"><Key>/IMAGE/NAME</Key><Value>Windows @RELEASE@ Pro</Value></MetaData></InstallFrom>
           <InstallTo><DiskID>0</DiskID><PartitionID>4</PartitionID></InstallTo>
           <WillShowUI>OnError</WillShowUI>
         </OSImage>
@@ -42,9 +42,9 @@
     </component>
     <component name="Microsoft-Windows-PnpCustomizationsWinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
       <DriverPaths>
-        <PathAndCredentials wcm:action="add" wcm:keyValue="1"><Path>E:\drivers\viostor\w11\amd64</Path></PathAndCredentials>
-        <PathAndCredentials wcm:action="add" wcm:keyValue="2"><Path>E:\drivers\vioscsi\w11\amd64</Path></PathAndCredentials>
-        <PathAndCredentials wcm:action="add" wcm:keyValue="3"><Path>E:\drivers\NetKVM\w11\amd64</Path></PathAndCredentials>
+        <PathAndCredentials wcm:action="add" wcm:keyValue="1"><Path>E:\drivers\viostor\w@RELEASE@\amd64</Path></PathAndCredentials>
+        <PathAndCredentials wcm:action="add" wcm:keyValue="2"><Path>E:\drivers\vioscsi\w@RELEASE@\amd64</Path></PathAndCredentials>
+        <PathAndCredentials wcm:action="add" wcm:keyValue="3"><Path>E:\drivers\NetKVM\w@RELEASE@\amd64</Path></PathAndCredentials>
       </DriverPaths>
     </component>
   </settings>
