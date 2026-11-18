@@ -3,8 +3,8 @@
 set -e
 
 if [ -e /etc/INITIALIZED ]; then
-  echo "already initialized"
-  exit 0
+	echo "already initialized"
+	exit 0
 fi
 
 echo "start initialization"
@@ -42,11 +42,11 @@ swapon /swapfile
 
 echo "get latest configuration"
 nix build --profile /nix/var/nix/profiles/system \
-  "github:linyinfeng/dotfiles/tested#nixosConfigurations.$CONFIG_NAME.config.system.build.toplevel" \
-  --verbose \
-  --option extra-experimental-features "nix-command flakes" \
-  --option extra-substituters "https://linyinfeng.cachix.org" \
-  --option extra-trusted-public-keys "linyinfeng.cachix.org-1:sPYQXcNrnCf7Vr7T0YmjXz5dMZ7aOKG3EqLja0xr9MM="
+	"github:linyinfeng/dotfiles/tested#nixosConfigurations.$CONFIG_NAME.config.system.build.toplevel" \
+	--verbose \
+	--option extra-experimental-features "nix-command flakes" \
+	--option extra-substituters "https://linyinfeng.cachix.org" \
+	--option extra-trusted-public-keys "linyinfeng.cachix.org-1:sPYQXcNrnCf7Vr7T0YmjXz5dMZ7aOKG3EqLja0xr9MM="
 
 echo "switch to new configuration"
 /nix/var/nix/profiles/system/bin/switch-to-configuration boot
