@@ -3,12 +3,8 @@ resource "incus_instance" "nixos" {
   type = "virtual-machine"
   # Manually import the initial image with this alias before the first apply.
   # Subsequent NixOS deployments update the guest in place.
-  image = "ostrich-initial"
-  profiles = [
-    incus_profile.seat.name,
-    incus_profile.streaming.name,
-    incus_profile.audio.name,
-  ]
+  image    = "ostrich-initial"
+  profiles = []
   # Keep creation stopped; subsequent power changes are operational actions.
   running = false
 
@@ -34,8 +30,9 @@ resource "incus_instance" "nixos" {
     name = "eth0"
     type = "nic"
     properties = {
-      name    = "eth0"
-      network = "incusbr0"
+      name           = "eth0"
+      network        = incus_network.incusbr0.name
+      "ipv4.address" = local.vm_subnet.nixos
     }
   }
 
@@ -47,8 +44,7 @@ resource "incus_instance" "nixos" {
 
   lifecycle {
     prevent_destroy = true
-    # Switching between NixOS and Windows is an operational action; applying
-    # unrelated infrastructure changes must not start or stop this VM.
-    ignore_changes = [image, running]
+    # Power and shared device profiles are switched manually after creation.
+    ignore_changes = [image, profiles, running]
   }
 }

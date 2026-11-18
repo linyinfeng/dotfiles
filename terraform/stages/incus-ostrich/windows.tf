@@ -12,9 +12,8 @@ resource "incus_instance" "windows" {
   running = false
 
   config = {
-    "limits.cpu"    = "12"
-    "limits.memory" = "16GiB"
-    # NixOS is the default owner of the shared GPU and peripherals.
+    "limits.cpu"          = "12"
+    "limits.memory"       = "16GiB"
     "boot.autostart"      = "false"
     "security.secureboot" = "true"
   }
@@ -34,8 +33,9 @@ resource "incus_instance" "windows" {
     name = "eth0"
     type = "nic"
     properties = {
-      name    = "eth0"
-      network = "incusbr0"
+      name           = "eth0"
+      network        = incus_network.incusbr0.name
+      "ipv4.address" = local.vm_subnet.windows
     }
   }
 
@@ -55,6 +55,7 @@ resource "incus_instance" "windows" {
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes  = [image, running]
+    # Power and shared device profiles are switched manually after creation.
+    ignore_changes = [image, profiles, running]
   }
 }
