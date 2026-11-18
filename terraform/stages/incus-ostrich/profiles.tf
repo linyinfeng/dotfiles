@@ -5,7 +5,7 @@ moved {
 
 resource "incus_profile" "seat" {
   name        = "seat"
-  description = "RTX 4060 and local input devices"
+  description = "RTX 4060, local input devices and YubiKey"
 
   device {
     name = "gpu"
@@ -33,6 +33,15 @@ resource "incus_profile" "seat" {
     properties = {
       vendorid  = "373b"
       productid = "101b"
+    }
+  }
+
+  device {
+    name = "yubikey"
+    type = "usb"
+    properties = {
+      vendorid  = "1050"
+      productid = "0407"
     }
   }
 }
