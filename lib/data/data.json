@@ -251,6 +251,18 @@
       "proxy": true
     }
   },
+  "subnets": {
+    "ostrich-incus": {
+      "cidr": "10.243.183.0/24",
+      "dhcp_range": "10.243.183.100-10.243.183.199",
+      "gateway": "10.243.183.1",
+      "nixos": "10.243.183.10",
+      "windows": "10.243.183.20"
+    },
+    "personal": {
+      "cidr": "10.243.0.0/16"
+    }
+  },
   "tailscale_hosts_json": "[\"hkg0\",\"mtl0\",\"nuc\",\"ostrich\",\"parrot\",\"sparrow\",\"xps8930\"]",
   "tailscale_tailnet_domain": "bunny-mountain.ts.net",
   "zitadel_incus_client_id": "399722494140978289",
