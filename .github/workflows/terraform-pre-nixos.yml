@@ -5,10 +5,12 @@ on:
       - "main"
   workflow_dispatch:
 
-concurrency: push-to-main
+concurrency:
+  group: push-to-main
+  queue: max
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
@@ -22,11 +24,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: infrastructure
     steps:
-      - name: Checkout
+      - name: Checkout latest main
         uses: actions/checkout@v7
         with:
+          ref: main
           path: dotfiles
-          token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
+          # Use the repository token so generated commits do not trigger workflows.
+          token: ${{ github.token }}
       - name: Setup
         uses: ./dotfiles/.github/actions/terraform-setup
         with:

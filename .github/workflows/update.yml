@@ -5,7 +5,9 @@ on:
     - cron: "0 16 * * *"
   workflow_dispatch:
 
-concurrency: push-to-main
+concurrency:
+  group: push-to-main
+  queue: max
 
 permissions:
   contents: read
@@ -22,6 +24,7 @@ jobs:
         with:
           ref: staging
           fetch-depth: 0
+          # Use the PAT so staging pushes and update PRs trigger CI.
           token: "${{ secrets.PAT_FOR_AUTOMATED_UPDATE }}"
       - name: Install nix
         uses: cachix/install-nix-action@v31

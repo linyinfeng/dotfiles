@@ -5,7 +5,9 @@ on:
       - "main"
   workflow_dispatch:
 
-concurrency: push-to-main
+concurrency:
+  group: push-to-main
+  queue: max
 
 permissions:
   contents: read
