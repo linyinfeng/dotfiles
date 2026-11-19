@@ -53,11 +53,14 @@ in
   home-manager.users.${name} =
     { lib, ... }:
     {
+      programs.hermes-team.github.poll = true;
+
       world = {
         profiles = {
           git.enable = lib.mkDefault true;
           llm = {
             general.enable = lib.mkDefault true;
+            hermes.enable = true;
             pi.enable = lib.mkDefault true;
           };
           shells.enable = lib.mkDefault true;
