@@ -72,6 +72,12 @@ in
         telegram = {
           envFile = config.sops.templates.hermes-team-telegram.path;
           userId = 148111617;
+          topicIds = {
+            secretary = 202615;
+            maintainer = 202616;
+            ops = 202617;
+            team-maintainer = 202618;
+          };
         };
         webhook.port = config.ports.hermes-team-webhook;
       };
