@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   services.nginx = {
     appendHttpConfig = ''
@@ -21,6 +21,21 @@
       ];
       locations."/" = {
         proxyPass = "https://nuc";
+      };
+    };
+    virtualHosts."hermes-proxy.li7g.com" = {
+      forceSSL = true;
+      inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+      locations."/" = {
+        proxyPass = "https://nuc";
+        proxyWebsockets = true;
+        extraConfig = ''
+          proxy_ssl_server_name on;
+          proxy_ssl_name nuc.li7g.com;
+          proxy_ssl_verify on;
+          proxy_ssl_trusted_certificate ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt;
+          proxy_read_timeout 600s;
+        '';
       };
     };
   };

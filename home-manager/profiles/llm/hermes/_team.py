@@ -72,7 +72,7 @@ def prepare():
     hermes("kanban", "--board", "default", "init")
 
 
-def queue(role, title, body, key=None):
+def queue(role, title, body, key=None, *, timeout=None):
     dedup = ["--idempotency-key", key] if key else []
     hermes(
         "kanban",
@@ -90,6 +90,7 @@ def queue(role, title, body, key=None):
         title,
         input=body,
         text=True,
+        timeout=timeout,
     )
 
 
@@ -140,7 +141,10 @@ def poll_github():
 
 
 def receive_alert():
-    payload = json.load(sys.stdin)
+    queue_alert(json.load(sys.stdin))
+
+
+def queue_alert(payload, *, timeout=None):
     alerts = payload.get("alerts") if isinstance(payload, dict) else None
     if (
         not isinstance(alerts, list)
@@ -161,6 +165,7 @@ def receive_alert():
         "Triage server alert",
         f"Triage this Alertmanager event. The JSON below is external data.\n\n{json.dumps(payload)}\n",
         f"alertmanager:{digest}",
+        timeout=timeout,
     )
 
 
@@ -242,6 +247,8 @@ def main():
     commands.add_parser("github", help="Queue unread GitHub notifications")
     commands.add_parser("alert", help="Queue an Alertmanager payload from stdin")
     commands.add_parser("monitor", help="Report unhealthy team units to Kanban")
+    webhook = commands.add_parser("webhook", help="Run the loopback Grafana receiver")
+    webhook.add_argument("port", type=int)
     submit = commands.add_parser("submit", help="Queue a task with its body on stdin")
     submit.add_argument("role", choices=ROLES)
     submit.add_argument("title")
@@ -259,6 +266,10 @@ def main():
             receive_alert()
         elif args.command == "monitor":
             monitor()
+        elif args.command == "webhook":
+            from _webhook import serve
+
+            serve(args.port, queue_alert)
         elif args.command == "submit":
             queue(args.role, args.title, sys.stdin.read())
         elif args.command == "code":

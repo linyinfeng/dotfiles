@@ -15,11 +15,15 @@ let
     team-maintainer = ./_team-maintainer.md;
   };
   codexUnits = lib.optional config.world.profiles.llm.general.enable "codex-app-server.service";
+  webhookEnabled = cfg.webhook.tokenFile != null;
+  dashboardEnabled = cfg.dashboard.port != null;
   persistentUnits = [
     "hermes-team.service"
   ]
   ++ codexUnits
-  ++ lib.optional cfg.github.poll "hermes-github-notifications.timer";
+  ++ lib.optional cfg.github.poll "hermes-github-notifications.timer"
+  ++ lib.optional webhookEnabled "hermes-team-webhook.service"
+  ++ lib.optional dashboardEnabled "hermes-team-dashboard.service";
   jobUnits = lib.optional cfg.github.poll "hermes-github-notifications.service";
   yaml = pkgs.formats.yaml { };
   modelKey = config.home.env.secretPaths.litellmApiKey or null;
@@ -67,7 +71,7 @@ let
     // lib.optionalAttrs (cfg.github.tokenFile != null) {
       HERMES_TEAM_GITHUB_TOKEN_FILE = cfg.github.tokenFile;
     };
-    text = ''exec python3 ${./_team.py} "$@"'';
+    text = ''exec python3 ${./.}/_team.py "$@"'';
   };
 in
 {
@@ -87,6 +91,22 @@ in
         description = "Runtime path to the GitHub token. If unset, use the saved gh token for github.user.";
       };
       poll = lib.mkEnableOption "polling unread GitHub notifications every ten minutes";
+    };
+    webhook = {
+      tokenFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Runtime path to the Grafana bearer token. Setting it enables the loopback receiver.";
+      };
+      port = lib.mkOption {
+        type = lib.types.port;
+        description = "Local port for the Grafana Webhook receiver.";
+      };
+    };
+    dashboard.port = lib.mkOption {
+      type = lib.types.nullOr lib.types.port;
+      default = null;
+      description = "Loopback port for the Hermes dashboard. Set only behind an authenticated reverse proxy.";
     };
   };
 
@@ -168,6 +188,35 @@ in
             Type = "oneshot";
             ExecStart = "${lib.getExe team} monitor";
             StateDirectory = "hermes-team-monitor";
+            UMask = "0077";
+          };
+        };
+        hermes-team-webhook = lib.mkIf webhookEnabled {
+          Unit = {
+            Description = "Receive Grafana alerts for the Hermes team";
+            PartOf = [ "hermes-team.target" ];
+            OnFailure = [ "hermes-team-monitor.service" ];
+          };
+          Service = {
+            ExecStart = "${lib.getExe team} webhook ${toString cfg.webhook.port}";
+            LoadCredential = "grafana-token:${cfg.webhook.tokenFile}";
+            Restart = "on-failure";
+            RestartSec = "10s";
+            UMask = "0077";
+          };
+        };
+        hermes-team-dashboard = lib.mkIf dashboardEnabled {
+          Unit = {
+            Description = "Hermes web dashboard and Kanban";
+            After = [ "hermes-team.service" ];
+            PartOf = [ "hermes-team.target" ];
+            OnFailure = [ "hermes-team-monitor.service" ];
+          };
+          Service = {
+            ExecStart = "${lib.getExe cfg.package} -p default dashboard --host 127.0.0.1 --port ${toString cfg.dashboard.port} --no-open --skip-build";
+            Environment = [ "HERMES_HOME=${hermesHome}" ];
+            Restart = "on-failure";
+            RestartSec = "10s";
             UMask = "0077";
           };
         };

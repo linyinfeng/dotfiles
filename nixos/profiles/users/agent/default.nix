@@ -14,9 +14,11 @@ in
   imports = [
     ./_filebrowser.nix
     ./_pi-web.nix
+    ./_hermes-web.nix
   ];
 
   world.profiles.development.llm-keys.enable = lib.mkDefault true;
+  world.profiles.services.personal-oidc.enable = lib.mkDefault true;
   users.users.${name} = {
     inherit uid;
     isNormalUser = true;
@@ -53,7 +55,10 @@ in
   home-manager.users.${name} =
     { lib, ... }:
     {
-      programs.hermes-team.github.poll = true;
+      programs.hermes-team = {
+        github.poll = true;
+        webhook.port = config.ports.hermes-team-webhook;
+      };
 
       world = {
         profiles = {

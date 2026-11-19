@@ -46,10 +46,30 @@ To supply a token from a runtime file, set
 update time while the corresponding card remains unarchived. Access to
 repository details uses the service user's `gh` configuration.
 
-Pipe Alertmanager webhook JSON from your alert relay into `hermes-team alert`
-as `agent`. For a different monitor, use `hermes-team submit ops 'Alert title'`
-with its event on stdin. This module provides the command to invoke and does
-not run an HTTP receiver. The board is the initial reporting destination.
+The web entrypoints are `https://hermes.li7g.com:8443` and
+`https://hermes-proxy.li7g.com`. Both serve the Hermes Dashboard at `/` and
+its shared Kanban board at `/kanban`. Nginx requires a Zitadel login through
+OAuth2 Proxy for the UI, APIs, and WebSockets. The allowed account is
+`lin.yinfeng@outlook.com`, configured by the shared `personal-oidc` profile.
+Other single-user applications can use that profile's Nginx authentication
+locations and shared `services.personal-oidc.allowedEmails` list. Register
+each application's HTTPS callback in the Zitadel Personal Apps client.
+
+Before deploying the host configuration, apply the Zitadel application and
+DNS records and refresh the Terraform outputs and host secrets through the
+repository's normal deployment workflow. The personal OIDC profile is
+enabled by default and requires the exported Personal Apps client ID.
+
+Configure Grafana separately to POST its default JSON to
+`https://hermes-proxy.li7g.com/grafana/alerts`. Set the authorization scheme
+to `Bearer` and use the `hermes_grafana_webhook_token` secret. This path
+uses the dedicated bearer token for machine authentication. The receiver
+returns HTTP 204 after Kanban accepts the event for `ops`. Repeated deliveries
+reuse the same card while it remains unarchived.
+
+For a local relay, pipe the same JSON to `hermes-team alert` as `agent`. For
+other monitor formats, use `hermes-team submit ops 'Alert title'` with the
+event on stdin.
 
 All four Profiles run as the same system user. Run
 `hermes -p secretary chat` to talk to the secretary.

@@ -66,6 +66,14 @@ output "grafana_password" {
   value     = random_password.grafana.result
   sensitive = true
 }
+resource "random_password" "hermes_grafana_webhook" {
+  length  = 32
+  special = false
+}
+output "hermes_grafana_webhook_token" {
+  value     = random_password.hermes_grafana_webhook.result
+  sensitive = true
+}
 resource "random_password" "vaultwarden_admin_token" {
   length  = 64
   special = false

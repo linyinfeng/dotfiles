@@ -129,6 +129,8 @@ locals {
     frp-nuc        = { on = "nuc", proxy = false }
     garage-admin   = { on = "mtl0", proxy = true }
     git            = { on = "nuc", proxy = false }
+    hermes         = { on = "nuc", proxy = false }
+    hermes-proxy   = { on = "mtl0", proxy = true }
     hledger        = { on = "mtl0", proxy = true }
     home-assistant = { on = "nuc", proxy = false }
     http-test      = { on = "mtl0", proxy = true }
