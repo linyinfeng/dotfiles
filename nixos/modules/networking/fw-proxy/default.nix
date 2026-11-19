@@ -470,6 +470,22 @@ with lib;
         '';
       };
     };
+    allowedIPv4Subnets = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      description = ''
+        IPv4 addresses or CIDR subnets allowed to access the explicit proxy ports
+        (HTTP/SOCKS5/mixed over TCP, and SOCKS5/mixed over UDP).
+      '';
+    };
+    allowedIPv6Subnets = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      description = ''
+        IPv6 addresses or CIDR subnets allowed to access the explicit proxy ports
+        (HTTP/SOCKS5/mixed over TCP, and SOCKS5/mixed over UDP).
+      '';
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -728,6 +744,37 @@ with lib;
       in
       {
         networking.firewall.interfaces = ifCfgs;
+      }
+    ))
+
+    (mkIf (cfg.allowedIPv4Subnets != [ ] || cfg.allowedIPv6Subnets != [ ]) (
+      let
+        tcpPorts = lib.concatMapStringsSep ", " toString [
+          cfg.ports.http
+          cfg.ports.socks
+          cfg.ports.mixed
+        ];
+        udpPorts = lib.concatMapStringsSep ", " toString [
+          cfg.ports.socks
+          cfg.ports.mixed
+        ];
+        mkRules =
+          family: subnets:
+          map (subnet: ''
+            ${family} saddr ${subnet} tcp dport { ${tcpPorts} } counter accept
+            ${family} saddr ${subnet} udp dport { ${udpPorts} } counter accept
+          '') subnets;
+      in
+      {
+        assertions = [
+          {
+            assertion = config.networking.nftables.enable;
+            message = "networking.fw-proxy.allowedIPv4Subnets and allowedIPv6Subnets require networking.nftables.enable";
+          }
+        ];
+        networking.firewall.extraInputRules = lib.concatStringsSep "\n" (
+          (mkRules "ip" cfg.allowedIPv4Subnets) ++ (mkRules "ip6" cfg.allowedIPv6Subnets)
+        );
       }
     ))
 

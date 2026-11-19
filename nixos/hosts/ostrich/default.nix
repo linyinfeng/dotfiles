@@ -47,6 +47,9 @@
       hardware.enableRedistributableFirmware = true;
       # NetworkManager manages the guest network interface.
       systemd.network.wait-online.enable = false;
+      networking.fw-proxy.allowedIPv4Subnets = [
+        config.lib.self.data.subnets.ostrich-incus.cidr
+      ];
 
       home-manager.users.yinfeng =
         { ... }:
