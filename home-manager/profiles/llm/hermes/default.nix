@@ -7,6 +7,10 @@
 }:
 let
   cfg = config.programs.hermes-team;
+  hermesPackages = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  hermesAgent = hermesPackages.hermes-agent.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [ ./_kanban-worker-python.patch ];
+  });
   hermesHome = "${config.home.homeDirectory}/.hermes";
   roleFiles = {
     maintainer = ./_maintainer.md;
@@ -76,9 +80,7 @@ let
 in
 {
   options.programs.hermes-team = {
-    package =
-      lib.mkPackageOption inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system} "hermes-agent"
-        { };
+    package = lib.mkPackageOption { hermes-agent = hermesAgent; } "hermes-agent" { };
     github = {
       user = lib.mkOption {
         type = lib.types.str;

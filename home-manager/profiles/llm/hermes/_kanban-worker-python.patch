@@ -1,0 +1,10 @@
+diff --git a/hermes_cli/kanban_db_dispatch.py b/hermes_cli/kanban_db_dispatch.py
+--- a/hermes_cli/kanban_db_dispatch.py
++++ b/hermes_cli/kanban_db_dispatch.py
+@@ -2697,4 +2697,5 @@
+ def _worker_argv(task: Task, profile_arg: str, hermes_home: Optional[str]) -> list[str]:
+     """The profile owner executes; this subprocess only waits for its receipt."""
+     import sys
+-    return [sys.executable, "-m", "hermes_cli.kanban_worker_client"]
++    python = os.environ.get("HERMES_PYTHON") or sys.executable
++    return [python, "-m", "hermes_cli.kanban_worker_client"]
