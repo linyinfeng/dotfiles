@@ -52,11 +52,27 @@ in
     after = [ "home-agent.mount" ];
     requires = [ "home-agent.mount" ];
   };
+  sops.secrets."telegram_bot_team" = {
+    predefined.enable = true;
+    restartUnits = [ ];
+  };
+  sops.templates.hermes-team-telegram = {
+    owner = name;
+    content = ''
+      TELEGRAM_BOT_TOKEN=${config.sops.placeholder.telegram_bot_team}
+    '';
+    # TODO: Restart the user gateway automatically when the token rotates.
+    restartUnits = [ ];
+  };
   home-manager.users.${name} =
     { lib, ... }:
     {
       programs.hermes-team = {
         github.poll = true;
+        telegram = {
+          envFile = config.sops.templates.hermes-team-telegram.path;
+          userId = 148111617;
+        };
         webhook.port = config.ports.hermes-team-webhook;
       };
 

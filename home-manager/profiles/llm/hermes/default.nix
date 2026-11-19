@@ -20,6 +20,7 @@ let
   codexUnits = lib.optional config.world.profiles.llm.general.enable "codex-app-server.service";
   webhookEnabled = cfg.webhook.tokenFile != null;
   dashboardEnabled = cfg.dashboard.port != null;
+  telegramEnabled = cfg.telegram.envFile != null;
   persistentUnits = [
     "hermes-team.service"
   ]
@@ -29,6 +30,29 @@ let
   ++ lib.optional dashboardEnabled "hermes-team-dashboard.service";
   jobUnits = lib.optional cfg.github.poll "hermes-github-notifications.service";
   yaml = pkgs.formats.yaml { };
+  telegramRoute = profile: {
+    name = "team-${profile}";
+    platform = "telegram";
+    chat_id = toString cfg.telegram.userId;
+    inherit profile;
+  };
+  telegramConfig = pkgs.linkFarm "hermes-team-telegram" {
+    "config.yaml" = yaml.generate "hermes-team-telegram.yaml" {
+      gateway = {
+        multiplex_profiles = true;
+        profile_routes =
+          lib.mapAttrsToList (
+            profile: id:
+            (telegramRoute profile)
+            // {
+              name = "team-${profile}-topic";
+              thread_id = toString id;
+            }
+          ) cfg.telegram.topicIds
+          ++ [ (telegramRoute "secretary") ];
+      };
+    };
+  };
   modelKey = config.home.env.secretPaths.litellmApiKey or null;
   seedConfig = yaml.generate "hermes-config.yaml" {
     model = {
@@ -110,6 +134,30 @@ in
       default = null;
       description = "Loopback port for the Hermes dashboard. Set only behind an authenticated reverse proxy.";
     };
+    telegram = {
+      envFile = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Runtime environment file containing TELEGRAM_BOT_TOKEN.";
+      };
+      userId = lib.mkOption {
+        type = lib.types.ints.positive;
+        description = "Telegram account allowed to use the team bot.";
+      };
+      topicIds = lib.mkOption {
+        type = lib.types.addCheck (lib.types.attrsOf lib.types.ints.positive) (
+          topics:
+          let
+            ids = lib.attrValues topics;
+          in
+          lib.all (role: builtins.hasAttr role roleFiles) (lib.attrNames topics)
+          && lib.all (id: id > 1) ids
+          && lib.length (lib.unique ids) == lib.length ids
+        );
+        default = { };
+        description = "Private Telegram topic IDs keyed by Hermes team profile.";
+      };
+    };
   };
 
   config = {
@@ -149,6 +197,7 @@ in
           Service = {
             ExecStartPre = [ "${lib.getExe team} prepare" ];
             ExecStart = "${lib.getExe cfg.package} -p default gateway run";
+            EnvironmentFile = lib.mkIf telegramEnabled cfg.telegram.envFile;
             Restart = "on-failure";
             RestartSec = "10s";
             Environment = [
@@ -162,7 +211,11 @@ in
                 ]
               }:${config.home.profileDirectory}/bin:/run/current-system/sw/bin"
             ]
-            ++ lib.optionals config.home.env.proxy.enable config.home.env.proxy.stringEnvironment;
+            ++ lib.optionals config.home.env.proxy.enable config.home.env.proxy.stringEnvironment
+            ++ lib.optionals telegramEnabled [
+              "TELEGRAM_ALLOWED_USERS=${toString cfg.telegram.userId}"
+              "HERMES_MANAGED_DIR=${telegramConfig}"
+            ];
             UMask = "0077";
           };
         };

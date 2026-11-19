@@ -76,3 +76,8 @@ event on stdin.
 
 All four Profiles run as the same system user. Run
 `hermes -p secretary chat` to talk to the secretary.
+
+The team Telegram bot uses a single gateway and token. Enable Threaded Mode
+in BotFather and set `programs.hermes-team.telegram.topicIds` to the private
+topic IDs for `secretary`, `maintainer`, `ops`, and `team-maintainer`. The
+main private chat goes to `secretary`.
