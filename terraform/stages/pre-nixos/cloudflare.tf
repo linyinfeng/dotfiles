@@ -135,7 +135,7 @@ locals {
     home-assistant = { on = "nuc", proxy = false }
     http-test      = { on = "mtl0", proxy = true }
     hydra          = { on = "nuc", proxy = false }
-    hydra-proxy    = { on = "mtl0", proxy = true }
+    hydra-proxy    = { on = "hkg0", proxy = true }
     hydra-runner   = { on = "nuc", proxy = false }
     influxdb       = { on = "mtl0", proxy = true }
     jellyfin       = { on = "nuc", proxy = false }

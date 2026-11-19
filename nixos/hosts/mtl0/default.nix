@@ -65,7 +65,6 @@ in
 
       services.nuc-proxy.virtualHosts = [
         "hermes-proxy.li7g.com"
-        "hydra-proxy.*"
         "nuc-proxy.*"
       ];
     }
