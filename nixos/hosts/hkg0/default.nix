@@ -12,9 +12,12 @@
           frp-server.enable = true;
           garage.enable = true;
           litellm.enable = true;
+          nuc-proxy.enable = true;
         };
         suites.overseaServer.enable = true;
       };
+
+      services.nuc-proxy.virtualHosts = [ "hydra-proxy.*" ];
 
       environment.global-persistence = {
         enable = true;

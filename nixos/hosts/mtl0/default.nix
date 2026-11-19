@@ -62,6 +62,12 @@ in
         virtualization.podman.enable = true;
       };
       # keep-sorted end
+
+      services.nuc-proxy.virtualHosts = [
+        "hermes-proxy.li7g.com"
+        "hydra-proxy.*"
+        "nuc-proxy.*"
+      ];
     }
 
     {
