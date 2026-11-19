@@ -10,7 +10,7 @@ resource "incus_instance" "nixos" {
 
   config = {
     "limits.cpu"          = "12"
-    "limits.memory"       = "16GiB"
+    "limits.memory"       = "8GiB"
     "boot.autostart"      = "true"
     "security.secureboot" = "false"
   }
