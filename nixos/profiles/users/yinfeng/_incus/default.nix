@@ -10,6 +10,8 @@ let
         "https://192.168.3.6:8443"
         "https://ostrich-incus.bunny-mountain.ts.net:8443"
       ];
+      # Pinned leaf cert bypasses SAN checks for LAN/Tailscale URLs;
+      # after renewing via pre-nixos, push it with `incus admin update-certificate ostrich:`.
       serverCertificate = config.lib.self.data.acme_li7g_com_certificate_pem;
       noProxy = [ "ostrich-incus.bunny-mountain.ts.net" ];
     };

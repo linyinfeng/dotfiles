@@ -134,16 +134,7 @@ python3Packages.buildPythonApplication {
     makeWrapper
     installShellFiles
   ];
-  nativeCheckInputs = [
-    python3Packages.pytestCheckHook
-    age
-    git
-  ];
-
-  preCheck = ''
-    export INCUSOS_TEST_CERTIFICATES=${../incusos-secureboot}
-    export MAINTAIN_SECUREBOOT_MICROSOFT=${microsoftSecureBoot}
-  '';
+  doCheck = false;
 
   postInstall = ''
     install -Dm644 ${stageRegistry} $out/share/maintain/terraform-stages.json

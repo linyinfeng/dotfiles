@@ -104,6 +104,8 @@ def setup_auth(payload: bytes) -> bytes:
     return timestamp + struct.pack("<IHH16s", 24, 0x200, 0xEF1, PKCS7) + payload
 
 
+# Host-specific certs under packages/incusos-secureboot/hosts/<host>/
+# (e.g. ostrich: exported from GIGABYTE B650I AX rev.1.0 F41e).
 def extra_database(directory: Path, hostname: str, variable: str) -> bytes:
     databases = []
     microsoft = os.environ.get("MAINTAIN_SECUREBOOT_MICROSOFT")

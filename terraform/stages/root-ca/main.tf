@@ -1,5 +1,7 @@
 # This state is encrypted only to personal PGP recipients, never the CI age key.
 # Keep offline root signing separate from online issuing keys and services.
+# Run locally with GPG/YubiKey in order: `maintain terraform pipe intermediate-ca`,
+# then `root-ca`, then `pre-nixos` (use `bootstrap` before the first `pipe`).
 resource "tls_private_key" "root_ca" {
   algorithm   = "ECDSA"
   ecdsa_curve = "P384"

@@ -32,11 +32,6 @@ app = typer.Typer(help="terraform stage pipelines")
 _registry: dict | None = None
 
 
-def reset_registry() -> None:
-    global _registry
-    _registry = None
-
-
 def registry() -> dict:
     """The stage registry Nix generated at build time: stages -> TF_VAR_* defaults, plus their order."""
     global _registry

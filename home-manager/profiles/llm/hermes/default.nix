@@ -155,7 +155,7 @@ in
           && lib.length (lib.unique ids) == lib.length ids
         );
         default = { };
-        description = "Private Telegram topic IDs keyed by Hermes team profile.";
+        description = "Private Telegram topic IDs keyed by Hermes team profile (requires BotFather Threaded Mode).";
       };
     };
   };
