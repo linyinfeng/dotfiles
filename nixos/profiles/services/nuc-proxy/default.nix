@@ -1,4 +1,27 @@
 { config, pkgs, ... }:
+let
+  mkProxy =
+    {
+      proxyWebsockets ? false,
+      extraConfig ? "",
+    }:
+    {
+      forceSSL = true;
+      inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
+      locations."/" = {
+        inherit proxyWebsockets;
+        proxyPass = "https://nuc";
+        extraConfig = ''
+          proxy_ssl_server_name on;
+          proxy_ssl_name nuc.li7g.com;
+          proxy_ssl_verify on;
+          proxy_ssl_verify_depth 2;
+          proxy_ssl_trusted_certificate ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt;
+        ''
+        + extraConfig;
+      };
+    };
+in
 {
   services.nginx = {
     appendHttpConfig = ''
@@ -13,28 +36,12 @@
       server nuc.dn42.li7g.com:${toString config.ports.https} resolve;
       server nuc.li7g.com:${toString config.ports.https-alternative} backup resolve;
     '';
-    virtualHosts."nuc-proxy.*" = {
-      forceSSL = true;
-      inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-      serverAliases = [
-        "hydra-proxy.*"
-      ];
-      locations."/" = {
-        proxyPass = "https://nuc";
-      };
-    };
-    virtualHosts."hermes-proxy.li7g.com" = {
-      forceSSL = true;
-      inherit (config.security.acme.tfCerts."li7g_com".nginxSettings) sslCertificate sslCertificateKey;
-      locations."/" = {
-        proxyPass = "https://nuc";
+    virtualHosts = {
+      "nuc-proxy.*" = mkProxy { };
+      "hydra-proxy.*" = mkProxy { };
+      "hermes-proxy.li7g.com" = mkProxy {
         proxyWebsockets = true;
         extraConfig = ''
-          proxy_ssl_server_name on;
-          proxy_ssl_name nuc.li7g.com;
-          proxy_ssl_verify on;
-          proxy_ssl_verify_depth 2;
-          proxy_ssl_trusted_certificate ${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt;
           proxy_read_timeout 600s;
         '';
       };
