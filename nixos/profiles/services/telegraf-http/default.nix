@@ -46,6 +46,12 @@ let
         code = 200;
       }
     ];
+    hermes = [
+      {
+        url = "https://hermes.li7g.com:8443/api/status";
+        code = 401;
+      }
+    ];
     hydra-runner = [
       {
         url = "https://hydra-runner.ts.li7g.com/status";
@@ -94,6 +100,12 @@ let
     ];
   };
   overrides = {
+    hermes-proxy = [
+      {
+        url = "https://hermes-proxy.li7g.com/api/status";
+        code = 401;
+      }
+    ];
     box = [
       # {
       #   url = "https://box.li7g.com/accounts/login/?next=/";
