@@ -198,6 +198,11 @@ in
             ExecStartPre = [ "${lib.getExe team} prepare" ];
             ExecStart = "${lib.getExe cfg.package} -p default gateway run";
             EnvironmentFile = lib.mkIf telegramEnabled cfg.telegram.envFile;
+            # SIGTERM during activation or systemctl stop makes the gateway exit 1, marking the unit
+            # failed and firing OnFailure=hermes-team-monitor.service before activation restarts it.
+            # ExecStop sends the gateway's planned-stop SIGINT only to the main PID, which exits 0
+            # without firing OnFailure. Systemd's default SIGTERM still reaches the rest of the cgroup.
+            ExecStop = "-${pkgs.procps}/bin/kill -INT $MAINPID";
             Restart = "on-failure";
             RestartSec = "10s";
             Environment = [
