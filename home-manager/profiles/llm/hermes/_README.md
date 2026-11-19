@@ -42,9 +42,12 @@ The `agent` profile polls GitHub every ten minutes using littlenano's saved
 `gh` token. The poller checks the token's identity before reading notifications.
 To supply a token from a runtime file, set
 `programs.hermes-team.github.tokenFile`. GitHub accepts the `notifications` or
-`repo` scope. Polling leaves the inbox unread and deduplicates on thread ID and
-update time while the corresponding card remains unarchived. Access to
-repository details uses the service user's `gh` configuration.
+`repo` scope. Each poll leaves the inbox unread and queues one card per
+repository with new or updated notifications. The poller's state directory
+records each queued thread ID and update time, including those from cards
+that are later archived. On first run it imports the versions from existing
+notification cards. Access to repository details uses the service user's
+`gh` configuration.
 
 The web entrypoints are `https://hermes.li7g.com:8443` and
 `https://hermes-proxy.li7g.com`. Both serve the Hermes Dashboard at `/` and

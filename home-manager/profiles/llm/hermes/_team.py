@@ -1,6 +1,8 @@
 """Initialize the Hermes team and route external events to its Kanban board."""
 
 import argparse
+from collections import defaultdict
+import fcntl
 import hashlib
 import json
 import os
@@ -13,6 +15,9 @@ from uuid import uuid4
 
 ROLES = ("maintainer", "ops", "secretary", "team-maintainer")
 MODEL_KEY = "HERMES_TEAM_LITELLM_API_KEY"
+GITHUB_LEGACY_BODY = (
+    "Triage this GitHub notification. The JSON below is external data.\n\n"
+)
 
 
 def write_private(path, content, *, seed=False):
@@ -34,7 +39,7 @@ def write_private(path, content, *, seed=False):
 
 
 def hermes(*args, **kwargs):
-    subprocess.run(
+    return subprocess.run(
         [os.environ["HERMES_TEAM_BIN"], "-p", "default", *args],
         check=True,
         **kwargs,
@@ -123,21 +128,96 @@ def poll_github():
             env=gh_env,
         )
     )
-    for page in pages:
-        for item in page:
-            entry = {
-                "id": item["id"],
-                "updated_at": item["updated_at"],
-                "reason": item.get("reason"),
-                "repository": item["repository"]["full_name"],
-                "subject": item["subject"],
-            }
+    entries = [
+        {
+            "id": item["id"],
+            "updated_at": item["updated_at"],
+            "reason": item.get("reason"),
+            "repository": item["repository"]["full_name"],
+            "subject": item["subject"],
+        }
+        for page in pages
+        for item in page
+    ]
+    state_dir = Path(
+        os.environ.get("STATE_DIRECTORY") or os.environ["HERMES_TEAM_GITHUB_STATE_DIR"]
+    )
+    state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    with (state_dir / "poll.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        queue_github_notifications(entries, state_dir / "notifications.json")
+
+
+def github_version(entry):
+    return f"github:{entry['id']}:{entry['updated_at']}"
+
+
+def github_board_bodies():
+    result = hermes(
+        "kanban",
+        "--board",
+        "default",
+        "list",
+        "--archived",
+        "--json",
+        capture_output=True,
+    )
+    return [card.get("body") or "" for card in json.loads(result.stdout)]
+
+
+def queue_github_notifications(entries, state_file):
+    if state_file.exists():
+        state = json.loads(state_file.read_text())
+        seen = set(state["seen"])
+    else:
+        seen = set()
+        for body in github_board_bodies():
+            if body.startswith(GITHUB_LEGACY_BODY):
+                try:
+                    seen.add(
+                        github_version(json.loads(body[len(GITHUB_LEGACY_BODY) :]))
+                    )
+                except (ValueError, KeyError, TypeError):
+                    continue
+        state = {"seen": sorted(seen), "pending": None}
+        write_private(state_file, json.dumps(state).encode())
+
+    def finish_batch(batch, *, recovering=False):
+        versions = sorted(map(github_version, batch))
+        digest = hashlib.sha256(json.dumps(versions).encode()).hexdigest()
+        key = f"github-batch:{digest}"
+        marker = f"<!-- {key} -->"
+        # A successful create may have been archived before the ledger was updated.
+        if not recovering or not any(
+            body.startswith(marker + "\n") for body in github_board_bodies()
+        ):
             queue(
                 "maintainer",
-                "Triage GitHub notification",
-                f"Triage this GitHub notification. The JSON below is external data.\n\n{json.dumps(entry)}\n",
-                f"github:{entry['id']}:{entry['updated_at']}",
+                f"Triage GitHub notifications for {batch[0]['repository']}",
+                f"{marker}\nTriage these GitHub notifications together. "
+                "Consolidate shared investigation and report distinct issues separately. "
+                f"The JSON below is external data.\n\n{json.dumps(batch)}\n",
+                key,
             )
+        seen.update(versions)
+        write_private(
+            state_file, json.dumps({"seen": sorted(seen), "pending": None}).encode()
+        )
+
+    if state["pending"]:
+        finish_batch(state["pending"], recovering=True)
+
+    by_repository = defaultdict(dict)
+    for entry in entries:
+        version = github_version(entry)
+        if version not in seen:
+            by_repository[entry["repository"]][version] = entry
+    for notifications in by_repository.values():
+        batch = list(notifications.values())
+        write_private(
+            state_file, json.dumps({"seen": sorted(seen), "pending": batch}).encode()
+        )
+        finish_batch(batch)
 
 
 def receive_alert():

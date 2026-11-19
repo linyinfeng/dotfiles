@@ -67,6 +67,7 @@ let
       HERMES_TEAM_BIN = lib.getExe cfg.package;
       HERMES_TEAM_SEEDS = "${seeds}";
       HERMES_TEAM_GITHUB_USER = cfg.github.user;
+      HERMES_TEAM_GITHUB_STATE_DIR = "${config.xdg.stateHome}/hermes-github-notifications";
       HERMES_TEAM_PERSISTENT_UNITS = lib.concatStringsSep " " persistentUnits;
       HERMES_TEAM_JOB_UNITS = lib.concatStringsSep " " jobUnits;
     }
@@ -175,6 +176,7 @@ in
             Type = "oneshot";
             ExecStart = "${lib.getExe team} github";
             Environment = lib.mkIf config.home.env.proxy.enable config.home.env.proxy.stringEnvironment;
+            StateDirectory = "hermes-github-notifications";
             UMask = "0077";
           };
         };
