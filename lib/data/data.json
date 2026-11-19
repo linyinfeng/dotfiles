@@ -98,6 +98,14 @@
       "on": "nuc",
       "proxy": false
     },
+    "hermes": {
+      "on": "nuc",
+      "proxy": false
+    },
+    "hermes-proxy": {
+      "on": "mtl0",
+      "proxy": true
+    },
     "hledger": {
       "on": "mtl0",
       "proxy": true
@@ -257,6 +265,7 @@
     "oidc.scopes": "openid,profile,email,offline_access,urn:zitadel:iam:org:project:id:399722493402702763:aud"
   },
   "zitadel_issuer": "https://yinfeng-fsgmya.us1.zitadel.cloud",
+  "zitadel_personal_oidc_client_id": "400261146139011276",
   "zitadel_synapse_client_id": "394607060265841364",
   "hosts": {
     "hkg0": {
