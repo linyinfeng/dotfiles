@@ -44,6 +44,10 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     # TODO: drop the isAarch64 guard once libreoffice builds on aarch64-linux
     # (buildPhase fails there: git not found, dragonbox tarball missing).
     ++ lib.optionals (!pkgs.stdenv.hostPlatform.isAarch64) [ libreoffice ]
+    ++ optionalPkg [
+      "llm-agents"
+      "antigravity-hub"
+    ]
     ++ optionalPkg [ "teamspeak6-client" ]
     ++ optionalPkg [
       "nur"
@@ -96,6 +100,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       ".goldendict"
 
       ".config/Codex"
+      ".config/Antigravity"
       ".config/calibre"
       ".config/Element"
       ".config/icalingua"

@@ -6,6 +6,7 @@
     git.enable = true;
     helix.enable = true;
     llm = {
+      antigravity.enable = true;
       general.enable = true;
       pi.enable = true;
     };
