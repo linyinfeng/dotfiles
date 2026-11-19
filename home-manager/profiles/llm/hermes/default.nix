@@ -8,9 +8,8 @@
 let
   cfg = config.programs.hermes-team;
   hermesPackages = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-  hermesAgent = hermesPackages.hermes-agent.overrideAttrs (old: {
-    patches = (old.patches or [ ]) ++ [ ./_kanban-worker-python.patch ];
-  });
+  # Workers launch via sys.executable and need the package's Python environment.
+  hermesAgent = hermesPackages.hermes-agent.withPythonPackages (_: [ ]);
   hermesHome = "${config.home.homeDirectory}/.hermes";
   roleFiles = {
     maintainer = ./_maintainer.md;
