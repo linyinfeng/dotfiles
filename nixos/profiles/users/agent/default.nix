@@ -86,6 +86,7 @@ in
         profiles = {
           git.enable = lib.mkDefault true;
           llm = {
+            antigravity.enable = lib.mkDefault true;
             general.enable = lib.mkDefault true;
             hermes.enable = true;
             pi.enable = lib.mkDefault true;
