@@ -8,6 +8,15 @@ let
   cfg = config.programs.antigravity-cli;
   installDir = ".local/share/antigravity-cli/bin";
 
+  appStoragePath =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/Antigravity/app_storage.json"
+    else
+      ".config/Antigravity/app_storage.json";
+
+  manageHubStorage =
+    pkgs.stdenv.hostPlatform.isDarwin || config.world.profiles.desktop-applications.enable;
+
   agy = pkgs.writeShellApplication {
     name = "agy";
     text = ''
@@ -61,6 +70,47 @@ in
     ];
 
     home.file.".gemini/GEMINI.md".source = ../_context.md;
+
+    # Both agy and Antigravity Hub rewrite their JSON configs at runtime, so
+    # merge declared preferences instead of linking read-only store files.
+    home.merge = {
+      ".gemini/antigravity-cli/settings.json".value = {
+        colorScheme = "terminal";
+        altScreenMode = "default";
+        agentMode = "accept-edits";
+        toolPermission = "always-proceed";
+        allowNonWorkspaceAccess = true;
+        enableTerminalSandbox = true;
+        queuedMessages = "send-immediately";
+      };
+
+      ".gemini/antigravity-cli/keybindings.json".value = {
+        "prompt.submit_alternate" = [ "alt+enter" ];
+        "prompt.insert_newline" = [
+          "shift+enter"
+          "ctrl+j"
+        ];
+      };
+
+      ".gemini/config/config.json".value = {
+        userSettings = {
+          themeMode = "THEME_MODE_INHERIT";
+          permissionPreset = "AGENT_PERMISSION_PRESET_TURBO";
+          enableTerminalSandbox = true;
+          autoExecutionPolicy = "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER";
+          nonWorkspaceFileAccessPolicy = "AGENT_SETTING_POLICY_ALLOW";
+          queuedMessageDeliveryStrategy = "MESSAGE_DELIVERY_STRATEGY_NEXT_INVOCATION";
+        };
+      };
+    }
+    // lib.optionalAttrs manageHubStorage {
+      # Hub's SettingsService compares boolean toggles strictly with `=== "true"`.
+      ${appStoragePath}.value = {
+        "jetski.typeface" = "system";
+        keepComputerAwake = "true";
+        runInBackground = "true";
+      };
+    };
 
     home.global-persistence.directories = [
       ".gemini"
