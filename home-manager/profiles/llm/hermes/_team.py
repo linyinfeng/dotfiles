@@ -10,11 +10,13 @@ from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 from tempfile import NamedTemporaryFile
 from uuid import uuid4
 
 ROLES = ("maintainer", "ops", "secretary", "team-maintainer")
 MODEL_KEY = "HERMES_TEAM_LITELLM_API_KEY"
+MONITOR_GRACE_SECONDS = float(os.environ.get("HERMES_TEAM_MONITOR_GRACE_SECONDS", "5"))
 GITHUB_LEGACY_BODY = (
     "Triage this GitHub notification. The JSON below is external data.\n\n"
 )
@@ -249,13 +251,10 @@ def queue_alert(payload, *, timeout=None):
     )
 
 
-def monitor():
-    state_file = Path(os.environ["STATE_DIRECTORY"]) / "incidents.json"
-    incidents = json.loads(state_file.read_text()) if state_file.exists() else {}
-    persistent = os.environ["HERMES_TEAM_PERSISTENT_UNITS"].split()
-    jobs = os.environ["HERMES_TEAM_JOB_UNITS"].split()
+def unit_failures(units, persistent, jobs):
+    """Map every unhealthy unit to its systemctl show properties."""
     failures = {}
-    for unit in persistent + jobs:
+    for unit in units:
         output = subprocess.check_output(
             [
                 "systemctl",
@@ -276,27 +275,52 @@ def monitor():
         )
         if failed:
             failures[unit] = status
+    return failures
 
-    current = {
-        unit: incidents.get(unit) or {"id": uuid4().hex, "queued": False}
-        for unit in failures
-    }
-    if current != incidents:
-        write_private(state_file, json.dumps(current).encode())
-    for unit, status in failures.items():
-        incident = current[unit]
-        if incident["queued"]:
-            continue
-        queue(
-            "team-maintainer",
-            f"Hermes team unit unhealthy: {unit}",
-            f"Investigate and restore {unit} for hermes-team.target. "
-            f"Observed systemd state: {json.dumps(status)}. "
-            "Check the current state and journal before acting, then verify recovery.",
-            f"hermes-team-monitor:{incident['id']}",
-        )
-        incident["queued"] = True
-        write_private(state_file, json.dumps(current).encode())
+
+def monitor():
+    state_dir = Path(os.environ["STATE_DIRECTORY"])
+    state_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
+    state_file = state_dir / "incidents.json"
+    persistent = set(os.environ["HERMES_TEAM_PERSISTENT_UNITS"].split())
+    jobs = set(os.environ["HERMES_TEAM_JOB_UNITS"].split())
+    units = sorted(persistent | jobs)
+
+    # A timer run and an OnFailure run can overlap. Let the first run finish.
+    with (state_dir / "monitor.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return
+
+        incidents = json.loads(state_file.read_text()) if state_file.exists() else {}
+        failures = unit_failures(units, persistent, jobs)
+        # Give activation time to restart units. A crash with RestartSec=10s
+        # should still be unhealthy at the default five-second recheck.
+        if failures:
+            time.sleep(MONITOR_GRACE_SECONDS)
+            failures = unit_failures(list(failures), persistent, jobs)
+
+        current = {
+            unit: incidents.get(unit) or {"id": uuid4().hex, "queued": False}
+            for unit in failures
+        }
+        if current != incidents:
+            write_private(state_file, json.dumps(current).encode())
+        for unit, status in failures.items():
+            incident = current[unit]
+            if incident["queued"]:
+                continue
+            queue(
+                "team-maintainer",
+                f"Hermes team unit unhealthy: {unit}",
+                f"Investigate and restore {unit} for hermes-team.target. "
+                f"Observed systemd state: {json.dumps(status)}. "
+                "Check the current state and journal before acting, then verify recovery.",
+                f"hermes-team-monitor:{incident['id']}",
+            )
+            incident["queued"] = True
+            write_private(state_file, json.dumps(current).encode())
 
 
 def code(repository):
