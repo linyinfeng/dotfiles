@@ -19,7 +19,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
     {
       home.packages = with pkgs; [
         # DAW
-        reaper
+        (reaper.override { jackLibrary = pipewire.jack; })
         qpwgraph # PipeWire patchbay
 
         # sheet music
