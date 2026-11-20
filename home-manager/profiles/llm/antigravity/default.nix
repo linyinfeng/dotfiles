@@ -60,6 +60,8 @@ in
       agy-install
     ];
 
+    home.file.".gemini/GEMINI.md".source = ../_context.md;
+
     home.global-persistence.directories = [
       ".gemini"
       ".local/share/antigravity-cli"

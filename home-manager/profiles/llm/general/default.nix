@@ -109,8 +109,14 @@ in
   ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.bubblewrap ]
   ++ lib.optionals (secretPaths ? litellmApiKey) [ codex-li7g ];
 
-  home.file.".local/share/codex-li7g/packages/standalone" = lib.mkIf (secretPaths ? litellmApiKey) {
-    source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.codex/packages/standalone";
+  home.file = {
+    ".codex/AGENTS.md".source = ../_context.md;
+    ".local/share/codex-li7g/AGENTS.md" = lib.mkIf (secretPaths ? litellmApiKey) {
+      source = ../_context.md;
+    };
+    ".local/share/codex-li7g/packages/standalone" = lib.mkIf (secretPaths ? litellmApiKey) {
+      source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.codex/packages/standalone";
+    };
   };
 
   home.global-persistence.directories = [
