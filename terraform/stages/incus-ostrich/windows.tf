@@ -1,3 +1,18 @@
+resource "incus_storage_volume" "windows_steam" {
+  name         = "windows-steam"
+  description  = "Steam library disk for the Windows VM"
+  pool         = "local"
+  content_type = "block"
+
+  config = {
+    size = "256GiB"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "incus_instance" "windows" {
   name = "windows"
   type = "virtual-machine"
@@ -26,6 +41,16 @@ resource "incus_instance" "windows" {
       pool     = "local"
       size     = "256GiB"
       "io.bus" = "virtio-blk"
+    }
+  }
+
+  device {
+    name = "steam"
+    type = "disk"
+    properties = {
+      pool     = incus_storage_volume.windows_steam.pool
+      source   = incus_storage_volume.windows_steam.name
+      "io.bus" = "virtio-scsi"
     }
   }
 
