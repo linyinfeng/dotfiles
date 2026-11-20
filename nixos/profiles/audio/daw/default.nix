@@ -7,11 +7,13 @@
     alsa-utils # amixer/alsactl/aconnect
   ];
 
-  # 256 frames at 48 kHz is ~5.3 ms; allowed-rates is the Scarlett Solo 4th Gen's range
+  # 256 frames at 48 kHz is ~5.3 ms; allowed-rates is the Scarlett Solo 4th Gen's range.
+  # Override PipeWire's built-in VM rule (cpu.vm.name = !null -> min-quantum = 1024)
+  # so passthrough audio interfaces on VM workstations keep low-latency quantums.
   services.pipewire.extraConfig.pipewire."10-daw" = {
-    context.properties = {
-      default.clock.rate = 48000;
-      default.clock.allowed-rates = [
+    "context.properties" = {
+      "default.clock.rate" = 48000;
+      "default.clock.allowed-rates" = [
         44100
         48000
         88200
@@ -19,10 +21,18 @@
         176400
         192000
       ];
-      default.clock.quantum = 256;
-      default.clock.min-quantum = 32;
-      default.clock.max-quantum = 1024;
+      "default.clock.quantum" = 256;
+      "default.clock.min-quantum" = 32;
+      "default.clock.max-quantum" = 1024;
     };
+    "context.properties.rules" = [
+      {
+        matches = [ { "cpu.vm.name" = "!null"; } ];
+        actions.update-props = {
+          "default.clock.min-quantum" = 32;
+        };
+      }
+    ];
   };
 
   # keep the interface powered: the default 5 s idle suspend pops on the next note
