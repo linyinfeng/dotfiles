@@ -67,6 +67,8 @@ in
   home-manager.users.${name} =
     { lib, ... }:
     {
+      programs.antigravity-cli.daemon.enable = true;
+
       programs.hermes-team = {
         github.poll = true;
         telegram = {
