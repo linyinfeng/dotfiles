@@ -47,6 +47,22 @@
     ];
   };
 
+  # system76-scheduler resets matched processes to SCHED_OTHER (and demotes
+  # user systemd services like carla.service to nice=9 / io=idle); exempt
+  # the real-time audio graph so PipeWire module-rt keeps SCHED_RR.
+  services.system76-scheduler.exceptions = [
+    "pipewire"
+    "pipewire-pulse"
+    "wireplumber"
+    "carla"
+    "reaper"
+    ''include name="*reaper*"''
+    ''include cgroup="/user.slice/*/app.slice/carla.service"''
+    ''include cgroup="/user.slice/*/session.slice/pipewire.service"''
+    ''include cgroup="/user.slice/*/session.slice/pipewire-pulse.service"''
+    ''include cgroup="/user.slice/*/session.slice/wireplumber.service"''
+  ];
+
   # rtkit covers PipeWire; REAPER's own ALSA backend asks for SCHED_FIFO itself
   security.pam.loginLimits = [
     {
@@ -60,6 +76,12 @@
       item = "memlock";
       type = "-";
       value = "unlimited";
+    }
+    {
+      domain = "@audio";
+      item = "nice";
+      type = "-";
+      value = "-20";
     }
   ];
 }
