@@ -15,6 +15,12 @@ let
     # ladspa
   ];
 
+  nixVst3Plugins = pkgs.buildEnv {
+    name = "nix-vst3-plugins";
+    paths = audioPlugins;
+    pathsToLink = [ "/lib/vst3" ];
+  };
+
   # Carla dlopens libjack.so.0 at runtime; wrap its entrypoints with PipeWire's
   # JACK library just like REAPER so desktop launches and the systemd service
   # connect to PipeWire without `pw-jack`.
@@ -102,6 +108,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
         };
         Service = {
           Type = "simple";
+          Environment = [ "PYTHONUNBUFFERED=1" ];
           ExecStartPre = lib.getExe carlaWaitForPipeWire;
           ExecStart = "${carla}/bin/carla --no-gui \"${carlaProject}\"";
           Restart = "on-failure";
@@ -128,6 +135,14 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
       # the profile instead of listing paths in REAPER's own preferences
       home.file.".lv2".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.profileDirectory}/lib/lv2";
+
+      # ~/.vst3 is a mutable persisted dir for yabridge, and Carla's VST3 scanner
+      # uses os.walk without followlinks=True, so materialize a real ~/.vst3/nix
+      # directory instead of a single directory symlink.
+      home.file.".vst3/nix" = {
+        source = "${nixVst3Plugins}/lib/vst3";
+        recursive = true;
+      };
 
       # home.packages lands in /etc/profiles/per-user/$USER, not in a stateHome
       # profile, so the search paths must follow profileDirectory
