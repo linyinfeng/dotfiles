@@ -11,6 +11,7 @@ let
     neuralrack # NAM + IR chain, also ships CLAP/VST2/VST3
     ratatouille-lv2 # two-model blend with phase alignment
     sfizz-ui
+    x42-plugins # meters, oscilloscope, tuner, etc.
     # ladspa
   ];
 
