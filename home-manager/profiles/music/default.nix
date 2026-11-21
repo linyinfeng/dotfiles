@@ -96,25 +96,29 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux (
 
       systemd.user.services.carla = {
         Unit = {
-          Description = "Carla headless audio patchbay";
+          Description = "Carla audio patchbay";
           After = [
+            "graphical-session.target"
             "pipewire.service"
             "wireplumber.service"
           ];
+          PartOf = [
+            "graphical-session.target"
+            "pipewire.service"
+          ];
           Requires = [ "pipewire.service" ];
           Wants = [ "wireplumber.service" ];
-          PartOf = [ "pipewire.service" ];
           ConditionPathExists = carlaProject;
         };
         Service = {
           Type = "simple";
           Environment = [ "PYTHONUNBUFFERED=1" ];
           ExecStartPre = lib.getExe carlaWaitForPipeWire;
-          ExecStart = "${carla}/bin/carla --no-gui \"${carlaProject}\"";
+          ExecStart = "${carla}/bin/carla \"${carlaProject}\"";
           Restart = "on-failure";
           RestartSec = 5;
         };
-        Install.WantedBy = [ "default.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
       };
     }
     (lib.mkIf pkgs.stdenv.hostPlatform.isx86_64 {
