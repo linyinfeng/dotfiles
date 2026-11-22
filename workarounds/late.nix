@@ -68,12 +68,6 @@
       ncro = inputs.ncro.packages.${prev.stdenv.hostPlatform.system}.ncro.overrideAttrs (old: {
         buildInputs = (old.buildInputs or [ ]) ++ [ prev.sqlite ];
       });
-      nginx = final.nginxStable;
-      # NGINX2Root fixes have reached nixpkgs master.
-      nginxStable =
-        assert lib.assertMsg (lib.versionOlder prev.nginxStable.version "1.30.7")
-          "nixpkgs has nginx 1.30.7 or newer. Remove the nginx workaround in workarounds/late.nix.";
-        (channelsOf final).latest.nginxStable;
       # calibre only runs piper's inference CLI; the default `withTrain` pulls
       # the whole training stack (librosa -> scikit-learn, torch, lightning),
       # and scikit-learn's checks fail on the emulated aarch64 builder.
