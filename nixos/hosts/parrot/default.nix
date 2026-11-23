@@ -76,6 +76,7 @@ in
         {
           world.users.yinfeng.common.enable = true;
           world.suites.full.enable = true;
+          programs.antigravity-cli.daemon.enable = true;
         };
 
       boot.tmp.useTmpfs = true;
