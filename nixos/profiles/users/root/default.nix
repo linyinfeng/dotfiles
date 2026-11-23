@@ -5,7 +5,7 @@
     openssh.authorizedKeys.keyFiles = [
       _ssh/F0FF1FC0.pub
       _ssh/FCD79CF5.pub
-      _ssh/juice.pub
+      _ssh/shiba.pub
     ];
   };
 
