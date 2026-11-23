@@ -29,5 +29,17 @@
     -m '<subject>'
   ```
 
+- Unless instructed otherwise, perform GitHub write actions (opening PRs,
+  commenting, creating issues) as `littlenano` by scoping `GH_TOKEN` per
+  command without switching the default `gh` account:
+
+  ```bash
+  GH_TOKEN="$(gh auth token --hostname github.com --user littlenano)" \
+    gh pr create ...
+  ```
+
+  If `littlenano` is not authenticated in `gh` on this machine, stop and ask
+  the user to log in rather than silently falling back to another account.
+
 - Every temporary workaround must carry a `# TODO` stating the condition that
   allows removing it.
