@@ -25,6 +25,17 @@ lib.mkMerge [
         init.defaultBranch = "main";
         pull.rebase = false;
         pull.ff = "only";
+        push.autoSetupRemote = true;
+        branch.sort = "-committerdate";
+        tag.sort = "version:refname";
+        column.ui = "auto";
+        diff.algorithm = "histogram";
+        diff.mnemonicPrefix = true;
+        rebase.autoSquash = true;
+        rebase.autoStash = true;
+        rebase.updateRefs = true;
+        rerere.enabled = true;
+        help.autocorrect = "prompt";
         credential = {
           helper = [ "${lib.getExe pkgs.git-credential-manager}" ];
           credentialStore = "secretservice";
@@ -50,6 +61,7 @@ lib.mkMerge [
           "https://git.li7g.com:8443".provider = "generic";
         };
         commit.gpgSign = true;
+        commit.verbose = true;
 
         # fish git status
         bash.showInformativeStatus = true;
@@ -97,7 +109,7 @@ lib.mkMerge [
     };
     programs.git = {
       settings = {
-        merge.conflictstyle = "diff3";
+        merge.conflictstyle = "zdiff3";
         diff.colorMoved = "default";
       };
       ignores = [
