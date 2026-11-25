@@ -165,10 +165,15 @@ in
     ) config.programs.mcp.servers;
   };
 
-  home.file.".pi/agent/extensions/host-status.ts".source = ./_extensions/host-status.ts;
-
-  home.file.".config/pi/web-search.json" = lib.mkIf (secretPaths ? piWebSearch) {
-    source = mkOutOfStoreSymlink secretPaths.piWebSearch;
+  home.file = {
+    ".pi/agent/extensions/host-status.ts".source = ./_extensions/host-status.ts;
+    ".pi/agent/skills" = {
+      source = ../_skills;
+      recursive = true;
+    };
+    ".config/pi/web-search.json" = lib.mkIf (secretPaths ? piWebSearch) {
+      source = mkOutOfStoreSymlink secretPaths.piWebSearch;
+    };
   };
 
   home.packages = [

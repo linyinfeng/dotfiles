@@ -69,7 +69,13 @@ in
       agy-install
     ];
 
-    home.file.".gemini/GEMINI.md".source = ../_context.md;
+    home.file = {
+      ".gemini/GEMINI.md".source = ../_context.md;
+      ".gemini/config/skills" = {
+        source = ../_skills;
+        recursive = true;
+      };
+    };
 
     # Both agy and Antigravity Hub rewrite their JSON configs at runtime, so
     # merge declared preferences instead of linking read-only store files.
