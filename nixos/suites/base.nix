@@ -2,14 +2,12 @@
 {
   world = {
     profiles = {
-      audio.daw.enable = true;
       boot = {
         kernel.latest.enable = true;
         systemd-initrd.enable = true;
       };
       development.shells.enable = true;
       global-persistence.enable = true;
-      nix.auto-gen.enable = true;
       programs.terminfo.enable = true;
       security = {
         polkit.enable = true;

@@ -2,7 +2,10 @@
 {
   world = {
     profiles = {
-      audio.midi.enable = true;
+      audio = {
+        daw.enable = true;
+        midi.enable = true;
+      };
       graphical.noctalia.enable = true;
       graphical.umbriel.enable = true;
       boot = {
