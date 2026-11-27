@@ -81,8 +81,8 @@ resource "zitadel_application_oidc" "opkssh" {
   app_type         = "OIDC_APP_TYPE_NATIVE"
   auth_method_type = "OIDC_AUTH_METHOD_TYPE_NONE"
   version          = "OIDC_VERSION_1_0"
-  # Required by Zitadel to permit opkssh's http://localhost loopback callbacks.
-  dev_mode = true
+  # Native apps permit http://localhost loopback callbacks without dev_mode.
+  dev_mode = false
 
   # Default loopback callbacks used by opkssh.
   redirect_uris = [
