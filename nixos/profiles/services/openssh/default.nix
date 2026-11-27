@@ -34,6 +34,8 @@ let
   );
 in
 {
+  imports = [ ./_opkssh.nix ];
+
   services.openssh = {
     enable = true;
     ports = [ config.ports.ssh ];

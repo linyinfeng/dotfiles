@@ -22,6 +22,11 @@
     steam = 407;
     cowrie = 408;
     sicp-staging = 409;
+    # Workaround: static ID for opksshuser so environment.etc."opk/{providers,auth_id}".gid
+    # can be set numerically under system.etc.overlay + services.userborn.
+    # TODO: Remove once nixpkgs services.opkssh and system.etc.overlay / services.userborn
+    # support non-root ownership for dynamically allocated users without numeric gid wiring.
+    opksshuser = 410;
   };
   ids.gids = {
     # service groups
@@ -35,5 +40,10 @@
     steam = 407;
     cowrie = 408;
     sicp-staging = 409;
+    # Workaround: static ID for opksshuser so environment.etc."opk/{providers,auth_id}".gid
+    # can be set numerically under system.etc.overlay + services.userborn.
+    # TODO: Remove once nixpkgs services.opkssh and system.etc.overlay / services.userborn
+    # support non-root ownership for dynamically allocated users without numeric gid wiring.
+    opksshuser = 410;
   };
 }
