@@ -5,6 +5,16 @@ moved {
   to   = zitadel_project.infrastructure
 }
 
+moved {
+  from = zitadel_project_role.incus_admin
+  to   = zitadel_project_role.infra_admin
+}
+
+moved {
+  from = zitadel_user_grant.incus_admin
+  to   = zitadel_user_grant.infra_admin
+}
+
 resource "zitadel_project" "infrastructure" {
   org_id                 = one(data.zitadel_organizations.li7g.ids)
   name                   = "Infrastructure"
@@ -13,14 +23,14 @@ resource "zitadel_project" "infrastructure" {
   has_project_check      = true
 }
 
-resource "zitadel_project_role" "incus_admin" {
+resource "zitadel_project_role" "infra_admin" {
   org_id       = zitadel_project.infrastructure.org_id
   project_id   = zitadel_project.infrastructure.id
   role_key     = "admin"
-  display_name = "Incus administrator"
+  display_name = "Infrastructure administrator"
 }
 
-data "zitadel_human_users" "incus_admin" {
+data "zitadel_human_users" "infra_admin" {
   org_id       = one(data.zitadel_organizations.li7g.ids)
   email        = "lin.yinfeng@outlook.com"
   email_method = "TEXT_QUERY_METHOD_EQUALS_IGNORE_CASE"
@@ -28,16 +38,16 @@ data "zitadel_human_users" "incus_admin" {
   lifecycle {
     postcondition {
       condition     = length(self.user_ids) == 1
-      error_message = "The Incus administrator email must match exactly one Zitadel user."
+      error_message = "The infrastructure administrator email must match exactly one Zitadel user."
     }
   }
 }
 
-resource "zitadel_user_grant" "incus_admin" {
+resource "zitadel_user_grant" "infra_admin" {
   org_id     = zitadel_project.infrastructure.org_id
   project_id = zitadel_project.infrastructure.id
-  user_id    = one(data.zitadel_human_users.incus_admin.user_ids)
-  role_keys  = [zitadel_project_role.incus_admin.role_key]
+  user_id    = one(data.zitadel_human_users.infra_admin.user_ids)
+  role_keys  = [zitadel_project_role.infra_admin.role_key]
 }
 
 resource "zitadel_application_oidc" "incus" {
@@ -63,6 +73,36 @@ resource "zitadel_application_oidc" "incus" {
   access_token_role_assertion = true
 }
 
+resource "zitadel_application_oidc" "opkssh" {
+  org_id     = zitadel_project.infrastructure.org_id
+  project_id = zitadel_project.infrastructure.id
+  name       = "opkssh"
+
+  app_type         = "OIDC_APP_TYPE_NATIVE"
+  auth_method_type = "OIDC_AUTH_METHOD_TYPE_NONE"
+  version          = "OIDC_VERSION_1_0"
+  # Required by Zitadel to permit opkssh's http://localhost loopback callbacks.
+  dev_mode = true
+
+  # Default loopback callbacks used by opkssh.
+  redirect_uris = [
+    "http://localhost:3000/login-callback",
+    "http://localhost:10001/login-callback",
+    "http://localhost:11110/login-callback",
+  ]
+  response_types = ["OIDC_RESPONSE_TYPE_CODE"]
+  grant_types = [
+    "OIDC_GRANT_TYPE_AUTHORIZATION_CODE",
+  ]
+
+  id_token_userinfo_assertion = true
+  access_token_type           = "OIDC_TOKEN_TYPE_BEARER"
+}
+
+output "zitadel_infra_admin_user_id" {
+  value = one(data.zitadel_human_users.infra_admin.user_ids)
+}
+
 output "zitadel_incus_client_id" {
   value = nonsensitive(zitadel_application_oidc.incus.client_id)
 }
@@ -81,7 +121,11 @@ output "zitadel_incus_server_config" {
     "authorization.client.oidc" = "scriptlet"
     "authorization.scriptlet"   = <<-SCRIPT
       def authorize(details, object, entitlement):
-          return details.Protocol == "oidc" and details.Username == ${jsonencode(one(data.zitadel_human_users.incus_admin.user_ids))}
+          return details.Protocol == "oidc" and details.Username == ${jsonencode(one(data.zitadel_human_users.infra_admin.user_ids))}
     SCRIPT
   }
+}
+
+output "zitadel_opkssh_client_id" {
+  value = nonsensitive(zitadel_application_oidc.opkssh.client_id)
 }
